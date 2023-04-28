@@ -1,6 +1,6 @@
 # Finch Java API Library
 
-[![Maven Central](https://img.shields.io/maven-central/v/org.finch.api/finch-java)](https://central.sonatype.com/artifact/org.finch.api/finch-java/0.0.2)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.0.2)
 
 The Finch Java SDK provides convenient access to the Finch REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
 
@@ -21,14 +21,14 @@ The API documentation can be found [here](https://developer.tryfinch.com/).
 #### Gradle
 
 ```kotlin
-implementation("org.finch.api:finch-java:0.0.2")
+implementation("com.tryfinch.api:finch-java:0.0.2")
 ```
 
 #### Maven
 
 ```xml
 <dependency>
-    <groupId>org.finch.api</groupId>
+    <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-java</artifactId>
     <version>0.0.2</version>
 </dependency>
@@ -39,8 +39,8 @@ implementation("org.finch.api:finch-java:0.0.2")
 Use `FinchOkHttpClient.builder()` to configure the client. At a minimum you need to set `.accessToken()`:
 
 ```java
-import org.finch.api.client.FinchClient;
-import org.finch.api.client.okhttp.FinchOkHttpClient;
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
     .accessToken("<your Access Token>")
@@ -74,9 +74,9 @@ To create a new hris directory, first use the `HrisDirectoryListIndividualsParam
 then pass that to the `listIndividuals` method of the `directory` service.
 
 ```java
-import org.finch.api.models.HrisDirectoryListIndividualsPage;
-import org.finch.api.models.HrisDirectoryListIndividualsParams;
-import org.finch.api.models.Page;
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage;
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams;
+import com.tryfinch.api.models.Page;
 
 HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.builder().build();
 HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals(params);
@@ -88,8 +88,8 @@ The Finch API provides a `list` method to get a paginated list of ats jobs.
 You can retrieve the first page by:
 
 ```java
-import org.finch.api.models.Job;
-import org.finch.api.models.Page;
+import com.tryfinch.api.models.Job;
+import com.tryfinch.api.models.Page;
 
 AtsJobListPage page = client.jobs().list();
 for (Job atsJob : page.jobs()) {
