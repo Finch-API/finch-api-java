@@ -3,7 +3,7 @@ plugins {
 }
 
 allprojects {
-    group = "org.finch.api"
+    group = "com.tryfinch.api"
     version = "0.0.2"
 }
 
