@@ -33,9 +33,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/Finch-API/finch-java.git")
-                    developerConnection.set("scm:git:git://github.com/Finch-API/finch-java.git")
-                    url.set("https://github.com/Finch-API/finch-java")
+                    connection.set("scm:git:git://github.com/Finch-API/finch-api-java.git")
+                    developerConnection.set("scm:git:git://github.com/Finch-API/finch-api-java.git")
+                    url.set("https://github.com/Finch-API/finch-api-java")
                 }
 
                 versionMapping {
