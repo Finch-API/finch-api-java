@@ -3,11 +3,11 @@
 package com.tryfinch.api.services.async.hris.benefits
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HrisBenefitsIndividualEnrolledIdsParams
-import com.tryfinch.api.models.HrisBenefitsIndividualRetrieveManyBenefitsPageAsync
-import com.tryfinch.api.models.HrisBenefitsIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitsIndividualUnenrollPageAsync
-import com.tryfinch.api.models.HrisBenefitsIndividualUnenrollParams
+import com.tryfinch.api.models.HriBenefitIndividualEnrolledIdsParams
+import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsPageAsync
+import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsParams
+import com.tryfinch.api.models.HriBenefitIndividualUnenrollPageAsync
+import com.tryfinch.api.models.HriBenefitIndividualUnenrollParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import java.util.concurrent.CompletableFuture
 
@@ -20,7 +20,7 @@ interface IndividualServiceAsync {
      */
     @JvmOverloads
     fun enrolledIds(
-        params: HrisBenefitsIndividualEnrolledIdsParams,
+        params: HriBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<IndividualEnrolledIdsResponse>
 
@@ -31,9 +31,9 @@ interface IndividualServiceAsync {
      */
     @JvmOverloads
     fun retrieveManyBenefits(
-        params: HrisBenefitsIndividualRetrieveManyBenefitsParams,
+        params: HriBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<HrisBenefitsIndividualRetrieveManyBenefitsPageAsync>
+    ): CompletableFuture<HriBenefitIndividualRetrieveManyBenefitsPageAsync>
 
     /**
      * **Availability: Automated and Assisted Benefits providers**
@@ -42,7 +42,7 @@ interface IndividualServiceAsync {
      */
     @JvmOverloads
     fun unenroll(
-        params: HrisBenefitsIndividualUnenrollParams,
+        params: HriBenefitIndividualUnenrollParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<HrisBenefitsIndividualUnenrollPageAsync>
+    ): CompletableFuture<HriBenefitIndividualUnenrollPageAsync>
 }

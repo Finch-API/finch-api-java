@@ -3,9 +3,9 @@
 package com.tryfinch.api.services.blocking.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtsJobListPage
-import com.tryfinch.api.models.AtsJobListParams
-import com.tryfinch.api.models.AtsJobRetrieveParams
+import com.tryfinch.api.models.AtJobListPage
+import com.tryfinch.api.models.AtJobListParams
+import com.tryfinch.api.models.AtJobRetrieveParams
 import com.tryfinch.api.models.Job
 
 interface JobService {
@@ -13,14 +13,14 @@ interface JobService {
     /** Gets a job from an organization. */
     @JvmOverloads
     fun retrieve(
-        params: AtsJobRetrieveParams,
+        params: AtJobRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): Job
 
     /** Gets all of an organization's jobs. */
     @JvmOverloads
     fun list(
-        params: AtsJobListParams,
+        params: AtJobListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): AtsJobListPage
+    ): AtJobListPage
 }

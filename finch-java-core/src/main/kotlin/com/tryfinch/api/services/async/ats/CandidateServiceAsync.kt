@@ -3,9 +3,9 @@
 package com.tryfinch.api.services.async.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtsCandidateListPageAsync
-import com.tryfinch.api.models.AtsCandidateListParams
-import com.tryfinch.api.models.AtsCandidateRetrieveParams
+import com.tryfinch.api.models.AtCandidateListPageAsync
+import com.tryfinch.api.models.AtCandidateListParams
+import com.tryfinch.api.models.AtCandidateRetrieveParams
 import com.tryfinch.api.models.Candidate
 import java.util.concurrent.CompletableFuture
 
@@ -17,7 +17,7 @@ interface CandidateServiceAsync {
      */
     @JvmOverloads
     fun retrieve(
-        params: AtsCandidateRetrieveParams,
+        params: AtCandidateRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<Candidate>
 
@@ -27,7 +27,7 @@ interface CandidateServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: AtsCandidateListParams,
+        params: AtCandidateListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<AtsCandidateListPageAsync>
+    ): CompletableFuture<AtCandidateListPageAsync>
 }

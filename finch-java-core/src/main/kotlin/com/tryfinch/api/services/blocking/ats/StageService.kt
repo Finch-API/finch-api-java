@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.blocking.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtsStageListPage
-import com.tryfinch.api.models.AtsStageListParams
+import com.tryfinch.api.models.AtStageListPage
+import com.tryfinch.api.models.AtStageListParams
 
 interface StageService {
 
@@ -15,7 +15,7 @@ interface StageService {
      */
     @JvmOverloads
     fun list(
-        params: AtsStageListParams,
+        params: AtStageListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): AtsStageListPage
+    ): AtStageListPage
 }

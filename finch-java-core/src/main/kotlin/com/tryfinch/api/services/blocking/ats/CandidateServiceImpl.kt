@@ -6,9 +6,9 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.AtsCandidateListPage
-import com.tryfinch.api.models.AtsCandidateListParams
-import com.tryfinch.api.models.AtsCandidateRetrieveParams
+import com.tryfinch.api.models.AtCandidateListPage
+import com.tryfinch.api.models.AtCandidateListParams
+import com.tryfinch.api.models.AtCandidateRetrieveParams
 import com.tryfinch.api.models.Candidate
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
@@ -29,7 +29,7 @@ constructor(
      * one or more applications.
      */
     override fun retrieve(
-        params: AtsCandidateRetrieveParams,
+        params: AtCandidateRetrieveParams,
         requestOptions: RequestOptions
     ): Candidate {
         val request =
@@ -51,8 +51,8 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtsCandidateListPage.Response> =
-        jsonHandler<AtsCandidateListPage.Response>(clientOptions.jsonMapper)
+    private val listHandler: Handler<AtCandidateListPage.Response> =
+        jsonHandler<AtCandidateListPage.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -60,9 +60,9 @@ constructor(
      * with one or more applications.
      */
     override fun list(
-        params: AtsCandidateListParams,
+        params: AtCandidateListParams,
         requestOptions: RequestOptions
-    ): AtsCandidateListPage {
+    ): AtCandidateListPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -79,7 +79,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtsCandidateListPage.of(this, params, it) }
+                .let { AtCandidateListPage.of(this, params, it) }
         }
     }
 }

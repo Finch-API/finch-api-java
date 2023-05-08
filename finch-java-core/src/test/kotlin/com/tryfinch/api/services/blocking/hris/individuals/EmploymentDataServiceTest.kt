@@ -3,7 +3,7 @@ package com.tryfinch.api.services.blocking.hris.individuals
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HrisIndividualsEmploymentDataRetrieveManyParams
+import com.tryfinch.api.models.HriIndividualEmploymentDataRetrieveManyParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -22,10 +22,10 @@ class EmploymentDataServiceTest {
         val employmentDataService = client.hris().individuals().employmentData()
         val getEmploymentResponse =
             employmentDataService.retrieveMany(
-                HrisIndividualsEmploymentDataRetrieveManyParams.builder()
+                HriIndividualEmploymentDataRetrieveManyParams.builder()
                     .requests(
                         listOf(
-                            HrisIndividualsEmploymentDataRetrieveManyParams.Request.builder()
+                            HriIndividualEmploymentDataRetrieveManyParams.Request.builder()
                                 .individualId("string")
                                 .build()
                         )

@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisIndividualsEmploymentDataRetrieveManyPage
-import com.tryfinch.api.models.HrisIndividualsEmploymentDataRetrieveManyParams
+import com.tryfinch.api.models.HriIndividualEmploymentDataRetrieveManyPage
+import com.tryfinch.api.models.HriIndividualEmploymentDataRetrieveManyParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.json
 import com.tryfinch.api.services.jsonHandler
@@ -20,11 +20,8 @@ constructor(
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-    private val retrieveManyHandler:
-        Handler<HrisIndividualsEmploymentDataRetrieveManyPage.Response> =
-        jsonHandler<HrisIndividualsEmploymentDataRetrieveManyPage.Response>(
-                clientOptions.jsonMapper
-            )
+    private val retrieveManyHandler: Handler<HriIndividualEmploymentDataRetrieveManyPage.Response> =
+        jsonHandler<HriIndividualEmploymentDataRetrieveManyPage.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -35,9 +32,9 @@ constructor(
      * what information the provider returns.
      */
     override fun retrieveMany(
-        params: HrisIndividualsEmploymentDataRetrieveManyParams,
+        params: HriIndividualEmploymentDataRetrieveManyParams,
         requestOptions: RequestOptions
-    ): HrisIndividualsEmploymentDataRetrieveManyPage {
+    ): HriIndividualEmploymentDataRetrieveManyPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -55,7 +52,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { HrisIndividualsEmploymentDataRetrieveManyPage.of(this, params, it) }
+                .let { HriIndividualEmploymentDataRetrieveManyPage.of(this, params, it) }
         }
     }
 }

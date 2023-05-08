@@ -6,11 +6,11 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisBenefitsIndividualEnrolledIdsParams
-import com.tryfinch.api.models.HrisBenefitsIndividualRetrieveManyBenefitsPageAsync
-import com.tryfinch.api.models.HrisBenefitsIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitsIndividualUnenrollPageAsync
-import com.tryfinch.api.models.HrisBenefitsIndividualUnenrollParams
+import com.tryfinch.api.models.HriBenefitIndividualEnrolledIdsParams
+import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsPageAsync
+import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsParams
+import com.tryfinch.api.models.HriBenefitIndividualUnenrollPageAsync
+import com.tryfinch.api.models.HriBenefitIndividualUnenrollParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividual
@@ -37,7 +37,7 @@ constructor(
      * Lists individuals currently enrolled in a given benefit.
      */
     override fun enrolledIds(
-        params: HrisBenefitsIndividualEnrolledIdsParams,
+        params: HriBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions
     ): CompletableFuture<IndividualEnrolledIdsResponse> {
         val request =
@@ -70,9 +70,9 @@ constructor(
      * Get enrolled benefit information for the given individuals.
      */
     override fun retrieveManyBenefits(
-        params: HrisBenefitsIndividualRetrieveManyBenefitsParams,
+        params: HriBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<HrisBenefitsIndividualRetrieveManyBenefitsPageAsync> {
+    ): CompletableFuture<HriBenefitIndividualRetrieveManyBenefitsPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -91,11 +91,11 @@ constructor(
                     }
                 }
                 .let {
-                    HrisBenefitsIndividualRetrieveManyBenefitsPageAsync.Response.Builder()
+                    HriBenefitIndividualRetrieveManyBenefitsPageAsync.Response.Builder()
                         .items(it)
                         .build()
                 }
-                .let { HrisBenefitsIndividualRetrieveManyBenefitsPageAsync.of(this, params, it) }
+                .let { HriBenefitIndividualRetrieveManyBenefitsPageAsync.of(this, params, it) }
         }
     }
 
@@ -109,9 +109,9 @@ constructor(
      * Unenroll individuals from a benefit
      */
     override fun unenroll(
-        params: HrisBenefitsIndividualUnenrollParams,
+        params: HriBenefitIndividualUnenrollParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<HrisBenefitsIndividualUnenrollPageAsync> {
+    ): CompletableFuture<HriBenefitIndividualUnenrollPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.DELETE)
@@ -130,10 +130,8 @@ constructor(
                         forEach { it.validate() }
                     }
                 }
-                .let {
-                    HrisBenefitsIndividualUnenrollPageAsync.Response.Builder().items(it).build()
-                }
-                .let { HrisBenefitsIndividualUnenrollPageAsync.of(this, params, it) }
+                .let { HriBenefitIndividualUnenrollPageAsync.Response.Builder().items(it).build() }
+                .let { HriBenefitIndividualUnenrollPageAsync.of(this, params, it) }
         }
     }
 }

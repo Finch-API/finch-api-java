@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisIndividualRetrieveManyPage
-import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
+import com.tryfinch.api.models.HriIndividualRetrieveManyPage
+import com.tryfinch.api.models.HriIndividualRetrieveManyParams
 import com.tryfinch.api.services.blocking.hris.individuals.EmploymentDataService
 import com.tryfinch.api.services.blocking.hris.individuals.EmploymentDataServiceImpl
 import com.tryfinch.api.services.errorHandler
@@ -28,15 +28,15 @@ constructor(
 
     override fun employmentData(): EmploymentDataService = employmentData
 
-    private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPage.Response> =
-        jsonHandler<HrisIndividualRetrieveManyPage.Response>(clientOptions.jsonMapper)
+    private val retrieveManyHandler: Handler<HriIndividualRetrieveManyPage.Response> =
+        jsonHandler<HriIndividualRetrieveManyPage.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Read individual data, excluding income and employment data */
     override fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams,
+        params: HriIndividualRetrieveManyParams,
         requestOptions: RequestOptions
-    ): HrisIndividualRetrieveManyPage {
+    ): HriIndividualRetrieveManyPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -54,7 +54,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { HrisIndividualRetrieveManyPage.of(this, params, it) }
+                .let { HriIndividualRetrieveManyPage.of(this, params, it) }
         }
     }
 }

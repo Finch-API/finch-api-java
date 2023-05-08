@@ -23,9 +23,11 @@ constructor(
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-    private val ats: AtServiceAsync by lazy { AtServiceAsyncImpl(clientOptions) }
+    private val sync: FinchClient by lazy { FinchClientImpl(clientOptions) }
 
-    private val hris: HriServiceAsync by lazy { HriServiceAsyncImpl(clientOptions) }
+    private val ats: AtsServiceAsync by lazy { AtsServiceAsyncImpl(clientOptions) }
+
+    private val hris: HrisServiceAsync by lazy { HrisServiceAsyncImpl(clientOptions) }
 
     private val providers: ProviderServiceAsync by lazy { ProviderServiceAsyncImpl(clientOptions) }
 
@@ -34,9 +36,11 @@ constructor(
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    override fun ats(): AtServiceAsync = ats
+    override fun sync(): FinchClient = sync
 
-    override fun hris(): HriServiceAsync = hris
+    override fun ats(): AtsServiceAsync = ats
+
+    override fun hris(): HrisServiceAsync = hris
 
     override fun providers(): ProviderServiceAsync = providers
 

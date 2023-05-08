@@ -6,11 +6,11 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisBenefitsIndividualEnrolledIdsParams
-import com.tryfinch.api.models.HrisBenefitsIndividualRetrieveManyBenefitsPage
-import com.tryfinch.api.models.HrisBenefitsIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitsIndividualUnenrollPage
-import com.tryfinch.api.models.HrisBenefitsIndividualUnenrollParams
+import com.tryfinch.api.models.HriBenefitIndividualEnrolledIdsParams
+import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsPage
+import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsParams
+import com.tryfinch.api.models.HriBenefitIndividualUnenrollPage
+import com.tryfinch.api.models.HriBenefitIndividualUnenrollParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividual
@@ -36,7 +36,7 @@ constructor(
      * Lists individuals currently enrolled in a given benefit.
      */
     override fun enrolledIds(
-        params: HrisBenefitsIndividualEnrolledIdsParams,
+        params: HriBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions
     ): IndividualEnrolledIdsResponse {
         val request =
@@ -68,9 +68,9 @@ constructor(
      * Get enrolled benefit information for the given individuals.
      */
     override fun retrieveManyBenefits(
-        params: HrisBenefitsIndividualRetrieveManyBenefitsParams,
+        params: HriBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions
-    ): HrisBenefitsIndividualRetrieveManyBenefitsPage {
+    ): HriBenefitIndividualRetrieveManyBenefitsPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -88,11 +88,11 @@ constructor(
                     }
                 }
                 .let {
-                    HrisBenefitsIndividualRetrieveManyBenefitsPage.Response.Builder()
+                    HriBenefitIndividualRetrieveManyBenefitsPage.Response.Builder()
                         .items(it)
                         .build()
                 }
-                .let { HrisBenefitsIndividualRetrieveManyBenefitsPage.of(this, params, it) }
+                .let { HriBenefitIndividualRetrieveManyBenefitsPage.of(this, params, it) }
         }
     }
 
@@ -106,9 +106,9 @@ constructor(
      * Unenroll individuals from a benefit
      */
     override fun unenroll(
-        params: HrisBenefitsIndividualUnenrollParams,
+        params: HriBenefitIndividualUnenrollParams,
         requestOptions: RequestOptions
-    ): HrisBenefitsIndividualUnenrollPage {
+    ): HriBenefitIndividualUnenrollPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.DELETE)
@@ -126,8 +126,8 @@ constructor(
                         forEach { it.validate() }
                     }
                 }
-                .let { HrisBenefitsIndividualUnenrollPage.Response.Builder().items(it).build() }
-                .let { HrisBenefitsIndividualUnenrollPage.of(this, params, it) }
+                .let { HriBenefitIndividualUnenrollPage.Response.Builder().items(it).build() }
+                .let { HriBenefitIndividualUnenrollPage.of(this, params, it) }
         }
     }
 }

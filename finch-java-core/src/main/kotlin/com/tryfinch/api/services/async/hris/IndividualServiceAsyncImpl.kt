@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisIndividualRetrieveManyPageAsync
-import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
+import com.tryfinch.api.models.HriIndividualRetrieveManyPageAsync
+import com.tryfinch.api.models.HriIndividualRetrieveManyParams
 import com.tryfinch.api.services.async.hris.individuals.EmploymentDataServiceAsync
 import com.tryfinch.api.services.async.hris.individuals.EmploymentDataServiceAsyncImpl
 import com.tryfinch.api.services.errorHandler
@@ -29,15 +29,15 @@ constructor(
 
     override fun employmentData(): EmploymentDataServiceAsync = employmentData
 
-    private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageAsync.Response> =
-        jsonHandler<HrisIndividualRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
+    private val retrieveManyHandler: Handler<HriIndividualRetrieveManyPageAsync.Response> =
+        jsonHandler<HriIndividualRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Read individual data, excluding income and employment data */
     override fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams,
+        params: HriIndividualRetrieveManyParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> {
+    ): CompletableFuture<HriIndividualRetrieveManyPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -56,7 +56,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { HrisIndividualRetrieveManyPageAsync.of(this, params, it) }
+                .let { HriIndividualRetrieveManyPageAsync.of(this, params, it) }
         }
     }
 }

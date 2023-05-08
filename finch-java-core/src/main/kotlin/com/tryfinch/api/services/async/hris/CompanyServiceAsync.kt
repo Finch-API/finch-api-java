@@ -4,7 +4,7 @@ package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.Company
-import com.tryfinch.api.models.HrisCompanyRetrieveParams
+import com.tryfinch.api.models.HriCompanyRetrieveParams
 import java.util.concurrent.CompletableFuture
 
 interface CompanyServiceAsync {
@@ -12,7 +12,7 @@ interface CompanyServiceAsync {
     /** Read basic company data */
     @JvmOverloads
     fun retrieve(
-        params: HrisCompanyRetrieveParams,
+        params: HriCompanyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<Company>
 }

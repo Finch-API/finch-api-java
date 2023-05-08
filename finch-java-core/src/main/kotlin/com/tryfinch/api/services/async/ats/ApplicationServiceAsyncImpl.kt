@@ -7,9 +7,9 @@ import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Application
-import com.tryfinch.api.models.AtsApplicationListPageAsync
-import com.tryfinch.api.models.AtsApplicationListParams
-import com.tryfinch.api.models.AtsApplicationRetrieveParams
+import com.tryfinch.api.models.AtApplicationListPageAsync
+import com.tryfinch.api.models.AtApplicationListParams
+import com.tryfinch.api.models.AtApplicationRetrieveParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
 import com.tryfinch.api.services.withErrorHandler
@@ -27,7 +27,7 @@ constructor(
 
     /** Gets an application from an organization. */
     override fun retrieve(
-        params: AtsApplicationRetrieveParams,
+        params: AtApplicationRetrieveParams,
         requestOptions: RequestOptions
     ): CompletableFuture<Application> {
         val request =
@@ -50,15 +50,15 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtsApplicationListPageAsync.Response> =
-        jsonHandler<AtsApplicationListPageAsync.Response>(clientOptions.jsonMapper)
+    private val listHandler: Handler<AtApplicationListPageAsync.Response> =
+        jsonHandler<AtApplicationListPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Gets all of an organization's applications. */
     override fun list(
-        params: AtsApplicationListParams,
+        params: AtApplicationListParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<AtsApplicationListPageAsync> {
+    ): CompletableFuture<AtApplicationListPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -76,7 +76,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtsApplicationListPageAsync.of(this, params, it) }
+                .let { AtApplicationListPageAsync.of(this, params, it) }
         }
     }
 }

@@ -6,9 +6,9 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.AtsJobListPageAsync
-import com.tryfinch.api.models.AtsJobListParams
-import com.tryfinch.api.models.AtsJobRetrieveParams
+import com.tryfinch.api.models.AtJobListPageAsync
+import com.tryfinch.api.models.AtJobListParams
+import com.tryfinch.api.models.AtJobRetrieveParams
 import com.tryfinch.api.models.Job
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
@@ -27,7 +27,7 @@ constructor(
 
     /** Gets a job from an organization. */
     override fun retrieve(
-        params: AtsJobRetrieveParams,
+        params: AtJobRetrieveParams,
         requestOptions: RequestOptions
     ): CompletableFuture<Job> {
         val request =
@@ -50,15 +50,15 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtsJobListPageAsync.Response> =
-        jsonHandler<AtsJobListPageAsync.Response>(clientOptions.jsonMapper)
+    private val listHandler: Handler<AtJobListPageAsync.Response> =
+        jsonHandler<AtJobListPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Gets all of an organization's jobs. */
     override fun list(
-        params: AtsJobListParams,
+        params: AtJobListParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<AtsJobListPageAsync> {
+    ): CompletableFuture<AtJobListPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -76,7 +76,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtsJobListPageAsync.of(this, params, it) }
+                .let { AtJobListPageAsync.of(this, params, it) }
         }
     }
 }

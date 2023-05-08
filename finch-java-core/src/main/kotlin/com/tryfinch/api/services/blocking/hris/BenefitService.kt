@@ -5,13 +5,13 @@ package com.tryfinch.api.services.blocking.hris
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
-import com.tryfinch.api.models.HrisBenefitCreateParams
-import com.tryfinch.api.models.HrisBenefitListPage
-import com.tryfinch.api.models.HrisBenefitListParams
-import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPage
-import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
-import com.tryfinch.api.models.HrisBenefitRetrieveParams
-import com.tryfinch.api.models.HrisBenefitUpdateParams
+import com.tryfinch.api.models.HriBenefitCreateParams
+import com.tryfinch.api.models.HriBenefitListPage
+import com.tryfinch.api.models.HriBenefitListParams
+import com.tryfinch.api.models.HriBenefitListSupportedBenefitsPage
+import com.tryfinch.api.models.HriBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HriBenefitRetrieveParams
+import com.tryfinch.api.models.HriBenefitUpdateParams
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 
@@ -27,7 +27,7 @@ interface BenefitService {
      */
     @JvmOverloads
     fun create(
-        params: HrisBenefitCreateParams,
+        params: HriBenefitCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CreateCompanyBenefitsResponse
 
@@ -38,7 +38,7 @@ interface BenefitService {
      */
     @JvmOverloads
     fun retrieve(
-        params: HrisBenefitRetrieveParams,
+        params: HriBenefitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompanyBenefit
 
@@ -49,7 +49,7 @@ interface BenefitService {
      */
     @JvmOverloads
     fun update(
-        params: HrisBenefitUpdateParams,
+        params: HriBenefitUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): UpdateCompanyBenefitResponse
 
@@ -60,9 +60,9 @@ interface BenefitService {
      */
     @JvmOverloads
     fun list(
-        params: HrisBenefitListParams,
+        params: HriBenefitListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HrisBenefitListPage
+    ): HriBenefitListPage
 
     /**
      * **Availability: Automated and Assisted Benefits providers**
@@ -71,7 +71,7 @@ interface BenefitService {
      */
     @JvmOverloads
     fun listSupportedBenefits(
-        params: HrisBenefitListSupportedBenefitsParams,
+        params: HriBenefitListSupportedBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HrisBenefitListSupportedBenefitsPage
+    ): HriBenefitListSupportedBenefitsPage
 }

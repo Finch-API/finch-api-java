@@ -5,13 +5,13 @@ package com.tryfinch.api.services.async.hris
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
-import com.tryfinch.api.models.HrisBenefitCreateParams
-import com.tryfinch.api.models.HrisBenefitListPageAsync
-import com.tryfinch.api.models.HrisBenefitListParams
-import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPageAsync
-import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
-import com.tryfinch.api.models.HrisBenefitRetrieveParams
-import com.tryfinch.api.models.HrisBenefitUpdateParams
+import com.tryfinch.api.models.HriBenefitCreateParams
+import com.tryfinch.api.models.HriBenefitListPageAsync
+import com.tryfinch.api.models.HriBenefitListParams
+import com.tryfinch.api.models.HriBenefitListSupportedBenefitsPageAsync
+import com.tryfinch.api.models.HriBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HriBenefitRetrieveParams
+import com.tryfinch.api.models.HriBenefitUpdateParams
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import java.util.concurrent.CompletableFuture
@@ -28,7 +28,7 @@ interface BenefitServiceAsync {
      */
     @JvmOverloads
     fun create(
-        params: HrisBenefitCreateParams,
+        params: HriBenefitCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<CreateCompanyBenefitsResponse>
 
@@ -39,7 +39,7 @@ interface BenefitServiceAsync {
      */
     @JvmOverloads
     fun retrieve(
-        params: HrisBenefitRetrieveParams,
+        params: HriBenefitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<CompanyBenefit>
 
@@ -50,7 +50,7 @@ interface BenefitServiceAsync {
      */
     @JvmOverloads
     fun update(
-        params: HrisBenefitUpdateParams,
+        params: HriBenefitUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<UpdateCompanyBenefitResponse>
 
@@ -61,9 +61,9 @@ interface BenefitServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: HrisBenefitListParams,
+        params: HriBenefitListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<HrisBenefitListPageAsync>
+    ): CompletableFuture<HriBenefitListPageAsync>
 
     /**
      * **Availability: Automated and Assisted Benefits providers**
@@ -72,7 +72,7 @@ interface BenefitServiceAsync {
      */
     @JvmOverloads
     fun listSupportedBenefits(
-        params: HrisBenefitListSupportedBenefitsParams,
+        params: HriBenefitListSupportedBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync>
+    ): CompletableFuture<HriBenefitListSupportedBenefitsPageAsync>
 }

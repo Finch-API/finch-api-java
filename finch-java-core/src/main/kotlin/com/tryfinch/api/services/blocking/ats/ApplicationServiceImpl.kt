@@ -7,9 +7,9 @@ import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Application
-import com.tryfinch.api.models.AtsApplicationListPage
-import com.tryfinch.api.models.AtsApplicationListParams
-import com.tryfinch.api.models.AtsApplicationRetrieveParams
+import com.tryfinch.api.models.AtApplicationListPage
+import com.tryfinch.api.models.AtApplicationListParams
+import com.tryfinch.api.models.AtApplicationRetrieveParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
 import com.tryfinch.api.services.withErrorHandler
@@ -26,7 +26,7 @@ constructor(
 
     /** Gets an application from an organization. */
     override fun retrieve(
-        params: AtsApplicationRetrieveParams,
+        params: AtApplicationRetrieveParams,
         requestOptions: RequestOptions
     ): Application {
         val request =
@@ -48,15 +48,15 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtsApplicationListPage.Response> =
-        jsonHandler<AtsApplicationListPage.Response>(clientOptions.jsonMapper)
+    private val listHandler: Handler<AtApplicationListPage.Response> =
+        jsonHandler<AtApplicationListPage.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Gets all of an organization's applications. */
     override fun list(
-        params: AtsApplicationListParams,
+        params: AtApplicationListParams,
         requestOptions: RequestOptions
-    ): AtsApplicationListPage {
+    ): AtApplicationListPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -73,7 +73,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtsApplicationListPage.of(this, params, it) }
+                .let { AtApplicationListPage.of(this, params, it) }
         }
     }
 }

@@ -7,7 +7,7 @@ import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Company
-import com.tryfinch.api.models.HrisCompanyRetrieveParams
+import com.tryfinch.api.models.HriCompanyRetrieveParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
 import com.tryfinch.api.services.withErrorHandler
@@ -24,7 +24,7 @@ constructor(
 
     /** Read basic company data */
     override fun retrieve(
-        params: HrisCompanyRetrieveParams,
+        params: HriCompanyRetrieveParams,
         requestOptions: RequestOptions
     ): Company {
         val request =

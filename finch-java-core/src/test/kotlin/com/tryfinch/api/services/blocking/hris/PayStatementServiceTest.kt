@@ -3,7 +3,7 @@ package com.tryfinch.api.services.blocking.hris
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
+import com.tryfinch.api.models.HriPayStatementRetrieveManyParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -22,10 +22,10 @@ class PayStatementServiceTest {
         val payStatementService = client.hris().payStatements()
         val getPayStatementsResponse =
             payStatementService.retrieveMany(
-                HrisPayStatementRetrieveManyParams.builder()
+                HriPayStatementRetrieveManyParams.builder()
                     .requests(
                         listOf(
-                            HrisPayStatementRetrieveManyParams.Request.builder()
+                            HriPayStatementRetrieveManyParams.Request.builder()
                                 .paymentId("e8b90071-0c11-471c-86e8-e303ef2f6782")
                                 .build()
                         )

@@ -3,8 +3,8 @@ package com.tryfinch.api.services.blocking.hris
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HrisBenefitListParams
-import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HriBenefitListParams
+import com.tryfinch.api.models.HriBenefitListSupportedBenefitsParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -23,7 +23,7 @@ class BenefitServiceTest {
         val benefitService = client.hris().benefits()
         val createCompanyBenefitsResponse =
             benefitService.create(
-                HrisBenefitCreateParams.builder()
+                HriBenefitCreateParams.builder()
                     .type(BenefitType._401K)
                     .description("string")
                     .frequency(BenefitFrequency.ONE_TIME)
@@ -44,7 +44,7 @@ class BenefitServiceTest {
                 .build()
         val benefitService = client.hris().benefits()
         val companyBenefit =
-            benefitService.retrieve(HrisBenefitRetrieveParams.builder().benefitId("string").build())
+            benefitService.retrieve(HriBenefitRetrieveParams.builder().benefitId("string").build())
         println(companyBenefit)
         companyBenefit.validate()
     }
@@ -61,7 +61,7 @@ class BenefitServiceTest {
         val benefitService = client.hris().benefits()
         val updateCompanyBenefitResponse =
             benefitService.update(
-                HrisBenefitUpdateParams.builder().benefitId("string").description("string").build()
+                HriBenefitUpdateParams.builder().benefitId("string").description("string").build()
             )
         println(updateCompanyBenefitResponse)
         updateCompanyBenefitResponse.validate()
@@ -77,8 +77,7 @@ class BenefitServiceTest {
                 .clientSecret("string")
                 .build()
         val benefitService = client.hris().benefits()
-        val getCompanyBenefitsResponse =
-            benefitService.list(HrisBenefitListParams.builder().build())
+        val getCompanyBenefitsResponse = benefitService.list(HriBenefitListParams.builder().build())
         println(getCompanyBenefitsResponse)
         getCompanyBenefitsResponse.items().forEach { it.validate() }
     }
@@ -95,7 +94,7 @@ class BenefitServiceTest {
         val benefitService = client.hris().benefits()
         val getCompanyBenefitsMetadataResponse =
             benefitService.listSupportedBenefits(
-                HrisBenefitListSupportedBenefitsParams.builder().build()
+                HriBenefitListSupportedBenefitsParams.builder().build()
             )
         println(getCompanyBenefitsMetadataResponse)
         getCompanyBenefitsMetadataResponse.items().forEach { it.validate() }

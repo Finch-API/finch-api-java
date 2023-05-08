@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisIndividualsEmploymentDataRetrieveManyPageAsync
-import com.tryfinch.api.models.HrisIndividualsEmploymentDataRetrieveManyParams
+import com.tryfinch.api.models.HriIndividualEmploymentDataRetrieveManyPageAsync
+import com.tryfinch.api.models.HriIndividualEmploymentDataRetrieveManyParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.json
 import com.tryfinch.api.services.jsonHandler
@@ -22,8 +22,8 @@ constructor(
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
     private val retrieveManyHandler:
-        Handler<HrisIndividualsEmploymentDataRetrieveManyPageAsync.Response> =
-        jsonHandler<HrisIndividualsEmploymentDataRetrieveManyPageAsync.Response>(
+        Handler<HriIndividualEmploymentDataRetrieveManyPageAsync.Response> =
+        jsonHandler<HriIndividualEmploymentDataRetrieveManyPageAsync.Response>(
                 clientOptions.jsonMapper
             )
             .withErrorHandler(errorHandler)
@@ -36,9 +36,9 @@ constructor(
      * what information the provider returns.
      */
     override fun retrieveMany(
-        params: HrisIndividualsEmploymentDataRetrieveManyParams,
+        params: HriIndividualEmploymentDataRetrieveManyParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<HrisIndividualsEmploymentDataRetrieveManyPageAsync> {
+    ): CompletableFuture<HriIndividualEmploymentDataRetrieveManyPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -57,7 +57,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { HrisIndividualsEmploymentDataRetrieveManyPageAsync.of(this, params, it) }
+                .let { HriIndividualEmploymentDataRetrieveManyPageAsync.of(this, params, it) }
         }
     }
 }

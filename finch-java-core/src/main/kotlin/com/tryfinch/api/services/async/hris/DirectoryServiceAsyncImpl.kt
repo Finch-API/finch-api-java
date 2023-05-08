@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPageAsync
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
+import com.tryfinch.api.models.HriDirectoryListIndividualsPageAsync
+import com.tryfinch.api.models.HriDirectoryListIndividualsParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
 import com.tryfinch.api.services.withErrorHandler
@@ -20,15 +20,15 @@ constructor(
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-    private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPageAsync.Response> =
-        jsonHandler<HrisDirectoryListIndividualsPageAsync.Response>(clientOptions.jsonMapper)
+    private val listIndividualsHandler: Handler<HriDirectoryListIndividualsPageAsync.Response> =
+        jsonHandler<HriDirectoryListIndividualsPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Read company directory and organization structure */
     override fun listIndividuals(
-        params: HrisDirectoryListIndividualsParams,
+        params: HriDirectoryListIndividualsParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<HrisDirectoryListIndividualsPageAsync> {
+    ): CompletableFuture<HriDirectoryListIndividualsPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -46,7 +46,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { HrisDirectoryListIndividualsPageAsync.of(this, params, it) }
+                .let { HriDirectoryListIndividualsPageAsync.of(this, params, it) }
         }
     }
 }

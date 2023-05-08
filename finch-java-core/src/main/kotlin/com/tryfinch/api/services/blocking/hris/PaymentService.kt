@@ -3,15 +3,15 @@
 package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HrisPaymentListPage
-import com.tryfinch.api.models.HrisPaymentListParams
+import com.tryfinch.api.models.HriPaymentListPage
+import com.tryfinch.api.models.HriPaymentListParams
 
 interface PaymentService {
 
     /** Read payroll and contractor related payments by the company. */
     @JvmOverloads
     fun list(
-        params: HrisPaymentListParams,
+        params: HriPaymentListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HrisPaymentListPage
+    ): HriPaymentListPage
 }

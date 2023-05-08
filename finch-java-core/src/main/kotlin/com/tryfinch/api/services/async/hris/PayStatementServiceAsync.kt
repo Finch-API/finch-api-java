@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageAsync
-import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
+import com.tryfinch.api.models.HriPayStatementRetrieveManyPageAsync
+import com.tryfinch.api.models.HriPayStatementRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
 interface PayStatementServiceAsync {
@@ -16,7 +16,7 @@ interface PayStatementServiceAsync {
      */
     @JvmOverloads
     fun retrieveMany(
-        params: HrisPayStatementRetrieveManyParams,
+        params: HriPayStatementRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<HrisPayStatementRetrieveManyPageAsync>
+    ): CompletableFuture<HriPayStatementRetrieveManyPageAsync>
 }
