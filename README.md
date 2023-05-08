@@ -1,10 +1,12 @@
-# Finch Kotlin API Library
+# Finch Java API Library
 
-The Finch Kotlin SDK provides convenient access to the Finch REST API from applications written in Kotlin. It includes helper classes with helpful types and documentation for every request and response property.
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.0.1)
+
+The Finch Java SDK provides convenient access to the Finch REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
 
 This package is currently in beta (pre-v1.0.0). We expect some breaking changes to rarely-used areas of the SDK, and appreciate your [feedback](mailto:founders@tryfinch.com).
 
-The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences that make it more ergonomic for use in Kotlin, such as nullable values instead of `Optional`, `Sequence` instead of `Stream`, and suspend functions instead of `CompletableFuture`.
+The Finch Java SDK is similar to the Finch Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
 ## Documentation
 
@@ -19,7 +21,7 @@ The API documentation can be found [here](https://developer.tryfinch.com/).
 #### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:0.0.1")
+implementation("com.tryfinch.api:finch-java:0.0.1")
 ```
 
 #### Maven
@@ -27,7 +29,7 @@ implementation("com.tryfinch.api:finch-kotlin:0.0.1")
 ```xml
 <dependency>
     <groupId>com.tryfinch.api</groupId>
-    <artifactId>finch-kotlin</artifactId>
+    <artifactId>finch-java</artifactId>
     <version>0.0.1</version>
 </dependency>
 ```
@@ -36,25 +38,25 @@ implementation("com.tryfinch.api:finch-kotlin:0.0.1")
 
 Use `FinchOkHttpClient.builder()` to configure the client. At a minimum you need to set `.accessToken()`:
 
-```kotlin
-import com.tryfinch.api.client.FinchClient
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+```java
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
-val client = FinchOkHttpClient.builder()
+FinchClient client = FinchOkHttpClient.builder()
     .accessToken("<your Access Token>")
-    .build()
+    .build();
 ```
 
 Alternately, use `FinchOkHttpClient.fromEnv()` to read client arguments from environment variables:
 
-```kotlin
-val client = FinchOkHttpClient.fromEnv()
+```java
+FinchClient client = FinchOkHttpClient.fromEnv();
 
 // Note: you can also call fromEnv() from the client builder, for example if you need to set additional properties
-val client = FinchOkHttpClient.builder()
+FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
     // ... set properties on the builder
-    .build()
+    .build();
 ```
 
 | Property     | Environment variable  | Required | Default value |
@@ -71,13 +73,13 @@ Read the documentation for more configuration options.
 To create a new hris directory, first use the `HriDirectoryListIndividualsParams` builder to specify attributes,
 then pass that to the `listIndividuals` method of the `directory` service.
 
-```kotlin
-import com.tryfinch.api.models.HriDirectoryListIndividualsPage
-import com.tryfinch.api.models.HriDirectoryListIndividualsParams
-import com.tryfinch.api.models.Page
+```java
+import com.tryfinch.api.models.HriDirectoryListIndividualsPage;
+import com.tryfinch.api.models.HriDirectoryListIndividualsParams;
+import com.tryfinch.api.models.Page;
 
-val params = HriDirectoryListIndividualsParams.builder().build()
-val hrisDirectory = client.directory().listIndividuals(params)
+HriDirectoryListIndividualsParams params = HriDirectoryListIndividualsParams.builder().build();
+HriDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals(params);
 ```
 
 ### Example: listing resources
@@ -85,13 +87,13 @@ val hrisDirectory = client.directory().listIndividuals(params)
 The Finch API provides a `list` method to get a paginated list of ats jobs.
 You can retrieve the first page by:
 
-```kotlin
-import com.tryfinch.api.models.Job
-import com.tryfinch.api.models.Page
+```java
+import com.tryfinch.api.models.Job;
+import com.tryfinch.api.models.Page;
 
-val page = client.jobs().list()
-for (atsJob: Job in page.jobs()) {
-    print(atsJob)
+AtJobListPage page = client.jobs().list();
+for (Job atsJob : page.jobs()) {
+    System.out.println(atsJob);
 }
 ```
 
@@ -108,24 +110,24 @@ To make a request to the Finch API, you generally build an instance of the appro
 In [Example: creating a resource](#example-creating-a-resource) above, we used the `HriDirectoryListIndividualsParams.builder()` to pass to
 the `listIndividuals` method of the `directory` service.
 
-Sometimes, the API may support other properties that are not yet supported in the Kotlin SDK types. In that case,
+Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
-```kotlin
-val params = HriDirectoryListIndividualsParams.builder()
+```java
+HriDirectoryListIndividualsParams params = HriDirectoryListIndividualsParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
-    .build()
+    .build();
 ```
 
 ## Responses
 
 ### Response validation
 
-When receiving a response, the Finch Kotlin SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Kotlin type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
+When receiving a response, the Finch Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
-```kotlin
-val hrisDirectory = client.directory().listIndividuals().validate()
+```java
+HriDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals().validate();
 ```
 
 ### Response properties as JSON
@@ -137,8 +139,8 @@ this SDK. Each model property has a corresponding JSON version, with an undersco
 
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
-```kotlin
-val secret = hrisDirectory._additionalProperties().get("secret_field")
+```java
+JsonValue secret = hrisDirectory._additionalProperties().get("secret_field");
 ```
 
 ---
@@ -155,20 +157,25 @@ which automatically handles fetching more pages for you:
 
 ### Synchronous
 
-```kotlin
-// As a Sequence:
-client.jobs().list(params).autoPager()
-    .take(50)
-    .forEach { atsJob -> print(atsJob) }
+```java
+// As an Iterable:
+AtJobListPage page = client.jobs().list(params);
+for (Job atsJob : page.autoPager()) {
+    System.out.println(atsJob);
+};
+
+// As a Stream:
+client.jobs().list(params).autoPager().stream()
+    .limit(50)
+    .forEach(atsJob -> System.out.println(atsJob));
 ```
 
 ### Asynchronous
 
-```kotlin
-// As a Flow:
+```java
+// Using forEach, which returns CompletableFuture<Void>:
 asyncClient.jobs().list(params).autoPager()
-    .take(50)
-    .collect { atsJob -> print(atsJob) }
+    .forEach(atsJob -> System.out.println(atsJob), executor);
 ```
 
 ### Manual pagination
@@ -178,14 +185,14 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 `response` and other methods to fetch top-level data about the page. It also has methods
 `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
 
-```kotlin
-val page = client.jobs().list(params)
+```java
+AtJobListPage page = client.jobs().list(params);
 while (page != null) {
-    for (atsJob in page.jobs) {
-        print(atsJob)
+    for (Job atsJob : page.jobs()) {
+        System.out.println(atsJob);
     }
 
-    page = page.getNextPage()
+    page = page.getNextPage().orElse(null);
 }
 ```
 
@@ -221,34 +228,34 @@ This library throws exceptions in a single hierarchy for easy handling:
 Requests that experience certain errors are automatically retried 2 times by default, with a short exponential backoff. Connection errors (for example, due to a network connectivity problem), 409 Conflict, 429 Rate Limit, and >=500 Internal errors will all be retried by default.
 You can provide a `maxRetries` on the client builder to configure this:
 
-```kotlin
-val client = FinchOkHttpClient.builder()
+```java
+FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
     .maxRetries(4)
-    .build()
+    .build();
 ```
 
 ### Timeouts
 
 Requests time out after 60 seconds by default. You can configure this on the client builder:
 
-```kotlin
-val client = FinchOkHttpClient.builder()
+```java
+FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
     .timeout(Duration.ofSeconds(30))
-    .build()
+    .build();
 ```
 
 ### Proxies
 
 Requests can be routed through a proxy. You can configure this on the client builder:
 
-```kotlin
-val client = FinchOkHttpClient.builder()
+```java
+FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
     .proxy(new Proxy(
         Type.HTTP,
         new InetSocketAddress("proxy.com", 8080)
     ))
-    .build()
+    .build();
 ```
