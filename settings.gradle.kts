@@ -1,6 +1,6 @@
-rootProject.name = "finch-java-root"
+rootProject.name = "finch-kotlin-root"
 
-include("finch-java")
-include("finch-java-client-okhttp")
-include("finch-java-core")
-include("finch-java-example")
+include("finch-kotlin")
+include("finch-kotlin-client-okhttp")
+include("finch-kotlin-core")
+include("finch-kotlin-example")
