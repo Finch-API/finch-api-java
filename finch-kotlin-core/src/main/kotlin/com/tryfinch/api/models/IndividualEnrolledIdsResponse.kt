@@ -1,0 +1,128 @@
+package com.tryfinch.api.models
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
+import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.toUnmodifiable
+import java.util.Objects
+
+@JsonDeserialize(builder = IndividualEnrolledIdsResponse.Builder::class)
+@NoAutoDetect
+class IndividualEnrolledIdsResponse
+private constructor(
+    private val benefitId: JsonField<String>,
+    private val individualIds: JsonField<List<String>>,
+    private val additionalProperties: Map<String, JsonValue>,
+) {
+
+    private var validated: Boolean = false
+
+    private var hashCode: Int = 0
+
+    fun benefitId(): String = benefitId.getRequired("benefit_id")
+
+    fun individualIds(): List<String> = individualIds.getRequired("individual_ids")
+
+    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId() = benefitId
+
+    @JsonProperty("individual_ids") @ExcludeMissing fun _individualIds() = individualIds
+
+    @JsonAnyGetter
+    @ExcludeMissing
+    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    fun validate() = apply {
+        if (!validated) {
+            benefitId()
+            individualIds()
+            validated = true
+        }
+    }
+
+    fun toBuilder() = Builder().from(this)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return other is IndividualEnrolledIdsResponse &&
+            this.benefitId == other.benefitId &&
+            this.individualIds == other.individualIds &&
+            this.additionalProperties == other.additionalProperties
+    }
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode =
+                Objects.hash(
+                    benefitId,
+                    individualIds,
+                    additionalProperties,
+                )
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "IndividualEnrolledIdsResponse{benefitId=$benefitId, individualIds=$individualIds, additionalProperties=$additionalProperties}"
+
+    companion object {
+
+        fun builder() = Builder()
+    }
+
+    class Builder {
+
+        private var benefitId: JsonField<String> = JsonMissing.of()
+        private var individualIds: JsonField<List<String>> = JsonMissing.of()
+        private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+        internal fun from(individualEnrolledIdsResponse: IndividualEnrolledIdsResponse) = apply {
+            this.benefitId = individualEnrolledIdsResponse.benefitId
+            this.individualIds = individualEnrolledIdsResponse.individualIds
+            additionalProperties(individualEnrolledIdsResponse.additionalProperties)
+        }
+
+        fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
+
+        @JsonProperty("benefit_id")
+        @ExcludeMissing
+        fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
+
+        fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
+
+        @JsonProperty("individual_ids")
+        @ExcludeMissing
+        fun individualIds(individualIds: JsonField<List<String>>) = apply {
+            this.individualIds = individualIds
+        }
+
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            this.additionalProperties.putAll(additionalProperties)
+        }
+
+        @JsonAnySetter
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            this.additionalProperties.put(key, value)
+        }
+
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun build(): IndividualEnrolledIdsResponse =
+            IndividualEnrolledIdsResponse(
+                benefitId,
+                individualIds.map { it.toUnmodifiable() },
+                additionalProperties.toUnmodifiable(),
+            )
+    }
+}
