@@ -17,10 +17,10 @@ import com.tryfinch.api.services.blocking.hris.PaymentService
 import com.tryfinch.api.services.blocking.hris.PaymentServiceImpl
 import com.tryfinch.api.services.errorHandler
 
-class HriServiceImpl
+class HrisServiceImpl
 constructor(
     private val clientOptions: ClientOptions,
-) : HriService {
+) : HrisService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 

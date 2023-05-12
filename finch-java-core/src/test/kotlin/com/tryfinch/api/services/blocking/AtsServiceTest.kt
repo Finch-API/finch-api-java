@@ -4,4 +4,4 @@ import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.models.*
 import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class) class AtServiceTest
+@ExtendWith(TestServerExtension::class) class AtsServiceTest

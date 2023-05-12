@@ -12,7 +12,7 @@ import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
 
-class HrisBenefitsIndividualUnenrollParams
+class HrisBenefitIndividualUnenrollParams
 constructor(
     private val benefitId: String,
     private val individualIds: List<String>?,
@@ -26,8 +26,8 @@ constructor(
     fun individualIds(): Optional<List<String>> = Optional.ofNullable(individualIds)
 
     @JvmSynthetic
-    internal fun getBody(): HrisBenefitsIndividualUnenrollBody {
-        return HrisBenefitsIndividualUnenrollBody(individualIds, additionalBodyProperties)
+    internal fun getBody(): HrisBenefitIndividualUnenrollBody {
+        return HrisBenefitIndividualUnenrollBody(individualIds, additionalBodyProperties)
     }
 
     @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -41,9 +41,9 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = HrisBenefitsIndividualUnenrollBody.Builder::class)
+    @JsonDeserialize(builder = HrisBenefitIndividualUnenrollBody.Builder::class)
     @NoAutoDetect
-    class HrisBenefitsIndividualUnenrollBody
+    class HrisBenefitIndividualUnenrollBody
     internal constructor(
         private val individualIds: List<String>?,
         private val additionalProperties: Map<String, JsonValue>,
@@ -65,7 +65,7 @@ constructor(
                 return true
             }
 
-            return other is HrisBenefitsIndividualUnenrollBody &&
+            return other is HrisBenefitIndividualUnenrollBody &&
                 this.individualIds == other.individualIds &&
                 this.additionalProperties == other.additionalProperties
         }
@@ -78,7 +78,7 @@ constructor(
         }
 
         override fun toString() =
-            "HrisBenefitsIndividualUnenrollBody{individualIds=$individualIds, additionalProperties=$additionalProperties}"
+            "HrisBenefitIndividualUnenrollBody{individualIds=$individualIds, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -92,10 +92,10 @@ constructor(
 
             @JvmSynthetic
             internal fun from(
-                hrisBenefitsIndividualUnenrollBody: HrisBenefitsIndividualUnenrollBody
+                hrisBenefitIndividualUnenrollBody: HrisBenefitIndividualUnenrollBody
             ) = apply {
-                this.individualIds = hrisBenefitsIndividualUnenrollBody.individualIds
-                additionalProperties(hrisBenefitsIndividualUnenrollBody.additionalProperties)
+                this.individualIds = hrisBenefitIndividualUnenrollBody.individualIds
+                additionalProperties(hrisBenefitIndividualUnenrollBody.additionalProperties)
             }
 
             /** Array of individual_ids to unenroll. */
@@ -118,8 +118,8 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): HrisBenefitsIndividualUnenrollBody =
-                HrisBenefitsIndividualUnenrollBody(
+            fun build(): HrisBenefitIndividualUnenrollBody =
+                HrisBenefitIndividualUnenrollBody(
                     individualIds?.toUnmodifiable(),
                     additionalProperties.toUnmodifiable()
                 )
@@ -137,7 +137,7 @@ constructor(
             return true
         }
 
-        return other is HrisBenefitsIndividualUnenrollParams &&
+        return other is HrisBenefitIndividualUnenrollParams &&
             this.benefitId == other.benefitId &&
             this.individualIds == other.individualIds &&
             this.additionalQueryParams == other.additionalQueryParams &&
@@ -156,7 +156,7 @@ constructor(
     }
 
     override fun toString() =
-        "HrisBenefitsIndividualUnenrollParams{benefitId=$benefitId, individualIds=$individualIds, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisBenefitIndividualUnenrollParams{benefitId=$benefitId, individualIds=$individualIds, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -176,13 +176,13 @@ constructor(
 
         @JvmSynthetic
         internal fun from(
-            hrisBenefitsIndividualUnenrollParams: HrisBenefitsIndividualUnenrollParams
+            hrisBenefitIndividualUnenrollParams: HrisBenefitIndividualUnenrollParams
         ) = apply {
-            this.benefitId = hrisBenefitsIndividualUnenrollParams.benefitId
-            this.individualIds = hrisBenefitsIndividualUnenrollParams.individualIds
-            additionalQueryParams(hrisBenefitsIndividualUnenrollParams.additionalQueryParams)
-            additionalHeaders(hrisBenefitsIndividualUnenrollParams.additionalHeaders)
-            additionalBodyProperties(hrisBenefitsIndividualUnenrollParams.additionalBodyProperties)
+            this.benefitId = hrisBenefitIndividualUnenrollParams.benefitId
+            this.individualIds = hrisBenefitIndividualUnenrollParams.individualIds
+            additionalQueryParams(hrisBenefitIndividualUnenrollParams.additionalQueryParams)
+            additionalHeaders(hrisBenefitIndividualUnenrollParams.additionalHeaders)
+            additionalBodyProperties(hrisBenefitIndividualUnenrollParams.additionalBodyProperties)
         }
 
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
@@ -246,8 +246,8 @@ constructor(
                 this.additionalBodyProperties.putAll(additionalBodyProperties)
             }
 
-        fun build(): HrisBenefitsIndividualUnenrollParams =
-            HrisBenefitsIndividualUnenrollParams(
+        fun build(): HrisBenefitIndividualUnenrollParams =
+            HrisBenefitIndividualUnenrollParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
                 individualIds?.toUnmodifiable(),
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),

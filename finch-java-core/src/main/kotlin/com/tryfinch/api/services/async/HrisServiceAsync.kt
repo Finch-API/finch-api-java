@@ -9,7 +9,7 @@ import com.tryfinch.api.services.async.hris.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsync
 import com.tryfinch.api.services.async.hris.PaymentServiceAsync
 
-interface HriServiceAsync {
+interface HrisServiceAsync {
 
     fun company(): CompanyServiceAsync
 

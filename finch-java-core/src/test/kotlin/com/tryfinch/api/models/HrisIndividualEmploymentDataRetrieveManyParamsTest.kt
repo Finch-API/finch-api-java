@@ -4,14 +4,14 @@ import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisIndividualsEmploymentDataRetrieveManyParamsTest {
+class HrisIndividualEmploymentDataRetrieveManyParamsTest {
 
     @Test
-    fun createHrisIndividualsEmploymentDataRetrieveManyParams() {
-        HrisIndividualsEmploymentDataRetrieveManyParams.builder()
+    fun createHrisIndividualEmploymentDataRetrieveManyParams() {
+        HrisIndividualEmploymentDataRetrieveManyParams.builder()
             .requests(
                 listOf(
-                    HrisIndividualsEmploymentDataRetrieveManyParams.Request.builder()
+                    HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
                         .individualId("string")
                         .build()
                 )
@@ -22,10 +22,10 @@ class HrisIndividualsEmploymentDataRetrieveManyParamsTest {
     @Test
     fun getBody() {
         val params =
-            HrisIndividualsEmploymentDataRetrieveManyParams.builder()
+            HrisIndividualEmploymentDataRetrieveManyParams.builder()
                 .requests(
                     listOf(
-                        HrisIndividualsEmploymentDataRetrieveManyParams.Request.builder()
+                        HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
                             .individualId("string")
                             .build()
                     )
@@ -36,7 +36,7 @@ class HrisIndividualsEmploymentDataRetrieveManyParamsTest {
         assertThat(body.requests())
             .isEqualTo(
                 listOf(
-                    HrisIndividualsEmploymentDataRetrieveManyParams.Request.builder()
+                    HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
                         .individualId("string")
                         .build()
                 )
@@ -46,10 +46,10 @@ class HrisIndividualsEmploymentDataRetrieveManyParamsTest {
     @Test
     fun getBodyWithoutOptionalFields() {
         val params =
-            HrisIndividualsEmploymentDataRetrieveManyParams.builder()
+            HrisIndividualEmploymentDataRetrieveManyParams.builder()
                 .requests(
                     listOf(
-                        HrisIndividualsEmploymentDataRetrieveManyParams.Request.builder()
+                        HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
                             .individualId("string")
                             .build()
                     )
@@ -60,7 +60,7 @@ class HrisIndividualsEmploymentDataRetrieveManyParamsTest {
         assertThat(body.requests())
             .isEqualTo(
                 listOf(
-                    HrisIndividualsEmploymentDataRetrieveManyParams.Request.builder()
+                    HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
                         .individualId("string")
                         .build()
                 )

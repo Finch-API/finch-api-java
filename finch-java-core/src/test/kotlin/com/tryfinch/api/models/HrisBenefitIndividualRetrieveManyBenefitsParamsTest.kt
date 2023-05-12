@@ -4,11 +4,11 @@ import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisBenefitsIndividualRetrieveManyBenefitsParamsTest {
+class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
 
     @Test
-    fun createHrisBenefitsIndividualRetrieveManyBenefitsParams() {
-        HrisBenefitsIndividualRetrieveManyBenefitsParams.builder()
+    fun createHrisBenefitIndividualRetrieveManyBenefitsParams() {
+        HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
             .benefitId("string")
             .individualIds(
                 "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
@@ -19,7 +19,7 @@ class HrisBenefitsIndividualRetrieveManyBenefitsParamsTest {
     @Test
     fun getQueryParams() {
         val params =
-            HrisBenefitsIndividualRetrieveManyBenefitsParams.builder()
+            HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
                 .benefitId("string")
                 .individualIds(
                     "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
@@ -36,7 +36,7 @@ class HrisBenefitsIndividualRetrieveManyBenefitsParamsTest {
     @Test
     fun getQueryParamsWithoutOptionalFields() {
         val params =
-            HrisBenefitsIndividualRetrieveManyBenefitsParams.builder().benefitId("string").build()
+            HrisBenefitIndividualRetrieveManyBenefitsParams.builder().benefitId("string").build()
         val expected = mutableMapOf<String, List<String>>()
         assertThat(params.getQueryParams()).isEqualTo(expected)
     }
@@ -44,7 +44,7 @@ class HrisBenefitsIndividualRetrieveManyBenefitsParamsTest {
     @Test
     fun getPathParam() {
         val params =
-            HrisBenefitsIndividualRetrieveManyBenefitsParams.builder().benefitId("string").build()
+            HrisBenefitIndividualRetrieveManyBenefitsParams.builder().benefitId("string").build()
         assertThat(params).isNotNull
         // path param "benefitId"
         assertThat(params.getPathParam(0)).isEqualTo("string")

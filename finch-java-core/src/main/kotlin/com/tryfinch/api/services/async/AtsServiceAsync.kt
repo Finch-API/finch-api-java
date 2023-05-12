@@ -8,7 +8,7 @@ import com.tryfinch.api.services.async.ats.JobServiceAsync
 import com.tryfinch.api.services.async.ats.OfferServiceAsync
 import com.tryfinch.api.services.async.ats.StageServiceAsync
 
-interface AtServiceAsync {
+interface AtsServiceAsync {
 
     fun candidates(): CandidateServiceAsync
 

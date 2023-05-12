@@ -10,58 +10,58 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
-import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
+import com.tryfinch.api.services.async.hris.individuals.EmploymentDataServiceAsync
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
-class HrisBenefitsIndividualRetrieveManyBenefitsPageAsync
+class HrisIndividualEmploymentDataRetrieveManyPageAsync
 private constructor(
-    private val individualsService: IndividualServiceAsync,
-    private val params: HrisBenefitsIndividualRetrieveManyBenefitsParams,
+    private val employmentDataService: EmploymentDataServiceAsync,
+    private val params: HrisIndividualEmploymentDataRetrieveManyParams,
     private val response: Response,
 ) {
 
     fun response(): Response = response
 
-    fun items(): List<IndividualBenefit> = response().items()
+    fun responses(): List<EmploymentDataResponse> = response().responses()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return other is HrisBenefitsIndividualRetrieveManyBenefitsPageAsync &&
-            this.individualsService == other.individualsService &&
+        return other is HrisIndividualEmploymentDataRetrieveManyPageAsync &&
+            this.employmentDataService == other.employmentDataService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            individualsService,
+            employmentDataService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "HrisBenefitsIndividualRetrieveManyBenefitsPageAsync{individualsService=$individualsService, params=$params, response=$response}"
+        "HrisIndividualEmploymentDataRetrieveManyPageAsync{employmentDataService=$employmentDataService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return items().isEmpty()
+        return responses().isEmpty()
     }
 
-    fun getNextPageParams(): Optional<HrisBenefitsIndividualRetrieveManyBenefitsParams> {
+    fun getNextPageParams(): Optional<HrisIndividualEmploymentDataRetrieveManyParams> {
         return Optional.empty()
     }
 
     fun getNextPage():
-        CompletableFuture<Optional<HrisBenefitsIndividualRetrieveManyBenefitsPageAsync>> {
+        CompletableFuture<Optional<HrisIndividualEmploymentDataRetrieveManyPageAsync>> {
         return getNextPageParams()
-            .map { individualsService.retrieveManyBenefits(it).thenApply { Optional.of(it) } }
+            .map { employmentDataService.retrieveMany(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
@@ -71,12 +71,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            individualsService: IndividualServiceAsync,
-            params: HrisBenefitsIndividualRetrieveManyBenefitsParams,
+            employmentDataService: EmploymentDataServiceAsync,
+            params: HrisIndividualEmploymentDataRetrieveManyParams,
             response: Response
         ) =
-            HrisBenefitsIndividualRetrieveManyBenefitsPageAsync(
-                individualsService,
+            HrisIndividualEmploymentDataRetrieveManyPageAsync(
+                employmentDataService,
                 params,
                 response,
             )
@@ -86,16 +86,17 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val items: JsonField<List<IndividualBenefit>>,
+        private val responses: JsonField<List<EmploymentDataResponse>>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun items(): List<IndividualBenefit> = items.getRequired("items")
+        fun responses(): List<EmploymentDataResponse> = responses.getRequired("responses")
 
-        @JsonProperty("items")
-        fun _items(): Optional<JsonField<List<IndividualBenefit>>> = Optional.ofNullable(items)
+        @JsonProperty("responses")
+        fun _responses(): Optional<JsonField<List<EmploymentDataResponse>>> =
+            Optional.ofNullable(responses)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -103,7 +104,7 @@ private constructor(
 
         fun validate() = apply {
             if (!validated) {
-                items().forEach { it.validate() }
+                responses().forEach { it.validate() }
                 validated = true
             }
         }
@@ -116,16 +117,16 @@ private constructor(
             }
 
             return other is Response &&
-                this.items == other.items &&
+                this.responses == other.responses &&
                 this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(items, additionalProperties)
+            return Objects.hash(responses, additionalProperties)
         }
 
         override fun toString() =
-            "HrisBenefitsIndividualRetrieveManyBenefitsPageAsync.Response{items=$items, additionalProperties=$additionalProperties}"
+            "HrisIndividualEmploymentDataRetrieveManyPageAsync.Response{responses=$responses, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -134,47 +135,50 @@ private constructor(
 
         class Builder {
 
-            private var items: JsonField<List<IndividualBenefit>> = JsonMissing.of()
+            private var responses: JsonField<List<EmploymentDataResponse>> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(page: Response) = apply {
-                this.items = page.items
+                this.responses = page.responses
                 this.additionalProperties.putAll(page.additionalProperties)
             }
 
-            fun items(items: List<IndividualBenefit>) = items(JsonField.of(items))
+            fun responses(responses: List<EmploymentDataResponse>) =
+                responses(JsonField.of(responses))
 
-            @JsonProperty("items")
-            fun items(items: JsonField<List<IndividualBenefit>>) = apply { this.items = items }
+            @JsonProperty("responses")
+            fun responses(responses: JsonField<List<EmploymentDataResponse>>) = apply {
+                this.responses = responses
+            }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() = Response(items, additionalProperties.toUnmodifiable())
+            fun build() = Response(responses, additionalProperties.toUnmodifiable())
         }
     }
 
     class AutoPager
     constructor(
-        private val firstPage: HrisBenefitsIndividualRetrieveManyBenefitsPageAsync,
+        private val firstPage: HrisIndividualEmploymentDataRetrieveManyPageAsync,
     ) {
 
         fun forEach(
-            action: Predicate<IndividualBenefit>,
+            action: Predicate<EmploymentDataResponse>,
             executor: Executor
         ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<HrisBenefitsIndividualRetrieveManyBenefitsPageAsync>>
+            fun CompletableFuture<Optional<HrisIndividualEmploymentDataRetrieveManyPageAsync>>
                 .forEach(
-                action: (IndividualBenefit) -> Boolean,
+                action: (EmploymentDataResponse) -> Boolean,
                 executor: Executor
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
                         page
-                            .filter { it.items().all(action) }
+                            .filter { it.responses().all(action) }
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
@@ -184,8 +188,8 @@ private constructor(
                 .forEach(action::test, executor)
         }
 
-        fun toList(executor: Executor): CompletableFuture<List<IndividualBenefit>> {
-            val values = mutableListOf<IndividualBenefit>()
+        fun toList(executor: Executor): CompletableFuture<List<EmploymentDataResponse>> {
+            val values = mutableListOf<EmploymentDataResponse>()
             return forEach(values::add, executor).thenApply { values }
         }
     }

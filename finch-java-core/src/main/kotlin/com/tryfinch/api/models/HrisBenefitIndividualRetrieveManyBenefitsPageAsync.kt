@@ -10,16 +10,17 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
-import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
+import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import java.util.Objects
 import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executor
+import java.util.function.Predicate
 
-class HrisBenefitsIndividualRetrieveManyBenefitsPage
+class HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 private constructor(
-    private val individualsService: IndividualService,
-    private val params: HrisBenefitsIndividualRetrieveManyBenefitsParams,
+    private val individualsService: IndividualServiceAsync,
+    private val params: HrisBenefitIndividualRetrieveManyBenefitsParams,
     private val response: Response,
 ) {
 
@@ -32,7 +33,7 @@ private constructor(
             return true
         }
 
-        return other is HrisBenefitsIndividualRetrieveManyBenefitsPage &&
+        return other is HrisBenefitIndividualRetrieveManyBenefitsPageAsync &&
             this.individualsService == other.individualsService &&
             this.params == other.params &&
             this.response == other.response
@@ -47,18 +48,21 @@ private constructor(
     }
 
     override fun toString() =
-        "HrisBenefitsIndividualRetrieveManyBenefitsPage{individualsService=$individualsService, params=$params, response=$response}"
+        "HrisBenefitIndividualRetrieveManyBenefitsPageAsync{individualsService=$individualsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return items().isEmpty()
     }
 
-    fun getNextPageParams(): Optional<HrisBenefitsIndividualRetrieveManyBenefitsParams> {
+    fun getNextPageParams(): Optional<HrisBenefitIndividualRetrieveManyBenefitsParams> {
         return Optional.empty()
     }
 
-    fun getNextPage(): Optional<HrisBenefitsIndividualRetrieveManyBenefitsPage> {
-        return getNextPageParams().map { individualsService.retrieveManyBenefits(it) }
+    fun getNextPage():
+        CompletableFuture<Optional<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>> {
+        return getNextPageParams()
+            .map { individualsService.retrieveManyBenefits(it).thenApply { Optional.of(it) } }
+            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -67,11 +71,11 @@ private constructor(
 
         @JvmStatic
         fun of(
-            individualsService: IndividualService,
-            params: HrisBenefitsIndividualRetrieveManyBenefitsParams,
+            individualsService: IndividualServiceAsync,
+            params: HrisBenefitIndividualRetrieveManyBenefitsParams,
             response: Response
         ) =
-            HrisBenefitsIndividualRetrieveManyBenefitsPage(
+            HrisBenefitIndividualRetrieveManyBenefitsPageAsync(
                 individualsService,
                 params,
                 response,
@@ -121,7 +125,7 @@ private constructor(
         }
 
         override fun toString() =
-            "HrisBenefitsIndividualRetrieveManyBenefitsPage.Response{items=$items, additionalProperties=$additionalProperties}"
+            "HrisBenefitIndividualRetrieveManyBenefitsPageAsync.Response{items=$items, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -155,23 +159,34 @@ private constructor(
 
     class AutoPager
     constructor(
-        private val firstPage: HrisBenefitsIndividualRetrieveManyBenefitsPage,
-    ) : Iterable<IndividualBenefit> {
+        private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPageAsync,
+    ) {
 
-        override fun iterator(): Iterator<IndividualBenefit> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage().orElse(null) ?: break
-                index = 0
-            }
+        fun forEach(
+            action: Predicate<IndividualBenefit>,
+            executor: Executor
+        ): CompletableFuture<Void> {
+            fun CompletableFuture<Optional<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>>
+                .forEach(
+                action: (IndividualBenefit) -> Boolean,
+                executor: Executor
+            ): CompletableFuture<Void> =
+                thenComposeAsync(
+                    { page ->
+                        page
+                            .filter { it.items().all(action) }
+                            .map { it.getNextPage().forEach(action, executor) }
+                            .orElseGet { CompletableFuture.completedFuture(null) }
+                    },
+                    executor
+                )
+            return CompletableFuture.completedFuture(Optional.of(firstPage))
+                .forEach(action::test, executor)
         }
 
-        fun stream(): Stream<IndividualBenefit> {
-            return StreamSupport.stream(spliterator(), false)
+        fun toList(executor: Executor): CompletableFuture<List<IndividualBenefit>> {
+            val values = mutableListOf<IndividualBenefit>()
+            return forEach(values::add, executor).thenApply { values }
         }
     }
 }

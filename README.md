@@ -1,6 +1,6 @@
 # Finch Java API Library
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.0.2)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.0.1)
 
 The Finch Java SDK provides convenient access to the Finch REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
 
@@ -21,7 +21,7 @@ The API documentation can be found [here](https://developer.tryfinch.com/).
 #### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:0.0.2")
+implementation("com.tryfinch.api:finch-java:0.0.1")
 ```
 
 #### Maven
@@ -30,7 +30,7 @@ implementation("com.tryfinch.api:finch-java:0.0.2")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-java</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.1</version>
 </dependency>
 ```
 
@@ -140,7 +140,7 @@ this SDK. Each model property has a corresponding JSON version, with an undersco
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```java
-String secret = hrisDirectory._additionalProperties().get("secret_field");
+JsonValue secret = hrisDirectory._additionalProperties().get("secret_field");
 ```
 
 ---

@@ -8,9 +8,11 @@ import com.tryfinch.api.services.blocking.*
 
 interface FinchClient {
 
-    fun ats(): AtService
+    fun async(): FinchClientAsync
 
-    fun hris(): HriService
+    fun ats(): AtsService
+
+    fun hris(): HrisService
 
     fun providers(): ProviderService
 

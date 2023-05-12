@@ -10,17 +10,16 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
-import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
+import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import java.util.Objects
 import java.util.Optional
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.Executor
-import java.util.function.Predicate
+import java.util.stream.Stream
+import java.util.stream.StreamSupport
 
-class HrisBenefitsIndividualUnenrollPageAsync
+class HrisBenefitIndividualUnenrollPage
 private constructor(
-    private val individualsService: IndividualServiceAsync,
-    private val params: HrisBenefitsIndividualUnenrollParams,
+    private val individualsService: IndividualService,
+    private val params: HrisBenefitIndividualUnenrollParams,
     private val response: Response,
 ) {
 
@@ -33,7 +32,7 @@ private constructor(
             return true
         }
 
-        return other is HrisBenefitsIndividualUnenrollPageAsync &&
+        return other is HrisBenefitIndividualUnenrollPage &&
             this.individualsService == other.individualsService &&
             this.params == other.params &&
             this.response == other.response
@@ -48,20 +47,18 @@ private constructor(
     }
 
     override fun toString() =
-        "HrisBenefitsIndividualUnenrollPageAsync{individualsService=$individualsService, params=$params, response=$response}"
+        "HrisBenefitIndividualUnenrollPage{individualsService=$individualsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return items().isEmpty()
     }
 
-    fun getNextPageParams(): Optional<HrisBenefitsIndividualUnenrollParams> {
+    fun getNextPageParams(): Optional<HrisBenefitIndividualUnenrollParams> {
         return Optional.empty()
     }
 
-    fun getNextPage(): CompletableFuture<Optional<HrisBenefitsIndividualUnenrollPageAsync>> {
-        return getNextPageParams()
-            .map { individualsService.unenroll(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
+    fun getNextPage(): Optional<HrisBenefitIndividualUnenrollPage> {
+        return getNextPageParams().map { individualsService.unenroll(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -70,11 +67,11 @@ private constructor(
 
         @JvmStatic
         fun of(
-            individualsService: IndividualServiceAsync,
-            params: HrisBenefitsIndividualUnenrollParams,
+            individualsService: IndividualService,
+            params: HrisBenefitIndividualUnenrollParams,
             response: Response
         ) =
-            HrisBenefitsIndividualUnenrollPageAsync(
+            HrisBenefitIndividualUnenrollPage(
                 individualsService,
                 params,
                 response,
@@ -124,7 +121,7 @@ private constructor(
         }
 
         override fun toString() =
-            "HrisBenefitsIndividualUnenrollPageAsync.Response{items=$items, additionalProperties=$additionalProperties}"
+            "HrisBenefitIndividualUnenrollPage.Response{items=$items, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -158,33 +155,23 @@ private constructor(
 
     class AutoPager
     constructor(
-        private val firstPage: HrisBenefitsIndividualUnenrollPageAsync,
-    ) {
+        private val firstPage: HrisBenefitIndividualUnenrollPage,
+    ) : Iterable<UnenrolledIndividual> {
 
-        fun forEach(
-            action: Predicate<UnenrolledIndividual>,
-            executor: Executor
-        ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<HrisBenefitsIndividualUnenrollPageAsync>>.forEach(
-                action: (UnenrolledIndividual) -> Boolean,
-                executor: Executor
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.items().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
+        override fun iterator(): Iterator<UnenrolledIndividual> = iterator {
+            var page = firstPage
+            var index = 0
+            while (true) {
+                while (index < page.items().size) {
+                    yield(page.items()[index++])
+                }
+                page = page.getNextPage().orElse(null) ?: break
+                index = 0
+            }
         }
 
-        fun toList(executor: Executor): CompletableFuture<List<UnenrolledIndividual>> {
-            val values = mutableListOf<UnenrolledIndividual>()
-            return forEach(values::add, executor).thenApply { values }
+        fun stream(): Stream<UnenrolledIndividual> {
+            return StreamSupport.stream(spliterator(), false)
         }
     }
 }

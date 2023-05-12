@@ -9,7 +9,7 @@ import com.tryfinch.api.services.blocking.hris.IndividualService
 import com.tryfinch.api.services.blocking.hris.PayStatementService
 import com.tryfinch.api.services.blocking.hris.PaymentService
 
-interface HriService {
+interface HrisService {
 
     fun company(): CompanyService
 

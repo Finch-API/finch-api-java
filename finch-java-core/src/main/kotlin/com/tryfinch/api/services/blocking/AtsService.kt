@@ -8,7 +8,7 @@ import com.tryfinch.api.services.blocking.ats.JobService
 import com.tryfinch.api.services.blocking.ats.OfferService
 import com.tryfinch.api.services.blocking.ats.StageService
 
-interface AtService {
+interface AtsService {
 
     fun candidates(): CandidateService
 

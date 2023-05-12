@@ -4,27 +4,17 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
 import com.tryfinch.api.models.*
 import java.util.Objects
-import java.util.Optional
 
-class HrisBenefitsIndividualRetrieveManyBenefitsParams
+class HrisBenefitIndividualEnrolledIdsParams
 constructor(
     private val benefitId: String,
-    private val individualIds: String?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
 ) {
 
     fun benefitId(): String = benefitId
 
-    fun individualIds(): Optional<String> = Optional.ofNullable(individualIds)
-
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> {
-        val params = mutableMapOf<String, List<String>>()
-        this.individualIds?.let { params.put("individual_ids", listOf(it.toString())) }
-        params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
-    }
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
@@ -44,9 +34,8 @@ constructor(
             return true
         }
 
-        return other is HrisBenefitsIndividualRetrieveManyBenefitsParams &&
+        return other is HrisBenefitIndividualEnrolledIdsParams &&
             this.benefitId == other.benefitId &&
-            this.individualIds == other.individualIds &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders
     }
@@ -54,14 +43,13 @@ constructor(
     override fun hashCode(): Int {
         return Objects.hash(
             benefitId,
-            individualIds,
             additionalQueryParams,
             additionalHeaders,
         )
     }
 
     override fun toString() =
-        "HrisBenefitsIndividualRetrieveManyBenefitsParams{benefitId=$benefitId, individualIds=$individualIds, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
+        "HrisBenefitIndividualEnrolledIdsParams{benefitId=$benefitId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -74,30 +62,19 @@ constructor(
     class Builder {
 
         private var benefitId: String? = null
-        private var individualIds: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(
-            hrisBenefitsIndividualRetrieveManyBenefitsParams:
-                HrisBenefitsIndividualRetrieveManyBenefitsParams
+            hrisBenefitIndividualEnrolledIdsParams: HrisBenefitIndividualEnrolledIdsParams
         ) = apply {
-            this.benefitId = hrisBenefitsIndividualRetrieveManyBenefitsParams.benefitId
-            this.individualIds = hrisBenefitsIndividualRetrieveManyBenefitsParams.individualIds
-            additionalQueryParams(
-                hrisBenefitsIndividualRetrieveManyBenefitsParams.additionalQueryParams
-            )
-            additionalHeaders(hrisBenefitsIndividualRetrieveManyBenefitsParams.additionalHeaders)
+            this.benefitId = hrisBenefitIndividualEnrolledIdsParams.benefitId
+            additionalQueryParams(hrisBenefitIndividualEnrolledIdsParams.additionalQueryParams)
+            additionalHeaders(hrisBenefitIndividualEnrolledIdsParams.additionalHeaders)
         }
 
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
-
-        /**
-         * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
-         */
-        fun individualIds(individualIds: String) = apply { this.individualIds = individualIds }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -139,10 +116,9 @@ constructor(
 
         fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
-        fun build(): HrisBenefitsIndividualRetrieveManyBenefitsParams =
-            HrisBenefitsIndividualRetrieveManyBenefitsParams(
+        fun build(): HrisBenefitIndividualEnrolledIdsParams =
+            HrisBenefitIndividualEnrolledIdsParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
-                individualIds,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
             )

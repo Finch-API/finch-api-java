@@ -61,7 +61,7 @@ class EmploymentDataTest {
                     )
                 )
                 .workId("string")
-                .workId_2("string")
+                .workId2("string")
                 .payGroupIds(listOf("string"))
                 .build()
         assertThat(employmentData).isNotNull
@@ -119,7 +119,7 @@ class EmploymentDataTest {
                     .build()
             )
         assertThat(employmentData.workId()).contains("string")
-        assertThat(employmentData.workId_2()).contains("string")
+        assertThat(employmentData.workId2()).contains("string")
         assertThat(employmentData.payGroupIds().get()).containsExactly("string")
     }
 }

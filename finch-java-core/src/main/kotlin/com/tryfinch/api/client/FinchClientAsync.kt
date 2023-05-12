@@ -9,9 +9,11 @@ import java.util.concurrent.CompletableFuture
 
 interface FinchClientAsync {
 
-    fun ats(): AtServiceAsync
+    fun sync(): FinchClient
 
-    fun hris(): HriServiceAsync
+    fun ats(): AtsServiceAsync
+
+    fun hris(): HrisServiceAsync
 
     fun providers(): ProviderServiceAsync
 

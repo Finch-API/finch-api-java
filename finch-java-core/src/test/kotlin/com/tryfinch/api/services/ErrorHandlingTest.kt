@@ -58,7 +58,7 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals_200() {
+    fun directoryListIndividuals200() {
         val service = client.hris().directory()
 
         val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
@@ -99,7 +99,7 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals_400() {
+    fun directoryListIndividuals400() {
         val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
@@ -114,7 +114,7 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals_401() {
+    fun directoryListIndividuals401() {
         val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
@@ -129,7 +129,7 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals_403() {
+    fun directoryListIndividuals403() {
         val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
@@ -144,7 +144,7 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals_404() {
+    fun directoryListIndividuals404() {
         val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
@@ -159,7 +159,7 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals_422() {
+    fun directoryListIndividuals422() {
         val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
@@ -174,7 +174,7 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals_429() {
+    fun directoryListIndividuals429() {
         val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
@@ -189,7 +189,7 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals_500() {
+    fun directoryListIndividuals500() {
         val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(

@@ -15,10 +15,10 @@ import com.tryfinch.api.services.blocking.ats.StageService
 import com.tryfinch.api.services.blocking.ats.StageServiceImpl
 import com.tryfinch.api.services.errorHandler
 
-class AtServiceImpl
+class AtsServiceImpl
 constructor(
     private val clientOptions: ClientOptions,
-) : AtService {
+) : AtsService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
