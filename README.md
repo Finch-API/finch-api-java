@@ -1,6 +1,6 @@
 # Finch Java API Library
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.0.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.1.0)
 
 The Finch Java SDK provides convenient access to the Finch REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
 
@@ -21,7 +21,7 @@ The API documentation can be found [here](https://developer.tryfinch.com/).
 #### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:0.0.1")
+implementation("com.tryfinch.api:finch-java:0.1.0")
 ```
 
 #### Maven
@@ -30,7 +30,7 @@ implementation("com.tryfinch.api:finch-java:0.0.1")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-java</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -59,10 +59,10 @@ FinchClient client = FinchOkHttpClient.builder()
     .build();
 ```
 
-| Property     | Environment variable  | Required | Default value |
-| ------------ | --------------------- | -------- | ------------- |
-| clientId     | `FINCH_CLIENT_ID`     | false    | —             |
-| clientSecret | `FINCH_CLIENT_SECRET` | false    | —             |
+| Property | Environment variable      | Required | Default value |
+| -------- | ------------------------- | -------- | ------------- |
+| clientId | `FINCH_CLIENT_ID` | false | — |
+| clientSecret | `FINCH_CLIENT_SECRET` | false | — |
 
 Read the documentation for more configuration options.
 
@@ -101,6 +101,14 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 ---
 
+
+
+
+
+
+
+
+
 ## Requests
 
 ### Parameters and bodies
@@ -130,10 +138,15 @@ When receiving a response, the Finch Java SDK will deserialize it into instances
 HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals().validate();
 ```
 
+
+
 ### Response properties as JSON
 
 In rare cases, you may want to access the underlying JSON value for a response property rather than using the typed version provided by
 this SDK. Each model property has a corresponding JSON version, with an underscore before the method name, which returns a `JsonField` value.
+
+
+
 
 ### Additional model properties
 
@@ -142,6 +155,7 @@ Sometimes, the server response may include additional properties that are not ye
 ```java
 JsonValue secret = hrisDirectory._additionalProperties().get("secret_field");
 ```
+
 
 ---
 
@@ -198,6 +212,8 @@ while (page != null) {
 
 ---
 
+
+
 ## Error handling
 
 This library throws exceptions in a single hierarchy for easy handling:
@@ -224,32 +240,24 @@ This library throws exceptions in a single hierarchy for easy handling:
 ## Network options
 
 ### Retries
-
 Requests that experience certain errors are automatically retried 2 times by default, with a short exponential backoff. Connection errors (for example, due to a network connectivity problem), 409 Conflict, 429 Rate Limit, and >=500 Internal errors will all be retried by default.
 You can provide a `maxRetries` on the client builder to configure this:
-
 ```java
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
     .maxRetries(4)
     .build();
 ```
-
 ### Timeouts
-
 Requests time out after 60 seconds by default. You can configure this on the client builder:
-
 ```java
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
     .timeout(Duration.ofSeconds(30))
     .build();
 ```
-
 ### Proxies
-
 Requests can be routed through a proxy. You can configure this on the client builder:
-
 ```java
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
