@@ -25,8 +25,8 @@ import com.tryfinch.api.errors.UnauthorizedException
 import com.tryfinch.api.errors.UnexpectedStatusCodeException
 import com.tryfinch.api.errors.UnprocessableEntityException
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HriDirectoryListIndividualsPage
-import com.tryfinch.api.models.HriDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.InstanceOfAssertFactories
@@ -61,13 +61,13 @@ class ErrorHandlingTest {
     fun directoryListIndividuals200() {
         val service = client.hris().directory()
 
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         val expected =
-            HriDirectoryListIndividualsPage.of(
+            HrisDirectoryListIndividualsPage.of(
                 service,
                 params,
-                HriDirectoryListIndividualsPage.Response.builder()
+                HrisDirectoryListIndividualsPage.Response.builder()
                     .paging(Paging.builder().count(123L).offset(123L).build())
                     .individuals(
                         listOf(
@@ -100,7 +100,7 @@ class ErrorHandlingTest {
 
     @Test
     fun directoryListIndividuals400() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
@@ -115,7 +115,7 @@ class ErrorHandlingTest {
 
     @Test
     fun directoryListIndividuals401() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
@@ -130,7 +130,7 @@ class ErrorHandlingTest {
 
     @Test
     fun directoryListIndividuals403() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
@@ -145,7 +145,7 @@ class ErrorHandlingTest {
 
     @Test
     fun directoryListIndividuals404() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
@@ -160,7 +160,7 @@ class ErrorHandlingTest {
 
     @Test
     fun directoryListIndividuals422() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
@@ -175,7 +175,7 @@ class ErrorHandlingTest {
 
     @Test
     fun directoryListIndividuals429() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
@@ -190,7 +190,7 @@ class ErrorHandlingTest {
 
     @Test
     fun directoryListIndividuals500() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
@@ -205,7 +205,7 @@ class ErrorHandlingTest {
 
     @Test
     fun unexpectedStatusCode() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
@@ -225,7 +225,7 @@ class ErrorHandlingTest {
 
     @Test
     fun invalidBody() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(get(anyUrl()).willReturn(status(200).withBody("Not JSON")))
 
@@ -239,7 +239,7 @@ class ErrorHandlingTest {
 
     @Test
     fun invalidErrorBody() {
-        val params = HriDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
 
         stubFor(get(anyUrl()).willReturn(status(400).withBody("Not JSON")))
 

@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HriPaymentListPageAsync
-import com.tryfinch.api.models.HriPaymentListParams
+import com.tryfinch.api.models.HrisPaymentListPageAsync
+import com.tryfinch.api.models.HrisPaymentListParams
 import com.tryfinch.api.models.Payment
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
@@ -26,9 +26,9 @@ constructor(
 
     /** Read payroll and contractor related payments by the company. */
     override fun list(
-        params: HriPaymentListParams,
+        params: HrisPaymentListParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<HriPaymentListPageAsync> {
+    ): CompletableFuture<HrisPaymentListPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -46,8 +46,8 @@ constructor(
                         forEach { it.validate() }
                     }
                 }
-                .let { HriPaymentListPageAsync.Response.Builder().items(it).build() }
-                .let { HriPaymentListPageAsync.of(this, params, it) }
+                .let { HrisPaymentListPageAsync.Response.Builder().items(it).build() }
+                .let { HrisPaymentListPageAsync.of(this, params, it) }
         }
     }
 }

@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HriPaymentListPageAsync
-import com.tryfinch.api.models.HriPaymentListParams
+import com.tryfinch.api.models.HrisPaymentListPageAsync
+import com.tryfinch.api.models.HrisPaymentListParams
 import java.util.concurrent.CompletableFuture
 
 interface PaymentServiceAsync {
@@ -12,7 +12,7 @@ interface PaymentServiceAsync {
     /** Read payroll and contractor related payments by the company. */
     @JvmOverloads
     fun list(
-        params: HriPaymentListParams,
+        params: HrisPaymentListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<HriPaymentListPageAsync>
+    ): CompletableFuture<HrisPaymentListPageAsync>
 }

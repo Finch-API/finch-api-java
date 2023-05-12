@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.async.hris.individuals
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HriIndividualEmploymentDataRetrieveManyPageAsync
-import com.tryfinch.api.models.HriIndividualEmploymentDataRetrieveManyParams
+import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
 interface EmploymentDataServiceAsync {
@@ -18,7 +18,7 @@ interface EmploymentDataServiceAsync {
      */
     @JvmOverloads
     fun retrieveMany(
-        params: HriIndividualEmploymentDataRetrieveManyParams,
+        params: HrisIndividualEmploymentDataRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<HriIndividualEmploymentDataRetrieveManyPageAsync>
+    ): CompletableFuture<HrisIndividualEmploymentDataRetrieveManyPageAsync>
 }

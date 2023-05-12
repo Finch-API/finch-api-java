@@ -8,13 +8,13 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
-import com.tryfinch.api.models.HriBenefitCreateParams
-import com.tryfinch.api.models.HriBenefitListPageAsync
-import com.tryfinch.api.models.HriBenefitListParams
-import com.tryfinch.api.models.HriBenefitListSupportedBenefitsPageAsync
-import com.tryfinch.api.models.HriBenefitListSupportedBenefitsParams
-import com.tryfinch.api.models.HriBenefitRetrieveParams
-import com.tryfinch.api.models.HriBenefitUpdateParams
+import com.tryfinch.api.models.HrisBenefitCreateParams
+import com.tryfinch.api.models.HrisBenefitListPageAsync
+import com.tryfinch.api.models.HrisBenefitListParams
+import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPageAsync
+import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HrisBenefitRetrieveParams
+import com.tryfinch.api.models.HrisBenefitUpdateParams
 import com.tryfinch.api.models.SupportedBenefit
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
@@ -49,7 +49,7 @@ constructor(
      * for each provider.
      */
     override fun create(
-        params: HriBenefitCreateParams,
+        params: HrisBenefitCreateParams,
         requestOptions: RequestOptions
     ): CompletableFuture<CreateCompanyBenefitsResponse> {
         val request =
@@ -82,7 +82,7 @@ constructor(
      * Lists benefit information for a given benefit
      */
     override fun retrieve(
-        params: HriBenefitRetrieveParams,
+        params: HrisBenefitRetrieveParams,
         requestOptions: RequestOptions
     ): CompletableFuture<CompanyBenefit> {
         val request =
@@ -115,7 +115,7 @@ constructor(
      * Updates an existing company-wide benefit
      */
     override fun update(
-        params: HriBenefitUpdateParams,
+        params: HrisBenefitUpdateParams,
         requestOptions: RequestOptions
     ): CompletableFuture<UpdateCompanyBenefitResponse> {
         val request =
@@ -148,9 +148,9 @@ constructor(
      * List all company-wide benefits.
      */
     override fun list(
-        params: HriBenefitListParams,
+        params: HrisBenefitListParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<HriBenefitListPageAsync> {
+    ): CompletableFuture<HrisBenefitListPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -168,8 +168,8 @@ constructor(
                         forEach { it.validate() }
                     }
                 }
-                .let { HriBenefitListPageAsync.Response.Builder().items(it).build() }
-                .let { HriBenefitListPageAsync.of(this, params, it) }
+                .let { HrisBenefitListPageAsync.Response.Builder().items(it).build() }
+                .let { HrisBenefitListPageAsync.of(this, params, it) }
         }
     }
 
@@ -182,9 +182,9 @@ constructor(
      * Lists available types and configurations for the provider associated with the access token.
      */
     override fun listSupportedBenefits(
-        params: HriBenefitListSupportedBenefitsParams,
+        params: HrisBenefitListSupportedBenefitsParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<HriBenefitListSupportedBenefitsPageAsync> {
+    ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -203,9 +203,9 @@ constructor(
                     }
                 }
                 .let {
-                    HriBenefitListSupportedBenefitsPageAsync.Response.Builder().items(it).build()
+                    HrisBenefitListSupportedBenefitsPageAsync.Response.Builder().items(it).build()
                 }
-                .let { HriBenefitListSupportedBenefitsPageAsync.of(this, params, it) }
+                .let { HrisBenefitListSupportedBenefitsPageAsync.of(this, params, it) }
         }
     }
 }

@@ -3,11 +3,11 @@
 package com.tryfinch.api.services.blocking.hris.benefits
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HriBenefitIndividualEnrolledIdsParams
-import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsPage
-import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HriBenefitIndividualUnenrollPage
-import com.tryfinch.api.models.HriBenefitIndividualUnenrollParams
+import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
+import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPage
+import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollPage
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 
 interface IndividualService {
@@ -19,7 +19,7 @@ interface IndividualService {
      */
     @JvmOverloads
     fun enrolledIds(
-        params: HriBenefitIndividualEnrolledIdsParams,
+        params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): IndividualEnrolledIdsResponse
 
@@ -30,9 +30,9 @@ interface IndividualService {
      */
     @JvmOverloads
     fun retrieveManyBenefits(
-        params: HriBenefitIndividualRetrieveManyBenefitsParams,
+        params: HrisBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriBenefitIndividualRetrieveManyBenefitsPage
+    ): HrisBenefitIndividualRetrieveManyBenefitsPage
 
     /**
      * **Availability: Automated and Assisted Benefits providers**
@@ -41,7 +41,7 @@ interface IndividualService {
      */
     @JvmOverloads
     fun unenroll(
-        params: HriBenefitIndividualUnenrollParams,
+        params: HrisBenefitIndividualUnenrollParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriBenefitIndividualUnenrollPage
+    ): HrisBenefitIndividualUnenrollPage
 }

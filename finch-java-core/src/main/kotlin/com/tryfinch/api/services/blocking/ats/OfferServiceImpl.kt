@@ -6,9 +6,9 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.AtOfferListPage
-import com.tryfinch.api.models.AtOfferListParams
-import com.tryfinch.api.models.AtOfferRetrieveParams
+import com.tryfinch.api.models.AtsOfferListPage
+import com.tryfinch.api.models.AtsOfferListParams
+import com.tryfinch.api.models.AtsOfferRetrieveParams
 import com.tryfinch.api.models.Offer
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
@@ -25,7 +25,7 @@ constructor(
         jsonHandler<Offer>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Get a single offer from an organization. */
-    override fun retrieve(params: AtOfferRetrieveParams, requestOptions: RequestOptions): Offer {
+    override fun retrieve(params: AtsOfferRetrieveParams, requestOptions: RequestOptions): Offer {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -45,12 +45,15 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtOfferListPage.Response> =
-        jsonHandler<AtOfferListPage.Response>(clientOptions.jsonMapper)
+    private val listHandler: Handler<AtsOfferListPage.Response> =
+        jsonHandler<AtsOfferListPage.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Get all offers put out by an organization. */
-    override fun list(params: AtOfferListParams, requestOptions: RequestOptions): AtOfferListPage {
+    override fun list(
+        params: AtsOfferListParams,
+        requestOptions: RequestOptions
+    ): AtsOfferListPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -67,7 +70,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtOfferListPage.of(this, params, it) }
+                .let { AtsOfferListPage.of(this, params, it) }
         }
     }
 }

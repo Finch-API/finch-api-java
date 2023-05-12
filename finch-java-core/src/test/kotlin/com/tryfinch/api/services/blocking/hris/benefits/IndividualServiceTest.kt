@@ -3,8 +3,8 @@ package com.tryfinch.api.services.blocking.hris.benefits
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HriBenefitIndividualUnenrollParams
+import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -23,7 +23,7 @@ class IndividualServiceTest {
         val individualService = client.hris().benefits().individuals()
         val individualEnrolledIdsResponse =
             individualService.enrolledIds(
-                HriBenefitIndividualEnrolledIdsParams.builder().benefitId("string").build()
+                HrisBenefitIndividualEnrolledIdsParams.builder().benefitId("string").build()
             )
         println(individualEnrolledIdsResponse)
         individualEnrolledIdsResponse.validate()
@@ -41,7 +41,9 @@ class IndividualServiceTest {
         val individualService = client.hris().benefits().individuals()
         val individualBenefits =
             individualService.retrieveManyBenefits(
-                HriBenefitIndividualRetrieveManyBenefitsParams.builder().benefitId("string").build()
+                HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
+                    .benefitId("string")
+                    .build()
             )
         println(individualBenefits)
         individualBenefits.items().forEach { it.validate() }
@@ -59,7 +61,7 @@ class IndividualServiceTest {
         val individualService = client.hris().benefits().individuals()
         val unenrollIndividualBenefitResponse =
             individualService.unenroll(
-                HriBenefitIndividualUnenrollParams.builder().benefitId("string").build()
+                HrisBenefitIndividualUnenrollParams.builder().benefitId("string").build()
             )
         println(unenrollIndividualBenefitResponse)
         unenrollIndividualBenefitResponse.items().forEach { it.validate() }

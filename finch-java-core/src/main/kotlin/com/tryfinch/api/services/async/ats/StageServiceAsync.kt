@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.async.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtStageListPageAsync
-import com.tryfinch.api.models.AtStageListParams
+import com.tryfinch.api.models.AtsStageListPageAsync
+import com.tryfinch.api.models.AtsStageListParams
 import java.util.concurrent.CompletableFuture
 
 interface StageServiceAsync {
@@ -16,7 +16,7 @@ interface StageServiceAsync {
      */
     @JvmOverloads
     fun list(
-        params: AtStageListParams,
+        params: AtsStageListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<AtStageListPageAsync>
+    ): CompletableFuture<AtsStageListPageAsync>
 }

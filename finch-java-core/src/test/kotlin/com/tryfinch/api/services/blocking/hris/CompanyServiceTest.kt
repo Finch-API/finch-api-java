@@ -19,7 +19,7 @@ class CompanyServiceTest {
                 .clientSecret("string")
                 .build()
         val companyService = client.hris().company()
-        val company = companyService.retrieve(HriCompanyRetrieveParams.builder().build())
+        val company = companyService.retrieve(HrisCompanyRetrieveParams.builder().build())
         println(company)
         company.validate()
     }

@@ -6,9 +6,9 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.AtOfferListPageAsync
-import com.tryfinch.api.models.AtOfferListParams
-import com.tryfinch.api.models.AtOfferRetrieveParams
+import com.tryfinch.api.models.AtsOfferListPageAsync
+import com.tryfinch.api.models.AtsOfferListParams
+import com.tryfinch.api.models.AtsOfferRetrieveParams
 import com.tryfinch.api.models.Offer
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
@@ -27,7 +27,7 @@ constructor(
 
     /** Get a single offer from an organization. */
     override fun retrieve(
-        params: AtOfferRetrieveParams,
+        params: AtsOfferRetrieveParams,
         requestOptions: RequestOptions
     ): CompletableFuture<Offer> {
         val request =
@@ -50,15 +50,15 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtOfferListPageAsync.Response> =
-        jsonHandler<AtOfferListPageAsync.Response>(clientOptions.jsonMapper)
+    private val listHandler: Handler<AtsOfferListPageAsync.Response> =
+        jsonHandler<AtsOfferListPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Get all offers put out by an organization. */
     override fun list(
-        params: AtOfferListParams,
+        params: AtsOfferListParams,
         requestOptions: RequestOptions
-    ): CompletableFuture<AtOfferListPageAsync> {
+    ): CompletableFuture<AtsOfferListPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -76,7 +76,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtOfferListPageAsync.of(this, params, it) }
+                .let { AtsOfferListPageAsync.of(this, params, it) }
         }
     }
 }
