@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HriDirectoryListIndividualsPage
-import com.tryfinch.api.models.HriDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
 import com.tryfinch.api.services.withErrorHandler
@@ -19,15 +19,15 @@ constructor(
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-    private val listIndividualsHandler: Handler<HriDirectoryListIndividualsPage.Response> =
-        jsonHandler<HriDirectoryListIndividualsPage.Response>(clientOptions.jsonMapper)
+    private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPage.Response> =
+        jsonHandler<HrisDirectoryListIndividualsPage.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Read company directory and organization structure */
     override fun listIndividuals(
-        params: HriDirectoryListIndividualsParams,
+        params: HrisDirectoryListIndividualsParams,
         requestOptions: RequestOptions
-    ): HriDirectoryListIndividualsPage {
+    ): HrisDirectoryListIndividualsPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -44,7 +44,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { HriDirectoryListIndividualsPage.of(this, params, it) }
+                .let { HrisDirectoryListIndividualsPage.of(this, params, it) }
         }
     }
 }

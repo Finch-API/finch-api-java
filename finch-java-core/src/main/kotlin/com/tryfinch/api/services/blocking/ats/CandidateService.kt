@@ -3,9 +3,9 @@
 package com.tryfinch.api.services.blocking.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtCandidateListPage
-import com.tryfinch.api.models.AtCandidateListParams
-import com.tryfinch.api.models.AtCandidateRetrieveParams
+import com.tryfinch.api.models.AtsCandidateListPage
+import com.tryfinch.api.models.AtsCandidateListParams
+import com.tryfinch.api.models.AtsCandidateRetrieveParams
 import com.tryfinch.api.models.Candidate
 
 interface CandidateService {
@@ -16,7 +16,7 @@ interface CandidateService {
      */
     @JvmOverloads
     fun retrieve(
-        params: AtCandidateRetrieveParams,
+        params: AtsCandidateRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): Candidate
 
@@ -26,7 +26,7 @@ interface CandidateService {
      */
     @JvmOverloads
     fun list(
-        params: AtCandidateListParams,
+        params: AtsCandidateListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): AtCandidateListPage
+    ): AtsCandidateListPage
 }

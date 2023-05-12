@@ -4,14 +4,14 @@ package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.Company
-import com.tryfinch.api.models.HriCompanyRetrieveParams
+import com.tryfinch.api.models.HrisCompanyRetrieveParams
 
 interface CompanyService {
 
     /** Read basic company data */
     @JvmOverloads
     fun retrieve(
-        params: HriCompanyRetrieveParams,
+        params: HrisCompanyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): Company
 }

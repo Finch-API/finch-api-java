@@ -6,9 +6,9 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.AtJobListPage
-import com.tryfinch.api.models.AtJobListParams
-import com.tryfinch.api.models.AtJobRetrieveParams
+import com.tryfinch.api.models.AtsJobListPage
+import com.tryfinch.api.models.AtsJobListParams
+import com.tryfinch.api.models.AtsJobRetrieveParams
 import com.tryfinch.api.models.Job
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
@@ -25,7 +25,7 @@ constructor(
         jsonHandler<Job>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     /** Gets a job from an organization. */
-    override fun retrieve(params: AtJobRetrieveParams, requestOptions: RequestOptions): Job {
+    override fun retrieve(params: AtsJobRetrieveParams, requestOptions: RequestOptions): Job {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -45,11 +45,12 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtJobListPage.Response> =
-        jsonHandler<AtJobListPage.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    private val listHandler: Handler<AtsJobListPage.Response> =
+        jsonHandler<AtsJobListPage.Response>(clientOptions.jsonMapper)
+            .withErrorHandler(errorHandler)
 
     /** Gets all of an organization's jobs. */
-    override fun list(params: AtJobListParams, requestOptions: RequestOptions): AtJobListPage {
+    override fun list(params: AtsJobListParams, requestOptions: RequestOptions): AtsJobListPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -66,7 +67,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtJobListPage.of(this, params, it) }
+                .let { AtsJobListPage.of(this, params, it) }
         }
     }
 }

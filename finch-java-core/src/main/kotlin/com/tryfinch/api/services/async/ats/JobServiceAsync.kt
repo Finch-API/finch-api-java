@@ -3,9 +3,9 @@
 package com.tryfinch.api.services.async.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtJobListPageAsync
-import com.tryfinch.api.models.AtJobListParams
-import com.tryfinch.api.models.AtJobRetrieveParams
+import com.tryfinch.api.models.AtsJobListPageAsync
+import com.tryfinch.api.models.AtsJobListParams
+import com.tryfinch.api.models.AtsJobRetrieveParams
 import com.tryfinch.api.models.Job
 import java.util.concurrent.CompletableFuture
 
@@ -14,14 +14,14 @@ interface JobServiceAsync {
     /** Gets a job from an organization. */
     @JvmOverloads
     fun retrieve(
-        params: AtJobRetrieveParams,
+        params: AtsJobRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<Job>
 
     /** Gets all of an organization's jobs. */
     @JvmOverloads
     fun list(
-        params: AtJobListParams,
+        params: AtsJobListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<AtJobListPageAsync>
+    ): CompletableFuture<AtsJobListPageAsync>
 }

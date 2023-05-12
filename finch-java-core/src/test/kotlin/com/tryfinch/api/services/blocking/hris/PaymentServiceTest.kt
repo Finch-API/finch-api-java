@@ -3,7 +3,7 @@ package com.tryfinch.api.services.blocking.hris
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HriPaymentListParams
+import com.tryfinch.api.models.HrisPaymentListParams
 import java.time.LocalDate
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,7 +23,7 @@ class PaymentServiceTest {
         val paymentService = client.hris().payments()
         val getPaymentsResponse =
             paymentService.list(
-                HriPaymentListParams.builder()
+                HrisPaymentListParams.builder()
                     .startDate(LocalDate.parse("2021-01-01"))
                     .endDate(LocalDate.parse("2021-01-01"))
                     .build()

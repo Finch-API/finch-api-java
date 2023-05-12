@@ -3,7 +3,7 @@ package com.tryfinch.api.services.blocking.ats
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.AtOfferListParams
+import com.tryfinch.api.models.AtsOfferListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -20,7 +20,8 @@ class OfferServiceTest {
                 .clientSecret("string")
                 .build()
         val offerService = client.ats().offers()
-        val offer = offerService.retrieve(AtOfferRetrieveParams.builder().offerId("string").build())
+        val offer =
+            offerService.retrieve(AtsOfferRetrieveParams.builder().offerId("string").build())
         println(offer)
         offer.validate()
     }
@@ -35,7 +36,7 @@ class OfferServiceTest {
                 .clientSecret("string")
                 .build()
         val offerService = client.ats().offers()
-        val response = offerService.list(AtOfferListParams.builder().build())
+        val response = offerService.list(AtsOfferListParams.builder().build())
         println(response)
         response.offers().forEach { it.validate() }
     }

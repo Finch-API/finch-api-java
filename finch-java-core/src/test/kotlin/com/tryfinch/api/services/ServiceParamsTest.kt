@@ -14,10 +14,10 @@ import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.AtJobListPage
-import com.tryfinch.api.models.AtJobListParams
-import com.tryfinch.api.models.HriDirectoryListIndividualsPage
-import com.tryfinch.api.models.HriDirectoryListIndividualsParams
+import com.tryfinch.api.models.AtsJobListPage
+import com.tryfinch.api.models.AtsJobListParams
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -53,7 +53,7 @@ class ServiceParamsTest {
         additionalQueryParams.put("test_query_param", listOf("def567"))
 
         val params =
-            HriDirectoryListIndividualsParams.builder()
+            HrisDirectoryListIndividualsParams.builder()
                 .limit(123L)
                 .offset(123L)
                 .additionalHeaders(additionalHeaders)
@@ -61,7 +61,7 @@ class ServiceParamsTest {
                 .build()
 
         val apiResponse =
-            HriDirectoryListIndividualsPage.Response.builder()
+            HrisDirectoryListIndividualsPage.Response.builder()
                 .paging(Paging.builder().count(123L).offset(123L).build())
                 .individuals(
                     listOf(
@@ -107,7 +107,7 @@ class ServiceParamsTest {
         additionalQueryParams.put("test_query_param", listOf("def567"))
 
         val params =
-            AtJobListParams.builder()
+            AtsJobListParams.builder()
                 .limit(123L)
                 .offset(123L)
                 .additionalHeaders(additionalHeaders)
@@ -115,7 +115,7 @@ class ServiceParamsTest {
                 .build()
 
         val apiResponse =
-            AtJobListPage.Response.builder()
+            AtsJobListPage.Response.builder()
                 .paging(Paging.builder().count(123L).offset(123L).build())
                 .jobs(
                     listOf(
