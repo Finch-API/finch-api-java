@@ -46,7 +46,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): IndividualBenefit = apply {
         if (!validated) {
             individualId()
             code()
@@ -210,7 +210,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Body = apply {
             if (!validated) {
                 employeeDeduction().map { it.validate() }
                 companyContribution().map { it.validate() }

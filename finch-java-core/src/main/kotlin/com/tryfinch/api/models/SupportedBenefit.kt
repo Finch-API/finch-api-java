@@ -106,7 +106,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): SupportedBenefit = apply {
         if (!validated) {
             type()
             description()

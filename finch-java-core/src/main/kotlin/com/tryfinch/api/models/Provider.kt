@@ -91,7 +91,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): Provider = apply {
         if (!validated) {
             id()
             displayName()
