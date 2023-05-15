@@ -46,7 +46,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): UnenrolledIndividual = apply {
         if (!validated) {
             individualId()
             code()
@@ -186,7 +186,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Body = apply {
             if (!validated) {
                 name()
                 finchCode()

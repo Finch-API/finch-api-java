@@ -44,7 +44,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): IndividualResponse = apply {
         if (!validated) {
             individualId()
             code()

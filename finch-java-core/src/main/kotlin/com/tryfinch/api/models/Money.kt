@@ -40,7 +40,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): Money = apply {
         if (!validated) {
             amount()
             currency()
