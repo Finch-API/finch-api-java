@@ -123,7 +123,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Response = apply {
             if (!validated) {
                 paging().validate()
                 applications().forEach { it.validate() }

@@ -34,7 +34,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): DisconnectResponse = apply {
         if (!validated) {
             status()
             validated = true

@@ -32,7 +32,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): CreateCompanyBenefitsResponse = apply {
         if (!validated) {
             benefitId()
             validated = true

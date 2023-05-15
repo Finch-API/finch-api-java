@@ -97,7 +97,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): Company = apply {
         if (!validated) {
             id()
             legalName()
@@ -320,7 +320,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Entity = apply {
             if (!validated) {
                 type()
                 subtype()
@@ -586,7 +586,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Department = apply {
             if (!validated) {
                 name()
                 parent().map { it.validate() }
@@ -701,7 +701,7 @@ private constructor(
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-            fun validate() = apply {
+            fun validate(): Parent = apply {
                 if (!validated) {
                     name()
                     validated = true
@@ -833,7 +833,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Account = apply {
             if (!validated) {
                 routingNumber()
                 accountName()
