@@ -102,7 +102,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): PayStatement = apply {
         if (!validated) {
             individualId()
             type()
@@ -487,7 +487,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Earning = apply {
             if (!validated) {
                 type()
                 name()
@@ -801,7 +801,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Tax = apply {
             if (!validated) {
                 type()
                 name()
@@ -1055,7 +1055,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): EmployeeDeduction = apply {
             if (!validated) {
                 name()
                 amount()
@@ -1233,7 +1233,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): EmployerContribution = apply {
             if (!validated) {
                 name()
                 amount()

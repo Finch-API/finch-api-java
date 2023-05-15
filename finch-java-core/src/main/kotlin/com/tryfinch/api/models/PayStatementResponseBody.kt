@@ -41,7 +41,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): PayStatementResponseBody = apply {
         if (!validated) {
             paging().map { it.validate() }
             payStatements().map { it.forEach { it.validate() } }

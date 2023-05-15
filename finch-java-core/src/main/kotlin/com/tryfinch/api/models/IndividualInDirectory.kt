@@ -78,7 +78,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): IndividualInDirectory = apply {
         if (!validated) {
             id()
             firstName()
@@ -261,7 +261,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Manager = apply {
             if (!validated) {
                 id()
                 validated = true
@@ -354,7 +354,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Department = apply {
             if (!validated) {
                 name()
                 validated = true

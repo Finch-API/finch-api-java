@@ -88,7 +88,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): Payment = apply {
         if (!validated) {
             id()
             payPeriod().map { it.validate() }
@@ -310,7 +310,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): PayPeriod = apply {
             if (!validated) {
                 startDate()
                 endDate()
