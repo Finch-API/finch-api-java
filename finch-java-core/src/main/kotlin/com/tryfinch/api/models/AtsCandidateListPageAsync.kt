@@ -110,7 +110,7 @@ private constructor(
 
         fun paging(): Paging = paging.getRequired("paging")
 
-        fun candidates(): List<Candidate> = candidates.getRequired("candidates")
+        fun candidates(): List<Candidate> = candidates.getNullable("candidates") ?: listOf()
 
         @JsonProperty("paging")
         fun _paging(): Optional<JsonField<Paging>> = Optional.ofNullable(paging)
@@ -125,7 +125,7 @@ private constructor(
         fun validate(): Response = apply {
             if (!validated) {
                 paging().validate()
-                candidates().forEach { it.validate() }
+                candidates().map { it.validate() }
                 validated = true
             }
         }

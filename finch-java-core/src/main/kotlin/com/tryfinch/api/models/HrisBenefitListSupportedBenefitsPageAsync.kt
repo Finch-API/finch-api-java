@@ -91,7 +91,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun items(): List<SupportedBenefit> = items.getRequired("items")
+        fun items(): List<SupportedBenefit> = items.getNullable("items") ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<SupportedBenefit>>> = Optional.ofNullable(items)
@@ -102,7 +102,7 @@ private constructor(
 
         fun validate(): Response = apply {
             if (!validated) {
-                items().forEach { it.validate() }
+                items().map { it.validate() }
                 validated = true
             }
         }
