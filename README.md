@@ -153,8 +153,22 @@ HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividu
 In rare cases, you may want to access the underlying JSON value for a response property rather than using the typed version provided by
 this SDK. Each model property has a corresponding JSON version, with an underscore before the method name, which returns a `JsonField` value.
 
+```java
+JsonField field = responseObj._field();
 
+if (field.isMissing()) {
+  // Value was not specified in the JSON response
+} else if (field.isNull()) {
+  // Value was provided as a literal null
+} else {
+  // See if value was provided as a string
+  Optional<String> jsonString = field.asString();
 
+  // If the value given by the API did not match the shape that the SDK expects
+  // you can deserialise into a custom type
+  MyClass myObj = responseObj._field().asUnknown().orElseThrow().convert(MyClass.class);
+}
+```
 
 ### Additional model properties
 
