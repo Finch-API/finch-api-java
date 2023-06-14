@@ -92,7 +92,7 @@ HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividu
 
 ### Example: listing resources
 
-The Finch API provides a `list` method to get a paginated list of ats jobs.
+The Finch API provides a `list` method to get a paginated list of jobs.
 You can retrieve the first page by:
 
 ```java
@@ -100,8 +100,8 @@ import com.tryfinch.api.models.Job;
 import com.tryfinch.api.models.Page;
 
 AtsJobListPage page = client.jobs().list();
-for (Job atsJob : page.jobs()) {
-    System.out.println(atsJob);
+for (Job job : page.jobs()) {
+    System.out.println(job);
 }
 ```
 
@@ -196,14 +196,14 @@ which automatically handles fetching more pages for you:
 ```java
 // As an Iterable:
 AtsJobListPage page = client.jobs().list(params);
-for (Job atsJob : page.autoPager()) {
-    System.out.println(atsJob);
+for (Job job : page.autoPager()) {
+    System.out.println(job);
 };
 
 // As a Stream:
 client.jobs().list(params).autoPager().stream()
     .limit(50)
-    .forEach(atsJob -> System.out.println(atsJob));
+    .forEach(job -> System.out.println(job));
 ```
 
 ### Asynchronous
@@ -211,7 +211,7 @@ client.jobs().list(params).autoPager().stream()
 ```java
 // Using forEach, which returns CompletableFuture<Void>:
 asyncClient.jobs().list(params).autoPager()
-    .forEach(atsJob -> System.out.println(atsJob), executor);
+    .forEach(job -> System.out.println(job), executor);
 ```
 
 ### Manual pagination
@@ -224,8 +224,8 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 ```java
 AtsJobListPage page = client.jobs().list(params);
 while (page != null) {
-    for (Job atsJob : page.jobs()) {
-        System.out.println(atsJob);
+    for (Job job : page.jobs()) {
+        System.out.println(job);
     }
 
     page = page.getNextPage().orElse(null);
