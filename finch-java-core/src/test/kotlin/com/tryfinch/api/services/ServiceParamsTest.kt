@@ -16,8 +16,6 @@ import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.models.*
 import com.tryfinch.api.models.AtsJobListPage
 import com.tryfinch.api.models.AtsJobListParams
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -43,7 +41,7 @@ class ServiceParamsTest {
     }
 
     @Test
-    fun hrisDirectoryListIndividualsWithAdditionalParams() {
+    fun atsCandidatesRetrieveWithAdditionalParams() {
         val additionalHeaders = mutableMapOf<String, List<String>>()
 
         additionalHeaders.put("x-test-header", listOf("abc1234"))
@@ -53,35 +51,25 @@ class ServiceParamsTest {
         additionalQueryParams.put("test_query_param", listOf("def567"))
 
         val params =
-            HrisDirectoryListIndividualsParams.builder()
-                .limit(123L)
-                .offset(123L)
+            AtsCandidateRetrieveParams.builder()
+                .candidateId("string")
                 .additionalHeaders(additionalHeaders)
                 .additionalQueryParams(additionalQueryParams)
                 .build()
 
         val apiResponse =
-            HrisDirectoryListIndividualsPage.Response.builder()
-                .paging(Paging.builder().count(123L).offset(123L).build())
-                .individuals(
-                    listOf(
-                        IndividualInDirectory.builder()
-                            .id("string")
-                            .firstName("string")
-                            .middleName("string")
-                            .lastName("string")
-                            .manager(
-                                IndividualInDirectory.Manager.builder()
-                                    .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
-                                    .build()
-                            )
-                            .department(
-                                IndividualInDirectory.Department.builder().name("string").build()
-                            )
-                            .isActive(true)
-                            .build()
-                    )
+            Candidate.builder()
+                .id("string")
+                .firstName("string")
+                .lastName("string")
+                .fullName("string")
+                .emails(listOf(Candidate.Email.builder().data("string").type("string").build()))
+                .phoneNumbers(
+                    listOf(Candidate.PhoneNumber.builder().data("string").type("string").build())
                 )
+                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .lastActivityAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .applicationIds(listOf("string"))
                 .build()
 
         stubFor(
@@ -91,7 +79,7 @@ class ServiceParamsTest {
                 .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.hris().directory().listIndividuals(params)
+        client.ats().candidates().retrieve(params)
 
         verify(getRequestedFor(anyUrl()))
     }
