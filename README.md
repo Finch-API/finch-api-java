@@ -78,16 +78,15 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new hris directory, first use the `HrisDirectoryListIndividualsParams` builder to specify attributes,
-then pass that to the `listIndividuals` method of the `directory` service.
+To create a new ats candidate, first use the `AtsCandidateRetrieveParams` builder to specify attributes,
+then pass that to the `retrieve` method of the `candidates` service.
 
 ```java
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage;
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams;
-import com.tryfinch.api.models.Page;
+import com.tryfinch.api.models.AtsCandidateRetrieveParams;
+import com.tryfinch.api.models.Candidate;
 
-HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.builder().build();
-HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals(params);
+AtsCandidateRetrieveParams params = AtsCandidateRetrieveParams.builder().build();
+Candidate atsCandidate = client.candidates().retrieve(params);
 ```
 
 ### Example: listing resources
@@ -115,14 +114,14 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListIndividualsParams.builder()` to pass to
-the `listIndividuals` method of the `directory` service.
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `AtsCandidateRetrieveParams.builder()` to pass to
+the `retrieve` method of the `candidates` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
 ```java
-HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.builder()
+AtsCandidateRetrieveParams params = AtsCandidateRetrieveParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
     .build();
@@ -135,7 +134,7 @@ HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.b
 When receiving a response, the Finch Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
-HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals().validate();
+Candidate atsCandidate = client.candidates().retrieve().validate();
 ```
 
 ### Response properties as JSON
@@ -165,7 +164,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```java
-JsonValue secret = hrisDirectory._additionalProperties().get("secret_field");
+JsonValue secret = atsCandidate._additionalProperties().get("secret_field");
 ```
 
 ---
