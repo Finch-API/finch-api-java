@@ -85,7 +85,9 @@ then pass that to the `retrieve` method of the `candidates` service.
 import com.tryfinch.api.models.AtsCandidateRetrieveParams;
 import com.tryfinch.api.models.Candidate;
 
-AtsCandidateRetrieveParams params = AtsCandidateRetrieveParams.builder().build();
+AtsCandidateRetrieveParams params = AtsCandidateRetrieveParams.builder()
+    .candidateId("<candidate id>")
+    .build();
 Candidate atsCandidate = client.candidates().retrieve(params);
 ```
 
