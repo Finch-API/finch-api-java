@@ -34,8 +34,6 @@ class IndividualBenefitTest {
                 .individualId("string")
                 .build()
         assertThat(individualBenefit).isNotNull
-        assertThat(individualBenefit.individualId()).contains("string")
-        assertThat(individualBenefit.code()).contains(123L)
         assertThat(individualBenefit.body())
             .contains(
                 IndividualBenefit.Body.builder()
@@ -56,5 +54,7 @@ class IndividualBenefitTest {
                     .hsaContributionLimit(IndividualBenefit.Body.HsaContributionLimit.INDIVIDUAL)
                     .build()
             )
+        assertThat(individualBenefit.code()).contains(123L)
+        assertThat(individualBenefit.individualId()).contains("string")
     }
 }

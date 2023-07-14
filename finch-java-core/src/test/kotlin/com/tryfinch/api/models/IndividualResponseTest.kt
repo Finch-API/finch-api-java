@@ -53,8 +53,6 @@ class IndividualResponseTest {
                 .individualId("string")
                 .build()
         assertThat(individualResponse).isNotNull
-        assertThat(individualResponse.individualId()).contains("string")
-        assertThat(individualResponse.code()).contains(123L)
         assertThat(individualResponse.body())
             .contains(
                 Individual.builder()
@@ -96,5 +94,7 @@ class IndividualResponseTest {
                     .ssn("string")
                     .build()
             )
+        assertThat(individualResponse.code()).contains(123L)
+        assertThat(individualResponse.individualId()).contains("string")
     }
 }

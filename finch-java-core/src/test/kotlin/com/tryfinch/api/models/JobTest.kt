@@ -29,11 +29,9 @@ class JobTest {
                 .build()
         assertThat(job).isNotNull
         assertThat(job.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(job.name()).contains("string")
-        assertThat(job.status()).contains(Job.Status.OPEN)
-        assertThat(job.department()).isEqualTo(Job.Department.builder().name("string").build())
-        assertThat(job.createdAt()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(job.closedAt()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+        assertThat(job.createdAt()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+        assertThat(job.department()).isEqualTo(Job.Department.builder().name("string").build())
         assertThat(job.hiringTeam())
             .isEqualTo(
                 Job.HiringTeam.builder()
@@ -43,5 +41,7 @@ class JobTest {
                     .recruiters(listOf(Job.HiringTeam.Recruiter.builder().name("string").build()))
                     .build()
             )
+        assertThat(job.name()).contains("string")
+        assertThat(job.status()).contains(Job.Status.OPEN)
     }
 }

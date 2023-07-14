@@ -20,8 +20,6 @@ class UnenrolledIndividualTest {
                 .individualId("string")
                 .build()
         assertThat(unenrolledIndividual).isNotNull
-        assertThat(unenrolledIndividual.individualId()).contains("string")
-        assertThat(unenrolledIndividual.code()).contains(123L)
         assertThat(unenrolledIndividual.body())
             .contains(
                 UnenrolledIndividual.Body.builder()
@@ -30,5 +28,7 @@ class UnenrolledIndividualTest {
                     .name("string")
                     .build()
             )
+        assertThat(unenrolledIndividual.code()).contains(123L)
+        assertThat(unenrolledIndividual.individualId()).contains("string")
     }
 }

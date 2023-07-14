@@ -71,8 +71,6 @@ class EmploymentDataResponseTest {
                 .individualId("string")
                 .build()
         assertThat(employmentDataResponse).isNotNull
-        assertThat(employmentDataResponse.individualId()).contains("string")
-        assertThat(employmentDataResponse.code()).contains(123L)
         assertThat(employmentDataResponse.body())
             .contains(
                 EmploymentData.builder()
@@ -132,5 +130,7 @@ class EmploymentDataResponseTest {
                     .workId2("string")
                     .build()
             )
+        assertThat(employmentDataResponse.code()).contains(123L)
+        assertThat(employmentDataResponse.individualId()).contains("string")
     }
 }

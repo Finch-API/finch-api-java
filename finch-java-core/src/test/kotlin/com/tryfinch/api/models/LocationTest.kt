@@ -19,13 +19,13 @@ class LocationTest {
                 .state("string")
                 .build()
         assertThat(location).isNotNull
+        assertThat(location.city()).contains("string")
+        assertThat(location.country()).contains("string")
         assertThat(location.line1()).contains("string")
         assertThat(location.line2()).contains("string")
-        assertThat(location.city()).contains("string")
-        assertThat(location.state()).contains("string")
-        assertThat(location.postalCode()).contains("string")
-        assertThat(location.country()).contains("string")
         assertThat(location.name()).contains("string")
+        assertThat(location.postalCode()).contains("string")
         assertThat(location.sourceId()).contains("string")
+        assertThat(location.state()).contains("string")
     }
 }

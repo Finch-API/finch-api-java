@@ -28,9 +28,6 @@ class CompanyBenefitTest {
                 .build()
         assertThat(companyBenefit).isNotNull
         assertThat(companyBenefit.benefitId()).isEqualTo("string")
-        assertThat(companyBenefit.type()).contains(BenefitType._401K)
-        assertThat(companyBenefit.description()).contains("string")
-        assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)
         assertThat(companyBenefit.companyContribution())
             .contains(
                 BenfitContribution.builder()
@@ -38,6 +35,7 @@ class CompanyBenefitTest {
                     .type(BenfitContribution.Type.FIXED)
                     .build()
             )
+        assertThat(companyBenefit.description()).contains("string")
         assertThat(companyBenefit.employeeDeduction())
             .contains(
                 BenfitContribution.builder()
@@ -45,5 +43,7 @@ class CompanyBenefitTest {
                     .type(BenfitContribution.Type.FIXED)
                     .build()
             )
+        assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)
+        assertThat(companyBenefit.type()).contains(BenefitType._401K)
     }
 }
