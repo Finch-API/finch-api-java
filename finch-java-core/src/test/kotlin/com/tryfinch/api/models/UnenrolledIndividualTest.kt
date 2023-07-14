@@ -9,15 +9,15 @@ class UnenrolledIndividualTest {
     fun createUnenrolledIndividual() {
         val unenrolledIndividual =
             UnenrolledIndividual.builder()
-                .individualId("string")
-                .code(123L)
                 .body(
                     UnenrolledIndividual.Body.builder()
-                        .name("string")
                         .finchCode("string")
                         .message("string")
+                        .name("string")
                         .build()
                 )
+                .code(123L)
+                .individualId("string")
                 .build()
         assertThat(unenrolledIndividual).isNotNull
         assertThat(unenrolledIndividual.individualId()).contains("string")
@@ -25,9 +25,9 @@ class UnenrolledIndividualTest {
         assertThat(unenrolledIndividual.body())
             .contains(
                 UnenrolledIndividual.Body.builder()
-                    .name("string")
                     .finchCode("string")
                     .message("string")
+                    .name("string")
                     .build()
             )
     }

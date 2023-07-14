@@ -10,16 +10,16 @@ class IndividualInDirectoryTest {
         val individualInDirectory =
             IndividualInDirectory.builder()
                 .id("string")
+                .department(IndividualInDirectory.Department.builder().name("string").build())
                 .firstName("string")
-                .middleName("string")
+                .isActive(true)
                 .lastName("string")
                 .manager(
                     IndividualInDirectory.Manager.builder()
                         .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
                         .build()
                 )
-                .department(IndividualInDirectory.Department.builder().name("string").build())
-                .isActive(true)
+                .middleName("string")
                 .build()
         assertThat(individualInDirectory).isNotNull
         assertThat(individualInDirectory.id()).contains("string")

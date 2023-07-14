@@ -9,15 +9,10 @@ class IndividualResponseTest {
     fun createIndividualResponse() {
         val individualResponse =
             IndividualResponse.builder()
-                .individualId("string")
-                .code(123L)
                 .body(
                     Individual.builder()
                         .id("string")
-                        .firstName("string")
-                        .middleName("string")
-                        .lastName("string")
-                        .preferredName("string")
+                        .dob("string")
                         .emails(
                             listOf(
                                 Individual.Email.builder()
@@ -26,6 +21,10 @@ class IndividualResponseTest {
                                     .build()
                             )
                         )
+                        .firstName("string")
+                        .gender(Individual.Gender.FEMALE)
+                        .lastName("string")
+                        .middleName("string")
                         .phoneNumbers(
                             listOf(
                                 Individual.PhoneNumber.builder()
@@ -34,23 +33,24 @@ class IndividualResponseTest {
                                     .build()
                             )
                         )
-                        .gender(Individual.Gender.FEMALE)
-                        .dob("string")
+                        .preferredName("string")
                         .residence(
                             Location.builder()
+                                .city("string")
+                                .country("string")
                                 .line1("string")
                                 .line2("string")
-                                .city("string")
-                                .state("string")
-                                .postalCode("string")
-                                .country("string")
                                 .name("string")
+                                .postalCode("string")
                                 .sourceId("string")
+                                .state("string")
                                 .build()
                         )
                         .ssn("string")
                         .build()
                 )
+                .code(123L)
+                .individualId("string")
                 .build()
         assertThat(individualResponse).isNotNull
         assertThat(individualResponse.individualId()).contains("string")
@@ -59,10 +59,7 @@ class IndividualResponseTest {
             .contains(
                 Individual.builder()
                     .id("string")
-                    .firstName("string")
-                    .middleName("string")
-                    .lastName("string")
-                    .preferredName("string")
+                    .dob("string")
                     .emails(
                         listOf(
                             Individual.Email.builder()
@@ -71,6 +68,10 @@ class IndividualResponseTest {
                                 .build()
                         )
                     )
+                    .firstName("string")
+                    .gender(Individual.Gender.FEMALE)
+                    .lastName("string")
+                    .middleName("string")
                     .phoneNumbers(
                         listOf(
                             Individual.PhoneNumber.builder()
@@ -79,18 +80,17 @@ class IndividualResponseTest {
                                 .build()
                         )
                     )
-                    .gender(Individual.Gender.FEMALE)
-                    .dob("string")
+                    .preferredName("string")
                     .residence(
                         Location.builder()
+                            .city("string")
+                            .country("string")
                             .line1("string")
                             .line2("string")
-                            .city("string")
-                            .state("string")
-                            .postalCode("string")
-                            .country("string")
                             .name("string")
+                            .postalCode("string")
                             .sourceId("string")
+                            .state("string")
                             .build()
                     )
                     .ssn("string")

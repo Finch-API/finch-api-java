@@ -11,10 +11,10 @@ class IntrospectionTest {
             Introspection.builder()
                 .clientId("string")
                 .companyId("string")
+                .manual(true)
+                .payrollProviderId("string")
                 .products(listOf("string"))
                 .username("string")
-                .payrollProviderId("string")
-                .manual(true)
                 .build()
         assertThat(introspection).isNotNull
         assertThat(introspection.clientId()).isEqualTo("string")

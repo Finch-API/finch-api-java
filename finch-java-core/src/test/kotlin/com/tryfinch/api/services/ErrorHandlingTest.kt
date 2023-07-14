@@ -68,34 +68,35 @@ class ErrorHandlingTest {
                 service,
                 params,
                 HrisDirectoryListIndividualsPage.Response.builder()
-                    .paging(Paging.builder().count(123L).offset(123L).build())
                     .individuals(
                         listOf(
                             IndividualInDirectory.builder()
                                 .id("string")
+                                .department(
+                                    IndividualInDirectory.Department.builder()
+                                        .name("string")
+                                        .build()
+                                )
                                 .firstName("string")
-                                .middleName("string")
+                                .isActive(true)
                                 .lastName("string")
                                 .manager(
                                     IndividualInDirectory.Manager.builder()
                                         .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
                                         .build()
                                 )
-                                .department(
-                                    IndividualInDirectory.Department.builder()
-                                        .name("string")
-                                        .build()
-                                )
-                                .isActive(true)
+                                .middleName("string")
                                 .build()
                         )
                     )
+                    .paging(Paging.builder().count(123L).offset(123L).build())
                     .build()
             )
 
         stubFor(get(anyUrl()).willReturn(ok().withBody(toJson(expected.response()))))
 
-        assertThat(service.listIndividuals(params).response()).isEqualTo(expected.response())
+        assertThat(client.hris().directory().listIndividuals(params).response())
+            .isEqualTo(expected.response())
     }
 
     @Test

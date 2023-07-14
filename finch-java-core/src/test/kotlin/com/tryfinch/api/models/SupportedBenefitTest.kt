@@ -9,14 +9,14 @@ class SupportedBenefitTest {
     fun createSupportedBenefit() {
         val supportedBenefit =
             SupportedBenefit.builder()
-                .type(BenefitType._401K)
-                .description("string")
-                .frequencies(listOf(BenefitFrequency.ONE_TIME))
-                .employeeDeduction(listOf(SupportedBenefit.EmployeeDeduction.FIXED))
-                .companyContribution(listOf(SupportedBenefit.CompanyContribution.FIXED))
                 .annualMaximum(true)
                 .catchUp(true)
+                .companyContribution(listOf(SupportedBenefit.CompanyContribution.FIXED))
+                .description("string")
+                .employeeDeduction(listOf(SupportedBenefit.EmployeeDeduction.FIXED))
+                .frequencies(listOf(BenefitFrequency.ONE_TIME))
                 .hsaContributionLimit(listOf(SupportedBenefit.HsaContributionLimit.INDIVIDUAL))
+                .type(BenefitType._401K)
                 .build()
         assertThat(supportedBenefit).isNotNull
         assertThat(supportedBenefit.type()).contains(BenefitType._401K)

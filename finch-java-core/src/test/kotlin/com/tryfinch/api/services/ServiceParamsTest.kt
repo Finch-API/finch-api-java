@@ -60,16 +60,16 @@ class ServiceParamsTest {
         val apiResponse =
             Candidate.builder()
                 .id("string")
-                .firstName("string")
-                .lastName("string")
-                .fullName("string")
+                .applicationIds(listOf("string"))
+                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .emails(listOf(Candidate.Email.builder().data("string").type("string").build()))
+                .firstName("string")
+                .fullName("string")
+                .lastActivityAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .lastName("string")
                 .phoneNumbers(
                     listOf(Candidate.PhoneNumber.builder().data("string").type("string").build())
                 )
-                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .lastActivityAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .applicationIds(listOf("string"))
                 .build()
 
         stubFor(
@@ -104,16 +104,13 @@ class ServiceParamsTest {
 
         val apiResponse =
             AtsJobListPage.Response.builder()
-                .paging(Paging.builder().count(123L).offset(123L).build())
                 .jobs(
                     listOf(
                         Job.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .name("string")
-                            .status(Job.Status.OPEN)
-                            .department(Job.Department.builder().name("string").build())
-                            .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .closedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .department(Job.Department.builder().name("string").build())
                             .hiringTeam(
                                 Job.HiringTeam.builder()
                                     .hiringManagers(
@@ -132,9 +129,12 @@ class ServiceParamsTest {
                                     )
                                     .build()
                             )
+                            .name("string")
+                            .status(Job.Status.OPEN)
                             .build()
                     )
                 )
+                .paging(Paging.builder().count(123L).offset(123L).build())
                 .build()
 
         stubFor(

@@ -10,21 +10,21 @@ class CompanyBenefitTest {
         val companyBenefit =
             CompanyBenefit.builder()
                 .benefitId("string")
-                .type(BenefitType._401K)
-                .description("string")
-                .frequency(BenefitFrequency.ONE_TIME)
                 .companyContribution(
                     BenfitContribution.builder()
-                        .type(BenfitContribution.Type.FIXED)
                         .amount(123L)
+                        .type(BenfitContribution.Type.FIXED)
                         .build()
                 )
+                .description("string")
                 .employeeDeduction(
                     BenfitContribution.builder()
-                        .type(BenfitContribution.Type.FIXED)
                         .amount(123L)
+                        .type(BenfitContribution.Type.FIXED)
                         .build()
                 )
+                .frequency(BenefitFrequency.ONE_TIME)
+                .type(BenefitType._401K)
                 .build()
         assertThat(companyBenefit).isNotNull
         assertThat(companyBenefit.benefitId()).isEqualTo("string")
@@ -34,15 +34,15 @@ class CompanyBenefitTest {
         assertThat(companyBenefit.companyContribution())
             .contains(
                 BenfitContribution.builder()
-                    .type(BenfitContribution.Type.FIXED)
                     .amount(123L)
+                    .type(BenfitContribution.Type.FIXED)
                     .build()
             )
         assertThat(companyBenefit.employeeDeduction())
             .contains(
                 BenfitContribution.builder()
-                    .type(BenfitContribution.Type.FIXED)
                     .amount(123L)
+                    .type(BenfitContribution.Type.FIXED)
                     .build()
             )
     }
