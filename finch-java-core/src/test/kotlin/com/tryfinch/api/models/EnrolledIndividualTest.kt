@@ -20,8 +20,6 @@ class EnrolledIndividualTest {
                 .individualId("string")
                 .build()
         assertThat(enrolledIndividual).isNotNull
-        assertThat(enrolledIndividual.individualId()).contains("string")
-        assertThat(enrolledIndividual.code()).contains(EnrolledIndividual.Code.OK)
         assertThat(enrolledIndividual.body())
             .contains(
                 EnrolledIndividual.Body.builder()
@@ -30,5 +28,7 @@ class EnrolledIndividualTest {
                     .name("string")
                     .build()
             )
+        assertThat(enrolledIndividual.code()).contains(EnrolledIndividual.Code.OK)
+        assertThat(enrolledIndividual.individualId()).contains("string")
     }
 }

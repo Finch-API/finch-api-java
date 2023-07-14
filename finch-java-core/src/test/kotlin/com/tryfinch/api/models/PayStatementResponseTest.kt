@@ -75,8 +75,6 @@ class PayStatementResponseTest {
                 .paymentId("string")
                 .build()
         assertThat(payStatementResponse).isNotNull
-        assertThat(payStatementResponse.paymentId()).contains("string")
-        assertThat(payStatementResponse.code()).contains(123L)
         assertThat(payStatementResponse.body())
             .contains(
                 PayStatementResponseBody.builder()
@@ -138,5 +136,7 @@ class PayStatementResponseTest {
                     )
                     .build()
             )
+        assertThat(payStatementResponse.code()).contains(123L)
+        assertThat(payStatementResponse.paymentId()).contains("string")
     }
 }

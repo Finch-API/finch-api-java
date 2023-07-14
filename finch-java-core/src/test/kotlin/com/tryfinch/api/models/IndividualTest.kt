@@ -48,14 +48,15 @@ class IndividualTest {
                 .build()
         assertThat(individual).isNotNull
         assertThat(individual.id()).contains("string")
-        assertThat(individual.firstName()).contains("string")
-        assertThat(individual.middleName()).contains("string")
-        assertThat(individual.lastName()).contains("string")
-        assertThat(individual.preferredName()).contains("string")
+        assertThat(individual.dob()).contains("string")
         assertThat(individual.emails().get())
             .containsExactly(
                 Individual.Email.builder().data("string").type(Individual.Email.Type.WORK).build()
             )
+        assertThat(individual.firstName()).contains("string")
+        assertThat(individual.gender()).contains(Individual.Gender.FEMALE)
+        assertThat(individual.lastName()).contains("string")
+        assertThat(individual.middleName()).contains("string")
         assertThat(individual.phoneNumbers().get())
             .containsExactly(
                 Individual.PhoneNumber.builder()
@@ -63,8 +64,7 @@ class IndividualTest {
                     .type(Individual.PhoneNumber.Type.WORK)
                     .build()
             )
-        assertThat(individual.gender()).contains(Individual.Gender.FEMALE)
-        assertThat(individual.dob()).contains("string")
+        assertThat(individual.preferredName()).contains("string")
         assertThat(individual.residence())
             .contains(
                 Location.builder()

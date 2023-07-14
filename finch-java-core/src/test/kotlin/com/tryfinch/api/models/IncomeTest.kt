@@ -15,9 +15,9 @@ class IncomeTest {
                 .unit(Income.Unit.YEARLY)
                 .build()
         assertThat(income).isNotNull
-        assertThat(income.unit()).contains(Income.Unit.YEARLY)
         assertThat(income.amount()).contains(123L)
         assertThat(income.currency()).contains("string")
         assertThat(income.effectiveDate()).contains("string")
+        assertThat(income.unit()).contains(Income.Unit.YEARLY)
     }
 }

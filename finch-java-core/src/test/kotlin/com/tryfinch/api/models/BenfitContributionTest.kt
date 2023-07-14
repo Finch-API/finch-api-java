@@ -10,7 +10,7 @@ class BenfitContributionTest {
         val benfitContribution =
             BenfitContribution.builder().amount(123L).type(BenfitContribution.Type.FIXED).build()
         assertThat(benfitContribution).isNotNull
-        assertThat(benfitContribution.type()).contains(BenfitContribution.Type.FIXED)
         assertThat(benfitContribution.amount()).contains(123L)
+        assertThat(benfitContribution.type()).contains(BenfitContribution.Type.FIXED)
     }
 }

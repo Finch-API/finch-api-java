@@ -56,16 +56,16 @@ class CompanyTest {
                 .build()
         assertThat(company).isNotNull
         assertThat(company.id()).isEqualTo("string")
-        assertThat(company.legalName()).contains("string")
-        assertThat(company.entity())
-            .contains(
-                Company.Entity.builder()
-                    .subtype(Company.Entity.Subtype.S_CORPORATION)
-                    .type(Company.Entity.Type.LLC)
+        assertThat(company.accounts().get())
+            .containsExactly(
+                Company.Account.builder()
+                    .accountName("string")
+                    .accountNumber("string")
+                    .accountType(Company.Account.AccountType.CHECKING)
+                    .institutionName("string")
+                    .routingNumber("string")
                     .build()
             )
-        assertThat(company.primaryEmail()).contains("string")
-        assertThat(company.primaryPhoneNumber()).contains("string")
         assertThat(company.departments().get())
             .containsExactly(
                 Company.Department.builder()
@@ -74,6 +74,14 @@ class CompanyTest {
                     .build()
             )
         assertThat(company.ein()).contains("string")
+        assertThat(company.entity())
+            .contains(
+                Company.Entity.builder()
+                    .subtype(Company.Entity.Subtype.S_CORPORATION)
+                    .type(Company.Entity.Type.LLC)
+                    .build()
+            )
+        assertThat(company.legalName()).contains("string")
         assertThat(company.locations().get())
             .containsExactly(
                 Location.builder()
@@ -87,15 +95,7 @@ class CompanyTest {
                     .state("string")
                     .build()
             )
-        assertThat(company.accounts().get())
-            .containsExactly(
-                Company.Account.builder()
-                    .accountName("string")
-                    .accountNumber("string")
-                    .accountType(Company.Account.AccountType.CHECKING)
-                    .institutionName("string")
-                    .routingNumber("string")
-                    .build()
-            )
+        assertThat(company.primaryEmail()).contains("string")
+        assertThat(company.primaryPhoneNumber()).contains("string")
     }
 }
