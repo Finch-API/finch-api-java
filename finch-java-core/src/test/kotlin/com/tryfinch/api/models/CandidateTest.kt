@@ -11,16 +11,16 @@ class CandidateTest {
         val candidate =
             Candidate.builder()
                 .id("string")
-                .firstName("string")
-                .lastName("string")
-                .fullName("string")
+                .applicationIds(listOf("string"))
+                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .emails(listOf(Candidate.Email.builder().data("string").type("string").build()))
+                .firstName("string")
+                .fullName("string")
+                .lastActivityAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .lastName("string")
                 .phoneNumbers(
                     listOf(Candidate.PhoneNumber.builder().data("string").type("string").build())
                 )
-                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .lastActivityAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .applicationIds(listOf("string"))
                 .build()
         assertThat(candidate).isNotNull
         assertThat(candidate.id()).isEqualTo("string")

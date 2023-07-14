@@ -26,9 +26,9 @@ private constructor(
 
     fun response(): Response = response
 
-    fun paging(): Paging = response().paging()
-
     fun individuals(): List<IndividualInDirectory> = response().individuals()
+
+    fun paging(): Paging = response().paging()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -101,24 +101,24 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val paging: JsonField<Paging>,
         private val individuals: JsonField<List<IndividualInDirectory>>,
+        private val paging: JsonField<Paging>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun paging(): Paging = paging.getRequired("paging")
-
         fun individuals(): List<IndividualInDirectory> =
             individuals.getNullable("individuals") ?: listOf()
 
-        @JsonProperty("paging")
-        fun _paging(): Optional<JsonField<Paging>> = Optional.ofNullable(paging)
+        fun paging(): Paging = paging.getRequired("paging")
 
         @JsonProperty("individuals")
         fun _individuals(): Optional<JsonField<List<IndividualInDirectory>>> =
             Optional.ofNullable(individuals)
+
+        @JsonProperty("paging")
+        fun _paging(): Optional<JsonField<Paging>> = Optional.ofNullable(paging)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -126,8 +126,8 @@ private constructor(
 
         fun validate(): Response = apply {
             if (!validated) {
-                paging().validate()
                 individuals().map { it.validate() }
+                paging().validate()
                 validated = true
             }
         }
@@ -140,21 +140,21 @@ private constructor(
             }
 
             return other is Response &&
-                this.paging == other.paging &&
                 this.individuals == other.individuals &&
+                this.paging == other.paging &&
                 this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
             return Objects.hash(
-                paging,
                 individuals,
+                paging,
                 additionalProperties,
             )
         }
 
         override fun toString() =
-            "HrisDirectoryListIndividualsPageAsync.Response{paging=$paging, individuals=$individuals, additionalProperties=$additionalProperties}"
+            "HrisDirectoryListIndividualsPageAsync.Response{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -163,21 +163,16 @@ private constructor(
 
         class Builder {
 
-            private var paging: JsonField<Paging> = JsonMissing.of()
             private var individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of()
+            private var paging: JsonField<Paging> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(page: Response) = apply {
-                this.paging = page.paging
                 this.individuals = page.individuals
+                this.paging = page.paging
                 this.additionalProperties.putAll(page.additionalProperties)
             }
-
-            fun paging(paging: Paging) = paging(JsonField.of(paging))
-
-            @JsonProperty("paging")
-            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
             fun individuals(individuals: List<IndividualInDirectory>) =
                 individuals(JsonField.of(individuals))
@@ -187,6 +182,11 @@ private constructor(
                 this.individuals = individuals
             }
 
+            fun paging(paging: Paging) = paging(JsonField.of(paging))
+
+            @JsonProperty("paging")
+            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
+
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
@@ -194,8 +194,8 @@ private constructor(
 
             fun build() =
                 Response(
-                    paging,
                     individuals,
+                    paging,
                     additionalProperties.toUnmodifiable(),
                 )
         }

@@ -26,9 +26,9 @@ private constructor(
 
     fun response(): Response = response
 
-    fun paging(): Paging = response().paging()
-
     fun candidates(): List<Candidate> = response().candidates()
+
+    fun paging(): Paging = response().paging()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -101,22 +101,22 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val paging: JsonField<Paging>,
         private val candidates: JsonField<List<Candidate>>,
+        private val paging: JsonField<Paging>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun paging(): Paging = paging.getRequired("paging")
-
         fun candidates(): List<Candidate> = candidates.getNullable("candidates") ?: listOf()
 
-        @JsonProperty("paging")
-        fun _paging(): Optional<JsonField<Paging>> = Optional.ofNullable(paging)
+        fun paging(): Paging = paging.getRequired("paging")
 
         @JsonProperty("candidates")
         fun _candidates(): Optional<JsonField<List<Candidate>>> = Optional.ofNullable(candidates)
+
+        @JsonProperty("paging")
+        fun _paging(): Optional<JsonField<Paging>> = Optional.ofNullable(paging)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -124,8 +124,8 @@ private constructor(
 
         fun validate(): Response = apply {
             if (!validated) {
-                paging().validate()
                 candidates().map { it.validate() }
+                paging().validate()
                 validated = true
             }
         }
@@ -138,21 +138,21 @@ private constructor(
             }
 
             return other is Response &&
-                this.paging == other.paging &&
                 this.candidates == other.candidates &&
+                this.paging == other.paging &&
                 this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
             return Objects.hash(
-                paging,
                 candidates,
+                paging,
                 additionalProperties,
             )
         }
 
         override fun toString() =
-            "AtsCandidateListPageAsync.Response{paging=$paging, candidates=$candidates, additionalProperties=$additionalProperties}"
+            "AtsCandidateListPageAsync.Response{candidates=$candidates, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -161,21 +161,16 @@ private constructor(
 
         class Builder {
 
-            private var paging: JsonField<Paging> = JsonMissing.of()
             private var candidates: JsonField<List<Candidate>> = JsonMissing.of()
+            private var paging: JsonField<Paging> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(page: Response) = apply {
-                this.paging = page.paging
                 this.candidates = page.candidates
+                this.paging = page.paging
                 this.additionalProperties.putAll(page.additionalProperties)
             }
-
-            fun paging(paging: Paging) = paging(JsonField.of(paging))
-
-            @JsonProperty("paging")
-            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
             fun candidates(candidates: List<Candidate>) = candidates(JsonField.of(candidates))
 
@@ -184,6 +179,11 @@ private constructor(
                 this.candidates = candidates
             }
 
+            fun paging(paging: Paging) = paging(JsonField.of(paging))
+
+            @JsonProperty("paging")
+            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
+
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
@@ -191,8 +191,8 @@ private constructor(
 
             fun build() =
                 Response(
-                    paging,
                     candidates,
+                    paging,
                     additionalProperties.toUnmodifiable(),
                 )
         }

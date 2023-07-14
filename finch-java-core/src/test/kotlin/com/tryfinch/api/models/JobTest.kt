@@ -11,11 +11,9 @@ class JobTest {
         val job =
             Job.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .name("string")
-                .status(Job.Status.OPEN)
-                .department(Job.Department.builder().name("string").build())
-                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .closedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .department(Job.Department.builder().name("string").build())
                 .hiringTeam(
                     Job.HiringTeam.builder()
                         .hiringManagers(
@@ -26,6 +24,8 @@ class JobTest {
                         )
                         .build()
                 )
+                .name("string")
+                .status(Job.Status.OPEN)
                 .build()
         assertThat(job).isNotNull
         assertThat(job.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

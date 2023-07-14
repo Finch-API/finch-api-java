@@ -9,50 +9,29 @@ class PayStatementResponseTest {
     fun createPayStatementResponse() {
         val payStatementResponse =
             PayStatementResponse.builder()
-                .paymentId("string")
-                .code(123L)
                 .body(
                     PayStatementResponseBody.builder()
                         .paging(Paging.builder().count(123L).offset(123L).build())
                         .payStatements(
                             listOf(
                                 PayStatement.builder()
-                                    .individualId("string")
-                                    .type(PayStatement.Type.REGULAR_PAYROLL)
-                                    .paymentMethod(PayStatement.PaymentMethod.CHECK)
-                                    .totalHours(123L)
-                                    .grossPay(
-                                        Money.builder().amount(123L).currency("string").build()
-                                    )
-                                    .netPay(Money.builder().amount(123L).currency("string").build())
                                     .earnings(
                                         listOf(
                                             PayStatement.Earning.builder()
-                                                .type(PayStatement.Earning.Type.SALARY)
-                                                .name("string")
                                                 .amount(123L)
                                                 .currency("string")
                                                 .hours(42.23)
-                                                .build()
-                                        )
-                                    )
-                                    .taxes(
-                                        listOf(
-                                            PayStatement.Tax.builder()
-                                                .type(PayStatement.Tax.Type.STATE)
                                                 .name("string")
-                                                .employer(true)
-                                                .amount(123L)
-                                                .currency("string")
+                                                .type(PayStatement.Earning.Type.SALARY)
                                                 .build()
                                         )
                                     )
                                     .employeeDeductions(
                                         listOf(
                                             PayStatement.EmployeeDeduction.builder()
-                                                .name("string")
                                                 .amount(123L)
                                                 .currency("string")
+                                                .name("string")
                                                 .preTax(true)
                                                 .type(BenefitType._401K)
                                                 .build()
@@ -61,18 +40,39 @@ class PayStatementResponseTest {
                                     .employerContributions(
                                         listOf(
                                             PayStatement.EmployerContribution.builder()
-                                                .name("string")
                                                 .amount(123L)
                                                 .currency("string")
+                                                .name("string")
                                                 .type(BenefitType._401K)
                                                 .build()
                                         )
                                     )
+                                    .grossPay(
+                                        Money.builder().amount(123L).currency("string").build()
+                                    )
+                                    .individualId("string")
+                                    .netPay(Money.builder().amount(123L).currency("string").build())
+                                    .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                                    .taxes(
+                                        listOf(
+                                            PayStatement.Tax.builder()
+                                                .amount(123L)
+                                                .currency("string")
+                                                .employer(true)
+                                                .name("string")
+                                                .type(PayStatement.Tax.Type.STATE)
+                                                .build()
+                                        )
+                                    )
+                                    .totalHours(123L)
+                                    .type(PayStatement.Type.REGULAR_PAYROLL)
                                     .build()
                             )
                         )
                         .build()
                 )
+                .code(123L)
+                .paymentId("string")
                 .build()
         assertThat(payStatementResponse).isNotNull
         assertThat(payStatementResponse.paymentId()).contains("string")
@@ -84,40 +84,23 @@ class PayStatementResponseTest {
                     .payStatements(
                         listOf(
                             PayStatement.builder()
-                                .individualId("string")
-                                .type(PayStatement.Type.REGULAR_PAYROLL)
-                                .paymentMethod(PayStatement.PaymentMethod.CHECK)
-                                .totalHours(123L)
-                                .grossPay(Money.builder().amount(123L).currency("string").build())
-                                .netPay(Money.builder().amount(123L).currency("string").build())
                                 .earnings(
                                     listOf(
                                         PayStatement.Earning.builder()
-                                            .type(PayStatement.Earning.Type.SALARY)
-                                            .name("string")
                                             .amount(123L)
                                             .currency("string")
                                             .hours(42.23)
-                                            .build()
-                                    )
-                                )
-                                .taxes(
-                                    listOf(
-                                        PayStatement.Tax.builder()
-                                            .type(PayStatement.Tax.Type.STATE)
                                             .name("string")
-                                            .employer(true)
-                                            .amount(123L)
-                                            .currency("string")
+                                            .type(PayStatement.Earning.Type.SALARY)
                                             .build()
                                     )
                                 )
                                 .employeeDeductions(
                                     listOf(
                                         PayStatement.EmployeeDeduction.builder()
-                                            .name("string")
                                             .amount(123L)
                                             .currency("string")
+                                            .name("string")
                                             .preTax(true)
                                             .type(BenefitType._401K)
                                             .build()
@@ -126,13 +109,30 @@ class PayStatementResponseTest {
                                 .employerContributions(
                                     listOf(
                                         PayStatement.EmployerContribution.builder()
-                                            .name("string")
                                             .amount(123L)
                                             .currency("string")
+                                            .name("string")
                                             .type(BenefitType._401K)
                                             .build()
                                     )
                                 )
+                                .grossPay(Money.builder().amount(123L).currency("string").build())
+                                .individualId("string")
+                                .netPay(Money.builder().amount(123L).currency("string").build())
+                                .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                                .taxes(
+                                    listOf(
+                                        PayStatement.Tax.builder()
+                                            .amount(123L)
+                                            .currency("string")
+                                            .employer(true)
+                                            .name("string")
+                                            .type(PayStatement.Tax.Type.STATE)
+                                            .build()
+                                    )
+                                )
+                                .totalHours(123L)
+                                .type(PayStatement.Type.REGULAR_PAYROLL)
                                 .build()
                         )
                     )
