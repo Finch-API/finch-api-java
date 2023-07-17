@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/Finch-API/finch-api-java/compare/v0.2.0...v0.2.1) (2023-07-17)
+
+
+### Chores
+
+* unreleased changes ([#30](https://github.com/Finch-API/finch-api-java/issues/30)) ([adcffe5](https://github.com/Finch-API/finch-api-java/commit/adcffe5e01386f00977e7b3e59691f9e0cdc6a6c))
+
 ## [0.2.0](https://github.com/Finch-API/finch-api-java/compare/v0.1.0...v0.2.0) (2023-06-29)
 
 
