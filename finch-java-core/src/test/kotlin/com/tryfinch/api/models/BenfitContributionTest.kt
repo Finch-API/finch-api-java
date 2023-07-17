@@ -8,9 +8,9 @@ class BenfitContributionTest {
     @Test
     fun createBenfitContribution() {
         val benfitContribution =
-            BenfitContribution.builder().type(BenfitContribution.Type.FIXED).amount(123L).build()
+            BenfitContribution.builder().amount(123L).type(BenfitContribution.Type.FIXED).build()
         assertThat(benfitContribution).isNotNull
-        assertThat(benfitContribution.type()).contains(BenfitContribution.Type.FIXED)
         assertThat(benfitContribution.amount()).contains(123L)
+        assertThat(benfitContribution.type()).contains(BenfitContribution.Type.FIXED)
     }
 }
