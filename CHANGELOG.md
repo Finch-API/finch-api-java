@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.2](https://github.com/Finch-API/finch-api-java/compare/v0.2.1...v0.2.2) (2023-07-22)
+
+
+### Bug Fixes
+
+* auto-close responses even if an exception is thrown during deserialization ([#33](https://github.com/Finch-API/finch-api-java/issues/33)) ([b428fc2](https://github.com/Finch-API/finch-api-java/commit/b428fc2817885e74e13b4eeee6354f627768b80b))
+
+
+### Chores
+
+* reformatting and response auto-closing ([#34](https://github.com/Finch-API/finch-api-java/issues/34)) ([a923265](https://github.com/Finch-API/finch-api-java/commit/a923265e3df98118a4530c226815c85c995b7ecd))
+
 ## [0.2.1](https://github.com/Finch-API/finch-api-java/compare/v0.2.0...v0.2.1) (2023-07-17)
 
 

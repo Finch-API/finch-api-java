@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.2.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.2.2)
 
 <!-- x-release-please-end -->
 
@@ -27,7 +27,7 @@ The API documentation can be found [here](https://developer.tryfinch.com/).
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:0.2.1")
+implementation("com.tryfinch.api:finch-java:0.2.2")
 ```
 
 #### Maven
@@ -36,7 +36,7 @@ implementation("com.tryfinch.api:finch-java:0.2.1")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-java</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
 </dependency>
 ```
 
