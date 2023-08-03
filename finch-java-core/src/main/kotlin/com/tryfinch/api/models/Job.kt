@@ -214,81 +214,6 @@ private constructor(
             )
     }
 
-    class Status
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) {
-
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Status && this.value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val OPEN = Status(JsonField.of("open"))
-
-            @JvmField val CLOSED = Status(JsonField.of("closed"))
-
-            @JvmField val ON_HOLD = Status(JsonField.of("on_hold"))
-
-            @JvmField val DRAFT = Status(JsonField.of("draft"))
-
-            @JvmField val ARCHIVED = Status(JsonField.of("archived"))
-
-            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
-        }
-
-        enum class Known {
-            OPEN,
-            CLOSED,
-            ON_HOLD,
-            DRAFT,
-            ARCHIVED,
-        }
-
-        enum class Value {
-            OPEN,
-            CLOSED,
-            ON_HOLD,
-            DRAFT,
-            ARCHIVED,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                OPEN -> Value.OPEN
-                CLOSED -> Value.CLOSED
-                ON_HOLD -> Value.ON_HOLD
-                DRAFT -> Value.DRAFT
-                ARCHIVED -> Value.ARCHIVED
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                OPEN -> Known.OPEN
-                CLOSED -> Known.CLOSED
-                ON_HOLD -> Known.ON_HOLD
-                DRAFT -> Known.DRAFT
-                ARCHIVED -> Known.ARCHIVED
-                else -> throw FinchInvalidDataException("Unknown Status: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
-    }
-
     @JsonDeserialize(builder = Department.Builder::class)
     @NoAutoDetect
     class Department
@@ -678,5 +603,80 @@ private constructor(
                 fun build(): Recruiter = Recruiter(name, additionalProperties.toUnmodifiable())
             }
         }
+    }
+
+    class Status
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Status && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val OPEN = Status(JsonField.of("open"))
+
+            @JvmField val CLOSED = Status(JsonField.of("closed"))
+
+            @JvmField val ON_HOLD = Status(JsonField.of("on_hold"))
+
+            @JvmField val DRAFT = Status(JsonField.of("draft"))
+
+            @JvmField val ARCHIVED = Status(JsonField.of("archived"))
+
+            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
+        }
+
+        enum class Known {
+            OPEN,
+            CLOSED,
+            ON_HOLD,
+            DRAFT,
+            ARCHIVED,
+        }
+
+        enum class Value {
+            OPEN,
+            CLOSED,
+            ON_HOLD,
+            DRAFT,
+            ARCHIVED,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                OPEN -> Value.OPEN
+                CLOSED -> Value.CLOSED
+                ON_HOLD -> Value.ON_HOLD
+                DRAFT -> Value.DRAFT
+                ARCHIVED -> Value.ARCHIVED
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                OPEN -> Known.OPEN
+                CLOSED -> Known.CLOSED
+                ON_HOLD -> Known.ON_HOLD
+                DRAFT -> Known.DRAFT
+                ARCHIVED -> Known.ARCHIVED
+                else -> throw FinchInvalidDataException("Unknown Status: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
     }
 }
