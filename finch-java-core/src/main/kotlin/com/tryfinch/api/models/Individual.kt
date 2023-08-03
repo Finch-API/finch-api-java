@@ -496,6 +496,75 @@ private constructor(
         }
     }
 
+    class Gender
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Gender && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val FEMALE = Gender(JsonField.of("female"))
+
+            @JvmField val MALE = Gender(JsonField.of("male"))
+
+            @JvmField val OTHER = Gender(JsonField.of("other"))
+
+            @JvmField val DECLINE_TO_SPECIFY = Gender(JsonField.of("decline_to_specify"))
+
+            @JvmStatic fun of(value: String) = Gender(JsonField.of(value))
+        }
+
+        enum class Known {
+            FEMALE,
+            MALE,
+            OTHER,
+            DECLINE_TO_SPECIFY,
+        }
+
+        enum class Value {
+            FEMALE,
+            MALE,
+            OTHER,
+            DECLINE_TO_SPECIFY,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                FEMALE -> Value.FEMALE
+                MALE -> Value.MALE
+                OTHER -> Value.OTHER
+                DECLINE_TO_SPECIFY -> Value.DECLINE_TO_SPECIFY
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                FEMALE -> Known.FEMALE
+                MALE -> Known.MALE
+                OTHER -> Known.OTHER
+                DECLINE_TO_SPECIFY -> Known.DECLINE_TO_SPECIFY
+                else -> throw FinchInvalidDataException("Unknown Gender: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+    }
+
     @JsonDeserialize(builder = PhoneNumber.Builder::class)
     @NoAutoDetect
     class PhoneNumber
@@ -665,74 +734,5 @@ private constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
-    }
-
-    class Gender
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) {
-
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Gender && this.value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val FEMALE = Gender(JsonField.of("female"))
-
-            @JvmField val MALE = Gender(JsonField.of("male"))
-
-            @JvmField val OTHER = Gender(JsonField.of("other"))
-
-            @JvmField val DECLINE_TO_SPECIFY = Gender(JsonField.of("decline_to_specify"))
-
-            @JvmStatic fun of(value: String) = Gender(JsonField.of(value))
-        }
-
-        enum class Known {
-            FEMALE,
-            MALE,
-            OTHER,
-            DECLINE_TO_SPECIFY,
-        }
-
-        enum class Value {
-            FEMALE,
-            MALE,
-            OTHER,
-            DECLINE_TO_SPECIFY,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                FEMALE -> Value.FEMALE
-                MALE -> Value.MALE
-                OTHER -> Value.OTHER
-                DECLINE_TO_SPECIFY -> Value.DECLINE_TO_SPECIFY
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                FEMALE -> Known.FEMALE
-                MALE -> Known.MALE
-                OTHER -> Known.OTHER
-                DECLINE_TO_SPECIFY -> Known.DECLINE_TO_SPECIFY
-                else -> throw FinchInvalidDataException("Unknown Gender: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
     }
 }

@@ -311,126 +311,6 @@ private constructor(
             )
     }
 
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) {
-
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Type && this.value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val REGULAR_PAYROLL = Type(JsonField.of("regular_payroll"))
-
-            @JvmField val OFF_CYCLE_PAYROLL = Type(JsonField.of("off_cycle_payroll"))
-
-            @JvmField val ONE_TIME_PAYMENT = Type(JsonField.of("one_time_payment"))
-
-            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-        }
-
-        enum class Known {
-            REGULAR_PAYROLL,
-            OFF_CYCLE_PAYROLL,
-            ONE_TIME_PAYMENT,
-        }
-
-        enum class Value {
-            REGULAR_PAYROLL,
-            OFF_CYCLE_PAYROLL,
-            ONE_TIME_PAYMENT,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                REGULAR_PAYROLL -> Value.REGULAR_PAYROLL
-                OFF_CYCLE_PAYROLL -> Value.OFF_CYCLE_PAYROLL
-                ONE_TIME_PAYMENT -> Value.ONE_TIME_PAYMENT
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                REGULAR_PAYROLL -> Known.REGULAR_PAYROLL
-                OFF_CYCLE_PAYROLL -> Known.OFF_CYCLE_PAYROLL
-                ONE_TIME_PAYMENT -> Known.ONE_TIME_PAYMENT
-                else -> throw FinchInvalidDataException("Unknown Type: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
-    }
-
-    class PaymentMethod
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) {
-
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is PaymentMethod && this.value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val CHECK = PaymentMethod(JsonField.of("check"))
-
-            @JvmField val DIRECT_DEPOSIT = PaymentMethod(JsonField.of("direct_deposit"))
-
-            @JvmStatic fun of(value: String) = PaymentMethod(JsonField.of(value))
-        }
-
-        enum class Known {
-            CHECK,
-            DIRECT_DEPOSIT,
-        }
-
-        enum class Value {
-            CHECK,
-            DIRECT_DEPOSIT,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                CHECK -> Value.CHECK
-                DIRECT_DEPOSIT -> Value.DIRECT_DEPOSIT
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                CHECK -> Known.CHECK
-                DIRECT_DEPOSIT -> Known.DIRECT_DEPOSIT
-                else -> throw FinchInvalidDataException("Unknown PaymentMethod: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
-    }
-
     @JsonDeserialize(builder = Earning.Builder::class)
     @NoAutoDetect
     class Earning
@@ -744,260 +624,6 @@ private constructor(
                     TIPS -> Known.TIPS
                     _1099 -> Known._1099
                     OTHER -> Known.OTHER
-                    else -> throw FinchInvalidDataException("Unknown Type: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
-    }
-
-    @JsonDeserialize(builder = Tax.Builder::class)
-    @NoAutoDetect
-    class Tax
-    private constructor(
-        private val type: JsonField<Type>,
-        private val name: JsonField<String>,
-        private val employer: JsonField<Boolean>,
-        private val amount: JsonField<Long>,
-        private val currency: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        private var hashCode: Int = 0
-
-        /** The type of taxes. */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
-
-        /** The exact name of tax from the pay statement. */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
-
-        /** `true` if the amount is paid by the employers. */
-        fun employer(): Optional<Boolean> = Optional.ofNullable(employer.getNullable("employer"))
-
-        /** The tax amount in cents. */
-        fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
-
-        /** The currency code. */
-        fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
-
-        /** The type of taxes. */
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
-
-        /** The exact name of tax from the pay statement. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
-
-        /** `true` if the amount is paid by the employers. */
-        @JsonProperty("employer") @ExcludeMissing fun _employer() = employer
-
-        /** The tax amount in cents. */
-        @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
-
-        /** The currency code. */
-        @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Tax = apply {
-            if (!validated) {
-                type()
-                name()
-                employer()
-                amount()
-                currency()
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Tax &&
-                this.type == other.type &&
-                this.name == other.name &&
-                this.employer == other.employer &&
-                this.amount == other.amount &&
-                this.currency == other.currency &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        type,
-                        name,
-                        employer,
-                        amount,
-                        currency,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Tax{type=$type, name=$name, employer=$employer, amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var type: JsonField<Type> = JsonMissing.of()
-            private var name: JsonField<String> = JsonMissing.of()
-            private var employer: JsonField<Boolean> = JsonMissing.of()
-            private var amount: JsonField<Long> = JsonMissing.of()
-            private var currency: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(tax: Tax) = apply {
-                this.type = tax.type
-                this.name = tax.name
-                this.employer = tax.employer
-                this.amount = tax.amount
-                this.currency = tax.currency
-                additionalProperties(tax.additionalProperties)
-            }
-
-            /** The type of taxes. */
-            fun type(type: Type) = type(JsonField.of(type))
-
-            /** The type of taxes. */
-            @JsonProperty("type")
-            @ExcludeMissing
-            fun type(type: JsonField<Type>) = apply { this.type = type }
-
-            /** The exact name of tax from the pay statement. */
-            fun name(name: String) = name(JsonField.of(name))
-
-            /** The exact name of tax from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
-            fun name(name: JsonField<String>) = apply { this.name = name }
-
-            /** `true` if the amount is paid by the employers. */
-            fun employer(employer: Boolean) = employer(JsonField.of(employer))
-
-            /** `true` if the amount is paid by the employers. */
-            @JsonProperty("employer")
-            @ExcludeMissing
-            fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
-
-            /** The tax amount in cents. */
-            fun amount(amount: Long) = amount(JsonField.of(amount))
-
-            /** The tax amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
-            fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
-
-            /** The currency code. */
-            fun currency(currency: String) = currency(JsonField.of(currency))
-
-            /** The currency code. */
-            @JsonProperty("currency")
-            @ExcludeMissing
-            fun currency(currency: JsonField<String>) = apply { this.currency = currency }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Tax =
-                Tax(
-                    type,
-                    name,
-                    employer,
-                    amount,
-                    currency,
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
-
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Type && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val STATE = Type(JsonField.of("state"))
-
-                @JvmField val FEDERAL = Type(JsonField.of("federal"))
-
-                @JvmField val LOCAL = Type(JsonField.of("local"))
-
-                @JvmField val FICA = Type(JsonField.of("fica"))
-
-                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-            }
-
-            enum class Known {
-                STATE,
-                FEDERAL,
-                LOCAL,
-                FICA,
-            }
-
-            enum class Value {
-                STATE,
-                FEDERAL,
-                LOCAL,
-                FICA,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    STATE -> Value.STATE
-                    FEDERAL -> Value.FEDERAL
-                    LOCAL -> Value.LOCAL
-                    FICA -> Value.FICA
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    STATE -> Known.STATE
-                    FEDERAL -> Known.FEDERAL
-                    LOCAL -> Known.LOCAL
-                    FICA -> Known.FICA
                     else -> throw FinchInvalidDataException("Unknown Type: $value")
                 }
 
@@ -1352,5 +978,379 @@ private constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+    }
+
+    class PaymentMethod
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is PaymentMethod && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val CHECK = PaymentMethod(JsonField.of("check"))
+
+            @JvmField val DIRECT_DEPOSIT = PaymentMethod(JsonField.of("direct_deposit"))
+
+            @JvmStatic fun of(value: String) = PaymentMethod(JsonField.of(value))
+        }
+
+        enum class Known {
+            CHECK,
+            DIRECT_DEPOSIT,
+        }
+
+        enum class Value {
+            CHECK,
+            DIRECT_DEPOSIT,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                CHECK -> Value.CHECK
+                DIRECT_DEPOSIT -> Value.DIRECT_DEPOSIT
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                CHECK -> Known.CHECK
+                DIRECT_DEPOSIT -> Known.DIRECT_DEPOSIT
+                else -> throw FinchInvalidDataException("Unknown PaymentMethod: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+    }
+
+    @JsonDeserialize(builder = Tax.Builder::class)
+    @NoAutoDetect
+    class Tax
+    private constructor(
+        private val type: JsonField<Type>,
+        private val name: JsonField<String>,
+        private val employer: JsonField<Boolean>,
+        private val amount: JsonField<Long>,
+        private val currency: JsonField<String>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var validated: Boolean = false
+
+        private var hashCode: Int = 0
+
+        /** The type of taxes. */
+        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+
+        /** The exact name of tax from the pay statement. */
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+
+        /** `true` if the amount is paid by the employers. */
+        fun employer(): Optional<Boolean> = Optional.ofNullable(employer.getNullable("employer"))
+
+        /** The tax amount in cents. */
+        fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
+
+        /** The currency code. */
+        fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
+
+        /** The type of taxes. */
+        @JsonProperty("type") @ExcludeMissing fun _type() = type
+
+        /** The exact name of tax from the pay statement. */
+        @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+        /** `true` if the amount is paid by the employers. */
+        @JsonProperty("employer") @ExcludeMissing fun _employer() = employer
+
+        /** The tax amount in cents. */
+        @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+
+        /** The currency code. */
+        @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun validate(): Tax = apply {
+            if (!validated) {
+                type()
+                name()
+                employer()
+                amount()
+                currency()
+                validated = true
+            }
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Tax &&
+                this.type == other.type &&
+                this.name == other.name &&
+                this.employer == other.employer &&
+                this.amount == other.amount &&
+                this.currency == other.currency &&
+                this.additionalProperties == other.additionalProperties
+        }
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        type,
+                        name,
+                        employer,
+                        amount,
+                        currency,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Tax{type=$type, name=$name, employer=$employer, amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var type: JsonField<Type> = JsonMissing.of()
+            private var name: JsonField<String> = JsonMissing.of()
+            private var employer: JsonField<Boolean> = JsonMissing.of()
+            private var amount: JsonField<Long> = JsonMissing.of()
+            private var currency: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(tax: Tax) = apply {
+                this.type = tax.type
+                this.name = tax.name
+                this.employer = tax.employer
+                this.amount = tax.amount
+                this.currency = tax.currency
+                additionalProperties(tax.additionalProperties)
+            }
+
+            /** The type of taxes. */
+            fun type(type: Type) = type(JsonField.of(type))
+
+            /** The type of taxes. */
+            @JsonProperty("type")
+            @ExcludeMissing
+            fun type(type: JsonField<Type>) = apply { this.type = type }
+
+            /** The exact name of tax from the pay statement. */
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** The exact name of tax from the pay statement. */
+            @JsonProperty("name")
+            @ExcludeMissing
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            /** `true` if the amount is paid by the employers. */
+            fun employer(employer: Boolean) = employer(JsonField.of(employer))
+
+            /** `true` if the amount is paid by the employers. */
+            @JsonProperty("employer")
+            @ExcludeMissing
+            fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
+
+            /** The tax amount in cents. */
+            fun amount(amount: Long) = amount(JsonField.of(amount))
+
+            /** The tax amount in cents. */
+            @JsonProperty("amount")
+            @ExcludeMissing
+            fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
+            /** The currency code. */
+            fun currency(currency: String) = currency(JsonField.of(currency))
+
+            /** The currency code. */
+            @JsonProperty("currency")
+            @ExcludeMissing
+            fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): Tax =
+                Tax(
+                    type,
+                    name,
+                    employer,
+                    amount,
+                    currency,
+                    additionalProperties.toUnmodifiable(),
+                )
+        }
+
+        class Type
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Type && this.value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val STATE = Type(JsonField.of("state"))
+
+                @JvmField val FEDERAL = Type(JsonField.of("federal"))
+
+                @JvmField val LOCAL = Type(JsonField.of("local"))
+
+                @JvmField val FICA = Type(JsonField.of("fica"))
+
+                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+            }
+
+            enum class Known {
+                STATE,
+                FEDERAL,
+                LOCAL,
+                FICA,
+            }
+
+            enum class Value {
+                STATE,
+                FEDERAL,
+                LOCAL,
+                FICA,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    STATE -> Value.STATE
+                    FEDERAL -> Value.FEDERAL
+                    LOCAL -> Value.LOCAL
+                    FICA -> Value.FICA
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    STATE -> Known.STATE
+                    FEDERAL -> Known.FEDERAL
+                    LOCAL -> Known.LOCAL
+                    FICA -> Known.FICA
+                    else -> throw FinchInvalidDataException("Unknown Type: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+    }
+
+    class Type
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Type && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val REGULAR_PAYROLL = Type(JsonField.of("regular_payroll"))
+
+            @JvmField val OFF_CYCLE_PAYROLL = Type(JsonField.of("off_cycle_payroll"))
+
+            @JvmField val ONE_TIME_PAYMENT = Type(JsonField.of("one_time_payment"))
+
+            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+        }
+
+        enum class Known {
+            REGULAR_PAYROLL,
+            OFF_CYCLE_PAYROLL,
+            ONE_TIME_PAYMENT,
+        }
+
+        enum class Value {
+            REGULAR_PAYROLL,
+            OFF_CYCLE_PAYROLL,
+            ONE_TIME_PAYMENT,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                REGULAR_PAYROLL -> Value.REGULAR_PAYROLL
+                OFF_CYCLE_PAYROLL -> Value.OFF_CYCLE_PAYROLL
+                ONE_TIME_PAYMENT -> Value.ONE_TIME_PAYMENT
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                REGULAR_PAYROLL -> Known.REGULAR_PAYROLL
+                OFF_CYCLE_PAYROLL -> Known.OFF_CYCLE_PAYROLL
+                ONE_TIME_PAYMENT -> Known.ONE_TIME_PAYMENT
+                else -> throw FinchInvalidDataException("Unknown Type: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
     }
 }

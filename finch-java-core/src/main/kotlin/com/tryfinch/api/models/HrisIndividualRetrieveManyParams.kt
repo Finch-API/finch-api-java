@@ -259,81 +259,6 @@ constructor(
             )
     }
 
-    @JsonDeserialize(builder = Request.Builder::class)
-    @NoAutoDetect
-    class Request
-    private constructor(
-        private val individualId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var hashCode: Int = 0
-
-        @JsonProperty("individual_id") fun individualId(): String? = individualId
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Request &&
-                this.individualId == other.individualId &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(individualId, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Request{individualId=$individualId, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var individualId: String? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(request: Request) = apply {
-                this.individualId = request.individualId
-                additionalProperties(request.additionalProperties)
-            }
-
-            @JsonProperty("individual_id")
-            fun individualId(individualId: String) = apply { this.individualId = individualId }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Request = Request(individualId, additionalProperties.toUnmodifiable())
-        }
-    }
-
     @JsonDeserialize(builder = Options.Builder::class)
     @NoAutoDetect
     class Options
@@ -407,6 +332,81 @@ constructor(
 
             fun build(): Options =
                 Options(include?.toUnmodifiable(), additionalProperties.toUnmodifiable())
+        }
+    }
+
+    @JsonDeserialize(builder = Request.Builder::class)
+    @NoAutoDetect
+    class Request
+    private constructor(
+        private val individualId: String?,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var hashCode: Int = 0
+
+        @JsonProperty("individual_id") fun individualId(): String? = individualId
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Request &&
+                this.individualId == other.individualId &&
+                this.additionalProperties == other.additionalProperties
+        }
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = Objects.hash(individualId, additionalProperties)
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Request{individualId=$individualId, additionalProperties=$additionalProperties}"
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var individualId: String? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(request: Request) = apply {
+                this.individualId = request.individualId
+                additionalProperties(request.additionalProperties)
+            }
+
+            @JsonProperty("individual_id")
+            fun individualId(individualId: String) = apply { this.individualId = individualId }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): Request = Request(individualId, additionalProperties.toUnmodifiable())
         }
     }
 }

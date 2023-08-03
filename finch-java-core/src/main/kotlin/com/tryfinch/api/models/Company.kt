@@ -290,490 +290,6 @@ private constructor(
             )
     }
 
-    /** The entity type object. */
-    @JsonDeserialize(builder = Entity.Builder::class)
-    @NoAutoDetect
-    class Entity
-    private constructor(
-        private val type: JsonField<Type>,
-        private val subtype: JsonField<Subtype>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        private var hashCode: Int = 0
-
-        /** The tax payer type of the company. */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
-
-        /** The tax payer subtype of the company. */
-        fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype.getNullable("subtype"))
-
-        /** The tax payer type of the company. */
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
-
-        /** The tax payer subtype of the company. */
-        @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Entity = apply {
-            if (!validated) {
-                type()
-                subtype()
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Entity &&
-                this.type == other.type &&
-                this.subtype == other.subtype &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        type,
-                        subtype,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Entity{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var type: JsonField<Type> = JsonMissing.of()
-            private var subtype: JsonField<Subtype> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(entity: Entity) = apply {
-                this.type = entity.type
-                this.subtype = entity.subtype
-                additionalProperties(entity.additionalProperties)
-            }
-
-            /** The tax payer type of the company. */
-            fun type(type: Type) = type(JsonField.of(type))
-
-            /** The tax payer type of the company. */
-            @JsonProperty("type")
-            @ExcludeMissing
-            fun type(type: JsonField<Type>) = apply { this.type = type }
-
-            /** The tax payer subtype of the company. */
-            fun subtype(subtype: Subtype) = subtype(JsonField.of(subtype))
-
-            /** The tax payer subtype of the company. */
-            @JsonProperty("subtype")
-            @ExcludeMissing
-            fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Entity =
-                Entity(
-                    type,
-                    subtype,
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
-
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Type && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val LLC = Type(JsonField.of("llc"))
-
-                @JvmField val CORPORATION = Type(JsonField.of("corporation"))
-
-                @JvmField val SOLE_PROPRIETOR = Type(JsonField.of("sole_proprietor"))
-
-                @JvmField val NON_PROFIT = Type(JsonField.of("non_profit"))
-
-                @JvmField val PARTNERSHIP = Type(JsonField.of("partnership"))
-
-                @JvmField val COOPERATIVE = Type(JsonField.of("cooperative"))
-
-                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-            }
-
-            enum class Known {
-                LLC,
-                CORPORATION,
-                SOLE_PROPRIETOR,
-                NON_PROFIT,
-                PARTNERSHIP,
-                COOPERATIVE,
-            }
-
-            enum class Value {
-                LLC,
-                CORPORATION,
-                SOLE_PROPRIETOR,
-                NON_PROFIT,
-                PARTNERSHIP,
-                COOPERATIVE,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    LLC -> Value.LLC
-                    CORPORATION -> Value.CORPORATION
-                    SOLE_PROPRIETOR -> Value.SOLE_PROPRIETOR
-                    NON_PROFIT -> Value.NON_PROFIT
-                    PARTNERSHIP -> Value.PARTNERSHIP
-                    COOPERATIVE -> Value.COOPERATIVE
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    LLC -> Known.LLC
-                    CORPORATION -> Known.CORPORATION
-                    SOLE_PROPRIETOR -> Known.SOLE_PROPRIETOR
-                    NON_PROFIT -> Known.NON_PROFIT
-                    PARTNERSHIP -> Known.PARTNERSHIP
-                    COOPERATIVE -> Known.COOPERATIVE
-                    else -> throw FinchInvalidDataException("Unknown Type: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
-
-        class Subtype
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Subtype && this.value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val S_CORPORATION = Subtype(JsonField.of("s_corporation"))
-
-                @JvmField val C_CORPORATION = Subtype(JsonField.of("c_corporation"))
-
-                @JvmField val B_CORPORATION = Subtype(JsonField.of("b_corporation"))
-
-                @JvmStatic fun of(value: String) = Subtype(JsonField.of(value))
-            }
-
-            enum class Known {
-                S_CORPORATION,
-                C_CORPORATION,
-                B_CORPORATION,
-            }
-
-            enum class Value {
-                S_CORPORATION,
-                C_CORPORATION,
-                B_CORPORATION,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    S_CORPORATION -> Value.S_CORPORATION
-                    C_CORPORATION -> Value.C_CORPORATION
-                    B_CORPORATION -> Value.B_CORPORATION
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    S_CORPORATION -> Known.S_CORPORATION
-                    C_CORPORATION -> Known.C_CORPORATION
-                    B_CORPORATION -> Known.B_CORPORATION
-                    else -> throw FinchInvalidDataException("Unknown Subtype: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
-    }
-
-    @JsonDeserialize(builder = Department.Builder::class)
-    @NoAutoDetect
-    class Department
-    private constructor(
-        private val name: JsonField<String>,
-        private val parent: JsonField<Parent>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        private var hashCode: Int = 0
-
-        /** The department name. */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
-
-        /** The parent department, if present. */
-        fun parent(): Optional<Parent> = Optional.ofNullable(parent.getNullable("parent"))
-
-        /** The department name. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
-
-        /** The parent department, if present. */
-        @JsonProperty("parent") @ExcludeMissing fun _parent() = parent
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Department = apply {
-            if (!validated) {
-                name()
-                parent().map { it.validate() }
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Department &&
-                this.name == other.name &&
-                this.parent == other.parent &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        parent,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Department{name=$name, parent=$parent, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var name: JsonField<String> = JsonMissing.of()
-            private var parent: JsonField<Parent> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(department: Department) = apply {
-                this.name = department.name
-                this.parent = department.parent
-                additionalProperties(department.additionalProperties)
-            }
-
-            /** The department name. */
-            fun name(name: String) = name(JsonField.of(name))
-
-            /** The department name. */
-            @JsonProperty("name")
-            @ExcludeMissing
-            fun name(name: JsonField<String>) = apply { this.name = name }
-
-            /** The parent department, if present. */
-            fun parent(parent: Parent) = parent(JsonField.of(parent))
-
-            /** The parent department, if present. */
-            @JsonProperty("parent")
-            @ExcludeMissing
-            fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Department =
-                Department(
-                    name,
-                    parent,
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
-
-        /** The parent department, if present. */
-        @JsonDeserialize(builder = Parent.Builder::class)
-        @NoAutoDetect
-        class Parent
-        private constructor(
-            private val name: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
-        ) {
-
-            private var validated: Boolean = false
-
-            private var hashCode: Int = 0
-
-            /** The parent department's name. */
-            fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
-
-            /** The parent department's name. */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            fun validate(): Parent = apply {
-                if (!validated) {
-                    name()
-                    validated = true
-                }
-            }
-
-            fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Parent &&
-                    this.name == other.name &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(name, additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "Parent{name=$name, additionalProperties=$additionalProperties}"
-
-            companion object {
-
-                @JvmStatic fun builder() = Builder()
-            }
-
-            class Builder {
-
-                private var name: JsonField<String> = JsonMissing.of()
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(parent: Parent) = apply {
-                    this.name = parent.name
-                    additionalProperties(parent.additionalProperties)
-                }
-
-                /** The parent department's name. */
-                fun name(name: String) = name(JsonField.of(name))
-
-                /** The parent department's name. */
-                @JsonProperty("name")
-                @ExcludeMissing
-                fun name(name: JsonField<String>) = apply { this.name = name }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
-                }
-
-                @JsonAnySetter
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun build(): Parent = Parent(name, additionalProperties.toUnmodifiable())
-            }
-        }
-    }
-
     @JsonDeserialize(builder = Account.Builder::class)
     @NoAutoDetect
     class Account
@@ -1036,6 +552,490 @@ private constructor(
                     CHECKING -> Known.CHECKING
                     SAVINGS -> Known.SAVINGS
                     else -> throw FinchInvalidDataException("Unknown AccountType: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+    }
+
+    @JsonDeserialize(builder = Department.Builder::class)
+    @NoAutoDetect
+    class Department
+    private constructor(
+        private val name: JsonField<String>,
+        private val parent: JsonField<Parent>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var validated: Boolean = false
+
+        private var hashCode: Int = 0
+
+        /** The department name. */
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+
+        /** The parent department, if present. */
+        fun parent(): Optional<Parent> = Optional.ofNullable(parent.getNullable("parent"))
+
+        /** The department name. */
+        @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+        /** The parent department, if present. */
+        @JsonProperty("parent") @ExcludeMissing fun _parent() = parent
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun validate(): Department = apply {
+            if (!validated) {
+                name()
+                parent().map { it.validate() }
+                validated = true
+            }
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Department &&
+                this.name == other.name &&
+                this.parent == other.parent &&
+                this.additionalProperties == other.additionalProperties
+        }
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        name,
+                        parent,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Department{name=$name, parent=$parent, additionalProperties=$additionalProperties}"
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var name: JsonField<String> = JsonMissing.of()
+            private var parent: JsonField<Parent> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(department: Department) = apply {
+                this.name = department.name
+                this.parent = department.parent
+                additionalProperties(department.additionalProperties)
+            }
+
+            /** The department name. */
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** The department name. */
+            @JsonProperty("name")
+            @ExcludeMissing
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            /** The parent department, if present. */
+            fun parent(parent: Parent) = parent(JsonField.of(parent))
+
+            /** The parent department, if present. */
+            @JsonProperty("parent")
+            @ExcludeMissing
+            fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): Department =
+                Department(
+                    name,
+                    parent,
+                    additionalProperties.toUnmodifiable(),
+                )
+        }
+
+        /** The parent department, if present. */
+        @JsonDeserialize(builder = Parent.Builder::class)
+        @NoAutoDetect
+        class Parent
+        private constructor(
+            private val name: JsonField<String>,
+            private val additionalProperties: Map<String, JsonValue>,
+        ) {
+
+            private var validated: Boolean = false
+
+            private var hashCode: Int = 0
+
+            /** The parent department's name. */
+            fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+
+            /** The parent department's name. */
+            @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            fun validate(): Parent = apply {
+                if (!validated) {
+                    name()
+                    validated = true
+                }
+            }
+
+            fun toBuilder() = Builder().from(this)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Parent &&
+                    this.name == other.name &&
+                    this.additionalProperties == other.additionalProperties
+            }
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = Objects.hash(name, additionalProperties)
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "Parent{name=$name, additionalProperties=$additionalProperties}"
+
+            companion object {
+
+                @JvmStatic fun builder() = Builder()
+            }
+
+            class Builder {
+
+                private var name: JsonField<String> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(parent: Parent) = apply {
+                    this.name = parent.name
+                    additionalProperties(parent.additionalProperties)
+                }
+
+                /** The parent department's name. */
+                fun name(name: String) = name(JsonField.of(name))
+
+                /** The parent department's name. */
+                @JsonProperty("name")
+                @ExcludeMissing
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    this.additionalProperties.putAll(additionalProperties)
+                }
+
+                @JsonAnySetter
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    this.additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun build(): Parent = Parent(name, additionalProperties.toUnmodifiable())
+            }
+        }
+    }
+
+    /** The entity type object. */
+    @JsonDeserialize(builder = Entity.Builder::class)
+    @NoAutoDetect
+    class Entity
+    private constructor(
+        private val type: JsonField<Type>,
+        private val subtype: JsonField<Subtype>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var validated: Boolean = false
+
+        private var hashCode: Int = 0
+
+        /** The tax payer type of the company. */
+        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+
+        /** The tax payer subtype of the company. */
+        fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype.getNullable("subtype"))
+
+        /** The tax payer type of the company. */
+        @JsonProperty("type") @ExcludeMissing fun _type() = type
+
+        /** The tax payer subtype of the company. */
+        @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun validate(): Entity = apply {
+            if (!validated) {
+                type()
+                subtype()
+                validated = true
+            }
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Entity &&
+                this.type == other.type &&
+                this.subtype == other.subtype &&
+                this.additionalProperties == other.additionalProperties
+        }
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        type,
+                        subtype,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Entity{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var type: JsonField<Type> = JsonMissing.of()
+            private var subtype: JsonField<Subtype> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(entity: Entity) = apply {
+                this.type = entity.type
+                this.subtype = entity.subtype
+                additionalProperties(entity.additionalProperties)
+            }
+
+            /** The tax payer type of the company. */
+            fun type(type: Type) = type(JsonField.of(type))
+
+            /** The tax payer type of the company. */
+            @JsonProperty("type")
+            @ExcludeMissing
+            fun type(type: JsonField<Type>) = apply { this.type = type }
+
+            /** The tax payer subtype of the company. */
+            fun subtype(subtype: Subtype) = subtype(JsonField.of(subtype))
+
+            /** The tax payer subtype of the company. */
+            @JsonProperty("subtype")
+            @ExcludeMissing
+            fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): Entity =
+                Entity(
+                    type,
+                    subtype,
+                    additionalProperties.toUnmodifiable(),
+                )
+        }
+
+        class Subtype
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Subtype && this.value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val S_CORPORATION = Subtype(JsonField.of("s_corporation"))
+
+                @JvmField val C_CORPORATION = Subtype(JsonField.of("c_corporation"))
+
+                @JvmField val B_CORPORATION = Subtype(JsonField.of("b_corporation"))
+
+                @JvmStatic fun of(value: String) = Subtype(JsonField.of(value))
+            }
+
+            enum class Known {
+                S_CORPORATION,
+                C_CORPORATION,
+                B_CORPORATION,
+            }
+
+            enum class Value {
+                S_CORPORATION,
+                C_CORPORATION,
+                B_CORPORATION,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    S_CORPORATION -> Value.S_CORPORATION
+                    C_CORPORATION -> Value.C_CORPORATION
+                    B_CORPORATION -> Value.B_CORPORATION
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    S_CORPORATION -> Known.S_CORPORATION
+                    C_CORPORATION -> Known.C_CORPORATION
+                    B_CORPORATION -> Known.B_CORPORATION
+                    else -> throw FinchInvalidDataException("Unknown Subtype: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+
+        class Type
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Type && this.value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val LLC = Type(JsonField.of("llc"))
+
+                @JvmField val CORPORATION = Type(JsonField.of("corporation"))
+
+                @JvmField val SOLE_PROPRIETOR = Type(JsonField.of("sole_proprietor"))
+
+                @JvmField val NON_PROFIT = Type(JsonField.of("non_profit"))
+
+                @JvmField val PARTNERSHIP = Type(JsonField.of("partnership"))
+
+                @JvmField val COOPERATIVE = Type(JsonField.of("cooperative"))
+
+                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+            }
+
+            enum class Known {
+                LLC,
+                CORPORATION,
+                SOLE_PROPRIETOR,
+                NON_PROFIT,
+                PARTNERSHIP,
+                COOPERATIVE,
+            }
+
+            enum class Value {
+                LLC,
+                CORPORATION,
+                SOLE_PROPRIETOR,
+                NON_PROFIT,
+                PARTNERSHIP,
+                COOPERATIVE,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    LLC -> Value.LLC
+                    CORPORATION -> Value.CORPORATION
+                    SOLE_PROPRIETOR -> Value.SOLE_PROPRIETOR
+                    NON_PROFIT -> Value.NON_PROFIT
+                    PARTNERSHIP -> Value.PARTNERSHIP
+                    COOPERATIVE -> Value.COOPERATIVE
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    LLC -> Known.LLC
+                    CORPORATION -> Known.CORPORATION
+                    SOLE_PROPRIETOR -> Known.SOLE_PROPRIETOR
+                    NON_PROFIT -> Known.NON_PROFIT
+                    PARTNERSHIP -> Known.PARTNERSHIP
+                    COOPERATIVE -> Known.COOPERATIVE
+                    else -> throw FinchInvalidDataException("Unknown Type: $value")
                 }
 
             fun asString(): String = _value().asStringOrThrow()
