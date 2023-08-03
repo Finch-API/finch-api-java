@@ -311,63 +311,6 @@ private constructor(
             )
     }
 
-    class EmployeeDeduction
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) {
-
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is EmployeeDeduction && this.value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val FIXED = EmployeeDeduction(JsonField.of("fixed"))
-
-            @JvmField val PERCENT = EmployeeDeduction(JsonField.of("percent"))
-
-            @JvmStatic fun of(value: String) = EmployeeDeduction(JsonField.of(value))
-        }
-
-        enum class Known {
-            FIXED,
-            PERCENT,
-        }
-
-        enum class Value {
-            FIXED,
-            PERCENT,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                FIXED -> Value.FIXED
-                PERCENT -> Value.PERCENT
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                FIXED -> Known.FIXED
-                PERCENT -> Known.PERCENT
-                else -> throw FinchInvalidDataException("Unknown EmployeeDeduction: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
-    }
-
     class CompanyContribution
     @JsonCreator
     private constructor(
@@ -420,6 +363,63 @@ private constructor(
                 FIXED -> Known.FIXED
                 PERCENT -> Known.PERCENT
                 else -> throw FinchInvalidDataException("Unknown CompanyContribution: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+    }
+
+    class EmployeeDeduction
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is EmployeeDeduction && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val FIXED = EmployeeDeduction(JsonField.of("fixed"))
+
+            @JvmField val PERCENT = EmployeeDeduction(JsonField.of("percent"))
+
+            @JvmStatic fun of(value: String) = EmployeeDeduction(JsonField.of(value))
+        }
+
+        enum class Known {
+            FIXED,
+            PERCENT,
+        }
+
+        enum class Value {
+            FIXED,
+            PERCENT,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                FIXED -> Value.FIXED
+                PERCENT -> Value.PERCENT
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                FIXED -> Known.FIXED
+                PERCENT -> Known.PERCENT
+                else -> throw FinchInvalidDataException("Unknown EmployeeDeduction: $value")
             }
 
         fun asString(): String = _value().asStringOrThrow()
