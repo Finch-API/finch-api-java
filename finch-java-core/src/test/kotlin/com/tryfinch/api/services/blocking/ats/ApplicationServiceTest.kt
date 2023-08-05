@@ -16,8 +16,6 @@ class ApplicationServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val applicationService = client.ats().applications()
         val application =
@@ -34,8 +32,6 @@ class ApplicationServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val applicationService = client.ats().applications()
         val response = applicationService.list(AtsApplicationListParams.builder().build())

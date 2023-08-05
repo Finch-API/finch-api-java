@@ -16,8 +16,6 @@ class PayStatementServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val payStatementService = client.hris().payStatements()
         val getPayStatementsResponse =

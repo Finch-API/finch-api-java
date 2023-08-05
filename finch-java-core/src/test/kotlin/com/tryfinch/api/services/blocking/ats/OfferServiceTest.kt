@@ -16,8 +16,6 @@ class OfferServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val offerService = client.ats().offers()
         val offer =
@@ -32,8 +30,6 @@ class OfferServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val offerService = client.ats().offers()
         val response = offerService.list(AtsOfferListParams.builder().build())

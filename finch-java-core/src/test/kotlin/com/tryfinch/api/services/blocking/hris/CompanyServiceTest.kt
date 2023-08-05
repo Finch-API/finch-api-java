@@ -15,8 +15,6 @@ class CompanyServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val companyService = client.hris().company()
         val company = companyService.retrieve(HrisCompanyRetrieveParams.builder().build())
