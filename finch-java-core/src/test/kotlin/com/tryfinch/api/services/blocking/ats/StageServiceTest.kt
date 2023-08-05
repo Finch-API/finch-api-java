@@ -16,8 +16,6 @@ class StageServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val stageService = client.ats().stages()
         val response = stageService.list(AtsStageListParams.builder().build())

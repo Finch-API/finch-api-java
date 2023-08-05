@@ -16,8 +16,6 @@ class DirectoryServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val directoryService = client.hris().directory()
         val getDirectoryResponse =
