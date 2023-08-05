@@ -16,8 +16,6 @@ class EmploymentDataServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val employmentDataService = client.hris().individuals().employmentData()
         val getEmploymentResponse =
