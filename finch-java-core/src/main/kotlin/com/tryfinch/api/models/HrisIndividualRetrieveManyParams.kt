@@ -175,7 +175,7 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var requests: List<Request>? = null
+        private var requests: MutableList<Request> = mutableListOf()
         private var options: Options? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
@@ -184,14 +184,19 @@ constructor(
         @JvmSynthetic
         internal fun from(hrisIndividualRetrieveManyParams: HrisIndividualRetrieveManyParams) =
             apply {
-                this.requests = hrisIndividualRetrieveManyParams.requests
+                this.requests(hrisIndividualRetrieveManyParams.requests ?: listOf())
                 this.options = hrisIndividualRetrieveManyParams.options
                 additionalQueryParams(hrisIndividualRetrieveManyParams.additionalQueryParams)
                 additionalHeaders(hrisIndividualRetrieveManyParams.additionalHeaders)
                 additionalBodyProperties(hrisIndividualRetrieveManyParams.additionalBodyProperties)
             }
 
-        fun requests(requests: List<Request>) = apply { this.requests = requests }
+        fun requests(requests: List<Request>) = apply {
+            this.requests.clear()
+            this.requests.addAll(requests)
+        }
+
+        fun addRequest(request: Request) = apply { this.requests.add(request) }
 
         fun options(options: Options) = apply { this.options = options }
 
@@ -251,7 +256,7 @@ constructor(
 
         fun build(): HrisIndividualRetrieveManyParams =
             HrisIndividualRetrieveManyParams(
-                requests?.toUnmodifiable(),
+                if (requests.size == 0) null else requests.toUnmodifiable(),
                 options,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),

@@ -158,7 +158,7 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var requests: List<Request>? = null
+        private var requests: MutableList<Request> = mutableListOf()
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -168,7 +168,7 @@ constructor(
             hrisIndividualEmploymentDataRetrieveManyParams:
                 HrisIndividualEmploymentDataRetrieveManyParams
         ) = apply {
-            this.requests = hrisIndividualEmploymentDataRetrieveManyParams.requests
+            this.requests(hrisIndividualEmploymentDataRetrieveManyParams.requests)
             additionalQueryParams(
                 hrisIndividualEmploymentDataRetrieveManyParams.additionalQueryParams
             )
@@ -179,7 +179,13 @@ constructor(
         }
 
         /** The array of batch requests. */
-        fun requests(requests: List<Request>) = apply { this.requests = requests }
+        fun requests(requests: List<Request>) = apply {
+            this.requests.clear()
+            this.requests.addAll(requests)
+        }
+
+        /** The array of batch requests. */
+        fun addRequest(request: Request) = apply { this.requests.add(request) }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
