@@ -169,7 +169,7 @@ constructor(
     class Builder {
 
         private var benefitId: String? = null
-        private var individualIds: List<String>? = null
+        private var individualIds: MutableList<String> = mutableListOf()
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -179,7 +179,7 @@ constructor(
             hrisBenefitIndividualUnenrollParams: HrisBenefitIndividualUnenrollParams
         ) = apply {
             this.benefitId = hrisBenefitIndividualUnenrollParams.benefitId
-            this.individualIds = hrisBenefitIndividualUnenrollParams.individualIds
+            this.individualIds(hrisBenefitIndividualUnenrollParams.individualIds ?: listOf())
             additionalQueryParams(hrisBenefitIndividualUnenrollParams.additionalQueryParams)
             additionalHeaders(hrisBenefitIndividualUnenrollParams.additionalHeaders)
             additionalBodyProperties(hrisBenefitIndividualUnenrollParams.additionalBodyProperties)
@@ -189,8 +189,12 @@ constructor(
 
         /** Array of individual_ids to unenroll. */
         fun individualIds(individualIds: List<String>) = apply {
-            this.individualIds = individualIds
+            this.individualIds.clear()
+            this.individualIds.addAll(individualIds)
         }
+
+        /** Array of individual_ids to unenroll. */
+        fun addIndividualId(individualId: String) = apply { this.individualIds.add(individualId) }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -249,7 +253,7 @@ constructor(
         fun build(): HrisBenefitIndividualUnenrollParams =
             HrisBenefitIndividualUnenrollParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
-                individualIds?.toUnmodifiable(),
+                if (individualIds.size == 0) null else individualIds.toUnmodifiable(),
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),
