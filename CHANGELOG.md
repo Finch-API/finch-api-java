@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.2.3](https://github.com/Finch-API/finch-api-java/compare/v0.2.2...v0.2.3) (2023-08-16)
+
+
+### Features
+
+* **ci:** add a publish-sonatype workflow for manual running ([#38](https://github.com/Finch-API/finch-api-java/issues/38)) ([955e06f](https://github.com/Finch-API/finch-api-java/commit/955e06ff1870a413af1f4c172a6a5fe0ce1a9190))
+* default timeout is set for java clients ([#46](https://github.com/Finch-API/finch-api-java/issues/46)) ([81cf300](https://github.com/Finch-API/finch-api-java/commit/81cf3009cdea49ead9c289e584bcd45b0d2f9c1e))
+* generate addXxx methods for array types ([#48](https://github.com/Finch-API/finch-api-java/issues/48)) ([b09c620](https://github.com/Finch-API/finch-api-java/commit/b09c620b1c0eba7a68ab247682c37068a6d674c6))
+
+
+### Bug Fixes
+
+* set correct timeouts on okhttp client ([#49](https://github.com/Finch-API/finch-api-java/issues/49)) ([e4d644c](https://github.com/Finch-API/finch-api-java/commit/e4d644cf115662f552a6686d083f8b57d1f2fb4a))
+
+
+### Chores
+
+* assign default reviewers to release PRs ([#47](https://github.com/Finch-API/finch-api-java/issues/47)) ([d68e3ca](https://github.com/Finch-API/finch-api-java/commit/d68e3cadfb2c47fb7f9b8faf7cb7d51441625b15))
+* **ci:** allow release to proceed without signing key id secret ([#43](https://github.com/Finch-API/finch-api-java/issues/43)) ([eb68631](https://github.com/Finch-API/finch-api-java/commit/eb68631766141498cc548a3bca4cf208bc3c6904))
+* **internal:** add `codegen.log` to `.gitignore` ([#36](https://github.com/Finch-API/finch-api-java/issues/36)) ([fdb1391](https://github.com/Finch-API/finch-api-java/commit/fdb13916e3c44f4cc98cfa9201e8157c08bda562))
+* **internal:** publish with --stacktrace for more helpful error information ([#40](https://github.com/Finch-API/finch-api-java/issues/40)) ([9837fbf](https://github.com/Finch-API/finch-api-java/commit/9837fbfe20c813ffbd72e5a9d6537502cea25b09))
+* **internal:** reorganize types ([#44](https://github.com/Finch-API/finch-api-java/issues/44)) ([6e16f39](https://github.com/Finch-API/finch-api-java/commit/6e16f39e868a9687cdffadc2b5b4eadb4f95851d))
+* **internal:** support passing GPG_SIGNING_KEY_ID from secrets ([#42](https://github.com/Finch-API/finch-api-java/issues/42)) ([8559c90](https://github.com/Finch-API/finch-api-java/commit/8559c90c4b58fe66b04749edf22a83bd7da56f7a))
+
 ## [0.2.2](https://github.com/Finch-API/finch-api-java/compare/v0.2.1...v0.2.2) (2023-07-22)
 
 
