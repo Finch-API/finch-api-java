@@ -14,26 +14,26 @@ import java.util.Optional
 
 class HrisBenefitCreateParams
 constructor(
-    private val type: BenefitType?,
     private val description: String?,
     private val frequency: BenefitFrequency?,
+    private val type: BenefitType?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun type(): Optional<BenefitType> = Optional.ofNullable(type)
-
     fun description(): Optional<String> = Optional.ofNullable(description)
 
     fun frequency(): Optional<BenefitFrequency> = Optional.ofNullable(frequency)
 
+    fun type(): Optional<BenefitType> = Optional.ofNullable(type)
+
     @JvmSynthetic
     internal fun getBody(): HrisBenefitCreateBody {
         return HrisBenefitCreateBody(
-            type,
             description,
             frequency,
+            type,
             additionalBodyProperties,
         )
     }
@@ -46,20 +46,20 @@ constructor(
     @NoAutoDetect
     class HrisBenefitCreateBody
     internal constructor(
-        private val type: BenefitType?,
         private val description: String?,
         private val frequency: BenefitFrequency?,
+        private val type: BenefitType?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
-        /** Type of benefit. */
-        @JsonProperty("type") fun type(): BenefitType? = type
-
         @JsonProperty("description") fun description(): String? = description
 
         @JsonProperty("frequency") fun frequency(): BenefitFrequency? = frequency
+
+        /** Type of benefit. */
+        @JsonProperty("type") fun type(): BenefitType? = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -73,9 +73,9 @@ constructor(
             }
 
             return other is HrisBenefitCreateBody &&
-                this.type == other.type &&
                 this.description == other.description &&
                 this.frequency == other.frequency &&
+                this.type == other.type &&
                 this.additionalProperties == other.additionalProperties
         }
 
@@ -83,9 +83,9 @@ constructor(
             if (hashCode == 0) {
                 hashCode =
                     Objects.hash(
-                        type,
                         description,
                         frequency,
+                        type,
                         additionalProperties,
                     )
             }
@@ -93,7 +93,7 @@ constructor(
         }
 
         override fun toString() =
-            "HrisBenefitCreateBody{type=$type, description=$description, frequency=$frequency, additionalProperties=$additionalProperties}"
+            "HrisBenefitCreateBody{description=$description, frequency=$frequency, type=$type, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -102,27 +102,27 @@ constructor(
 
         class Builder {
 
-            private var type: BenefitType? = null
             private var description: String? = null
             private var frequency: BenefitFrequency? = null
+            private var type: BenefitType? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(hrisBenefitCreateBody: HrisBenefitCreateBody) = apply {
-                this.type = hrisBenefitCreateBody.type
                 this.description = hrisBenefitCreateBody.description
                 this.frequency = hrisBenefitCreateBody.frequency
+                this.type = hrisBenefitCreateBody.type
                 additionalProperties(hrisBenefitCreateBody.additionalProperties)
             }
-
-            /** Type of benefit. */
-            @JsonProperty("type") fun type(type: BenefitType) = apply { this.type = type }
 
             @JsonProperty("description")
             fun description(description: String) = apply { this.description = description }
 
             @JsonProperty("frequency")
             fun frequency(frequency: BenefitFrequency) = apply { this.frequency = frequency }
+
+            /** Type of benefit. */
+            @JsonProperty("type") fun type(type: BenefitType) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -140,9 +140,9 @@ constructor(
 
             fun build(): HrisBenefitCreateBody =
                 HrisBenefitCreateBody(
-                    type,
                     description,
                     frequency,
+                    type,
                     additionalProperties.toUnmodifiable(),
                 )
         }
@@ -160,9 +160,9 @@ constructor(
         }
 
         return other is HrisBenefitCreateParams &&
-            this.type == other.type &&
             this.description == other.description &&
             this.frequency == other.frequency &&
+            this.type == other.type &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
             this.additionalBodyProperties == other.additionalBodyProperties
@@ -170,9 +170,9 @@ constructor(
 
     override fun hashCode(): Int {
         return Objects.hash(
-            type,
             description,
             frequency,
+            type,
             additionalQueryParams,
             additionalHeaders,
             additionalBodyProperties,
@@ -180,7 +180,7 @@ constructor(
     }
 
     override fun toString() =
-        "HrisBenefitCreateParams{type=$type, description=$description, frequency=$frequency, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisBenefitCreateParams{description=$description, frequency=$frequency, type=$type, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -192,29 +192,29 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var type: BenefitType? = null
         private var description: String? = null
         private var frequency: BenefitFrequency? = null
+        private var type: BenefitType? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(hrisBenefitCreateParams: HrisBenefitCreateParams) = apply {
-            this.type = hrisBenefitCreateParams.type
             this.description = hrisBenefitCreateParams.description
             this.frequency = hrisBenefitCreateParams.frequency
+            this.type = hrisBenefitCreateParams.type
             additionalQueryParams(hrisBenefitCreateParams.additionalQueryParams)
             additionalHeaders(hrisBenefitCreateParams.additionalHeaders)
             additionalBodyProperties(hrisBenefitCreateParams.additionalBodyProperties)
         }
 
-        /** Type of benefit. */
-        fun type(type: BenefitType) = apply { this.type = type }
-
         fun description(description: String) = apply { this.description = description }
 
         fun frequency(frequency: BenefitFrequency) = apply { this.frequency = frequency }
+
+        /** Type of benefit. */
+        fun type(type: BenefitType) = apply { this.type = type }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -272,9 +272,9 @@ constructor(
 
         fun build(): HrisBenefitCreateParams =
             HrisBenefitCreateParams(
-                type,
                 description,
                 frequency,
+                type,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),
