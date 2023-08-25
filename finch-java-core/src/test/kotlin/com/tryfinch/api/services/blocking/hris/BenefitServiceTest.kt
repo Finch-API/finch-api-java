@@ -22,9 +22,9 @@ class BenefitServiceTest {
         val createCompanyBenefitsResponse =
             benefitService.create(
                 HrisBenefitCreateParams.builder()
-                    .type(BenefitType._401K)
                     .description("string")
                     .frequency(BenefitFrequency.ONE_TIME)
+                    .type(BenefitType._401K)
                     .build()
             )
         println(createCompanyBenefitsResponse)
