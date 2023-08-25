@@ -56,9 +56,6 @@
       "hidden": true
     }
   ],
-  "reviewers": [
-    "yjp20"
-  ],
   "release-type": "simple",
   "extra-files": [
     "README.md",
