@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.4](https://github.com/Finch-API/finch-api-java/compare/v0.2.3...v0.2.4) (2023-08-26)
+
+
+### Chores
+
+* **internal:** minor code re-ordering ([#52](https://github.com/Finch-API/finch-api-java/issues/52)) ([982b0f8](https://github.com/Finch-API/finch-api-java/commit/982b0f841a2c5f5b1d5c4b3a07e8e6bfd01f5ede))
+* **internal:** remove reviewer ([#54](https://github.com/Finch-API/finch-api-java/issues/54)) ([8918d16](https://github.com/Finch-API/finch-api-java/commit/8918d165f8a69bb0b4733262ec23c0bfce0e2b6c))
+
 ## [0.2.3](https://github.com/Finch-API/finch-api-java/compare/v0.2.2...v0.2.3) (2023-08-16)
 
 
