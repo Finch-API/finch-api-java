@@ -4,7 +4,7 @@ import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollParams
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -46,7 +46,7 @@ class IndividualServiceTest {
     }
 
     @Test
-    fun callUnenroll() {
+    fun callUnenrollMany() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
@@ -54,8 +54,8 @@ class IndividualServiceTest {
                 .build()
         val individualService = client.hris().benefits().individuals()
         val unenrollIndividualBenefitResponse =
-            individualService.unenroll(
-                HrisBenefitIndividualUnenrollParams.builder().benefitId("string").build()
+            individualService.unenrollMany(
+                HrisBenefitIndividualUnenrollManyParams.builder().benefitId("string").build()
             )
         println(unenrollIndividualBenefitResponse)
         unenrollIndividualBenefitResponse.items().forEach { it.validate() }

@@ -9,8 +9,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPage
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollPage
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollParams
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyPage
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividual
@@ -96,7 +96,7 @@ constructor(
         }
     }
 
-    private val unenrollHandler: Handler<List<UnenrolledIndividual>> =
+    private val unenrollManyHandler: Handler<List<UnenrolledIndividual>> =
         jsonHandler<List<UnenrolledIndividual>>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
@@ -105,10 +105,10 @@ constructor(
      *
      * Unenroll individuals from a benefit
      */
-    override fun unenroll(
-        params: HrisBenefitIndividualUnenrollParams,
+    override fun unenrollMany(
+        params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions
-    ): HrisBenefitIndividualUnenrollPage {
+    ): HrisBenefitIndividualUnenrollManyPage {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.DELETE)
@@ -120,14 +120,14 @@ constructor(
                 .build()
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response
-                .use { unenrollHandler.handle(it) }
+                .use { unenrollManyHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         forEach { it.validate() }
                     }
                 }
-                .let { HrisBenefitIndividualUnenrollPage.Response.Builder().items(it).build() }
-                .let { HrisBenefitIndividualUnenrollPage.of(this, params, it) }
+                .let { HrisBenefitIndividualUnenrollManyPage.Response.Builder().items(it).build() }
+                .let { HrisBenefitIndividualUnenrollManyPage.of(this, params, it) }
         }
     }
 }

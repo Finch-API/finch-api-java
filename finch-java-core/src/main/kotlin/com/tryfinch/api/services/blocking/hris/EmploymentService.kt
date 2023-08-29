@@ -1,12 +1,12 @@
 @file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
 
-package com.tryfinch.api.services.blocking.hris.individuals
+package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyPage
-import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyParams
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyPage
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 
-interface EmploymentDataService {
+interface EmploymentService {
 
     /**
      * Read individual employment and income data
@@ -17,7 +17,7 @@ interface EmploymentDataService {
      */
     @JvmOverloads
     fun retrieveMany(
-        params: HrisIndividualEmploymentDataRetrieveManyParams,
+        params: HrisEmploymentRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HrisIndividualEmploymentDataRetrieveManyPage
+    ): HrisEmploymentRetrieveManyPage
 }

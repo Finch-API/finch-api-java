@@ -6,8 +6,8 @@ import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollPageAsync
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollParams
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyPageAsync
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import java.util.concurrent.CompletableFuture
 
@@ -41,8 +41,8 @@ interface IndividualServiceAsync {
      * Unenroll individuals from a benefit
      */
     @JvmOverloads
-    fun unenroll(
-        params: HrisBenefitIndividualUnenrollParams,
+    fun unenrollMany(
+        params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<HrisBenefitIndividualUnenrollPageAsync>
+    ): CompletableFuture<HrisBenefitIndividualUnenrollManyPageAsync>
 }
