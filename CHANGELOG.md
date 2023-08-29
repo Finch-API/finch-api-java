@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0 (2023-08-29)
+
+Full Changelog: [v0.2.4...v0.3.0](https://github.com/Finch-API/finch-api-java/compare/v0.2.4...v0.3.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** restructure some methods ([#59](https://github.com/Finch-API/finch-api-java/issues/59))
+
+### Features
+
+* **client:** restructure some methods ([#59](https://github.com/Finch-API/finch-api-java/issues/59)) ([4a53cb8](https://github.com/Finch-API/finch-api-java/commit/4a53cb840a3a61a272f3a81071fe870564a1b59c))
+
+
+### Chores
+
+* **ci:** setup workflows to create releases and release PRs ([#56](https://github.com/Finch-API/finch-api-java/issues/56)) ([09f532d](https://github.com/Finch-API/finch-api-java/commit/09f532d1717713f532dd83e1c718d2d66a1fdccd))
+
 ## [0.2.4](https://github.com/Finch-API/finch-api-java/compare/v0.2.3...v0.2.4) (2023-08-26)
 
 
