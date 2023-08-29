@@ -6,8 +6,8 @@ import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPage
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollPage
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollParams
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyPage
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 
 interface IndividualService {
@@ -40,8 +40,8 @@ interface IndividualService {
      * Unenroll individuals from a benefit
      */
     @JvmOverloads
-    fun unenroll(
-        params: HrisBenefitIndividualUnenrollParams,
+    fun unenrollMany(
+        params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HrisBenefitIndividualUnenrollPage
+    ): HrisBenefitIndividualUnenrollManyPage
 }

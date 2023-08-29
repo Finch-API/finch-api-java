@@ -9,6 +9,8 @@ import com.tryfinch.api.services.async.hris.CompanyServiceAsync
 import com.tryfinch.api.services.async.hris.CompanyServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsyncImpl
+import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
+import com.tryfinch.api.services.async.hris.EmploymentServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.IndividualServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsync
@@ -26,12 +28,6 @@ constructor(
 
     private val company: CompanyServiceAsync by lazy { CompanyServiceAsyncImpl(clientOptions) }
 
-    private val payments: PaymentServiceAsync by lazy { PaymentServiceAsyncImpl(clientOptions) }
-
-    private val payStatements: PayStatementServiceAsync by lazy {
-        PayStatementServiceAsyncImpl(clientOptions)
-    }
-
     private val directory: DirectoryServiceAsync by lazy {
         DirectoryServiceAsyncImpl(clientOptions)
     }
@@ -40,17 +36,29 @@ constructor(
         IndividualServiceAsyncImpl(clientOptions)
     }
 
+    private val employments: EmploymentServiceAsync by lazy {
+        EmploymentServiceAsyncImpl(clientOptions)
+    }
+
+    private val payments: PaymentServiceAsync by lazy { PaymentServiceAsyncImpl(clientOptions) }
+
+    private val payStatements: PayStatementServiceAsync by lazy {
+        PayStatementServiceAsyncImpl(clientOptions)
+    }
+
     private val benefits: BenefitServiceAsync by lazy { BenefitServiceAsyncImpl(clientOptions) }
 
     override fun company(): CompanyServiceAsync = company
 
-    override fun payments(): PaymentServiceAsync = payments
-
-    override fun payStatements(): PayStatementServiceAsync = payStatements
-
     override fun directory(): DirectoryServiceAsync = directory
 
     override fun individuals(): IndividualServiceAsync = individuals
+
+    override fun employments(): EmploymentServiceAsync = employments
+
+    override fun payments(): PaymentServiceAsync = payments
+
+    override fun payStatements(): PayStatementServiceAsync = payStatements
 
     override fun benefits(): BenefitServiceAsync = benefits
 }

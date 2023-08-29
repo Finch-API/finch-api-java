@@ -4,11 +4,11 @@ import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisBenefitIndividualUnenrollParamsTest {
+class HrisBenefitIndividualUnenrollManyParamsTest {
 
     @Test
-    fun createHrisBenefitIndividualUnenrollParams() {
-        HrisBenefitIndividualUnenrollParams.builder()
+    fun createHrisBenefitIndividualUnenrollManyParams() {
+        HrisBenefitIndividualUnenrollManyParams.builder()
             .benefitId("string")
             .individualIds(listOf("string"))
             .build()
@@ -17,7 +17,7 @@ class HrisBenefitIndividualUnenrollParamsTest {
     @Test
     fun getBody() {
         val params =
-            HrisBenefitIndividualUnenrollParams.builder()
+            HrisBenefitIndividualUnenrollManyParams.builder()
                 .benefitId("string")
                 .individualIds(listOf("string"))
                 .build()
@@ -28,14 +28,14 @@ class HrisBenefitIndividualUnenrollParamsTest {
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = HrisBenefitIndividualUnenrollParams.builder().benefitId("string").build()
+        val params = HrisBenefitIndividualUnenrollManyParams.builder().benefitId("string").build()
         val body = params.getBody()
         assertThat(body).isNotNull
     }
 
     @Test
     fun getPathParam() {
-        val params = HrisBenefitIndividualUnenrollParams.builder().benefitId("string").build()
+        val params = HrisBenefitIndividualUnenrollManyParams.builder().benefitId("string").build()
         assertThat(params).isNotNull
         // path param "benefitId"
         assertThat(params.getPathParam(0)).isEqualTo("string")
