@@ -4,14 +4,14 @@ import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisIndividualEmploymentDataRetrieveManyParamsTest {
+class HrisEmploymentRetrieveManyParamsTest {
 
     @Test
-    fun createHrisIndividualEmploymentDataRetrieveManyParams() {
-        HrisIndividualEmploymentDataRetrieveManyParams.builder()
+    fun createHrisEmploymentRetrieveManyParams() {
+        HrisEmploymentRetrieveManyParams.builder()
             .requests(
                 listOf(
-                    HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
+                    HrisEmploymentRetrieveManyParams.Request.builder()
                         .individualId("string")
                         .build()
                 )
@@ -22,10 +22,10 @@ class HrisIndividualEmploymentDataRetrieveManyParamsTest {
     @Test
     fun getBody() {
         val params =
-            HrisIndividualEmploymentDataRetrieveManyParams.builder()
+            HrisEmploymentRetrieveManyParams.builder()
                 .requests(
                     listOf(
-                        HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
+                        HrisEmploymentRetrieveManyParams.Request.builder()
                             .individualId("string")
                             .build()
                     )
@@ -36,7 +36,7 @@ class HrisIndividualEmploymentDataRetrieveManyParamsTest {
         assertThat(body.requests())
             .isEqualTo(
                 listOf(
-                    HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
+                    HrisEmploymentRetrieveManyParams.Request.builder()
                         .individualId("string")
                         .build()
                 )
@@ -46,10 +46,10 @@ class HrisIndividualEmploymentDataRetrieveManyParamsTest {
     @Test
     fun getBodyWithoutOptionalFields() {
         val params =
-            HrisIndividualEmploymentDataRetrieveManyParams.builder()
+            HrisEmploymentRetrieveManyParams.builder()
                 .requests(
                     listOf(
-                        HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
+                        HrisEmploymentRetrieveManyParams.Request.builder()
                             .individualId("string")
                             .build()
                     )
@@ -60,7 +60,7 @@ class HrisIndividualEmploymentDataRetrieveManyParamsTest {
         assertThat(body.requests())
             .isEqualTo(
                 listOf(
-                    HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
+                    HrisEmploymentRetrieveManyParams.Request.builder()
                         .individualId("string")
                         .build()
                 )

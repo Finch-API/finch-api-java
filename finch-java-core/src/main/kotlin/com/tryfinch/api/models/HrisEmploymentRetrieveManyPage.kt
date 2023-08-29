@@ -10,16 +10,16 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
-import com.tryfinch.api.services.blocking.hris.individuals.EmploymentDataService
+import com.tryfinch.api.services.blocking.hris.EmploymentService
 import java.util.Objects
 import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
-class HrisIndividualEmploymentDataRetrieveManyPage
+class HrisEmploymentRetrieveManyPage
 private constructor(
-    private val employmentDataService: EmploymentDataService,
-    private val params: HrisIndividualEmploymentDataRetrieveManyParams,
+    private val employmentsService: EmploymentService,
+    private val params: HrisEmploymentRetrieveManyParams,
     private val response: Response,
 ) {
 
@@ -32,33 +32,33 @@ private constructor(
             return true
         }
 
-        return other is HrisIndividualEmploymentDataRetrieveManyPage &&
-            this.employmentDataService == other.employmentDataService &&
+        return other is HrisEmploymentRetrieveManyPage &&
+            this.employmentsService == other.employmentsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            employmentDataService,
+            employmentsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "HrisIndividualEmploymentDataRetrieveManyPage{employmentDataService=$employmentDataService, params=$params, response=$response}"
+        "HrisEmploymentRetrieveManyPage{employmentsService=$employmentsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return responses().isEmpty()
     }
 
-    fun getNextPageParams(): Optional<HrisIndividualEmploymentDataRetrieveManyParams> {
+    fun getNextPageParams(): Optional<HrisEmploymentRetrieveManyParams> {
         return Optional.empty()
     }
 
-    fun getNextPage(): Optional<HrisIndividualEmploymentDataRetrieveManyPage> {
-        return getNextPageParams().map { employmentDataService.retrieveMany(it) }
+    fun getNextPage(): Optional<HrisEmploymentRetrieveManyPage> {
+        return getNextPageParams().map { employmentsService.retrieveMany(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -67,12 +67,12 @@ private constructor(
 
         @JvmStatic
         fun of(
-            employmentDataService: EmploymentDataService,
-            params: HrisIndividualEmploymentDataRetrieveManyParams,
+            employmentsService: EmploymentService,
+            params: HrisEmploymentRetrieveManyParams,
             response: Response
         ) =
-            HrisIndividualEmploymentDataRetrieveManyPage(
-                employmentDataService,
+            HrisEmploymentRetrieveManyPage(
+                employmentsService,
                 params,
                 response,
             )
@@ -123,7 +123,7 @@ private constructor(
         }
 
         override fun toString() =
-            "HrisIndividualEmploymentDataRetrieveManyPage.Response{responses=$responses, additionalProperties=$additionalProperties}"
+            "HrisEmploymentRetrieveManyPage.Response{responses=$responses, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -160,7 +160,7 @@ private constructor(
 
     class AutoPager
     constructor(
-        private val firstPage: HrisIndividualEmploymentDataRetrieveManyPage,
+        private val firstPage: HrisEmploymentRetrieveManyPage,
     ) : Iterable<EmploymentDataResponse> {
 
         override fun iterator(): Iterator<EmploymentDataResponse> = iterator {

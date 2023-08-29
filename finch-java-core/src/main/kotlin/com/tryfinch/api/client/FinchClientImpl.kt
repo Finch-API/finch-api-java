@@ -24,9 +24,9 @@ constructor(
 
     private val async: FinchClientAsync by lazy { FinchClientAsyncImpl(clientOptions) }
 
-    private val ats: AtsService by lazy { AtsServiceImpl(clientOptions) }
-
     private val hris: HrisService by lazy { HrisServiceImpl(clientOptions) }
+
+    private val ats: AtsService by lazy { AtsServiceImpl(clientOptions) }
 
     private val providers: ProviderService by lazy { ProviderServiceImpl(clientOptions) }
 
@@ -37,9 +37,9 @@ constructor(
 
     override fun async(): FinchClientAsync = async
 
-    override fun ats(): AtsService = ats
-
     override fun hris(): HrisService = hris
+
+    override fun ats(): AtsService = ats
 
     override fun providers(): ProviderService = providers
 

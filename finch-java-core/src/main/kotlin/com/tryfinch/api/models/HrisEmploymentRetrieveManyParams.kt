@@ -11,7 +11,7 @@ import com.tryfinch.api.core.toUnmodifiable
 import com.tryfinch.api.models.*
 import java.util.Objects
 
-class HrisIndividualEmploymentDataRetrieveManyParams
+class HrisEmploymentRetrieveManyParams
 constructor(
     private val requests: List<Request>,
     private val additionalQueryParams: Map<String, List<String>>,
@@ -22,8 +22,8 @@ constructor(
     fun requests(): List<Request> = requests
 
     @JvmSynthetic
-    internal fun getBody(): HrisIndividualEmploymentDataRetrieveManyBody {
-        return HrisIndividualEmploymentDataRetrieveManyBody(requests, additionalBodyProperties)
+    internal fun getBody(): HrisEmploymentRetrieveManyBody {
+        return HrisEmploymentRetrieveManyBody(requests, additionalBodyProperties)
     }
 
     @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -31,9 +31,9 @@ constructor(
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     /** Individual Ids Request Body */
-    @JsonDeserialize(builder = HrisIndividualEmploymentDataRetrieveManyBody.Builder::class)
+    @JsonDeserialize(builder = HrisEmploymentRetrieveManyBody.Builder::class)
     @NoAutoDetect
-    class HrisIndividualEmploymentDataRetrieveManyBody
+    class HrisEmploymentRetrieveManyBody
     internal constructor(
         private val requests: List<Request>?,
         private val additionalProperties: Map<String, JsonValue>,
@@ -55,7 +55,7 @@ constructor(
                 return true
             }
 
-            return other is HrisIndividualEmploymentDataRetrieveManyBody &&
+            return other is HrisEmploymentRetrieveManyBody &&
                 this.requests == other.requests &&
                 this.additionalProperties == other.additionalProperties
         }
@@ -68,7 +68,7 @@ constructor(
         }
 
         override fun toString() =
-            "HrisIndividualEmploymentDataRetrieveManyBody{requests=$requests, additionalProperties=$additionalProperties}"
+            "HrisEmploymentRetrieveManyBody{requests=$requests, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -81,15 +81,11 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(
-                hrisIndividualEmploymentDataRetrieveManyBody:
-                    HrisIndividualEmploymentDataRetrieveManyBody
-            ) = apply {
-                this.requests = hrisIndividualEmploymentDataRetrieveManyBody.requests
-                additionalProperties(
-                    hrisIndividualEmploymentDataRetrieveManyBody.additionalProperties
-                )
-            }
+            internal fun from(hrisEmploymentRetrieveManyBody: HrisEmploymentRetrieveManyBody) =
+                apply {
+                    this.requests = hrisEmploymentRetrieveManyBody.requests
+                    additionalProperties(hrisEmploymentRetrieveManyBody.additionalProperties)
+                }
 
             /** The array of batch requests. */
             @JsonProperty("requests")
@@ -109,8 +105,8 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): HrisIndividualEmploymentDataRetrieveManyBody =
-                HrisIndividualEmploymentDataRetrieveManyBody(
+            fun build(): HrisEmploymentRetrieveManyBody =
+                HrisEmploymentRetrieveManyBody(
                     checkNotNull(requests) { "`requests` is required but was not set" }
                         .toUnmodifiable(),
                     additionalProperties.toUnmodifiable()
@@ -129,7 +125,7 @@ constructor(
             return true
         }
 
-        return other is HrisIndividualEmploymentDataRetrieveManyParams &&
+        return other is HrisEmploymentRetrieveManyParams &&
             this.requests == other.requests &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
@@ -146,7 +142,7 @@ constructor(
     }
 
     override fun toString() =
-        "HrisIndividualEmploymentDataRetrieveManyParams{requests=$requests, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisEmploymentRetrieveManyParams{requests=$requests, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -164,19 +160,13 @@ constructor(
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(
-            hrisIndividualEmploymentDataRetrieveManyParams:
-                HrisIndividualEmploymentDataRetrieveManyParams
-        ) = apply {
-            this.requests(hrisIndividualEmploymentDataRetrieveManyParams.requests)
-            additionalQueryParams(
-                hrisIndividualEmploymentDataRetrieveManyParams.additionalQueryParams
-            )
-            additionalHeaders(hrisIndividualEmploymentDataRetrieveManyParams.additionalHeaders)
-            additionalBodyProperties(
-                hrisIndividualEmploymentDataRetrieveManyParams.additionalBodyProperties
-            )
-        }
+        internal fun from(hrisEmploymentRetrieveManyParams: HrisEmploymentRetrieveManyParams) =
+            apply {
+                this.requests(hrisEmploymentRetrieveManyParams.requests)
+                additionalQueryParams(hrisEmploymentRetrieveManyParams.additionalQueryParams)
+                additionalHeaders(hrisEmploymentRetrieveManyParams.additionalHeaders)
+                additionalBodyProperties(hrisEmploymentRetrieveManyParams.additionalBodyProperties)
+            }
 
         /** The array of batch requests. */
         fun requests(requests: List<Request>) = apply {
@@ -241,8 +231,8 @@ constructor(
                 this.additionalBodyProperties.putAll(additionalBodyProperties)
             }
 
-        fun build(): HrisIndividualEmploymentDataRetrieveManyParams =
-            HrisIndividualEmploymentDataRetrieveManyParams(
+        fun build(): HrisEmploymentRetrieveManyParams =
+            HrisEmploymentRetrieveManyParams(
                 checkNotNull(requests) { "`requests` is required but was not set" }
                     .toUnmodifiable(),
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),

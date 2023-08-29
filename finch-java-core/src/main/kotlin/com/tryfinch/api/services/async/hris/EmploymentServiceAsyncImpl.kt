@@ -1,4 +1,4 @@
-package com.tryfinch.api.services.blocking.hris.individuals
+package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
@@ -6,23 +6,23 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyPage
-import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyParams
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.json
 import com.tryfinch.api.services.jsonHandler
 import com.tryfinch.api.services.withErrorHandler
+import java.util.concurrent.CompletableFuture
 
-class EmploymentDataServiceImpl
+class EmploymentServiceAsyncImpl
 constructor(
     private val clientOptions: ClientOptions,
-) : EmploymentDataService {
+) : EmploymentServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-    private val retrieveManyHandler:
-        Handler<HrisIndividualEmploymentDataRetrieveManyPage.Response> =
-        jsonHandler<HrisIndividualEmploymentDataRetrieveManyPage.Response>(clientOptions.jsonMapper)
+    private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageAsync.Response> =
+        jsonHandler<HrisEmploymentRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -33,9 +33,9 @@ constructor(
      * what information the provider returns.
      */
     override fun retrieveMany(
-        params: HrisIndividualEmploymentDataRetrieveManyParams,
+        params: HrisEmploymentRetrieveManyParams,
         requestOptions: RequestOptions
-    ): HrisIndividualEmploymentDataRetrieveManyPage {
+    ): CompletableFuture<HrisEmploymentRetrieveManyPageAsync> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -45,7 +45,8 @@ constructor(
                 .putAllHeaders(params.getHeaders())
                 .body(json(clientOptions.jsonMapper, params.getBody()))
                 .build()
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
+        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
+            ->
             response
                 .use { retrieveManyHandler.handle(it) }
                 .apply {
@@ -53,7 +54,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { HrisIndividualEmploymentDataRetrieveManyPage.of(this, params, it) }
+                .let { HrisEmploymentRetrieveManyPageAsync.of(this, params, it) }
         }
     }
 }

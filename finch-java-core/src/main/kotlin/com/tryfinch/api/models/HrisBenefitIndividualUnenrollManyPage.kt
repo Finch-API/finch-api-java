@@ -16,10 +16,10 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
-class HrisBenefitIndividualUnenrollPage
+class HrisBenefitIndividualUnenrollManyPage
 private constructor(
     private val individualsService: IndividualService,
-    private val params: HrisBenefitIndividualUnenrollParams,
+    private val params: HrisBenefitIndividualUnenrollManyParams,
     private val response: Response,
 ) {
 
@@ -32,7 +32,7 @@ private constructor(
             return true
         }
 
-        return other is HrisBenefitIndividualUnenrollPage &&
+        return other is HrisBenefitIndividualUnenrollManyPage &&
             this.individualsService == other.individualsService &&
             this.params == other.params &&
             this.response == other.response
@@ -47,18 +47,18 @@ private constructor(
     }
 
     override fun toString() =
-        "HrisBenefitIndividualUnenrollPage{individualsService=$individualsService, params=$params, response=$response}"
+        "HrisBenefitIndividualUnenrollManyPage{individualsService=$individualsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         return items().isEmpty()
     }
 
-    fun getNextPageParams(): Optional<HrisBenefitIndividualUnenrollParams> {
+    fun getNextPageParams(): Optional<HrisBenefitIndividualUnenrollManyParams> {
         return Optional.empty()
     }
 
-    fun getNextPage(): Optional<HrisBenefitIndividualUnenrollPage> {
-        return getNextPageParams().map { individualsService.unenroll(it) }
+    fun getNextPage(): Optional<HrisBenefitIndividualUnenrollManyPage> {
+        return getNextPageParams().map { individualsService.unenrollMany(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -68,10 +68,10 @@ private constructor(
         @JvmStatic
         fun of(
             individualsService: IndividualService,
-            params: HrisBenefitIndividualUnenrollParams,
+            params: HrisBenefitIndividualUnenrollManyParams,
             response: Response
         ) =
-            HrisBenefitIndividualUnenrollPage(
+            HrisBenefitIndividualUnenrollManyPage(
                 individualsService,
                 params,
                 response,
@@ -121,7 +121,7 @@ private constructor(
         }
 
         override fun toString() =
-            "HrisBenefitIndividualUnenrollPage.Response{items=$items, additionalProperties=$additionalProperties}"
+            "HrisBenefitIndividualUnenrollManyPage.Response{items=$items, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -155,7 +155,7 @@ private constructor(
 
     class AutoPager
     constructor(
-        private val firstPage: HrisBenefitIndividualUnenrollPage,
+        private val firstPage: HrisBenefitIndividualUnenrollManyPage,
     ) : Iterable<UnenrolledIndividual> {
 
         override fun iterator(): Iterator<UnenrolledIndividual> = iterator {
