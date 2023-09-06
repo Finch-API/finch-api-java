@@ -32,6 +32,8 @@ constructor(
 
     private val account: AccountService by lazy { AccountServiceImpl(clientOptions) }
 
+    private val webhooks: WebhookService by lazy { WebhookServiceImpl(clientOptions) }
+
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -44,6 +46,8 @@ constructor(
     override fun providers(): ProviderService = providers
 
     override fun account(): AccountService = account
+
+    override fun webhooks(): WebhookService = webhooks
 
     override fun getAccessToken(
         clientId: String,

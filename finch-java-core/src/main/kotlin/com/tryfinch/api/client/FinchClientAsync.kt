@@ -19,6 +19,8 @@ interface FinchClientAsync {
 
     fun account(): AccountServiceAsync
 
+    fun webhooks(): WebhookServiceAsync
+
     fun getAccessToken(
         clientId: String,
         clientSecret: String,

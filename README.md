@@ -67,10 +67,11 @@ FinchClient client = FinchOkHttpClient.builder()
     .build();
 ```
 
-| Property     | Environment variable  | Required | Default value |
-| ------------ | --------------------- | -------- | ------------- |
-| clientId     | `FINCH_CLIENT_ID`     | false    | —             |
-| clientSecret | `FINCH_CLIENT_SECRET` | false    | —             |
+| Property      | Environment variable   | Required | Default value |
+| ------------- | ---------------------- | -------- | ------------- |
+| clientId      | `FINCH_CLIENT_ID`      | false    | —             |
+| clientSecret  | `FINCH_CLIENT_SECRET`  | false    | —             |
+| webhookSecret | `FINCH_WEBHOOK_SECRET` | false    | —             |
 
 Read the documentation for more configuration options.
 
@@ -221,6 +222,20 @@ while (page != null) {
     page = page.getNextPage().orElse(null);
 }
 ```
+
+---
+
+---
+
+## Webhook Verification
+
+We provide helper methods for verifying that a webhook request came from LiFinchthic, and not a malicious third party.
+
+You can use `finch.webhooks().verifySignature(body, headers, secret?)` or `finch.webhooks().unwrap(body, headers, secret?)`,
+both of which will raise an error if the signature is invalid.
+
+Note that the "body" parameter must be the raw JSON string sent from the server (do not parse it first).
+The `.unwrap()` method can parse this JSON for you.
 
 ---
 
