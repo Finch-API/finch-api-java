@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 (2023-09-06)
+
+Full Changelog: [v0.3.0...v0.3.1](https://github.com/Finch-API/finch-api-java/compare/v0.3.0...v0.3.1)
+
+### Features
+
+* add webhook verification methods ([#62](https://github.com/Finch-API/finch-api-java/issues/62)) ([98a20c4](https://github.com/Finch-API/finch-api-java/commit/98a20c42736e388531f16501c7bc94f3f74b8bb7))
+
 ## 0.3.0 (2023-08-29)
 
 Full Changelog: [v0.2.4...v0.3.0](https://github.com/Finch-API/finch-api-java/compare/v0.2.4...v0.3.0)
