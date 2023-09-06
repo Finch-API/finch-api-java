@@ -37,6 +37,7 @@ class ServiceParamsTest {
                 .baseUrl(wmRuntimeInfo.getHttpBaseUrl())
                 .clientId("string")
                 .clientSecret("string")
+                .webhookSecret("string")
                 .build()
     }
 
