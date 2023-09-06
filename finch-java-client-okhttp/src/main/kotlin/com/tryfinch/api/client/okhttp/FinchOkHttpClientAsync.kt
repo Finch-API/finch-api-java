@@ -66,6 +66,10 @@ class FinchOkHttpClientAsync private constructor() {
 
         fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
 
+        fun webhookSecret(webhookSecret: String?) = apply {
+            clientOptions.webhookSecret(webhookSecret)
+        }
+
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
         fun build(): FinchClientAsync {

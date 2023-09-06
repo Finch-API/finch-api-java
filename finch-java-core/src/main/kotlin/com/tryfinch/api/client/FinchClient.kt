@@ -18,6 +18,8 @@ interface FinchClient {
 
     fun account(): AccountService
 
+    fun webhooks(): WebhookService
+
     fun getAccessToken(
         clientId: String,
         clientSecret: String,
