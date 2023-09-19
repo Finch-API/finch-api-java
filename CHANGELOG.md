@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.2 (2023-09-19)
+
+Full Changelog: [v0.3.1...v0.3.2](https://github.com/Finch-API/finch-api-java/compare/v0.3.1...v0.3.2)
+
+### Features
+
+* **client:** retry on 408 Request Timeout ([#65](https://github.com/Finch-API/finch-api-java/issues/65)) ([f3601a6](https://github.com/Finch-API/finch-api-java/commit/f3601a6041c8afd06b0a96e3736cc77750d606e5))
+
+
+### Chores
+
+* **api:** remove deprecated & unused ATS API ([#68](https://github.com/Finch-API/finch-api-java/issues/68)) ([60d13e0](https://github.com/Finch-API/finch-api-java/commit/60d13e06834161d73dda20f2679ca2d76d612e78))
+
 ## 0.3.1 (2023-09-06)
 
 Full Changelog: [v0.3.0...v0.3.1](https://github.com/Finch-API/finch-api-java/compare/v0.3.0...v0.3.1)
