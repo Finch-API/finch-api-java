@@ -79,31 +79,32 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new ats candidate, first use the `AtsCandidateRetrieveParams` builder to specify attributes,
-then pass that to the `retrieve` method of the `candidates` service.
+To create a new hris directory, first use the `HrisDirectoryListIndividualsParams` builder to specify attributes,
+then pass that to the `listIndividuals` method of the `directory` service.
 
 ```java
-import com.tryfinch.api.models.AtsCandidateRetrieveParams;
-import com.tryfinch.api.models.Candidate;
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage;
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams;
+import com.tryfinch.api.models.Page;
 
-AtsCandidateRetrieveParams params = AtsCandidateRetrieveParams.builder()
+HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.builder()
     .candidateId("<candidate id>")
     .build();
-Candidate atsCandidate = client.candidates().retrieve(params);
+HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals(params);
 ```
 
 ### Example: listing resources
 
-The Finch API provides a `list` method to get a paginated list of jobs.
+The Finch API provides a `listIndividuals` method to get a paginated list of directory.
 You can retrieve the first page by:
 
 ```java
-import com.tryfinch.api.models.Job;
+import com.tryfinch.api.models.IndividualInDirectory;
 import com.tryfinch.api.models.Page;
 
-AtsJobListPage page = client.jobs().list();
-for (Job job : page.jobs()) {
-    System.out.println(job);
+HrisDirectoryListIndividualsPage page = client.directory().listIndividuals();
+for (IndividualInDirectory directory : page.individuals()) {
+    System.out.println(directory);
 }
 ```
 
@@ -117,14 +118,14 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `AtsCandidateRetrieveParams.builder()` to pass to
-the `retrieve` method of the `candidates` service.
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListIndividualsParams.builder()` to pass to
+the `listIndividuals` method of the `directory` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
 ```java
-AtsCandidateRetrieveParams params = AtsCandidateRetrieveParams.builder()
+HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
     .build();
@@ -137,7 +138,7 @@ AtsCandidateRetrieveParams params = AtsCandidateRetrieveParams.builder()
 When receiving a response, the Finch Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
-Candidate atsCandidate = client.candidates().retrieve().validate();
+HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals().validate();
 ```
 
 ### Response properties as JSON
@@ -167,7 +168,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```java
-JsonValue secret = atsCandidate._additionalProperties().get("secret_field");
+JsonValue secret = hrisDirectory._additionalProperties().get("secret_field");
 ```
 
 ---
@@ -186,23 +187,23 @@ which automatically handles fetching more pages for you:
 
 ```java
 // As an Iterable:
-AtsJobListPage page = client.jobs().list(params);
-for (Job job : page.autoPager()) {
-    System.out.println(job);
+HrisDirectoryListIndividualsPage page = client.directory().listIndividuals(params);
+for (IndividualInDirectory directory : page.autoPager()) {
+    System.out.println(directory);
 };
 
 // As a Stream:
-client.jobs().list(params).autoPager().stream()
+client.directory().listIndividuals(params).autoPager().stream()
     .limit(50)
-    .forEach(job -> System.out.println(job));
+    .forEach(directory -> System.out.println(directory));
 ```
 
 ### Asynchronous
 
 ```java
 // Using forEach, which returns CompletableFuture<Void>:
-asyncClient.jobs().list(params).autoPager()
-    .forEach(job -> System.out.println(job), executor);
+asyncClient.directory().listIndividuals(params).autoPager()
+    .forEach(directory -> System.out.println(directory), executor);
 ```
 
 ### Manual pagination
@@ -213,10 +214,10 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
 
 ```java
-AtsJobListPage page = client.jobs().list(params);
+HrisDirectoryListIndividualsPage page = client.directory().listIndividuals(params);
 while (page != null) {
-    for (Job job : page.jobs()) {
-        System.out.println(job);
+    for (IndividualInDirectory directory : page.individuals()) {
+        System.out.println(directory);
     }
 
     page = page.getNextPage().orElse(null);
