@@ -14,9 +14,8 @@ import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.AtsJobListPage
-import com.tryfinch.api.models.AtsJobListParams
-import java.time.OffsetDateTime
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -42,7 +41,7 @@ class ServiceParamsTest {
     }
 
     @Test
-    fun atsCandidatesRetrieveWithAdditionalParams() {
+    fun hrisDirectoryListIndividualsWithAdditionalParams() {
         val additionalHeaders = mutableMapOf<String, List<String>>()
 
         additionalHeaders.put("x-test-header", listOf("abc1234"))
@@ -52,51 +51,7 @@ class ServiceParamsTest {
         additionalQueryParams.put("test_query_param", listOf("def567"))
 
         val params =
-            AtsCandidateRetrieveParams.builder()
-                .candidateId("string")
-                .additionalHeaders(additionalHeaders)
-                .additionalQueryParams(additionalQueryParams)
-                .build()
-
-        val apiResponse =
-            Candidate.builder()
-                .id("string")
-                .applicationIds(listOf("string"))
-                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .emails(listOf(Candidate.Email.builder().data("string").type("string").build()))
-                .firstName("string")
-                .fullName("string")
-                .lastActivityAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .lastName("string")
-                .phoneNumbers(
-                    listOf(Candidate.PhoneNumber.builder().data("string").type("string").build())
-                )
-                .build()
-
-        stubFor(
-            get(anyUrl())
-                .withHeader("x-test-header", equalTo("abc1234"))
-                .withQueryParam("test_query_param", equalTo("def567"))
-                .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
-        )
-
-        client.ats().candidates().retrieve(params)
-
-        verify(getRequestedFor(anyUrl()))
-    }
-
-    @Test
-    fun atsJobsListWithAdditionalParams() {
-        val additionalHeaders = mutableMapOf<String, List<String>>()
-
-        additionalHeaders.put("x-test-header", listOf("abc1234"))
-
-        val additionalQueryParams = mutableMapOf<String, List<String>>()
-
-        additionalQueryParams.put("test_query_param", listOf("def567"))
-
-        val params =
-            AtsJobListParams.builder()
+            HrisDirectoryListIndividualsParams.builder()
                 .limit(123L)
                 .offset(123L)
                 .additionalHeaders(additionalHeaders)
@@ -104,34 +59,23 @@ class ServiceParamsTest {
                 .build()
 
         val apiResponse =
-            AtsJobListPage.Response.builder()
-                .jobs(
+            HrisDirectoryListIndividualsPage.Response.builder()
+                .individuals(
                     listOf(
-                        Job.builder()
-                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .closedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .department(Job.Department.builder().name("string").build())
-                            .hiringTeam(
-                                Job.HiringTeam.builder()
-                                    .hiringManagers(
-                                        listOf(
-                                            Job.HiringTeam.HiringManager.builder()
-                                                .name("string")
-                                                .build()
-                                        )
-                                    )
-                                    .recruiters(
-                                        listOf(
-                                            Job.HiringTeam.Recruiter.builder()
-                                                .name("string")
-                                                .build()
-                                        )
-                                    )
+                        IndividualInDirectory.builder()
+                            .id("string")
+                            .department(
+                                IndividualInDirectory.Department.builder().name("string").build()
+                            )
+                            .firstName("string")
+                            .isActive(true)
+                            .lastName("string")
+                            .manager(
+                                IndividualInDirectory.Manager.builder()
+                                    .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
                                     .build()
                             )
-                            .name("string")
-                            .status(Job.Status.OPEN)
+                            .middleName("string")
                             .build()
                     )
                 )
@@ -145,7 +89,7 @@ class ServiceParamsTest {
                 .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.ats().jobs().list(params)
+        client.hris().directory().listIndividuals(params)
 
         verify(getRequestedFor(anyUrl()))
     }
