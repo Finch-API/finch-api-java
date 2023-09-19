@@ -12,8 +12,6 @@ interface FinchClient {
 
     fun hris(): HrisService
 
-    fun ats(): AtsService
-
     fun providers(): ProviderService
 
     fun account(): AccountService
