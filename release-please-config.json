@@ -57,6 +57,11 @@
       "hidden": true
     }
   ],
+  "reviewers": [
+    "jordanbrauer",
+    "M-Shehu",
+    "johnny-finch"
+  ],
   "release-type": "simple",
   "extra-files": [
     "README.md",
