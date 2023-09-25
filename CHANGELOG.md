@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.3 (2023-09-25)
+
+Full Changelog: [v0.3.2...v0.3.3](https://github.com/Finch-API/finch-api-java/compare/v0.3.2...v0.3.3)
+
+### Features
+
+* **ci:** add reviewers ([#69](https://github.com/Finch-API/finch-api-java/issues/69)) ([b779b96](https://github.com/Finch-API/finch-api-java/commit/b779b9621ffda3423bf5887e1ef2b3512f5d6e84))
+
 ## 0.3.2 (2023-09-19)
 
 Full Changelog: [v0.3.1...v0.3.2](https://github.com/Finch-API/finch-api-java/compare/v0.3.1...v0.3.2)
