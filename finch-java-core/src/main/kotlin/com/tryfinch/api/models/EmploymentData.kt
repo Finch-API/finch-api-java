@@ -34,6 +34,7 @@ private constructor(
     private val location: JsonField<Location>,
     private val income: JsonField<Income>,
     private val incomeHistory: JsonField<List<Income>>,
+    private val sourceId: JsonField<String>,
     private val workId: JsonField<String>,
     private val workId2: JsonField<String>,
     private val payGroupIds: JsonField<List<String>>,
@@ -92,6 +93,9 @@ private constructor(
     /** The array of income history. */
     fun incomeHistory(): Optional<List<Income>> =
         Optional.ofNullable(incomeHistory.getNullable("income_history"))
+
+    /** The source system's unique employment identifier for this individual */
+    fun sourceId(): Optional<String> = Optional.ofNullable(sourceId.getNullable("source_id"))
 
     /**
      * Note: This property is only available if enabled for your account. Please reach out to your
@@ -158,6 +162,9 @@ private constructor(
     /** The array of income history. */
     @JsonProperty("income_history") @ExcludeMissing fun _incomeHistory() = incomeHistory
 
+    /** The source system's unique employment identifier for this individual */
+    @JsonProperty("source_id") @ExcludeMissing fun _sourceId() = sourceId
+
     /**
      * Note: This property is only available if enabled for your account. Please reach out to your
      * Finch representative if you would like access.
@@ -197,6 +204,7 @@ private constructor(
             location().map { it.validate() }
             income().map { it.validate() }
             incomeHistory().map { it.forEach { it.validate() } }
+            sourceId()
             workId()
             workId2()
             payGroupIds()
@@ -227,6 +235,7 @@ private constructor(
             this.location == other.location &&
             this.income == other.income &&
             this.incomeHistory == other.incomeHistory &&
+            this.sourceId == other.sourceId &&
             this.workId == other.workId &&
             this.workId2 == other.workId2 &&
             this.payGroupIds == other.payGroupIds &&
@@ -252,6 +261,7 @@ private constructor(
                     location,
                     income,
                     incomeHistory,
+                    sourceId,
                     workId,
                     workId2,
                     payGroupIds,
@@ -262,7 +272,7 @@ private constructor(
     }
 
     override fun toString() =
-        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, workId=$workId, workId2=$workId2, payGroupIds=$payGroupIds, additionalProperties=$additionalProperties}"
+        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, workId2=$workId2, payGroupIds=$payGroupIds, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -286,6 +296,7 @@ private constructor(
         private var location: JsonField<Location> = JsonMissing.of()
         private var income: JsonField<Income> = JsonMissing.of()
         private var incomeHistory: JsonField<List<Income>> = JsonMissing.of()
+        private var sourceId: JsonField<String> = JsonMissing.of()
         private var workId: JsonField<String> = JsonMissing.of()
         private var workId2: JsonField<String> = JsonMissing.of()
         private var payGroupIds: JsonField<List<String>> = JsonMissing.of()
@@ -308,6 +319,7 @@ private constructor(
             this.location = employmentData.location
             this.income = employmentData.income
             this.incomeHistory = employmentData.incomeHistory
+            this.sourceId = employmentData.sourceId
             this.workId = employmentData.workId
             this.workId2 = employmentData.workId2
             this.payGroupIds = employmentData.payGroupIds
@@ -436,6 +448,14 @@ private constructor(
             this.incomeHistory = incomeHistory
         }
 
+        /** The source system's unique employment identifier for this individual */
+        fun sourceId(sourceId: String) = sourceId(JsonField.of(sourceId))
+
+        /** The source system's unique employment identifier for this individual */
+        @JsonProperty("source_id")
+        @ExcludeMissing
+        fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
+
         /**
          * Note: This property is only available if enabled for your account. Please reach out to
          * your Finch representative if you would like access.
@@ -511,6 +531,7 @@ private constructor(
                 location,
                 income,
                 incomeHistory.map { it.toUnmodifiable() },
+                sourceId,
                 workId,
                 workId2,
                 payGroupIds.map { it.toUnmodifiable() },
