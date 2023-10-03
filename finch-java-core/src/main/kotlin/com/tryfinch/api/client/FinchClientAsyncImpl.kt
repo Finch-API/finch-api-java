@@ -33,6 +33,10 @@ constructor(
 
     private val webhooks: WebhookServiceAsync by lazy { WebhookServiceAsyncImpl(clientOptions) }
 
+    private val requestForwarding: RequestForwardingServiceAsync by lazy {
+        RequestForwardingServiceAsyncImpl(clientOptions)
+    }
+
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -45,6 +49,8 @@ constructor(
     override fun account(): AccountServiceAsync = account
 
     override fun webhooks(): WebhookServiceAsync = webhooks
+
+    override fun requestForwarding(): RequestForwardingServiceAsync = requestForwarding
 
     override fun getAccessToken(
         clientId: String,

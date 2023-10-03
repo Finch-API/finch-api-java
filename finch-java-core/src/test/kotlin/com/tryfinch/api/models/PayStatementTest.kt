@@ -56,7 +56,7 @@ class PayStatementTest {
                             .build()
                     )
                 )
-                .totalHours(123L)
+                .totalHours(42.23)
                 .type(PayStatement.Type.REGULAR_PAYROLL)
                 .build()
         assertThat(payStatement).isNotNull
@@ -105,7 +105,7 @@ class PayStatementTest {
                     .type(PayStatement.Tax.Type.STATE)
                     .build()
             )
-        assertThat(payStatement.totalHours()).contains(123L)
+        assertThat(payStatement.totalHours()).contains(42.23)
         assertThat(payStatement.type()).contains(PayStatement.Type.REGULAR_PAYROLL)
     }
 }
