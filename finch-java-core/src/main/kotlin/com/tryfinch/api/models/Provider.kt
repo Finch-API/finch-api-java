@@ -57,9 +57,7 @@ private constructor(
         Optional.ofNullable(primaryColor.getNullable("primary_color"))
 
     /**
-     * [DEPRECATED] Whether the Finch integration with this provider uses the Assisted Connect Flow
-     * by default. This field is now deprecated. Please check for a `type` of `assisted` in the
-     * `authentication_methods` field instead.
+     * Whether the Finch integration with this provider uses the Assisted Connect Flow by default.
      */
     fun manual(): Optional<Boolean> = Optional.ofNullable(manual.getNullable("manual"))
 
@@ -85,9 +83,7 @@ private constructor(
     @JsonProperty("primary_color") @ExcludeMissing fun _primaryColor() = primaryColor
 
     /**
-     * [DEPRECATED] Whether the Finch integration with this provider uses the Assisted Connect Flow
-     * by default. This field is now deprecated. Please check for a `type` of `assisted` in the
-     * `authentication_methods` field instead.
+     * Whether the Finch integration with this provider uses the Assisted Connect Flow by default.
      */
     @JsonProperty("manual") @ExcludeMissing fun _manual() = manual
 
@@ -236,16 +232,14 @@ private constructor(
         }
 
         /**
-         * [DEPRECATED] Whether the Finch integration with this provider uses the Assisted Connect
-         * Flow by default. This field is now deprecated. Please check for a `type` of `assisted` in
-         * the `authentication_methods` field instead.
+         * Whether the Finch integration with this provider uses the Assisted Connect Flow by
+         * default.
          */
         fun manual(manual: Boolean) = manual(JsonField.of(manual))
 
         /**
-         * [DEPRECATED] Whether the Finch integration with this provider uses the Assisted Connect
-         * Flow by default. This field is now deprecated. Please check for a `type` of `assisted` in
-         * the `authentication_methods` field instead.
+         * Whether the Finch integration with this provider uses the Assisted Connect Flow by
+         * default.
          */
         @JsonProperty("manual")
         @ExcludeMissing
