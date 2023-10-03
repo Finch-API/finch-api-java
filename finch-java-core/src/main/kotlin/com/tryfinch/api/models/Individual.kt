@@ -27,6 +27,7 @@ private constructor(
     private val emails: JsonField<List<Email>>,
     private val phoneNumbers: JsonField<List<PhoneNumber>>,
     private val gender: JsonField<Gender>,
+    private val ethnicity: JsonField<Ethnicity>,
     private val dob: JsonField<String>,
     private val residence: JsonField<Location>,
     private val ssn: JsonField<String>,
@@ -61,6 +62,9 @@ private constructor(
     /** The gender of the individual. */
     fun gender(): Optional<Gender> = Optional.ofNullable(gender.getNullable("gender"))
 
+    /** The EEOC-defined ethnicity of the individual. */
+    fun ethnicity(): Optional<Ethnicity> = Optional.ofNullable(ethnicity.getNullable("ethnicity"))
+
     fun dob(): Optional<String> = Optional.ofNullable(dob.getNullable("dob"))
 
     fun residence(): Optional<Location> = Optional.ofNullable(residence.getNullable("residence"))
@@ -93,6 +97,9 @@ private constructor(
     /** The gender of the individual. */
     @JsonProperty("gender") @ExcludeMissing fun _gender() = gender
 
+    /** The EEOC-defined ethnicity of the individual. */
+    @JsonProperty("ethnicity") @ExcludeMissing fun _ethnicity() = ethnicity
+
     @JsonProperty("dob") @ExcludeMissing fun _dob() = dob
 
     @JsonProperty("residence") @ExcludeMissing fun _residence() = residence
@@ -117,6 +124,7 @@ private constructor(
             emails().map { it.forEach { it.validate() } }
             phoneNumbers().map { it.forEach { it.validate() } }
             gender()
+            ethnicity()
             dob()
             residence().map { it.validate() }
             ssn()
@@ -140,6 +148,7 @@ private constructor(
             this.emails == other.emails &&
             this.phoneNumbers == other.phoneNumbers &&
             this.gender == other.gender &&
+            this.ethnicity == other.ethnicity &&
             this.dob == other.dob &&
             this.residence == other.residence &&
             this.ssn == other.ssn &&
@@ -158,6 +167,7 @@ private constructor(
                     emails,
                     phoneNumbers,
                     gender,
+                    ethnicity,
                     dob,
                     residence,
                     ssn,
@@ -168,7 +178,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Individual{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, dob=$dob, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
+        "Individual{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -185,6 +195,7 @@ private constructor(
         private var emails: JsonField<List<Email>> = JsonMissing.of()
         private var phoneNumbers: JsonField<List<PhoneNumber>> = JsonMissing.of()
         private var gender: JsonField<Gender> = JsonMissing.of()
+        private var ethnicity: JsonField<Ethnicity> = JsonMissing.of()
         private var dob: JsonField<String> = JsonMissing.of()
         private var residence: JsonField<Location> = JsonMissing.of()
         private var ssn: JsonField<String> = JsonMissing.of()
@@ -200,6 +211,7 @@ private constructor(
             this.emails = individual.emails
             this.phoneNumbers = individual.phoneNumbers
             this.gender = individual.gender
+            this.ethnicity = individual.ethnicity
             this.dob = individual.dob
             this.residence = individual.residence
             this.ssn = individual.ssn
@@ -268,6 +280,14 @@ private constructor(
         @ExcludeMissing
         fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
 
+        /** The EEOC-defined ethnicity of the individual. */
+        fun ethnicity(ethnicity: Ethnicity) = ethnicity(JsonField.of(ethnicity))
+
+        /** The EEOC-defined ethnicity of the individual. */
+        @JsonProperty("ethnicity")
+        @ExcludeMissing
+        fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { this.ethnicity = ethnicity }
+
         fun dob(dob: String) = dob(JsonField.of(dob))
 
         @JsonProperty("dob")
@@ -318,6 +338,7 @@ private constructor(
                 emails.map { it.toUnmodifiable() },
                 phoneNumbers.map { it.toUnmodifiable() },
                 gender,
+                ethnicity,
                 dob,
                 residence,
                 ssn,
@@ -494,6 +515,104 @@ private constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+    }
+
+    class Ethnicity
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Ethnicity && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val ASIAN = Ethnicity(JsonField.of("asian"))
+
+            @JvmField val WHITE = Ethnicity(JsonField.of("white"))
+
+            @JvmField
+            val BLACK_OR_AFRICAN_AMERICAN = Ethnicity(JsonField.of("black_or_african_american"))
+
+            @JvmField
+            val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER =
+                Ethnicity(JsonField.of("native_hawaiian_or_pacific_islander"))
+
+            @JvmField
+            val AMERICAN_INDIAN_OR_ALASKA_NATIVE =
+                Ethnicity(JsonField.of("american_indian_or_alaska_native"))
+
+            @JvmField val HISPANIC_OR_LATINO = Ethnicity(JsonField.of("hispanic_or_latino"))
+
+            @JvmField val TWO_OR_MORE_RACES = Ethnicity(JsonField.of("two_or_more_races"))
+
+            @JvmField val DECLINE_TO_SPECIFY = Ethnicity(JsonField.of("decline_to_specify"))
+
+            @JvmStatic fun of(value: String) = Ethnicity(JsonField.of(value))
+        }
+
+        enum class Known {
+            ASIAN,
+            WHITE,
+            BLACK_OR_AFRICAN_AMERICAN,
+            NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER,
+            AMERICAN_INDIAN_OR_ALASKA_NATIVE,
+            HISPANIC_OR_LATINO,
+            TWO_OR_MORE_RACES,
+            DECLINE_TO_SPECIFY,
+        }
+
+        enum class Value {
+            ASIAN,
+            WHITE,
+            BLACK_OR_AFRICAN_AMERICAN,
+            NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER,
+            AMERICAN_INDIAN_OR_ALASKA_NATIVE,
+            HISPANIC_OR_LATINO,
+            TWO_OR_MORE_RACES,
+            DECLINE_TO_SPECIFY,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                ASIAN -> Value.ASIAN
+                WHITE -> Value.WHITE
+                BLACK_OR_AFRICAN_AMERICAN -> Value.BLACK_OR_AFRICAN_AMERICAN
+                NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER -> Value.NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER
+                AMERICAN_INDIAN_OR_ALASKA_NATIVE -> Value.AMERICAN_INDIAN_OR_ALASKA_NATIVE
+                HISPANIC_OR_LATINO -> Value.HISPANIC_OR_LATINO
+                TWO_OR_MORE_RACES -> Value.TWO_OR_MORE_RACES
+                DECLINE_TO_SPECIFY -> Value.DECLINE_TO_SPECIFY
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                ASIAN -> Known.ASIAN
+                WHITE -> Known.WHITE
+                BLACK_OR_AFRICAN_AMERICAN -> Known.BLACK_OR_AFRICAN_AMERICAN
+                NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER -> Known.NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER
+                AMERICAN_INDIAN_OR_ALASKA_NATIVE -> Known.AMERICAN_INDIAN_OR_ALASKA_NATIVE
+                HISPANIC_OR_LATINO -> Known.HISPANIC_OR_LATINO
+                TWO_OR_MORE_RACES -> Known.TWO_OR_MORE_RACES
+                DECLINE_TO_SPECIFY -> Known.DECLINE_TO_SPECIFY
+                else -> throw FinchInvalidDataException("Unknown Ethnicity: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
     }
 
     class Gender

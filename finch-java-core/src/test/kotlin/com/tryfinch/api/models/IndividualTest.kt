@@ -19,6 +19,7 @@ class IndividualTest {
                             .build()
                     )
                 )
+                .ethnicity(Individual.Ethnicity.ASIAN)
                 .firstName("string")
                 .gender(Individual.Gender.FEMALE)
                 .lastName("string")
@@ -53,6 +54,7 @@ class IndividualTest {
             .containsExactly(
                 Individual.Email.builder().data("string").type(Individual.Email.Type.WORK).build()
             )
+        assertThat(individual.ethnicity()).contains(Individual.Ethnicity.ASIAN)
         assertThat(individual.firstName()).contains("string")
         assertThat(individual.gender()).contains(Individual.Gender.FEMALE)
         assertThat(individual.lastName()).contains("string")

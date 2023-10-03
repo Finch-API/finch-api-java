@@ -3,6 +3,7 @@
 package com.tryfinch.api.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.*
 import com.tryfinch.api.services.blocking.*
 
@@ -17,6 +18,19 @@ interface FinchClient {
     fun account(): AccountService
 
     fun webhooks(): WebhookService
+
+    fun employer(): EmployerService
+
+    /**
+     * The Forward API allows you to make direct requests to an employment system. If Finch’s
+     * unified API doesn’t have a data model that cleanly fits your needs, then Forward allows you
+     * to push or pull data models directly against an integration’s API.
+     */
+    @JvmOverloads
+    fun forward(
+        params: ClientForwardParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): ForwardResponse
 
     fun getAccessToken(
         clientId: String,
