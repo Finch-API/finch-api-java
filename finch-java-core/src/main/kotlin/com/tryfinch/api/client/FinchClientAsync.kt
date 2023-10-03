@@ -19,6 +19,8 @@ interface FinchClientAsync {
 
     fun webhooks(): WebhookServiceAsync
 
+    fun requestForwarding(): RequestForwardingServiceAsync
+
     fun getAccessToken(
         clientId: String,
         clientSecret: String,
