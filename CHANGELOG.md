@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.4 (2023-10-04)
+
+Full Changelog: [v0.3.3...v0.3.4](https://github.com/Finch-API/finch-api-java/compare/v0.3.3...v0.3.4)
+
+### Features
+
+* **api:** add `/forward` endpoint and other updates ([#76](https://github.com/Finch-API/finch-api-java/issues/76)) ([f8590fa](https://github.com/Finch-API/finch-api-java/commit/f8590fa0796f77433470a2665bbfba5079b3b46e))
+
+
+### Chores
+
+* **docs:** adjust some docstrings ([#77](https://github.com/Finch-API/finch-api-java/issues/77)) ([a8cdb4f](https://github.com/Finch-API/finch-api-java/commit/a8cdb4f107a6b0a36aae4dceb26ab6289ae1f34e))
+* **docs:** adjust some docstrings ([#78](https://github.com/Finch-API/finch-api-java/issues/78)) ([9402e63](https://github.com/Finch-API/finch-api-java/commit/9402e630e7d9b6cb164e444fd8bfb6f5bb3d7c56))
+* **internal:** add a top-level generated comment to each file ([#79](https://github.com/Finch-API/finch-api-java/issues/79)) ([439d020](https://github.com/Finch-API/finch-api-java/commit/439d020b5caba0794e40aa85ed0aef9e16e07d5e))
+
 ## 0.3.3 (2023-09-25)
 
 Full Changelog: [v0.3.2...v0.3.3](https://github.com/Finch-API/finch-api-java/compare/v0.3.2...v0.3.3)
