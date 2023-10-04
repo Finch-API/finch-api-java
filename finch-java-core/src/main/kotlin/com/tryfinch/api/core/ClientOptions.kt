@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package com.tryfinch.api.core
 
 import com.fasterxml.jackson.databind.json.JsonMapper

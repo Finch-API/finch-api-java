@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package com.tryfinch.api.models
 
 import org.assertj.core.api.Assertions.assertThat
