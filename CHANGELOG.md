@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.5 (2023-10-11)
+
+Full Changelog: [v0.3.4...v0.3.5](https://github.com/Finch-API/finch-api-java/compare/v0.3.4...v0.3.5)
+
+### Bug Fixes
+
+* correct benfits to benefits ([#80](https://github.com/Finch-API/finch-api-java/issues/80)) ([049218c](https://github.com/Finch-API/finch-api-java/commit/049218cb6ffad8e864d8af6c09f783e5035bdb35))
+
 ## 0.3.4 (2023-10-04)
 
 Full Changelog: [v0.3.3...v0.3.4](https://github.com/Finch-API/finch-api-java/compare/v0.3.3...v0.3.4)
