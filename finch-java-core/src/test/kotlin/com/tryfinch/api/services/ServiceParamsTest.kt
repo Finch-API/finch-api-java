@@ -16,8 +16,8 @@ import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListPage
+import com.tryfinch.api.models.HrisDirectoryListParams
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -43,7 +43,7 @@ class ServiceParamsTest {
     }
 
     @Test
-    fun hrisDirectoryListIndividualsWithAdditionalParams() {
+    fun hrisDirectoryListWithAdditionalParams() {
         val additionalHeaders = mutableMapOf<String, List<String>>()
 
         additionalHeaders.put("x-test-header", listOf("abc1234"))
@@ -53,7 +53,7 @@ class ServiceParamsTest {
         additionalQueryParams.put("test_query_param", listOf("def567"))
 
         val params =
-            HrisDirectoryListIndividualsParams.builder()
+            HrisDirectoryListParams.builder()
                 .limit(123L)
                 .offset(123L)
                 .additionalHeaders(additionalHeaders)
@@ -61,7 +61,7 @@ class ServiceParamsTest {
                 .build()
 
         val apiResponse =
-            HrisDirectoryListIndividualsPage.Response.builder()
+            HrisDirectoryListPage.Response.builder()
                 .individuals(
                     listOf(
                         IndividualInDirectory.builder()
@@ -91,7 +91,7 @@ class ServiceParamsTest {
                 .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.hris().directory().listIndividuals(params)
+        client.hris().directory().list(params)
 
         verify(getRequestedFor(anyUrl()))
     }
