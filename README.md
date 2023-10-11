@@ -8,13 +8,11 @@
 
 The Finch Java SDK provides convenient access to the Finch REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
 
-This package is currently in beta (pre-v1.0.0). We expect some breaking changes to rarely-used areas of the SDK, and appreciate your [feedback](https://www.github.com/Finch-API/finch-api-java/issues).
-
 The Finch Java SDK is similar to the Finch Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
 ## Documentation
 
-The API documentation can be found [here](https://developer.tryfinch.com/).
+The API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
 
 ---
 
@@ -79,30 +77,30 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new hris directory, first use the `HrisDirectoryListIndividualsParams` builder to specify attributes,
-then pass that to the `listIndividuals` method of the `directory` service.
+To create a new hris directory, first use the `HrisDirectoryListParams` builder to specify attributes,
+then pass that to the `list` method of the `directory` service.
 
 ```java
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage;
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams;
+import com.tryfinch.api.models.HrisDirectoryListPage;
+import com.tryfinch.api.models.HrisDirectoryListParams;
 import com.tryfinch.api.models.Page;
 
-HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.builder()
+HrisDirectoryListParams params = HrisDirectoryListParams.builder()
     .candidateId("<candidate id>")
     .build();
-HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals(params);
+HrisDirectoryListPage hrisDirectory = client.directory().list(params);
 ```
 
 ### Example: listing resources
 
-The Finch API provides a `listIndividuals` method to get a paginated list of directory.
+The Finch API provides a `list` method to get a paginated list of directory.
 You can retrieve the first page by:
 
 ```java
 import com.tryfinch.api.models.IndividualInDirectory;
 import com.tryfinch.api.models.Page;
 
-HrisDirectoryListIndividualsPage page = client.directory().listIndividuals();
+HrisDirectoryListPage page = client.directory().list();
 for (IndividualInDirectory directory : page.individuals()) {
     System.out.println(directory);
 }
@@ -118,14 +116,14 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListIndividualsParams.builder()` to pass to
-the `listIndividuals` method of the `directory` service.
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListParams.builder()` to pass to
+the `list` method of the `directory` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
 ```java
-HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.builder()
+HrisDirectoryListParams params = HrisDirectoryListParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
     .build();
@@ -138,7 +136,7 @@ HrisDirectoryListIndividualsParams params = HrisDirectoryListIndividualsParams.b
 When receiving a response, the Finch Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
-HrisDirectoryListIndividualsPage hrisDirectory = client.directory().listIndividuals().validate();
+HrisDirectoryListPage hrisDirectory = client.directory().list().validate();
 ```
 
 ### Response properties as JSON
@@ -187,13 +185,13 @@ which automatically handles fetching more pages for you:
 
 ```java
 // As an Iterable:
-HrisDirectoryListIndividualsPage page = client.directory().listIndividuals(params);
+HrisDirectoryListPage page = client.directory().list(params);
 for (IndividualInDirectory directory : page.autoPager()) {
     System.out.println(directory);
 };
 
 // As a Stream:
-client.directory().listIndividuals(params).autoPager().stream()
+client.directory().list(params).autoPager().stream()
     .limit(50)
     .forEach(directory -> System.out.println(directory));
 ```
@@ -202,7 +200,7 @@ client.directory().listIndividuals(params).autoPager().stream()
 
 ```java
 // Using forEach, which returns CompletableFuture<Void>:
-asyncClient.directory().listIndividuals(params).autoPager()
+asyncClient.directory().list(params).autoPager()
     .forEach(directory -> System.out.println(directory), executor);
 ```
 
@@ -214,7 +212,7 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
 
 ```java
-HrisDirectoryListIndividualsPage page = client.directory().listIndividuals(params);
+HrisDirectoryListPage page = client.directory().list(params);
 while (page != null) {
     for (IndividualInDirectory directory : page.individuals()) {
         System.out.println(directory);
@@ -301,3 +299,14 @@ FinchClient client = FinchOkHttpClient.builder()
     ))
     .build();
 ```
+
+## Semantic Versioning
+
+This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
+
+1. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals)_.
+2. Changes that we do not expect to impact the vast majority of users in practice.
+
+We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
+
+We are keen for your feedback; please open an [issue](https://www.github.com/Finch-API/finch-api-java/issues) with questions, bugs, or suggestions.

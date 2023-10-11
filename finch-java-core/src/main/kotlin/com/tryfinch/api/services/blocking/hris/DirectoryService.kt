@@ -7,11 +7,21 @@ package com.tryfinch.api.services.blocking.hris
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListPage
+import com.tryfinch.api.models.HrisDirectoryListParams
 
 interface DirectoryService {
 
     /** Read company directory and organization structure */
     @JvmOverloads
+    fun list(
+        params: HrisDirectoryListParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): HrisDirectoryListPage
+
+    /** Read company directory and organization structure */
+    @JvmOverloads
+    @Deprecated("use `list` instead")
     fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
         requestOptions: RequestOptions = RequestOptions.none()

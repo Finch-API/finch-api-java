@@ -27,8 +27,8 @@ import com.tryfinch.api.errors.UnauthorizedException
 import com.tryfinch.api.errors.UnexpectedStatusCodeException
 import com.tryfinch.api.errors.UnprocessableEntityException
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListPage
+import com.tryfinch.api.models.HrisDirectoryListParams
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.InstanceOfAssertFactories
@@ -61,16 +61,16 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun directoryListIndividuals200() {
+    fun directoryList200() {
         val service = client.hris().directory()
 
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         val expected =
-            HrisDirectoryListIndividualsPage.of(
+            HrisDirectoryListPage.of(
                 service,
                 params,
-                HrisDirectoryListIndividualsPage.Response.builder()
+                HrisDirectoryListPage.Response.builder()
                     .individuals(
                         listOf(
                             IndividualInDirectory.builder()
@@ -98,110 +98,109 @@ class ErrorHandlingTest {
 
         stubFor(get(anyUrl()).willReturn(ok().withBody(toJson(expected.response()))))
 
-        assertThat(client.hris().directory().listIndividuals(params).response())
-            .isEqualTo(expected.response())
+        assertThat(client.hris().directory().list(params).response()).isEqualTo(expected.response())
     }
 
     @Test
-    fun directoryListIndividuals400() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+    fun directoryList400() {
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
                 .willReturn(status(400).withHeader("Foo", "Bar").withBody(toJson(FINCH_ERROR)))
         )
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertBadRequest(e, ImmutableListMultimap.of("Foo", "Bar"), FINCH_ERROR)
             })
     }
 
     @Test
-    fun directoryListIndividuals401() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+    fun directoryList401() {
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
                 .willReturn(status(401).withHeader("Foo", "Bar").withBody(toJson(FINCH_ERROR)))
         )
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertUnauthorized(e, ImmutableListMultimap.of("Foo", "Bar"), FINCH_ERROR)
             })
     }
 
     @Test
-    fun directoryListIndividuals403() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+    fun directoryList403() {
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
                 .willReturn(status(403).withHeader("Foo", "Bar").withBody(toJson(FINCH_ERROR)))
         )
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertPermissionDenied(e, ImmutableListMultimap.of("Foo", "Bar"), FINCH_ERROR)
             })
     }
 
     @Test
-    fun directoryListIndividuals404() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+    fun directoryList404() {
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
                 .willReturn(status(404).withHeader("Foo", "Bar").withBody(toJson(FINCH_ERROR)))
         )
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertNotFound(e, ImmutableListMultimap.of("Foo", "Bar"), FINCH_ERROR)
             })
     }
 
     @Test
-    fun directoryListIndividuals422() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+    fun directoryList422() {
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
                 .willReturn(status(422).withHeader("Foo", "Bar").withBody(toJson(FINCH_ERROR)))
         )
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertUnprocessableEntity(e, ImmutableListMultimap.of("Foo", "Bar"), FINCH_ERROR)
             })
     }
 
     @Test
-    fun directoryListIndividuals429() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+    fun directoryList429() {
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
                 .willReturn(status(429).withHeader("Foo", "Bar").withBody(toJson(FINCH_ERROR)))
         )
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertRateLimit(e, ImmutableListMultimap.of("Foo", "Bar"), FINCH_ERROR)
             })
     }
 
     @Test
-    fun directoryListIndividuals500() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+    fun directoryList500() {
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
                 .willReturn(status(500).withHeader("Foo", "Bar").withBody(toJson(FINCH_ERROR)))
         )
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertInternalServer(e, ImmutableListMultimap.of("Foo", "Bar"), FINCH_ERROR)
             })
@@ -209,14 +208,14 @@ class ErrorHandlingTest {
 
     @Test
     fun unexpectedStatusCode() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(
             get(anyUrl())
                 .willReturn(status(999).withHeader("Foo", "Bar").withBody(toJson(FINCH_ERROR)))
         )
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertUnexpectedStatusCodeException(
                     e,
@@ -229,11 +228,11 @@ class ErrorHandlingTest {
 
     @Test
     fun invalidBody() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(get(anyUrl()).willReturn(status(200).withBody("Not JSON")))
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertThat(e)
                     .isInstanceOf(FinchException::class.java)
@@ -243,11 +242,11 @@ class ErrorHandlingTest {
 
     @Test
     fun invalidErrorBody() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(123L).offset(123L).build()
+        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
 
         stubFor(get(anyUrl()).willReturn(status(400).withBody("Not JSON")))
 
-        assertThatThrownBy({ client.hris().directory().listIndividuals(params) })
+        assertThatThrownBy({ client.hris().directory().list(params) })
             .satisfies({ e ->
                 assertBadRequest(e, ImmutableListMultimap.of(), FinchError.builder().build())
             })
