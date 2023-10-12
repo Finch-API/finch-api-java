@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.google.common.collect.ListMultimap
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.getRequiredHeader
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
@@ -56,15 +57,9 @@ constructor(
                 throw FinchException("Invalid webhook secret")
             }
 
-        val eventId =
-            headers.get("finch-event-id").getOrNull(0)
-                ?: throw FinchException("Could not find finch-event-id header")
-        val msgSignture =
-            headers.get("finch-signature").getOrNull(0)
-                ?: throw FinchException("Could not find finch-signature header")
-        val msgTimestamp =
-            headers.get("finch-timestamp").getOrNull(0)
-                ?: throw FinchException("Could not find finch-timestamp header")
+        val eventId = headers.getRequiredHeader("finch-event-id")
+        val msgSignature = headers.getRequiredHeader("finch-signature")
+        val msgTimestamp = headers.getRequiredHeader("finch-timestamp")
 
         val timestamp =
             try {
@@ -86,7 +81,7 @@ constructor(
         val expectedSignature =
             mac.doFinal("$eventId.${timestamp.epochSecond}.$payload".toByteArray())
 
-        msgSignture.splitToSequence(" ").forEach {
+        msgSignature.splitToSequence(" ").forEach {
             val parts = it.split(",")
             if (parts.size != 2) {
                 return@forEach

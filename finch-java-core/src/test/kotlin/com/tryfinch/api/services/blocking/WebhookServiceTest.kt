@@ -30,7 +30,7 @@ class WebhookServiceTest {
         val payload = "{\"company_id\":\"720be419-0293-4d32-a707-32179b0827ab\"}"
         val headers =
             ImmutableListMultimap.of(
-                "finch-event-id",
+                "Finch-Event-Id",
                 "msg_2Lh9KRb0pzN4LePd3XiA4v12Axj",
                 "finch-timestamp",
                 "1676312382",
@@ -58,7 +58,7 @@ class WebhookServiceTest {
         val webhookSignature = "m7y0TV2C+hlHxU42wCieApTSTaA8/047OAplBqxIV/s="
         val headers =
             ImmutableListMultimap.of(
-                "finch-event-id",
+                "Finch-Event-Id",
                 webhookId,
                 "finch-timestamp",
                 webhookTimestamp,
@@ -72,7 +72,7 @@ class WebhookServiceTest {
                     .verifySignature(
                         payload,
                         ImmutableListMultimap.of(
-                            "finch-event-id",
+                            "Finch-Event-Id",
                             webhookId,
                             "finch-timestamp",
                             "1676312022",
@@ -91,7 +91,7 @@ class WebhookServiceTest {
                     .verifySignature(
                         payload,
                         ImmutableListMultimap.of(
-                            "finch-event-id",
+                            "Finch-Event-Id",
                             webhookId,
                             "finch-timestamp",
                             "1676312742",
@@ -118,7 +118,7 @@ class WebhookServiceTest {
                     .verifySignature(
                         payload,
                         ImmutableListMultimap.of(
-                            "finch-event-id",
+                            "Finch-Event-Id",
                             webhookId,
                             "finch-timestamp",
                             webhookTimestamp,
@@ -136,7 +136,7 @@ class WebhookServiceTest {
                     .verifySignature(
                         payload,
                         ImmutableListMultimap.of(
-                            "finch-event-id",
+                            "Finch-Event-Id",
                             webhookId,
                             "finch-timestamp",
                             webhookTimestamp,
@@ -155,7 +155,7 @@ class WebhookServiceTest {
                     .verifySignature(
                         payload,
                         ImmutableListMultimap.of(
-                            "finch-event-id",
+                            "Finch-Event-Id",
                             webhookId,
                             "finch-timestamp",
                             webhookTimestamp,
@@ -173,7 +173,7 @@ class WebhookServiceTest {
                     .verifySignature(
                         payload,
                         ImmutableListMultimap.of(
-                            "finch-event-id",
+                            "Finch-Event-Id",
                             webhookId,
                             "finch-timestamp",
                             webhookTimestamp,
