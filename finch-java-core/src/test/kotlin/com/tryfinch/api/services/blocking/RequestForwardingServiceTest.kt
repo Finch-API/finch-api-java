@@ -17,7 +17,7 @@ class RequestForwardingServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val requestForwardingService = client.requestForwarding()
         val requestForwardingForwardResponse =

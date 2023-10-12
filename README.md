@@ -42,18 +42,9 @@ implementation("com.tryfinch.api:finch-java:0.3.5")
 
 ### Configure the client
 
-Use `FinchOkHttpClient.builder()` to configure the client. At a minimum you need to set `.accessToken()`:
+Use `FinchOkHttpClient.builder()` to configure the client.
 
-```java
-import com.tryfinch.api.client.FinchClient;
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
-
-FinchClient client = FinchOkHttpClient.builder()
-    .accessToken("<your Access Token>")
-    .build();
-```
-
-Alternately, use `FinchOkHttpClient.fromEnv()` to read client arguments from environment variables:
+Alternately, set the environment with `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` or `FINCH_WEBHOOK_SECRET`, and use `FinchOkHttpClient.fromEnv()` to read from the environment.
 
 ```java
 FinchClient client = FinchOkHttpClient.fromEnv();

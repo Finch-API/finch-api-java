@@ -15,12 +15,12 @@ private constructor(
     @get:JvmName("jsonMapper") val jsonMapper: JsonMapper,
     @get:JvmName("clock") val clock: Clock,
     @get:JvmName("baseUrl") val baseUrl: String,
-    @get:JvmName("accessToken") val accessToken: String,
-    @get:JvmName("headers") val headers: ListMultimap<String, String>,
-    @get:JvmName("responseValidation") val responseValidation: Boolean,
+    @get:JvmName("accessToken") val accessToken: String?,
     @get:JvmName("clientId") val clientId: String?,
     @get:JvmName("clientSecret") val clientSecret: String?,
     @get:JvmName("webhookSecret") val webhookSecret: String?,
+    @get:JvmName("headers") val headers: ListMultimap<String, String>,
+    @get:JvmName("responseValidation") val responseValidation: Boolean,
 ) {
 
     companion object {
@@ -79,7 +79,7 @@ private constructor(
 
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
-        fun accessToken(accessToken: String) = apply { this.accessToken = accessToken }
+        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
 
         fun clientId(clientId: String?) = apply { this.clientId = clientId }
 
@@ -95,7 +95,6 @@ private constructor(
 
         fun build(): ClientOptions {
             checkNotNull(httpClient) { "`httpClient` is required but was not set" }
-            checkNotNull(accessToken) { "`accessToken` is required but was not set" }
 
             val headers = ArrayListMultimap.create<String, String>()
             headers.put("X-Stainless-Lang", "java")
@@ -117,12 +116,12 @@ private constructor(
                 jsonMapper ?: jsonMapper(),
                 clock,
                 baseUrl,
-                accessToken!!,
-                headers.toUnmodifiable(),
-                responseValidation,
+                accessToken,
                 clientId,
                 clientSecret,
                 webhookSecret,
+                headers.toUnmodifiable(),
+                responseValidation,
             )
         }
     }
