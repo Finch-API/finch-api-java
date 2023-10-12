@@ -41,8 +41,6 @@ class ErrorHandlingTest {
 
     private val JSON_MAPPER: JsonMapper = jsonMapper()
 
-    private val API_KEY: String = "accessToken"
-
     private val FINCH_ERROR: FinchError =
         FinchError.builder().putAdditionalProperty("key", JsonString.of("value")).build()
 
@@ -52,11 +50,11 @@ class ErrorHandlingTest {
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
         client =
             FinchOkHttpClient.builder()
-                .accessToken(API_KEY)
                 .baseUrl(wmRuntimeInfo.getHttpBaseUrl())
-                .clientId("string")
-                .clientSecret("string")
-                .webhookSecret("string")
+                .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
+                .webhookSecret("My Webhook Secret")
                 .build()
     }
 

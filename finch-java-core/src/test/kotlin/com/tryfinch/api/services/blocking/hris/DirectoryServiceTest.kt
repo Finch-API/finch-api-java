@@ -18,7 +18,7 @@ class DirectoryServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val directoryService = client.hris().directory()
         val getDirectoryResponse = directoryService.list(HrisDirectoryListParams.builder().build())
@@ -31,7 +31,7 @@ class DirectoryServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val directoryService = client.hris().directory()
         @Suppress("DEPRECATION")

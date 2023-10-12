@@ -18,7 +18,7 @@ class BenefitServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
         val createCompanyBenefitsResponse =
@@ -38,7 +38,7 @@ class BenefitServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
         val companyBenefit =
@@ -52,7 +52,7 @@ class BenefitServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
         val updateCompanyBenefitResponse =
@@ -68,7 +68,7 @@ class BenefitServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
         val getCompanyBenefitsResponse =
@@ -82,7 +82,7 @@ class BenefitServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
         val getCompanyBenefitsMetadataResponse =

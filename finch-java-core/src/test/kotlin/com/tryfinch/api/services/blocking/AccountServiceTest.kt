@@ -16,7 +16,7 @@ class AccountServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val accountService = client.account()
         val disconnectResponse =
@@ -30,7 +30,7 @@ class AccountServiceTest {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("test-api-key")
+                .accessToken("My Access Token")
                 .build()
         val accountService = client.account()
         val introspection = accountService.introspect(AccountIntrospectParams.builder().build())

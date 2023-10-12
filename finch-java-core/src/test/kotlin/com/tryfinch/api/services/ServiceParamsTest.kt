@@ -26,19 +26,17 @@ class ServiceParamsTest {
 
     private val JSON_MAPPER: JsonMapper = jsonMapper()
 
-    private val API_KEY: String = "accessToken"
-
     private lateinit var client: FinchClient
 
     @BeforeEach
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
         client =
             FinchOkHttpClient.builder()
-                .accessToken(API_KEY)
+                .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
+                .webhookSecret("My Webhook Secret")
                 .baseUrl(wmRuntimeInfo.getHttpBaseUrl())
-                .clientId("string")
-                .clientSecret("string")
-                .webhookSecret("string")
                 .build()
     }
 
