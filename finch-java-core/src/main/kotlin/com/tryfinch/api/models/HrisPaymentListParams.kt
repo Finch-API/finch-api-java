@@ -10,21 +10,21 @@ import java.util.Objects
 
 class HrisPaymentListParams
 constructor(
-    private val startDate: LocalDate,
     private val endDate: LocalDate,
+    private val startDate: LocalDate,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
 ) {
 
-    fun startDate(): LocalDate = startDate
-
     fun endDate(): LocalDate = endDate
+
+    fun startDate(): LocalDate = startDate
 
     @JvmSynthetic
     internal fun getQueryParams(): Map<String, List<String>> {
         val params = mutableMapOf<String, List<String>>()
-        this.startDate.let { params.put("start_date", listOf(it.toString())) }
         this.endDate.let { params.put("end_date", listOf(it.toString())) }
+        this.startDate.let { params.put("start_date", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
         return params.toUnmodifiable()
     }
@@ -41,23 +41,23 @@ constructor(
         }
 
         return other is HrisPaymentListParams &&
-            this.startDate == other.startDate &&
             this.endDate == other.endDate &&
+            this.startDate == other.startDate &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            startDate,
             endDate,
+            startDate,
             additionalQueryParams,
             additionalHeaders,
         )
     }
 
     override fun toString() =
-        "HrisPaymentListParams{startDate=$startDate, endDate=$endDate, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
+        "HrisPaymentListParams{endDate=$endDate, startDate=$startDate, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -69,24 +69,24 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var startDate: LocalDate? = null
         private var endDate: LocalDate? = null
+        private var startDate: LocalDate? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(hrisPaymentListParams: HrisPaymentListParams) = apply {
-            this.startDate = hrisPaymentListParams.startDate
             this.endDate = hrisPaymentListParams.endDate
+            this.startDate = hrisPaymentListParams.startDate
             additionalQueryParams(hrisPaymentListParams.additionalQueryParams)
             additionalHeaders(hrisPaymentListParams.additionalHeaders)
         }
 
-        /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
-        fun startDate(startDate: LocalDate) = apply { this.startDate = startDate }
-
         /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
         fun endDate(endDate: LocalDate) = apply { this.endDate = endDate }
+
+        /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+        fun startDate(startDate: LocalDate) = apply { this.startDate = startDate }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -130,8 +130,8 @@ constructor(
 
         fun build(): HrisPaymentListParams =
             HrisPaymentListParams(
-                checkNotNull(startDate) { "`startDate` is required but was not set" },
                 checkNotNull(endDate) { "`endDate` is required but was not set" },
+                checkNotNull(startDate) { "`startDate` is required but was not set" },
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
             )
