@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.6 (2023-10-12)
+
+Full Changelog: [v0.3.5...v0.3.6](https://github.com/Finch-API/finch-api-java/compare/v0.3.5...v0.3.6)
+
+### Chores
+
+* **internal:** rearrange client arguments ([#82](https://github.com/Finch-API/finch-api-java/issues/82)) ([a703739](https://github.com/Finch-API/finch-api-java/commit/a70373900b373560c739967026515ac92fc21892))
+
 ## 0.3.5 (2023-10-11)
 
 Full Changelog: [v0.3.4...v0.3.5](https://github.com/Finch-API/finch-api-java/compare/v0.3.4...v0.3.5)
