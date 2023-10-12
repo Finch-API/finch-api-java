@@ -24,8 +24,8 @@ class PaymentServiceTest {
         val getPaymentsResponse =
             paymentService.list(
                 HrisPaymentListParams.builder()
-                    .startDate(LocalDate.parse("2021-01-01"))
                     .endDate(LocalDate.parse("2021-01-01"))
+                    .startDate(LocalDate.parse("2021-01-01"))
                     .build()
             )
         println(getPaymentsResponse)
