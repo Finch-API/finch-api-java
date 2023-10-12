@@ -36,8 +36,6 @@ class FinchOkHttpClientAsync private constructor() {
 
         fun clock(clock: Clock) = apply { clientOptions.clock(clock) }
 
-        fun accessToken(accessToken: String) = apply { clientOptions.accessToken(accessToken) }
-
         fun headers(headers: Map<String, Iterable<String>>) = apply {
             clientOptions.headers(headers)
         }
@@ -63,6 +61,8 @@ class FinchOkHttpClientAsync private constructor() {
         fun responseValidation(responseValidation: Boolean) = apply {
             clientOptions.responseValidation(responseValidation)
         }
+
+        fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
 
         fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
 
