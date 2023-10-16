@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.0 (2023-10-16)
+
+Full Changelog: [v0.3.6...v0.4.0](https://github.com/Finch-API/finch-api-java/compare/v0.3.6...v0.4.0)
+
+### Features
+
+* make webhook headers case insensitive ([#87](https://github.com/Finch-API/finch-api-java/issues/87)) ([921143b](https://github.com/Finch-API/finch-api-java/commit/921143b43698f2f21a403bfd989e1c49b190da25))
+
+
+### Chores
+
+* **internal:** minor reformatting ([#84](https://github.com/Finch-API/finch-api-java/issues/84)) ([d3c0044](https://github.com/Finch-API/finch-api-java/commit/d3c0044f6442be5d9880e545053a06ae58c53222))
+
+
+### Documentation
+
+* organisation -&gt; organization (UK to US English) ([#88](https://github.com/Finch-API/finch-api-java/issues/88)) ([6907cdb](https://github.com/Finch-API/finch-api-java/commit/6907cdb0f1599a87ddc4683534c89b428f8710e5))
+
 ## 0.3.6 (2023-10-12)
 
 Full Changelog: [v0.3.5...v0.3.6](https://github.com/Finch-API/finch-api-java/compare/v0.3.5...v0.3.6)
