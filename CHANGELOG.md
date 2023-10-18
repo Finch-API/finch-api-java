@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 (2023-10-18)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/Finch-API/finch-api-java/compare/v0.4.0...v0.4.1)
+
+### Chores
+
+* **internal:** add missing deprecation notice ([#89](https://github.com/Finch-API/finch-api-java/issues/89)) ([697ae9a](https://github.com/Finch-API/finch-api-java/commit/697ae9a413d75372b9252427592947e54a807519))
+
 ## 0.4.0 (2023-10-16)
 
 Full Changelog: [v0.3.6...v0.4.0](https://github.com/Finch-API/finch-api-java/compare/v0.3.6...v0.4.0)
