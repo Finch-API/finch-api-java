@@ -76,6 +76,7 @@ private constructor(
     }
 
     fun getNextPage(): Optional<HrisDirectoryListIndividualsPage> {
+        @Suppress("DEPRECATION")
         return getNextPageParams().map { directoryService.listIndividuals(it) }
     }
 
