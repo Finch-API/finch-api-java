@@ -77,6 +77,7 @@ private constructor(
     }
 
     fun getNextPage(): CompletableFuture<Optional<HrisDirectoryListIndividualsPageAsync>> {
+        @Suppress("DEPRECATION")
         return getNextPageParams()
             .map { directoryService.listIndividuals(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
