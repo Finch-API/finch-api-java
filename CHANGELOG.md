@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2 (2023-10-19)
+
+Full Changelog: [v0.4.1...v0.4.2](https://github.com/Finch-API/finch-api-java/compare/v0.4.1...v0.4.2)
+
 ## 0.4.1 (2023-10-18)
 
 Full Changelog: [v0.4.0...v0.4.1](https://github.com/Finch-API/finch-api-java/compare/v0.4.0...v0.4.1)
