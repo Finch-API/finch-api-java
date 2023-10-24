@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 (2023-10-24)
+
+Full Changelog: [v0.4.2...v0.5.0](https://github.com/Finch-API/finch-api-java/compare/v0.4.2...v0.5.0)
+
+### Features
+
+* **client:** adjust retry behavior ([#93](https://github.com/Finch-API/finch-api-java/issues/93)) ([cdfcc14](https://github.com/Finch-API/finch-api-java/commit/cdfcc14e1a04c0bac09e5803d160046827ae8783))
+
 ## 0.4.2 (2023-10-19)
 
 Full Changelog: [v0.4.1...v0.4.2](https://github.com/Finch-API/finch-api-java/compare/v0.4.1...v0.4.2)
