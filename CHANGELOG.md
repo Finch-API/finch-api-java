@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0 (2023-10-31)
+
+Full Changelog: [v0.5.1...v0.6.0](https://github.com/Finch-API/finch-api-java/compare/v0.5.1...v0.6.0)
+
+### Features
+
+* **github:** include a devcontainer setup ([#97](https://github.com/Finch-API/finch-api-java/issues/97)) ([d38039d](https://github.com/Finch-API/finch-api-java/commit/d38039dd8453f03935240367d2abb1d9f23a4902))
+
 ## 0.5.1 (2023-10-24)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/Finch-API/finch-api-java/compare/v0.5.0...v0.5.1)
