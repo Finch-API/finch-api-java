@@ -79,7 +79,7 @@ import com.tryfinch.api.models.Page;
 HrisDirectoryListParams params = HrisDirectoryListParams.builder()
     .candidateId("<candidate id>")
     .build();
-HrisDirectoryListPage hrisDirectory = client.directory().list(params);
+HrisDirectoryListPage page = client.hris().directory().list(params);
 ```
 
 ### Example: listing resources
@@ -91,7 +91,7 @@ You can retrieve the first page by:
 import com.tryfinch.api.models.IndividualInDirectory;
 import com.tryfinch.api.models.Page;
 
-HrisDirectoryListPage page = client.directory().list();
+HrisDirectoryListPage page = client.hris().directory().list();
 for (IndividualInDirectory directory : page.individuals()) {
     System.out.println(directory);
 }
@@ -127,7 +127,7 @@ HrisDirectoryListParams params = HrisDirectoryListParams.builder()
 When receiving a response, the Finch Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
-HrisDirectoryListPage hrisDirectory = client.directory().list().validate();
+HrisDirectoryListPage page = client.hris().directory().list().validate();
 ```
 
 ### Response properties as JSON
@@ -157,7 +157,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```java
-JsonValue secret = hrisDirectory._additionalProperties().get("secret_field");
+JsonValue secret = page._additionalProperties().get("secret_field");
 ```
 
 ---
@@ -176,13 +176,13 @@ which automatically handles fetching more pages for you:
 
 ```java
 // As an Iterable:
-HrisDirectoryListPage page = client.directory().list(params);
+HrisDirectoryListPage page = client.hris().directory().list(params);
 for (IndividualInDirectory directory : page.autoPager()) {
     System.out.println(directory);
 };
 
 // As a Stream:
-client.directory().list(params).autoPager().stream()
+client.hris().directory().list(params).autoPager().stream()
     .limit(50)
     .forEach(directory -> System.out.println(directory));
 ```
@@ -191,7 +191,7 @@ client.directory().list(params).autoPager().stream()
 
 ```java
 // Using forEach, which returns CompletableFuture<Void>:
-asyncClient.directory().list(params).autoPager()
+asyncClient.hris().directory().list(params).autoPager()
     .forEach(directory -> System.out.println(directory), executor);
 ```
 
@@ -203,7 +203,7 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
 
 ```java
-HrisDirectoryListPage page = client.directory().list(params);
+HrisDirectoryListPage page = client.hris().directory().list(params);
 while (page != null) {
     for (IndividualInDirectory directory : page.individuals()) {
         System.out.println(directory);
