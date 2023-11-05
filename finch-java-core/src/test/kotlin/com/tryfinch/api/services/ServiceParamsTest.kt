@@ -41,7 +41,7 @@ class ServiceParamsTest {
     }
 
     @Test
-    fun hrisDirectoryListWithAdditionalParams() {
+    fun directoriesListWithAdditionalParams() {
         val additionalHeaders = mutableMapOf<String, List<String>>()
 
         additionalHeaders.put("x-test-header", listOf("abc1234"))
