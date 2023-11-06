@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.8.0 (2023-11-06)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/Finch-API/finch-api-java/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **client:** allow binary returns ([#99](https://github.com/Finch-API/finch-api-java/issues/99)) ([6232afc](https://github.com/Finch-API/finch-api-java/commit/6232afc5972c220c5940550147d56ff2699e930f))
+
+
+### Documentation
+
+* **readme:** improve example snippets ([#101](https://github.com/Finch-API/finch-api-java/issues/101)) ([522188f](https://github.com/Finch-API/finch-api-java/commit/522188f904fa5c59c56c67b867aebe66bbab5ef0))
+
 ## 0.7.0 (2023-11-05)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/Finch-API/finch-api-java/compare/v0.6.0...v0.7.0)
