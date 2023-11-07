@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.1 (2023-11-07)
+
+Full Changelog: [v0.8.0...v0.8.1](https://github.com/Finch-API/finch-api-java/compare/v0.8.0...v0.8.1)
+
+### Chores
+
+* **docs:** fix some typos ([#103](https://github.com/Finch-API/finch-api-java/issues/103)) ([a7b027e](https://github.com/Finch-API/finch-api-java/commit/a7b027ea211d77569fe5b54e0c8a94594673bfe3))
+
 ## 0.8.0 (2023-11-06)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/Finch-API/finch-api-java/compare/v0.7.0...v0.8.0)
