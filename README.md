@@ -219,7 +219,7 @@ while (page != null) {
 
 ## Webhook Verification
 
-We provide helper methods for verifying that a webhook request came from LiFinchthic, and not a malicious third party.
+We provide helper methods for verifying that a webhook request came from Finch, and not a malicious third party.
 
 You can use `finch.webhooks().verifySignature(body, headers, secret?)` or `finch.webhooks().unwrap(body, headers, secret?)`,
 both of which will raise an error if the signature is invalid.
