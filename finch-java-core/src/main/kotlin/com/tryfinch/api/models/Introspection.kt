@@ -20,6 +20,7 @@ class Introspection
 private constructor(
     private val clientId: JsonField<String>,
     private val companyId: JsonField<String>,
+    private val accountId: JsonField<String>,
     private val products: JsonField<List<String>>,
     private val username: JsonField<String>,
     private val payrollProviderId: JsonField<String>,
@@ -36,6 +37,9 @@ private constructor(
 
     /** The Finch uuid of the company associated with the `access_token`. */
     fun companyId(): String = companyId.getRequired("company_id")
+
+    /** The Finch uuid of the account used to connect this company. */
+    fun accountId(): String = accountId.getRequired("account_id")
 
     /** An array of the authorized products associated with the `access_token`. */
     fun products(): List<String> = products.getRequired("products")
@@ -57,6 +61,9 @@ private constructor(
 
     /** The Finch uuid of the company associated with the `access_token`. */
     @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+
+    /** The Finch uuid of the account used to connect this company. */
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
 
     /** An array of the authorized products associated with the `access_token`. */
     @JsonProperty("products") @ExcludeMissing fun _products() = products
@@ -83,6 +90,7 @@ private constructor(
         if (!validated) {
             clientId()
             companyId()
+            accountId()
             products()
             username()
             payrollProviderId()
@@ -101,6 +109,7 @@ private constructor(
         return other is Introspection &&
             this.clientId == other.clientId &&
             this.companyId == other.companyId &&
+            this.accountId == other.accountId &&
             this.products == other.products &&
             this.username == other.username &&
             this.payrollProviderId == other.payrollProviderId &&
@@ -114,6 +123,7 @@ private constructor(
                 Objects.hash(
                     clientId,
                     companyId,
+                    accountId,
                     products,
                     username,
                     payrollProviderId,
@@ -125,7 +135,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Introspection{clientId=$clientId, companyId=$companyId, products=$products, username=$username, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
+        "Introspection{clientId=$clientId, companyId=$companyId, accountId=$accountId, products=$products, username=$username, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -136,6 +146,7 @@ private constructor(
 
         private var clientId: JsonField<String> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
+        private var accountId: JsonField<String> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
         private var username: JsonField<String> = JsonMissing.of()
         private var payrollProviderId: JsonField<String> = JsonMissing.of()
@@ -146,6 +157,7 @@ private constructor(
         internal fun from(introspection: Introspection) = apply {
             this.clientId = introspection.clientId
             this.companyId = introspection.companyId
+            this.accountId = introspection.accountId
             this.products = introspection.products
             this.username = introspection.username
             this.payrollProviderId = introspection.payrollProviderId
@@ -168,6 +180,14 @@ private constructor(
         @JsonProperty("company_id")
         @ExcludeMissing
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+
+        /** The Finch uuid of the account used to connect this company. */
+        fun accountId(accountId: String) = accountId(JsonField.of(accountId))
+
+        /** The Finch uuid of the account used to connect this company. */
+        @JsonProperty("account_id")
+        @ExcludeMissing
+        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /** An array of the authorized products associated with the `access_token`. */
         fun products(products: List<String>) = products(JsonField.of(products))
@@ -228,6 +248,7 @@ private constructor(
             Introspection(
                 clientId,
                 companyId,
+                accountId,
                 products.map { it.toUnmodifiable() },
                 username,
                 payrollProviderId,
