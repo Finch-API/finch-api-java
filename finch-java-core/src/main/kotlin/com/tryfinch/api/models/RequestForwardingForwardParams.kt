@@ -68,8 +68,8 @@ constructor(
         private var hashCode: Int = 0
 
         /**
-         * The HTTP method for the forwarded request. Valid values include: `GET`, `POST`, `PUT`,
-         * `DELETE`, and `PATCH`.
+         * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
+         * `DELETE` , and `PATCH`.
          */
         @JsonProperty("method") fun method(): String? = method
 
@@ -161,8 +161,8 @@ constructor(
             }
 
             /**
-             * The HTTP method for the forwarded request. Valid values include: `GET`, `POST`,
-             * `PUT`, `DELETE`, and `PATCH`.
+             * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` ,
+             * `PUT` , `DELETE` , and `PATCH`.
              */
             @JsonProperty("method") fun method(method: String) = apply { this.method = method }
 
@@ -289,8 +289,8 @@ constructor(
         }
 
         /**
-         * The HTTP method for the forwarded request. Valid values include: `GET`, `POST`, `PUT`,
-         * `DELETE`, and `PATCH`.
+         * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
+         * `DELETE` , and `PATCH`.
          */
         fun method(method: String) = apply { this.method = method }
 

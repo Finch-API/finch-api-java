@@ -33,17 +33,21 @@ private constructor(
 
         @JvmField val EVERY_PAYCHECK = BenefitFrequency(JsonField.of("every_paycheck"))
 
+        @JvmField val MONTHLY = BenefitFrequency(JsonField.of("monthly"))
+
         @JvmStatic fun of(value: String) = BenefitFrequency(JsonField.of(value))
     }
 
     enum class Known {
         ONE_TIME,
         EVERY_PAYCHECK,
+        MONTHLY,
     }
 
     enum class Value {
         ONE_TIME,
         EVERY_PAYCHECK,
+        MONTHLY,
         _UNKNOWN,
     }
 
@@ -51,6 +55,7 @@ private constructor(
         when (this) {
             ONE_TIME -> Value.ONE_TIME
             EVERY_PAYCHECK -> Value.EVERY_PAYCHECK
+            MONTHLY -> Value.MONTHLY
             else -> Value._UNKNOWN
         }
 
@@ -58,6 +63,7 @@ private constructor(
         when (this) {
             ONE_TIME -> Known.ONE_TIME
             EVERY_PAYCHECK -> Known.EVERY_PAYCHECK
+            MONTHLY -> Known.MONTHLY
             else -> throw FinchInvalidDataException("Unknown BenefitFrequency: $value")
         }
 
