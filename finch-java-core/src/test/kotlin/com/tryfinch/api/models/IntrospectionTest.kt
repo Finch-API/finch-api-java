@@ -11,6 +11,7 @@ class IntrospectionTest {
     fun createIntrospection() {
         val introspection =
             Introspection.builder()
+                .accountId("string")
                 .clientId("string")
                 .companyId("string")
                 .manual(true)
@@ -19,6 +20,7 @@ class IntrospectionTest {
                 .username("string")
                 .build()
         assertThat(introspection).isNotNull
+        assertThat(introspection.accountId()).isEqualTo("string")
         assertThat(introspection.clientId()).isEqualTo("string")
         assertThat(introspection.companyId()).isEqualTo("string")
         assertThat(introspection.manual()).isEqualTo(true)

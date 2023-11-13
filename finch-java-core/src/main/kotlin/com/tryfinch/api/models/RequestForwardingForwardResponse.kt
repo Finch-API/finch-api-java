@@ -236,8 +236,8 @@ private constructor(
         private var hashCode: Int = 0
 
         /**
-         * The HTTP method that was specified for the forwarded request. Valid values include:
-         * `GET`, `POST`, `PUT` , `DELETE`, and `PATCH`.
+         * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
+         * , `POST` , `PUT` , `DELETE` , and `PATCH`.
          */
         fun method(): String = method.getRequired("method")
 
@@ -252,8 +252,8 @@ private constructor(
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
         /**
-         * The HTTP method that was specified for the forwarded request. Valid values include:
-         * `GET`, `POST`, `PUT` , `DELETE`, and `PATCH`.
+         * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
+         * , `POST` , `PUT` , `DELETE` , and `PATCH`.
          */
         @JsonProperty("method") @ExcludeMissing fun _method() = method
 
@@ -352,13 +352,13 @@ private constructor(
 
             /**
              * The HTTP method that was specified for the forwarded request. Valid values include:
-             * `GET`, `POST`, `PUT` , `DELETE`, and `PATCH`.
+             * `GET` , `POST` , `PUT` , `DELETE` , and `PATCH`.
              */
             fun method(method: String) = method(JsonField.of(method))
 
             /**
              * The HTTP method that was specified for the forwarded request. Valid values include:
-             * `GET`, `POST`, `PUT` , `DELETE`, and `PATCH`.
+             * `GET` , `POST` , `PUT` , `DELETE` , and `PATCH`.
              */
             @JsonProperty("method")
             @ExcludeMissing

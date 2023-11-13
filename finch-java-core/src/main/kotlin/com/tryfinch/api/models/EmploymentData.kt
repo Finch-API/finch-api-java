@@ -36,6 +36,7 @@ private constructor(
     private val location: JsonField<Location>,
     private val income: JsonField<Income>,
     private val incomeHistory: JsonField<List<Income>>,
+    private val customFields: JsonField<List<CustomField>>,
     private val sourceId: JsonField<String>,
     private val workId: JsonField<String>,
     private val workId2: JsonField<String>,
@@ -95,6 +96,13 @@ private constructor(
     /** The array of income history. */
     fun incomeHistory(): Optional<List<Income>> =
         Optional.ofNullable(incomeHistory.getNullable("income_history"))
+
+    /**
+     * Custom fields for the individual. These are fields which are defined by the employer in the
+     * system.
+     */
+    fun customFields(): Optional<List<CustomField>> =
+        Optional.ofNullable(customFields.getNullable("custom_fields"))
 
     /** The source system's unique employment identifier for this individual */
     fun sourceId(): Optional<String> = Optional.ofNullable(sourceId.getNullable("source_id"))
@@ -164,6 +172,12 @@ private constructor(
     /** The array of income history. */
     @JsonProperty("income_history") @ExcludeMissing fun _incomeHistory() = incomeHistory
 
+    /**
+     * Custom fields for the individual. These are fields which are defined by the employer in the
+     * system.
+     */
+    @JsonProperty("custom_fields") @ExcludeMissing fun _customFields() = customFields
+
     /** The source system's unique employment identifier for this individual */
     @JsonProperty("source_id") @ExcludeMissing fun _sourceId() = sourceId
 
@@ -206,6 +220,7 @@ private constructor(
             location().map { it.validate() }
             income().map { it.validate() }
             incomeHistory().map { it.forEach { it.validate() } }
+            customFields().map { it.forEach { it.validate() } }
             sourceId()
             workId()
             workId2()
@@ -237,6 +252,7 @@ private constructor(
             this.location == other.location &&
             this.income == other.income &&
             this.incomeHistory == other.incomeHistory &&
+            this.customFields == other.customFields &&
             this.sourceId == other.sourceId &&
             this.workId == other.workId &&
             this.workId2 == other.workId2 &&
@@ -263,6 +279,7 @@ private constructor(
                     location,
                     income,
                     incomeHistory,
+                    customFields,
                     sourceId,
                     workId,
                     workId2,
@@ -274,7 +291,7 @@ private constructor(
     }
 
     override fun toString() =
-        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, workId2=$workId2, payGroupIds=$payGroupIds, additionalProperties=$additionalProperties}"
+        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, workId=$workId, workId2=$workId2, payGroupIds=$payGroupIds, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -298,6 +315,7 @@ private constructor(
         private var location: JsonField<Location> = JsonMissing.of()
         private var income: JsonField<Income> = JsonMissing.of()
         private var incomeHistory: JsonField<List<Income>> = JsonMissing.of()
+        private var customFields: JsonField<List<CustomField>> = JsonMissing.of()
         private var sourceId: JsonField<String> = JsonMissing.of()
         private var workId: JsonField<String> = JsonMissing.of()
         private var workId2: JsonField<String> = JsonMissing.of()
@@ -321,6 +339,7 @@ private constructor(
             this.location = employmentData.location
             this.income = employmentData.income
             this.incomeHistory = employmentData.incomeHistory
+            this.customFields = employmentData.customFields
             this.sourceId = employmentData.sourceId
             this.workId = employmentData.workId
             this.workId2 = employmentData.workId2
@@ -450,6 +469,22 @@ private constructor(
             this.incomeHistory = incomeHistory
         }
 
+        /**
+         * Custom fields for the individual. These are fields which are defined by the employer in
+         * the system.
+         */
+        fun customFields(customFields: List<CustomField>) = customFields(JsonField.of(customFields))
+
+        /**
+         * Custom fields for the individual. These are fields which are defined by the employer in
+         * the system.
+         */
+        @JsonProperty("custom_fields")
+        @ExcludeMissing
+        fun customFields(customFields: JsonField<List<CustomField>>) = apply {
+            this.customFields = customFields
+        }
+
         /** The source system's unique employment identifier for this individual */
         fun sourceId(sourceId: String) = sourceId(JsonField.of(sourceId))
 
@@ -533,12 +568,122 @@ private constructor(
                 location,
                 income,
                 incomeHistory.map { it.toUnmodifiable() },
+                customFields.map { it.toUnmodifiable() },
                 sourceId,
                 workId,
                 workId2,
                 payGroupIds.map { it.toUnmodifiable() },
                 additionalProperties.toUnmodifiable(),
             )
+    }
+
+    @JsonDeserialize(builder = CustomField.Builder::class)
+    @NoAutoDetect
+    class CustomField
+    private constructor(
+        private val name: JsonField<String>,
+        private val value: JsonValue,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var validated: Boolean = false
+
+        private var hashCode: Int = 0
+
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+
+        @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+        @JsonProperty("value") @ExcludeMissing fun _value() = value
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun validate(): CustomField = apply {
+            if (!validated) {
+                name()
+                validated = true
+            }
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is CustomField &&
+                this.name == other.name &&
+                this.value == other.value &&
+                this.additionalProperties == other.additionalProperties
+        }
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        name,
+                        value,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "CustomField{name=$name, value=$value, additionalProperties=$additionalProperties}"
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var name: JsonField<String> = JsonMissing.of()
+            private var value: JsonValue = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(customField: CustomField) = apply {
+                this.name = customField.name
+                this.value = customField.value
+                additionalProperties(customField.additionalProperties)
+            }
+
+            fun name(name: String) = name(JsonField.of(name))
+
+            @JsonProperty("name")
+            @ExcludeMissing
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            @JsonProperty("value")
+            @ExcludeMissing
+            fun value(value: JsonValue) = apply { this.value = value }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): CustomField =
+                CustomField(
+                    name,
+                    value,
+                    additionalProperties.toUnmodifiable(),
+                )
+        }
     }
 
     /** The department object. */
