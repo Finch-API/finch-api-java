@@ -33,6 +33,7 @@ private constructor(
     private val dob: JsonField<String>,
     private val residence: JsonField<Location>,
     private val ssn: JsonField<String>,
+    private val encryptedSsn: JsonField<String>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -77,6 +78,13 @@ private constructor(
      */
     fun ssn(): Optional<String> = Optional.ofNullable(ssn.getNullable("ssn"))
 
+    /**
+     * Note: This property is only available if enabled for your account. Please reach out to your
+     * Finch representative if you would like access.
+     */
+    fun encryptedSsn(): Optional<String> =
+        Optional.ofNullable(encryptedSsn.getNullable("encrypted_ssn"))
+
     /** A stable Finch `id` (UUID v4) for an individual in the company. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
 
@@ -112,6 +120,12 @@ private constructor(
      */
     @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
 
+    /**
+     * Note: This property is only available if enabled for your account. Please reach out to your
+     * Finch representative if you would like access.
+     */
+    @JsonProperty("encrypted_ssn") @ExcludeMissing fun _encryptedSsn() = encryptedSsn
+
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -130,6 +144,7 @@ private constructor(
             dob()
             residence().map { it.validate() }
             ssn()
+            encryptedSsn()
             validated = true
         }
     }
@@ -154,6 +169,7 @@ private constructor(
             this.dob == other.dob &&
             this.residence == other.residence &&
             this.ssn == other.ssn &&
+            this.encryptedSsn == other.encryptedSsn &&
             this.additionalProperties == other.additionalProperties
     }
 
@@ -173,6 +189,7 @@ private constructor(
                     dob,
                     residence,
                     ssn,
+                    encryptedSsn,
                     additionalProperties,
                 )
         }
@@ -180,7 +197,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Individual{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
+        "Individual{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, residence=$residence, ssn=$ssn, encryptedSsn=$encryptedSsn, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -201,6 +218,7 @@ private constructor(
         private var dob: JsonField<String> = JsonMissing.of()
         private var residence: JsonField<Location> = JsonMissing.of()
         private var ssn: JsonField<String> = JsonMissing.of()
+        private var encryptedSsn: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -217,6 +235,7 @@ private constructor(
             this.dob = individual.dob
             this.residence = individual.residence
             this.ssn = individual.ssn
+            this.encryptedSsn = individual.encryptedSsn
             additionalProperties(individual.additionalProperties)
         }
 
@@ -316,6 +335,22 @@ private constructor(
         @ExcludeMissing
         fun ssn(ssn: JsonField<String>) = apply { this.ssn = ssn }
 
+        /**
+         * Note: This property is only available if enabled for your account. Please reach out to
+         * your Finch representative if you would like access.
+         */
+        fun encryptedSsn(encryptedSsn: String) = encryptedSsn(JsonField.of(encryptedSsn))
+
+        /**
+         * Note: This property is only available if enabled for your account. Please reach out to
+         * your Finch representative if you would like access.
+         */
+        @JsonProperty("encrypted_ssn")
+        @ExcludeMissing
+        fun encryptedSsn(encryptedSsn: JsonField<String>) = apply {
+            this.encryptedSsn = encryptedSsn
+        }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             this.additionalProperties.putAll(additionalProperties)
@@ -344,6 +379,7 @@ private constructor(
                 dob,
                 residence,
                 ssn,
+                encryptedSsn,
                 additionalProperties.toUnmodifiable(),
             )
     }

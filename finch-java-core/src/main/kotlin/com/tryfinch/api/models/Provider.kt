@@ -2205,7 +2205,7 @@ private constructor(
                 private val employment: JsonField<Employment>,
                 private val income: JsonField<Income>,
                 private val location: JsonField<Location>,
-                private val manager: JsonValue,
+                private val manager: JsonField<Manager>,
                 private val additionalProperties: Map<String, JsonValue>,
             ) {
 
@@ -2254,6 +2254,9 @@ private constructor(
 
                 fun location(): Optional<Location> =
                     Optional.ofNullable(location.getNullable("location"))
+
+                fun manager(): Optional<Manager> =
+                    Optional.ofNullable(manager.getNullable("manager"))
 
                 @JsonProperty("id") @ExcludeMissing fun _id() = id
 
@@ -2308,6 +2311,7 @@ private constructor(
                         employment().map { it.validate() }
                         income().map { it.validate() }
                         location().map { it.validate() }
+                        manager().map { it.validate() }
                         validated = true
                     }
                 }
@@ -2390,7 +2394,7 @@ private constructor(
                     private var employment: JsonField<Employment> = JsonMissing.of()
                     private var income: JsonField<Income> = JsonMissing.of()
                     private var location: JsonField<Location> = JsonMissing.of()
-                    private var manager: JsonValue = JsonMissing.of()
+                    private var manager: JsonField<Manager> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
@@ -2523,9 +2527,11 @@ private constructor(
                     @ExcludeMissing
                     fun location(location: JsonField<Location>) = apply { this.location = location }
 
+                    fun manager(manager: Manager) = manager(JsonField.of(manager))
+
                     @JsonProperty("manager")
                     @ExcludeMissing
-                    fun manager(manager: JsonValue) = apply { this.manager = manager }
+                    fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -3097,6 +3103,97 @@ private constructor(
                             )
                     }
                 }
+
+                @JsonDeserialize(builder = Manager.Builder::class)
+                @NoAutoDetect
+                class Manager
+                private constructor(
+                    private val id: JsonField<Boolean>,
+                    private val additionalProperties: Map<String, JsonValue>,
+                ) {
+
+                    private var validated: Boolean = false
+
+                    private var hashCode: Int = 0
+
+                    fun id(): Optional<Boolean> = Optional.ofNullable(id.getNullable("id"))
+
+                    @JsonProperty("id") @ExcludeMissing fun _id() = id
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                    fun validate(): Manager = apply {
+                        if (!validated) {
+                            id()
+                            validated = true
+                        }
+                    }
+
+                    fun toBuilder() = Builder().from(this)
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is Manager &&
+                            this.id == other.id &&
+                            this.additionalProperties == other.additionalProperties
+                    }
+
+                    override fun hashCode(): Int {
+                        if (hashCode == 0) {
+                            hashCode = Objects.hash(id, additionalProperties)
+                        }
+                        return hashCode
+                    }
+
+                    override fun toString() =
+                        "Manager{id=$id, additionalProperties=$additionalProperties}"
+
+                    companion object {
+
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    class Builder {
+
+                        private var id: JsonField<Boolean> = JsonMissing.of()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(manager: Manager) = apply {
+                            this.id = manager.id
+                            additionalProperties(manager.additionalProperties)
+                        }
+
+                        fun id(id: Boolean) = id(JsonField.of(id))
+
+                        @JsonProperty("id")
+                        @ExcludeMissing
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                this.additionalProperties.putAll(additionalProperties)
+                            }
+
+                        @JsonAnySetter
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            this.additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun build(): Manager = Manager(id, additionalProperties.toUnmodifiable())
+                    }
+                }
             }
 
             @JsonDeserialize(builder = SupportedIndividualFields.Builder::class)
@@ -3112,6 +3209,7 @@ private constructor(
                 private val gender: JsonField<Boolean>,
                 private val ethnicity: JsonField<Boolean>,
                 private val ssn: JsonField<Boolean>,
+                private val encryptedSsn: JsonField<Boolean>,
                 private val emails: JsonField<Emails>,
                 private val phoneNumbers: JsonField<PhoneNumbers>,
                 private val residence: JsonField<Residence>,
@@ -3145,6 +3243,9 @@ private constructor(
 
                 fun ssn(): Optional<Boolean> = Optional.ofNullable(ssn.getNullable("ssn"))
 
+                fun encryptedSsn(): Optional<Boolean> =
+                    Optional.ofNullable(encryptedSsn.getNullable("encrypted_ssn"))
+
                 fun emails(): Optional<Emails> = Optional.ofNullable(emails.getNullable("emails"))
 
                 fun phoneNumbers(): Optional<PhoneNumbers> =
@@ -3171,6 +3272,8 @@ private constructor(
 
                 @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
 
+                @JsonProperty("encrypted_ssn") @ExcludeMissing fun _encryptedSsn() = encryptedSsn
+
                 @JsonProperty("emails") @ExcludeMissing fun _emails() = emails
 
                 @JsonProperty("phone_numbers") @ExcludeMissing fun _phoneNumbers() = phoneNumbers
@@ -3192,6 +3295,7 @@ private constructor(
                         gender()
                         ethnicity()
                         ssn()
+                        encryptedSsn()
                         emails().map { it.validate() }
                         phoneNumbers().map { it.validate() }
                         residence().map { it.validate() }
@@ -3216,6 +3320,7 @@ private constructor(
                         this.gender == other.gender &&
                         this.ethnicity == other.ethnicity &&
                         this.ssn == other.ssn &&
+                        this.encryptedSsn == other.encryptedSsn &&
                         this.emails == other.emails &&
                         this.phoneNumbers == other.phoneNumbers &&
                         this.residence == other.residence &&
@@ -3235,6 +3340,7 @@ private constructor(
                                 gender,
                                 ethnicity,
                                 ssn,
+                                encryptedSsn,
                                 emails,
                                 phoneNumbers,
                                 residence,
@@ -3245,7 +3351,7 @@ private constructor(
                 }
 
                 override fun toString() =
-                    "SupportedIndividualFields{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, dob=$dob, gender=$gender, ethnicity=$ethnicity, ssn=$ssn, emails=$emails, phoneNumbers=$phoneNumbers, residence=$residence, additionalProperties=$additionalProperties}"
+                    "SupportedIndividualFields{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, dob=$dob, gender=$gender, ethnicity=$ethnicity, ssn=$ssn, encryptedSsn=$encryptedSsn, emails=$emails, phoneNumbers=$phoneNumbers, residence=$residence, additionalProperties=$additionalProperties}"
 
                 companion object {
 
@@ -3263,6 +3369,7 @@ private constructor(
                     private var gender: JsonField<Boolean> = JsonMissing.of()
                     private var ethnicity: JsonField<Boolean> = JsonMissing.of()
                     private var ssn: JsonField<Boolean> = JsonMissing.of()
+                    private var encryptedSsn: JsonField<Boolean> = JsonMissing.of()
                     private var emails: JsonField<Emails> = JsonMissing.of()
                     private var phoneNumbers: JsonField<PhoneNumbers> = JsonMissing.of()
                     private var residence: JsonField<Residence> = JsonMissing.of()
@@ -3280,6 +3387,7 @@ private constructor(
                             this.gender = supportedIndividualFields.gender
                             this.ethnicity = supportedIndividualFields.ethnicity
                             this.ssn = supportedIndividualFields.ssn
+                            this.encryptedSsn = supportedIndividualFields.encryptedSsn
                             this.emails = supportedIndividualFields.emails
                             this.phoneNumbers = supportedIndividualFields.phoneNumbers
                             this.residence = supportedIndividualFields.residence
@@ -3349,6 +3457,15 @@ private constructor(
                     @ExcludeMissing
                     fun ssn(ssn: JsonField<Boolean>) = apply { this.ssn = ssn }
 
+                    fun encryptedSsn(encryptedSsn: Boolean) =
+                        encryptedSsn(JsonField.of(encryptedSsn))
+
+                    @JsonProperty("encrypted_ssn")
+                    @ExcludeMissing
+                    fun encryptedSsn(encryptedSsn: JsonField<Boolean>) = apply {
+                        this.encryptedSsn = encryptedSsn
+                    }
+
                     fun emails(emails: Emails) = emails(JsonField.of(emails))
 
                     @JsonProperty("emails")
@@ -3398,6 +3515,7 @@ private constructor(
                             gender,
                             ethnicity,
                             ssn,
+                            encryptedSsn,
                             emails,
                             phoneNumbers,
                             residence,

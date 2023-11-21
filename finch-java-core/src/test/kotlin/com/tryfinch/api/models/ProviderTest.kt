@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -859,7 +858,14 @@ class ProviderTest {
                                                     .state(true)
                                                     .build()
                                             )
-                                            .manager(JsonValue.from(mapOf<String, Any>()))
+                                            .manager(
+                                                Provider.AuthenticationMethod.SupportedFields
+                                                    .SupportedEmploymentFields
+                                                    .Manager
+                                                    .builder()
+                                                    .id(true)
+                                                    .build()
+                                            )
                                             .middleName(true)
                                             .startDate(true)
                                             .title(true)
@@ -880,6 +886,7 @@ class ProviderTest {
                                                     .type(true)
                                                     .build()
                                             )
+                                            .encryptedSsn(true)
                                             .ethnicity(true)
                                             .firstName(true)
                                             .gender(true)
@@ -1827,7 +1834,14 @@ class ProviderTest {
                                             .state(true)
                                             .build()
                                     )
-                                    .manager(JsonValue.from(mapOf<String, Any>()))
+                                    .manager(
+                                        Provider.AuthenticationMethod.SupportedFields
+                                            .SupportedEmploymentFields
+                                            .Manager
+                                            .builder()
+                                            .id(true)
+                                            .build()
+                                    )
                                     .middleName(true)
                                     .startDate(true)
                                     .title(true)
@@ -1848,6 +1862,7 @@ class ProviderTest {
                                             .type(true)
                                             .build()
                                     )
+                                    .encryptedSsn(true)
                                     .ethnicity(true)
                                     .firstName(true)
                                     .gender(true)
