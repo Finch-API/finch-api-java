@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.10.0 (2023-11-21)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/Finch-API/finch-api-java/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** updates ([#109](https://github.com/Finch-API/finch-api-java/issues/109)) ([37c706a](https://github.com/Finch-API/finch-api-java/commit/37c706ac9e0a082811bd1d967d070687686e0850))
+
+
+### Chores
+
+* **internal:** update stats file ([#107](https://github.com/Finch-API/finch-api-java/issues/107)) ([41093ba](https://github.com/Finch-API/finch-api-java/commit/41093ba9df9fe09c2fdf4881e46728f7bcffe5a3))
+
 ## 0.9.0 (2023-11-13)
 
 Full Changelog: [v0.8.1...v0.9.0](https://github.com/Finch-API/finch-api-java/compare/v0.8.1...v0.9.0)
