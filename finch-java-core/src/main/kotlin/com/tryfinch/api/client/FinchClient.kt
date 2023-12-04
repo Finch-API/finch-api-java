@@ -22,6 +22,8 @@ interface FinchClient {
 
     fun requestForwarding(): RequestForwardingService
 
+    fun jobs(): JobService
+
     fun getAccessToken(
         clientId: String,
         clientSecret: String,
