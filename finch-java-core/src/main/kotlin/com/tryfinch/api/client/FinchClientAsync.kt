@@ -23,6 +23,8 @@ interface FinchClientAsync {
 
     fun requestForwarding(): RequestForwardingServiceAsync
 
+    fun jobs(): JobServiceAsync
+
     fun getAccessToken(
         clientId: String,
         clientSecret: String,

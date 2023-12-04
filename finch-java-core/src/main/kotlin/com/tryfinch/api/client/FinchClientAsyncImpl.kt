@@ -39,6 +39,8 @@ constructor(
         RequestForwardingServiceAsyncImpl(clientOptions)
     }
 
+    private val jobs: JobServiceAsync by lazy { JobServiceAsyncImpl(clientOptions) }
+
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -53,6 +55,8 @@ constructor(
     override fun webhooks(): WebhookServiceAsync = webhooks
 
     override fun requestForwarding(): RequestForwardingServiceAsync = requestForwarding
+
+    override fun jobs(): JobServiceAsync = jobs
 
     override fun getAccessToken(
         clientId: String,
