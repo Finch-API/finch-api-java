@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0 (2023-12-04)
+
+Full Changelog: [v0.10.1...v0.11.0](https://github.com/Finch-API/finch-api-java/compare/v0.10.1...v0.11.0)
+
+### Features
+
+* **api:** add `/jobs` endpoints ([#112](https://github.com/Finch-API/finch-api-java/issues/112)) ([450e65a](https://github.com/Finch-API/finch-api-java/commit/450e65ae9c89f659136f2b5c4fa4943112a42823))
+
 ## 0.10.1 (2023-12-04)
 
 Full Changelog: [v0.10.0...v0.10.1](https://github.com/Finch-API/finch-api-java/compare/v0.10.0...v0.10.1)
