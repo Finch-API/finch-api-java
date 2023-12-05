@@ -4,6 +4,7 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
@@ -12,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 @JsonDeserialize(builder = Introspection.Builder::class)
@@ -19,6 +21,8 @@ import java.util.Objects
 class Introspection
 private constructor(
     private val clientId: JsonField<String>,
+    private val clientType: JsonField<ClientType>,
+    private val connectionType: JsonField<ConnectionType>,
     private val companyId: JsonField<String>,
     private val accountId: JsonField<String>,
     private val products: JsonField<List<String>>,
@@ -34,6 +38,15 @@ private constructor(
 
     /** The client id of the application associated with the `access_token`. */
     fun clientId(): String = clientId.getRequired("client_id")
+
+    /** The type of application associated with a token. */
+    fun clientType(): ClientType = clientType.getRequired("client_type")
+
+    /**
+     * The type of the connection associated with the token.<br> `provider` - connection to an
+     * external provider<br> `finch` - finch-generated data.
+     */
+    fun connectionType(): ConnectionType = connectionType.getRequired("connection_type")
 
     /** The Finch uuid of the company associated with the `access_token`. */
     fun companyId(): String = companyId.getRequired("company_id")
@@ -58,6 +71,15 @@ private constructor(
 
     /** The client id of the application associated with the `access_token`. */
     @JsonProperty("client_id") @ExcludeMissing fun _clientId() = clientId
+
+    /** The type of application associated with a token. */
+    @JsonProperty("client_type") @ExcludeMissing fun _clientType() = clientType
+
+    /**
+     * The type of the connection associated with the token.<br> `provider` - connection to an
+     * external provider<br> `finch` - finch-generated data.
+     */
+    @JsonProperty("connection_type") @ExcludeMissing fun _connectionType() = connectionType
 
     /** The Finch uuid of the company associated with the `access_token`. */
     @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
@@ -89,6 +111,8 @@ private constructor(
     fun validate(): Introspection = apply {
         if (!validated) {
             clientId()
+            clientType()
+            connectionType()
             companyId()
             accountId()
             products()
@@ -108,6 +132,8 @@ private constructor(
 
         return other is Introspection &&
             this.clientId == other.clientId &&
+            this.clientType == other.clientType &&
+            this.connectionType == other.connectionType &&
             this.companyId == other.companyId &&
             this.accountId == other.accountId &&
             this.products == other.products &&
@@ -122,6 +148,8 @@ private constructor(
             hashCode =
                 Objects.hash(
                     clientId,
+                    clientType,
+                    connectionType,
                     companyId,
                     accountId,
                     products,
@@ -135,7 +163,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Introspection{clientId=$clientId, companyId=$companyId, accountId=$accountId, products=$products, username=$username, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
+        "Introspection{clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, products=$products, username=$username, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -145,6 +173,8 @@ private constructor(
     class Builder {
 
         private var clientId: JsonField<String> = JsonMissing.of()
+        private var clientType: JsonField<ClientType> = JsonMissing.of()
+        private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
@@ -156,6 +186,8 @@ private constructor(
         @JvmSynthetic
         internal fun from(introspection: Introspection) = apply {
             this.clientId = introspection.clientId
+            this.clientType = introspection.clientType
+            this.connectionType = introspection.connectionType
             this.companyId = introspection.companyId
             this.accountId = introspection.accountId
             this.products = introspection.products
@@ -172,6 +204,31 @@ private constructor(
         @JsonProperty("client_id")
         @ExcludeMissing
         fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
+
+        /** The type of application associated with a token. */
+        fun clientType(clientType: ClientType) = clientType(JsonField.of(clientType))
+
+        /** The type of application associated with a token. */
+        @JsonProperty("client_type")
+        @ExcludeMissing
+        fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
+
+        /**
+         * The type of the connection associated with the token.<br> `provider` - connection to an
+         * external provider<br> `finch` - finch-generated data.
+         */
+        fun connectionType(connectionType: ConnectionType) =
+            connectionType(JsonField.of(connectionType))
+
+        /**
+         * The type of the connection associated with the token.<br> `provider` - connection to an
+         * external provider<br> `finch` - finch-generated data.
+         */
+        @JsonProperty("connection_type")
+        @ExcludeMissing
+        fun connectionType(connectionType: JsonField<ConnectionType>) = apply {
+            this.connectionType = connectionType
+        }
 
         /** The Finch uuid of the company associated with the `access_token`. */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
@@ -247,6 +304,8 @@ private constructor(
         fun build(): Introspection =
             Introspection(
                 clientId,
+                clientType,
+                connectionType,
                 companyId,
                 accountId,
                 products.map { it.toUnmodifiable() },
@@ -255,5 +314,125 @@ private constructor(
                 manual,
                 additionalProperties.toUnmodifiable(),
             )
+    }
+
+    class ClientType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is ClientType && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val PRODUCTION = ClientType(JsonField.of("production"))
+
+            @JvmField val DEVELOPMENT = ClientType(JsonField.of("development"))
+
+            @JvmField val SANDBOX = ClientType(JsonField.of("sandbox"))
+
+            @JvmStatic fun of(value: String) = ClientType(JsonField.of(value))
+        }
+
+        enum class Known {
+            PRODUCTION,
+            DEVELOPMENT,
+            SANDBOX,
+        }
+
+        enum class Value {
+            PRODUCTION,
+            DEVELOPMENT,
+            SANDBOX,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                PRODUCTION -> Value.PRODUCTION
+                DEVELOPMENT -> Value.DEVELOPMENT
+                SANDBOX -> Value.SANDBOX
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                PRODUCTION -> Known.PRODUCTION
+                DEVELOPMENT -> Known.DEVELOPMENT
+                SANDBOX -> Known.SANDBOX
+                else -> throw FinchInvalidDataException("Unknown ClientType: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+    }
+
+    class ConnectionType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is ConnectionType && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val PROVIDER = ConnectionType(JsonField.of("provider"))
+
+            @JvmField val FINCH = ConnectionType(JsonField.of("finch"))
+
+            @JvmStatic fun of(value: String) = ConnectionType(JsonField.of(value))
+        }
+
+        enum class Known {
+            PROVIDER,
+            FINCH,
+        }
+
+        enum class Value {
+            PROVIDER,
+            FINCH,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                PROVIDER -> Value.PROVIDER
+                FINCH -> Value.FINCH
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                PROVIDER -> Known.PROVIDER
+                FINCH -> Known.FINCH
+                else -> throw FinchInvalidDataException("Unknown ConnectionType: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
     }
 }
