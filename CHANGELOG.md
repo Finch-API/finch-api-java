@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.0 (2023-12-06)
+
+Full Changelog: [v0.11.0...v0.12.0](https://github.com/Finch-API/finch-api-java/compare/v0.11.0...v0.12.0)
+
+### Features
+
+* **api:** add `client_type` and `connection_type` to introspection ([#114](https://github.com/Finch-API/finch-api-java/issues/114)) ([1429584](https://github.com/Finch-API/finch-api-java/commit/1429584dcb5d7f5ba2abe9cb7765e11b46f34c3c))
+
 ## 0.11.0 (2023-12-04)
 
 Full Changelog: [v0.10.1...v0.11.0](https://github.com/Finch-API/finch-api-java/compare/v0.10.1...v0.11.0)
