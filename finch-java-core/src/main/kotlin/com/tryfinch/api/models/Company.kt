@@ -986,6 +986,8 @@ private constructor(
 
                 @JvmField val LLC = Type(JsonField.of("llc"))
 
+                @JvmField val LP = Type(JsonField.of("lp"))
+
                 @JvmField val CORPORATION = Type(JsonField.of("corporation"))
 
                 @JvmField val SOLE_PROPRIETOR = Type(JsonField.of("sole_proprietor"))
@@ -1001,6 +1003,7 @@ private constructor(
 
             enum class Known {
                 LLC,
+                LP,
                 CORPORATION,
                 SOLE_PROPRIETOR,
                 NON_PROFIT,
@@ -1010,6 +1013,7 @@ private constructor(
 
             enum class Value {
                 LLC,
+                LP,
                 CORPORATION,
                 SOLE_PROPRIETOR,
                 NON_PROFIT,
@@ -1021,6 +1025,7 @@ private constructor(
             fun value(): Value =
                 when (this) {
                     LLC -> Value.LLC
+                    LP -> Value.LP
                     CORPORATION -> Value.CORPORATION
                     SOLE_PROPRIETOR -> Value.SOLE_PROPRIETOR
                     NON_PROFIT -> Value.NON_PROFIT
@@ -1032,6 +1037,7 @@ private constructor(
             fun known(): Known =
                 when (this) {
                     LLC -> Known.LLC
+                    LP -> Known.LP
                     CORPORATION -> Known.CORPORATION
                     SOLE_PROPRIETOR -> Known.SOLE_PROPRIETOR
                     NON_PROFIT -> Known.NON_PROFIT
