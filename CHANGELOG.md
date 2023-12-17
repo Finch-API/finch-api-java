@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.1 (2023-12-17)
+
+Full Changelog: [v0.13.0...v0.13.1](https://github.com/Finch-API/finch-api-java/compare/v0.13.0...v0.13.1)
+
+### Chores
+
+* **ci:** run release workflow once per day ([#119](https://github.com/Finch-API/finch-api-java/issues/119)) ([f1b0194](https://github.com/Finch-API/finch-api-java/commit/f1b01942f11e9ca40b126b73268597c28a75d076))
+
 ## 0.13.0 (2023-12-07)
 
 Full Changelog: [v0.12.0...v0.13.0](https://github.com/Finch-API/finch-api-java/compare/v0.12.0...v0.13.0)
