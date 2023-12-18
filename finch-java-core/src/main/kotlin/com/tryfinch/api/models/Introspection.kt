@@ -43,8 +43,11 @@ private constructor(
     fun clientType(): ClientType = clientType.getRequired("client_type")
 
     /**
-     * The type of the connection associated with the token.<br> `provider` - connection to an
-     * external provider<br> `finch` - finch-generated data.
+     * The type of the connection associated with the token.
+     *
+     * `provider` - connection to an external provider
+     *
+     * `finch` - finch-generated data.
      */
     fun connectionType(): ConnectionType = connectionType.getRequired("connection_type")
 
@@ -76,8 +79,11 @@ private constructor(
     @JsonProperty("client_type") @ExcludeMissing fun _clientType() = clientType
 
     /**
-     * The type of the connection associated with the token.<br> `provider` - connection to an
-     * external provider<br> `finch` - finch-generated data.
+     * The type of the connection associated with the token.
+     *
+     * `provider` - connection to an external provider
+     *
+     * `finch` - finch-generated data.
      */
     @JsonProperty("connection_type") @ExcludeMissing fun _connectionType() = connectionType
 
@@ -214,15 +220,21 @@ private constructor(
         fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
 
         /**
-         * The type of the connection associated with the token.<br> `provider` - connection to an
-         * external provider<br> `finch` - finch-generated data.
+         * The type of the connection associated with the token.
+         *
+         * `provider` - connection to an external provider
+         *
+         * `finch` - finch-generated data.
          */
         fun connectionType(connectionType: ConnectionType) =
             connectionType(JsonField.of(connectionType))
 
         /**
-         * The type of the connection associated with the token.<br> `provider` - connection to an
-         * external provider<br> `finch` - finch-generated data.
+         * The type of the connection associated with the token.
+         *
+         * `provider` - connection to an external provider
+         *
+         * `finch` - finch-generated data.
          */
         @JsonProperty("connection_type")
         @ExcludeMissing
