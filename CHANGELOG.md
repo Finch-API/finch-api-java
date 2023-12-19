@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.2 (2023-12-19)
+
+Full Changelog: [v0.13.1...v0.13.2](https://github.com/Finch-API/finch-api-java/compare/v0.13.1...v0.13.2)
+
+### Documentation
+
+* replace &lt;br&gt; tags with newlines ([#121](https://github.com/Finch-API/finch-api-java/issues/121)) ([64d81cf](https://github.com/Finch-API/finch-api-java/commit/64d81cf0e418edc3dcd32ab3dcdbb2e09b1e9806))
+
 ## 0.13.1 (2023-12-17)
 
 Full Changelog: [v0.13.0...v0.13.1](https://github.com/Finch-API/finch-api-java/compare/v0.13.0...v0.13.1)
