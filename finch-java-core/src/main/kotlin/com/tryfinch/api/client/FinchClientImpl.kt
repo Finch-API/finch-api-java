@@ -26,6 +26,8 @@ constructor(
 
     private val async: FinchClientAsync by lazy { FinchClientAsyncImpl(clientOptions) }
 
+    private val accessTokens: AccessTokenService by lazy { AccessTokenServiceImpl(clientOptions) }
+
     private val hris: HrisService by lazy { HrisServiceImpl(clientOptions) }
 
     private val providers: ProviderService by lazy { ProviderServiceImpl(clientOptions) }
@@ -44,6 +46,8 @@ constructor(
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     override fun async(): FinchClientAsync = async
+
+    override fun accessTokens(): AccessTokenService = accessTokens
 
     override fun hris(): HrisService = hris
 
@@ -99,6 +103,23 @@ constructor(
             "&products=${URLEncoder.encode(products, Charsets.UTF_8.name())}" +
             "&redirect_uri=${URLEncoder.encode(redirectUri, Charsets.UTF_8.name())}" +
             "&sandbox=${if (sandbox) "true" else "false"}"
+    }
+
+    override fun withAccessToken(accessToken: String): FinchClient {
+        return FinchClientImpl(
+            ClientOptions.builder()
+                .httpClient(clientOptions.httpClient)
+                .jsonMapper(clientOptions.jsonMapper)
+                .clock(clientOptions.clock)
+                .baseUrl(clientOptions.baseUrl)
+                .accessToken(accessToken)
+                .clientId(clientOptions.clientId)
+                .clientSecret(clientOptions.clientSecret)
+                .webhookSecret(clientOptions.webhookSecret)
+                .headers(clientOptions.headers.asMap())
+                .responseValidation(clientOptions.responseValidation)
+                .build()
+        )
     }
 
     private data class GetAccessTokenParams(
