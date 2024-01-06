@@ -12,6 +12,8 @@ interface FinchClient {
 
     fun async(): FinchClientAsync
 
+    fun accessTokens(): AccessTokenService
+
     fun hris(): HrisService
 
     fun providers(): ProviderService
@@ -32,6 +34,8 @@ interface FinchClient {
     ): String
 
     fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String
+
+    fun withAccessToken(accessToken: String): FinchClient
 
     private data class GetAccessTokenParams(
         @JsonProperty("client_id") val clientId: String,
