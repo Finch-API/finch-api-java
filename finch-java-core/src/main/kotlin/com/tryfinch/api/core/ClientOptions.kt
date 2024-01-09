@@ -8,6 +8,7 @@ import com.google.common.collect.ListMultimap
 import com.tryfinch.api.core.http.HttpClient
 import com.tryfinch.api.core.http.RetryingHttpClient
 import java.time.Clock
+import java.util.Base64
 
 class ClientOptions
 private constructor(
@@ -118,7 +119,15 @@ private constructor(
             headers.put("X-Stainless-Package-Version", getPackageVersion())
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             headers.put("Finch-API-Version", "2020-09-17")
-            headers.put("Authorization", "Bearer ${accessToken}")
+            if (!accessToken.isNullOrEmpty()) {
+                headers.put("Authorization", "Bearer ${accessToken}")
+            }
+            if (!sandboxClientId.isNullOrEmpty() && !sandboxClientSecret.isNullOrEmpty()) {
+                headers.put(
+                    "Authorization",
+                    "Basic ${Base64.getEncoder().encodeToString("${sandboxClientId}:${sandboxClientSecret}".toByteArray())}"
+                )
+            }
             this.headers.forEach(headers::replaceValues)
 
             return ClientOptions(
