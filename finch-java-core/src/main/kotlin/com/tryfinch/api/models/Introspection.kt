@@ -15,6 +15,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
+import java.util.Optional
 
 @JsonDeserialize(builder = Introspection.Builder::class)
 @NoAutoDetect
@@ -25,6 +26,7 @@ private constructor(
     private val connectionType: JsonField<ConnectionType>,
     private val companyId: JsonField<String>,
     private val accountId: JsonField<String>,
+    private val authenticationMethods: JsonField<AuthenticationMethods>,
     private val products: JsonField<List<String>>,
     private val username: JsonField<String>,
     private val payrollProviderId: JsonField<String>,
@@ -56,6 +58,9 @@ private constructor(
 
     /** The Finch uuid of the account used to connect this company. */
     fun accountId(): String = accountId.getRequired("account_id")
+
+    fun authenticationMethods(): AuthenticationMethods =
+        authenticationMethods.getRequired("authentication_methods")
 
     /** An array of the authorized products associated with the `access_token`. */
     fun products(): List<String> = products.getRequired("products")
@@ -93,6 +98,10 @@ private constructor(
     /** The Finch uuid of the account used to connect this company. */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
 
+    @JsonProperty("authentication_methods")
+    @ExcludeMissing
+    fun _authenticationMethods() = authenticationMethods
+
     /** An array of the authorized products associated with the `access_token`. */
     @JsonProperty("products") @ExcludeMissing fun _products() = products
 
@@ -121,6 +130,7 @@ private constructor(
             connectionType()
             companyId()
             accountId()
+            authenticationMethods().validate()
             products()
             username()
             payrollProviderId()
@@ -142,6 +152,7 @@ private constructor(
             this.connectionType == other.connectionType &&
             this.companyId == other.companyId &&
             this.accountId == other.accountId &&
+            this.authenticationMethods == other.authenticationMethods &&
             this.products == other.products &&
             this.username == other.username &&
             this.payrollProviderId == other.payrollProviderId &&
@@ -158,6 +169,7 @@ private constructor(
                     connectionType,
                     companyId,
                     accountId,
+                    authenticationMethods,
                     products,
                     username,
                     payrollProviderId,
@@ -169,7 +181,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Introspection{clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, products=$products, username=$username, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
+        "Introspection{clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, authenticationMethods=$authenticationMethods, products=$products, username=$username, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -183,6 +195,7 @@ private constructor(
         private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
+        private var authenticationMethods: JsonField<AuthenticationMethods> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
         private var username: JsonField<String> = JsonMissing.of()
         private var payrollProviderId: JsonField<String> = JsonMissing.of()
@@ -196,6 +209,7 @@ private constructor(
             this.connectionType = introspection.connectionType
             this.companyId = introspection.companyId
             this.accountId = introspection.accountId
+            this.authenticationMethods = introspection.authenticationMethods
             this.products = introspection.products
             this.username = introspection.username
             this.payrollProviderId = introspection.payrollProviderId
@@ -257,6 +271,15 @@ private constructor(
         @JsonProperty("account_id")
         @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
+
+        fun authenticationMethods(authenticationMethods: AuthenticationMethods) =
+            authenticationMethods(JsonField.of(authenticationMethods))
+
+        @JsonProperty("authentication_methods")
+        @ExcludeMissing
+        fun authenticationMethods(authenticationMethods: JsonField<AuthenticationMethods>) = apply {
+            this.authenticationMethods = authenticationMethods
+        }
 
         /** An array of the authorized products associated with the `access_token`. */
         fun products(products: List<String>) = products(JsonField.of(products))
@@ -320,12 +343,252 @@ private constructor(
                 connectionType,
                 companyId,
                 accountId,
+                authenticationMethods,
                 products.map { it.toUnmodifiable() },
                 username,
                 payrollProviderId,
                 manual,
                 additionalProperties.toUnmodifiable(),
             )
+    }
+
+    @JsonDeserialize(builder = AuthenticationMethods.Builder::class)
+    @NoAutoDetect
+    class AuthenticationMethods
+    private constructor(
+        private val type: JsonField<String>,
+        private val connectionStatus: JsonField<ConnectionStatus>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var validated: Boolean = false
+
+        private var hashCode: Int = 0
+
+        fun type(): Optional<String> = Optional.ofNullable(type.getNullable("type"))
+
+        fun connectionStatus(): Optional<ConnectionStatus> =
+            Optional.ofNullable(connectionStatus.getNullable("connection_status"))
+
+        @JsonProperty("type") @ExcludeMissing fun _type() = type
+
+        @JsonProperty("connection_status")
+        @ExcludeMissing
+        fun _connectionStatus() = connectionStatus
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun validate(): AuthenticationMethods = apply {
+            if (!validated) {
+                type()
+                connectionStatus().map { it.validate() }
+                validated = true
+            }
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is AuthenticationMethods &&
+                this.type == other.type &&
+                this.connectionStatus == other.connectionStatus &&
+                this.additionalProperties == other.additionalProperties
+        }
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        type,
+                        connectionStatus,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "AuthenticationMethods{type=$type, connectionStatus=$connectionStatus, additionalProperties=$additionalProperties}"
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var type: JsonField<String> = JsonMissing.of()
+            private var connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(authenticationMethods: AuthenticationMethods) = apply {
+                this.type = authenticationMethods.type
+                this.connectionStatus = authenticationMethods.connectionStatus
+                additionalProperties(authenticationMethods.additionalProperties)
+            }
+
+            fun type(type: String) = type(JsonField.of(type))
+
+            @JsonProperty("type")
+            @ExcludeMissing
+            fun type(type: JsonField<String>) = apply { this.type = type }
+
+            fun connectionStatus(connectionStatus: ConnectionStatus) =
+                connectionStatus(JsonField.of(connectionStatus))
+
+            @JsonProperty("connection_status")
+            @ExcludeMissing
+            fun connectionStatus(connectionStatus: JsonField<ConnectionStatus>) = apply {
+                this.connectionStatus = connectionStatus
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): AuthenticationMethods =
+                AuthenticationMethods(
+                    type,
+                    connectionStatus,
+                    additionalProperties.toUnmodifiable(),
+                )
+        }
+
+        @JsonDeserialize(builder = ConnectionStatus.Builder::class)
+        @NoAutoDetect
+        class ConnectionStatus
+        private constructor(
+            private val status: JsonField<IntrospectResponseConnectionStatus>,
+            private val message: JsonField<String>,
+            private val additionalProperties: Map<String, JsonValue>,
+        ) {
+
+            private var validated: Boolean = false
+
+            private var hashCode: Int = 0
+
+            fun status(): Optional<IntrospectResponseConnectionStatus> =
+                Optional.ofNullable(status.getNullable("status"))
+
+            fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+
+            @JsonProperty("status") @ExcludeMissing fun _status() = status
+
+            @JsonProperty("message") @ExcludeMissing fun _message() = message
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            fun validate(): ConnectionStatus = apply {
+                if (!validated) {
+                    status()
+                    message()
+                    validated = true
+                }
+            }
+
+            fun toBuilder() = Builder().from(this)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is ConnectionStatus &&
+                    this.status == other.status &&
+                    this.message == other.message &&
+                    this.additionalProperties == other.additionalProperties
+            }
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode =
+                        Objects.hash(
+                            status,
+                            message,
+                            additionalProperties,
+                        )
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
+
+            companion object {
+
+                @JvmStatic fun builder() = Builder()
+            }
+
+            class Builder {
+
+                private var status: JsonField<IntrospectResponseConnectionStatus> = JsonMissing.of()
+                private var message: JsonField<String> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(connectionStatus: ConnectionStatus) = apply {
+                    this.status = connectionStatus.status
+                    this.message = connectionStatus.message
+                    additionalProperties(connectionStatus.additionalProperties)
+                }
+
+                fun status(status: IntrospectResponseConnectionStatus) =
+                    status(JsonField.of(status))
+
+                @JsonProperty("status")
+                @ExcludeMissing
+                fun status(status: JsonField<IntrospectResponseConnectionStatus>) = apply {
+                    this.status = status
+                }
+
+                fun message(message: String) = message(JsonField.of(message))
+
+                @JsonProperty("message")
+                @ExcludeMissing
+                fun message(message: JsonField<String>) = apply { this.message = message }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    this.additionalProperties.putAll(additionalProperties)
+                }
+
+                @JsonAnySetter
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    this.additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun build(): ConnectionStatus =
+                    ConnectionStatus(
+                        status,
+                        message,
+                        additionalProperties.toUnmodifiable(),
+                    )
+            }
+        }
     }
 
     class ClientType

@@ -16,11 +16,7 @@ class IndividualInDirectoryTest {
                 .firstName("string")
                 .isActive(true)
                 .lastName("string")
-                .manager(
-                    IndividualInDirectory.Manager.builder()
-                        .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
-                        .build()
-                )
+                .manager(IndividualInDirectory.Manager.builder().id("string").build())
                 .middleName("string")
                 .build()
         assertThat(individualInDirectory).isNotNull
@@ -31,11 +27,7 @@ class IndividualInDirectoryTest {
         assertThat(individualInDirectory.isActive()).contains(true)
         assertThat(individualInDirectory.lastName()).contains("string")
         assertThat(individualInDirectory.manager())
-            .contains(
-                IndividualInDirectory.Manager.builder()
-                    .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
-                    .build()
-            )
+            .contains(IndividualInDirectory.Manager.builder().id("string").build())
         assertThat(individualInDirectory.middleName()).contains("string")
     }
 }

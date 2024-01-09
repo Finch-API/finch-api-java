@@ -26,7 +26,7 @@ class PayStatementServiceTest {
                     .requests(
                         listOf(
                             HrisPayStatementRetrieveManyParams.Request.builder()
-                                .paymentId("e8b90071-0c11-471c-86e8-e303ef2f6782")
+                                .paymentId("string")
                                 .build()
                         )
                     )
