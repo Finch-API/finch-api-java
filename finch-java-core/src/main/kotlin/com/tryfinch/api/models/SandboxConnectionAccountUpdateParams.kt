@@ -16,14 +16,13 @@ import java.util.Optional
 
 class SandboxConnectionAccountUpdateParams
 constructor(
-    private val connectionStatus: IntrospectResponseConnectionStatus?,
+    private val connectionStatus: ConnectionStatusType?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun connectionStatus(): Optional<IntrospectResponseConnectionStatus> =
-        Optional.ofNullable(connectionStatus)
+    fun connectionStatus(): Optional<ConnectionStatusType> = Optional.ofNullable(connectionStatus)
 
     @JvmSynthetic
     internal fun getBody(): SandboxConnectionAccountUpdateBody {
@@ -38,14 +37,14 @@ constructor(
     @NoAutoDetect
     class SandboxConnectionAccountUpdateBody
     internal constructor(
-        private val connectionStatus: IntrospectResponseConnectionStatus?,
+        private val connectionStatus: ConnectionStatusType?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
         @JsonProperty("connection_status")
-        fun connectionStatus(): IntrospectResponseConnectionStatus? = connectionStatus
+        fun connectionStatus(): ConnectionStatusType? = connectionStatus
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -80,7 +79,7 @@ constructor(
 
         class Builder {
 
-            private var connectionStatus: IntrospectResponseConnectionStatus? = null
+            private var connectionStatus: ConnectionStatusType? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -92,7 +91,7 @@ constructor(
             }
 
             @JsonProperty("connection_status")
-            fun connectionStatus(connectionStatus: IntrospectResponseConnectionStatus) = apply {
+            fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
                 this.connectionStatus = connectionStatus
             }
 
@@ -158,7 +157,7 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var connectionStatus: IntrospectResponseConnectionStatus? = null
+        private var connectionStatus: ConnectionStatusType? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -173,7 +172,7 @@ constructor(
             additionalBodyProperties(sandboxConnectionAccountUpdateParams.additionalBodyProperties)
         }
 
-        fun connectionStatus(connectionStatus: IntrospectResponseConnectionStatus) = apply {
+        fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
             this.connectionStatus = connectionStatus
         }
 

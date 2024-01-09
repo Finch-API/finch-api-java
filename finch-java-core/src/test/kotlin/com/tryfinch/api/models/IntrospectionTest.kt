@@ -17,7 +17,7 @@ class IntrospectionTest {
                         .connectionStatus(
                             Introspection.AuthenticationMethods.ConnectionStatus.builder()
                                 .message("string")
-                                .status(IntrospectResponseConnectionStatus.PENDING)
+                                .status(ConnectionStatusType.PENDING)
                                 .build()
                         )
                         .type("string")
@@ -40,7 +40,7 @@ class IntrospectionTest {
                     .connectionStatus(
                         Introspection.AuthenticationMethods.ConnectionStatus.builder()
                             .message("string")
-                            .status(IntrospectResponseConnectionStatus.PENDING)
+                            .status(ConnectionStatusType.PENDING)
                             .build()
                     )
                     .type("string")

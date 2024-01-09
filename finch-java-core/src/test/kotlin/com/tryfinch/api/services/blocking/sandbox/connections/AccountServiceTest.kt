@@ -45,7 +45,7 @@ class AccountServiceTest {
         val accountUpdateResponse =
             accountService.update(
                 SandboxConnectionAccountUpdateParams.builder()
-                    .connectionStatus(IntrospectResponseConnectionStatus.PENDING)
+                    .connectionStatus(ConnectionStatusType.PENDING)
                     .build()
             )
         println(accountUpdateResponse)
