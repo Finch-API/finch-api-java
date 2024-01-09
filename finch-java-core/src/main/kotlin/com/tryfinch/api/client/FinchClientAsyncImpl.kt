@@ -45,8 +45,6 @@ constructor(
 
     private val jobs: JobServiceAsync by lazy { JobServiceAsyncImpl(clientOptions) }
 
-    private val auth: AuthServiceAsync by lazy { AuthServiceAsyncImpl(clientOptions) }
-
     private val sandbox: SandboxServiceAsync by lazy { SandboxServiceAsyncImpl(clientOptions) }
 
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
@@ -67,8 +65,6 @@ constructor(
     override fun requestForwarding(): RequestForwardingServiceAsync = requestForwarding
 
     override fun jobs(): JobServiceAsync = jobs
-
-    override fun auth(): AuthServiceAsync = auth
 
     override fun sandbox(): SandboxServiceAsync = sandbox
 

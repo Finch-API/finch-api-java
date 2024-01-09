@@ -18,6 +18,8 @@ private constructor(
     @get:JvmName("accessToken") val accessToken: String?,
     @get:JvmName("clientId") val clientId: String?,
     @get:JvmName("clientSecret") val clientSecret: String?,
+    @get:JvmName("sandboxClientId") val sandboxClientId: String?,
+    @get:JvmName("sandboxClientSecret") val sandboxClientSecret: String?,
     @get:JvmName("webhookSecret") val webhookSecret: String?,
     @get:JvmName("headers") val headers: ListMultimap<String, String>,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
@@ -44,6 +46,8 @@ private constructor(
         private var accessToken: String? = null
         private var clientId: String? = null
         private var clientSecret: String? = null
+        private var sandboxClientId: String? = null
+        private var sandboxClientSecret: String? = null
         private var webhookSecret: String? = null
 
         fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
@@ -85,11 +89,21 @@ private constructor(
 
         fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
 
+        fun sandboxClientId(sandboxClientId: String?) = apply {
+            this.sandboxClientId = sandboxClientId
+        }
+
+        fun sandboxClientSecret(sandboxClientSecret: String?) = apply {
+            this.sandboxClientSecret = sandboxClientSecret
+        }
+
         fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
 
         fun fromEnv() = apply {
             System.getenv("FINCH_CLIENT_ID")?.let { clientId(it) }
             System.getenv("FINCH_CLIENT_SECRET")?.let { clientSecret(it) }
+            System.getenv("FINCH_SANDBOX_CLIENT_ID")?.let { sandboxClientId(it) }
+            System.getenv("FINCH_SANDBOX_CLIENT_SECRET")?.let { sandboxClientSecret(it) }
             System.getenv("FINCH_WEBHOOK_SECRET")?.let { webhookSecret(it) }
         }
 
@@ -119,6 +133,8 @@ private constructor(
                 accessToken,
                 clientId,
                 clientSecret,
+                sandboxClientId,
+                sandboxClientSecret,
                 webhookSecret,
                 headers.toUnmodifiable(),
                 responseValidation,
