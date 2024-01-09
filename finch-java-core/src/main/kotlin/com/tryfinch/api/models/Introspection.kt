@@ -475,7 +475,7 @@ private constructor(
         @NoAutoDetect
         class ConnectionStatus
         private constructor(
-            private val status: JsonField<IntrospectResponseConnectionStatus>,
+            private val status: JsonField<ConnectionStatusType>,
             private val message: JsonField<String>,
             private val additionalProperties: Map<String, JsonValue>,
         ) {
@@ -484,7 +484,7 @@ private constructor(
 
             private var hashCode: Int = 0
 
-            fun status(): Optional<IntrospectResponseConnectionStatus> =
+            fun status(): Optional<ConnectionStatusType> =
                 Optional.ofNullable(status.getNullable("status"))
 
             fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
@@ -540,7 +540,7 @@ private constructor(
 
             class Builder {
 
-                private var status: JsonField<IntrospectResponseConnectionStatus> = JsonMissing.of()
+                private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
                 private var message: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -551,14 +551,11 @@ private constructor(
                     additionalProperties(connectionStatus.additionalProperties)
                 }
 
-                fun status(status: IntrospectResponseConnectionStatus) =
-                    status(JsonField.of(status))
+                fun status(status: ConnectionStatusType) = status(JsonField.of(status))
 
                 @JsonProperty("status")
                 @ExcludeMissing
-                fun status(status: JsonField<IntrospectResponseConnectionStatus>) = apply {
-                    this.status = status
-                }
+                fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
                 fun message(message: String) = message(JsonField.of(message))
 
