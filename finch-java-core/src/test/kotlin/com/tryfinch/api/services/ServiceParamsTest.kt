@@ -70,11 +70,7 @@ class ServiceParamsTest {
                             .firstName("string")
                             .isActive(true)
                             .lastName("string")
-                            .manager(
-                                IndividualInDirectory.Manager.builder()
-                                    .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
-                                    .build()
-                            )
+                            .manager(IndividualInDirectory.Manager.builder().id("string").build())
                             .middleName("string")
                             .build()
                     )

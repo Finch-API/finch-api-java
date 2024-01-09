@@ -63,11 +63,7 @@ class EmploymentDataTest {
                         .state("string")
                         .build()
                 )
-                .manager(
-                    EmploymentData.Manager.builder()
-                        .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
-                        .build()
-                )
+                .manager(EmploymentData.Manager.builder().id("string").build())
                 .middleName("string")
                 .payGroupIds(listOf("string"))
                 .sourceId("string")
@@ -131,9 +127,7 @@ class EmploymentDataTest {
                     .build()
             )
         assertThat(employmentData.manager())
-            .contains(
-                EmploymentData.Manager.builder().id("e8b90071-0c11-471c-86e8-e303ef2f6782").build()
-            )
+            .contains(EmploymentData.Manager.builder().id("string").build())
         assertThat(employmentData.middleName()).contains("string")
         assertThat(employmentData.payGroupIds().get()).containsExactly("string")
         assertThat(employmentData.sourceId()).contains("string")

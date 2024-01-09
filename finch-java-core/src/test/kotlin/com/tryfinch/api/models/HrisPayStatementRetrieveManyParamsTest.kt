@@ -14,7 +14,7 @@ class HrisPayStatementRetrieveManyParamsTest {
             .requests(
                 listOf(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("e8b90071-0c11-471c-86e8-e303ef2f6782")
+                        .paymentId("string")
                         .limit(123L)
                         .offset(123L)
                         .build()
@@ -30,7 +30,7 @@ class HrisPayStatementRetrieveManyParamsTest {
                 .requests(
                     listOf(
                         HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("e8b90071-0c11-471c-86e8-e303ef2f6782")
+                            .paymentId("string")
                             .limit(123L)
                             .offset(123L)
                             .build()
@@ -43,7 +43,7 @@ class HrisPayStatementRetrieveManyParamsTest {
             .isEqualTo(
                 listOf(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("e8b90071-0c11-471c-86e8-e303ef2f6782")
+                        .paymentId("string")
                         .limit(123L)
                         .offset(123L)
                         .build()
@@ -58,7 +58,7 @@ class HrisPayStatementRetrieveManyParamsTest {
                 .requests(
                     listOf(
                         HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("e8b90071-0c11-471c-86e8-e303ef2f6782")
+                            .paymentId("string")
                             .build()
                     )
                 )
@@ -68,9 +68,7 @@ class HrisPayStatementRetrieveManyParamsTest {
         assertThat(body.requests())
             .isEqualTo(
                 listOf(
-                    HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("e8b90071-0c11-471c-86e8-e303ef2f6782")
-                        .build()
+                    HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
                 )
             )
     }
