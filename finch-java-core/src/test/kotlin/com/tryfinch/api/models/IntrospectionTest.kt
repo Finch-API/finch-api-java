@@ -12,6 +12,17 @@ class IntrospectionTest {
         val introspection =
             Introspection.builder()
                 .accountId("string")
+                .authenticationMethods(
+                    Introspection.AuthenticationMethods.builder()
+                        .connectionStatus(
+                            Introspection.AuthenticationMethods.ConnectionStatus.builder()
+                                .message("string")
+                                .status(IntrospectResponseConnectionStatus.PENDING)
+                                .build()
+                        )
+                        .type("string")
+                        .build()
+                )
                 .clientId("string")
                 .clientType(Introspection.ClientType.PRODUCTION)
                 .companyId("string")
@@ -23,6 +34,18 @@ class IntrospectionTest {
                 .build()
         assertThat(introspection).isNotNull
         assertThat(introspection.accountId()).isEqualTo("string")
+        assertThat(introspection.authenticationMethods())
+            .isEqualTo(
+                Introspection.AuthenticationMethods.builder()
+                    .connectionStatus(
+                        Introspection.AuthenticationMethods.ConnectionStatus.builder()
+                            .message("string")
+                            .status(IntrospectResponseConnectionStatus.PENDING)
+                            .build()
+                    )
+                    .type("string")
+                    .build()
+            )
         assertThat(introspection.clientId()).isEqualTo("string")
         assertThat(introspection.clientType()).isEqualTo(Introspection.ClientType.PRODUCTION)
         assertThat(introspection.companyId()).isEqualTo("string")
