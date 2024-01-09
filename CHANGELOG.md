@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.14.0 (2024-01-09)
+
+Full Changelog: [v0.13.2...v0.14.0](https://github.com/Finch-API/finch-api-java/compare/v0.13.2...v0.14.0)
+
+### Features
+
+* **api:** add method to create access token ([#125](https://github.com/Finch-API/finch-api-java/issues/125)) ([b456bde](https://github.com/Finch-API/finch-api-java/commit/b456bdee9ae7effecb7a1c4c1a7faacd6b26c335))
+* **api:** add sandbox APIs ([#127](https://github.com/Finch-API/finch-api-java/issues/127)) ([44671e6](https://github.com/Finch-API/finch-api-java/commit/44671e666b645dac5d43e499d29531f0b88dc34a))
+
+
+### Chores
+
+* add .keep files for examples and custom code directories ([#126](https://github.com/Finch-API/finch-api-java/issues/126)) ([98b8b4a](https://github.com/Finch-API/finch-api-java/commit/98b8b4a234444abe4dd136931524ee22df2aa2d1))
+* **internal:** bump license ([#123](https://github.com/Finch-API/finch-api-java/issues/123)) ([121f7f9](https://github.com/Finch-API/finch-api-java/commit/121f7f9ffe98731113aecda46effa52976c2ee62))
+
 ## 0.13.2 (2023-12-19)
 
 Full Changelog: [v0.13.1...v0.13.2](https://github.com/Finch-API/finch-api-java/compare/v0.13.1...v0.13.2)
