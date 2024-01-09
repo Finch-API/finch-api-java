@@ -11,7 +11,7 @@ class SandboxConnectionAccountUpdateParamsTest {
     @Test
     fun createSandboxConnectionAccountUpdateParams() {
         SandboxConnectionAccountUpdateParams.builder()
-            .connectionStatus(IntrospectResponseConnectionStatus.PENDING)
+            .connectionStatus(ConnectionStatusType.PENDING)
             .build()
     }
 
@@ -19,11 +19,11 @@ class SandboxConnectionAccountUpdateParamsTest {
     fun getBody() {
         val params =
             SandboxConnectionAccountUpdateParams.builder()
-                .connectionStatus(IntrospectResponseConnectionStatus.PENDING)
+                .connectionStatus(ConnectionStatusType.PENDING)
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.connectionStatus()).isEqualTo(IntrospectResponseConnectionStatus.PENDING)
+        assertThat(body.connectionStatus()).isEqualTo(ConnectionStatusType.PENDING)
     }
 
     @Test
