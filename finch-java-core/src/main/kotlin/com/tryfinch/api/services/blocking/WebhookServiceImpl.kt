@@ -5,11 +5,11 @@ package com.tryfinch.api.services.blocking
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.google.common.collect.ListMultimap
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.getRequiredHeader
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
+import com.tryfinch.api.models.WebhookEvent
 import com.tryfinch.api.services.errorHandler
 import java.security.MessageDigest
 import java.time.Duration
@@ -29,10 +29,10 @@ constructor(
         payload: String,
         headers: ListMultimap<String, String>,
         secret: String?
-    ): JsonValue {
+    ): WebhookEvent {
         verifySignature(payload, headers, secret)
         return try {
-            clientOptions.jsonMapper.readValue(payload, JsonValue::class.java)
+            clientOptions.jsonMapper.readValue(payload, WebhookEvent::class.java)
         } catch (e: JsonProcessingException) {
             throw FinchException("Invalid event payload", e)
         }
