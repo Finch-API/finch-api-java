@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.15.0 (2024-01-11)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/Finch-API/finch-api-java/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **client:** hook up sandbox auth ([#131](https://github.com/Finch-API/finch-api-java/issues/131)) ([897400c](https://github.com/Finch-API/finch-api-java/commit/897400c7075f74794f168f724d3f83f94fe189df))
+* remove redundant endpoint, add sandbox client options (not yet used) ([#130](https://github.com/Finch-API/finch-api-java/issues/130)) ([1b03f96](https://github.com/Finch-API/finch-api-java/commit/1b03f9685aa991d4d5b3f06a5c5fca1af243b17a))
+
+
+### Chores
+
+* **internal:** rename unreleased connection status type ([#128](https://github.com/Finch-API/finch-api-java/issues/128)) ([f6b4e30](https://github.com/Finch-API/finch-api-java/commit/f6b4e30c5798ebb3f566d4010bda571df41b5ce8))
+
 ## 0.14.0 (2024-01-09)
 
 Full Changelog: [v0.13.2...v0.14.0](https://github.com/Finch-API/finch-api-java/compare/v0.13.2...v0.14.0)
