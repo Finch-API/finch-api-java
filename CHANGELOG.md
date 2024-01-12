@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.16.0 (2024-01-12)
+
+Full Changelog: [v0.15.0...v0.16.0](https://github.com/Finch-API/finch-api-java/compare/v0.15.0...v0.16.0)
+
+### Features
+
+* **webhooks:** add types to the `unwrap` method ([#132](https://github.com/Finch-API/finch-api-java/issues/132)) ([b474d37](https://github.com/Finch-API/finch-api-java/commit/b474d37aec292f7e6afaad6c8fc6f17935603e83))
+
+
+### Documentation
+
+* **readme:** improve api reference ([#134](https://github.com/Finch-API/finch-api-java/issues/134)) ([aaf27e0](https://github.com/Finch-API/finch-api-java/commit/aaf27e03e64fafb559c7a40a1e607860ff97cd95))
+
 ## 0.15.0 (2024-01-11)
 
 Full Changelog: [v0.14.0...v0.15.0](https://github.com/Finch-API/finch-api-java/compare/v0.14.0...v0.15.0)
