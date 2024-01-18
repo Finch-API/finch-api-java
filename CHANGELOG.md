@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.17.0 (2024-01-18)
+
+Full Changelog: [v0.16.0...v0.17.0](https://github.com/Finch-API/finch-api-java/compare/v0.16.0...v0.17.0)
+
+### Features
+
+* **api:** add employer_contributions field ([#138](https://github.com/Finch-API/finch-api-java/issues/138)) ([a79589d](https://github.com/Finch-API/finch-api-java/commit/a79589d6349395f938578b6f629ebc0a64fb08db))
+
+
+### Chores
+
+* **ci:** rely on Stainless GitHub App for releases ([#137](https://github.com/Finch-API/finch-api-java/issues/137)) ([a66fdd3](https://github.com/Finch-API/finch-api-java/commit/a66fdd3f55fb91c00b3c74aab64bff6fa41804b7))
+* **internal:** speculative retry-after-ms support ([#135](https://github.com/Finch-API/finch-api-java/issues/135)) ([c000421](https://github.com/Finch-API/finch-api-java/commit/c00042136a86196326f29227d5cca4db4d2c8e7d))
+
 ## 0.16.0 (2024-01-12)
 
 Full Changelog: [v0.15.0...v0.16.0](https://github.com/Finch-API/finch-api-java/compare/v0.15.0...v0.16.0)
