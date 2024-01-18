@@ -963,6 +963,18 @@ class ProviderTest {
                                                             .type(true)
                                                             .build()
                                                     )
+                                                    .employerContributions(
+                                                        Provider.AuthenticationMethod
+                                                            .SupportedFields
+                                                            .SupportedPayStatementFields
+                                                            .PayStatements
+                                                            .EmployerContributions
+                                                            .builder()
+                                                            .amount(true)
+                                                            .currency(true)
+                                                            .name(true)
+                                                            .build()
+                                                    )
                                                     .employerDeductions(
                                                         Provider.AuthenticationMethod
                                                             .SupportedFields
@@ -1935,6 +1947,17 @@ class ProviderTest {
                                                     .name(true)
                                                     .preTax(true)
                                                     .type(true)
+                                                    .build()
+                                            )
+                                            .employerContributions(
+                                                Provider.AuthenticationMethod.SupportedFields
+                                                    .SupportedPayStatementFields
+                                                    .PayStatements
+                                                    .EmployerContributions
+                                                    .builder()
+                                                    .amount(true)
+                                                    .currency(true)
+                                                    .name(true)
                                                     .build()
                                             )
                                             .employerDeductions(
