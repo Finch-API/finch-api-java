@@ -25,9 +25,7 @@ class ConnectionServiceTest {
             connectionService.create(
                 SandboxConnectionCreateParams.builder()
                     .providerId("string")
-                    .authenticationType(
-                        SandboxConnectionCreateParams.AuthenticationType.CREDENTIALS
-                    )
+                    .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
                     .employerSize(123L)
                     .products(listOf("string"))
                     .build()
