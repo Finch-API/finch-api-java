@@ -13,7 +13,7 @@ class SandboxConnectionAccountCreateParamsTest {
         SandboxConnectionAccountCreateParams.builder()
             .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .providerId("string")
-            .authenticationType(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIALS)
+            .authenticationType(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
             .products(listOf("string"))
             .build()
     }
@@ -25,7 +25,7 @@ class SandboxConnectionAccountCreateParamsTest {
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .providerId("string")
                 .authenticationType(
-                    SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIALS
+                    SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL
                 )
                 .products(listOf("string"))
                 .build()
@@ -34,7 +34,7 @@ class SandboxConnectionAccountCreateParamsTest {
         assertThat(body.companyId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.providerId()).isEqualTo("string")
         assertThat(body.authenticationType())
-            .isEqualTo(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIALS)
+            .isEqualTo(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
         assertThat(body.products()).isEqualTo(listOf("string"))
     }
 

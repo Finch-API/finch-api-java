@@ -12,7 +12,7 @@ class SandboxConnectionCreateParamsTest {
     fun createSandboxConnectionCreateParams() {
         SandboxConnectionCreateParams.builder()
             .providerId("string")
-            .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIALS)
+            .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
             .employerSize(123L)
             .products(listOf("string"))
             .build()
@@ -23,7 +23,7 @@ class SandboxConnectionCreateParamsTest {
         val params =
             SandboxConnectionCreateParams.builder()
                 .providerId("string")
-                .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIALS)
+                .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
                 .employerSize(123L)
                 .products(listOf("string"))
                 .build()
@@ -31,7 +31,7 @@ class SandboxConnectionCreateParamsTest {
         assertThat(body).isNotNull
         assertThat(body.providerId()).isEqualTo("string")
         assertThat(body.authenticationType())
-            .isEqualTo(SandboxConnectionCreateParams.AuthenticationType.CREDENTIALS)
+            .isEqualTo(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
         assertThat(body.employerSize()).isEqualTo(123L)
         assertThat(body.products()).isEqualTo(listOf("string"))
     }
