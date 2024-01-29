@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.17.1 (2024-01-29)
+
+Full Changelog: [v0.17.0...v0.17.1](https://github.com/Finch-API/finch-api-java/compare/v0.17.0...v0.17.1)
+
+### Bug Fixes
+
+* **api:** fix authentication_type enum ([#139](https://github.com/Finch-API/finch-api-java/issues/139)) ([6200a53](https://github.com/Finch-API/finch-api-java/commit/6200a537fd34209f4542f3afdc1fd8c87108f98d))
+* **api:** update `employer_size` parameter to `employee_size` ([#141](https://github.com/Finch-API/finch-api-java/issues/141)) ([afa0df8](https://github.com/Finch-API/finch-api-java/commit/afa0df8471b63e9d06835d6983d932f1286c44c8))
+
 ## 0.17.0 (2024-01-18)
 
 Full Changelog: [v0.16.0...v0.17.0](https://github.com/Finch-API/finch-api-java/compare/v0.16.0...v0.17.0)
