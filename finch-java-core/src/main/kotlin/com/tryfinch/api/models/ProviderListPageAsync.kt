@@ -53,7 +53,7 @@ private constructor(
         "ProviderListPageAsync{providersService=$providersService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return items().isEmpty()
+        return !items().isEmpty()
     }
 
     fun getNextPageParams(): Optional<ProviderListParams> {
