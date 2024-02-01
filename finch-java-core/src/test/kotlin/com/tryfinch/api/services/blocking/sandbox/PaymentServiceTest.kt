@@ -17,6 +17,8 @@ class PaymentServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val paymentService = client.sandbox().payment()
         val paymentCreateResponse =

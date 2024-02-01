@@ -18,6 +18,8 @@ class ProviderServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val providerService = client.providers()
         val getProvidersResponse = providerService.list(ProviderListParams.builder().build())

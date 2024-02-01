@@ -19,6 +19,8 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val benefitService = client.hris().benefits()
         val createCompanyBenefitsResponse =
@@ -39,6 +41,8 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val benefitService = client.hris().benefits()
         val companyBenefit =
@@ -53,6 +57,8 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val benefitService = client.hris().benefits()
         val updateCompanyBenefitResponse =
@@ -69,6 +75,8 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val benefitService = client.hris().benefits()
         val getCompanyBenefitsResponse =
@@ -83,6 +91,8 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val benefitService = client.hris().benefits()
         val getCompanyBenefitsMetadataResponse =
