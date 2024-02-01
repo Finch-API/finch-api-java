@@ -18,6 +18,8 @@ class IndividualServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val individualService = client.hris().individuals()
         val getIndividualsResponse =

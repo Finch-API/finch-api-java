@@ -8,6 +8,7 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
 import com.tryfinch.api.services.errorHandler
@@ -31,6 +32,28 @@ constructor(
         params: AccessTokenCreateParams,
         requestOptions: RequestOptions
     ): CreateAccessTokenResponse {
+        val builder = params.toBuilder()
+
+        if (!params.clientSecret().isPresent) {
+            if (clientOptions.clientSecret == null || clientOptions.clientSecret.isEmpty()) {
+                throw FinchException(
+                    "client_secret must be provided as an argument or with the FINCH_CLIENT_SECRET environment variable"
+                )
+            }
+            builder.clientSecret(clientOptions.clientSecret)
+        }
+
+        if (!params.clientId().isPresent) {
+            if (clientOptions.clientId == null || clientOptions.clientId.isEmpty()) {
+                throw FinchException(
+                    "client_id must be provided as an argument or with the FINCH_CLIENT_ID environment variable"
+                )
+            }
+            builder.clientId(clientOptions.clientId)
+        }
+
+        val modifiedParams = builder.build()
+
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -38,7 +61,7 @@ constructor(
                 .putAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
                 .putAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .body(json(clientOptions.jsonMapper, modifiedParams.getBody()))
                 .build()
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response

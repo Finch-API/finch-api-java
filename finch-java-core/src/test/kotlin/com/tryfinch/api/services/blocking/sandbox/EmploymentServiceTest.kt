@@ -18,6 +18,8 @@ class EmploymentServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val employmentService = client.sandbox().employment()
         val employmentUpdateResponse =
