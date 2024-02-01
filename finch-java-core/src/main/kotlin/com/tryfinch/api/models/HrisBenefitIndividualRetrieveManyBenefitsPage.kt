@@ -52,7 +52,7 @@ private constructor(
         "HrisBenefitIndividualRetrieveManyBenefitsPage{individualsService=$individualsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return items().isEmpty()
+        return !items().isEmpty()
     }
 
     fun getNextPageParams(): Optional<HrisBenefitIndividualRetrieveManyBenefitsParams> {
