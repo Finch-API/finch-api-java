@@ -17,6 +17,8 @@ class CompanyServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val companyService = client.sandbox().company()
         val companyUpdateResponse =

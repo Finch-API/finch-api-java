@@ -18,6 +18,8 @@ class AutomatedServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val automatedService = client.jobs().automated()
         val automatedCreateResponse =
@@ -36,6 +38,8 @@ class AutomatedServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val automatedService = client.jobs().automated()
         val automatedAsyncJob =
@@ -50,6 +54,8 @@ class AutomatedServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
+                .clientId("My Client ID")
+                .clientSecret("My Client Secret")
                 .build()
         val automatedService = client.jobs().automated()
         val response = automatedService.list(JobAutomatedListParams.builder().build())
