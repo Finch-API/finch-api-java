@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.18.0 (2024-02-02)
+
+Full Changelog: [v0.17.1...v0.18.0](https://github.com/Finch-API/finch-api-java/compare/v0.17.1...v0.18.0)
+
+### Features
+
+* **api:** create access token reads client opts if not provided ([#145](https://github.com/Finch-API/finch-api-java/issues/145)) ([645d324](https://github.com/Finch-API/finch-api-java/commit/645d3242ebfbfd0000b2b28492dda6096b554381))
+
+
+### Bug Fixes
+
+* **pagination:** correct hasNextPage check ([#144](https://github.com/Finch-API/finch-api-java/issues/144)) ([53eee41](https://github.com/Finch-API/finch-api-java/commit/53eee41cb2c441ec7bd4889fabfcb302177510e2))
+
+
+### Chores
+
+* **interal:** make link to api.md relative ([#146](https://github.com/Finch-API/finch-api-java/issues/146)) ([7e3e753](https://github.com/Finch-API/finch-api-java/commit/7e3e753c0aa45b2e5c3a7e194525107b59e72a1e))
+* **internal:** support pre-release versioning ([#142](https://github.com/Finch-API/finch-api-java/issues/142)) ([a0ee2c2](https://github.com/Finch-API/finch-api-java/commit/a0ee2c2d6da28cafdb218c47e8ada8a831ef5bc6))
+
 ## 0.17.1 (2024-01-29)
 
 Full Changelog: [v0.17.0...v0.17.1](https://github.com/Finch-API/finch-api-java/compare/v0.17.0...v0.17.1)
