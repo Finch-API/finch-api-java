@@ -1,5 +1,57 @@
 # Changelog
 
+## 0.0.1 (2024-02-15)
+
+Full Changelog: [...abc-v0.0.1](https://github.com/Finch-API/finch-api-java/compare/...abc-v0.0.1)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** restructure some methods ([#59](https://github.com/Finch-API/finch-api-java/issues/59))
+* improve pagination response types ([#16](https://github.com/Finch-API/finch-api-java/issues/16))
+
+### Features
+
+* add JsonValue.convert method ([#14](https://github.com/Finch-API/finch-api-java/issues/14)) ([c8e25a8](https://github.com/Finch-API/finch-api-java/commit/c8e25a8c6d6984f72d807f496a362f9c2267915a))
+* add webhook verification methods ([#62](https://github.com/Finch-API/finch-api-java/issues/62)) ([61553ed](https://github.com/Finch-API/finch-api-java/commit/61553ed75049f518785460fad61e924ff439aa7b))
+* **api:** add `/forward` endpoint and other updates ([#76](https://github.com/Finch-API/finch-api-java/issues/76)) ([36391dd](https://github.com/Finch-API/finch-api-java/commit/36391ddedfd1882e8f496569bc201bbd89758591))
+* **api:** add `/jobs` endpoints ([#112](https://github.com/Finch-API/finch-api-java/issues/112)) ([087140f](https://github.com/Finch-API/finch-api-java/commit/087140f8f1675ce435e54bf72bcea0c0cae87185))
+* **api:** add `client_type` and `connection_type` to introspection ([#114](https://github.com/Finch-API/finch-api-java/issues/114)) ([e397a81](https://github.com/Finch-API/finch-api-java/commit/e397a81b0717693794e40415f2cb5f9a52e74d97))
+* **api:** add `lp` tax payer type enum value ([#117](https://github.com/Finch-API/finch-api-java/issues/117)) ([26b58f0](https://github.com/Finch-API/finch-api-java/commit/26b58f0796d99c18d2842880f550f018cbc0f265))
+* **api:** add employer_contributions field ([#138](https://github.com/Finch-API/finch-api-java/issues/138)) ([46b3238](https://github.com/Finch-API/finch-api-java/commit/46b32388649da2a51f66f59286981e7574f20e9a))
+* **api:** add method to create access token ([#125](https://github.com/Finch-API/finch-api-java/issues/125)) ([ae59f3b](https://github.com/Finch-API/finch-api-java/commit/ae59f3b7769957443abd6d1b2ee330057b63894f))
+* **api:** add sandbox APIs ([#127](https://github.com/Finch-API/finch-api-java/issues/127)) ([ba7deb7](https://github.com/Finch-API/finch-api-java/commit/ba7deb7951ebac9e69c52a03dc1a74e0598abfba))
+* **api:** create access token reads client opts if not provided ([#145](https://github.com/Finch-API/finch-api-java/issues/145)) ([c08e8e3](https://github.com/Finch-API/finch-api-java/commit/c08e8e30f611b9e4850ac7709cba6eaf67792a13))
+* **api:** updates ([#105](https://github.com/Finch-API/finch-api-java/issues/105)) ([c2dfc88](https://github.com/Finch-API/finch-api-java/commit/c2dfc88eba1dee7230f11ee150cfcfa09536be36))
+* **api:** updates ([#109](https://github.com/Finch-API/finch-api-java/issues/109)) ([237c264](https://github.com/Finch-API/finch-api-java/commit/237c26437aa1ab35810bdb0547338893a3b09476))
+* **ci:** add a publish-sonatype workflow for manual running ([#38](https://github.com/Finch-API/finch-api-java/issues/38)) ([955e06f](https://github.com/Finch-API/finch-api-java/commit/955e06ff1870a413af1f4c172a6a5fe0ce1a9190))
+* **ci:** add reviewers ([#69](https://github.com/Finch-API/finch-api-java/issues/69)) ([9235bb3](https://github.com/Finch-API/finch-api-java/commit/9235bb38436009d3cfc13b7c13a9eaa3d78a5cb4))
+* **client:** adjust retry behavior ([#93](https://github.com/Finch-API/finch-api-java/issues/93)) ([909d8c0](https://github.com/Finch-API/finch-api-java/commit/909d8c0fe4eb1bf5ce6a022b74405cf170039114))
+* **client:** allow binary returns ([#99](https://github.com/Finch-API/finch-api-java/issues/99)) ([a3b6b45](https://github.com/Finch-API/finch-api-java/commit/a3b6b45382ecc94d03937aaa2e6f3338b23e45b9))
+* **client:** hook up sandbox auth ([#131](https://github.com/Finch-API/finch-api-java/issues/131)) ([097ea0a](https://github.com/Finch-API/finch-api-java/commit/097ea0a908a65dc335562e6b8583b8a43a8dd372))
+* **client:** restructure some methods ([#59](https://github.com/Finch-API/finch-api-java/issues/59)) ([cdb3491](https://github.com/Finch-API/finch-api-java/commit/cdb34912e10a6676bb2ec048da2f78f0345af43c))
+* **client:** retry on 408 Request Timeout ([#65](https://github.com/Finch-API/finch-api-java/issues/65)) ([73e9ea2](https://github.com/Finch-API/finch-api-java/commit/73e9ea2cae0b04dadeaa6340de2037f2e4cac106))
+* **core:** add `asUnknown` to `JsonField` ([#17](https://github.com/Finch-API/finch-api-java/issues/17)) ([7f1a599](https://github.com/Finch-API/finch-api-java/commit/7f1a59990c62892bbc1906b1bf20c0638da165f5))
+* default timeout is set for java clients ([#46](https://github.com/Finch-API/finch-api-java/issues/46)) ([81cf300](https://github.com/Finch-API/finch-api-java/commit/81cf3009cdea49ead9c289e584bcd45b0d2f9c1e))
+* generate addXxx methods for array types ([#48](https://github.com/Finch-API/finch-api-java/issues/48)) ([b09c620](https://github.com/Finch-API/finch-api-java/commit/b09c620b1c0eba7a68ab247682c37068a6d674c6))
+* **github:** include a devcontainer setup ([#97](https://github.com/Finch-API/finch-api-java/issues/97)) ([848c081](https://github.com/Finch-API/finch-api-java/commit/848c0811185551eba92a50b89f16c121bb643118))
+* improve pagination response types ([#16](https://github.com/Finch-API/finch-api-java/issues/16)) ([dd55fad](https://github.com/Finch-API/finch-api-java/commit/dd55fad7654c196d1f7d91c6e5e4cc50b8a57980))
+* **init:** initial commit ([#1](https://github.com/Finch-API/finch-api-java/issues/1)) ([4897c7f](https://github.com/Finch-API/finch-api-java/commit/4897c7f1e1223872e39eb9b6f8e73149569ef38f))
+* make webhook headers case insensitive ([#87](https://github.com/Finch-API/finch-api-java/issues/87)) ([105cae0](https://github.com/Finch-API/finch-api-java/commit/105cae0d1b6c3739b33d1e0ee97eacab8549772e))
+* remove redundant endpoint, add sandbox client options (not yet used) ([#130](https://github.com/Finch-API/finch-api-java/issues/130)) ([05cbfa7](https://github.com/Finch-API/finch-api-java/commit/05cbfa73ca2d495b24bc7337c75bdd5e5205013b))
+* **tests:** support specifying `SKIP_MOCK_TESTS=true` ([#18](https://github.com/Finch-API/finch-api-java/issues/18)) ([54f4511](https://github.com/Finch-API/finch-api-java/commit/54f4511903408094aa10ba2f4ce4a4b2c180fbb7))
+* **webhooks:** add types to the `unwrap` method ([#132](https://github.com/Finch-API/finch-api-java/issues/132)) ([0f60a3b](https://github.com/Finch-API/finch-api-java/commit/0f60a3bfc4ccd0fa73644df6b2535e1b07a45674))
+
+
+### Bug Fixes
+
+* **api:** fix authentication_type enum ([#139](https://github.com/Finch-API/finch-api-java/issues/139)) ([92a2c62](https://github.com/Finch-API/finch-api-java/commit/92a2c62278833772f09bef4baf0855f635874b9a))
+* **api:** update `employer_size` parameter to `employee_size` ([#141](https://github.com/Finch-API/finch-api-java/issues/141)) ([c306413](https://github.com/Finch-API/finch-api-java/commit/c30641347e13885f701ffbdf7f437f1e7bf740d2))
+* auto-close responses even if an exception is thrown during deserialization ([#33](https://github.com/Finch-API/finch-api-java/issues/33)) ([b428fc2](https://github.com/Finch-API/finch-api-java/commit/b428fc2817885e74e13b4eeee6354f627768b80b))
+* correct benfits to benefits ([#80](https://github.com/Finch-API/finch-api-java/issues/80)) ([18b72a1](https://github.com/Finch-API/finch-api-java/commit/18b72a1c22de750c55125893d4542f27d4da395c))
+* **pagination:** correct hasNextPage check ([#144](https://github.com/Finch-API/finch-api-java/issues/144)) ([f824ac9](https://github.com/Finch-API/finch-api-java/commit/f824ac9b51a65bb31fb6fe9e5dd24d7a3d4a6a92))
+* set correct timeouts on okhttp client ([#49](https://github.com/Finch-API/finch-api-java/issues/49)) ([e4d644c](https://github.com/Finch-API/finch-api-java/commit/e4d644cf115662f552a6686d083f8b57d1f2fb4a))
+* use correct reverse domain ([#2](https://github.com/Finch-API/finch-api-java/issues/2)) ([6197485](https://github.com/Finch-API/finch-api-java/commit/61974858ae59eaf4b70d6cf491c9e3c4488c61f6))
+
 ## 0.18.0 (2024-02-02)
 
 Full Changelog: [v0.17.1...v0.18.0](https://github.com/Finch-API/finch-api-java/compare/v0.17.1...v0.18.0)
