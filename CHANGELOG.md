@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.18.1 (2024-02-15)
+
+Full Changelog: [v0.18.0...v0.18.1](https://github.com/Finch-API/finch-api-java/compare/v0.18.0...v0.18.1)
+
+### Chores
+
+* **internal:** refactor release environment script ([#147](https://github.com/Finch-API/finch-api-java/issues/147)) ([0071bb2](https://github.com/Finch-API/finch-api-java/commit/0071bb285a9a66ab0e9ecb9959bd6d53920bfeaf))
+
 ## 0.18.0 (2024-02-02)
 
 Full Changelog: [v0.17.1...v0.18.0](https://github.com/Finch-API/finch-api-java/compare/v0.17.1...v0.18.0)
