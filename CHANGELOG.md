@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.19.0 (2024-02-22)
+
+Full Changelog: [v0.18.1...v0.19.0](https://github.com/Finch-API/finch-api-java/compare/v0.18.1...v0.19.0)
+
+### Features
+
+* **api:** create new sandbox job ([#150](https://github.com/Finch-API/finch-api-java/issues/150)) ([4e9226b](https://github.com/Finch-API/finch-api-java/commit/4e9226b54cada845fdf5351e431fd0852cfa1c3f))
+
+
+### Chores
+
+* update dependency org.apache.httpcomponents.core5:httpcore5 to v5.2.4 ([#152](https://github.com/Finch-API/finch-api-java/issues/152)) ([ac75fd1](https://github.com/Finch-API/finch-api-java/commit/ac75fd17b51746a837e0f33cc869abec07b6253a))
+* update dependency org.slf4j:slf4j-simple to v1.7.36 ([#153](https://github.com/Finch-API/finch-api-java/issues/153)) ([2daf2d6](https://github.com/Finch-API/finch-api-java/commit/2daf2d66b1e495e0432bdedd3ece5adfd3e5ceee))
+
 ## 0.18.1 (2024-02-15)
 
 Full Changelog: [v0.18.0...v0.18.1](https://github.com/Finch-API/finch-api-java/compare/v0.18.0...v0.18.1)
