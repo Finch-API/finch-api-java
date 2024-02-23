@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.19.1 (2024-02-23)
+
+Full Changelog: [v0.19.0...v0.19.1](https://github.com/Finch-API/finch-api-java/compare/v0.19.0...v0.19.1)
+
+### Chores
+
+* **ci:** update actions/setup-java action to v4 ([#159](https://github.com/Finch-API/finch-api-java/issues/159)) ([14036c4](https://github.com/Finch-API/finch-api-java/commit/14036c42bc6ad872503cd6021981ce9eac889430))
+* **internal:** update deps ([#157](https://github.com/Finch-API/finch-api-java/issues/157)) ([5af2b48](https://github.com/Finch-API/finch-api-java/commit/5af2b48261e5718c6d081d8c3c40faf53569d91f))
+* update dependency com.diffplug.spotless:spotless-plugin-gradle to v6.25.0 ([#161](https://github.com/Finch-API/finch-api-java/issues/161)) ([31416ab](https://github.com/Finch-API/finch-api-java/commit/31416ab89ba552edc59268bb829ff29b49fe1783))
+* update dependency com.github.tomakehurst:wiremock-jre8 to v2.35.2 ([#164](https://github.com/Finch-API/finch-api-java/issues/164)) ([97a9de1](https://github.com/Finch-API/finch-api-java/commit/97a9de1f6648a63e18d9fa219a9eb19b8095a1e1))
+* update dependency com.google.guava:guava to v33 ([#162](https://github.com/Finch-API/finch-api-java/issues/162)) ([7ec9b80](https://github.com/Finch-API/finch-api-java/commit/7ec9b808fbc30d1bbef247ca3b23137100225c6a))
+* update dependency com.squareup.okhttp3:okhttp to v4.12.0 ([#160](https://github.com/Finch-API/finch-api-java/issues/160)) ([4689351](https://github.com/Finch-API/finch-api-java/commit/46893517c2103a2a951c8bf921727956ebde3b7b))
+* update dependency org.apache.httpcomponents.client5:httpclient5 to v5.3.1 ([#158](https://github.com/Finch-API/finch-api-java/issues/158)) ([84d1596](https://github.com/Finch-API/finch-api-java/commit/84d1596f4e70789524887b6bd370dae41a63ca12))
+* update dependency org.assertj:assertj-core to v3.25.3 ([#154](https://github.com/Finch-API/finch-api-java/issues/154)) ([712f10b](https://github.com/Finch-API/finch-api-java/commit/712f10b23eaed8e1e1ff6f3a85fb37ec5c0b4f02))
+* update dependency org.assertj:assertj-guava to v3.25.3 ([#156](https://github.com/Finch-API/finch-api-java/issues/156)) ([f196f19](https://github.com/Finch-API/finch-api-java/commit/f196f196e88a1e33c92fcafc066a190c9e7cb153))
+* update dependency org.slf4j:slf4j-simple to v2 ([#163](https://github.com/Finch-API/finch-api-java/issues/163)) ([908ff08](https://github.com/Finch-API/finch-api-java/commit/908ff085f5353c751cba7abd5226710b588678e2))
+
 ## 0.19.0 (2024-02-22)
 
 Full Changelog: [v0.18.1...v0.19.0](https://github.com/Finch-API/finch-api-java/compare/v0.18.1...v0.19.0)
