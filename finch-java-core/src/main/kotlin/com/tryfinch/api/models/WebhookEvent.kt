@@ -35,32 +35,53 @@ private constructor(
     private var validated: Boolean = false
 
     fun accountUpdateEvent(): Optional<AccountUpdateEvent> = Optional.ofNullable(accountUpdateEvent)
+
     fun jobCompletionEvent(): Optional<JobCompletionEvent> = Optional.ofNullable(jobCompletionEvent)
+
     fun companyEvent(): Optional<CompanyEvent> = Optional.ofNullable(companyEvent)
+
     fun directoryEvent(): Optional<DirectoryEvent> = Optional.ofNullable(directoryEvent)
+
     fun employmentEvent(): Optional<EmploymentEvent> = Optional.ofNullable(employmentEvent)
+
     fun individualEvent(): Optional<IndividualEvent> = Optional.ofNullable(individualEvent)
+
     fun paymentEvent(): Optional<PaymentEvent> = Optional.ofNullable(paymentEvent)
+
     fun payStatementEvent(): Optional<PayStatementEvent> = Optional.ofNullable(payStatementEvent)
 
     fun isAccountUpdateEvent(): Boolean = accountUpdateEvent != null
+
     fun isJobCompletionEvent(): Boolean = jobCompletionEvent != null
+
     fun isCompanyEvent(): Boolean = companyEvent != null
+
     fun isDirectoryEvent(): Boolean = directoryEvent != null
+
     fun isEmploymentEvent(): Boolean = employmentEvent != null
+
     fun isIndividualEvent(): Boolean = individualEvent != null
+
     fun isPaymentEvent(): Boolean = paymentEvent != null
+
     fun isPayStatementEvent(): Boolean = payStatementEvent != null
 
     fun asAccountUpdateEvent(): AccountUpdateEvent =
         accountUpdateEvent.getOrThrow("accountUpdateEvent")
+
     fun asJobCompletionEvent(): JobCompletionEvent =
         jobCompletionEvent.getOrThrow("jobCompletionEvent")
+
     fun asCompanyEvent(): CompanyEvent = companyEvent.getOrThrow("companyEvent")
+
     fun asDirectoryEvent(): DirectoryEvent = directoryEvent.getOrThrow("directoryEvent")
+
     fun asEmploymentEvent(): EmploymentEvent = employmentEvent.getOrThrow("employmentEvent")
+
     fun asIndividualEvent(): IndividualEvent = individualEvent.getOrThrow("individualEvent")
+
     fun asPaymentEvent(): PaymentEvent = paymentEvent.getOrThrow("paymentEvent")
+
     fun asPayStatementEvent(): PayStatementEvent = payStatementEvent.getOrThrow("payStatementEvent")
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
