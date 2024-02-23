@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.20.0 (2024-02-23)
+
+Full Changelog: [v0.19.1...v0.20.0](https://github.com/Finch-API/finch-api-java/compare/v0.19.1...v0.20.0)
+
+### Features
+
+* **api:** make redirect_uri optional ([#165](https://github.com/Finch-API/finch-api-java/issues/165)) ([7bd04da](https://github.com/Finch-API/finch-api-java/commit/7bd04da2ed4d44e47ef4b7401e2015bb3d40cf27))
+
 ## 0.19.1 (2024-02-23)
 
 Full Changelog: [v0.19.0...v0.19.1](https://github.com/Finch-API/finch-api-java/compare/v0.19.0...v0.19.1)
