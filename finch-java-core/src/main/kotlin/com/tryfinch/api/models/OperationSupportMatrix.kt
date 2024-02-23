@@ -32,113 +32,89 @@ private constructor(
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
-     *
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     * provider
-     *
+     *   provider
      * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     * cannot support
-     *
+     *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     * client and not to Finch
+     *   client and not to Finch
      */
     fun create(): Optional<OperationSupport> = Optional.ofNullable(create.getNullable("create"))
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
-     *
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     * provider
-     *
+     *   provider
      * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     * cannot support
-     *
+     *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     * client and not to Finch
+     *   client and not to Finch
      */
     fun update(): Optional<OperationSupport> = Optional.ofNullable(update.getNullable("update"))
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
-     *
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     * provider
-     *
+     *   provider
      * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     * cannot support
-     *
+     *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     * client and not to Finch
+     *   client and not to Finch
      */
     fun delete(): Optional<OperationSupport> = Optional.ofNullable(delete.getNullable("delete"))
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
-     *
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     * provider
-     *
+     *   provider
      * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     * cannot support
-     *
+     *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     * client and not to Finch
+     *   client and not to Finch
      */
     fun read(): Optional<OperationSupport> = Optional.ofNullable(read.getNullable("read"))
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
-     *
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     * provider
-     *
+     *   provider
      * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     * cannot support
-     *
+     *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     * client and not to Finch
+     *   client and not to Finch
      */
     @JsonProperty("create") @ExcludeMissing fun _create() = create
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
-     *
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     * provider
-     *
+     *   provider
      * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     * cannot support
-     *
+     *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     * client and not to Finch
+     *   client and not to Finch
      */
     @JsonProperty("update") @ExcludeMissing fun _update() = update
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
-     *
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     * provider
-     *
+     *   provider
      * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     * cannot support
-     *
+     *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     * client and not to Finch
+     *   client and not to Finch
      */
     @JsonProperty("delete") @ExcludeMissing fun _delete() = delete
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
-     *
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     * provider
-     *
+     *   provider
      * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     * cannot support
-     *
+     *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     * client and not to Finch
+     *   client and not to Finch
      */
     @JsonProperty("read") @ExcludeMissing fun _read() = read
 
@@ -212,29 +188,23 @@ private constructor(
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
-         *
          * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         * provider
-         *
+         *   provider
          * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         * cannot support
-         *
+         *   cannot support
          * - `client_access_only`: This behavior is supported by the provider, but only available to
-         * the client and not to Finch
+         *   the client and not to Finch
          */
         fun create(create: OperationSupport) = create(JsonField.of(create))
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
-         *
          * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         * provider
-         *
+         *   provider
          * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         * cannot support
-         *
+         *   cannot support
          * - `client_access_only`: This behavior is supported by the provider, but only available to
-         * the client and not to Finch
+         *   the client and not to Finch
          */
         @JsonProperty("create")
         @ExcludeMissing
@@ -242,29 +212,23 @@ private constructor(
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
-         *
          * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         * provider
-         *
+         *   provider
          * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         * cannot support
-         *
+         *   cannot support
          * - `client_access_only`: This behavior is supported by the provider, but only available to
-         * the client and not to Finch
+         *   the client and not to Finch
          */
         fun update(update: OperationSupport) = update(JsonField.of(update))
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
-         *
          * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         * provider
-         *
+         *   provider
          * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         * cannot support
-         *
+         *   cannot support
          * - `client_access_only`: This behavior is supported by the provider, but only available to
-         * the client and not to Finch
+         *   the client and not to Finch
          */
         @JsonProperty("update")
         @ExcludeMissing
@@ -272,29 +236,23 @@ private constructor(
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
-         *
          * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         * provider
-         *
+         *   provider
          * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         * cannot support
-         *
+         *   cannot support
          * - `client_access_only`: This behavior is supported by the provider, but only available to
-         * the client and not to Finch
+         *   the client and not to Finch
          */
         fun delete(delete: OperationSupport) = delete(JsonField.of(delete))
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
-         *
          * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         * provider
-         *
+         *   provider
          * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         * cannot support
-         *
+         *   cannot support
          * - `client_access_only`: This behavior is supported by the provider, but only available to
-         * the client and not to Finch
+         *   the client and not to Finch
          */
         @JsonProperty("delete")
         @ExcludeMissing
@@ -302,29 +260,23 @@ private constructor(
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
-         *
          * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         * provider
-         *
+         *   provider
          * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         * cannot support
-         *
+         *   cannot support
          * - `client_access_only`: This behavior is supported by the provider, but only available to
-         * the client and not to Finch
+         *   the client and not to Finch
          */
         fun read(read: OperationSupport) = read(JsonField.of(read))
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
-         *
          * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         * provider
-         *
+         *   provider
          * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         * cannot support
-         *
+         *   cannot support
          * - `client_access_only`: This behavior is supported by the provider, but only available to
-         * the client and not to Finch
+         *   the client and not to Finch
          */
         @JsonProperty("read")
         @ExcludeMissing

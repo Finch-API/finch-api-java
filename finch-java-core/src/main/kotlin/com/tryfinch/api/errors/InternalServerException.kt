@@ -9,5 +9,6 @@ constructor(
     private val error: FinchError,
 ) : FinchServiceException(headers, "${error}") {
     override fun statusCode(): Int = statusCode
+
     fun error(): FinchError = error
 }

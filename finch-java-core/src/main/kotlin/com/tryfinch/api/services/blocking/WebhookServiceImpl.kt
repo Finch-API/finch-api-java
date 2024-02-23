@@ -46,7 +46,7 @@ constructor(
         val webhookSecret =
             secret
                 ?: clientOptions.webhookSecret
-                    ?: throw FinchException(
+                ?: throw FinchException(
                     "The webhook secret must either be set using the env var, FINCH_WEBHOOK_SECRET, on the client class, or passed to this method"
                 )
 
