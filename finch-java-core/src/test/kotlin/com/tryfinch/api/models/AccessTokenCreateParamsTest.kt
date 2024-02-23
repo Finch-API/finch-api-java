@@ -12,9 +12,9 @@ class AccessTokenCreateParamsTest {
     fun createAccessTokenCreateParams() {
         AccessTokenCreateParams.builder()
             .code("<your_authorization_code>")
-            .redirectUri("https://example.com")
             .clientId("<your_client_id>")
             .clientSecret("<your_client_secret>")
+            .redirectUri("https://example.com")
             .build()
     }
 
@@ -23,28 +23,23 @@ class AccessTokenCreateParamsTest {
         val params =
             AccessTokenCreateParams.builder()
                 .code("<your_authorization_code>")
-                .redirectUri("https://example.com")
                 .clientId("<your_client_id>")
                 .clientSecret("<your_client_secret>")
+                .redirectUri("https://example.com")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
-        assertThat(body.redirectUri()).isEqualTo("https://example.com")
         assertThat(body.clientId()).isEqualTo("<your_client_id>")
         assertThat(body.clientSecret()).isEqualTo("<your_client_secret>")
+        assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params =
-            AccessTokenCreateParams.builder()
-                .code("<your_authorization_code>")
-                .redirectUri("https://example.com")
-                .build()
+        val params = AccessTokenCreateParams.builder().code("<your_authorization_code>").build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
-        assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
 }
