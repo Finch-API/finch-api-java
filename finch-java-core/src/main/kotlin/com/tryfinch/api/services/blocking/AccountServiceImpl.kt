@@ -27,11 +27,7 @@ constructor(
     private val disconnectHandler: Handler<DisconnectResponse> =
         jsonHandler<DisconnectResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /**
-     * Disconnect an employer from your application and invalidate all `access_token`s associated
-     * with the employer. We require applications to implement the Disconnect endpoint for billing
-     * and security purposes.
-     */
+    /** Disconnect one or more `access_token`s from your application. */
     override fun disconnect(
         params: AccountDisconnectParams,
         requestOptions: RequestOptions

@@ -32,11 +32,7 @@ constructor(
         jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
-    /**
-     * **Availability: Automated Benefits providers only**
-     *
-     * Lists individuals currently enrolled in a given benefit.
-     */
+    /** Lists individuals currently enrolled in a given deduction. */
     override fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions
@@ -64,11 +60,7 @@ constructor(
         jsonHandler<List<IndividualBenefit>>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
-    /**
-     * **Availability: Automated Benefits providers only**
-     *
-     * Get enrolled benefit information for the given individuals.
-     */
+    /** Get enrollment information for the given individuals. */
     override fun retrieveManyBenefits(
         params: HrisBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions
@@ -102,11 +94,7 @@ constructor(
         jsonHandler<List<UnenrolledIndividual>>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
-    /**
-     * **Availability: Automated and Assisted Benefits providers**
-     *
-     * Unenroll individuals from a benefit
-     */
+    /** Unenroll individuals from a deduction or contribution */
     override fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions
