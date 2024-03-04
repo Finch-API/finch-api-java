@@ -27,13 +27,7 @@ constructor(
         jsonHandler<HrisEmploymentRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
-    /**
-     * Read individual employment and income data
-     *
-     * Note: Income information is returned as reported by the provider. This may not always be
-     * annualized income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on
-     * what information the provider returns.
-     */
+    /** Read individual employment and income data */
     override fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
         requestOptions: RequestOptions

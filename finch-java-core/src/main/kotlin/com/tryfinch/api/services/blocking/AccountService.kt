@@ -12,11 +12,7 @@ import com.tryfinch.api.models.Introspection
 
 interface AccountService {
 
-    /**
-     * Disconnect an employer from your application and invalidate all `access_token`s associated
-     * with the employer. We require applications to implement the Disconnect endpoint for billing
-     * and security purposes.
-     */
+    /** Disconnect one or more `access_token`s from your application. */
     @JvmOverloads
     fun disconnect(
         params: AccountDisconnectParams,

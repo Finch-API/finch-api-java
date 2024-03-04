@@ -15,33 +15,21 @@ import java.util.concurrent.CompletableFuture
 
 interface IndividualServiceAsync {
 
-    /**
-     * **Availability: Automated Benefits providers only**
-     *
-     * Lists individuals currently enrolled in a given benefit.
-     */
+    /** Lists individuals currently enrolled in a given deduction. */
     @JvmOverloads
     fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<IndividualEnrolledIdsResponse>
 
-    /**
-     * **Availability: Automated Benefits providers only**
-     *
-     * Get enrolled benefit information for the given individuals.
-     */
+    /** Get enrollment information for the given individuals. */
     @JvmOverloads
     fun retrieveManyBenefits(
         params: HrisBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>
 
-    /**
-     * **Availability: Automated and Assisted Benefits providers**
-     *
-     * Unenroll individuals from a benefit
-     */
+    /** Unenroll individuals from a deduction or contribution */
     @JvmOverloads
     fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
