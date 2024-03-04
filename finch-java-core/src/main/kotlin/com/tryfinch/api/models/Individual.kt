@@ -73,14 +73,15 @@ private constructor(
     fun residence(): Optional<Location> = Optional.ofNullable(residence.getNullable("residence"))
 
     /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
+     * Social Security Number of the individual. This field is only available with the `ssn` scope
+     * enabled and the `options: { include: ['ssn'] }` param set in the body.
      */
     fun ssn(): Optional<String> = Optional.ofNullable(ssn.getNullable("ssn"))
 
     /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
+     * Social Security Number of the individual in **encrypted** format. This field is only
+     * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
+     * the body.
      */
     fun encryptedSsn(): Optional<String> =
         Optional.ofNullable(encryptedSsn.getNullable("encrypted_ssn"))
@@ -115,14 +116,15 @@ private constructor(
     @JsonProperty("residence") @ExcludeMissing fun _residence() = residence
 
     /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
+     * Social Security Number of the individual. This field is only available with the `ssn` scope
+     * enabled and the `options: { include: ['ssn'] }` param set in the body.
      */
     @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
 
     /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
+     * Social Security Number of the individual in **encrypted** format. This field is only
+     * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
+     * the body.
      */
     @JsonProperty("encrypted_ssn") @ExcludeMissing fun _encryptedSsn() = encryptedSsn
 
@@ -322,28 +324,30 @@ private constructor(
         fun residence(residence: JsonField<Location>) = apply { this.residence = residence }
 
         /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
+         * Social Security Number of the individual. This field is only available with the `ssn`
+         * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          */
         fun ssn(ssn: String) = ssn(JsonField.of(ssn))
 
         /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
+         * Social Security Number of the individual. This field is only available with the `ssn`
+         * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          */
         @JsonProperty("ssn")
         @ExcludeMissing
         fun ssn(ssn: JsonField<String>) = apply { this.ssn = ssn }
 
         /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
+         * Social Security Number of the individual in **encrypted** format. This field is only
+         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
+         * in the body.
          */
         fun encryptedSsn(encryptedSsn: String) = encryptedSsn(JsonField.of(encryptedSsn))
 
         /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
+         * Social Security Number of the individual in **encrypted** format. This field is only
+         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
+         * in the body.
          */
         @JsonProperty("encrypted_ssn")
         @ExcludeMissing

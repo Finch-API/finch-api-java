@@ -70,7 +70,6 @@ class EmploymentDataTest {
                 .startDate("string")
                 .title("string")
                 .workId("string")
-                .workId2("string")
                 .build()
         assertThat(employmentData).isNotNull
         assertThat(employmentData.id()).contains("string")
@@ -134,6 +133,5 @@ class EmploymentDataTest {
         assertThat(employmentData.startDate()).contains("string")
         assertThat(employmentData.title()).contains("string")
         assertThat(employmentData.workId()).contains("string")
-        assertThat(employmentData.workId2()).contains("string")
     }
 }
