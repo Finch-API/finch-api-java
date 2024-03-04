@@ -39,7 +39,6 @@ private constructor(
     private val customFields: JsonField<List<CustomField>>,
     private val sourceId: JsonField<String>,
     private val workId: JsonField<String>,
-    private val workId2: JsonField<String>,
     private val payGroupIds: JsonField<List<String>>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
@@ -107,17 +106,8 @@ private constructor(
     /** The source system's unique employment identifier for this individual */
     fun sourceId(): Optional<String> = Optional.ofNullable(sourceId.getNullable("source_id"))
 
-    /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
-     */
+    /** This field is deprecated in favour of `source_id` */
     fun workId(): Optional<String> = Optional.ofNullable(workId.getNullable("work_id"))
-
-    /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
-     */
-    fun workId2(): Optional<String> = Optional.ofNullable(workId2.getNullable("work_id_2"))
 
     /**
      * Note: This property is only available if enabled for your account. Please reach out to your
@@ -181,17 +171,8 @@ private constructor(
     /** The source system's unique employment identifier for this individual */
     @JsonProperty("source_id") @ExcludeMissing fun _sourceId() = sourceId
 
-    /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
-     */
+    /** This field is deprecated in favour of `source_id` */
     @JsonProperty("work_id") @ExcludeMissing fun _workId() = workId
-
-    /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
-     */
-    @JsonProperty("work_id_2") @ExcludeMissing fun _workId2() = workId2
 
     /**
      * Note: This property is only available if enabled for your account. Please reach out to your
@@ -223,7 +204,6 @@ private constructor(
             customFields().map { it.forEach { it.validate() } }
             sourceId()
             workId()
-            workId2()
             payGroupIds()
             validated = true
         }
@@ -255,7 +235,6 @@ private constructor(
             this.customFields == other.customFields &&
             this.sourceId == other.sourceId &&
             this.workId == other.workId &&
-            this.workId2 == other.workId2 &&
             this.payGroupIds == other.payGroupIds &&
             this.additionalProperties == other.additionalProperties
     }
@@ -282,7 +261,6 @@ private constructor(
                     customFields,
                     sourceId,
                     workId,
-                    workId2,
                     payGroupIds,
                     additionalProperties,
                 )
@@ -291,7 +269,7 @@ private constructor(
     }
 
     override fun toString() =
-        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, workId=$workId, workId2=$workId2, payGroupIds=$payGroupIds, additionalProperties=$additionalProperties}"
+        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, workId=$workId, payGroupIds=$payGroupIds, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -318,7 +296,6 @@ private constructor(
         private var customFields: JsonField<List<CustomField>> = JsonMissing.of()
         private var sourceId: JsonField<String> = JsonMissing.of()
         private var workId: JsonField<String> = JsonMissing.of()
-        private var workId2: JsonField<String> = JsonMissing.of()
         private var payGroupIds: JsonField<List<String>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -342,7 +319,6 @@ private constructor(
             this.customFields = employmentData.customFields
             this.sourceId = employmentData.sourceId
             this.workId = employmentData.workId
-            this.workId2 = employmentData.workId2
             this.payGroupIds = employmentData.payGroupIds
             additionalProperties(employmentData.additionalProperties)
         }
@@ -493,33 +469,13 @@ private constructor(
         @ExcludeMissing
         fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
-        /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
-         */
+        /** This field is deprecated in favour of `source_id` */
         fun workId(workId: String) = workId(JsonField.of(workId))
 
-        /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
-         */
+        /** This field is deprecated in favour of `source_id` */
         @JsonProperty("work_id")
         @ExcludeMissing
         fun workId(workId: JsonField<String>) = apply { this.workId = workId }
-
-        /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
-         */
-        fun workId2(workId2: String) = workId2(JsonField.of(workId2))
-
-        /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
-         */
-        @JsonProperty("work_id_2")
-        @ExcludeMissing
-        fun workId2(workId2: JsonField<String>) = apply { this.workId2 = workId2 }
 
         /**
          * Note: This property is only available if enabled for your account. Please reach out to
@@ -571,7 +527,6 @@ private constructor(
                 customFields.map { it.toUnmodifiable() },
                 sourceId,
                 workId,
-                workId2,
                 payGroupIds.map { it.toUnmodifiable() },
                 additionalProperties.toUnmodifiable(),
             )
