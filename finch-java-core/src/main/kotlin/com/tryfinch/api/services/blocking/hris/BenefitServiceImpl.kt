@@ -42,10 +42,8 @@ constructor(
             .withErrorHandler(errorHandler)
 
     /**
-     * **Availability: Automated and Assisted Benefits providers**
-     *
-     * Creates a new company-wide benefit. Please use the `/meta` endpoint to view available types
-     * for each provider.
+     * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
+     * view available types for each provider.
      */
     override fun create(
         params: HrisBenefitCreateParams,
@@ -74,11 +72,7 @@ constructor(
     private val retrieveHandler: Handler<CompanyBenefit> =
         jsonHandler<CompanyBenefit>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /**
-     * **Availability: Automated Benefits providers only**
-     *
-     * Lists benefit information for a given benefit
-     */
+    /** Lists deductions and contributions information for a given item */
     override fun retrieve(
         params: HrisBenefitRetrieveParams,
         requestOptions: RequestOptions
@@ -106,11 +100,7 @@ constructor(
         jsonHandler<UpdateCompanyBenefitResponse>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
-    /**
-     * **Availability: Automated and Assisted Benefits providers**
-     *
-     * Updates an existing company-wide benefit
-     */
+    /** Updates an existing company-wide deduction or contribution */
     override fun update(
         params: HrisBenefitUpdateParams,
         requestOptions: RequestOptions
@@ -138,11 +128,7 @@ constructor(
     private val listHandler: Handler<List<CompanyBenefit>> =
         jsonHandler<List<CompanyBenefit>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /**
-     * **Availability: Automated Benefits providers only**
-     *
-     * List all company-wide benefits.
-     */
+    /** List all company-wide deductions and contributions. */
     override fun list(
         params: HrisBenefitListParams,
         requestOptions: RequestOptions
@@ -171,11 +157,7 @@ constructor(
     private val listSupportedBenefitsHandler: Handler<List<SupportedBenefit>> =
         jsonHandler<List<SupportedBenefit>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /**
-     * **Availability: Automated and Assisted Benefits providers**
-     *
-     * Lists available types and configurations for the provider associated with the access token.
-     */
+    /** Get deductions metadata */
     override fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams,
         requestOptions: RequestOptions

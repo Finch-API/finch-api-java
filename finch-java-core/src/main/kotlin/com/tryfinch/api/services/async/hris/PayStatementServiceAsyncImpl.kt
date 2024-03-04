@@ -30,7 +30,7 @@ constructor(
     /**
      * Read detailed pay statements for each individual.
      *
-     * Deduction and contribution types are supported by the payroll systems that support Benefits.
+     * Deduction and contribution types are supported by the payroll systems that supports Benefits.
      */
     override fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
