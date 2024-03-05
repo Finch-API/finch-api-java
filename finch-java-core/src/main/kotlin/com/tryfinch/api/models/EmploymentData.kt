@@ -39,7 +39,6 @@ private constructor(
     private val customFields: JsonField<List<CustomField>>,
     private val sourceId: JsonField<String>,
     private val workId: JsonField<String>,
-    private val payGroupIds: JsonField<List<String>>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -109,13 +108,6 @@ private constructor(
     /** This field is deprecated in favour of `source_id` */
     fun workId(): Optional<String> = Optional.ofNullable(workId.getNullable("work_id"))
 
-    /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
-     */
-    fun payGroupIds(): Optional<List<String>> =
-        Optional.ofNullable(payGroupIds.getNullable("pay_group_ids"))
-
     /** string A stable Finch `id` (UUID v4) for an individual in the company. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
 
@@ -174,12 +166,6 @@ private constructor(
     /** This field is deprecated in favour of `source_id` */
     @JsonProperty("work_id") @ExcludeMissing fun _workId() = workId
 
-    /**
-     * Note: This property is only available if enabled for your account. Please reach out to your
-     * Finch representative if you would like access.
-     */
-    @JsonProperty("pay_group_ids") @ExcludeMissing fun _payGroupIds() = payGroupIds
-
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -204,7 +190,6 @@ private constructor(
             customFields().map { it.forEach { it.validate() } }
             sourceId()
             workId()
-            payGroupIds()
             validated = true
         }
     }
@@ -235,7 +220,6 @@ private constructor(
             this.customFields == other.customFields &&
             this.sourceId == other.sourceId &&
             this.workId == other.workId &&
-            this.payGroupIds == other.payGroupIds &&
             this.additionalProperties == other.additionalProperties
     }
 
@@ -261,7 +245,6 @@ private constructor(
                     customFields,
                     sourceId,
                     workId,
-                    payGroupIds,
                     additionalProperties,
                 )
         }
@@ -269,7 +252,7 @@ private constructor(
     }
 
     override fun toString() =
-        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, workId=$workId, payGroupIds=$payGroupIds, additionalProperties=$additionalProperties}"
+        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -296,7 +279,6 @@ private constructor(
         private var customFields: JsonField<List<CustomField>> = JsonMissing.of()
         private var sourceId: JsonField<String> = JsonMissing.of()
         private var workId: JsonField<String> = JsonMissing.of()
-        private var payGroupIds: JsonField<List<String>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -319,7 +301,6 @@ private constructor(
             this.customFields = employmentData.customFields
             this.sourceId = employmentData.sourceId
             this.workId = employmentData.workId
-            this.payGroupIds = employmentData.payGroupIds
             additionalProperties(employmentData.additionalProperties)
         }
 
@@ -477,22 +458,6 @@ private constructor(
         @ExcludeMissing
         fun workId(workId: JsonField<String>) = apply { this.workId = workId }
 
-        /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
-         */
-        fun payGroupIds(payGroupIds: List<String>) = payGroupIds(JsonField.of(payGroupIds))
-
-        /**
-         * Note: This property is only available if enabled for your account. Please reach out to
-         * your Finch representative if you would like access.
-         */
-        @JsonProperty("pay_group_ids")
-        @ExcludeMissing
-        fun payGroupIds(payGroupIds: JsonField<List<String>>) = apply {
-            this.payGroupIds = payGroupIds
-        }
-
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             this.additionalProperties.putAll(additionalProperties)
@@ -527,7 +492,6 @@ private constructor(
                 customFields.map { it.toUnmodifiable() },
                 sourceId,
                 workId,
-                payGroupIds.map { it.toUnmodifiable() },
                 additionalProperties.toUnmodifiable(),
             )
     }
