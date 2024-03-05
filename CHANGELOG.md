@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.21.0 (2024-03-05)
+
+Full Changelog: [v0.20.0...v0.21.0](https://github.com/Finch-API/finch-api-java/compare/v0.20.0...v0.21.0)
+
+### Features
+
+* **api:** remove deprecated `deduction` from docstring ([#167](https://github.com/Finch-API/finch-api-java/issues/167)) ([cf4b0e3](https://github.com/Finch-API/finch-api-java/commit/cf4b0e31b4f6703141ed21c38c236f7775018f98))
+
+
+### Chores
+
+* remove internal-only field ([#171](https://github.com/Finch-API/finch-api-java/issues/171)) ([b6465a1](https://github.com/Finch-API/finch-api-java/commit/b6465a1e69732abdc44c9979ffc171d3a5f4de25))
+* update some doc strings ([#169](https://github.com/Finch-API/finch-api-java/issues/169)) ([189695e](https://github.com/Finch-API/finch-api-java/commit/189695e9dd1ce31d1f54660a3b0d9bc929c632c0))
+
+
+### Documentation
+
+* update some doc strings ([#170](https://github.com/Finch-API/finch-api-java/issues/170)) ([756ba0b](https://github.com/Finch-API/finch-api-java/commit/756ba0b9222e8171e9ad5b08dba015531ed77d76))
+
 ## 0.20.0 (2024-02-23)
 
 Full Changelog: [v0.19.1...v0.20.0](https://github.com/Finch-API/finch-api-java/compare/v0.19.1...v0.20.0)
