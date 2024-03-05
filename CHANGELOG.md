@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.21.1 (2024-03-05)
+
+Full Changelog: [v0.21.0...v0.21.1](https://github.com/Finch-API/finch-api-java/compare/v0.21.0...v0.21.1)
+
+### Chores
+
+* add api.md ([#172](https://github.com/Finch-API/finch-api-java/issues/172)) ([54cc0ed](https://github.com/Finch-API/finch-api-java/commit/54cc0edecb18e985cad1e40cf66532b13ad21146))
+
 ## 0.21.0 (2024-03-05)
 
 Full Changelog: [v0.20.0...v0.21.0](https://github.com/Finch-API/finch-api-java/compare/v0.20.0...v0.21.0)
