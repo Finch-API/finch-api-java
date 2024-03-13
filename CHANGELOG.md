@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.0 (2024-03-13)
+
+Full Changelog: [v0.21.1...v0.22.0](https://github.com/Finch-API/finch-api-java/compare/v0.21.1...v0.22.0)
+
+### Features
+
+* add HttpRequestBody.contentLength() ([#174](https://github.com/Finch-API/finch-api-java/issues/174)) ([3e5f3f5](https://github.com/Finch-API/finch-api-java/commit/3e5f3f5318da2bb403878009aa53fe632a3db128))
+
 ## 0.21.1 (2024-03-05)
 
 Full Changelog: [v0.21.0...v0.21.1](https://github.com/Finch-API/finch-api-java/compare/v0.21.0...v0.21.1)
