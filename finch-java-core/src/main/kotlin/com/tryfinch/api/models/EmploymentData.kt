@@ -35,7 +35,7 @@ private constructor(
     private val classCode: JsonField<String>,
     private val location: JsonField<Location>,
     private val income: JsonField<Income>,
-    private val incomeHistory: JsonField<List<Income>>,
+    private val incomeHistory: JsonField<List<Income?>>,
     private val customFields: JsonField<List<CustomField>>,
     private val sourceId: JsonField<String>,
     private val workId: JsonField<String>,
@@ -92,7 +92,7 @@ private constructor(
     fun income(): Optional<Income> = Optional.ofNullable(income.getNullable("income"))
 
     /** The array of income history. */
-    fun incomeHistory(): Optional<List<Income>> =
+    fun incomeHistory(): Optional<List<Income?>> =
         Optional.ofNullable(incomeHistory.getNullable("income_history"))
 
     /**
@@ -186,7 +186,7 @@ private constructor(
             classCode()
             location().map { it.validate() }
             income().map { it.validate() }
-            incomeHistory().map { it.forEach { it.validate() } }
+            incomeHistory().map { it.forEach { it?.validate() } }
             customFields().map { it.forEach { it.validate() } }
             sourceId()
             workId()
@@ -275,7 +275,7 @@ private constructor(
         private var classCode: JsonField<String> = JsonMissing.of()
         private var location: JsonField<Location> = JsonMissing.of()
         private var income: JsonField<Income> = JsonMissing.of()
-        private var incomeHistory: JsonField<List<Income>> = JsonMissing.of()
+        private var incomeHistory: JsonField<List<Income?>> = JsonMissing.of()
         private var customFields: JsonField<List<CustomField>> = JsonMissing.of()
         private var sourceId: JsonField<String> = JsonMissing.of()
         private var workId: JsonField<String> = JsonMissing.of()
@@ -417,12 +417,12 @@ private constructor(
         fun income(income: JsonField<Income>) = apply { this.income = income }
 
         /** The array of income history. */
-        fun incomeHistory(incomeHistory: List<Income>) = incomeHistory(JsonField.of(incomeHistory))
+        fun incomeHistory(incomeHistory: List<Income?>) = incomeHistory(JsonField.of(incomeHistory))
 
         /** The array of income history. */
         @JsonProperty("income_history")
         @ExcludeMissing
-        fun incomeHistory(incomeHistory: JsonField<List<Income>>) = apply {
+        fun incomeHistory(incomeHistory: JsonField<List<Income?>>) = apply {
             this.incomeHistory = incomeHistory
         }
 
