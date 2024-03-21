@@ -26,9 +26,9 @@ private constructor(
     private val entity: JsonField<Entity>,
     private val primaryEmail: JsonField<String>,
     private val primaryPhoneNumber: JsonField<String>,
-    private val departments: JsonField<List<Department>>,
+    private val departments: JsonField<List<Department?>>,
     private val ein: JsonField<String>,
-    private val locations: JsonField<List<Location>>,
+    private val locations: JsonField<List<Location?>>,
     private val accounts: JsonField<List<Account>>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
@@ -55,13 +55,13 @@ private constructor(
         Optional.ofNullable(primaryPhoneNumber.getNullable("primary_phone_number"))
 
     /** The array of company departments. */
-    fun departments(): Optional<List<Department>> =
+    fun departments(): Optional<List<Department?>> =
         Optional.ofNullable(departments.getNullable("departments"))
 
     /** The employer identification number. */
     fun ein(): Optional<String> = Optional.ofNullable(ein.getNullable("ein"))
 
-    fun locations(): Optional<List<Location>> =
+    fun locations(): Optional<List<Location?>> =
         Optional.ofNullable(locations.getNullable("locations"))
 
     /** An array of bank account objects associated with the payroll/HRIS system. */
@@ -106,9 +106,9 @@ private constructor(
             entity().map { it.validate() }
             primaryEmail()
             primaryPhoneNumber()
-            departments().map { it.forEach { it.validate() } }
+            departments().map { it.forEach { it?.validate() } }
             ein()
-            locations().map { it.forEach { it.validate() } }
+            locations().map { it.forEach { it?.validate() } }
             accounts().map { it.forEach { it.validate() } }
             validated = true
         }
@@ -168,9 +168,9 @@ private constructor(
         private var entity: JsonField<Entity> = JsonMissing.of()
         private var primaryEmail: JsonField<String> = JsonMissing.of()
         private var primaryPhoneNumber: JsonField<String> = JsonMissing.of()
-        private var departments: JsonField<List<Department>> = JsonMissing.of()
+        private var departments: JsonField<List<Department?>> = JsonMissing.of()
         private var ein: JsonField<String> = JsonMissing.of()
-        private var locations: JsonField<List<Location>> = JsonMissing.of()
+        private var locations: JsonField<List<Location?>> = JsonMissing.of()
         private var accounts: JsonField<List<Account>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -232,12 +232,12 @@ private constructor(
         }
 
         /** The array of company departments. */
-        fun departments(departments: List<Department>) = departments(JsonField.of(departments))
+        fun departments(departments: List<Department?>) = departments(JsonField.of(departments))
 
         /** The array of company departments. */
         @JsonProperty("departments")
         @ExcludeMissing
-        fun departments(departments: JsonField<List<Department>>) = apply {
+        fun departments(departments: JsonField<List<Department?>>) = apply {
             this.departments = departments
         }
 
@@ -249,11 +249,11 @@ private constructor(
         @ExcludeMissing
         fun ein(ein: JsonField<String>) = apply { this.ein = ein }
 
-        fun locations(locations: List<Location>) = locations(JsonField.of(locations))
+        fun locations(locations: List<Location?>) = locations(JsonField.of(locations))
 
         @JsonProperty("locations")
         @ExcludeMissing
-        fun locations(locations: JsonField<List<Location>>) = apply { this.locations = locations }
+        fun locations(locations: JsonField<List<Location?>>) = apply { this.locations = locations }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
         fun accounts(accounts: List<Account>) = accounts(JsonField.of(accounts))

@@ -266,7 +266,7 @@ constructor(
         private val lastName: String?,
         private val preferredName: String?,
         private val emails: List<Email>?,
-        private val phoneNumbers: List<PhoneNumber>?,
+        private val phoneNumbers: List<PhoneNumber?>?,
         private val gender: Gender?,
         private val ethnicity: Ethnicity?,
         private val dob: String?,
@@ -283,7 +283,7 @@ constructor(
         private val classCode: String?,
         private val location: Location?,
         private val income: Income?,
-        private val incomeHistory: List<Income>?,
+        private val incomeHistory: List<Income?>?,
         private val customFields: List<CustomField>?,
         private val sourceId: String?,
         private val additionalProperties: Map<String, JsonValue>,
@@ -305,7 +305,7 @@ constructor(
 
         @JsonProperty("emails") fun emails(): List<Email>? = emails
 
-        @JsonProperty("phone_numbers") fun phoneNumbers(): List<PhoneNumber>? = phoneNumbers
+        @JsonProperty("phone_numbers") fun phoneNumbers(): List<PhoneNumber?>? = phoneNumbers
 
         /** The gender of the individual. */
         @JsonProperty("gender") fun gender(): Gender? = gender
@@ -362,7 +362,7 @@ constructor(
         @JsonProperty("income") fun income(): Income? = income
 
         /** The array of income history. */
-        @JsonProperty("income_history") fun incomeHistory(): List<Income>? = incomeHistory
+        @JsonProperty("income_history") fun incomeHistory(): List<Income?>? = incomeHistory
 
         /**
          * Custom fields for the individual. These are fields which are defined by the employer in
@@ -463,7 +463,7 @@ constructor(
             private var lastName: String? = null
             private var preferredName: String? = null
             private var emails: List<Email>? = null
-            private var phoneNumbers: List<PhoneNumber>? = null
+            private var phoneNumbers: List<PhoneNumber?>? = null
             private var gender: Gender? = null
             private var ethnicity: Ethnicity? = null
             private var dob: String? = null
@@ -480,7 +480,7 @@ constructor(
             private var classCode: String? = null
             private var location: Location? = null
             private var income: Income? = null
-            private var incomeHistory: List<Income>? = null
+            private var incomeHistory: List<Income?>? = null
             private var customFields: List<CustomField>? = null
             private var sourceId: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -534,7 +534,7 @@ constructor(
             @JsonProperty("emails") fun emails(emails: List<Email>) = apply { this.emails = emails }
 
             @JsonProperty("phone_numbers")
-            fun phoneNumbers(phoneNumbers: List<PhoneNumber>) = apply {
+            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
                 this.phoneNumbers = phoneNumbers
             }
 
@@ -605,7 +605,7 @@ constructor(
 
             /** The array of income history. */
             @JsonProperty("income_history")
-            fun incomeHistory(incomeHistory: List<Income>) = apply {
+            fun incomeHistory(incomeHistory: List<Income?>) = apply {
                 this.incomeHistory = incomeHistory
             }
 
