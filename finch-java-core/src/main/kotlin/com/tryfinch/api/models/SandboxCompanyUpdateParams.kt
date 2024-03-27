@@ -20,11 +20,11 @@ import java.util.Optional
 class SandboxCompanyUpdateParams
 constructor(
     private val accounts: List<Account>?,
-    private val departments: List<Department>?,
+    private val departments: List<Department?>?,
     private val ein: String?,
     private val entity: Entity?,
     private val legalName: String?,
-    private val locations: List<Location>?,
+    private val locations: List<Location?>?,
     private val primaryEmail: String?,
     private val primaryPhoneNumber: String?,
     private val additionalQueryParams: Map<String, List<String>>,
@@ -34,7 +34,7 @@ constructor(
 
     fun accounts(): Optional<List<Account>> = Optional.ofNullable(accounts)
 
-    fun departments(): Optional<List<Department>> = Optional.ofNullable(departments)
+    fun departments(): Optional<List<Department?>> = Optional.ofNullable(departments)
 
     fun ein(): Optional<String> = Optional.ofNullable(ein)
 
@@ -42,7 +42,7 @@ constructor(
 
     fun legalName(): Optional<String> = Optional.ofNullable(legalName)
 
-    fun locations(): Optional<List<Location>> = Optional.ofNullable(locations)
+    fun locations(): Optional<List<Location?>> = Optional.ofNullable(locations)
 
     fun primaryEmail(): Optional<String> = Optional.ofNullable(primaryEmail)
 
@@ -72,11 +72,11 @@ constructor(
     class SandboxCompanyUpdateBody
     internal constructor(
         private val accounts: List<Account>?,
-        private val departments: List<Department>?,
+        private val departments: List<Department?>?,
         private val ein: String?,
         private val entity: Entity?,
         private val legalName: String?,
-        private val locations: List<Location>?,
+        private val locations: List<Location?>?,
         private val primaryEmail: String?,
         private val primaryPhoneNumber: String?,
         private val additionalProperties: Map<String, JsonValue>,
@@ -88,7 +88,7 @@ constructor(
         @JsonProperty("accounts") fun accounts(): List<Account>? = accounts
 
         /** The array of company departments. */
-        @JsonProperty("departments") fun departments(): List<Department>? = departments
+        @JsonProperty("departments") fun departments(): List<Department?>? = departments
 
         /** The employer identification number. */
         @JsonProperty("ein") fun ein(): String? = ein
@@ -99,7 +99,7 @@ constructor(
         /** The legal name of the company. */
         @JsonProperty("legal_name") fun legalName(): String? = legalName
 
-        @JsonProperty("locations") fun locations(): List<Location>? = locations
+        @JsonProperty("locations") fun locations(): List<Location?>? = locations
 
         /** The email of the main administrator on the account. */
         @JsonProperty("primary_email") fun primaryEmail(): String? = primaryEmail
@@ -159,11 +159,11 @@ constructor(
         class Builder {
 
             private var accounts: List<Account>? = null
-            private var departments: List<Department>? = null
+            private var departments: List<Department?>? = null
             private var ein: String? = null
             private var entity: Entity? = null
             private var legalName: String? = null
-            private var locations: List<Location>? = null
+            private var locations: List<Location?>? = null
             private var primaryEmail: String? = null
             private var primaryPhoneNumber: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -187,7 +187,7 @@ constructor(
 
             /** The array of company departments. */
             @JsonProperty("departments")
-            fun departments(departments: List<Department>) = apply {
+            fun departments(departments: List<Department?>) = apply {
                 this.departments = departments
             }
 
@@ -202,7 +202,7 @@ constructor(
             fun legalName(legalName: String) = apply { this.legalName = legalName }
 
             @JsonProperty("locations")
-            fun locations(locations: List<Location>) = apply { this.locations = locations }
+            fun locations(locations: List<Location?>) = apply { this.locations = locations }
 
             /** The email of the main administrator on the account. */
             @JsonProperty("primary_email")
@@ -298,11 +298,11 @@ constructor(
     class Builder {
 
         private var accounts: MutableList<Account> = mutableListOf()
-        private var departments: MutableList<Department> = mutableListOf()
+        private var departments: MutableList<Department?> = mutableListOf()
         private var ein: String? = null
         private var entity: Entity? = null
         private var legalName: String? = null
-        private var locations: MutableList<Location> = mutableListOf()
+        private var locations: MutableList<Location?> = mutableListOf()
         private var primaryEmail: String? = null
         private var primaryPhoneNumber: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
@@ -334,7 +334,7 @@ constructor(
         fun addAccount(account: Account) = apply { this.accounts.add(account) }
 
         /** The array of company departments. */
-        fun departments(departments: List<Department>) = apply {
+        fun departments(departments: List<Department?>) = apply {
             this.departments.clear()
             this.departments.addAll(departments)
         }
@@ -351,7 +351,7 @@ constructor(
         /** The legal name of the company. */
         fun legalName(legalName: String) = apply { this.legalName = legalName }
 
-        fun locations(locations: List<Location>) = apply {
+        fun locations(locations: List<Location?>) = apply {
             this.locations.clear()
             this.locations.addAll(locations)
         }

@@ -27,10 +27,10 @@ private constructor(
     private val totalHours: JsonField<Double>,
     private val grossPay: JsonField<Money>,
     private val netPay: JsonField<Money>,
-    private val earnings: JsonField<List<Earning>>,
-    private val taxes: JsonField<List<Tax>>,
-    private val employeeDeductions: JsonField<List<EmployeeDeduction>>,
-    private val employerContributions: JsonField<List<EmployerContribution>>,
+    private val earnings: JsonField<List<Earning?>>,
+    private val taxes: JsonField<List<Tax?>>,
+    private val employeeDeductions: JsonField<List<EmployeeDeduction?>>,
+    private val employerContributions: JsonField<List<EmployerContribution?>>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -57,16 +57,16 @@ private constructor(
     fun netPay(): Optional<Money> = Optional.ofNullable(netPay.getNullable("net_pay"))
 
     /** The array of earnings objects associated with this pay statement */
-    fun earnings(): Optional<List<Earning>> = Optional.ofNullable(earnings.getNullable("earnings"))
+    fun earnings(): Optional<List<Earning?>> = Optional.ofNullable(earnings.getNullable("earnings"))
 
     /** The array of taxes objects associated with this pay statement. */
-    fun taxes(): Optional<List<Tax>> = Optional.ofNullable(taxes.getNullable("taxes"))
+    fun taxes(): Optional<List<Tax?>> = Optional.ofNullable(taxes.getNullable("taxes"))
 
     /** The array of deductions objects associated with this pay statement. */
-    fun employeeDeductions(): Optional<List<EmployeeDeduction>> =
+    fun employeeDeductions(): Optional<List<EmployeeDeduction?>> =
         Optional.ofNullable(employeeDeductions.getNullable("employee_deductions"))
 
-    fun employerContributions(): Optional<List<EmployerContribution>> =
+    fun employerContributions(): Optional<List<EmployerContribution?>> =
         Optional.ofNullable(employerContributions.getNullable("employer_contributions"))
 
     /** A stable Finch `id` (UUID v4) for an individual in the company */
@@ -112,10 +112,10 @@ private constructor(
             totalHours()
             grossPay().map { it.validate() }
             netPay().map { it.validate() }
-            earnings().map { it.forEach { it.validate() } }
-            taxes().map { it.forEach { it.validate() } }
-            employeeDeductions().map { it.forEach { it.validate() } }
-            employerContributions().map { it.forEach { it.validate() } }
+            earnings().map { it.forEach { it?.validate() } }
+            taxes().map { it.forEach { it?.validate() } }
+            employeeDeductions().map { it.forEach { it?.validate() } }
+            employerContributions().map { it.forEach { it?.validate() } }
             validated = true
         }
     }
@@ -177,10 +177,10 @@ private constructor(
         private var totalHours: JsonField<Double> = JsonMissing.of()
         private var grossPay: JsonField<Money> = JsonMissing.of()
         private var netPay: JsonField<Money> = JsonMissing.of()
-        private var earnings: JsonField<List<Earning>> = JsonMissing.of()
-        private var taxes: JsonField<List<Tax>> = JsonMissing.of()
-        private var employeeDeductions: JsonField<List<EmployeeDeduction>> = JsonMissing.of()
-        private var employerContributions: JsonField<List<EmployerContribution>> = JsonMissing.of()
+        private var earnings: JsonField<List<Earning?>> = JsonMissing.of()
+        private var taxes: JsonField<List<Tax?>> = JsonMissing.of()
+        private var employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of()
+        private var employerContributions: JsonField<List<EmployerContribution?>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -247,38 +247,38 @@ private constructor(
         fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
         /** The array of earnings objects associated with this pay statement */
-        fun earnings(earnings: List<Earning>) = earnings(JsonField.of(earnings))
+        fun earnings(earnings: List<Earning?>) = earnings(JsonField.of(earnings))
 
         /** The array of earnings objects associated with this pay statement */
         @JsonProperty("earnings")
         @ExcludeMissing
-        fun earnings(earnings: JsonField<List<Earning>>) = apply { this.earnings = earnings }
+        fun earnings(earnings: JsonField<List<Earning?>>) = apply { this.earnings = earnings }
 
         /** The array of taxes objects associated with this pay statement. */
-        fun taxes(taxes: List<Tax>) = taxes(JsonField.of(taxes))
+        fun taxes(taxes: List<Tax?>) = taxes(JsonField.of(taxes))
 
         /** The array of taxes objects associated with this pay statement. */
         @JsonProperty("taxes")
         @ExcludeMissing
-        fun taxes(taxes: JsonField<List<Tax>>) = apply { this.taxes = taxes }
+        fun taxes(taxes: JsonField<List<Tax?>>) = apply { this.taxes = taxes }
 
         /** The array of deductions objects associated with this pay statement. */
-        fun employeeDeductions(employeeDeductions: List<EmployeeDeduction>) =
+        fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>) =
             employeeDeductions(JsonField.of(employeeDeductions))
 
         /** The array of deductions objects associated with this pay statement. */
         @JsonProperty("employee_deductions")
         @ExcludeMissing
-        fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction>>) = apply {
+        fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) = apply {
             this.employeeDeductions = employeeDeductions
         }
 
-        fun employerContributions(employerContributions: List<EmployerContribution>) =
+        fun employerContributions(employerContributions: List<EmployerContribution?>) =
             employerContributions(JsonField.of(employerContributions))
 
         @JsonProperty("employer_contributions")
         @ExcludeMissing
-        fun employerContributions(employerContributions: JsonField<List<EmployerContribution>>) =
+        fun employerContributions(employerContributions: JsonField<List<EmployerContribution?>>) =
             apply {
                 this.employerContributions = employerContributions
             }

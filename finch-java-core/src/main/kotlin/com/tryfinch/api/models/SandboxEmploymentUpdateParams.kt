@@ -27,7 +27,7 @@ constructor(
     private val endDate: String?,
     private val firstName: String?,
     private val income: Income?,
-    private val incomeHistory: List<Income>?,
+    private val incomeHistory: List<Income?>?,
     private val isActive: Boolean?,
     private val lastName: String?,
     private val location: Location?,
@@ -57,7 +57,7 @@ constructor(
 
     fun income(): Optional<Income> = Optional.ofNullable(income)
 
-    fun incomeHistory(): Optional<List<Income>> = Optional.ofNullable(incomeHistory)
+    fun incomeHistory(): Optional<List<Income?>> = Optional.ofNullable(incomeHistory)
 
     fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive)
 
@@ -120,7 +120,7 @@ constructor(
         private val endDate: String?,
         private val firstName: String?,
         private val income: Income?,
-        private val incomeHistory: List<Income>?,
+        private val incomeHistory: List<Income?>?,
         private val isActive: Boolean?,
         private val lastName: String?,
         private val location: Location?,
@@ -162,7 +162,7 @@ constructor(
         @JsonProperty("income") fun income(): Income? = income
 
         /** The array of income history. */
-        @JsonProperty("income_history") fun incomeHistory(): List<Income>? = incomeHistory
+        @JsonProperty("income_history") fun incomeHistory(): List<Income?>? = incomeHistory
 
         /** `true` if the individual an an active employee or contractor at the company. */
         @JsonProperty("is_active") fun isActive(): Boolean? = isActive
@@ -260,7 +260,7 @@ constructor(
             private var endDate: String? = null
             private var firstName: String? = null
             private var income: Income? = null
-            private var incomeHistory: List<Income>? = null
+            private var incomeHistory: List<Income?>? = null
             private var isActive: Boolean? = null
             private var lastName: String? = null
             private var location: Location? = null
@@ -329,7 +329,7 @@ constructor(
 
             /** The array of income history. */
             @JsonProperty("income_history")
-            fun incomeHistory(incomeHistory: List<Income>) = apply {
+            fun incomeHistory(incomeHistory: List<Income?>) = apply {
                 this.incomeHistory = incomeHistory
             }
 
@@ -479,7 +479,7 @@ constructor(
         private var endDate: String? = null
         private var firstName: String? = null
         private var income: Income? = null
-        private var incomeHistory: MutableList<Income> = mutableListOf()
+        private var incomeHistory: MutableList<Income?> = mutableListOf()
         private var isActive: Boolean? = null
         private var lastName: String? = null
         private var location: Location? = null
@@ -555,7 +555,7 @@ constructor(
         fun income(income: Income) = apply { this.income = income }
 
         /** The array of income history. */
-        fun incomeHistory(incomeHistory: List<Income>) = apply {
+        fun incomeHistory(incomeHistory: List<Income?>) = apply {
             this.incomeHistory.clear()
             this.incomeHistory.addAll(incomeHistory)
         }

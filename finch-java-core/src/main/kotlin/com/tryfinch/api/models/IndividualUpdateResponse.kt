@@ -26,7 +26,7 @@ private constructor(
     private val lastName: JsonField<String>,
     private val preferredName: JsonField<String>,
     private val emails: JsonField<List<Email>>,
-    private val phoneNumbers: JsonField<List<PhoneNumber>>,
+    private val phoneNumbers: JsonField<List<PhoneNumber?>>,
     private val gender: JsonField<Gender>,
     private val ethnicity: JsonField<Ethnicity>,
     private val dob: JsonField<String>,
@@ -56,7 +56,7 @@ private constructor(
 
     fun emails(): Optional<List<Email>> = Optional.ofNullable(emails.getNullable("emails"))
 
-    fun phoneNumbers(): Optional<List<PhoneNumber>> =
+    fun phoneNumbers(): Optional<List<PhoneNumber?>> =
         Optional.ofNullable(phoneNumbers.getNullable("phone_numbers"))
 
     /** The gender of the individual. */
@@ -139,7 +139,7 @@ private constructor(
             lastName()
             preferredName()
             emails().map { it.forEach { it.validate() } }
-            phoneNumbers().map { it.forEach { it.validate() } }
+            phoneNumbers().map { it.forEach { it?.validate() } }
             gender()
             ethnicity()
             dob()
@@ -213,7 +213,7 @@ private constructor(
         private var lastName: JsonField<String> = JsonMissing.of()
         private var preferredName: JsonField<String> = JsonMissing.of()
         private var emails: JsonField<List<Email>> = JsonMissing.of()
-        private var phoneNumbers: JsonField<List<PhoneNumber>> = JsonMissing.of()
+        private var phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of()
         private var gender: JsonField<Gender> = JsonMissing.of()
         private var ethnicity: JsonField<Ethnicity> = JsonMissing.of()
         private var dob: JsonField<String> = JsonMissing.of()
@@ -281,11 +281,12 @@ private constructor(
         @ExcludeMissing
         fun emails(emails: JsonField<List<Email>>) = apply { this.emails = emails }
 
-        fun phoneNumbers(phoneNumbers: List<PhoneNumber>) = phoneNumbers(JsonField.of(phoneNumbers))
+        fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) =
+            phoneNumbers(JsonField.of(phoneNumbers))
 
         @JsonProperty("phone_numbers")
         @ExcludeMissing
-        fun phoneNumbers(phoneNumbers: JsonField<List<PhoneNumber>>) = apply {
+        fun phoneNumbers(phoneNumbers: JsonField<List<PhoneNumber?>>) = apply {
             this.phoneNumbers = phoneNumbers
         }
 

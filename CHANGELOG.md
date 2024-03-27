@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.22.1 (2024-03-27)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/Finch-API/finch-api-java/compare/v0.22.0...v0.22.1)
+
+### Bug Fixes
+
+* handle nullable values inside of arrays ([#178](https://github.com/Finch-API/finch-api-java/issues/178)) ([a859d7f](https://github.com/Finch-API/finch-api-java/commit/a859d7fcca3590acffefbdb56a6bbf379ceffbfc))
+
+
+### Chores
+
+* revert temporary commit ([3f05676](https://github.com/Finch-API/finch-api-java/commit/3f0567625cecfddfbb3f684a089dfe57d6d69521))
+* temporary commit ([#179](https://github.com/Finch-API/finch-api-java/issues/179)) ([0bd3bdc](https://github.com/Finch-API/finch-api-java/commit/0bd3bdcb78fdfe8dfa9edad16467bbe27e30c8d5))
+
+
+### Documentation
+
+* **readme:** consistent use of sentence case in headings ([#176](https://github.com/Finch-API/finch-api-java/issues/176)) ([969e463](https://github.com/Finch-API/finch-api-java/commit/969e4637f946fd45c0aa13a06820aeef99a79a3b))
+
 ## 0.22.0 (2024-03-13)
 
 Full Changelog: [v0.21.1...v0.22.0](https://github.com/Finch-API/finch-api-java/compare/v0.21.1...v0.22.0)

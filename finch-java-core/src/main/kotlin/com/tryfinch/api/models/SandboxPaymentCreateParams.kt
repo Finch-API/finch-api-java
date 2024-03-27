@@ -307,10 +307,10 @@ constructor(
         private val totalHours: Double?,
         private val grossPay: Money?,
         private val netPay: Money?,
-        private val earnings: List<Earning>?,
-        private val taxes: List<Tax>?,
-        private val employeeDeductions: List<EmployeeDeduction>?,
-        private val employerContributions: List<EmployerContribution>?,
+        private val earnings: List<Earning?>?,
+        private val taxes: List<Tax?>?,
+        private val employeeDeductions: List<EmployeeDeduction?>?,
+        private val employerContributions: List<EmployerContribution?>?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -333,17 +333,17 @@ constructor(
         @JsonProperty("net_pay") fun netPay(): Money? = netPay
 
         /** The array of earnings objects associated with this pay statement */
-        @JsonProperty("earnings") fun earnings(): List<Earning>? = earnings
+        @JsonProperty("earnings") fun earnings(): List<Earning?>? = earnings
 
         /** The array of taxes objects associated with this pay statement. */
-        @JsonProperty("taxes") fun taxes(): List<Tax>? = taxes
+        @JsonProperty("taxes") fun taxes(): List<Tax?>? = taxes
 
         /** The array of deductions objects associated with this pay statement. */
         @JsonProperty("employee_deductions")
-        fun employeeDeductions(): List<EmployeeDeduction>? = employeeDeductions
+        fun employeeDeductions(): List<EmployeeDeduction?>? = employeeDeductions
 
         @JsonProperty("employer_contributions")
-        fun employerContributions(): List<EmployerContribution>? = employerContributions
+        fun employerContributions(): List<EmployerContribution?>? = employerContributions
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -406,10 +406,10 @@ constructor(
             private var totalHours: Double? = null
             private var grossPay: Money? = null
             private var netPay: Money? = null
-            private var earnings: List<Earning>? = null
-            private var taxes: List<Tax>? = null
-            private var employeeDeductions: List<EmployeeDeduction>? = null
-            private var employerContributions: List<EmployerContribution>? = null
+            private var earnings: List<Earning?>? = null
+            private var taxes: List<Tax?>? = null
+            private var employeeDeductions: List<EmployeeDeduction?>? = null
+            private var employerContributions: List<EmployerContribution?>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -451,19 +451,19 @@ constructor(
 
             /** The array of earnings objects associated with this pay statement */
             @JsonProperty("earnings")
-            fun earnings(earnings: List<Earning>) = apply { this.earnings = earnings }
+            fun earnings(earnings: List<Earning?>) = apply { this.earnings = earnings }
 
             /** The array of taxes objects associated with this pay statement. */
-            @JsonProperty("taxes") fun taxes(taxes: List<Tax>) = apply { this.taxes = taxes }
+            @JsonProperty("taxes") fun taxes(taxes: List<Tax?>) = apply { this.taxes = taxes }
 
             /** The array of deductions objects associated with this pay statement. */
             @JsonProperty("employee_deductions")
-            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction>) = apply {
+            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>) = apply {
                 this.employeeDeductions = employeeDeductions
             }
 
             @JsonProperty("employer_contributions")
-            fun employerContributions(employerContributions: List<EmployerContribution>) = apply {
+            fun employerContributions(employerContributions: List<EmployerContribution?>) = apply {
                 this.employerContributions = employerContributions
             }
 
