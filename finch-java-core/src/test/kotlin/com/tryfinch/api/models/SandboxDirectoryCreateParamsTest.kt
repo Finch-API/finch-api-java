@@ -279,7 +279,7 @@ class SandboxDirectoryCreateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.body())
+        assertThat(body)
             .isEqualTo(
                 listOf(
                     SandboxDirectoryCreateParams.IndividualOrEmployment.builder()
@@ -414,7 +414,7 @@ class SandboxDirectoryCreateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.body())
+        assertThat(body)
             .isEqualTo(
                 listOf(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
             )
