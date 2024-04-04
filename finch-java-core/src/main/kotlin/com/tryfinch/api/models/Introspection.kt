@@ -46,10 +46,8 @@ private constructor(
 
     /**
      * The type of the connection associated with the token.
-     *
-     * `provider` - connection to an external provider
-     *
-     * `finch` - finch-generated data.
+     * - `provider` - connection to an external provider
+     * - `finch` - finch-generated data.
      */
     fun connectionType(): ConnectionType = connectionType.getRequired("connection_type")
 
@@ -85,10 +83,8 @@ private constructor(
 
     /**
      * The type of the connection associated with the token.
-     *
-     * `provider` - connection to an external provider
-     *
-     * `finch` - finch-generated data.
+     * - `provider` - connection to an external provider
+     * - `finch` - finch-generated data.
      */
     @JsonProperty("connection_type") @ExcludeMissing fun _connectionType() = connectionType
 
@@ -235,20 +231,16 @@ private constructor(
 
         /**
          * The type of the connection associated with the token.
-         *
-         * `provider` - connection to an external provider
-         *
-         * `finch` - finch-generated data.
+         * - `provider` - connection to an external provider
+         * - `finch` - finch-generated data.
          */
         fun connectionType(connectionType: ConnectionType) =
             connectionType(JsonField.of(connectionType))
 
         /**
          * The type of the connection associated with the token.
-         *
-         * `provider` - connection to an external provider
-         *
-         * `finch` - finch-generated data.
+         * - `provider` - connection to an external provider
+         * - `finch` - finch-generated data.
          */
         @JsonProperty("connection_type")
         @ExcludeMissing
