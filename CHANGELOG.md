@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.23.0 (2024-04-04)
+
+Full Changelog: [v0.22.1...v0.23.0](https://github.com/Finch-API/finch-api-java/compare/v0.22.1...v0.23.0)
+
+### Features
+
+* **client:** add support for top-level array body params ([#183](https://github.com/Finch-API/finch-api-java/issues/183)) ([e528955](https://github.com/Finch-API/finch-api-java/commit/e528955572cc5fc304f861f35bf1097dbe0f441d))
+
+
+### Chores
+
+* **api:** improve descriptions ([#186](https://github.com/Finch-API/finch-api-java/issues/186)) ([00c3753](https://github.com/Finch-API/finch-api-java/commit/00c37531d9a87eb713d474364097261fc97582ba))
+* **deps:** update jackson to v2.14.3 ([#181](https://github.com/Finch-API/finch-api-java/issues/181)) ([5f6c2f7](https://github.com/Finch-API/finch-api-java/commit/5f6c2f79d911b73b78aee6db3782ca3794695775))
+* **deps:** update junit5 to v5.9.3 ([#185](https://github.com/Finch-API/finch-api-java/issues/185)) ([db2931a](https://github.com/Finch-API/finch-api-java/commit/db2931acbe2c270be7ad457fab06a8beffbf29ef))
+* **deps:** update kotlin-gradle-plugin to v1.9.23 ([#184](https://github.com/Finch-API/finch-api-java/issues/184)) ([43c0614](https://github.com/Finch-API/finch-api-java/commit/43c061492df6fc655e97ea1c8932965c2c9d6be3))
+
 ## 0.22.1 (2024-03-27)
 
 Full Changelog: [v0.22.0...v0.22.1](https://github.com/Finch-API/finch-api-java/compare/v0.22.0...v0.22.1)
