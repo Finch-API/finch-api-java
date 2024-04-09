@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.24.0 (2024-04-09)
+
+Full Changelog: [v0.23.0...v0.24.0](https://github.com/Finch-API/finch-api-java/compare/v0.23.0...v0.24.0)
+
+### Features
+
+* **api:** updates ([#187](https://github.com/Finch-API/finch-api-java/issues/187)) ([4600d43](https://github.com/Finch-API/finch-api-java/commit/4600d4308b16aa06a06ef3b5bc2999757b622daa))
+
+
+### Chores
+
+* **tests:** import wiremock.client.WireMock.put ([#189](https://github.com/Finch-API/finch-api-java/issues/189)) ([3d5d1e7](https://github.com/Finch-API/finch-api-java/commit/3d5d1e7874b041e38e0d7ad4ecbe7f04b0096f2a))
+
 ## 0.23.0 (2024-04-04)
 
 Full Changelog: [v0.22.1...v0.23.0](https://github.com/Finch-API/finch-api-java/compare/v0.22.1...v0.23.0)
