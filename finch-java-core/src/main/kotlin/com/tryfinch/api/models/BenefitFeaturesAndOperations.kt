@@ -146,11 +146,11 @@ private constructor(
     private constructor(
         private val description: JsonField<String>,
         private val frequencies: JsonField<List<BenefitFrequency?>>,
-        private val employeeDeduction: JsonField<List<EmployeeDeduction>>,
-        private val companyContribution: JsonField<List<CompanyContribution>>,
+        private val employeeDeduction: JsonField<List<EmployeeDeduction?>>,
+        private val companyContribution: JsonField<List<CompanyContribution?>>,
         private val annualMaximum: JsonField<Boolean>,
         private val catchUp: JsonField<Boolean>,
-        private val hsaContributionLimit: JsonField<List<HsaContributionLimit>>,
+        private val hsaContributionLimit: JsonField<List<HsaContributionLimit?>>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -166,13 +166,13 @@ private constructor(
             Optional.ofNullable(frequencies.getNullable("frequencies"))
 
         /** Supported deduction types. An empty array indicates deductions are not supported. */
-        fun employeeDeduction(): Optional<List<EmployeeDeduction>> =
+        fun employeeDeduction(): Optional<List<EmployeeDeduction?>> =
             Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
 
         /**
          * Supported contribution types. An empty array indicates contributions are not supported.
          */
-        fun companyContribution(): Optional<List<CompanyContribution>> =
+        fun companyContribution(): Optional<List<CompanyContribution?>> =
             Optional.ofNullable(companyContribution.getNullable("company_contribution"))
 
         /** Whether the provider supports an annual maximum for this benefit. */
@@ -189,7 +189,7 @@ private constructor(
          * Whether the provider supports HSA contribution limits. Empty if this feature is not
          * supported for the benefit. This array only has values for HSA benefits.
          */
-        fun hsaContributionLimit(): Optional<List<HsaContributionLimit>> =
+        fun hsaContributionLimit(): Optional<List<HsaContributionLimit?>> =
             Optional.ofNullable(hsaContributionLimit.getNullable("hsa_contribution_limit"))
 
         @JsonProperty("description") @ExcludeMissing fun _description() = description
@@ -290,11 +290,12 @@ private constructor(
 
             private var description: JsonField<String> = JsonMissing.of()
             private var frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of()
-            private var employeeDeduction: JsonField<List<EmployeeDeduction>> = JsonMissing.of()
-            private var companyContribution: JsonField<List<CompanyContribution>> = JsonMissing.of()
+            private var employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of()
+            private var companyContribution: JsonField<List<CompanyContribution?>> =
+                JsonMissing.of()
             private var annualMaximum: JsonField<Boolean> = JsonMissing.of()
             private var catchUp: JsonField<Boolean> = JsonMissing.of()
-            private var hsaContributionLimit: JsonField<List<HsaContributionLimit>> =
+            private var hsaContributionLimit: JsonField<List<HsaContributionLimit?>> =
                 JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -330,13 +331,13 @@ private constructor(
             }
 
             /** Supported deduction types. An empty array indicates deductions are not supported. */
-            fun employeeDeduction(employeeDeduction: List<EmployeeDeduction>) =
+            fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>) =
                 employeeDeduction(JsonField.of(employeeDeduction))
 
             /** Supported deduction types. An empty array indicates deductions are not supported. */
             @JsonProperty("employee_deduction")
             @ExcludeMissing
-            fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction>>) = apply {
+            fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction?>>) = apply {
                 this.employeeDeduction = employeeDeduction
             }
 
@@ -344,7 +345,7 @@ private constructor(
              * Supported contribution types. An empty array indicates contributions are not
              * supported.
              */
-            fun companyContribution(companyContribution: List<CompanyContribution>) =
+            fun companyContribution(companyContribution: List<CompanyContribution?>) =
                 companyContribution(JsonField.of(companyContribution))
 
             /**
@@ -353,7 +354,7 @@ private constructor(
              */
             @JsonProperty("company_contribution")
             @ExcludeMissing
-            fun companyContribution(companyContribution: JsonField<List<CompanyContribution>>) =
+            fun companyContribution(companyContribution: JsonField<List<CompanyContribution?>>) =
                 apply {
                     this.companyContribution = companyContribution
                 }
@@ -386,7 +387,7 @@ private constructor(
              * Whether the provider supports HSA contribution limits. Empty if this feature is not
              * supported for the benefit. This array only has values for HSA benefits.
              */
-            fun hsaContributionLimit(hsaContributionLimit: List<HsaContributionLimit>) =
+            fun hsaContributionLimit(hsaContributionLimit: List<HsaContributionLimit?>) =
                 hsaContributionLimit(JsonField.of(hsaContributionLimit))
 
             /**
@@ -395,7 +396,7 @@ private constructor(
              */
             @JsonProperty("hsa_contribution_limit")
             @ExcludeMissing
-            fun hsaContributionLimit(hsaContributionLimit: JsonField<List<HsaContributionLimit>>) =
+            fun hsaContributionLimit(hsaContributionLimit: JsonField<List<HsaContributionLimit?>>) =
                 apply {
                     this.hsaContributionLimit = hsaContributionLimit
                 }
