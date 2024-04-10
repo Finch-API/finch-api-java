@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -11,7 +12,7 @@ class ConnectionStatusType
 @JsonCreator
 private constructor(
     private val value: JsonField<String>,
-) {
+) : Enum {
 
     @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
