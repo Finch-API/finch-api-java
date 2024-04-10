@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.0 (2024-04-10)
+
+Full Changelog: [v0.24.0...v0.25.0](https://github.com/Finch-API/finch-api-java/compare/v0.24.0...v0.25.0)
+
+### Features
+
+* **client:** implement support for multipart/form-data body requests ([#190](https://github.com/Finch-API/finch-api-java/issues/190)) ([4f08515](https://github.com/Finch-API/finch-api-java/commit/4f085155fcb09e1300d5c5f503dd4eaf98ac1c8b))
+
 ## 0.24.0 (2024-04-09)
 
 Full Changelog: [v0.23.0...v0.24.0](https://github.com/Finch-API/finch-api-java/compare/v0.23.0...v0.24.0)
