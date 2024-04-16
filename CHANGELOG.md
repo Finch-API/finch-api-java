@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.26.0 (2024-04-16)
+
+Full Changelog: [v0.25.0...v0.26.0](https://github.com/Finch-API/finch-api-java/compare/v0.25.0...v0.26.0)
+
+### Features
+
+* **api:** updates ([#192](https://github.com/Finch-API/finch-api-java/issues/192)) ([fcb1e91](https://github.com/Finch-API/finch-api-java/commit/fcb1e91a991f0399d7a0a306a5c3b63fc88aeb58))
+
+
+### Chores
+
+* **internal:** formatting ([#194](https://github.com/Finch-API/finch-api-java/issues/194)) ([2e2ada9](https://github.com/Finch-API/finch-api-java/commit/2e2ada990868b109aa9775076a81bfa14579f295))
+
+
+### Build System
+
+* configure UTF-8 locale in devcontainer ([#195](https://github.com/Finch-API/finch-api-java/issues/195)) ([e0a37c5](https://github.com/Finch-API/finch-api-java/commit/e0a37c558779f13fcf15d4ba65f26a7117dd6db4))
+
 ## 0.25.0 (2024-04-10)
 
 Full Changelog: [v0.24.0...v0.25.0](https://github.com/Finch-API/finch-api-java/compare/v0.24.0...v0.25.0)
