@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.26.3 (2024-04-29)
+
+Full Changelog: [v0.26.2...v0.26.3](https://github.com/Finch-API/finch-api-java/compare/v0.26.2...v0.26.3)
+
+### Bug Fixes
+
+* **internal:** escape characters for POM description in gradle publish ([#203](https://github.com/Finch-API/finch-api-java/issues/203)) ([d500403](https://github.com/Finch-API/finch-api-java/commit/d500403bfa57fe33bdf2e2800f1fc1c65e2eec16))
+
+
+### Chores
+
+* **internal:** use actions/checkout@v4 for codeflow ([#200](https://github.com/Finch-API/finch-api-java/issues/200)) ([b8f017b](https://github.com/Finch-API/finch-api-java/commit/b8f017b4682cbd86fccca04858b057f2d1dd35bc))
+
+
+### Documentation
+
+* clarify behavior around employee_size ([#202](https://github.com/Finch-API/finch-api-java/issues/202)) ([3492cd3](https://github.com/Finch-API/finch-api-java/commit/3492cd3d3c260c29b7423522b8b75084e4b513ba))
+
 ## 0.26.2 (2024-04-23)
 
 Full Changelog: [v0.26.1...v0.26.2](https://github.com/Finch-API/finch-api-java/compare/v0.26.1...v0.26.2)
