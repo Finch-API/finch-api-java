@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.26.4 (2024-04-30)
+
+Full Changelog: [v0.26.3...v0.26.4](https://github.com/Finch-API/finch-api-java/compare/v0.26.3...v0.26.4)
+
+### Chores
+
+* **internal:** add link to openapi spec ([#204](https://github.com/Finch-API/finch-api-java/issues/204)) ([a4fa6c9](https://github.com/Finch-API/finch-api-java/commit/a4fa6c9e69c3a182dbe7e03f6f213da8fbec10d7))
+
 ## 0.26.3 (2024-04-29)
 
 Full Changelog: [v0.26.2...v0.26.3](https://github.com/Finch-API/finch-api-java/compare/v0.26.2...v0.26.3)
