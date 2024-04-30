@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.26.5 (2024-04-30)
+
+Full Changelog: [v0.26.4...v0.26.5](https://github.com/Finch-API/finch-api-java/compare/v0.26.4...v0.26.5)
+
+### Chores
+
+* **internal:** add scripts/mock ([#206](https://github.com/Finch-API/finch-api-java/issues/206)) ([e44e504](https://github.com/Finch-API/finch-api-java/commit/e44e5045a3d8715e710d1be2abc209e585a7f882))
+
 ## 0.26.4 (2024-04-30)
 
 Full Changelog: [v0.26.3...v0.26.4](https://github.com/Finch-API/finch-api-java/compare/v0.26.3...v0.26.4)
