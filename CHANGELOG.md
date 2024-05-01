@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.26.6 (2024-05-01)
+
+Full Changelog: [v0.26.5...v0.26.6](https://github.com/Finch-API/finch-api-java/compare/v0.26.5...v0.26.6)
+
+### Chores
+
+* **internal:** bump mock server version to ~5.8.0 ([#208](https://github.com/Finch-API/finch-api-java/issues/208)) ([c0d14f5](https://github.com/Finch-API/finch-api-java/commit/c0d14f519c9756d4555d5c0bb0b9f1f4649d7a19))
+
 ## 0.26.5 (2024-04-30)
 
 Full Changelog: [v0.26.4...v0.26.5](https://github.com/Finch-API/finch-api-java/compare/v0.26.4...v0.26.5)
