@@ -11,7 +11,7 @@ jobs:
   lint:
     name: lint
     runs-on: ubuntu-latest
-    if: github.repository == 'Finch-API/finch-api-java'
+    
 
     steps:
       - uses: actions/checkout@v4

@@ -53,6 +53,7 @@ class EmploymentDataResponseTest {
                         )
                         .isActive(true)
                         .lastName("string")
+                        .latestRehireDate("string")
                         .location(
                             Location.builder()
                                 .city("string")
@@ -119,6 +120,7 @@ class EmploymentDataResponseTest {
                     )
                     .isActive(true)
                     .lastName("string")
+                    .latestRehireDate("string")
                     .location(
                         Location.builder()
                             .city("string")
