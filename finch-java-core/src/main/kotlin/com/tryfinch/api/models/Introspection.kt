@@ -27,7 +27,7 @@ private constructor(
     private val connectionType: JsonField<ConnectionType>,
     private val companyId: JsonField<String>,
     private val accountId: JsonField<String>,
-    private val authenticationMethods: JsonField<AuthenticationMethods>,
+    private val authenticationMethods: JsonField<List<AuthenticationMethod>>,
     private val products: JsonField<List<String>>,
     private val username: JsonField<String>,
     private val payrollProviderId: JsonField<String>,
@@ -58,7 +58,7 @@ private constructor(
     /** The Finch uuid of the account used to connect this company. */
     fun accountId(): String = accountId.getRequired("account_id")
 
-    fun authenticationMethods(): AuthenticationMethods =
+    fun authenticationMethods(): List<AuthenticationMethod> =
         authenticationMethods.getRequired("authentication_methods")
 
     /** An array of the authorized products associated with the `access_token`. */
@@ -127,7 +127,7 @@ private constructor(
             connectionType()
             companyId()
             accountId()
-            authenticationMethods().validate()
+            authenticationMethods().forEach { it.validate() }
             products()
             username()
             payrollProviderId()
@@ -192,7 +192,7 @@ private constructor(
         private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
-        private var authenticationMethods: JsonField<AuthenticationMethods> = JsonMissing.of()
+        private var authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
         private var username: JsonField<String> = JsonMissing.of()
         private var payrollProviderId: JsonField<String> = JsonMissing.of()
@@ -265,14 +265,15 @@ private constructor(
         @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
-        fun authenticationMethods(authenticationMethods: AuthenticationMethods) =
+        fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
             authenticationMethods(JsonField.of(authenticationMethods))
 
         @JsonProperty("authentication_methods")
         @ExcludeMissing
-        fun authenticationMethods(authenticationMethods: JsonField<AuthenticationMethods>) = apply {
-            this.authenticationMethods = authenticationMethods
-        }
+        fun authenticationMethods(authenticationMethods: JsonField<List<AuthenticationMethod>>) =
+            apply {
+                this.authenticationMethods = authenticationMethods
+            }
 
         /** An array of the authorized products associated with the `access_token`. */
         fun products(products: List<String>) = products(JsonField.of(products))
@@ -336,7 +337,7 @@ private constructor(
                 connectionType,
                 companyId,
                 accountId,
-                authenticationMethods,
+                authenticationMethods.map { it.toUnmodifiable() },
                 products.map { it.toUnmodifiable() },
                 username,
                 payrollProviderId,
@@ -345,9 +346,9 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = AuthenticationMethods.Builder::class)
+    @JsonDeserialize(builder = AuthenticationMethod.Builder::class)
     @NoAutoDetect
-    class AuthenticationMethods
+    class AuthenticationMethod
     private constructor(
         private val type: JsonField<String>,
         private val connectionStatus: JsonField<ConnectionStatus>,
@@ -373,7 +374,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate(): AuthenticationMethods = apply {
+        fun validate(): AuthenticationMethod = apply {
             if (!validated) {
                 type()
                 connectionStatus().map { it.validate() }
@@ -388,7 +389,7 @@ private constructor(
                 return true
             }
 
-            return other is AuthenticationMethods &&
+            return other is AuthenticationMethod &&
                 this.type == other.type &&
                 this.connectionStatus == other.connectionStatus &&
                 this.additionalProperties == other.additionalProperties
@@ -407,7 +408,7 @@ private constructor(
         }
 
         override fun toString() =
-            "AuthenticationMethods{type=$type, connectionStatus=$connectionStatus, additionalProperties=$additionalProperties}"
+            "AuthenticationMethod{type=$type, connectionStatus=$connectionStatus, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -421,10 +422,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(authenticationMethods: AuthenticationMethods) = apply {
-                this.type = authenticationMethods.type
-                this.connectionStatus = authenticationMethods.connectionStatus
-                additionalProperties(authenticationMethods.additionalProperties)
+            internal fun from(authenticationMethod: AuthenticationMethod) = apply {
+                this.type = authenticationMethod.type
+                this.connectionStatus = authenticationMethod.connectionStatus
+                additionalProperties(authenticationMethod.additionalProperties)
             }
 
             fun type(type: String) = type(JsonField.of(type))
@@ -456,8 +457,8 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): AuthenticationMethods =
-                AuthenticationMethods(
+            fun build(): AuthenticationMethod =
+                AuthenticationMethod(
                     type,
                     connectionStatus,
                     additionalProperties.toUnmodifiable(),

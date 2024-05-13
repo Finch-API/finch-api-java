@@ -13,15 +13,17 @@ class IntrospectionTest {
             Introspection.builder()
                 .accountId("string")
                 .authenticationMethods(
-                    Introspection.AuthenticationMethods.builder()
-                        .connectionStatus(
-                            Introspection.AuthenticationMethods.ConnectionStatus.builder()
-                                .message("string")
-                                .status(ConnectionStatusType.PENDING)
-                                .build()
-                        )
-                        .type("string")
-                        .build()
+                    listOf(
+                        Introspection.AuthenticationMethod.builder()
+                            .connectionStatus(
+                                Introspection.AuthenticationMethod.ConnectionStatus.builder()
+                                    .message("string")
+                                    .status(ConnectionStatusType.PENDING)
+                                    .build()
+                            )
+                            .type("string")
+                            .build()
+                    )
                 )
                 .clientId("string")
                 .clientType(Introspection.ClientType.PRODUCTION)
@@ -35,10 +37,10 @@ class IntrospectionTest {
         assertThat(introspection).isNotNull
         assertThat(introspection.accountId()).isEqualTo("string")
         assertThat(introspection.authenticationMethods())
-            .isEqualTo(
-                Introspection.AuthenticationMethods.builder()
+            .containsExactly(
+                Introspection.AuthenticationMethod.builder()
                     .connectionStatus(
-                        Introspection.AuthenticationMethods.ConnectionStatus.builder()
+                        Introspection.AuthenticationMethod.ConnectionStatus.builder()
                             .message("string")
                             .status(ConnectionStatusType.PENDING)
                             .build()
