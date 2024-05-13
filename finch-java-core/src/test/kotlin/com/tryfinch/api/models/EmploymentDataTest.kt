@@ -51,6 +51,7 @@ class EmploymentDataTest {
                 )
                 .isActive(true)
                 .lastName("string")
+                .latestRehireDate("string")
                 .location(
                     Location.builder()
                         .city("string")
@@ -111,6 +112,7 @@ class EmploymentDataTest {
             )
         assertThat(employmentData.isActive()).contains(true)
         assertThat(employmentData.lastName()).contains("string")
+        assertThat(employmentData.latestRehireDate()).contains("string")
         assertThat(employmentData.location())
             .contains(
                 Location.builder()

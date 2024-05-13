@@ -12,7 +12,7 @@ class AccessTokenCreateParamsTest {
     fun createAccessTokenCreateParams() {
         AccessTokenCreateParams.builder()
             .code("<your_authorization_code>")
-            .clientId("<your_client_id>")
+            .clientId("12345678-1234-1234-1234-123456789ABC")
             .clientSecret("<your_client_secret>")
             .redirectUri("https://example.com")
             .build()
@@ -23,14 +23,14 @@ class AccessTokenCreateParamsTest {
         val params =
             AccessTokenCreateParams.builder()
                 .code("<your_authorization_code>")
-                .clientId("<your_client_id>")
+                .clientId("12345678-1234-1234-1234-123456789ABC")
                 .clientSecret("<your_client_secret>")
                 .redirectUri("https://example.com")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
-        assertThat(body.clientId()).isEqualTo("<your_client_id>")
+        assertThat(body.clientId()).isEqualTo("12345678-1234-1234-1234-123456789ABC")
         assertThat(body.clientSecret()).isEqualTo("<your_client_secret>")
         assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
