@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.27.0 (2024-05-14)
+
+Full Changelog: [v0.26.6...v0.27.0](https://github.com/Finch-API/finch-api-java/compare/v0.26.6...v0.27.0)
+
+### Features
+
+* propagate resource description field from stainless config to SDK docs ([#211](https://github.com/Finch-API/finch-api-java/issues/211)) ([07c4e2a](https://github.com/Finch-API/finch-api-java/commit/07c4e2a453606ed724e5dff0840fb3375311104f))
+
+
+### Bug Fixes
+
+* **api:** correct authentication methods type ([#216](https://github.com/Finch-API/finch-api-java/issues/216)) ([3bd8f8f](https://github.com/Finch-API/finch-api-java/commit/3bd8f8f224bae0990533827fd9b66ab3444a2676))
+
+
+### Chores
+
+* **docs:** add SECURITY.md ([#213](https://github.com/Finch-API/finch-api-java/issues/213)) ([8e29a75](https://github.com/Finch-API/finch-api-java/commit/8e29a75a4d2cae90c5629cf28a091e8045db916b))
+* **internal:** add scripts-to-rule-them-all ([#218](https://github.com/Finch-API/finch-api-java/issues/218)) ([6e51a61](https://github.com/Finch-API/finch-api-java/commit/6e51a61b5a8c7e39d5e646e94ea0069f93362968))
+* **internal:** minor updates ([#215](https://github.com/Finch-API/finch-api-java/issues/215)) ([3b61721](https://github.com/Finch-API/finch-api-java/commit/3b617218146c3ac2af368271c5859b1118b3f93a))
+* **tests:** update client ID example value ([#217](https://github.com/Finch-API/finch-api-java/issues/217)) ([f1f4a5e](https://github.com/Finch-API/finch-api-java/commit/f1f4a5e814954497104048e341135e71e4f3e45d))
+
 ## 0.26.6 (2024-05-01)
 
 Full Changelog: [v0.26.5...v0.26.6](https://github.com/Finch-API/finch-api-java/compare/v0.26.5...v0.26.6)
