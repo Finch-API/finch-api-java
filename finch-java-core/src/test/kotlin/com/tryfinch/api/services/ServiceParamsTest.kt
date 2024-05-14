@@ -34,7 +34,7 @@ class ServiceParamsTest {
         client =
             FinchOkHttpClient.builder()
                 .accessToken("My Access Token")
-                .clientId("My Client ID")
+                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
                 .clientSecret("My Client Secret")
                 .sandboxClientId("My Sandbox Client ID")
                 .sandboxClientSecret("My Sandbox Client Secret")
