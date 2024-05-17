@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.27.1 (2024-05-17)
+
+Full Changelog: [v0.27.0...v0.27.1](https://github.com/Finch-API/finch-api-java/compare/v0.27.0...v0.27.1)
+
+### Chores
+
+* **internal:** resolve spec formatting issue ([#221](https://github.com/Finch-API/finch-api-java/issues/221)) ([15696d4](https://github.com/Finch-API/finch-api-java/commit/15696d4d9c0a94c623ff23bae3cd831cf1b56e77))
+* **tests:** update some example values ([#219](https://github.com/Finch-API/finch-api-java/issues/219)) ([bc5a108](https://github.com/Finch-API/finch-api-java/commit/bc5a108a4a6645fe09ed811c9a16d113938bcf1c))
+
 ## 0.27.0 (2024-05-14)
 
 Full Changelog: [v0.26.6...v0.27.0](https://github.com/Finch-API/finch-api-java/compare/v0.26.6...v0.27.0)
