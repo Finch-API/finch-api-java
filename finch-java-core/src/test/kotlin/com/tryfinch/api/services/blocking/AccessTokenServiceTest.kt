@@ -25,7 +25,7 @@ class AccessTokenServiceTest {
             accessTokenService.create(
                 AccessTokenCreateParams.builder()
                     .code("<your_authorization_code>")
-                    .clientId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
                     .clientSecret("<your_client_secret>")
                     .redirectUri("https://example.com")
                     .build()
