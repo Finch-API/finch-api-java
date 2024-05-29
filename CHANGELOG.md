@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.27.2 (2024-05-29)
+
+Full Changelog: [v0.27.1...v0.27.2](https://github.com/Finch-API/finch-api-java/compare/v0.27.1...v0.27.2)
+
+### Documentation
+
+* **examples:** fix example snippets ([b3dc8dd](https://github.com/Finch-API/finch-api-java/commit/b3dc8ddcdfdc196841c9b5b4fc9921271a5078e7))
+
 ## 0.27.1 (2024-05-17)
 
 Full Changelog: [v0.27.0...v0.27.1](https://github.com/Finch-API/finch-api-java/compare/v0.27.0...v0.27.1)
