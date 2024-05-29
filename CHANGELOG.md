@@ -1,13 +1,5 @@
 # Changelog
 
-## 0.27.2 (2024-05-23)
-
-Full Changelog: [v0.27.1...v0.27.2](https://github.com/Finch-API/finch-api-java/compare/v0.27.1...v0.27.2)
-
-### Chores
-
-* **tests:** example client_id ([#222](https://github.com/Finch-API/finch-api-java/issues/222)) ([ef19cb4](https://github.com/Finch-API/finch-api-java/commit/ef19cb432b18ca118c597c4b2244f7c1eb5c4aa6))
-
 ## 0.27.1 (2024-05-17)
 
 Full Changelog: [v0.27.0...v0.27.1](https://github.com/Finch-API/finch-api-java/compare/v0.27.0...v0.27.1)
