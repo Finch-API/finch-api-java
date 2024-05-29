@@ -78,9 +78,7 @@ import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 import com.tryfinch.api.models.Page;
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .candidateId("<candidate id>")
-    .build();
+HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
 HrisDirectoryListPage page = client.hris().directory().list(params);
 ```
 
