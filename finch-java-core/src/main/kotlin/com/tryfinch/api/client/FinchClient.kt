@@ -28,6 +28,8 @@ interface FinchClient {
 
     fun sandbox(): SandboxService
 
+    fun payroll(): PayrollService
+
     fun getAccessToken(
         clientId: String,
         clientSecret: String,

@@ -44,6 +44,8 @@ constructor(
 
     private val sandbox: SandboxService by lazy { SandboxServiceImpl(clientOptions) }
 
+    private val payroll: PayrollService by lazy { PayrollServiceImpl(clientOptions) }
+
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -64,6 +66,8 @@ constructor(
     override fun jobs(): JobService = jobs
 
     override fun sandbox(): SandboxService = sandbox
+
+    override fun payroll(): PayrollService = payroll
 
     override fun getAccessToken(
         clientId: String,
