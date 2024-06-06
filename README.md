@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.26.6)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/0.27.2)
 
 <!-- x-release-please-end -->
 
@@ -25,7 +25,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:0.26.6")
+implementation("com.tryfinch.api:finch-java:0.27.2")
 ```
 
 #### Maven
@@ -34,7 +34,7 @@ implementation("com.tryfinch.api:finch-java:0.26.6")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-java</artifactId>
-    <version>0.26.6</version>
+    <version>0.27.2</version>
 </dependency>
 ```
 
@@ -78,7 +78,9 @@ import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 import com.tryfinch.api.models.Page;
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
+HrisDirectoryListParams params = HrisDirectoryListParams.builder()
+    .candidateId("<candidate id>")
+    .build();
 HrisDirectoryListPage page = client.hris().directory().list(params);
 ```
 
@@ -215,6 +217,20 @@ while (page != null) {
 
 ---
 
+---
+
+## Webhook Verification
+
+We provide helper methods for verifying that a webhook request came from Finch, and not a malicious third party.
+
+You can use `finch.webhooks().verifySignature(body, headers, secret?)` or `finch.webhooks().unwrap(body, headers, secret?)`,
+both of which will raise an error if the signature is invalid.
+
+Note that the "body" parameter must be the raw JSON string sent from the server (do not parse it first).
+The `.unwrap()` method can parse this JSON for you.
+
+---
+
 ## Error handling
 
 This library throws exceptions in a single hierarchy for easy handling:
@@ -276,30 +292,6 @@ FinchClient client = FinchOkHttpClient.builder()
     ))
     .build();
 ```
-
-## Making custom/undocumented requests
-
-This library is typed for convenient access to the documented API. If you need to access undocumented
-params or response properties, the library can still be used.
-
-### Undocumented request params
-
-To make requests using undocumented parameters, you can provide or override parameters on the params object
-while building it.
-
-```kotlin
-FooCreateParams address = FooCreateParams.builder()
-    .id("my_id")
-    .putAdditionalProperty("secret_prop", JsonValue.from("hello"))
-    .build();
-```
-
-### Undocumented response properties
-
-To access undocumented response properties, you can use `res._additionalProperties()` on a response object to
-get a map of untyped fields of type `Map<String, JsonValue>`. You can then access fields like
-`._additionalProperties().get("secret_prop").asString()` or use other helpers defined on the `JsonValue` class
-to extract it to a desired type.
 
 ## Semantic versioning
 
