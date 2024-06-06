@@ -26,4 +26,6 @@ interface FinchClientAsync {
     fun jobs(): JobServiceAsync
 
     fun sandbox(): SandboxServiceAsync
+
+    fun payroll(): PayrollServiceAsync
 }
