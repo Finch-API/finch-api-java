@@ -12,7 +12,7 @@ class AccessTokenCreateParamsTest {
     fun createAccessTokenCreateParams() {
         AccessTokenCreateParams.builder()
             .code("<your_authorization_code>")
-            .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
+            .clientId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .clientSecret("<your_client_secret>")
             .redirectUri("https://example.com")
             .build()
@@ -23,14 +23,14 @@ class AccessTokenCreateParamsTest {
         val params =
             AccessTokenCreateParams.builder()
                 .code("<your_authorization_code>")
-                .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
+                .clientId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .clientSecret("<your_client_secret>")
                 .redirectUri("https://example.com")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
-        assertThat(body.clientId()).isEqualTo("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
+        assertThat(body.clientId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.clientSecret()).isEqualTo("<your_client_secret>")
         assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
