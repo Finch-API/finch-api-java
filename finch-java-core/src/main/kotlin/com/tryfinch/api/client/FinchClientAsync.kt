@@ -29,6 +29,8 @@ interface FinchClientAsync {
 
     fun sandbox(): SandboxServiceAsync
 
+    fun payroll(): PayrollServiceAsync
+
     fun getAccessToken(
         clientId: String,
         clientSecret: String,
