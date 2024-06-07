@@ -1,5 +1,183 @@
 # Changelog
 
+## 0.28.0 (2024-06-06)
+
+Full Changelog: [v0.27.2...v0.28.0](https://github.com/Finch-API/finch-api-java/compare/v0.27.2...v0.28.0)
+
+### Features
+
+* **api:** updates ([#226](https://github.com/Finch-API/finch-api-java/issues/226)) ([0d3853c](https://github.com/Finch-API/finch-api-java/commit/0d3853cce1253aebbe7ac476986ed95d474d1275))
+
+## 0.27.2 (2024-05-29)
+
+Full Changelog: [v0.27.1...v0.27.2](https://github.com/Finch-API/finch-api-java/compare/v0.27.1...v0.27.2)
+
+### Documentation
+
+* **examples:** fix example snippets ([b3dc8dd](https://github.com/Finch-API/finch-api-java/commit/b3dc8ddcdfdc196841c9b5b4fc9921271a5078e7))
+
+## 0.27.1 (2024-05-17)
+
+Full Changelog: [v0.27.0...v0.27.1](https://github.com/Finch-API/finch-api-java/compare/v0.27.0...v0.27.1)
+
+### Chores
+
+* **internal:** resolve spec formatting issue ([#221](https://github.com/Finch-API/finch-api-java/issues/221)) ([15696d4](https://github.com/Finch-API/finch-api-java/commit/15696d4d9c0a94c623ff23bae3cd831cf1b56e77))
+* **tests:** update some example values ([#219](https://github.com/Finch-API/finch-api-java/issues/219)) ([bc5a108](https://github.com/Finch-API/finch-api-java/commit/bc5a108a4a6645fe09ed811c9a16d113938bcf1c))
+
+## 0.27.0 (2024-05-14)
+
+Full Changelog: [v0.26.6...v0.27.0](https://github.com/Finch-API/finch-api-java/compare/v0.26.6...v0.27.0)
+
+### Features
+
+* propagate resource description field from stainless config to SDK docs ([#211](https://github.com/Finch-API/finch-api-java/issues/211)) ([07c4e2a](https://github.com/Finch-API/finch-api-java/commit/07c4e2a453606ed724e5dff0840fb3375311104f))
+
+
+### Bug Fixes
+
+* **api:** correct authentication methods type ([#216](https://github.com/Finch-API/finch-api-java/issues/216)) ([3bd8f8f](https://github.com/Finch-API/finch-api-java/commit/3bd8f8f224bae0990533827fd9b66ab3444a2676))
+
+
+### Chores
+
+* **docs:** add SECURITY.md ([#213](https://github.com/Finch-API/finch-api-java/issues/213)) ([8e29a75](https://github.com/Finch-API/finch-api-java/commit/8e29a75a4d2cae90c5629cf28a091e8045db916b))
+* **internal:** add scripts-to-rule-them-all ([#218](https://github.com/Finch-API/finch-api-java/issues/218)) ([6e51a61](https://github.com/Finch-API/finch-api-java/commit/6e51a61b5a8c7e39d5e646e94ea0069f93362968))
+* **internal:** minor updates ([#215](https://github.com/Finch-API/finch-api-java/issues/215)) ([3b61721](https://github.com/Finch-API/finch-api-java/commit/3b617218146c3ac2af368271c5859b1118b3f93a))
+* **tests:** update client ID example value ([#217](https://github.com/Finch-API/finch-api-java/issues/217)) ([f1f4a5e](https://github.com/Finch-API/finch-api-java/commit/f1f4a5e814954497104048e341135e71e4f3e45d))
+
+## 0.26.6 (2024-05-01)
+
+Full Changelog: [v0.26.5...v0.26.6](https://github.com/Finch-API/finch-api-java/compare/v0.26.5...v0.26.6)
+
+### Chores
+
+* **internal:** bump mock server version to ~5.8.0 ([#208](https://github.com/Finch-API/finch-api-java/issues/208)) ([c0d14f5](https://github.com/Finch-API/finch-api-java/commit/c0d14f519c9756d4555d5c0bb0b9f1f4649d7a19))
+
+## 0.26.5 (2024-04-30)
+
+Full Changelog: [v0.26.4...v0.26.5](https://github.com/Finch-API/finch-api-java/compare/v0.26.4...v0.26.5)
+
+### Chores
+
+* **internal:** add scripts/mock ([#206](https://github.com/Finch-API/finch-api-java/issues/206)) ([e44e504](https://github.com/Finch-API/finch-api-java/commit/e44e5045a3d8715e710d1be2abc209e585a7f882))
+
+## 0.26.4 (2024-04-30)
+
+Full Changelog: [v0.26.3...v0.26.4](https://github.com/Finch-API/finch-api-java/compare/v0.26.3...v0.26.4)
+
+### Chores
+
+* **internal:** add link to openapi spec ([#204](https://github.com/Finch-API/finch-api-java/issues/204)) ([a4fa6c9](https://github.com/Finch-API/finch-api-java/commit/a4fa6c9e69c3a182dbe7e03f6f213da8fbec10d7))
+
+## 0.26.3 (2024-04-29)
+
+Full Changelog: [v0.26.2...v0.26.3](https://github.com/Finch-API/finch-api-java/compare/v0.26.2...v0.26.3)
+
+### Bug Fixes
+
+* **internal:** escape characters for POM description in gradle publish ([#203](https://github.com/Finch-API/finch-api-java/issues/203)) ([d500403](https://github.com/Finch-API/finch-api-java/commit/d500403bfa57fe33bdf2e2800f1fc1c65e2eec16))
+
+
+### Chores
+
+* **internal:** use actions/checkout@v4 for codeflow ([#200](https://github.com/Finch-API/finch-api-java/issues/200)) ([b8f017b](https://github.com/Finch-API/finch-api-java/commit/b8f017b4682cbd86fccca04858b057f2d1dd35bc))
+
+
+### Documentation
+
+* clarify behavior around employee_size ([#202](https://github.com/Finch-API/finch-api-java/issues/202)) ([3492cd3](https://github.com/Finch-API/finch-api-java/commit/3492cd3d3c260c29b7423522b8b75084e4b513ba))
+
+## 0.26.2 (2024-04-23)
+
+Full Changelog: [v0.26.1...v0.26.2](https://github.com/Finch-API/finch-api-java/compare/v0.26.1...v0.26.2)
+
+### Chores
+
+* **internal:** gradlew v8.7, use gradle task config avoidance APIs ([#198](https://github.com/Finch-API/finch-api-java/issues/198)) ([526a3d9](https://github.com/Finch-API/finch-api-java/commit/526a3d92591cfedee3666d783b3423a45f731ccd))
+
+## 0.26.1 (2024-04-21)
+
+Full Changelog: [v0.26.0...v0.26.1](https://github.com/Finch-API/finch-api-java/compare/v0.26.0...v0.26.1)
+
+### Chores
+
+* **ci:** validate Gradle wrapper ([#196](https://github.com/Finch-API/finch-api-java/issues/196)) ([4b38797](https://github.com/Finch-API/finch-api-java/commit/4b38797340732c091b2ea921f9233c293c8f50f4))
+
+## 0.26.0 (2024-04-16)
+
+Full Changelog: [v0.25.0...v0.26.0](https://github.com/Finch-API/finch-api-java/compare/v0.25.0...v0.26.0)
+
+### Features
+
+* **api:** updates ([#192](https://github.com/Finch-API/finch-api-java/issues/192)) ([fcb1e91](https://github.com/Finch-API/finch-api-java/commit/fcb1e91a991f0399d7a0a306a5c3b63fc88aeb58))
+
+
+### Chores
+
+* **internal:** formatting ([#194](https://github.com/Finch-API/finch-api-java/issues/194)) ([2e2ada9](https://github.com/Finch-API/finch-api-java/commit/2e2ada990868b109aa9775076a81bfa14579f295))
+
+
+### Build System
+
+* configure UTF-8 locale in devcontainer ([#195](https://github.com/Finch-API/finch-api-java/issues/195)) ([e0a37c5](https://github.com/Finch-API/finch-api-java/commit/e0a37c558779f13fcf15d4ba65f26a7117dd6db4))
+
+## 0.25.0 (2024-04-10)
+
+Full Changelog: [v0.24.0...v0.25.0](https://github.com/Finch-API/finch-api-java/compare/v0.24.0...v0.25.0)
+
+### Features
+
+* **client:** implement support for multipart/form-data body requests ([#190](https://github.com/Finch-API/finch-api-java/issues/190)) ([4f08515](https://github.com/Finch-API/finch-api-java/commit/4f085155fcb09e1300d5c5f503dd4eaf98ac1c8b))
+
+## 0.24.0 (2024-04-09)
+
+Full Changelog: [v0.23.0...v0.24.0](https://github.com/Finch-API/finch-api-java/compare/v0.23.0...v0.24.0)
+
+### Features
+
+* **api:** updates ([#187](https://github.com/Finch-API/finch-api-java/issues/187)) ([4600d43](https://github.com/Finch-API/finch-api-java/commit/4600d4308b16aa06a06ef3b5bc2999757b622daa))
+
+
+### Chores
+
+* **tests:** import wiremock.client.WireMock.put ([#189](https://github.com/Finch-API/finch-api-java/issues/189)) ([3d5d1e7](https://github.com/Finch-API/finch-api-java/commit/3d5d1e7874b041e38e0d7ad4ecbe7f04b0096f2a))
+
+## 0.23.0 (2024-04-04)
+
+Full Changelog: [v0.22.1...v0.23.0](https://github.com/Finch-API/finch-api-java/compare/v0.22.1...v0.23.0)
+
+### Features
+
+* **client:** add support for top-level array body params ([#183](https://github.com/Finch-API/finch-api-java/issues/183)) ([e528955](https://github.com/Finch-API/finch-api-java/commit/e528955572cc5fc304f861f35bf1097dbe0f441d))
+
+
+### Chores
+
+* **api:** improve descriptions ([#186](https://github.com/Finch-API/finch-api-java/issues/186)) ([00c3753](https://github.com/Finch-API/finch-api-java/commit/00c37531d9a87eb713d474364097261fc97582ba))
+* **deps:** update jackson to v2.14.3 ([#181](https://github.com/Finch-API/finch-api-java/issues/181)) ([5f6c2f7](https://github.com/Finch-API/finch-api-java/commit/5f6c2f79d911b73b78aee6db3782ca3794695775))
+* **deps:** update junit5 to v5.9.3 ([#185](https://github.com/Finch-API/finch-api-java/issues/185)) ([db2931a](https://github.com/Finch-API/finch-api-java/commit/db2931acbe2c270be7ad457fab06a8beffbf29ef))
+* **deps:** update kotlin-gradle-plugin to v1.9.23 ([#184](https://github.com/Finch-API/finch-api-java/issues/184)) ([43c0614](https://github.com/Finch-API/finch-api-java/commit/43c061492df6fc655e97ea1c8932965c2c9d6be3))
+
+## 0.22.1 (2024-03-27)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/Finch-API/finch-api-java/compare/v0.22.0...v0.22.1)
+
+### Bug Fixes
+
+* handle nullable values inside of arrays ([#178](https://github.com/Finch-API/finch-api-java/issues/178)) ([a859d7f](https://github.com/Finch-API/finch-api-java/commit/a859d7fcca3590acffefbdb56a6bbf379ceffbfc))
+
+
+### Chores
+
+* revert temporary commit ([3f05676](https://github.com/Finch-API/finch-api-java/commit/3f0567625cecfddfbb3f684a089dfe57d6d69521))
+* temporary commit ([#179](https://github.com/Finch-API/finch-api-java/issues/179)) ([0bd3bdc](https://github.com/Finch-API/finch-api-java/commit/0bd3bdcb78fdfe8dfa9edad16467bbe27e30c8d5))
+
+
+### Documentation
+
+* **readme:** consistent use of sentence case in headings ([#176](https://github.com/Finch-API/finch-api-java/issues/176)) ([969e463](https://github.com/Finch-API/finch-api-java/commit/969e4637f946fd45c0aa13a06820aeef99a79a3b))
+
 ## 0.22.0 (2024-03-13)
 
 Full Changelog: [v0.21.1...v0.22.0](https://github.com/Finch-API/finch-api-java/compare/v0.21.1...v0.22.0)
