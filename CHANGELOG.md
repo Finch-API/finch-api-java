@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.28.1 (2024-06-07)
+
+Full Changelog: [v0.28.0...v0.28.1](https://github.com/Finch-API/finch-api-java/compare/v0.28.0...v0.28.1)
+
+### Bug Fixes
+
+* rename pay groups endpoint ([#229](https://github.com/Finch-API/finch-api-java/issues/229)) ([d896f6a](https://github.com/Finch-API/finch-api-java/commit/d896f6a704c299ceeca1df1a0c65f97701870ca0))
+
 ## 0.28.0 (2024-06-06)
 
 Full Changelog: [v0.27.2...v0.28.0](https://github.com/Finch-API/finch-api-java/compare/v0.27.2...v0.28.0)
