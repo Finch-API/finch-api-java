@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.29.0 (2024-06-17)
+
+Full Changelog: [v0.28.1...v0.29.0](https://github.com/Finch-API/finch-api-java/compare/v0.28.1...v0.29.0)
+
+### Features
+
+* **client:** add support for `putQueryParam` on `ClientOptions` ([#232](https://github.com/Finch-API/finch-api-java/issues/232)) ([d2c4f26](https://github.com/Finch-API/finch-api-java/commit/d2c4f26da11d8898fa7560f10fa9863208659d85))
+
 ## 0.28.1 (2024-06-07)
 
 Full Changelog: [v0.28.0...v0.28.1](https://github.com/Finch-API/finch-api-java/compare/v0.28.0...v0.28.1)
