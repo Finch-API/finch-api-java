@@ -35,6 +35,7 @@ constructor(
             HttpRequest.builder()
                 .method(HttpMethod.PUT)
                 .addPathSegments("sandbox", "company")
+                .putAllQueryParams(clientOptions.queryParams)
                 .putAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
                 .putAllHeaders(params.getHeaders())
