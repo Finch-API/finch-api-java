@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.29.1 (2024-06-28)
+
+Full Changelog: [v0.29.0...v0.29.1](https://github.com/Finch-API/finch-api-java/compare/v0.29.0...v0.29.1)
+
+### Chores
+
+* gitignore test server logs ([#234](https://github.com/Finch-API/finch-api-java/issues/234)) ([5090e70](https://github.com/Finch-API/finch-api-java/commit/5090e70842acda92a26c3289fc13cedcedcdb61c))
+
 ## 0.29.0 (2024-06-17)
 
 Full Changelog: [v0.28.1...v0.29.0](https://github.com/Finch-API/finch-api-java/compare/v0.28.1...v0.29.0)
