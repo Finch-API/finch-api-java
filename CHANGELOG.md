@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.29.2 (2024-07-01)
+
+Full Changelog: [v0.29.1...v0.29.2](https://github.com/Finch-API/finch-api-java/compare/v0.29.1...v0.29.2)
+
+### Chores
+
+* sync openapi spec ([#236](https://github.com/Finch-API/finch-api-java/issues/236)) ([668950b](https://github.com/Finch-API/finch-api-java/commit/668950b5a3d941a54fe14580a0bb9e094082b845))
+
 ## 0.29.1 (2024-06-28)
 
 Full Changelog: [v0.29.0...v0.29.1](https://github.com/Finch-API/finch-api-java/compare/v0.29.0...v0.29.1)
