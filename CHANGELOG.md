@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.29.3 (2024-07-10)
+
+Full Changelog: [v0.29.2...v0.29.3](https://github.com/Finch-API/finch-api-java/compare/v0.29.2...v0.29.3)
+
+### Chores
+
+* **docs:** document minimum Java version (Java 8) in README ([#239](https://github.com/Finch-API/finch-api-java/issues/239)) ([6b0e37d](https://github.com/Finch-API/finch-api-java/commit/6b0e37d843994f97a8197e804e7fa1b4f3ae4ef2))
+
 ## 0.29.2 (2024-07-01)
 
 Full Changelog: [v0.29.1...v0.29.2](https://github.com/Finch-API/finch-api-java/compare/v0.29.1...v0.29.2)
