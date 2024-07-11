@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.29.4 (2024-07-11)
+
+Full Changelog: [v0.29.3...v0.29.4](https://github.com/Finch-API/finch-api-java/compare/v0.29.3...v0.29.4)
+
+### Chores
+
+* **ci:** also run workflows for PRs targeting `next` ([#241](https://github.com/Finch-API/finch-api-java/issues/241)) ([653add2](https://github.com/Finch-API/finch-api-java/commit/653add2705c8b209480b792517f9f056625e19c9))
+
+
+### Documentation
+
+* **examples:** update example values ([#243](https://github.com/Finch-API/finch-api-java/issues/243)) ([1386333](https://github.com/Finch-API/finch-api-java/commit/13863332bbc42cdc7f5cd2d120c1bb181c3ac4b7))
+
 ## 0.29.3 (2024-07-10)
 
 Full Changelog: [v0.29.2...v0.29.3](https://github.com/Finch-API/finch-api-java/compare/v0.29.2...v0.29.3)
