@@ -9,8 +9,8 @@ class DisconnectResponseTest {
 
     @Test
     fun createDisconnectResponse() {
-        val disconnectResponse = DisconnectResponse.builder().status("string").build()
+        val disconnectResponse = DisconnectResponse.builder().status("status").build()
         assertThat(disconnectResponse).isNotNull
-        assertThat(disconnectResponse.status()).isEqualTo("string")
+        assertThat(disconnectResponse.status()).isEqualTo("status")
     }
 }

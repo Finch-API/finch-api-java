@@ -11,14 +11,14 @@ class CompanyBenefitTest {
     fun createCompanyBenefit() {
         val companyBenefit =
             CompanyBenefit.builder()
-                .benefitId("string")
+                .benefitId("benefit_id")
                 .companyContribution(
                     BenefitContribution.builder()
                         .amount(123L)
                         .type(BenefitContribution.Type.FIXED)
                         .build()
                 )
-                .description("string")
+                .description("description")
                 .employeeDeduction(
                     BenefitContribution.builder()
                         .amount(123L)
@@ -29,7 +29,7 @@ class CompanyBenefitTest {
                 .type(BenefitType._401K)
                 .build()
         assertThat(companyBenefit).isNotNull
-        assertThat(companyBenefit.benefitId()).isEqualTo("string")
+        assertThat(companyBenefit.benefitId()).isEqualTo("benefit_id")
         assertThat(companyBenefit.companyContribution())
             .contains(
                 BenefitContribution.builder()
@@ -37,7 +37,7 @@ class CompanyBenefitTest {
                     .type(BenefitContribution.Type.FIXED)
                     .build()
             )
-        assertThat(companyBenefit.description()).contains("string")
+        assertThat(companyBenefit.description()).contains("description")
         assertThat(companyBenefit.employeeDeduction())
             .contains(
                 BenefitContribution.builder()

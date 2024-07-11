@@ -13,24 +13,24 @@ class EnrolledIndividualTest {
             EnrolledIndividual.builder()
                 .body(
                     EnrolledIndividual.Body.builder()
-                        .finchCode("string")
-                        .message("string")
-                        .name("string")
+                        .finchCode("finch_code")
+                        .message("message")
+                        .name("name")
                         .build()
                 )
                 .code(EnrolledIndividual.Code.OK)
-                .individualId("string")
+                .individualId("individual_id")
                 .build()
         assertThat(enrolledIndividual).isNotNull
         assertThat(enrolledIndividual.body())
             .contains(
                 EnrolledIndividual.Body.builder()
-                    .finchCode("string")
-                    .message("string")
-                    .name("string")
+                    .finchCode("finch_code")
+                    .message("message")
+                    .name("name")
                     .build()
             )
         assertThat(enrolledIndividual.code()).contains(EnrolledIndividual.Code.OK)
-        assertThat(enrolledIndividual.individualId()).contains("string")
+        assertThat(enrolledIndividual.individualId()).contains("individual_id")
     }
 }

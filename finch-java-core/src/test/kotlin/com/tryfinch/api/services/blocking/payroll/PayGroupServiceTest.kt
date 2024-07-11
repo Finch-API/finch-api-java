@@ -24,7 +24,7 @@ class PayGroupServiceTest {
         val payGroupService = client.payroll().payGroups()
         val payGroupRetrieveResponse =
             payGroupService.retrieve(
-                PayrollPayGroupRetrieveParams.builder().payGroupId("string").build()
+                PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
             )
         println(payGroupRetrieveResponse)
         payGroupRetrieveResponse.validate()

@@ -28,13 +28,13 @@ class DirectoryServiceTest {
                     .body(
                         listOf(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.builder()
-                                .classCode("string")
+                                .classCode("class_code")
                                 .customFields(
                                     listOf(
                                         SandboxDirectoryCreateParams.IndividualOrEmployment
                                             .CustomField
                                             .builder()
-                                            .name("string")
+                                            .name("name")
                                             .value(JsonValue.from(mapOf<String, Any>()))
                                             .build()
                                     )
@@ -42,15 +42,15 @@ class DirectoryServiceTest {
                                 .department(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Department
                                         .builder()
-                                        .name("string")
+                                        .name("name")
                                         .build()
                                 )
-                                .dob("string")
+                                .dob("dob")
                                 .emails(
                                     listOf(
                                         SandboxDirectoryCreateParams.IndividualOrEmployment.Email
                                             .builder()
-                                            .data("string")
+                                            .data("data")
                                             .type(
                                                 SandboxDirectoryCreateParams.IndividualOrEmployment
                                                     .Email
@@ -77,13 +77,13 @@ class DirectoryServiceTest {
                                         )
                                         .build()
                                 )
-                                .encryptedSsn("string")
-                                .endDate("string")
+                                .encryptedSsn("encrypted_ssn")
+                                .endDate("end_date")
                                 .ethnicity(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity
                                         .ASIAN
                                 )
-                                .firstName("string")
+                                .firstName("first_name")
                                 .gender(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Gender
                                         .FEMALE
@@ -91,8 +91,8 @@ class DirectoryServiceTest {
                                 .income(
                                     Income.builder()
                                         .amount(123L)
-                                        .currency("string")
-                                        .effectiveDate("string")
+                                        .currency("currency")
+                                        .effectiveDate("effective_date")
                                         .unit(Income.Unit.YEARLY)
                                         .build()
                                 )
@@ -100,39 +100,39 @@ class DirectoryServiceTest {
                                     listOf(
                                         Income.builder()
                                             .amount(123L)
-                                            .currency("string")
-                                            .effectiveDate("string")
+                                            .currency("currency")
+                                            .effectiveDate("effective_date")
                                             .unit(Income.Unit.YEARLY)
                                             .build()
                                     )
                                 )
                                 .isActive(true)
-                                .lastName("string")
+                                .lastName("last_name")
                                 .location(
                                     Location.builder()
-                                        .city("string")
-                                        .country("string")
-                                        .line1("string")
-                                        .line2("string")
-                                        .name("string")
-                                        .postalCode("string")
-                                        .sourceId("string")
-                                        .state("string")
+                                        .city("city")
+                                        .country("country")
+                                        .line1("line1")
+                                        .line2("line2")
+                                        .name("name")
+                                        .postalCode("postal_code")
+                                        .sourceId("source_id")
+                                        .state("state")
                                         .build()
                                 )
                                 .manager(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Manager
                                         .builder()
-                                        .id("string")
+                                        .id("id")
                                         .build()
                                 )
-                                .middleName("string")
+                                .middleName("middle_name")
                                 .phoneNumbers(
                                     listOf(
                                         SandboxDirectoryCreateParams.IndividualOrEmployment
                                             .PhoneNumber
                                             .builder()
-                                            .data("string")
+                                            .data("data")
                                             .type(
                                                 SandboxDirectoryCreateParams.IndividualOrEmployment
                                                     .PhoneNumber
@@ -142,23 +142,23 @@ class DirectoryServiceTest {
                                             .build()
                                     )
                                 )
-                                .preferredName("string")
+                                .preferredName("preferred_name")
                                 .residence(
                                     Location.builder()
-                                        .city("string")
-                                        .country("string")
-                                        .line1("string")
-                                        .line2("string")
-                                        .name("string")
-                                        .postalCode("string")
-                                        .sourceId("string")
-                                        .state("string")
+                                        .city("city")
+                                        .country("country")
+                                        .line1("line1")
+                                        .line2("line2")
+                                        .name("name")
+                                        .postalCode("postal_code")
+                                        .sourceId("source_id")
+                                        .state("state")
                                         .build()
                                 )
-                                .sourceId("string")
-                                .ssn("string")
-                                .startDate("string")
-                                .title("string")
+                                .sourceId("source_id")
+                                .ssn("ssn")
+                                .startDate("start_date")
+                                .title("title")
                                 .build()
                         )
                     )

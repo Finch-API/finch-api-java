@@ -12,14 +12,14 @@ class IncomeTest {
         val income =
             Income.builder()
                 .amount(123L)
-                .currency("string")
-                .effectiveDate("string")
+                .currency("currency")
+                .effectiveDate("effective_date")
                 .unit(Income.Unit.YEARLY)
                 .build()
         assertThat(income).isNotNull
         assertThat(income.amount()).contains(123L)
-        assertThat(income.currency()).contains("string")
-        assertThat(income.effectiveDate()).contains("string")
+        assertThat(income.currency()).contains("currency")
+        assertThat(income.effectiveDate()).contains("effective_date")
         assertThat(income.unit()).contains(Income.Unit.YEARLY)
     }
 }

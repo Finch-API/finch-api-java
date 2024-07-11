@@ -21,7 +21,7 @@ class BenefitFeaturesAndOperationsTest {
                                     .FIXED
                             )
                         )
-                        .description("string")
+                        .description("description")
                         .employeeDeduction(
                             listOf(
                                 BenefitFeaturesAndOperations.BenefitFeature.EmployeeDeduction.FIXED
@@ -68,7 +68,7 @@ class BenefitFeaturesAndOperationsTest {
                             BenefitFeaturesAndOperations.BenefitFeature.CompanyContribution.FIXED
                         )
                     )
-                    .description("string")
+                    .description("description")
                     .employeeDeduction(
                         listOf(BenefitFeaturesAndOperations.BenefitFeature.EmployeeDeduction.FIXED)
                     )

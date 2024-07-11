@@ -24,7 +24,7 @@ class PaymentServiceTest {
         val paymentCreateResponse =
             paymentService.create(
                 SandboxPaymentCreateParams.builder()
-                    .endDate("string")
+                    .endDate("end_date")
                     .payStatements(
                         listOf(
                             SandboxPaymentCreateParams.PayStatement.builder()
@@ -32,9 +32,9 @@ class PaymentServiceTest {
                                     listOf(
                                         SandboxPaymentCreateParams.PayStatement.Earning.builder()
                                             .amount(123L)
-                                            .currency("string")
+                                            .currency("currency")
                                             .hours(42.23)
-                                            .name("string")
+                                            .name("name")
                                             .type(
                                                 SandboxPaymentCreateParams.PayStatement.Earning.Type
                                                     .SALARY
@@ -47,8 +47,8 @@ class PaymentServiceTest {
                                         SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
                                             .builder()
                                             .amount(123L)
-                                            .currency("string")
-                                            .name("string")
+                                            .currency("currency")
+                                            .name("name")
                                             .preTax(true)
                                             .type(BenefitType._401K)
                                             .build()
@@ -59,15 +59,15 @@ class PaymentServiceTest {
                                         SandboxPaymentCreateParams.PayStatement.EmployerContribution
                                             .builder()
                                             .amount(123L)
-                                            .currency("string")
-                                            .name("string")
+                                            .currency("currency")
+                                            .name("name")
                                             .type(BenefitType._401K)
                                             .build()
                                     )
                                 )
-                                .grossPay(Money.builder().amount(123L).currency("string").build())
-                                .individualId("string")
-                                .netPay(Money.builder().amount(123L).currency("string").build())
+                                .grossPay(Money.builder().amount(123L).currency("currency").build())
+                                .individualId("individual_id")
+                                .netPay(Money.builder().amount(123L).currency("currency").build())
                                 .paymentMethod(
                                     SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
                                 )
@@ -75,9 +75,9 @@ class PaymentServiceTest {
                                     listOf(
                                         SandboxPaymentCreateParams.PayStatement.Tax.builder()
                                             .amount(123L)
-                                            .currency("string")
+                                            .currency("currency")
                                             .employer(true)
-                                            .name("string")
+                                            .name("name")
                                             .type(
                                                 SandboxPaymentCreateParams.PayStatement.Tax.Type
                                                     .STATE
@@ -90,7 +90,7 @@ class PaymentServiceTest {
                                 .build()
                         )
                     )
-                    .startDate("string")
+                    .startDate("start_date")
                     .build()
             )
         println(paymentCreateResponse)

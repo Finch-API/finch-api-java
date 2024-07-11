@@ -11,23 +11,23 @@ class CreateAccessTokenResponseTest {
     fun createCreateAccessTokenResponse() {
         val createAccessTokenResponse =
             CreateAccessTokenResponse.builder()
-                .accessToken("string")
-                .accountId("string")
+                .accessToken("access_token")
+                .accountId("account_id")
                 .clientType(CreateAccessTokenResponse.ClientType.PRODUCTION)
-                .companyId("string")
+                .companyId("company_id")
                 .connectionType(CreateAccessTokenResponse.ConnectionType.PROVIDER)
                 .products(listOf("string"))
-                .providerId("string")
+                .providerId("provider_id")
                 .build()
         assertThat(createAccessTokenResponse).isNotNull
-        assertThat(createAccessTokenResponse.accessToken()).isEqualTo("string")
-        assertThat(createAccessTokenResponse.accountId()).isEqualTo("string")
+        assertThat(createAccessTokenResponse.accessToken()).isEqualTo("access_token")
+        assertThat(createAccessTokenResponse.accountId()).isEqualTo("account_id")
         assertThat(createAccessTokenResponse.clientType())
             .isEqualTo(CreateAccessTokenResponse.ClientType.PRODUCTION)
-        assertThat(createAccessTokenResponse.companyId()).isEqualTo("string")
+        assertThat(createAccessTokenResponse.companyId()).isEqualTo("company_id")
         assertThat(createAccessTokenResponse.connectionType())
             .isEqualTo(CreateAccessTokenResponse.ConnectionType.PROVIDER)
         assertThat(createAccessTokenResponse.products()).containsExactly("string")
-        assertThat(createAccessTokenResponse.providerId()).isEqualTo("string")
+        assertThat(createAccessTokenResponse.providerId()).isEqualTo("provider_id")
     }
 }

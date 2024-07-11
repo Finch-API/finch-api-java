@@ -33,7 +33,7 @@ class IndividualBenefitTest {
                         .build()
                 )
                 .code(123L)
-                .individualId("string")
+                .individualId("individual_id")
                 .build()
         assertThat(individualBenefit).isNotNull
         assertThat(individualBenefit.body())
@@ -57,6 +57,6 @@ class IndividualBenefitTest {
                     .build()
             )
         assertThat(individualBenefit.code()).contains(123L)
-        assertThat(individualBenefit.individualId()).contains("string")
+        assertThat(individualBenefit.individualId()).contains("individual_id")
     }
 }
