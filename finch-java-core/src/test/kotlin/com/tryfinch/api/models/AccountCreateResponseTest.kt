@@ -16,7 +16,7 @@ class AccountCreateResponseTest {
                 .authenticationType(AccountCreateResponse.AuthenticationType.CREDENTIAL)
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .products(listOf("string"))
-                .providerId("string")
+                .providerId("provider_id")
                 .build()
         assertThat(accountCreateResponse).isNotNull
         assertThat(accountCreateResponse.accessToken())
@@ -28,6 +28,6 @@ class AccountCreateResponseTest {
         assertThat(accountCreateResponse.companyId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(accountCreateResponse.products()).containsExactly("string")
-        assertThat(accountCreateResponse.providerId()).isEqualTo("string")
+        assertThat(accountCreateResponse.providerId()).isEqualTo("provider_id")
     }
 }

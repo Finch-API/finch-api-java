@@ -13,14 +13,14 @@ class AutomatedCreateResponseTest {
             AutomatedCreateResponse.builder()
                 .allowedRefreshes(123L)
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .jobUrl("string")
+                .jobUrl("job_url")
                 .remainingRefreshes(123L)
                 .build()
         assertThat(automatedCreateResponse).isNotNull
         assertThat(automatedCreateResponse.allowedRefreshes()).isEqualTo(123L)
         assertThat(automatedCreateResponse.jobId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(automatedCreateResponse.jobUrl()).isEqualTo("string")
+        assertThat(automatedCreateResponse.jobUrl()).isEqualTo("job_url")
         assertThat(automatedCreateResponse.remainingRefreshes()).isEqualTo(123L)
     }
 }

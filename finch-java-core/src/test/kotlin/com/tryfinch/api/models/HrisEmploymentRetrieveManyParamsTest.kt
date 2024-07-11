@@ -14,7 +14,7 @@ class HrisEmploymentRetrieveManyParamsTest {
             .requests(
                 listOf(
                     HrisEmploymentRetrieveManyParams.Request.builder()
-                        .individualId("string")
+                        .individualId("individual_id")
                         .build()
                 )
             )
@@ -28,7 +28,7 @@ class HrisEmploymentRetrieveManyParamsTest {
                 .requests(
                     listOf(
                         HrisEmploymentRetrieveManyParams.Request.builder()
-                            .individualId("string")
+                            .individualId("individual_id")
                             .build()
                     )
                 )
@@ -39,7 +39,7 @@ class HrisEmploymentRetrieveManyParamsTest {
             .isEqualTo(
                 listOf(
                     HrisEmploymentRetrieveManyParams.Request.builder()
-                        .individualId("string")
+                        .individualId("individual_id")
                         .build()
                 )
             )
@@ -52,7 +52,7 @@ class HrisEmploymentRetrieveManyParamsTest {
                 .requests(
                     listOf(
                         HrisEmploymentRetrieveManyParams.Request.builder()
-                            .individualId("string")
+                            .individualId("individual_id")
                             .build()
                     )
                 )
@@ -63,7 +63,7 @@ class HrisEmploymentRetrieveManyParamsTest {
             .isEqualTo(
                 listOf(
                     HrisEmploymentRetrieveManyParams.Request.builder()
-                        .individualId("string")
+                        .individualId("individual_id")
                         .build()
                 )
             )

@@ -26,7 +26,7 @@ class ConnectionServiceTest {
         val connectionCreateResponse =
             connectionService.create(
                 SandboxConnectionCreateParams.builder()
-                    .providerId("string")
+                    .providerId("provider_id")
                     .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
                     .employeeSize(123L)
                     .products(listOf("string"))

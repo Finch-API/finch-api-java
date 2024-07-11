@@ -22,7 +22,7 @@ class ManualServiceTest {
                 .build()
         val manualService = client.jobs().manual()
         val manualAsyncJob =
-            manualService.retrieve(JobManualRetrieveParams.builder().jobId("string").build())
+            manualService.retrieve(JobManualRetrieveParams.builder().jobId("job_id").build())
         println(manualAsyncJob)
         manualAsyncJob.validate()
     }
