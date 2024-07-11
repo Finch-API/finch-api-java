@@ -25,7 +25,7 @@ class IndividualServiceTest {
         val individualService = client.hris().benefits().individuals()
         val individualEnrolledIdsResponse =
             individualService.enrolledIds(
-                HrisBenefitIndividualEnrolledIdsParams.builder().benefitId("string").build()
+                HrisBenefitIndividualEnrolledIdsParams.builder().benefitId("benefit_id").build()
             )
         println(individualEnrolledIdsResponse)
         individualEnrolledIdsResponse.validate()
@@ -44,7 +44,7 @@ class IndividualServiceTest {
         val individualBenefits =
             individualService.retrieveManyBenefits(
                 HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
-                    .benefitId("string")
+                    .benefitId("benefit_id")
                     .build()
             )
         println(individualBenefits)
@@ -63,7 +63,7 @@ class IndividualServiceTest {
         val individualService = client.hris().benefits().individuals()
         val unenrollIndividualBenefitResponse =
             individualService.unenrollMany(
-                HrisBenefitIndividualUnenrollManyParams.builder().benefitId("string").build()
+                HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
             )
         println(unenrollIndividualBenefitResponse)
         unenrollIndividualBenefitResponse.items().forEach { it.validate() }

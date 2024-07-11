@@ -10,15 +10,15 @@ class HrisBenefitRetrieveParamsTest {
 
     @Test
     fun createHrisBenefitRetrieveParams() {
-        HrisBenefitRetrieveParams.builder().benefitId("string").build()
+        HrisBenefitRetrieveParams.builder().benefitId("benefit_id").build()
     }
 
     @Test
     fun getPathParam() {
-        val params = HrisBenefitRetrieveParams.builder().benefitId("string").build()
+        val params = HrisBenefitRetrieveParams.builder().benefitId("benefit_id").build()
         assertThat(params).isNotNull
         // path param "benefitId"
-        assertThat(params.getPathParam(0)).isEqualTo("string")
+        assertThat(params.getPathParam(0)).isEqualTo("benefit_id")
         // out-of-bound path param
         assertThat(params.getPathParam(1)).isEqualTo("")
     }

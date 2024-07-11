@@ -17,7 +17,7 @@ class HrisIndividualRetrieveManyParamsTest {
             .requests(
                 listOf(
                     HrisIndividualRetrieveManyParams.Request.builder()
-                        .individualId("string")
+                        .individualId("individual_id")
                         .build()
                 )
             )
@@ -36,7 +36,7 @@ class HrisIndividualRetrieveManyParamsTest {
                 .requests(
                     listOf(
                         HrisIndividualRetrieveManyParams.Request.builder()
-                            .individualId("string")
+                            .individualId("individual_id")
                             .build()
                     )
                 )
@@ -51,7 +51,7 @@ class HrisIndividualRetrieveManyParamsTest {
             .isEqualTo(
                 listOf(
                     HrisIndividualRetrieveManyParams.Request.builder()
-                        .individualId("string")
+                        .individualId("individual_id")
                         .build()
                 )
             )

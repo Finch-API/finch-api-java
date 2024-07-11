@@ -10,15 +10,15 @@ class PayrollPayGroupRetrieveParamsTest {
 
     @Test
     fun createPayrollPayGroupRetrieveParams() {
-        PayrollPayGroupRetrieveParams.builder().payGroupId("string").build()
+        PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
     }
 
     @Test
     fun getPathParam() {
-        val params = PayrollPayGroupRetrieveParams.builder().payGroupId("string").build()
+        val params = PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
         assertThat(params).isNotNull
         // path param "payGroupId"
-        assertThat(params.getPathParam(0)).isEqualTo("string")
+        assertThat(params.getPathParam(0)).isEqualTo("pay_group_id")
         // out-of-bound path param
         assertThat(params.getPathParam(1)).isEqualTo("")
     }

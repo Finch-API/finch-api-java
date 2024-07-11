@@ -12,9 +12,9 @@ class RequestForwardingForwardParamsTest {
     @Test
     fun createRequestForwardingForwardParams() {
         RequestForwardingForwardParams.builder()
-            .method("string")
-            .route("string")
-            .data("string")
+            .method("method")
+            .route("route")
+            .data("data")
             .headers(JsonNull.of())
             .params(JsonNull.of())
             .build()
@@ -24,17 +24,17 @@ class RequestForwardingForwardParamsTest {
     fun getBody() {
         val params =
             RequestForwardingForwardParams.builder()
-                .method("string")
-                .route("string")
-                .data("string")
+                .method("method")
+                .route("route")
+                .data("data")
                 .headers(JsonNull.of())
                 .params(JsonNull.of())
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.method()).isEqualTo("string")
-        assertThat(body.route()).isEqualTo("string")
-        assertThat(body.data()).isEqualTo("string")
+        assertThat(body.method()).isEqualTo("method")
+        assertThat(body.route()).isEqualTo("route")
+        assertThat(body.data()).isEqualTo("data")
         assertThat(body.headers()).isEqualTo(JsonNull.of())
         assertThat(body.params()).isEqualTo(JsonNull.of())
     }
@@ -42,10 +42,10 @@ class RequestForwardingForwardParamsTest {
     @Test
     fun getBodyWithoutOptionalFields() {
         val params =
-            RequestForwardingForwardParams.builder().method("string").route("string").build()
+            RequestForwardingForwardParams.builder().method("method").route("route").build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.method()).isEqualTo("string")
-        assertThat(body.route()).isEqualTo("string")
+        assertThat(body.method()).isEqualTo("method")
+        assertThat(body.route()).isEqualTo("route")
     }
 }

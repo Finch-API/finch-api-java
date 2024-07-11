@@ -66,15 +66,15 @@ class ServiceParamsTest {
                 .individuals(
                     listOf(
                         IndividualInDirectory.builder()
-                            .id("string")
+                            .id("id")
                             .department(
-                                IndividualInDirectory.Department.builder().name("string").build()
+                                IndividualInDirectory.Department.builder().name("name").build()
                             )
-                            .firstName("string")
+                            .firstName("first_name")
                             .isActive(true)
-                            .lastName("string")
-                            .manager(IndividualInDirectory.Manager.builder().id("string").build())
-                            .middleName("string")
+                            .lastName("last_name")
+                            .manager(IndividualInDirectory.Manager.builder().id("id").build())
+                            .middleName("middle_name")
                             .build()
                     )
                 )
