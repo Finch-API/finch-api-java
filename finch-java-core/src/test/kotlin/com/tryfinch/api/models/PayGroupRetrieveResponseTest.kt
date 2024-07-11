@@ -13,14 +13,14 @@ class PayGroupRetrieveResponseTest {
             PayGroupRetrieveResponse.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .individualIds(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-                .name("string")
+                .name("name")
                 .payFrequencies(listOf(PayGroupRetrieveResponse.PayFrequency.ANNUALLY))
                 .build()
         assertThat(payGroupRetrieveResponse).isNotNull
         assertThat(payGroupRetrieveResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(payGroupRetrieveResponse.individualIds())
             .containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(payGroupRetrieveResponse.name()).isEqualTo("string")
+        assertThat(payGroupRetrieveResponse.name()).isEqualTo("name")
         assertThat(payGroupRetrieveResponse.payFrequencies())
             .containsExactly(PayGroupRetrieveResponse.PayFrequency.ANNUALLY)
     }

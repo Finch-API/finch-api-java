@@ -10,9 +10,9 @@ class PaymentCreateResponseTest {
     @Test
     fun createPaymentCreateResponse() {
         val paymentCreateResponse =
-            PaymentCreateResponse.builder().payDate("string").paymentId("string").build()
+            PaymentCreateResponse.builder().payDate("pay_date").paymentId("payment_id").build()
         assertThat(paymentCreateResponse).isNotNull
-        assertThat(paymentCreateResponse.payDate()).isEqualTo("string")
-        assertThat(paymentCreateResponse.paymentId()).isEqualTo("string")
+        assertThat(paymentCreateResponse.payDate()).isEqualTo("pay_date")
+        assertThat(paymentCreateResponse.paymentId()).isEqualTo("payment_id")
     }
 }

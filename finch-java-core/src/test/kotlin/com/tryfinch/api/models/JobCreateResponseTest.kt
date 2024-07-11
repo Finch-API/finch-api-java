@@ -13,13 +13,13 @@ class JobCreateResponseTest {
             JobCreateResponse.builder()
                 .allowedRefreshes(123L)
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .jobUrl("string")
+                .jobUrl("job_url")
                 .remainingRefreshes(123L)
                 .build()
         assertThat(jobCreateResponse).isNotNull
         assertThat(jobCreateResponse.allowedRefreshes()).isEqualTo(123L)
         assertThat(jobCreateResponse.jobId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(jobCreateResponse.jobUrl()).isEqualTo("string")
+        assertThat(jobCreateResponse.jobUrl()).isEqualTo("job_url")
         assertThat(jobCreateResponse.remainingRefreshes()).isEqualTo(123L)
     }
 }

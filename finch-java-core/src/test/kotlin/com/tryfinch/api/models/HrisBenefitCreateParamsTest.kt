@@ -11,7 +11,7 @@ class HrisBenefitCreateParamsTest {
     @Test
     fun createHrisBenefitCreateParams() {
         HrisBenefitCreateParams.builder()
-            .description("string")
+            .description("description")
             .frequency(BenefitFrequency.ONE_TIME)
             .type(BenefitType._401K)
             .build()
@@ -21,13 +21,13 @@ class HrisBenefitCreateParamsTest {
     fun getBody() {
         val params =
             HrisBenefitCreateParams.builder()
-                .description("string")
+                .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
                 .type(BenefitType._401K)
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.description()).isEqualTo("string")
+        assertThat(body.description()).isEqualTo("description")
         assertThat(body.frequency()).isEqualTo(BenefitFrequency.ONE_TIME)
         assertThat(body.type()).isEqualTo(BenefitType._401K)
     }

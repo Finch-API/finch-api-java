@@ -43,7 +43,7 @@ class AutomatedServiceTest {
                 .build()
         val automatedService = client.jobs().automated()
         val automatedAsyncJob =
-            automatedService.retrieve(JobAutomatedRetrieveParams.builder().jobId("string").build())
+            automatedService.retrieve(JobAutomatedRetrieveParams.builder().jobId("job_id").build())
         println(automatedAsyncJob)
         automatedAsyncJob.validate()
     }

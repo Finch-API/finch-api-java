@@ -14,7 +14,7 @@ class HrisPayStatementRetrieveManyParamsTest {
             .requests(
                 listOf(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("string")
+                        .paymentId("payment_id")
                         .limit(123L)
                         .offset(123L)
                         .build()
@@ -30,7 +30,7 @@ class HrisPayStatementRetrieveManyParamsTest {
                 .requests(
                     listOf(
                         HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("string")
+                            .paymentId("payment_id")
                             .limit(123L)
                             .offset(123L)
                             .build()
@@ -43,7 +43,7 @@ class HrisPayStatementRetrieveManyParamsTest {
             .isEqualTo(
                 listOf(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("string")
+                        .paymentId("payment_id")
                         .limit(123L)
                         .offset(123L)
                         .build()
@@ -58,7 +58,7 @@ class HrisPayStatementRetrieveManyParamsTest {
                 .requests(
                     listOf(
                         HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("string")
+                            .paymentId("payment_id")
                             .build()
                     )
                 )
@@ -68,7 +68,9 @@ class HrisPayStatementRetrieveManyParamsTest {
         assertThat(body.requests())
             .isEqualTo(
                 listOf(
-                    HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
+                    HrisPayStatementRetrieveManyParams.Request.builder()
+                        .paymentId("payment_id")
+                        .build()
                 )
             )
     }

@@ -26,7 +26,7 @@ class BenefitServiceTest {
         val createCompanyBenefitsResponse =
             benefitService.create(
                 HrisBenefitCreateParams.builder()
-                    .description("string")
+                    .description("description")
                     .frequency(BenefitFrequency.ONE_TIME)
                     .type(BenefitType._401K)
                     .build()
@@ -46,7 +46,9 @@ class BenefitServiceTest {
                 .build()
         val benefitService = client.hris().benefits()
         val companyBenefit =
-            benefitService.retrieve(HrisBenefitRetrieveParams.builder().benefitId("string").build())
+            benefitService.retrieve(
+                HrisBenefitRetrieveParams.builder().benefitId("benefit_id").build()
+            )
         println(companyBenefit)
         companyBenefit.validate()
     }
@@ -63,7 +65,10 @@ class BenefitServiceTest {
         val benefitService = client.hris().benefits()
         val updateCompanyBenefitResponse =
             benefitService.update(
-                HrisBenefitUpdateParams.builder().benefitId("string").description("string").build()
+                HrisBenefitUpdateParams.builder()
+                    .benefitId("benefit_id")
+                    .description("description")
+                    .build()
             )
         println(updateCompanyBenefitResponse)
         updateCompanyBenefitResponse.validate()

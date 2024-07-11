@@ -25,9 +25,9 @@ class RequestForwardingServiceTest {
         val requestForwardingForwardResponse =
             requestForwardingService.forward(
                 RequestForwardingForwardParams.builder()
-                    .method("string")
-                    .route("string")
-                    .data("string")
+                    .method("method")
+                    .route("route")
+                    .data("data")
                     .headers(JsonNull.of())
                     .params(JsonNull.of())
                     .build()

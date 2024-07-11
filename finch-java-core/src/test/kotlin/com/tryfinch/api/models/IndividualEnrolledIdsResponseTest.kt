@@ -11,11 +11,11 @@ class IndividualEnrolledIdsResponseTest {
     fun createIndividualEnrolledIdsResponse() {
         val individualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse.builder()
-                .benefitId("string")
+                .benefitId("benefit_id")
                 .individualIds(listOf("string"))
                 .build()
         assertThat(individualEnrolledIdsResponse).isNotNull
-        assertThat(individualEnrolledIdsResponse.benefitId()).isEqualTo("string")
+        assertThat(individualEnrolledIdsResponse.benefitId()).isEqualTo("benefit_id")
         assertThat(individualEnrolledIdsResponse.individualIds()).containsExactly("string")
     }
 }

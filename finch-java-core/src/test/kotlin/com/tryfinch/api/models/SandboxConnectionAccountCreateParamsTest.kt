@@ -12,7 +12,7 @@ class SandboxConnectionAccountCreateParamsTest {
     fun createSandboxConnectionAccountCreateParams() {
         SandboxConnectionAccountCreateParams.builder()
             .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .providerId("string")
+            .providerId("provider_id")
             .authenticationType(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
             .products(listOf("string"))
             .build()
@@ -23,7 +23,7 @@ class SandboxConnectionAccountCreateParamsTest {
         val params =
             SandboxConnectionAccountCreateParams.builder()
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .providerId("string")
+                .providerId("provider_id")
                 .authenticationType(
                     SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL
                 )
@@ -32,7 +32,7 @@ class SandboxConnectionAccountCreateParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.companyId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.providerId()).isEqualTo("string")
+        assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
             .isEqualTo(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
         assertThat(body.products()).isEqualTo(listOf("string"))
@@ -43,11 +43,11 @@ class SandboxConnectionAccountCreateParamsTest {
         val params =
             SandboxConnectionAccountCreateParams.builder()
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .providerId("string")
+                .providerId("provider_id")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.companyId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(body.providerId()).isEqualTo("string")
+        assertThat(body.providerId()).isEqualTo("provider_id")
     }
 }

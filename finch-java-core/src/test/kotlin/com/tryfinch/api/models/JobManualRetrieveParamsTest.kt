@@ -10,15 +10,15 @@ class JobManualRetrieveParamsTest {
 
     @Test
     fun createJobManualRetrieveParams() {
-        JobManualRetrieveParams.builder().jobId("string").build()
+        JobManualRetrieveParams.builder().jobId("job_id").build()
     }
 
     @Test
     fun getPathParam() {
-        val params = JobManualRetrieveParams.builder().jobId("string").build()
+        val params = JobManualRetrieveParams.builder().jobId("job_id").build()
         assertThat(params).isNotNull
         // path param "jobId"
-        assertThat(params.getPathParam(0)).isEqualTo("string")
+        assertThat(params.getPathParam(0)).isEqualTo("job_id")
         // out-of-bound path param
         assertThat(params.getPathParam(1)).isEqualTo("")
     }

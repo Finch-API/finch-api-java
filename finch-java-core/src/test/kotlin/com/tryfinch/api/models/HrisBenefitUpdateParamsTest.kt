@@ -10,31 +10,34 @@ class HrisBenefitUpdateParamsTest {
 
     @Test
     fun createHrisBenefitUpdateParams() {
-        HrisBenefitUpdateParams.builder().benefitId("string").description("string").build()
+        HrisBenefitUpdateParams.builder().benefitId("benefit_id").description("description").build()
     }
 
     @Test
     fun getBody() {
         val params =
-            HrisBenefitUpdateParams.builder().benefitId("string").description("string").build()
+            HrisBenefitUpdateParams.builder()
+                .benefitId("benefit_id")
+                .description("description")
+                .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.description()).isEqualTo("string")
+        assertThat(body.description()).isEqualTo("description")
     }
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = HrisBenefitUpdateParams.builder().benefitId("string").build()
+        val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
         val body = params.getBody()
         assertThat(body).isNotNull
     }
 
     @Test
     fun getPathParam() {
-        val params = HrisBenefitUpdateParams.builder().benefitId("string").build()
+        val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
         assertThat(params).isNotNull
         // path param "benefitId"
-        assertThat(params.getPathParam(0)).isEqualTo("string")
+        assertThat(params.getPathParam(0)).isEqualTo("benefit_id")
         // out-of-bound path param
         assertThat(params.getPathParam(1)).isEqualTo("")
     }
