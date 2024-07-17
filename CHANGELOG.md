@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.29.5 (2024-07-17)
+
+Full Changelog: [v0.29.4...v0.29.5](https://github.com/Finch-API/finch-api-java/compare/v0.29.4...v0.29.5)
+
+### Bug Fixes
+
+* **api:** remove unused fields ([#246](https://github.com/Finch-API/finch-api-java/issues/246)) ([7167bf4](https://github.com/Finch-API/finch-api-java/commit/7167bf43d60e137cdd03885aca8f4839a43079bb))
+
+
+### Chores
+
+* **docs:** minor update to formatting of API link in README ([#249](https://github.com/Finch-API/finch-api-java/issues/249)) ([f6edd21](https://github.com/Finch-API/finch-api-java/commit/f6edd218b3db15b094744a5a4d5390a549e36913))
+* **internal:** codegen related update ([#250](https://github.com/Finch-API/finch-api-java/issues/250)) ([e40ae76](https://github.com/Finch-API/finch-api-java/commit/e40ae760666e55b81aff436e89367f911602fcc2))
+
 ## 0.29.4 (2024-07-11)
 
 Full Changelog: [v0.29.3...v0.29.4](https://github.com/Finch-API/finch-api-java/compare/v0.29.3...v0.29.4)

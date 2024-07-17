@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "com.tryfinch.api"
-    version = "0.29.4" // x-release-please-version
+    version = "0.29.5" // x-release-please-version
 }
 
 nexusPublishing {
