@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.30.0 (2024-07-19)
+
+Full Changelog: [v0.29.5...v0.30.0](https://github.com/Finch-API/finch-api-java/compare/v0.29.5...v0.30.0)
+
+### ⚠ BREAKING CHANGES
+
+* **api:** authentication method type is an enum, not a plain string ([#252](https://github.com/Finch-API/finch-api-java/issues/252))
+
+### Bug Fixes
+
+* **api:** authentication method type is an enum, not a plain string ([#252](https://github.com/Finch-API/finch-api-java/issues/252)) ([1ac0fc0](https://github.com/Finch-API/finch-api-java/commit/1ac0fc0b93dd61b578c1f6ad0524a6969cb552c7))
+
+
+### Chores
+
+* **ci:** limit release doctor target branches ([#254](https://github.com/Finch-API/finch-api-java/issues/254)) ([1b078f2](https://github.com/Finch-API/finch-api-java/commit/1b078f234b00c05aaa67b16be3bcf5538eee695a))
+* **docs:** improve docstrings ([#255](https://github.com/Finch-API/finch-api-java/issues/255)) ([7e1dcaa](https://github.com/Finch-API/finch-api-java/commit/7e1dcaad71fa44c5f7f6adcd8d62fd30761aec49))
+
 ## 0.29.5 (2024-07-17)
 
 Full Changelog: [v0.29.4...v0.29.5](https://github.com/Finch-API/finch-api-java/compare/v0.29.4...v0.29.5)
