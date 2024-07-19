@@ -12,7 +12,7 @@ The Finch Java SDK is similar to the Finch Kotlin SDK but with minor differences
 
 ## Documentation
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/).
+The REST API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
 
 ---
 
