@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.30.1 (2024-07-23)
+
+Full Changelog: [v0.30.0...v0.30.1](https://github.com/Finch-API/finch-api-java/compare/v0.30.0...v0.30.1)
+
+### Chores
+
+* **tests:** update prism version ([#258](https://github.com/Finch-API/finch-api-java/issues/258)) ([4823ae8](https://github.com/Finch-API/finch-api-java/commit/4823ae8833af62c8004440b8277082f4e54a82a5))
+
 ## 0.30.0 (2024-07-19)
 
 Full Changelog: [v0.29.5...v0.30.0](https://github.com/Finch-API/finch-api-java/compare/v0.29.5...v0.30.0)
