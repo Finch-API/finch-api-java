@@ -5,7 +5,7 @@ package com.tryfinch.api.client
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.guava.api.Assertions.assertThat
@@ -13,13 +13,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @WireMockTest
-class FinchClientTest {
-    private lateinit var client: FinchClient
+class FinchClientAsyncTest {
+    private lateinit var client: FinchClientAsync
 
     @BeforeEach
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
         client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(wmRuntimeInfo.getHttpBaseUrl())
                 .accessToken("My Access Token")
                 .clientId("My Client ID")
@@ -44,12 +44,14 @@ class FinchClientTest {
         )
 
         assertThat(
-                client.getAccessToken(
-                    "our-client-id",
-                    "our-client-secret",
-                    "finch-auth-code",
-                    "our-redirect-uri"
-                )
+                client
+                    .getAccessToken(
+                        "our-client-id",
+                        "our-client-secret",
+                        "finch-auth-code",
+                        "our-redirect-uri"
+                    )
+                    .get()
             )
             .isEqualTo(expectedToken)
     }
@@ -68,7 +70,9 @@ class FinchClientTest {
         )
 
         assertThat(
-                client.getAccessToken("our-client-id", "our-client-secret", "finch-auth-code", null)
+                client
+                    .getAccessToken("our-client-id", "our-client-secret", "finch-auth-code", null)
+                    .get()
             )
             .isEqualTo(expectedToken)
     }
