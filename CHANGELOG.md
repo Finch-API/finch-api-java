@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.30.2 (2024-07-24)
+
+Full Changelog: [v0.30.1...v0.30.2](https://github.com/Finch-API/finch-api-java/compare/v0.30.1...v0.30.2)
+
+### Bug Fixes
+
+* **api:** mark redirect_uri as optional for getAccessToken helper ([#260](https://github.com/Finch-API/finch-api-java/issues/260)) ([b7dcddf](https://github.com/Finch-API/finch-api-java/commit/b7dcddf91d957ad1cf868fab086a7eeb11de07ba))
+
 ## 0.30.1 (2024-07-23)
 
 Full Changelog: [v0.30.0...v0.30.1](https://github.com/Finch-API/finch-api-java/compare/v0.30.0...v0.30.1)
