@@ -1,11 +1,10 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services
+package com.tryfinch.api.client
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
-import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
