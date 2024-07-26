@@ -1024,6 +1024,8 @@ class ProviderTest {
                                             .individualIds(true)
                                             .netPay(true)
                                             .payDate(true)
+                                            .payFrequencies(true)
+                                            .payGroupIds(true)
                                             .payPeriod(
                                                 Provider.AuthenticationMethod.SupportedFields
                                                     .SupportedPaymentFields
@@ -2007,6 +2009,8 @@ class ProviderTest {
                                     .individualIds(true)
                                     .netPay(true)
                                     .payDate(true)
+                                    .payFrequencies(true)
+                                    .payGroupIds(true)
                                     .payPeriod(
                                         Provider.AuthenticationMethod.SupportedFields
                                             .SupportedPaymentFields
