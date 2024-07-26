@@ -11,12 +11,12 @@ class PayGroupListResponseTest {
     fun createPayGroupListResponse() {
         val payGroupListResponse =
             PayGroupListResponse.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .id("id")
                 .name("name")
                 .payFrequencies(listOf(PayGroupListResponse.PayFrequency.ANNUALLY))
                 .build()
         assertThat(payGroupListResponse).isNotNull
-        assertThat(payGroupListResponse.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(payGroupListResponse.id()).contains("id")
         assertThat(payGroupListResponse.name()).contains("name")
         assertThat(payGroupListResponse.payFrequencies().get())
             .containsExactly(PayGroupListResponse.PayFrequency.ANNUALLY)
