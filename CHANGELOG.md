@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.31.0 (2024-07-26)
+
+Full Changelog: [v0.30.2...v0.31.0](https://github.com/Finch-API/finch-api-java/compare/v0.30.2...v0.31.0)
+
+### Features
+
+* **api:** add 'payment frequencies' and 'pay group ids' to payment model ([#262](https://github.com/Finch-API/finch-api-java/issues/262)) ([0e1ab3c](https://github.com/Finch-API/finch-api-java/commit/0e1ab3c963b19e8212a76f24546f499794098405))
+
 ## 0.30.2 (2024-07-24)
 
 Full Changelog: [v0.30.1...v0.30.2](https://github.com/Finch-API/finch-api-java/compare/v0.30.1...v0.30.2)
