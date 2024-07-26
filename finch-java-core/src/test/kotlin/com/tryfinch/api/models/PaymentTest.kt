@@ -20,6 +20,8 @@ class PaymentTest {
                 .individualIds(listOf("string"))
                 .netPay(Money.builder().amount(123L).currency("currency").build())
                 .payDate("pay_date")
+                .payFrequencies(listOf(Payment.PayFrequency.ANNUALLY))
+                .payGroupIds(listOf("string"))
                 .payPeriod(
                     Payment.PayPeriod.builder().endDate("end_date").startDate("start_date").build()
                 )
@@ -39,6 +41,8 @@ class PaymentTest {
         assertThat(payment.netPay())
             .contains(Money.builder().amount(123L).currency("currency").build())
         assertThat(payment.payDate()).contains("pay_date")
+        assertThat(payment.payFrequencies().get()).containsExactly(Payment.PayFrequency.ANNUALLY)
+        assertThat(payment.payGroupIds().get()).containsExactly("string")
         assertThat(payment.payPeriod())
             .contains(
                 Payment.PayPeriod.builder().endDate("end_date").startDate("start_date").build()
