@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.31.1 (2024-07-29)
+
+Full Changelog: [v0.31.0...v0.31.1](https://github.com/Finch-API/finch-api-java/compare/v0.31.0...v0.31.1)
+
+### Bug Fixes
+
+* **client:** GetAccessTokenResponse was incorrectly expecting property 'accessToken' instead of 'access_token' ([#265](https://github.com/Finch-API/finch-api-java/issues/265)) ([b6a6413](https://github.com/Finch-API/finch-api-java/commit/b6a641361a579a111f08eeb61d2d782483d44f61))
+
 ## 0.31.0 (2024-07-26)
 
 Full Changelog: [v0.30.2...v0.31.0](https://github.com/Finch-API/finch-api-java/compare/v0.30.2...v0.31.0)
