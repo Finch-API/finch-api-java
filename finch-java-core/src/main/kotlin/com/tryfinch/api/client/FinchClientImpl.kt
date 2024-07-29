@@ -139,5 +139,11 @@ constructor(
 
     private data class GetAccessTokenResponse(
         @JsonProperty("access_token") val accessToken: String,
+        @JsonProperty("account_id") val accountId: String,
+        @JsonProperty("client_type") val clientType: String,
+        @JsonProperty("company_id") val companyId: String,
+        @JsonProperty("connection_type") val connectionType: String,
+        @JsonProperty("products") val products: List<String>,
+        @JsonProperty("provider_id") val providerId: String,
     )
 }
