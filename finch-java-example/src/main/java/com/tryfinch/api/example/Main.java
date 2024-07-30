@@ -19,7 +19,11 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Creating access token:");
-        String accessToken = client.getAccessToken(CLIENT_ID, CLIENT_SECRET, ACCESS_CODE, REDIRECT_URI);
-        System.out.println("Access token: " + accessToken);
+        CreateAccessTokenResponse response = client.accessTokens()
+                .create(AccessTokenCreateParams.builder()
+                        .code(ACCESS_CODE)
+                        .redirectUri(REDIRECT_URI)
+                        .build());
+        System.out.println("Access token: " + response.accessToken());
     }
 }

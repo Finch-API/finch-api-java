@@ -33,7 +33,8 @@ class FinchClientAsyncTest {
     @Test
     fun getAccessTokenWithRedirectUri() {
         val expectedToken = "My Token"
-        val expectedJsonResponse = "{\"accessToken\":\"My Token\"}"
+        val expectedJsonResponse =
+            "{\"access_token\":\"My Token\",\"account_id\":\"my-account-id\",\"company_id\":\"my-company-id\",\"provider_id\":\"gusto\",\"products\":[\"company\",\"directory\"],\"connection_type\":\"finch\",\"client_type\":\"sandbox\"}"
         val expectedJsonRequest =
             "{\"client_id\":\"our-client-id\",\"client_secret\":\"our-client-secret\",\"code\":\"finch-auth-code\",\"redirect_uri\":\"our-redirect-uri\"}"
 
@@ -43,6 +44,7 @@ class FinchClientAsyncTest {
                 .willReturn(ok().withBody(expectedJsonResponse))
         )
 
+        @Suppress("DEPRECATION")
         assertThat(
                 client
                     .getAccessToken(
@@ -59,7 +61,8 @@ class FinchClientAsyncTest {
     @Test
     fun getAccessTokenWithoutRedirectUri() {
         val expectedToken = "My Token"
-        val expectedJsonResponse = "{\"accessToken\":\"My Token\"}"
+        val expectedJsonResponse =
+            "{\"access_token\":\"My Token\",\"account_id\":\"my-account-id\",\"company_id\":\"my-company-id\",\"provider_id\":\"gusto\",\"products\":[\"company\",\"directory\"],\"connection_type\":\"finch\",\"client_type\":\"sandbox\"}"
         val expectedJsonRequest =
             "{\"client_id\":\"our-client-id\",\"client_secret\":\"our-client-secret\",\"code\":\"finch-auth-code\"}"
 
@@ -69,6 +72,7 @@ class FinchClientAsyncTest {
                 .willReturn(ok().withBody(expectedJsonResponse))
         )
 
+        @Suppress("DEPRECATION")
         assertThat(
                 client
                     .getAccessToken("our-client-id", "our-client-secret", "finch-auth-code", null)
