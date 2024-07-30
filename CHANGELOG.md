@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.32.0 (2024-07-30)
+
+Full Changelog: [v0.31.1...v0.32.0](https://github.com/Finch-API/finch-api-java/compare/v0.31.1...v0.32.0)
+
+### Features
+
+* **client:** improve binary return values ([#270](https://github.com/Finch-API/finch-api-java/issues/270)) ([2be9d90](https://github.com/Finch-API/finch-api-java/commit/2be9d90fdec626d274b69e3979fc6efd1106aa38))
+
+
+### Chores
+
+* **formatting:** fix formatting ([65f8cd8](https://github.com/Finch-API/finch-api-java/commit/65f8cd8c8a8d139b15dda679f7b0de4f0fb12eb9))
+
 ## 0.31.1 (2024-07-29)
 
 Full Changelog: [v0.31.0...v0.31.1](https://github.com/Finch-API/finch-api-java/compare/v0.31.0...v0.31.1)
