@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.33.0 (2024-07-30)
+
+Full Changelog: [v0.32.0...v0.33.0](https://github.com/Finch-API/finch-api-java/compare/v0.32.0...v0.33.0)
+
+### Features
+
+* **client:** deprecate getAccessToken in favor of client.accessTokens().create() ([#272](https://github.com/Finch-API/finch-api-java/issues/272)) ([cf49dcd](https://github.com/Finch-API/finch-api-java/commit/cf49dcdf460003745d56ba8fec499d8798007a72))
+
+
+### Chores
+
+* **ci:** run tests in CI ([#274](https://github.com/Finch-API/finch-api-java/issues/274)) ([353a867](https://github.com/Finch-API/finch-api-java/commit/353a867b5ac4d6f6741602612719cc132884bc6d))
+
 ## 0.32.0 (2024-07-30)
 
 Full Changelog: [v0.31.1...v0.32.0](https://github.com/Finch-API/finch-api-java/compare/v0.31.1...v0.32.0)
