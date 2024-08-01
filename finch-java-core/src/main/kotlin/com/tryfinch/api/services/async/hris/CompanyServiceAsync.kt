@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 
 interface CompanyServiceAsync {
 
-    /** Read basic company data */
+    /** Read basic company data. */
     @JvmOverloads
     fun retrieve(
         params: HrisCompanyRetrieveParams,
