@@ -25,7 +25,7 @@ constructor(
     private val retrieveHandler: Handler<Company> =
         jsonHandler<Company>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /** Read basic company data */
+    /** Read basic company data. */
     override fun retrieve(
         params: HrisCompanyRetrieveParams,
         requestOptions: RequestOptions
