@@ -10,7 +10,7 @@ import com.tryfinch.api.models.HrisCompanyRetrieveParams
 
 interface CompanyService {
 
-    /** Read basic company data */
+    /** Read basic company data. */
     @JvmOverloads
     fun retrieve(
         params: HrisCompanyRetrieveParams,
