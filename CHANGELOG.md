@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 (2024-08-09)
+
+Full Changelog: [v1.0.0...v1.0.1](https://github.com/Finch-API/finch-api-java/compare/v1.0.0...v1.0.1)
+
+### Chores
+
+* **ci:** bump prism mock server version ([#278](https://github.com/Finch-API/finch-api-java/issues/278)) ([ba70559](https://github.com/Finch-API/finch-api-java/commit/ba705597766c36bae54fe7ed6d3f07cabe8365ca))
+
 ## 1.0.0 (2024-08-01)
 
 Full Changelog: [v0.33.0...v1.0.0](https://github.com/Finch-API/finch-api-java/compare/v0.33.0...v1.0.0)
