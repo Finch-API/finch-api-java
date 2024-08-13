@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 (2024-08-13)
+
+Full Changelog: [v1.0.1...v1.1.0](https://github.com/Finch-API/finch-api-java/compare/v1.0.1...v1.1.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#280](https://github.com/Finch-API/finch-api-java/issues/280)) ([5e5eb00](https://github.com/Finch-API/finch-api-java/commit/5e5eb00ef453d8742ecd686710cb396676ac6a73))
+
 ## 1.0.1 (2024-08-09)
 
 Full Changelog: [v1.0.0...v1.0.1](https://github.com/Finch-API/finch-api-java/compare/v1.0.0...v1.0.1)
