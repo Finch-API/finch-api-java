@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
 import com.tryfinch.api.models.*
@@ -15,7 +14,6 @@ constructor(
     private val offset: Long?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
@@ -37,8 +35,6 @@ constructor(
 
     fun _additionalHeaders(): Map<String, List<String>> = additionalHeaders
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
@@ -48,8 +44,7 @@ constructor(
             this.limit == other.limit &&
             this.offset == other.offset &&
             this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+            this.additionalHeaders == other.additionalHeaders
     }
 
     override fun hashCode(): Int {
@@ -58,12 +53,11 @@ constructor(
             offset,
             additionalQueryParams,
             additionalHeaders,
-            additionalBodyProperties,
         )
     }
 
     override fun toString() =
-        "HrisDirectoryListIndividualsParams{limit=$limit, offset=$offset, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisDirectoryListIndividualsParams{limit=$limit, offset=$offset, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -79,7 +73,6 @@ constructor(
         private var offset: Long? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(hrisDirectoryListIndividualsParams: HrisDirectoryListIndividualsParams) =
@@ -88,9 +81,6 @@ constructor(
                 this.offset = hrisDirectoryListIndividualsParams.offset
                 additionalQueryParams(hrisDirectoryListIndividualsParams.additionalQueryParams)
                 additionalHeaders(hrisDirectoryListIndividualsParams.additionalHeaders)
-                additionalBodyProperties(
-                    hrisDirectoryListIndividualsParams.additionalBodyProperties
-                )
             }
 
         /** Number of employees to return (defaults to all) */
@@ -139,27 +129,12 @@ constructor(
 
         fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            this.additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
         fun build(): HrisDirectoryListIndividualsParams =
             HrisDirectoryListIndividualsParams(
                 limit,
                 offset,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
             )
     }
 }
