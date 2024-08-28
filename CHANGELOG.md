@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 (2024-08-28)
+
+Full Changelog: [v1.1.0...v1.2.0](https://github.com/Finch-API/finch-api-java/compare/v1.1.0...v1.2.0)
+
+### Features
+
+* chore: update reviewers for new teams ([#283](https://github.com/Finch-API/finch-api-java/issues/283)) ([37494b4](https://github.com/Finch-API/finch-api-java/commit/37494b4a4ee94e5dabe92f1c2558e1ba92a80579))
+
 ## 1.1.0 (2024-08-13)
 
 Full Changelog: [v1.0.1...v1.1.0](https://github.com/Finch-API/finch-api-java/compare/v1.0.1...v1.1.0)
