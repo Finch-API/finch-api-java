@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.1 (2024-08-28)
+
+Full Changelog: [v1.2.0...v1.2.1](https://github.com/Finch-API/finch-api-java/compare/v1.2.0...v1.2.1)
+
+### Chores
+
+* **internal:** codegen related update ([#286](https://github.com/Finch-API/finch-api-java/issues/286)) ([39546ec](https://github.com/Finch-API/finch-api-java/commit/39546ec164739d4378c3e92888fa039e3ed0ee8f))
+
 ## 1.2.0 (2024-08-28)
 
 Full Changelog: [v1.1.0...v1.2.0](https://github.com/Finch-API/finch-api-java/compare/v1.1.0...v1.2.0)
