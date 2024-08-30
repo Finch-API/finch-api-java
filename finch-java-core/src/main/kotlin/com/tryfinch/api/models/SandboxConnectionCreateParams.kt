@@ -65,6 +65,7 @@ constructor(
 
         private var hashCode: Int = 0
 
+        /** The provider associated with the connection */
         @JsonProperty("provider_id") fun providerId(): String? = providerId
 
         @JsonProperty("authentication_type")
@@ -137,6 +138,7 @@ constructor(
                 additionalProperties(sandboxConnectionCreateBody.additionalProperties)
             }
 
+            /** The provider associated with the connection */
             @JsonProperty("provider_id")
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
@@ -246,6 +248,7 @@ constructor(
             additionalBodyProperties(sandboxConnectionCreateParams.additionalBodyProperties)
         }
 
+        /** The provider associated with the connection */
         fun providerId(providerId: String) = apply { this.providerId = providerId }
 
         fun authenticationType(authenticationType: AuthenticationType) = apply {
