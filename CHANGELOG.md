@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.0 (2024-08-30)
+
+Full Changelog: [v1.2.1...v1.3.0](https://github.com/Finch-API/finch-api-java/compare/v1.2.1...v1.3.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#291](https://github.com/Finch-API/finch-api-java/issues/291)) ([9475ba0](https://github.com/Finch-API/finch-api-java/commit/9475ba0f7fcae9d40053ec581b141f625fab1747))
+
+
+### Chores
+
+* consistent string literal escaping ([#289](https://github.com/Finch-API/finch-api-java/issues/289)) ([8097c3c](https://github.com/Finch-API/finch-api-java/commit/8097c3cb8d4995904fb478aa8a00087784df5067))
+* **internal:** codegen related update ([#292](https://github.com/Finch-API/finch-api-java/issues/292)) ([59082c1](https://github.com/Finch-API/finch-api-java/commit/59082c1ba2113c6b9c349e377fcaa6460ec8113b))
+
 ## 1.2.1 (2024-08-28)
 
 Full Changelog: [v1.2.0...v1.2.1](https://github.com/Finch-API/finch-api-java/compare/v1.2.0...v1.2.1)
