@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 (2024-09-03)
+
+Full Changelog: [v1.3.0...v1.4.0](https://github.com/Finch-API/finch-api-java/compare/v1.3.0...v1.4.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#294](https://github.com/Finch-API/finch-api-java/issues/294)) ([b206b73](https://github.com/Finch-API/finch-api-java/commit/b206b7388a43f4eb3af42e843bc67a69364c0d00))
+
 ## 1.3.0 (2024-08-30)
 
 Full Changelog: [v1.2.1...v1.3.0](https://github.com/Finch-API/finch-api-java/compare/v1.2.1...v1.3.0)
