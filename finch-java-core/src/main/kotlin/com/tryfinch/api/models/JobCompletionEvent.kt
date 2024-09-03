@@ -373,66 +373,69 @@ private constructor(
         companion object {
 
             @JvmField
-            val JOB_BENEFIT_CREATE_UPDATED = EventType(JsonField.of("job.benefit_create.updated"))
+            val JOB_BENEFIT_CREATE_COMPLETED =
+                EventType(JsonField.of("job.benefit_create.completed"))
 
             @JvmField
-            val JOB_BENEFIT_ENROLL_UPDATED = EventType(JsonField.of("job.benefit_enroll.updated"))
+            val JOB_BENEFIT_ENROLL_COMPLETED =
+                EventType(JsonField.of("job.benefit_enroll.completed"))
 
             @JvmField
-            val JOB_BENEFIT_REGISTER_UPDATED =
-                EventType(JsonField.of("job.benefit_register.updated"))
+            val JOB_BENEFIT_REGISTER_COMPLETED =
+                EventType(JsonField.of("job.benefit_register.completed"))
 
             @JvmField
-            val JOB_BENEFIT_UNENROLL_UPDATED =
-                EventType(JsonField.of("job.benefit_unenroll.updated"))
+            val JOB_BENEFIT_UNENROLL_COMPLETED =
+                EventType(JsonField.of("job.benefit_unenroll.completed"))
 
             @JvmField
-            val JOB_BENEFIT_UPDATE_UPDATED = EventType(JsonField.of("job.benefit_update.updated"))
+            val JOB_BENEFIT_UPDATE_COMPLETED =
+                EventType(JsonField.of("job.benefit_update.completed"))
 
             @JvmField
-            val JOB_DATA_SYNC_ALL_UPDATED = EventType(JsonField.of("job.data_sync_all.updated"))
+            val JOB_DATA_SYNC_ALL_COMPLETED = EventType(JsonField.of("job.data_sync_all.completed"))
 
             @JvmStatic fun of(value: String) = EventType(JsonField.of(value))
         }
 
         enum class Known {
-            JOB_BENEFIT_CREATE_UPDATED,
-            JOB_BENEFIT_ENROLL_UPDATED,
-            JOB_BENEFIT_REGISTER_UPDATED,
-            JOB_BENEFIT_UNENROLL_UPDATED,
-            JOB_BENEFIT_UPDATE_UPDATED,
-            JOB_DATA_SYNC_ALL_UPDATED,
+            JOB_BENEFIT_CREATE_COMPLETED,
+            JOB_BENEFIT_ENROLL_COMPLETED,
+            JOB_BENEFIT_REGISTER_COMPLETED,
+            JOB_BENEFIT_UNENROLL_COMPLETED,
+            JOB_BENEFIT_UPDATE_COMPLETED,
+            JOB_DATA_SYNC_ALL_COMPLETED,
         }
 
         enum class Value {
-            JOB_BENEFIT_CREATE_UPDATED,
-            JOB_BENEFIT_ENROLL_UPDATED,
-            JOB_BENEFIT_REGISTER_UPDATED,
-            JOB_BENEFIT_UNENROLL_UPDATED,
-            JOB_BENEFIT_UPDATE_UPDATED,
-            JOB_DATA_SYNC_ALL_UPDATED,
+            JOB_BENEFIT_CREATE_COMPLETED,
+            JOB_BENEFIT_ENROLL_COMPLETED,
+            JOB_BENEFIT_REGISTER_COMPLETED,
+            JOB_BENEFIT_UNENROLL_COMPLETED,
+            JOB_BENEFIT_UPDATE_COMPLETED,
+            JOB_DATA_SYNC_ALL_COMPLETED,
             _UNKNOWN,
         }
 
         fun value(): Value =
             when (this) {
-                JOB_BENEFIT_CREATE_UPDATED -> Value.JOB_BENEFIT_CREATE_UPDATED
-                JOB_BENEFIT_ENROLL_UPDATED -> Value.JOB_BENEFIT_ENROLL_UPDATED
-                JOB_BENEFIT_REGISTER_UPDATED -> Value.JOB_BENEFIT_REGISTER_UPDATED
-                JOB_BENEFIT_UNENROLL_UPDATED -> Value.JOB_BENEFIT_UNENROLL_UPDATED
-                JOB_BENEFIT_UPDATE_UPDATED -> Value.JOB_BENEFIT_UPDATE_UPDATED
-                JOB_DATA_SYNC_ALL_UPDATED -> Value.JOB_DATA_SYNC_ALL_UPDATED
+                JOB_BENEFIT_CREATE_COMPLETED -> Value.JOB_BENEFIT_CREATE_COMPLETED
+                JOB_BENEFIT_ENROLL_COMPLETED -> Value.JOB_BENEFIT_ENROLL_COMPLETED
+                JOB_BENEFIT_REGISTER_COMPLETED -> Value.JOB_BENEFIT_REGISTER_COMPLETED
+                JOB_BENEFIT_UNENROLL_COMPLETED -> Value.JOB_BENEFIT_UNENROLL_COMPLETED
+                JOB_BENEFIT_UPDATE_COMPLETED -> Value.JOB_BENEFIT_UPDATE_COMPLETED
+                JOB_DATA_SYNC_ALL_COMPLETED -> Value.JOB_DATA_SYNC_ALL_COMPLETED
                 else -> Value._UNKNOWN
             }
 
         fun known(): Known =
             when (this) {
-                JOB_BENEFIT_CREATE_UPDATED -> Known.JOB_BENEFIT_CREATE_UPDATED
-                JOB_BENEFIT_ENROLL_UPDATED -> Known.JOB_BENEFIT_ENROLL_UPDATED
-                JOB_BENEFIT_REGISTER_UPDATED -> Known.JOB_BENEFIT_REGISTER_UPDATED
-                JOB_BENEFIT_UNENROLL_UPDATED -> Known.JOB_BENEFIT_UNENROLL_UPDATED
-                JOB_BENEFIT_UPDATE_UPDATED -> Known.JOB_BENEFIT_UPDATE_UPDATED
-                JOB_DATA_SYNC_ALL_UPDATED -> Known.JOB_DATA_SYNC_ALL_UPDATED
+                JOB_BENEFIT_CREATE_COMPLETED -> Known.JOB_BENEFIT_CREATE_COMPLETED
+                JOB_BENEFIT_ENROLL_COMPLETED -> Known.JOB_BENEFIT_ENROLL_COMPLETED
+                JOB_BENEFIT_REGISTER_COMPLETED -> Known.JOB_BENEFIT_REGISTER_COMPLETED
+                JOB_BENEFIT_UNENROLL_COMPLETED -> Known.JOB_BENEFIT_UNENROLL_COMPLETED
+                JOB_BENEFIT_UPDATE_COMPLETED -> Known.JOB_BENEFIT_UPDATE_COMPLETED
+                JOB_DATA_SYNC_ALL_COMPLETED -> Known.JOB_DATA_SYNC_ALL_COMPLETED
                 else -> throw FinchInvalidDataException("Unknown EventType: $value")
             }
 
