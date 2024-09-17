@@ -2,13 +2,9 @@ package com.tryfinch.api.errors
 
 import com.google.common.collect.ListMultimap
 
-class InternalServerException
-constructor(
-    private val statusCode: Int,
+class InternalServerException(
+    statusCode: Int,
     headers: ListMultimap<String, String>,
-    private val error: FinchError,
-) : FinchServiceException(headers, "${error}") {
-    override fun statusCode(): Int = statusCode
-
-    fun error(): FinchError = error
-}
+    body: String,
+    error: FinchError,
+) : FinchServiceException(statusCode, headers, body, error)
