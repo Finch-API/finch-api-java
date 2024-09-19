@@ -31,6 +31,7 @@ constructor(
     private val incomeHistory: List<Income?>?,
     private val isActive: Boolean?,
     private val lastName: String?,
+    private val latestRehireDate: String?,
     private val location: Location?,
     private val manager: Manager?,
     private val middleName: String?,
@@ -64,6 +65,8 @@ constructor(
 
     fun lastName(): Optional<String> = Optional.ofNullable(lastName)
 
+    fun latestRehireDate(): Optional<String> = Optional.ofNullable(latestRehireDate)
+
     fun location(): Optional<Location> = Optional.ofNullable(location)
 
     fun manager(): Optional<Manager> = Optional.ofNullable(manager)
@@ -89,6 +92,7 @@ constructor(
             incomeHistory,
             isActive,
             lastName,
+            latestRehireDate,
             location,
             manager,
             middleName,
@@ -124,6 +128,7 @@ constructor(
         private val incomeHistory: List<Income?>?,
         private val isActive: Boolean?,
         private val lastName: String?,
+        private val latestRehireDate: String?,
         private val location: Location?,
         private val manager: Manager?,
         private val middleName: String?,
@@ -171,6 +176,8 @@ constructor(
         /** The legal last name of the individual. */
         @JsonProperty("last_name") fun lastName(): String? = lastName
 
+        @JsonProperty("latest_rehire_date") fun latestRehireDate(): String? = latestRehireDate
+
         @JsonProperty("location") fun location(): Location? = location
 
         /** The manager object representing the manager of the individual within the org. */
@@ -209,6 +216,7 @@ constructor(
                 this.incomeHistory == other.incomeHistory &&
                 this.isActive == other.isActive &&
                 this.lastName == other.lastName &&
+                this.latestRehireDate == other.latestRehireDate &&
                 this.location == other.location &&
                 this.manager == other.manager &&
                 this.middleName == other.middleName &&
@@ -232,6 +240,7 @@ constructor(
                         incomeHistory,
                         isActive,
                         lastName,
+                        latestRehireDate,
                         location,
                         manager,
                         middleName,
@@ -245,7 +254,7 @@ constructor(
         }
 
         override fun toString() =
-            "SandboxEmploymentUpdateBody{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
+            "SandboxEmploymentUpdateBody{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -264,6 +273,7 @@ constructor(
             private var incomeHistory: List<Income?>? = null
             private var isActive: Boolean? = null
             private var lastName: String? = null
+            private var latestRehireDate: String? = null
             private var location: Location? = null
             private var manager: Manager? = null
             private var middleName: String? = null
@@ -284,6 +294,7 @@ constructor(
                 this.incomeHistory = sandboxEmploymentUpdateBody.incomeHistory
                 this.isActive = sandboxEmploymentUpdateBody.isActive
                 this.lastName = sandboxEmploymentUpdateBody.lastName
+                this.latestRehireDate = sandboxEmploymentUpdateBody.latestRehireDate
                 this.location = sandboxEmploymentUpdateBody.location
                 this.manager = sandboxEmploymentUpdateBody.manager
                 this.middleName = sandboxEmploymentUpdateBody.middleName
@@ -342,6 +353,11 @@ constructor(
             @JsonProperty("last_name")
             fun lastName(lastName: String) = apply { this.lastName = lastName }
 
+            @JsonProperty("latest_rehire_date")
+            fun latestRehireDate(latestRehireDate: String) = apply {
+                this.latestRehireDate = latestRehireDate
+            }
+
             @JsonProperty("location")
             fun location(location: Location) = apply { this.location = location }
 
@@ -389,6 +405,7 @@ constructor(
                     incomeHistory?.toUnmodifiable(),
                     isActive,
                     lastName,
+                    latestRehireDate,
                     location,
                     manager,
                     middleName,
@@ -423,6 +440,7 @@ constructor(
             this.incomeHistory == other.incomeHistory &&
             this.isActive == other.isActive &&
             this.lastName == other.lastName &&
+            this.latestRehireDate == other.latestRehireDate &&
             this.location == other.location &&
             this.manager == other.manager &&
             this.middleName == other.middleName &&
@@ -447,6 +465,7 @@ constructor(
             incomeHistory,
             isActive,
             lastName,
+            latestRehireDate,
             location,
             manager,
             middleName,
@@ -460,7 +479,7 @@ constructor(
     }
 
     override fun toString() =
-        "SandboxEmploymentUpdateParams{individualId=$individualId, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxEmploymentUpdateParams{individualId=$individualId, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -483,6 +502,7 @@ constructor(
         private var incomeHistory: MutableList<Income?> = mutableListOf()
         private var isActive: Boolean? = null
         private var lastName: String? = null
+        private var latestRehireDate: String? = null
         private var location: Location? = null
         private var manager: Manager? = null
         private var middleName: String? = null
@@ -506,6 +526,7 @@ constructor(
             this.incomeHistory(sandboxEmploymentUpdateParams.incomeHistory ?: listOf())
             this.isActive = sandboxEmploymentUpdateParams.isActive
             this.lastName = sandboxEmploymentUpdateParams.lastName
+            this.latestRehireDate = sandboxEmploymentUpdateParams.latestRehireDate
             this.location = sandboxEmploymentUpdateParams.location
             this.manager = sandboxEmploymentUpdateParams.manager
             this.middleName = sandboxEmploymentUpdateParams.middleName
@@ -571,6 +592,10 @@ constructor(
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String) = apply { this.lastName = lastName }
+
+        fun latestRehireDate(latestRehireDate: String) = apply {
+            this.latestRehireDate = latestRehireDate
+        }
 
         fun location(location: Location) = apply { this.location = location }
 
@@ -655,6 +680,7 @@ constructor(
                 if (incomeHistory.size == 0) null else incomeHistory.toUnmodifiable(),
                 isActive,
                 lastName,
+                latestRehireDate,
                 location,
                 manager,
                 middleName,

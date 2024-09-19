@@ -31,6 +31,7 @@ private constructor(
     private val employment: JsonField<Employment>,
     private val startDate: JsonField<String>,
     private val endDate: JsonField<String>,
+    private val latestRehireDate: JsonField<String>,
     private val isActive: JsonField<Boolean>,
     private val classCode: JsonField<String>,
     private val location: JsonField<Location>,
@@ -72,6 +73,9 @@ private constructor(
     fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
 
     fun endDate(): Optional<String> = Optional.ofNullable(endDate.getNullable("end_date"))
+
+    fun latestRehireDate(): Optional<String> =
+        Optional.ofNullable(latestRehireDate.getNullable("latest_rehire_date"))
 
     /** `true` if the individual an an active employee or contractor at the company. */
     fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive.getNullable("is_active"))
@@ -130,6 +134,8 @@ private constructor(
 
     @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
 
+    @JsonProperty("latest_rehire_date") @ExcludeMissing fun _latestRehireDate() = latestRehireDate
+
     /** `true` if the individual an an active employee or contractor at the company. */
     @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
 
@@ -175,6 +181,7 @@ private constructor(
             employment().map { it.validate() }
             startDate()
             endDate()
+            latestRehireDate()
             isActive()
             classCode()
             location().map { it.validate() }
@@ -204,6 +211,7 @@ private constructor(
             this.employment == other.employment &&
             this.startDate == other.startDate &&
             this.endDate == other.endDate &&
+            this.latestRehireDate == other.latestRehireDate &&
             this.isActive == other.isActive &&
             this.classCode == other.classCode &&
             this.location == other.location &&
@@ -228,6 +236,7 @@ private constructor(
                     employment,
                     startDate,
                     endDate,
+                    latestRehireDate,
                     isActive,
                     classCode,
                     location,
@@ -243,7 +252,7 @@ private constructor(
     }
 
     override fun toString() =
-        "EmploymentUpdateResponse{firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, id=$id, additionalProperties=$additionalProperties}"
+        "EmploymentUpdateResponse{firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, id=$id, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -261,6 +270,7 @@ private constructor(
         private var employment: JsonField<Employment> = JsonMissing.of()
         private var startDate: JsonField<String> = JsonMissing.of()
         private var endDate: JsonField<String> = JsonMissing.of()
+        private var latestRehireDate: JsonField<String> = JsonMissing.of()
         private var isActive: JsonField<Boolean> = JsonMissing.of()
         private var classCode: JsonField<String> = JsonMissing.of()
         private var location: JsonField<Location> = JsonMissing.of()
@@ -282,6 +292,7 @@ private constructor(
             this.employment = employmentUpdateResponse.employment
             this.startDate = employmentUpdateResponse.startDate
             this.endDate = employmentUpdateResponse.endDate
+            this.latestRehireDate = employmentUpdateResponse.latestRehireDate
             this.isActive = employmentUpdateResponse.isActive
             this.classCode = employmentUpdateResponse.classCode
             this.location = employmentUpdateResponse.location
@@ -360,6 +371,15 @@ private constructor(
         @JsonProperty("end_date")
         @ExcludeMissing
         fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
+
+        fun latestRehireDate(latestRehireDate: String) =
+            latestRehireDate(JsonField.of(latestRehireDate))
+
+        @JsonProperty("latest_rehire_date")
+        @ExcludeMissing
+        fun latestRehireDate(latestRehireDate: JsonField<String>) = apply {
+            this.latestRehireDate = latestRehireDate
+        }
 
         /** `true` if the individual an an active employee or contractor at the company. */
         fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
@@ -464,6 +484,7 @@ private constructor(
                 employment,
                 startDate,
                 endDate,
+                latestRehireDate,
                 isActive,
                 classCode,
                 location,
