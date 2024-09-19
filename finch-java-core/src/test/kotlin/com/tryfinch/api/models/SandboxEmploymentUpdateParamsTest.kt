@@ -51,6 +51,7 @@ class SandboxEmploymentUpdateParamsTest {
             )
             .isActive(true)
             .lastName("last_name")
+            .latestRehireDate("latest_rehire_date")
             .location(
                 Location.builder()
                     .city("city")
@@ -114,6 +115,7 @@ class SandboxEmploymentUpdateParamsTest {
                 )
                 .isActive(true)
                 .lastName("last_name")
+                .latestRehireDate("latest_rehire_date")
                 .location(
                     Location.builder()
                         .city("city")
@@ -177,6 +179,7 @@ class SandboxEmploymentUpdateParamsTest {
             )
         assertThat(body.isActive()).isEqualTo(true)
         assertThat(body.lastName()).isEqualTo("last_name")
+        assertThat(body.latestRehireDate()).isEqualTo("latest_rehire_date")
         assertThat(body.location())
             .isEqualTo(
                 Location.builder()
