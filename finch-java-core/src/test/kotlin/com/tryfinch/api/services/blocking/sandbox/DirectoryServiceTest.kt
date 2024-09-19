@@ -108,6 +108,7 @@ class DirectoryServiceTest {
                                 )
                                 .isActive(true)
                                 .lastName("last_name")
+                                .latestRehireDate("latest_rehire_date")
                                 .location(
                                     Location.builder()
                                         .city("city")
