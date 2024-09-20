@@ -40,6 +40,8 @@ constructor(
 
     private val payroll: PayrollServiceAsync by lazy { PayrollServiceAsyncImpl(clientOptions) }
 
+    private val connect: ConnectServiceAsync by lazy { ConnectServiceAsyncImpl(clientOptions) }
+
     override fun sync(): FinchClient = sync
 
     override fun accessTokens(): AccessTokenServiceAsync = accessTokens
@@ -59,4 +61,6 @@ constructor(
     override fun sandbox(): SandboxServiceAsync = sandbox
 
     override fun payroll(): PayrollServiceAsync = payroll
+
+    override fun connect(): ConnectServiceAsync = connect
 }

@@ -28,4 +28,6 @@ interface FinchClient {
     fun sandbox(): SandboxService
 
     fun payroll(): PayrollService
+
+    fun connect(): ConnectService
 }
