@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.5.0 (2024-09-20)
+
+Full Changelog: [v1.4.0...v1.5.0](https://github.com/Finch-API/finch-api-java/compare/v1.4.0...v1.5.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#300](https://github.com/Finch-API/finch-api-java/issues/300)) ([18f03cc](https://github.com/Finch-API/finch-api-java/commit/18f03cc39839d681008359a758008219836197a5))
+* **client:** added structured fields to errors ([#299](https://github.com/Finch-API/finch-api-java/issues/299)) ([5d9dc9e](https://github.com/Finch-API/finch-api-java/commit/5d9dc9e4fb7b4111c4925c86afef2ede0bd44de4))
+
+
+### Documentation
+
+* adjust additional properties example ([#297](https://github.com/Finch-API/finch-api-java/issues/297)) ([110e7a3](https://github.com/Finch-API/finch-api-java/commit/110e7a3fe17fe9c092c476860b24df79deaf0015))
+
 ## 1.4.0 (2024-09-03)
 
 Full Changelog: [v1.3.0...v1.4.0](https://github.com/Finch-API/finch-api-java/compare/v1.3.0...v1.4.0)
