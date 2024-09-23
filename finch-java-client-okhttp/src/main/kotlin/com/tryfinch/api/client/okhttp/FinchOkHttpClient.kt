@@ -68,14 +68,6 @@ class FinchOkHttpClient private constructor() {
 
         fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
 
-        fun sandboxClientId(sandboxClientId: String?) = apply {
-            clientOptions.sandboxClientId(sandboxClientId)
-        }
-
-        fun sandboxClientSecret(sandboxClientSecret: String?) = apply {
-            clientOptions.sandboxClientSecret(sandboxClientSecret)
-        }
-
         fun webhookSecret(webhookSecret: String?) = apply {
             clientOptions.webhookSecret(webhookSecret)
         }
