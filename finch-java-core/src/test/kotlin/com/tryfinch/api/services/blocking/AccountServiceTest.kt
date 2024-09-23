@@ -17,8 +17,6 @@ class AccountServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
-                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
-                .clientSecret("My Client Secret")
                 .build()
         val accountService = client.account()
         val disconnectResponse =
@@ -33,8 +31,6 @@ class AccountServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
-                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
-                .clientSecret("My Client Secret")
                 .build()
         val accountService = client.account()
         val introspection = accountService.introspect(AccountIntrospectParams.builder().build())

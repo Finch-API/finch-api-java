@@ -19,8 +19,6 @@ class IndividualServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
-                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
-                .clientSecret("My Client Secret")
                 .build()
         val individualService = client.hris().benefits().individuals()
         val individualEnrolledIdsResponse =
@@ -37,8 +35,6 @@ class IndividualServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
-                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
-                .clientSecret("My Client Secret")
                 .build()
         val individualService = client.hris().benefits().individuals()
         val individualBenefits =
@@ -57,8 +53,6 @@ class IndividualServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
-                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
-                .clientSecret("My Client Secret")
                 .build()
         val individualService = client.hris().benefits().individuals()
         val unenrollIndividualBenefitResponse =
