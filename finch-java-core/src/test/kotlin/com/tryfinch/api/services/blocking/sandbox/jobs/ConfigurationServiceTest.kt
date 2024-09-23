@@ -17,8 +17,6 @@ class ConfigurationServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
-                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
-                .clientSecret("My Client Secret")
                 .build()
         val configurationService = client.sandbox().jobs().configuration()
         val configurationRetrieveResponse =
@@ -35,8 +33,6 @@ class ConfigurationServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
-                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
-                .clientSecret("My Client Secret")
                 .build()
         val configurationService = client.sandbox().jobs().configuration()
         val sandboxJobConfiguration =
