@@ -5,12 +5,14 @@ package com.tryfinch.api.services.blocking.connect
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
 class SessionServiceTest {
 
+    @Disabled("authentication setup doesn't currently work with the mock server")
     @Test
     fun callNew() {
         val client =
@@ -44,6 +46,7 @@ class SessionServiceTest {
         sessionNewResponse.validate()
     }
 
+    @Disabled("authentication setup doesn't currently work with the mock server")
     @Test
     fun callReauthenticate() {
         val client =
