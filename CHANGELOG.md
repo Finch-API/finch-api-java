@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.6.0 (2024-10-02)
+
+Full Changelog: [v1.5.0...v1.6.0](https://github.com/Finch-API/finch-api-java/compare/v1.5.0...v1.6.0)
+
+### Features
+
+* **api:** manual updates ([#304](https://github.com/Finch-API/finch-api-java/issues/304)) ([b744b4d](https://github.com/Finch-API/finch-api-java/commit/b744b4dd5231158a9925b7cdefb5da765259fba6))
+* **api:** manual updates ([#305](https://github.com/Finch-API/finch-api-java/issues/305)) ([ea50091](https://github.com/Finch-API/finch-api-java/commit/ea50091dc35e61e4e317959abb9288ab4998743c))
+
+
+### Chores
+
+* **internal:** codegen related update ([#301](https://github.com/Finch-API/finch-api-java/issues/301)) ([b46c9ff](https://github.com/Finch-API/finch-api-java/commit/b46c9ff71cede520d0acbad571da2d0fc5604beb))
+* **internal:** codegen related update ([#306](https://github.com/Finch-API/finch-api-java/issues/306)) ([3c50e88](https://github.com/Finch-API/finch-api-java/commit/3c50e88fc82bd96be22ff7fa3043d17bbb6285a6))
+* **internal:** fix test ([be5830b](https://github.com/Finch-API/finch-api-java/commit/be5830bbcb574c9ac2c984d76ba6256a42fc1078))
+* **internal:** skip failing tests ([#303](https://github.com/Finch-API/finch-api-java/issues/303)) ([caf3fb8](https://github.com/Finch-API/finch-api-java/commit/caf3fb8225dd13d6416c38abf37c9e167c1bc39b))
+
 ## 1.5.0 (2024-09-20)
 
 Full Changelog: [v1.4.0...v1.5.0](https://github.com/Finch-API/finch-api-java/compare/v1.4.0...v1.5.0)
