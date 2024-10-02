@@ -24,8 +24,6 @@ class FinchClientTest {
                 .accessToken("My Access Token")
                 .clientId("My Client ID")
                 .clientSecret("My Client Secret")
-                .sandboxClientId("My Sandbox Client ID")
-                .sandboxClientSecret("My Sandbox Client Secret")
                 .webhookSecret("My Webhook Secret")
                 .build()
     }
