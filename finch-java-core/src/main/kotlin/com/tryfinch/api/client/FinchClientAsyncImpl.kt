@@ -48,6 +48,8 @@ constructor(
 
     private val payroll: PayrollServiceAsync by lazy { PayrollServiceAsyncImpl(clientOptions) }
 
+    private val connect: ConnectServiceAsync by lazy { ConnectServiceAsyncImpl(clientOptions) }
+
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -70,6 +72,8 @@ constructor(
     override fun sandbox(): SandboxServiceAsync = sandbox
 
     override fun payroll(): PayrollServiceAsync = payroll
+
+    override fun connect(): ConnectServiceAsync = connect
 
     /** @deprecated use client.accessTokens().create instead */
     @Deprecated("use client.accessTokens().create instead", ReplaceWith("accessTokens().create()"))
