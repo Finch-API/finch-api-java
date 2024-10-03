@@ -29,6 +29,9 @@ private constructor(
     private val connectionType: JsonField<ConnectionType>,
     private val companyId: JsonField<String>,
     private val accountId: JsonField<String>,
+    private val customerId: JsonField<String>,
+    private val customerName: JsonField<String>,
+    private val customerEmail: JsonField<String>,
     private val authenticationMethods: JsonField<List<AuthenticationMethod>>,
     private val products: JsonField<List<String>>,
     private val username: JsonField<String>,
@@ -71,6 +74,26 @@ private constructor(
      * account ID.
      */
     fun accountId(): String = accountId.getRequired("account_id")
+
+    /**
+     * The ID of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    fun customerId(): Optional<String> = Optional.ofNullable(customerId.getNullable("customer_id"))
+
+    /**
+     * The name of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    fun customerName(): Optional<String> =
+        Optional.ofNullable(customerName.getNullable("customer_name"))
+
+    /**
+     * The email of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    fun customerEmail(): Optional<String> =
+        Optional.ofNullable(customerEmail.getNullable("customer_email"))
 
     fun authenticationMethods(): List<AuthenticationMethod> =
         authenticationMethods.getRequired("authentication_methods")
@@ -125,6 +148,24 @@ private constructor(
      */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
 
+    /**
+     * The ID of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    @JsonProperty("customer_id") @ExcludeMissing fun _customerId() = customerId
+
+    /**
+     * The name of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    @JsonProperty("customer_name") @ExcludeMissing fun _customerName() = customerName
+
+    /**
+     * The email of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    @JsonProperty("customer_email") @ExcludeMissing fun _customerEmail() = customerEmail
+
     @JsonProperty("authentication_methods")
     @ExcludeMissing
     fun _authenticationMethods() = authenticationMethods
@@ -164,6 +205,9 @@ private constructor(
             connectionType()
             companyId()
             accountId()
+            customerId()
+            customerName()
+            customerEmail()
             authenticationMethods().forEach { it.validate() }
             products()
             username()
@@ -189,6 +233,9 @@ private constructor(
             this.connectionType == other.connectionType &&
             this.companyId == other.companyId &&
             this.accountId == other.accountId &&
+            this.customerId == other.customerId &&
+            this.customerName == other.customerName &&
+            this.customerEmail == other.customerEmail &&
             this.authenticationMethods == other.authenticationMethods &&
             this.products == other.products &&
             this.username == other.username &&
@@ -209,6 +256,9 @@ private constructor(
                     connectionType,
                     companyId,
                     accountId,
+                    customerId,
+                    customerName,
+                    customerEmail,
                     authenticationMethods,
                     products,
                     username,
@@ -222,7 +272,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Introspection{connectionId=$connectionId, connectionStatus=$connectionStatus, clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, authenticationMethods=$authenticationMethods, products=$products, username=$username, providerId=$providerId, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
+        "Introspection{connectionId=$connectionId, connectionStatus=$connectionStatus, clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, customerId=$customerId, customerName=$customerName, customerEmail=$customerEmail, authenticationMethods=$authenticationMethods, products=$products, username=$username, providerId=$providerId, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -238,6 +288,9 @@ private constructor(
         private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
+        private var customerId: JsonField<String> = JsonMissing.of()
+        private var customerName: JsonField<String> = JsonMissing.of()
+        private var customerEmail: JsonField<String> = JsonMissing.of()
         private var authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
         private var username: JsonField<String> = JsonMissing.of()
@@ -255,6 +308,9 @@ private constructor(
             this.connectionType = introspection.connectionType
             this.companyId = introspection.companyId
             this.accountId = introspection.accountId
+            this.customerId = introspection.customerId
+            this.customerName = introspection.customerName
+            this.customerEmail = introspection.customerEmail
             this.authenticationMethods = introspection.authenticationMethods
             this.products = introspection.products
             this.username = introspection.username
@@ -346,6 +402,52 @@ private constructor(
         @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
+        /**
+         * The ID of your customer you provided to Finch when a connect session was created for this
+         * connection.
+         */
+        fun customerId(customerId: String) = customerId(JsonField.of(customerId))
+
+        /**
+         * The ID of your customer you provided to Finch when a connect session was created for this
+         * connection.
+         */
+        @JsonProperty("customer_id")
+        @ExcludeMissing
+        fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
+
+        /**
+         * The name of your customer you provided to Finch when a connect session was created for
+         * this connection.
+         */
+        fun customerName(customerName: String) = customerName(JsonField.of(customerName))
+
+        /**
+         * The name of your customer you provided to Finch when a connect session was created for
+         * this connection.
+         */
+        @JsonProperty("customer_name")
+        @ExcludeMissing
+        fun customerName(customerName: JsonField<String>) = apply {
+            this.customerName = customerName
+        }
+
+        /**
+         * The email of your customer you provided to Finch when a connect session was created for
+         * this connection.
+         */
+        fun customerEmail(customerEmail: String) = customerEmail(JsonField.of(customerEmail))
+
+        /**
+         * The email of your customer you provided to Finch when a connect session was created for
+         * this connection.
+         */
+        @JsonProperty("customer_email")
+        @ExcludeMissing
+        fun customerEmail(customerEmail: JsonField<String>) = apply {
+            this.customerEmail = customerEmail
+        }
+
         fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
             authenticationMethods(JsonField.of(authenticationMethods))
 
@@ -434,6 +536,9 @@ private constructor(
                 connectionType,
                 companyId,
                 accountId,
+                customerId,
+                customerName,
+                customerEmail,
                 authenticationMethods.map { it.toUnmodifiable() },
                 products.map { it.toUnmodifiable() },
                 username,

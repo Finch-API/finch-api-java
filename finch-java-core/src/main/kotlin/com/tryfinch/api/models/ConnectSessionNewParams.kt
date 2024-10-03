@@ -102,7 +102,9 @@ constructor(
 
         @JsonProperty("manual") fun manual(): Boolean? = manual
 
-        /** The number of minutes until the session expires (defaults to 10,080, which is 7 days) */
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
         @JsonProperty("minutes_to_expire") fun minutesToExpire(): Double? = minutesToExpire
 
         @JsonProperty("redirect_uri") fun redirectUri(): String? = redirectUri
@@ -205,7 +207,8 @@ constructor(
             @JsonProperty("manual") fun manual(manual: Boolean) = apply { this.manual = manual }
 
             /**
-             * The number of minutes until the session expires (defaults to 10,080, which is 7 days)
+             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * days)
              */
             @JsonProperty("minutes_to_expire")
             fun minutesToExpire(minutesToExpire: Double) = apply {
@@ -351,7 +354,9 @@ constructor(
 
         fun manual(manual: Boolean) = apply { this.manual = manual }
 
-        /** The number of minutes until the session expires (defaults to 10,080, which is 7 days) */
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
         fun minutesToExpire(minutesToExpire: Double) = apply {
             this.minutesToExpire = minutesToExpire
         }
