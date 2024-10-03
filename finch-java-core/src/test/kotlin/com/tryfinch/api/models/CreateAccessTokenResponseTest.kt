@@ -19,6 +19,7 @@ class CreateAccessTokenResponseTest {
                 .connectionType(CreateAccessTokenResponse.ConnectionType.PROVIDER)
                 .products(listOf("string"))
                 .providerId("provider_id")
+                .customerId("customer_id")
                 .build()
         assertThat(createAccessTokenResponse).isNotNull
         assertThat(createAccessTokenResponse.accessToken()).isEqualTo("access_token")
@@ -31,5 +32,6 @@ class CreateAccessTokenResponseTest {
             .isEqualTo(CreateAccessTokenResponse.ConnectionType.PROVIDER)
         assertThat(createAccessTokenResponse.products()).containsExactly("string")
         assertThat(createAccessTokenResponse.providerId()).isEqualTo("provider_id")
+        assertThat(createAccessTokenResponse.customerId()).contains("customer_id")
     }
 }

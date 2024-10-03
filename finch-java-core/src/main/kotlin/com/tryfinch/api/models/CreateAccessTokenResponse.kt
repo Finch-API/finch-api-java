@@ -16,6 +16,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
+import java.util.Optional
 
 @JsonDeserialize(builder = CreateAccessTokenResponse.Builder::class)
 @NoAutoDetect
@@ -23,6 +24,7 @@ class CreateAccessTokenResponse
 private constructor(
     private val accessToken: JsonField<String>,
     private val connectionId: JsonField<String>,
+    private val customerId: JsonField<String>,
     private val accountId: JsonField<String>,
     private val clientType: JsonField<ClientType>,
     private val companyId: JsonField<String>,
@@ -41,6 +43,12 @@ private constructor(
 
     /** The Finch UUID of the connection associated with the `access_token`. */
     fun connectionId(): String = connectionId.getRequired("connection_id")
+
+    /**
+     * The ID of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    fun customerId(): Optional<String> = Optional.ofNullable(customerId.getNullable("customer_id"))
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
     fun accountId(): String = accountId.getRequired("account_id")
@@ -69,6 +77,12 @@ private constructor(
 
     /** The Finch UUID of the connection associated with the `access_token`. */
     @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+
+    /**
+     * The ID of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    @JsonProperty("customer_id") @ExcludeMissing fun _customerId() = customerId
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
@@ -100,6 +114,7 @@ private constructor(
         if (!validated) {
             accessToken()
             connectionId()
+            customerId()
             accountId()
             clientType()
             companyId()
@@ -120,6 +135,7 @@ private constructor(
         return other is CreateAccessTokenResponse &&
             this.accessToken == other.accessToken &&
             this.connectionId == other.connectionId &&
+            this.customerId == other.customerId &&
             this.accountId == other.accountId &&
             this.clientType == other.clientType &&
             this.companyId == other.companyId &&
@@ -135,6 +151,7 @@ private constructor(
                 Objects.hash(
                     accessToken,
                     connectionId,
+                    customerId,
                     accountId,
                     clientType,
                     companyId,
@@ -148,7 +165,7 @@ private constructor(
     }
 
     override fun toString() =
-        "CreateAccessTokenResponse{accessToken=$accessToken, connectionId=$connectionId, accountId=$accountId, clientType=$clientType, companyId=$companyId, connectionType=$connectionType, products=$products, providerId=$providerId, additionalProperties=$additionalProperties}"
+        "CreateAccessTokenResponse{accessToken=$accessToken, connectionId=$connectionId, customerId=$customerId, accountId=$accountId, clientType=$clientType, companyId=$companyId, connectionType=$connectionType, products=$products, providerId=$providerId, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -159,6 +176,7 @@ private constructor(
 
         private var accessToken: JsonField<String> = JsonMissing.of()
         private var connectionId: JsonField<String> = JsonMissing.of()
+        private var customerId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
         private var clientType: JsonField<ClientType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
@@ -171,6 +189,7 @@ private constructor(
         internal fun from(createAccessTokenResponse: CreateAccessTokenResponse) = apply {
             this.accessToken = createAccessTokenResponse.accessToken
             this.connectionId = createAccessTokenResponse.connectionId
+            this.customerId = createAccessTokenResponse.customerId
             this.accountId = createAccessTokenResponse.accountId
             this.clientType = createAccessTokenResponse.clientType
             this.companyId = createAccessTokenResponse.companyId
@@ -197,6 +216,20 @@ private constructor(
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
+
+        /**
+         * The ID of your customer you provided to Finch when a connect session was created for this
+         * connection.
+         */
+        fun customerId(customerId: String) = customerId(JsonField.of(customerId))
+
+        /**
+         * The ID of your customer you provided to Finch when a connect session was created for this
+         * connection.
+         */
+        @JsonProperty("customer_id")
+        @ExcludeMissing
+        fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID.
@@ -283,6 +316,7 @@ private constructor(
             CreateAccessTokenResponse(
                 accessToken,
                 connectionId,
+                customerId,
                 accountId,
                 clientType,
                 companyId,
