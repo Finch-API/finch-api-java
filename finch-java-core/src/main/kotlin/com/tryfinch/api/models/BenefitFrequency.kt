@@ -21,7 +21,7 @@ private constructor(
             return true
         }
 
-        return other is BenefitFrequency && this.value == other.value
+        return /* spotless:off */ other is BenefitFrequency && this.value == other.value /* spotless:on */
     }
 
     override fun hashCode() = value.hashCode()

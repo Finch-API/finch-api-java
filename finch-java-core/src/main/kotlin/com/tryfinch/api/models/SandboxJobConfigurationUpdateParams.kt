@@ -52,8 +52,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("completion_status")
         fun completionStatus(): CompletionStatus? = completionStatus
 
@@ -64,32 +62,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is SandboxJobConfigurationUpdateBody &&
-                this.completionStatus == other.completionStatus &&
-                this.type == other.type &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        completionStatus,
-                        type,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "SandboxJobConfigurationUpdateBody{completionStatus=$completionStatus, type=$type, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -141,6 +113,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is SandboxJobConfigurationUpdateBody && this.completionStatus == other.completionStatus && this.type == other.type && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(completionStatus, type, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "SandboxJobConfigurationUpdateBody{completionStatus=$completionStatus, type=$type, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -154,22 +146,11 @@ constructor(
             return true
         }
 
-        return other is SandboxJobConfigurationUpdateParams &&
-            this.completionStatus == other.completionStatus &&
-            this.type == other.type &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is SandboxJobConfigurationUpdateParams && this.completionStatus == other.completionStatus && this.type == other.type && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            completionStatus,
-            type,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(completionStatus, type, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -285,7 +266,7 @@ constructor(
                 return true
             }
 
-            return other is CompletionStatus && this.value == other.value
+            return /* spotless:off */ other is CompletionStatus && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -354,7 +335,7 @@ constructor(
                 return true
             }
 
-            return other is Type && this.value == other.value
+            return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

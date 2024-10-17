@@ -28,8 +28,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /**
      * - `supported`: This operation is supported by both the provider and Finch
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
@@ -133,36 +131,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is OperationSupportMatrix &&
-            this.create == other.create &&
-            this.update == other.update &&
-            this.delete == other.delete &&
-            this.read == other.read &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    create,
-                    update,
-                    delete,
-                    read,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "OperationSupportMatrix{create=$create, update=$update, delete=$delete, read=$read, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -305,4 +273,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is OperationSupportMatrix && this.create == other.create && this.update == other.update && this.delete == other.delete && this.read == other.read && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(create, update, delete, read, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "OperationSupportMatrix{create=$create, update=$update, delete=$delete, read=$read, additionalProperties=$additionalProperties}"
 }

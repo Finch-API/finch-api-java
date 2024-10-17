@@ -30,8 +30,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
 
@@ -59,34 +57,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is IndividualBenefit &&
-            this.individualId == other.individualId &&
-            this.code == other.code &&
-            this.body == other.body &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    individualId,
-                    code,
-                    body,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "IndividualBenefit{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -165,8 +135,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         fun employeeDeduction(): Optional<BenefitContribution> =
             Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
 
@@ -225,38 +193,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Body &&
-                this.employeeDeduction == other.employeeDeduction &&
-                this.companyContribution == other.companyContribution &&
-                this.annualMaximum == other.annualMaximum &&
-                this.catchUp == other.catchUp &&
-                this.hsaContributionLimit == other.hsaContributionLimit &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        employeeDeduction,
-                        companyContribution,
-                        annualMaximum,
-                        catchUp,
-                        hsaContributionLimit,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Body{employeeDeduction=$employeeDeduction, companyContribution=$companyContribution, annualMaximum=$annualMaximum, catchUp=$catchUp, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -374,7 +310,7 @@ private constructor(
                     return true
                 }
 
-                return other is HsaContributionLimit && this.value == other.value
+                return /* spotless:off */ other is HsaContributionLimit && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -417,5 +353,45 @@ private constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && this.employeeDeduction == other.employeeDeduction && this.companyContribution == other.companyContribution && this.annualMaximum == other.annualMaximum && this.catchUp == other.catchUp && this.hsaContributionLimit == other.hsaContributionLimit && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(employeeDeduction, companyContribution, annualMaximum, catchUp, hsaContributionLimit, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Body{employeeDeduction=$employeeDeduction, companyContribution=$companyContribution, annualMaximum=$annualMaximum, catchUp=$catchUp, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is IndividualBenefit && this.individualId == other.individualId && this.code == other.code && this.body == other.body && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(individualId, code, body, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "IndividualBenefit{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"
 }

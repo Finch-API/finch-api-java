@@ -40,20 +40,11 @@ constructor(
             return true
         }
 
-        return other is HrisPaymentListParams &&
-            this.endDate == other.endDate &&
-            this.startDate == other.startDate &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is HrisPaymentListParams && this.endDate == other.endDate && this.startDate == other.startDate && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            endDate,
-            startDate,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(endDate, startDate, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

@@ -63,8 +63,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("company_id") fun companyId(): String? = companyId
 
         /** The provider associated with the `access_token` */
@@ -84,36 +82,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is SandboxConnectionAccountCreateBody &&
-                this.companyId == other.companyId &&
-                this.providerId == other.providerId &&
-                this.authenticationType == other.authenticationType &&
-                this.products == other.products &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        companyId,
-                        providerId,
-                        authenticationType,
-                        products,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "SandboxConnectionAccountCreateBody{companyId=$companyId, providerId=$providerId, authenticationType=$authenticationType, products=$products, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -181,6 +149,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is SandboxConnectionAccountCreateBody && this.companyId == other.companyId && this.providerId == other.providerId && this.authenticationType == other.authenticationType && this.products == other.products && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(companyId, providerId, authenticationType, products, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "SandboxConnectionAccountCreateBody{companyId=$companyId, providerId=$providerId, authenticationType=$authenticationType, products=$products, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -194,26 +182,11 @@ constructor(
             return true
         }
 
-        return other is SandboxConnectionAccountCreateParams &&
-            this.companyId == other.companyId &&
-            this.providerId == other.providerId &&
-            this.authenticationType == other.authenticationType &&
-            this.products == other.products &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is SandboxConnectionAccountCreateParams && this.companyId == other.companyId && this.providerId == other.providerId && this.authenticationType == other.authenticationType && this.products == other.products && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            companyId,
-            providerId,
-            authenticationType,
-            products,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(companyId, providerId, authenticationType, products, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -353,7 +326,7 @@ constructor(
                 return true
             }
 
-            return other is AuthenticationType && this.value == other.value
+            return /* spotless:off */ other is AuthenticationType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

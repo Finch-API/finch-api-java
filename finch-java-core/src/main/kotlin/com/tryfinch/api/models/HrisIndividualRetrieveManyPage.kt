@@ -34,18 +34,11 @@ private constructor(
             return true
         }
 
-        return other is HrisIndividualRetrieveManyPage &&
-            this.individualsService == other.individualsService &&
-            this.params == other.params &&
-            this.response == other.response
+        return /* spotless:off */ other is HrisIndividualRetrieveManyPage && this.individualsService == other.individualsService && this.params == other.params && this.response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            individualsService,
-            params,
-            response,
-        )
+        return /* spotless:off */ Objects.hash(individualsService, params, response) /* spotless:on */
     }
 
     override fun toString() =
@@ -114,13 +107,11 @@ private constructor(
                 return true
             }
 
-            return other is Response &&
-                this.responses == other.responses &&
-                this.additionalProperties == other.additionalProperties
+            return /* spotless:off */ other is Response && this.responses == other.responses && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(responses, additionalProperties)
+            return /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
         }
 
         override fun toString() =

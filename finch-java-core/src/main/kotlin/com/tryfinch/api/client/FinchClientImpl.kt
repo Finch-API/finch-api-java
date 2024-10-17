@@ -3,18 +3,13 @@
 package com.tryfinch.api.client
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.*
 import com.tryfinch.api.services.blocking.*
-import com.tryfinch.api.services.errorHandler
 
 class FinchClientImpl
 constructor(
     private val clientOptions: ClientOptions,
 ) : FinchClient {
-
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
     private val async: FinchClientAsync by lazy { FinchClientAsyncImpl(clientOptions) }
 

@@ -37,18 +37,11 @@ private constructor(
             return true
         }
 
-        return other is JobAutomatedListPageAsync &&
-            this.automatedService == other.automatedService &&
-            this.params == other.params &&
-            this.response == other.response
+        return /* spotless:off */ other is JobAutomatedListPageAsync && this.automatedService == other.automatedService && this.params == other.params && this.response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            automatedService,
-            params,
-            response,
-        )
+        return /* spotless:off */ Objects.hash(automatedService, params, response) /* spotless:on */
     }
 
     override fun toString() =
@@ -139,18 +132,11 @@ private constructor(
                 return true
             }
 
-            return other is Response &&
-                this.data == other.data &&
-                this.paging == other.paging &&
-                this.additionalProperties == other.additionalProperties
+            return /* spotless:off */ other is Response && this.data == other.data && this.paging == other.paging && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(
-                data,
-                paging,
-                additionalProperties,
-            )
+            return /* spotless:off */ Objects.hash(data, paging, additionalProperties) /* spotless:on */
         }
 
         override fun toString() =

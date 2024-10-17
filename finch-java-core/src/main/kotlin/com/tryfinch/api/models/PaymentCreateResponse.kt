@@ -25,8 +25,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The ID of the payment. */
     fun paymentId(): String = paymentId.getRequired("payment_id")
 
@@ -52,32 +50,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is PaymentCreateResponse &&
-            this.paymentId == other.paymentId &&
-            this.payDate == other.payDate &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    paymentId,
-                    payDate,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "PaymentCreateResponse{paymentId=$paymentId, payDate=$payDate, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -134,4 +106,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is PaymentCreateResponse && this.paymentId == other.paymentId && this.payDate == other.payDate && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(paymentId, payDate, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "PaymentCreateResponse{paymentId=$paymentId, payDate=$payDate, additionalProperties=$additionalProperties}"
 }

@@ -37,18 +37,11 @@ private constructor(
             return true
         }
 
-        return other is HrisDirectoryListPageAsync &&
-            this.directoryService == other.directoryService &&
-            this.params == other.params &&
-            this.response == other.response
+        return /* spotless:off */ other is HrisDirectoryListPageAsync && this.directoryService == other.directoryService && this.params == other.params && this.response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            directoryService,
-            params,
-            response,
-        )
+        return /* spotless:off */ Objects.hash(directoryService, params, response) /* spotless:on */
     }
 
     override fun toString() =
@@ -141,18 +134,11 @@ private constructor(
                 return true
             }
 
-            return other is Response &&
-                this.individuals == other.individuals &&
-                this.paging == other.paging &&
-                this.additionalProperties == other.additionalProperties
+            return /* spotless:off */ other is Response && this.individuals == other.individuals && this.paging == other.paging && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(
-                individuals,
-                paging,
-                additionalProperties,
-            )
+            return /* spotless:off */ Objects.hash(individuals, paging, additionalProperties) /* spotless:on */
         }
 
         override fun toString() =

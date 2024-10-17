@@ -24,8 +24,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** If the request is successful, Finch will return “success” (HTTP 200 status). */
     fun status(): String = status.getRequired("status")
 
@@ -44,26 +42,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is DisconnectResponse &&
-            this.status == other.status &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = Objects.hash(status, additionalProperties)
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "DisconnectResponse{status=$status, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -106,4 +84,24 @@ private constructor(
         fun build(): DisconnectResponse =
             DisconnectResponse(status, additionalProperties.toUnmodifiable())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is DisconnectResponse && this.status == other.status && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(status, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "DisconnectResponse{status=$status, additionalProperties=$additionalProperties}"
 }

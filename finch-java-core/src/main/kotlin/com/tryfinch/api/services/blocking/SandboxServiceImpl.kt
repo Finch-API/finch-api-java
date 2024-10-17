@@ -3,8 +3,6 @@
 package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.services.blocking.sandbox.CompanyService
 import com.tryfinch.api.services.blocking.sandbox.CompanyServiceImpl
 import com.tryfinch.api.services.blocking.sandbox.ConnectionService
@@ -19,14 +17,11 @@ import com.tryfinch.api.services.blocking.sandbox.JobService
 import com.tryfinch.api.services.blocking.sandbox.JobServiceImpl
 import com.tryfinch.api.services.blocking.sandbox.PaymentService
 import com.tryfinch.api.services.blocking.sandbox.PaymentServiceImpl
-import com.tryfinch.api.services.errorHandler
 
 class SandboxServiceImpl
 constructor(
     private val clientOptions: ClientOptions,
 ) : SandboxService {
-
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
     private val connections: ConnectionService by lazy { ConnectionServiceImpl(clientOptions) }
 

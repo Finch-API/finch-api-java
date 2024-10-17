@@ -33,8 +33,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The ID of the new connection */
     fun connectionId(): String = connectionId.getRequired("connection_id")
 
@@ -92,42 +90,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is ConnectionCreateResponse &&
-            this.connectionId == other.connectionId &&
-            this.companyId == other.companyId &&
-            this.providerId == other.providerId &&
-            this.accountId == other.accountId &&
-            this.authenticationType == other.authenticationType &&
-            this.products == other.products &&
-            this.accessToken == other.accessToken &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    connectionId,
-                    companyId,
-                    providerId,
-                    accountId,
-                    authenticationType,
-                    products,
-                    accessToken,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "ConnectionCreateResponse{connectionId=$connectionId, companyId=$companyId, providerId=$providerId, accountId=$accountId, authenticationType=$authenticationType, products=$products, accessToken=$accessToken, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -252,7 +214,7 @@ private constructor(
                 return true
             }
 
-            return other is AuthenticationType && this.value == other.value
+            return /* spotless:off */ other is AuthenticationType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -307,4 +269,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ConnectionCreateResponse && this.connectionId == other.connectionId && this.companyId == other.companyId && this.providerId == other.providerId && this.accountId == other.accountId && this.authenticationType == other.authenticationType && this.products == other.products && this.accessToken == other.accessToken && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(connectionId, companyId, providerId, accountId, authenticationType, products, accessToken, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "ConnectionCreateResponse{connectionId=$connectionId, companyId=$companyId, providerId=$providerId, accountId=$accountId, authenticationType=$authenticationType, products=$products, accessToken=$accessToken, additionalProperties=$additionalProperties}"
 }
