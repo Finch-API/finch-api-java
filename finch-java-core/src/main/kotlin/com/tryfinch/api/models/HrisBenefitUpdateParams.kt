@@ -51,8 +51,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** Updated name or description. */
         @JsonProperty("description") fun description(): String? = description
 
@@ -61,26 +59,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is HrisBenefitUpdateBody &&
-                this.description == other.description &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(description, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "HrisBenefitUpdateBody{description=$description, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -119,6 +97,26 @@ constructor(
             fun build(): HrisBenefitUpdateBody =
                 HrisBenefitUpdateBody(description, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is HrisBenefitUpdateBody && this.description == other.description && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(description, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "HrisBenefitUpdateBody{description=$description, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -132,22 +130,11 @@ constructor(
             return true
         }
 
-        return other is HrisBenefitUpdateParams &&
-            this.benefitId == other.benefitId &&
-            this.description == other.description &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is HrisBenefitUpdateParams && this.benefitId == other.benefitId && this.description == other.description && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            benefitId,
-            description,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(benefitId, description, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =

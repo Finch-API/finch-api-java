@@ -4,9 +4,13 @@ package com.tryfinch.api.services.blocking.hris.benefits
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.handlers.errorHandler
+import com.tryfinch.api.core.handlers.jsonHandler
+import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.json
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPage
@@ -16,10 +20,6 @@ import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividual
-import com.tryfinch.api.services.errorHandler
-import com.tryfinch.api.services.json
-import com.tryfinch.api.services.jsonHandler
-import com.tryfinch.api.services.withErrorHandler
 
 class IndividualServiceImpl
 constructor(

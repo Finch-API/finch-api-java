@@ -975,18 +975,6 @@ class ProviderTest {
                                                             .name(true)
                                                             .build()
                                                     )
-                                                    .employerDeductions(
-                                                        Provider.AuthenticationMethod
-                                                            .SupportedFields
-                                                            .SupportedPayStatementFields
-                                                            .PayStatements
-                                                            .EmployerDeductions
-                                                            .builder()
-                                                            .amount(true)
-                                                            .currency(true)
-                                                            .name(true)
-                                                            .build()
-                                                    )
                                                     .grossPay(true)
                                                     .individualId(true)
                                                     .netPay(true)
@@ -1957,17 +1945,6 @@ class ProviderTest {
                                                     .SupportedPayStatementFields
                                                     .PayStatements
                                                     .EmployerContributions
-                                                    .builder()
-                                                    .amount(true)
-                                                    .currency(true)
-                                                    .name(true)
-                                                    .build()
-                                            )
-                                            .employerDeductions(
-                                                Provider.AuthenticationMethod.SupportedFields
-                                                    .SupportedPayStatementFields
-                                                    .PayStatements
-                                                    .EmployerDeductions
                                                     .builder()
                                                     .amount(true)
                                                     .currency(true)

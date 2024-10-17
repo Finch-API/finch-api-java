@@ -63,8 +63,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** The ID of the existing connection to reauthenticate */
         @JsonProperty("connection_id") fun connectionId(): String? = connectionId
 
@@ -84,36 +82,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ConnectSessionReauthenticateBody &&
-                this.connectionId == other.connectionId &&
-                this.minutesToExpire == other.minutesToExpire &&
-                this.products == other.products &&
-                this.redirectUri == other.redirectUri &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        connectionId,
-                        minutesToExpire,
-                        products,
-                        redirectUri,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ConnectSessionReauthenticateBody{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -182,6 +150,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ConnectSessionReauthenticateBody && this.connectionId == other.connectionId && this.minutesToExpire == other.minutesToExpire && this.products == other.products && this.redirectUri == other.redirectUri && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(connectionId, minutesToExpire, products, redirectUri, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ConnectSessionReauthenticateBody{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -195,26 +183,11 @@ constructor(
             return true
         }
 
-        return other is ConnectSessionReauthenticateParams &&
-            this.connectionId == other.connectionId &&
-            this.minutesToExpire == other.minutesToExpire &&
-            this.products == other.products &&
-            this.redirectUri == other.redirectUri &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ConnectSessionReauthenticateParams && this.connectionId == other.connectionId && this.minutesToExpire == other.minutesToExpire && this.products == other.products && this.redirectUri == other.redirectUri && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            connectionId,
-            minutesToExpire,
-            products,
-            redirectUri,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(connectionId, minutesToExpire, products, redirectUri, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -353,7 +326,7 @@ constructor(
                 return true
             }
 
-            return other is ConnectProducts && this.value == other.value
+            return /* spotless:off */ other is ConnectProducts && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

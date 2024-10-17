@@ -32,8 +32,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): Optional<String> =
         Optional.ofNullable(connectionId.getNullable("connection_id"))
@@ -96,38 +94,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is EmploymentEvent &&
-            this.connectionId == other.connectionId &&
-            this.companyId == other.companyId &&
-            this.accountId == other.accountId &&
-            this.eventType == other.eventType &&
-            this.data == other.data &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    connectionId,
-                    companyId,
-                    accountId,
-                    eventType,
-                    data,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "EmploymentEvent{connectionId=$connectionId, companyId=$companyId, accountId=$accountId, eventType=$eventType, data=$data, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -238,8 +204,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         /** The ID of the individual related to the event. */
         fun individualId(): Optional<String> =
             Optional.ofNullable(individualId.getNullable("individual_id"))
@@ -259,26 +223,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Data &&
-                this.individualId == other.individualId &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(individualId, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Data{individualId=$individualId, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -322,6 +266,26 @@ private constructor(
 
             fun build(): Data = Data(individualId, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Data && this.individualId == other.individualId && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(individualId, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Data{individualId=$individualId, additionalProperties=$additionalProperties}"
     }
 
     class EventType
@@ -337,7 +301,7 @@ private constructor(
                 return true
             }
 
-            return other is EventType && this.value == other.value
+            return /* spotless:off */ other is EventType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -386,4 +350,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is EmploymentEvent && this.connectionId == other.connectionId && this.companyId == other.companyId && this.accountId == other.accountId && this.eventType == other.eventType && this.data == other.data && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(connectionId, companyId, accountId, eventType, data, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "EmploymentEvent{connectionId=$connectionId, companyId=$companyId, accountId=$accountId, eventType=$eventType, data=$data, additionalProperties=$additionalProperties}"
 }

@@ -36,8 +36,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The id of the job that has been created. */
     fun jobId(): String = jobId.getRequired("job_id")
 
@@ -118,44 +116,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is AutomatedAsyncJob &&
-            this.jobId == other.jobId &&
-            this.jobUrl == other.jobUrl &&
-            this.type == other.type &&
-            this.status == other.status &&
-            this.createdAt == other.createdAt &&
-            this.scheduledAt == other.scheduledAt &&
-            this.startedAt == other.startedAt &&
-            this.completedAt == other.completedAt &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    jobId,
-                    jobUrl,
-                    type,
-                    status,
-                    createdAt,
-                    scheduledAt,
-                    startedAt,
-                    completedAt,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "AutomatedAsyncJob{jobId=$jobId, jobUrl=$jobUrl, type=$type, status=$status, createdAt=$createdAt, scheduledAt=$scheduledAt, startedAt=$startedAt, completedAt=$completedAt, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -310,7 +270,7 @@ private constructor(
                 return true
             }
 
-            return other is Status && this.value == other.value
+            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -391,7 +351,7 @@ private constructor(
                 return true
             }
 
-            return other is Type && this.value == other.value
+            return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -428,4 +388,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AutomatedAsyncJob && this.jobId == other.jobId && this.jobUrl == other.jobUrl && this.type == other.type && this.status == other.status && this.createdAt == other.createdAt && this.scheduledAt == other.scheduledAt && this.startedAt == other.startedAt && this.completedAt == other.completedAt && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(jobId, jobUrl, type, status, createdAt, scheduledAt, startedAt, completedAt, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "AutomatedAsyncJob{jobId=$jobId, jobUrl=$jobUrl, type=$type, status=$status, createdAt=$createdAt, scheduledAt=$scheduledAt, startedAt=$startedAt, completedAt=$completedAt, additionalProperties=$additionalProperties}"
 }

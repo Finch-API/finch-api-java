@@ -28,8 +28,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /**
      * The HTTP status code of the forwarded request’s response, exactly received from the
      * underlying integration’s API. This value will be returned as an integer.
@@ -86,36 +84,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is RequestForwardingForwardResponse &&
-            this.headers == other.headers &&
-            this.statusCode == other.statusCode &&
-            this.data == other.data &&
-            this.request == other.request &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    headers,
-                    statusCode,
-                    data,
-                    request,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "RequestForwardingForwardResponse{headers=$headers, statusCode=$statusCode, data=$data, request=$request, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -233,8 +201,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         /**
          * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
          * , `POST` , `PUT` , `DELETE` , and `PATCH`.
@@ -293,38 +259,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Request &&
-                this.method == other.method &&
-                this.route == other.route &&
-                this.headers == other.headers &&
-                this.params == other.params &&
-                this.data == other.data &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        method,
-                        route,
-                        headers,
-                        params,
-                        data,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Request{method=$method, route=$route, headers=$headers, params=$params, data=$data, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -428,5 +362,45 @@ private constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Request && this.method == other.method && this.route == other.route && this.headers == other.headers && this.params == other.params && this.data == other.data && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(method, route, headers, params, data, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Request{method=$method, route=$route, headers=$headers, params=$params, data=$data, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is RequestForwardingForwardResponse && this.headers == other.headers && this.statusCode == other.statusCode && this.data == other.data && this.request == other.request && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(headers, statusCode, data, request, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "RequestForwardingForwardResponse{headers=$headers, statusCode=$statusCode, data=$data, request=$request, additionalProperties=$additionalProperties}"
 }

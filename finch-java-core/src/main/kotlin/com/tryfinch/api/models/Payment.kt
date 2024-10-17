@@ -39,8 +39,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The unique id for the payment. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -128,52 +126,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is Payment &&
-            this.id == other.id &&
-            this.payPeriod == other.payPeriod &&
-            this.payDate == other.payDate &&
-            this.debitDate == other.debitDate &&
-            this.companyDebit == other.companyDebit &&
-            this.grossPay == other.grossPay &&
-            this.netPay == other.netPay &&
-            this.employerTaxes == other.employerTaxes &&
-            this.employeeTaxes == other.employeeTaxes &&
-            this.individualIds == other.individualIds &&
-            this.payGroupIds == other.payGroupIds &&
-            this.payFrequencies == other.payFrequencies &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    payPeriod,
-                    payDate,
-                    debitDate,
-                    companyDebit,
-                    grossPay,
-                    netPay,
-                    employerTaxes,
-                    employeeTaxes,
-                    individualIds,
-                    payGroupIds,
-                    payFrequencies,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "Payment{id=$id, payPeriod=$payPeriod, payDate=$payDate, debitDate=$debitDate, companyDebit=$companyDebit, grossPay=$grossPay, netPay=$netPay, employerTaxes=$employerTaxes, employeeTaxes=$employeeTaxes, individualIds=$individualIds, payGroupIds=$payGroupIds, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -351,7 +303,7 @@ private constructor(
                 return true
             }
 
-            return other is PayFrequency && this.value == other.value
+            return /* spotless:off */ other is PayFrequency && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -449,8 +401,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
 
         fun endDate(): Optional<String> = Optional.ofNullable(endDate.getNullable("end_date"))
@@ -472,32 +422,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is PayPeriod &&
-                this.startDate == other.startDate &&
-                this.endDate == other.endDate &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        startDate,
-                        endDate,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "PayPeriod{startDate=$startDate, endDate=$endDate, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -550,5 +474,45 @@ private constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is PayPeriod && this.startDate == other.startDate && this.endDate == other.endDate && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(startDate, endDate, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "PayPeriod{startDate=$startDate, endDate=$endDate, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is Payment && this.id == other.id && this.payPeriod == other.payPeriod && this.payDate == other.payDate && this.debitDate == other.debitDate && this.companyDebit == other.companyDebit && this.grossPay == other.grossPay && this.netPay == other.netPay && this.employerTaxes == other.employerTaxes && this.employeeTaxes == other.employeeTaxes && this.individualIds == other.individualIds && this.payGroupIds == other.payGroupIds && this.payFrequencies == other.payFrequencies && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, payPeriod, payDate, debitDate, companyDebit, grossPay, netPay, employerTaxes, employeeTaxes, individualIds, payGroupIds, payFrequencies, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "Payment{id=$id, payPeriod=$payPeriod, payDate=$payDate, debitDate=$debitDate, companyDebit=$companyDebit, grossPay=$grossPay, netPay=$netPay, employerTaxes=$employerTaxes, employeeTaxes=$employeeTaxes, individualIds=$individualIds, payGroupIds=$payGroupIds, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
 }

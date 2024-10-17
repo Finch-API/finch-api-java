@@ -65,8 +65,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /**
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
          * `DELETE` , and `PATCH`.
@@ -103,38 +101,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is RequestForwardingForwardBody &&
-                this.method == other.method &&
-                this.route == other.route &&
-                this.data == other.data &&
-                this.headers == other.headers &&
-                this.params == other.params &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        method,
-                        route,
-                        data,
-                        headers,
-                        params,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "RequestForwardingForwardBody{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -217,6 +183,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is RequestForwardingForwardBody && this.method == other.method && this.route == other.route && this.data == other.data && this.headers == other.headers && this.params == other.params && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(method, route, data, headers, params, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "RequestForwardingForwardBody{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -230,28 +216,11 @@ constructor(
             return true
         }
 
-        return other is RequestForwardingForwardParams &&
-            this.method == other.method &&
-            this.route == other.route &&
-            this.data == other.data &&
-            this.headers == other.headers &&
-            this.params == other.params &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is RequestForwardingForwardParams && this.method == other.method && this.route == other.route && this.data == other.data && this.headers == other.headers && this.params == other.params && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            method,
-            route,
-            data,
-            headers,
-            params,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(method, route, data, headers, params, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
