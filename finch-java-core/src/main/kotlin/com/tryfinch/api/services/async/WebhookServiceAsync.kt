@@ -4,4 +4,16 @@
 
 package com.tryfinch.api.services.async
 
-interface WebhookServiceAsync
+import com.google.common.collect.ListMultimap
+import com.tryfinch.api.models.WebhookEvent
+
+interface WebhookServiceAsync {
+
+    fun unwrap(
+        payload: String,
+        headers: ListMultimap<String, String>,
+        secret: String?
+    ): WebhookEvent
+
+    fun verifySignature(payload: String, headers: ListMultimap<String, String>, secret: String?)
+}
