@@ -23,7 +23,7 @@ class FinchOkHttpClient private constructor() {
 
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()
         private var baseUrl: String = ClientOptions.PRODUCTION_URL
-        // default timeout for client is 1 minute
+        // The default timeout for the client is 1 minute.
         private var timeout: Duration = Duration.ofSeconds(60)
         private var proxy: Proxy? = null
 
@@ -74,8 +74,8 @@ class FinchOkHttpClient private constructor() {
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
-        fun build(): FinchClient {
-            return FinchClientImpl(
+        fun build(): FinchClient =
+            FinchClientImpl(
                 clientOptions
                     .httpClient(
                         OkHttpClient.builder()
@@ -86,6 +86,5 @@ class FinchOkHttpClient private constructor() {
                     )
                     .build()
             )
-        }
     }
 }
