@@ -25,7 +25,7 @@ class PayrollPayGroupListParamsTest {
                 .build()
         val expected = mutableMapOf<String, List<String>>()
         expected.put("individual_id", listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
-        expected.put("pay_frequencies", listOf("string"))
+        expected.put("pay_frequencies[]", listOf("string"))
         assertThat(params.getQueryParams()).isEqualTo(expected)
     }
 
