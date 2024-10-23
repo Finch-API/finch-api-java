@@ -24,9 +24,7 @@ constructor(
     internal fun getQueryParams(): Map<String, List<String>> {
         val params = mutableMapOf<String, List<String>>()
         this.individualId?.let { params.put("individual_id", listOf(it.toString())) }
-        this.payFrequencies?.let {
-            params.put("pay_frequencies", listOf(it.joinToString(separator = ",")))
-        }
+        this.payFrequencies?.let { params.put("pay_frequencies[]", it.map(Any::toString)) }
         params.putAll(additionalQueryParams)
         return params.toUnmodifiable()
     }
