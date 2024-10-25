@@ -26,27 +26,31 @@ constructor(
 
     private val async: FinchClientAsync by lazy { FinchClientAsyncImpl(clientOptions) }
 
-    private val accessTokens: AccessTokenService by lazy { AccessTokenServiceImpl(clientOptions) }
-
-    private val hris: HrisService by lazy { HrisServiceImpl(clientOptions) }
-
-    private val providers: ProviderService by lazy { ProviderServiceImpl(clientOptions) }
-
-    private val account: AccountService by lazy { AccountServiceImpl(clientOptions) }
-
-    private val webhooks: WebhookService by lazy { WebhookServiceImpl(clientOptions) }
-
-    private val requestForwarding: RequestForwardingService by lazy {
-        RequestForwardingServiceImpl(clientOptions)
+    private val accessTokens: AccessTokenService by lazy {
+        AccessTokenServiceImpl(clientOptionsWithUserAgent)
     }
 
-    private val jobs: JobService by lazy { JobServiceImpl(clientOptions) }
+    private val hris: HrisService by lazy { HrisServiceImpl(clientOptionsWithUserAgent) }
 
-    private val sandbox: SandboxService by lazy { SandboxServiceImpl(clientOptions) }
+    private val providers: ProviderService by lazy {
+        ProviderServiceImpl(clientOptionsWithUserAgent)
+    }
 
-    private val payroll: PayrollService by lazy { PayrollServiceImpl(clientOptions) }
+    private val account: AccountService by lazy { AccountServiceImpl(clientOptionsWithUserAgent) }
 
-    private val connect: ConnectService by lazy { ConnectServiceImpl(clientOptions) }
+    private val webhooks: WebhookService by lazy { WebhookServiceImpl(clientOptionsWithUserAgent) }
+
+    private val requestForwarding: RequestForwardingService by lazy {
+        RequestForwardingServiceImpl(clientOptionsWithUserAgent)
+    }
+
+    private val jobs: JobService by lazy { JobServiceImpl(clientOptionsWithUserAgent) }
+
+    private val sandbox: SandboxService by lazy { SandboxServiceImpl(clientOptionsWithUserAgent) }
+
+    private val payroll: PayrollService by lazy { PayrollServiceImpl(clientOptionsWithUserAgent) }
+
+    private val connect: ConnectService by lazy { ConnectServiceImpl(clientOptionsWithUserAgent) }
 
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
