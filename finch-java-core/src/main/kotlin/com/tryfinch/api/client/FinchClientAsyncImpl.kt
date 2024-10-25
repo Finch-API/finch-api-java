@@ -3,6 +3,7 @@
 package com.tryfinch.api.client
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.getPackageVersion
 import com.tryfinch.api.models.*
 import com.tryfinch.api.services.async.*
 
@@ -11,31 +12,52 @@ constructor(
     private val clientOptions: ClientOptions,
 ) : FinchClientAsync {
 
+    private val clientOptionsWithUserAgent =
+        if (clientOptions.headers.containsKey("User-Agent")) clientOptions
+        else
+            clientOptions
+                .toBuilder()
+                .putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}")
+                .build()
+
+    // Pass the original clientOptions so that this client sets its own User-Agent.
     private val sync: FinchClient by lazy { FinchClientImpl(clientOptions) }
 
     private val accessTokens: AccessTokenServiceAsync by lazy {
-        AccessTokenServiceAsyncImpl(clientOptions)
+        AccessTokenServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
-    private val hris: HrisServiceAsync by lazy { HrisServiceAsyncImpl(clientOptions) }
+    private val hris: HrisServiceAsync by lazy { HrisServiceAsyncImpl(clientOptionsWithUserAgent) }
 
-    private val providers: ProviderServiceAsync by lazy { ProviderServiceAsyncImpl(clientOptions) }
+    private val providers: ProviderServiceAsync by lazy {
+        ProviderServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val account: AccountServiceAsync by lazy { AccountServiceAsyncImpl(clientOptions) }
+    private val account: AccountServiceAsync by lazy {
+        AccountServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val webhooks: WebhookServiceAsync by lazy { WebhookServiceAsyncImpl(clientOptions) }
+    private val webhooks: WebhookServiceAsync by lazy {
+        WebhookServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
     private val requestForwarding: RequestForwardingServiceAsync by lazy {
-        RequestForwardingServiceAsyncImpl(clientOptions)
+        RequestForwardingServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
-    private val jobs: JobServiceAsync by lazy { JobServiceAsyncImpl(clientOptions) }
+    private val jobs: JobServiceAsync by lazy { JobServiceAsyncImpl(clientOptionsWithUserAgent) }
 
-    private val sandbox: SandboxServiceAsync by lazy { SandboxServiceAsyncImpl(clientOptions) }
+    private val sandbox: SandboxServiceAsync by lazy {
+        SandboxServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val payroll: PayrollServiceAsync by lazy { PayrollServiceAsyncImpl(clientOptions) }
+    private val payroll: PayrollServiceAsync by lazy {
+        PayrollServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val connect: ConnectServiceAsync by lazy { ConnectServiceAsyncImpl(clientOptions) }
+    private val connect: ConnectServiceAsync by lazy {
+        ConnectServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
     override fun sync(): FinchClient = sync
 
