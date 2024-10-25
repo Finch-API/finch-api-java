@@ -31,8 +31,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** A stable Finch id (UUID v4) for an individual in the company. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -94,42 +92,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is IndividualInDirectory &&
-            this.id == other.id &&
-            this.firstName == other.firstName &&
-            this.middleName == other.middleName &&
-            this.lastName == other.lastName &&
-            this.manager == other.manager &&
-            this.department == other.department &&
-            this.isActive == other.isActive &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    firstName,
-                    middleName,
-                    lastName,
-                    manager,
-                    department,
-                    isActive,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "IndividualInDirectory{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, manager=$manager, department=$department, isActive=$isActive, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -251,8 +213,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         /** The name of the department. */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
@@ -271,26 +231,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Department &&
-                this.name == other.name &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(name, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Department{name=$name, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -332,6 +272,26 @@ private constructor(
 
             fun build(): Department = Department(name, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Department && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Department{name=$name, additionalProperties=$additionalProperties}"
     }
 
     /** The manager object. */
@@ -344,8 +304,6 @@ private constructor(
     ) {
 
         private var validated: Boolean = false
-
-        private var hashCode: Int = 0
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
@@ -365,25 +323,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Manager &&
-                this.id == other.id &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(id, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -425,5 +364,44 @@ private constructor(
 
             fun build(): Manager = Manager(id, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Manager && this.id == other.id && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(id, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is IndividualInDirectory && this.id == other.id && this.firstName == other.firstName && this.middleName == other.middleName && this.lastName == other.lastName && this.manager == other.manager && this.department == other.department && this.isActive == other.isActive && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, firstName, middleName, lastName, manager, department, isActive, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "IndividualInDirectory{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, manager=$manager, department=$department, isActive=$isActive, additionalProperties=$additionalProperties}"
 }

@@ -123,28 +123,11 @@ private constructor(
             return true
         }
 
-        return other is WebhookEvent &&
-            this.accountUpdateEvent == other.accountUpdateEvent &&
-            this.jobCompletionEvent == other.jobCompletionEvent &&
-            this.companyEvent == other.companyEvent &&
-            this.directoryEvent == other.directoryEvent &&
-            this.employmentEvent == other.employmentEvent &&
-            this.individualEvent == other.individualEvent &&
-            this.paymentEvent == other.paymentEvent &&
-            this.payStatementEvent == other.payStatementEvent
+        return /* spotless:off */ other is WebhookEvent && this.accountUpdateEvent == other.accountUpdateEvent && this.jobCompletionEvent == other.jobCompletionEvent && this.companyEvent == other.companyEvent && this.directoryEvent == other.directoryEvent && this.employmentEvent == other.employmentEvent && this.individualEvent == other.individualEvent && this.paymentEvent == other.paymentEvent && this.payStatementEvent == other.payStatementEvent /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            accountUpdateEvent,
-            jobCompletionEvent,
-            companyEvent,
-            directoryEvent,
-            employmentEvent,
-            individualEvent,
-            paymentEvent,
-            payStatementEvent,
-        )
+        return /* spotless:off */ Objects.hash(accountUpdateEvent, jobCompletionEvent, companyEvent, directoryEvent, employmentEvent, individualEvent, paymentEvent, payStatementEvent) /* spotless:on */
     }
 
     override fun toString(): String {

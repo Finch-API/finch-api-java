@@ -4,16 +4,16 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.handlers.errorHandler
+import com.tryfinch.api.core.handlers.jsonHandler
+import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.json
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
-import com.tryfinch.api.services.errorHandler
-import com.tryfinch.api.services.json
-import com.tryfinch.api.services.jsonHandler
-import com.tryfinch.api.services.withErrorHandler
 
 class RequestForwardingServiceImpl
 constructor(

@@ -88,8 +88,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("customer_id") fun customerId(): String? = customerId
 
         @JsonProperty("customer_name") fun customerName(): String? = customerName
@@ -116,46 +114,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ConnectSessionNewBody &&
-                this.customerId == other.customerId &&
-                this.customerName == other.customerName &&
-                this.products == other.products &&
-                this.customerEmail == other.customerEmail &&
-                this.integration == other.integration &&
-                this.manual == other.manual &&
-                this.minutesToExpire == other.minutesToExpire &&
-                this.redirectUri == other.redirectUri &&
-                this.sandbox == other.sandbox &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        customerId,
-                        customerName,
-                        products,
-                        customerEmail,
-                        integration,
-                        manual,
-                        minutesToExpire,
-                        redirectUri,
-                        sandbox,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ConnectSessionNewBody{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -250,6 +208,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ConnectSessionNewBody && this.customerId == other.customerId && this.customerName == other.customerName && this.products == other.products && this.customerEmail == other.customerEmail && this.integration == other.integration && this.manual == other.manual && this.minutesToExpire == other.minutesToExpire && this.redirectUri == other.redirectUri && this.sandbox == other.sandbox && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ConnectSessionNewBody{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -263,36 +241,11 @@ constructor(
             return true
         }
 
-        return other is ConnectSessionNewParams &&
-            this.customerId == other.customerId &&
-            this.customerName == other.customerName &&
-            this.products == other.products &&
-            this.customerEmail == other.customerEmail &&
-            this.integration == other.integration &&
-            this.manual == other.manual &&
-            this.minutesToExpire == other.minutesToExpire &&
-            this.redirectUri == other.redirectUri &&
-            this.sandbox == other.sandbox &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ConnectSessionNewParams && this.customerId == other.customerId && this.customerName == other.customerName && this.products == other.products && this.customerEmail == other.customerEmail && this.integration == other.integration && this.manual == other.manual && this.minutesToExpire == other.minutesToExpire && this.redirectUri == other.redirectUri && this.sandbox == other.sandbox && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            customerId,
-            customerName,
-            products,
-            customerEmail,
-            integration,
-            manual,
-            minutesToExpire,
-            redirectUri,
-            sandbox,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -450,7 +403,7 @@ constructor(
                 return true
             }
 
-            return other is ConnectProducts && this.value == other.value
+            return /* spotless:off */ other is ConnectProducts && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -539,8 +492,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("provider") fun provider(): String? = provider
 
         @JsonProperty("auth_method") fun authMethod(): AuthMethod? = authMethod
@@ -550,32 +501,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Integration &&
-                this.provider == other.provider &&
-                this.authMethod == other.authMethod &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        provider,
-                        authMethod,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Integration{provider=$provider, authMethod=$authMethod, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -636,7 +561,7 @@ constructor(
                     return true
                 }
 
-                return other is AuthMethod && this.value == other.value
+                return /* spotless:off */ other is AuthMethod && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -691,6 +616,26 @@ constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Integration && this.provider == other.provider && this.authMethod == other.authMethod && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(provider, authMethod, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Integration{provider=$provider, authMethod=$authMethod, additionalProperties=$additionalProperties}"
     }
 
     class Sandbox
@@ -706,7 +651,7 @@ constructor(
                 return true
             }
 
-            return other is Sandbox && this.value == other.value
+            return /* spotless:off */ other is Sandbox && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

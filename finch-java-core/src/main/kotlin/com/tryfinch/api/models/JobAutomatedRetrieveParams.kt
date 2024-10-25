@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is JobAutomatedRetrieveParams &&
-            this.jobId == other.jobId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is JobAutomatedRetrieveParams && this.jobId == other.jobId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            jobId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(jobId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

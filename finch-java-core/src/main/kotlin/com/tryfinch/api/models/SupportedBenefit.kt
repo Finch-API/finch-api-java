@@ -35,8 +35,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Type of benefit. */
     fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
 
@@ -124,44 +122,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is SupportedBenefit &&
-            this.type == other.type &&
-            this.description == other.description &&
-            this.frequencies == other.frequencies &&
-            this.employeeDeduction == other.employeeDeduction &&
-            this.companyContribution == other.companyContribution &&
-            this.annualMaximum == other.annualMaximum &&
-            this.catchUp == other.catchUp &&
-            this.hsaContributionLimit == other.hsaContributionLimit &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    type,
-                    description,
-                    frequencies,
-                    employeeDeduction,
-                    companyContribution,
-                    annualMaximum,
-                    catchUp,
-                    hsaContributionLimit,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "SupportedBenefit{type=$type, description=$description, frequencies=$frequencies, employeeDeduction=$employeeDeduction, companyContribution=$companyContribution, annualMaximum=$annualMaximum, catchUp=$catchUp, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -328,7 +288,7 @@ private constructor(
                 return true
             }
 
-            return other is CompanyContribution && this.value == other.value
+            return /* spotless:off */ other is CompanyContribution && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -385,7 +345,7 @@ private constructor(
                 return true
             }
 
-            return other is EmployeeDeduction && this.value == other.value
+            return /* spotless:off */ other is EmployeeDeduction && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -442,7 +402,7 @@ private constructor(
                 return true
             }
 
-            return other is HsaContributionLimit && this.value == other.value
+            return /* spotless:off */ other is HsaContributionLimit && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -485,4 +445,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SupportedBenefit && this.type == other.type && this.description == other.description && this.frequencies == other.frequencies && this.employeeDeduction == other.employeeDeduction && this.companyContribution == other.companyContribution && this.annualMaximum == other.annualMaximum && this.catchUp == other.catchUp && this.hsaContributionLimit == other.hsaContributionLimit && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(type, description, frequencies, employeeDeduction, companyContribution, annualMaximum, catchUp, hsaContributionLimit, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "SupportedBenefit{type=$type, description=$description, frequencies=$frequencies, employeeDeduction=$employeeDeduction, companyContribution=$companyContribution, annualMaximum=$annualMaximum, catchUp=$catchUp, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
 }

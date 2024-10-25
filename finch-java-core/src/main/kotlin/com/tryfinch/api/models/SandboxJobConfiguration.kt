@@ -28,8 +28,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun type(): Type = type.getRequired("type")
 
     fun completionStatus(): CompletionStatus = completionStatus.getRequired("completion_status")
@@ -51,32 +49,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is SandboxJobConfiguration &&
-            this.type == other.type &&
-            this.completionStatus == other.completionStatus &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    type,
-                    completionStatus,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "SandboxJobConfiguration{type=$type, completionStatus=$completionStatus, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -146,7 +118,7 @@ private constructor(
                 return true
             }
 
-            return other is CompletionStatus && this.value == other.value
+            return /* spotless:off */ other is CompletionStatus && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -215,7 +187,7 @@ private constructor(
                 return true
             }
 
-            return other is Type && this.value == other.value
+            return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -252,4 +224,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxJobConfiguration && this.type == other.type && this.completionStatus == other.completionStatus && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(type, completionStatus, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "SandboxJobConfiguration{type=$type, completionStatus=$completionStatus, additionalProperties=$additionalProperties}"
 }

@@ -27,8 +27,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): Optional<String> =
         Optional.ofNullable(connectionId.getNullable("connection_id"))
@@ -74,34 +72,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is BaseWebhookEvent &&
-            this.connectionId == other.connectionId &&
-            this.companyId == other.companyId &&
-            this.accountId == other.accountId &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    connectionId,
-                    companyId,
-                    accountId,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "BaseWebhookEvent{connectionId=$connectionId, companyId=$companyId, accountId=$accountId, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -183,4 +153,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is BaseWebhookEvent && this.connectionId == other.connectionId && this.companyId == other.companyId && this.accountId == other.accountId && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(connectionId, companyId, accountId, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "BaseWebhookEvent{connectionId=$connectionId, companyId=$companyId, accountId=$accountId, additionalProperties=$additionalProperties}"
 }
