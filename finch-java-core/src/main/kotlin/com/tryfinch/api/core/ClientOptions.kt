@@ -23,7 +23,10 @@ private constructor(
     @get:JvmName("headers") val headers: ListMultimap<String, String>,
     @get:JvmName("queryParams") val queryParams: ListMultimap<String, String>,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
+    @get:JvmName("maxRetries") val maxRetries: Int,
 ) {
+
+    fun toBuilder() = Builder().from(this)
 
     companion object {
 
@@ -48,6 +51,28 @@ private constructor(
         private var clientId: String? = null
         private var clientSecret: String? = null
         private var webhookSecret: String? = null
+
+        @JvmSynthetic
+        internal fun from(clientOptions: ClientOptions) = apply {
+            httpClient = clientOptions.httpClient
+            jsonMapper = clientOptions.jsonMapper
+            clock = clientOptions.clock
+            baseUrl = clientOptions.baseUrl
+            headers =
+                clientOptions.headers.asMap().mapValuesTo(mutableMapOf()) { (_, value) ->
+                    value.toMutableList()
+                }
+            queryParams =
+                clientOptions.queryParams.asMap().mapValuesTo(mutableMapOf()) { (_, value) ->
+                    value.toMutableList()
+                }
+            responseValidation = clientOptions.responseValidation
+            maxRetries = clientOptions.maxRetries
+            accessToken = clientOptions.accessToken
+            clientId = clientOptions.clientId
+            clientSecret = clientOptions.clientSecret
+            webhookSecret = clientOptions.webhookSecret
+        }
 
         fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
 
@@ -125,6 +150,7 @@ private constructor(
             headers.put("X-Stainless-OS", getOsName())
             headers.put("X-Stainless-OS-Version", getOsVersion())
             headers.put("X-Stainless-Package-Version", getPackageVersion())
+            headers.put("X-Stainless-Runtime", "JRE")
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             headers.put("Finch-API-Version", "2020-09-17")
             if (!accessToken.isNullOrEmpty()) {
@@ -155,6 +181,7 @@ private constructor(
                 headers.toUnmodifiable(),
                 queryParams.toUnmodifiable(),
                 responseValidation,
+                maxRetries,
             )
         }
     }
