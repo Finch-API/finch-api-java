@@ -20,7 +20,7 @@ class SessionServiceTest {
                 .build()
         val sessionService = client.connect().sessions()
         val sessionNewResponse =
-            sessionService.new(
+            sessionService.new_(
                 ConnectSessionNewParams.builder()
                     .customerId("x")
                     .customerName("x")

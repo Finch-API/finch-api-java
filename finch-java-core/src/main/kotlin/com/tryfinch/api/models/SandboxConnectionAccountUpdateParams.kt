@@ -41,8 +41,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("connection_status")
         fun connectionStatus(): ConnectionStatusType? = connectionStatus
 
@@ -51,26 +49,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is SandboxConnectionAccountUpdateBody &&
-                this.connectionStatus == other.connectionStatus &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(connectionStatus, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "SandboxConnectionAccountUpdateBody{connectionStatus=$connectionStatus, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -115,6 +93,26 @@ constructor(
                     additionalProperties.toUnmodifiable()
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is SandboxConnectionAccountUpdateBody && this.connectionStatus == other.connectionStatus && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(connectionStatus, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "SandboxConnectionAccountUpdateBody{connectionStatus=$connectionStatus, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -128,20 +126,11 @@ constructor(
             return true
         }
 
-        return other is SandboxConnectionAccountUpdateParams &&
-            this.connectionStatus == other.connectionStatus &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is SandboxConnectionAccountUpdateParams && this.connectionStatus == other.connectionStatus && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            connectionStatus,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(connectionStatus, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =

@@ -4,6 +4,9 @@ package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.handlers.errorHandler
+import com.tryfinch.api.core.handlers.jsonHandler
+import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
@@ -11,9 +14,6 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisPaymentListPageAsync
 import com.tryfinch.api.models.HrisPaymentListParams
 import com.tryfinch.api.models.Payment
-import com.tryfinch.api.services.errorHandler
-import com.tryfinch.api.services.jsonHandler
-import com.tryfinch.api.services.withErrorHandler
 import java.util.concurrent.CompletableFuture
 
 class PaymentServiceAsyncImpl

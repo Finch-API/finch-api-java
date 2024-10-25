@@ -46,8 +46,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** string A stable Finch `id` (UUID v4) for an individual in the company. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -203,66 +201,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is EmploymentData &&
-            this.id == other.id &&
-            this.firstName == other.firstName &&
-            this.middleName == other.middleName &&
-            this.lastName == other.lastName &&
-            this.title == other.title &&
-            this.manager == other.manager &&
-            this.department == other.department &&
-            this.employment == other.employment &&
-            this.startDate == other.startDate &&
-            this.endDate == other.endDate &&
-            this.latestRehireDate == other.latestRehireDate &&
-            this.isActive == other.isActive &&
-            this.classCode == other.classCode &&
-            this.location == other.location &&
-            this.income == other.income &&
-            this.incomeHistory == other.incomeHistory &&
-            this.customFields == other.customFields &&
-            this.sourceId == other.sourceId &&
-            this.workId == other.workId &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    firstName,
-                    middleName,
-                    lastName,
-                    title,
-                    manager,
-                    department,
-                    employment,
-                    startDate,
-                    endDate,
-                    latestRehireDate,
-                    isActive,
-                    classCode,
-                    location,
-                    income,
-                    incomeHistory,
-                    customFields,
-                    sourceId,
-                    workId,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -529,8 +467,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         @JsonProperty("name") @ExcludeMissing fun _name() = name
@@ -549,32 +485,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is CustomField &&
-                this.name == other.name &&
-                this.value == other.value &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        value,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "CustomField{name=$name, value=$value, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -625,6 +535,26 @@ private constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is CustomField && this.name == other.name && this.value == other.value && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, value, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "CustomField{name=$name, value=$value, additionalProperties=$additionalProperties}"
     }
 
     /** The department object. */
@@ -637,8 +567,6 @@ private constructor(
     ) {
 
         private var validated: Boolean = false
-
-        private var hashCode: Int = 0
 
         /** The name of the department associated with the individual. */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
@@ -658,26 +586,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Department &&
-                this.name == other.name &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(name, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Department{name=$name, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -719,6 +627,26 @@ private constructor(
 
             fun build(): Department = Department(name, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Department && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Department{name=$name, additionalProperties=$additionalProperties}"
     }
 
     /** The employment object. */
@@ -732,8 +660,6 @@ private constructor(
     ) {
 
         private var validated: Boolean = false
-
-        private var hashCode: Int = 0
 
         /** The main employment type of the individual. */
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
@@ -766,32 +692,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Employment &&
-                this.type == other.type &&
-                this.subtype == other.subtype &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        type,
-                        subtype,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -868,7 +768,7 @@ private constructor(
                     return true
                 }
 
-                return other is Subtype && this.value == other.value
+                return /* spotless:off */ other is Subtype && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -949,7 +849,7 @@ private constructor(
                     return true
                 }
 
-                return other is Type && this.value == other.value
+                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -992,6 +892,26 @@ private constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Employment && this.type == other.type && this.subtype == other.subtype && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(type, subtype, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
     }
 
     /** The manager object representing the manager of the individual within the org. */
@@ -1004,8 +924,6 @@ private constructor(
     ) {
 
         private var validated: Boolean = false
-
-        private var hashCode: Int = 0
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
@@ -1025,25 +943,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Manager &&
-                this.id == other.id &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(id, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -1085,5 +984,44 @@ private constructor(
 
             fun build(): Manager = Manager(id, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Manager && this.id == other.id && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(id, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is EmploymentData && this.id == other.id && this.firstName == other.firstName && this.middleName == other.middleName && this.lastName == other.lastName && this.title == other.title && this.manager == other.manager && this.department == other.department && this.employment == other.employment && this.startDate == other.startDate && this.endDate == other.endDate && this.latestRehireDate == other.latestRehireDate && this.isActive == other.isActive && this.classCode == other.classCode && this.location == other.location && this.income == other.income && this.incomeHistory == other.incomeHistory && this.customFields == other.customFields && this.sourceId == other.sourceId && this.workId == other.workId && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, firstName, middleName, lastName, title, manager, department, employment, startDate, endDate, latestRehireDate, isActive, classCode, location, income, incomeHistory, customFields, sourceId, workId, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "EmploymentData{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
 }

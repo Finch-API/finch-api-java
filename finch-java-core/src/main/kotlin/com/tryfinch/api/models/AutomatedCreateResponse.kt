@@ -27,8 +27,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The id of the job that has been created. */
     fun jobId(): String = jobId.getRequired("job_id")
 
@@ -70,36 +68,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is AutomatedCreateResponse &&
-            this.jobId == other.jobId &&
-            this.jobUrl == other.jobUrl &&
-            this.allowedRefreshes == other.allowedRefreshes &&
-            this.remainingRefreshes == other.remainingRefreshes &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    jobId,
-                    jobUrl,
-                    allowedRefreshes,
-                    remainingRefreshes,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "AutomatedCreateResponse{jobId=$jobId, jobUrl=$jobUrl, allowedRefreshes=$allowedRefreshes, remainingRefreshes=$remainingRefreshes, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -184,4 +152,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AutomatedCreateResponse && this.jobId == other.jobId && this.jobUrl == other.jobUrl && this.allowedRefreshes == other.allowedRefreshes && this.remainingRefreshes == other.remainingRefreshes && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(jobId, jobUrl, allowedRefreshes, remainingRefreshes, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "AutomatedCreateResponse{jobId=$jobId, jobUrl=$jobUrl, allowedRefreshes=$allowedRefreshes, remainingRefreshes=$remainingRefreshes, additionalProperties=$additionalProperties}"
 }

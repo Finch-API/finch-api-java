@@ -40,8 +40,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun s125Medical(): Optional<BenefitFeaturesAndOperations> =
         Optional.ofNullable(s125Medical.getNullable("s125_medical"))
 
@@ -125,52 +123,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is BenefitsSupport &&
-            this.s125Medical == other.s125Medical &&
-            this.s125Dental == other.s125Dental &&
-            this.s125Vision == other.s125Vision &&
-            this.hsaPre == other.hsaPre &&
-            this.hsaPost == other.hsaPost &&
-            this.fsaMedical == other.fsaMedical &&
-            this.fsaDependentCare == other.fsaDependentCare &&
-            this.simpleIra == other.simpleIra &&
-            this.simple == other.simple &&
-            this.commuter == other.commuter &&
-            this.customPostTax == other.customPostTax &&
-            this.customPreTax == other.customPreTax &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    s125Medical,
-                    s125Dental,
-                    s125Vision,
-                    hsaPre,
-                    hsaPost,
-                    fsaMedical,
-                    fsaDependentCare,
-                    simpleIra,
-                    simple,
-                    commuter,
-                    customPostTax,
-                    customPreTax,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "BenefitsSupport{s125Medical=$s125Medical, s125Dental=$s125Dental, s125Vision=$s125Vision, hsaPre=$hsaPre, hsaPost=$hsaPost, fsaMedical=$fsaMedical, fsaDependentCare=$fsaDependentCare, simpleIra=$simpleIra, simple=$simple, commuter=$commuter, customPostTax=$customPostTax, customPreTax=$customPreTax, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -340,4 +292,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is BenefitsSupport && this.s125Medical == other.s125Medical && this.s125Dental == other.s125Dental && this.s125Vision == other.s125Vision && this.hsaPre == other.hsaPre && this.hsaPost == other.hsaPost && this.fsaMedical == other.fsaMedical && this.fsaDependentCare == other.fsaDependentCare && this.simpleIra == other.simpleIra && this.simple == other.simple && this.commuter == other.commuter && this.customPostTax == other.customPostTax && this.customPreTax == other.customPreTax && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(s125Medical, s125Dental, s125Vision, hsaPre, hsaPost, fsaMedical, fsaDependentCare, simpleIra, simple, commuter, customPostTax, customPreTax, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "BenefitsSupport{s125Medical=$s125Medical, s125Dental=$s125Dental, s125Vision=$s125Vision, hsaPre=$hsaPre, hsaPost=$hsaPost, fsaMedical=$fsaMedical, fsaDependentCare=$fsaDependentCare, simpleIra=$simpleIra, simple=$simple, commuter=$commuter, customPostTax=$customPostTax, customPreTax=$customPreTax, additionalProperties=$additionalProperties}"
 }

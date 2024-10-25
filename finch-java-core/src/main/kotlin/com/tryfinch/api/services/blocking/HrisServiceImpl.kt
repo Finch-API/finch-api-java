@@ -3,8 +3,6 @@
 package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.services.blocking.hris.BenefitService
 import com.tryfinch.api.services.blocking.hris.BenefitServiceImpl
 import com.tryfinch.api.services.blocking.hris.CompanyService
@@ -19,14 +17,11 @@ import com.tryfinch.api.services.blocking.hris.PayStatementService
 import com.tryfinch.api.services.blocking.hris.PayStatementServiceImpl
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import com.tryfinch.api.services.blocking.hris.PaymentServiceImpl
-import com.tryfinch.api.services.errorHandler
 
 class HrisServiceImpl
 constructor(
     private val clientOptions: ClientOptions,
 ) : HrisService {
-
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
     private val company: CompanyService by lazy { CompanyServiceImpl(clientOptions) }
 

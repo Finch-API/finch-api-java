@@ -46,20 +46,11 @@ constructor(
             return true
         }
 
-        return other is HrisBenefitIndividualRetrieveManyBenefitsParams &&
-            this.benefitId == other.benefitId &&
-            this.individualIds == other.individualIds &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsParams && this.benefitId == other.benefitId && this.individualIds == other.individualIds && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            benefitId,
-            individualIds,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(benefitId, individualIds, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

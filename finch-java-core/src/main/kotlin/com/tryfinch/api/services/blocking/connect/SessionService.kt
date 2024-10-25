@@ -14,7 +14,7 @@ interface SessionService {
 
     /** Create a new connect session for an employer */
     @JvmOverloads
-    fun new(
+    fun new_(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): SessionNewResponse
