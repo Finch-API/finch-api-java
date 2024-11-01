@@ -11,7 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = CreateCompanyBenefitsResponse.Builder::class)
@@ -78,7 +78,7 @@ private constructor(
         }
 
         fun build(): CreateCompanyBenefitsResponse =
-            CreateCompanyBenefitsResponse(benefitId, additionalProperties.toUnmodifiable())
+            CreateCompanyBenefitsResponse(benefitId, additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

@@ -12,7 +12,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.models.*
 import java.util.Objects
@@ -122,9 +122,9 @@ constructor(
             fun build(): SandboxPaymentCreateBody =
                 SandboxPaymentCreateBody(
                     endDate,
-                    payStatements?.toUnmodifiable(),
+                    payStatements?.toImmutable(),
                     startDate,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -267,11 +267,11 @@ constructor(
         fun build(): SandboxPaymentCreateParams =
             SandboxPaymentCreateParams(
                 endDate,
-                if (payStatements.size == 0) null else payStatements.toUnmodifiable(),
+                if (payStatements.size == 0) null else payStatements.toImmutable(),
                 startDate,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -423,11 +423,11 @@ constructor(
                     totalHours,
                     grossPay,
                     netPay,
-                    earnings?.toUnmodifiable(),
-                    taxes?.toUnmodifiable(),
-                    employeeDeductions?.toUnmodifiable(),
-                    employerContributions?.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable(),
+                    earnings?.toImmutable(),
+                    taxes?.toImmutable(),
+                    employeeDeductions?.toImmutable(),
+                    employerContributions?.toImmutable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -532,7 +532,7 @@ constructor(
                         amount,
                         currency,
                         hours,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -776,7 +776,7 @@ constructor(
                         currency,
                         preTax,
                         type,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -886,7 +886,7 @@ constructor(
                         amount,
                         currency,
                         type,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1064,7 +1064,7 @@ constructor(
                         employer,
                         amount,
                         currency,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 

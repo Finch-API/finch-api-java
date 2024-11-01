@@ -918,6 +918,16 @@ class ProviderTest {
                                             .ssn(true)
                                             .build()
                                     )
+                                    .payGroup(
+                                        Provider.AuthenticationMethod.SupportedFields
+                                            .SupportedPayGroupFields
+                                            .builder()
+                                            .id(true)
+                                            .individualIds(true)
+                                            .name(true)
+                                            .payFrequencies(true)
+                                            .build()
+                                    )
                                     .payStatement(
                                         Provider.AuthenticationMethod.SupportedFields
                                             .SupportedPayStatementFields
@@ -1895,6 +1905,16 @@ class ProviderTest {
                                             .build()
                                     )
                                     .ssn(true)
+                                    .build()
+                            )
+                            .payGroup(
+                                Provider.AuthenticationMethod.SupportedFields
+                                    .SupportedPayGroupFields
+                                    .builder()
+                                    .id(true)
+                                    .individualIds(true)
+                                    .name(true)
+                                    .payFrequencies(true)
                                     .build()
                             )
                             .payStatement(

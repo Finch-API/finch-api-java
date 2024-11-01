@@ -11,7 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.jobs.AutomatedService
 import java.util.Objects
 import java.util.Optional
@@ -176,7 +176,7 @@ private constructor(
                 Response(
                     data,
                     paging,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
     }
