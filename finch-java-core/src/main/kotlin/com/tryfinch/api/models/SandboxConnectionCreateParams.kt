@@ -12,7 +12,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.models.*
 import java.util.Objects
@@ -145,8 +145,8 @@ constructor(
                     checkNotNull(providerId) { "`providerId` is required but was not set" },
                     authenticationType,
                     employeeSize,
-                    products?.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable(),
+                    products?.toImmutable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -301,10 +301,10 @@ constructor(
                 checkNotNull(providerId) { "`providerId` is required but was not set" },
                 authenticationType,
                 employeeSize,
-                if (products.size == 0) null else products.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                if (products.size == 0) null else products.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 

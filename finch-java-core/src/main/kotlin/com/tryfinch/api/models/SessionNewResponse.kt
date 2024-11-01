@@ -11,7 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = SessionNewResponse.Builder::class)
@@ -103,7 +103,7 @@ private constructor(
             SessionNewResponse(
                 sessionId,
                 connectUrl,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 

@@ -12,7 +12,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.models.*
 import java.util.Objects
@@ -145,9 +145,9 @@ constructor(
                 ConnectSessionReauthenticateBody(
                     checkNotNull(connectionId) { "`connectionId` is required but was not set" },
                     minutesToExpire,
-                    products?.toUnmodifiable(),
+                    products?.toImmutable(),
                     redirectUri,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -305,11 +305,11 @@ constructor(
             ConnectSessionReauthenticateParams(
                 checkNotNull(connectionId) { "`connectionId` is required but was not set" },
                 minutesToExpire,
-                if (products.size == 0) null else products.toUnmodifiable(),
+                if (products.size == 0) null else products.toImmutable(),
                 redirectUri,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
