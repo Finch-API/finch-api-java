@@ -3,7 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
@@ -25,7 +25,7 @@ constructor(
         val params = mutableMapOf<String, List<String>>()
         this.individualIds?.let { params.put("individual_ids", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -136,8 +136,8 @@ constructor(
             HrisBenefitIndividualRetrieveManyBenefitsParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
                 individualIds,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 }

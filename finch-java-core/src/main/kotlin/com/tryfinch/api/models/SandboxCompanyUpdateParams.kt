@@ -12,7 +12,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.models.*
 import java.util.Objects
@@ -191,15 +191,15 @@ constructor(
 
             fun build(): SandboxCompanyUpdateBody =
                 SandboxCompanyUpdateBody(
-                    accounts?.toUnmodifiable(),
-                    departments?.toUnmodifiable(),
+                    accounts?.toImmutable(),
+                    departments?.toImmutable(),
                     ein,
                     entity,
                     legalName,
-                    locations?.toUnmodifiable(),
+                    locations?.toImmutable(),
                     primaryEmail,
                     primaryPhoneNumber,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -380,17 +380,17 @@ constructor(
 
         fun build(): SandboxCompanyUpdateParams =
             SandboxCompanyUpdateParams(
-                if (accounts.size == 0) null else accounts.toUnmodifiable(),
-                if (departments.size == 0) null else departments.toUnmodifiable(),
+                if (accounts.size == 0) null else accounts.toImmutable(),
+                if (departments.size == 0) null else departments.toImmutable(),
                 ein,
                 entity,
                 legalName,
-                if (locations.size == 0) null else locations.toUnmodifiable(),
+                if (locations.size == 0) null else locations.toImmutable(),
                 primaryEmail,
                 primaryPhoneNumber,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -499,7 +499,7 @@ constructor(
                     institutionName,
                     accountType,
                     accountNumber,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -644,7 +644,7 @@ constructor(
                 Department(
                     name,
                     parent,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -700,7 +700,7 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Parent = Parent(name, additionalProperties.toUnmodifiable())
+                fun build(): Parent = Parent(name, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -810,7 +810,7 @@ constructor(
                 Entity(
                     type,
                     subtype,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 

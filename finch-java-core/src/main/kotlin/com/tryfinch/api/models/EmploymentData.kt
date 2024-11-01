@@ -13,7 +13,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
@@ -448,11 +448,11 @@ private constructor(
                 classCode,
                 location,
                 income,
-                incomeHistory.map { it.toUnmodifiable() },
-                customFields.map { it.toUnmodifiable() },
+                incomeHistory.map { it.toImmutable() },
+                customFields.map { it.toImmutable() },
                 sourceId,
                 workId,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -532,7 +532,7 @@ private constructor(
                 CustomField(
                     name,
                     value,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -625,7 +625,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Department = Department(name, additionalProperties.toUnmodifiable())
+            fun build(): Department = Department(name, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -751,7 +751,7 @@ private constructor(
                 Employment(
                     type,
                     subtype,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -982,7 +982,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Manager = Manager(id, additionalProperties.toUnmodifiable())
+            fun build(): Manager = Manager(id, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

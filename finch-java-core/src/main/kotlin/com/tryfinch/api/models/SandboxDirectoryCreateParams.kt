@@ -12,7 +12,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.models.*
 import java.util.Objects
@@ -193,9 +193,9 @@ constructor(
 
         fun build(): SandboxDirectoryCreateParams =
             SandboxDirectoryCreateParams(
-                checkNotNull(body) { "`body` is required but was not set" }.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                checkNotNull(body) { "`body` is required but was not set" }.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 
@@ -522,8 +522,8 @@ constructor(
                     middleName,
                     lastName,
                     preferredName,
-                    emails?.toUnmodifiable(),
-                    phoneNumbers?.toUnmodifiable(),
+                    emails?.toImmutable(),
+                    phoneNumbers?.toImmutable(),
                     gender,
                     ethnicity,
                     dob,
@@ -541,10 +541,10 @@ constructor(
                     classCode,
                     location,
                     income,
-                    incomeHistory?.toUnmodifiable(),
-                    customFields?.toUnmodifiable(),
+                    incomeHistory?.toImmutable(),
+                    customFields?.toImmutable(),
                     sourceId,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -608,7 +608,7 @@ constructor(
                     CustomField(
                         name,
                         value,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -685,7 +685,7 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Department = Department(name, additionalProperties.toUnmodifiable())
+                fun build(): Department = Department(name, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -769,7 +769,7 @@ constructor(
                     Email(
                         data,
                         type,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -923,7 +923,7 @@ constructor(
                     Employment(
                         type,
                         subtype,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1306,7 +1306,7 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Manager = Manager(id, additionalProperties.toUnmodifiable())
+                fun build(): Manager = Manager(id, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1389,7 +1389,7 @@ constructor(
                     PhoneNumber(
                         data,
                         type,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 

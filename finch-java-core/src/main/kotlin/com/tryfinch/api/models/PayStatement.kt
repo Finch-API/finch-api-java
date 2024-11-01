@@ -13,7 +13,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
@@ -262,11 +262,11 @@ private constructor(
                 totalHours,
                 grossPay,
                 netPay,
-                earnings.map { it.toUnmodifiable() },
-                taxes.map { it.toUnmodifiable() },
-                employeeDeductions.map { it.toUnmodifiable() },
-                employerContributions.map { it.toUnmodifiable() },
-                additionalProperties.toUnmodifiable(),
+                earnings.map { it.toImmutable() },
+                taxes.map { it.toImmutable() },
+                employeeDeductions.map { it.toImmutable() },
+                employerContributions.map { it.toImmutable() },
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -428,7 +428,7 @@ private constructor(
                     amount,
                     currency,
                     hours,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -722,7 +722,7 @@ private constructor(
                     currency,
                     preTax,
                     type,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -874,7 +874,7 @@ private constructor(
                     amount,
                     currency,
                     type,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -1102,7 +1102,7 @@ private constructor(
                     employer,
                     amount,
                     currency,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 

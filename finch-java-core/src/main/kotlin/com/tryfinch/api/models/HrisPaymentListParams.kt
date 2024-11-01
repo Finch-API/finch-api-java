@@ -3,7 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.models.*
 import java.time.LocalDate
 import java.util.Objects
@@ -26,7 +26,7 @@ constructor(
         this.endDate.let { params.put("end_date", listOf(it.toString())) }
         this.startDate.let { params.put("start_date", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -123,8 +123,8 @@ constructor(
             HrisPaymentListParams(
                 checkNotNull(endDate) { "`endDate` is required but was not set" },
                 checkNotNull(startDate) { "`startDate` is required but was not set" },
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 }
