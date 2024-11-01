@@ -12,7 +12,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.models.*
 import java.util.Objects
@@ -198,14 +198,14 @@ constructor(
                     checkNotNull(customerId) { "`customerId` is required but was not set" },
                     checkNotNull(customerName) { "`customerName` is required but was not set" },
                     checkNotNull(products) { "`products` is required but was not set" }
-                        .toUnmodifiable(),
+                        .toImmutable(),
                     customerEmail,
                     integration,
                     manual,
                     minutesToExpire,
                     redirectUri,
                     sandbox,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -376,17 +376,16 @@ constructor(
             ConnectSessionNewParams(
                 checkNotNull(customerId) { "`customerId` is required but was not set" },
                 checkNotNull(customerName) { "`customerName` is required but was not set" },
-                checkNotNull(products) { "`products` is required but was not set" }
-                    .toUnmodifiable(),
+                checkNotNull(products) { "`products` is required but was not set" }.toImmutable(),
                 customerEmail,
                 integration,
                 manual,
                 minutesToExpire,
                 redirectUri,
                 sandbox,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -544,7 +543,7 @@ constructor(
                 Integration(
                     provider,
                     authMethod,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 

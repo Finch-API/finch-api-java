@@ -6,11 +6,11 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.google.common.collect.ListMultimap
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.getRequiredHeader
+import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.WebhookEvent
-import com.tryfinch.api.services.errorHandler
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.Instant

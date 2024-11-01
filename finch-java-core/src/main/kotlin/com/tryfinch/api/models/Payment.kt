@@ -13,7 +13,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
@@ -283,10 +283,10 @@ private constructor(
                 netPay,
                 employerTaxes,
                 employeeTaxes,
-                individualIds.map { it.toUnmodifiable() },
-                payGroupIds.map { it.toUnmodifiable() },
-                payFrequencies.map { it.toUnmodifiable() },
-                additionalProperties.toUnmodifiable(),
+                individualIds.map { it.toImmutable() },
+                payGroupIds.map { it.toImmutable() },
+                payFrequencies.map { it.toImmutable() },
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -471,7 +471,7 @@ private constructor(
                 PayPeriod(
                     startDate,
                     endDate,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 

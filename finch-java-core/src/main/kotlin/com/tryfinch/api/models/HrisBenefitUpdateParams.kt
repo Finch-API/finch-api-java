@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
@@ -95,7 +95,7 @@ constructor(
             }
 
             fun build(): HrisBenefitUpdateBody =
-                HrisBenefitUpdateBody(description, additionalProperties.toUnmodifiable())
+                HrisBenefitUpdateBody(description, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -228,9 +228,9 @@ constructor(
             HrisBenefitUpdateParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
                 description,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 }

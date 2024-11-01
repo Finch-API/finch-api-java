@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.models.*
 import java.util.Objects
 
@@ -88,8 +88,8 @@ constructor(
             fun build(): HrisEmploymentRetrieveManyBody =
                 HrisEmploymentRetrieveManyBody(
                     checkNotNull(requests) { "`requests` is required but was not set" }
-                        .toUnmodifiable(),
-                    additionalProperties.toUnmodifiable()
+                        .toImmutable(),
+                    additionalProperties.toImmutable()
                 )
         }
 
@@ -224,11 +224,10 @@ constructor(
 
         fun build(): HrisEmploymentRetrieveManyParams =
             HrisEmploymentRetrieveManyParams(
-                checkNotNull(requests) { "`requests` is required but was not set" }
-                    .toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                checkNotNull(requests) { "`requests` is required but was not set" }.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -294,7 +293,7 @@ constructor(
             fun build(): Request =
                 Request(
                     checkNotNull(individualId) { "`individualId` is required but was not set" },
-                    additionalProperties.toUnmodifiable()
+                    additionalProperties.toImmutable()
                 )
         }
 

@@ -13,7 +13,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
@@ -253,7 +253,7 @@ private constructor(
                 scheduledAt,
                 startedAt,
                 completedAt,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 

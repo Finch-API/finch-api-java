@@ -13,7 +13,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
@@ -265,13 +265,13 @@ private constructor(
             SupportedBenefit(
                 type,
                 description,
-                frequencies.map { it.toUnmodifiable() },
-                employeeDeduction.map { it.toUnmodifiable() },
-                companyContribution.map { it.toUnmodifiable() },
+                frequencies.map { it.toImmutable() },
+                employeeDeduction.map { it.toImmutable() },
+                companyContribution.map { it.toImmutable() },
                 annualMaximum,
                 catchUp,
-                hsaContributionLimit.map { it.toUnmodifiable() },
-                additionalProperties.toUnmodifiable(),
+                hsaContributionLimit.map { it.toImmutable() },
+                additionalProperties.toImmutable(),
             )
     }
 
