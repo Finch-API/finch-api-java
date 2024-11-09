@@ -1,9 +1,9 @@
 package com.tryfinch.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.tryfinch.api.core.http.Headers
 
 class NotFoundException(
-    headers: ListMultimap<String, String>,
+    headers: Headers,
     body: String,
     error: FinchError,
 ) : FinchServiceException(404, headers, body, error)

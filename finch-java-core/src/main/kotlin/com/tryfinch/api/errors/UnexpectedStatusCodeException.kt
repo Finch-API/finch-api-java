@@ -1,10 +1,10 @@
 package com.tryfinch.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.tryfinch.api.core.http.Headers
 
 class UnexpectedStatusCodeException(
     statusCode: Int,
-    headers: ListMultimap<String, String>,
+    headers: Headers,
     body: String,
     error: FinchError,
 ) : FinchServiceException(statusCode, headers, body, error)
