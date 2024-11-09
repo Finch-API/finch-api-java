@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -27,12 +28,12 @@ class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
                     "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
                 )
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
+        val expected = QueryParams.builder()
         expected.put(
             "individual_ids",
-            listOf("d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a")
+            "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
         )
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
@@ -41,8 +42,8 @@ class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
             HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
                 .benefitId("benefit_id")
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
