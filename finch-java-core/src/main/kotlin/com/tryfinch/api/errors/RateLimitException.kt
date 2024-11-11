@@ -1,9 +1,9 @@
 package com.tryfinch.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.tryfinch.api.core.http.Headers
 
 class RateLimitException(
-    headers: ListMultimap<String, String>,
+    headers: Headers,
     body: String,
     error: FinchError,
 ) : FinchServiceException(429, headers, body, error)

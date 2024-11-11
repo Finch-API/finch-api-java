@@ -3,10 +3,10 @@
 package com.tryfinch.api.core
 
 import com.fasterxml.jackson.databind.json.JsonMapper
-import com.google.common.collect.ArrayListMultimap
-import com.google.common.collect.ListMultimap
+import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.HttpClient
 import com.tryfinch.api.core.http.PhantomReachableClosingHttpClient
+import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.http.RetryingHttpClient
 import java.time.Clock
 import java.util.Base64
@@ -18,8 +18,8 @@ private constructor(
     @get:JvmName("jsonMapper") val jsonMapper: JsonMapper,
     @get:JvmName("clock") val clock: Clock,
     @get:JvmName("baseUrl") val baseUrl: String,
-    @get:JvmName("headers") val headers: ListMultimap<String, String>,
-    @get:JvmName("queryParams") val queryParams: ListMultimap<String, String>,
+    @get:JvmName("headers") val headers: Headers,
+    @get:JvmName("queryParams") val queryParams: QueryParams,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
     @get:JvmName("maxRetries") val maxRetries: Int,
     @get:JvmName("accessToken") val accessToken: String?,
@@ -45,8 +45,8 @@ private constructor(
         private var jsonMapper: JsonMapper = jsonMapper()
         private var clock: Clock = Clock.systemUTC()
         private var baseUrl: String = PRODUCTION_URL
-        private var headers: ListMultimap<String, String> = ArrayListMultimap.create()
-        private var queryParams: ListMultimap<String, String> = ArrayListMultimap.create()
+        private var headers: Headers.Builder = Headers.builder()
+        private var queryParams: QueryParams.Builder = QueryParams.builder()
         private var responseValidation: Boolean = false
         private var maxRetries: Int = 2
         private var accessToken: String? = null
@@ -60,8 +60,8 @@ private constructor(
             jsonMapper = clientOptions.jsonMapper
             clock = clientOptions.clock
             baseUrl = clientOptions.baseUrl
-            headers = ArrayListMultimap.create(clientOptions.headers)
-            queryParams = ArrayListMultimap.create(clientOptions.queryParams)
+            headers = clientOptions.headers.toBuilder()
+            queryParams = clientOptions.queryParams.toBuilder()
             responseValidation = clientOptions.responseValidation
             maxRetries = clientOptions.maxRetries
             accessToken = clientOptions.accessToken
@@ -78,6 +78,11 @@ private constructor(
 
         fun baseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
 
+        fun headers(headers: Headers) = apply {
+            this.headers.clear()
+            putAllHeaders(headers)
+        }
+
         fun headers(headers: Map<String, Iterable<String>>) = apply {
             this.headers.clear()
             putAllHeaders(headers)
@@ -85,32 +90,73 @@ private constructor(
 
         fun putHeader(name: String, value: String) = apply { headers.put(name, value) }
 
-        fun putHeaders(name: String, values: Iterable<String>) = apply {
-            headers.putAll(name, values)
-        }
+        fun putHeaders(name: String, values: Iterable<String>) = apply { headers.put(name, values) }
+
+        fun putAllHeaders(headers: Headers) = apply { this.headers.putAll(headers) }
 
         fun putAllHeaders(headers: Map<String, Iterable<String>>) = apply {
-            headers.forEach(::putHeaders)
+            this.headers.putAll(headers)
         }
 
-        fun removeHeader(name: String) = apply { headers.removeAll(name) }
+        fun replaceHeaders(name: String, value: String) = apply { headers.replace(name, value) }
+
+        fun replaceHeaders(name: String, values: Iterable<String>) = apply {
+            headers.replace(name, values)
+        }
+
+        fun replaceAllHeaders(headers: Headers) = apply { this.headers.replaceAll(headers) }
+
+        fun replaceAllHeaders(headers: Map<String, Iterable<String>>) = apply {
+            this.headers.replaceAll(headers)
+        }
+
+        fun removeHeaders(name: String) = apply { headers.remove(name) }
+
+        fun removeAllHeaders(names: Set<String>) = apply { headers.removeAll(names) }
+
+        fun queryParams(queryParams: QueryParams) = apply {
+            this.queryParams.clear()
+            putAllQueryParams(queryParams)
+        }
 
         fun queryParams(queryParams: Map<String, Iterable<String>>) = apply {
             this.queryParams.clear()
             putAllQueryParams(queryParams)
         }
 
-        fun putQueryParam(name: String, value: String) = apply { queryParams.put(name, value) }
+        fun putQueryParam(key: String, value: String) = apply { queryParams.put(key, value) }
 
-        fun putQueryParams(name: String, values: Iterable<String>) = apply {
-            queryParams.putAll(name, values)
+        fun putQueryParams(key: String, values: Iterable<String>) = apply {
+            queryParams.put(key, values)
+        }
+
+        fun putAllQueryParams(queryParams: QueryParams) = apply {
+            this.queryParams.putAll(queryParams)
         }
 
         fun putAllQueryParams(queryParams: Map<String, Iterable<String>>) = apply {
-            queryParams.forEach(::putQueryParams)
+            this.queryParams.putAll(queryParams)
         }
 
-        fun removeQueryParam(name: String) = apply { queryParams.removeAll(name) }
+        fun replaceQueryParams(key: String, value: String) = apply {
+            queryParams.replace(key, value)
+        }
+
+        fun replaceQueryParams(key: String, values: Iterable<String>) = apply {
+            queryParams.replace(key, values)
+        }
+
+        fun replaceAllQueryParams(queryParams: QueryParams) = apply {
+            this.queryParams.replaceAll(queryParams)
+        }
+
+        fun replaceAllQueryParams(queryParams: Map<String, Iterable<String>>) = apply {
+            this.queryParams.replaceAll(queryParams)
+        }
+
+        fun removeQueryParams(key: String) = apply { queryParams.remove(key) }
+
+        fun removeAllQueryParams(keys: Set<String>) = apply { queryParams.removeAll(keys) }
 
         fun responseValidation(responseValidation: Boolean) = apply {
             this.responseValidation = responseValidation
@@ -135,8 +181,8 @@ private constructor(
         fun build(): ClientOptions {
             checkNotNull(httpClient) { "`httpClient` is required but was not set" }
 
-            val headers = ArrayListMultimap.create<String, String>()
-            val queryParams = ArrayListMultimap.create<String, String>()
+            val headers = Headers.builder()
+            val queryParams = QueryParams.builder()
             headers.put("X-Stainless-Lang", "java")
             headers.put("X-Stainless-Arch", getOsArch())
             headers.put("X-Stainless-OS", getOsName())
@@ -145,17 +191,23 @@ private constructor(
             headers.put("X-Stainless-Runtime", "JRE")
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             headers.put("Finch-API-Version", "2020-09-17")
-            if (!accessToken.isNullOrEmpty()) {
-                headers.put("Authorization", "Bearer ${accessToken}")
+            accessToken?.let {
+                if (!it.isEmpty()) {
+                    headers.put("Authorization", "Bearer $it")
+                }
             }
-            if (!clientId.isNullOrEmpty() && !clientSecret.isNullOrEmpty()) {
-                headers.put(
-                    "Authorization",
-                    "Basic ${Base64.getEncoder().encodeToString("${clientId}:${clientSecret}".toByteArray())}"
-                )
+            clientId?.let { username ->
+                clientSecret?.let { password ->
+                    if (!username.isEmpty() && !password.isEmpty()) {
+                        headers.put(
+                            "Authorization",
+                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}"
+                        )
+                    }
+                }
             }
-            this.headers.asMap().forEach(headers::replaceValues)
-            this.queryParams.asMap().forEach(queryParams::replaceValues)
+            headers.replaceAll(this.headers.build())
+            queryParams.replaceAll(this.queryParams.build())
 
             return ClientOptions(
                 httpClient!!,
@@ -169,8 +221,8 @@ private constructor(
                 jsonMapper,
                 clock,
                 baseUrl,
-                headers.toImmutable(),
-                queryParams.toImmutable(),
+                headers.build(),
+                queryParams.build(),
                 responseValidation,
                 maxRetries,
                 accessToken,

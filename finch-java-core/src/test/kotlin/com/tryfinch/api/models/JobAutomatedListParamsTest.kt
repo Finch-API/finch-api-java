@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -16,16 +17,16 @@ class JobAutomatedListParamsTest {
     @Test
     fun getQueryParams() {
         val params = JobAutomatedListParams.builder().limit(123L).offset(123L).build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("limit", listOf("123"))
-        expected.put("offset", listOf("123"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("limit", "123")
+        expected.put("offset", "123")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
     fun getQueryParamsWithoutOptionalFields() {
         val params = JobAutomatedListParams.builder().build()
-        val expected = mutableMapOf<String, List<String>>()
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 }

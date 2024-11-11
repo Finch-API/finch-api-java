@@ -5,6 +5,7 @@ package com.tryfinch.api.services.blocking
 import com.google.common.collect.ImmutableListMultimap
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.*
 import java.time.Clock
@@ -29,14 +30,11 @@ class WebhookServiceTest {
 
         val payload = "{\"company_id\":\"720be419-0293-4d32-a707-32179b0827ab\"}"
         val headers =
-            ImmutableListMultimap.of(
-                "Finch-Event-Id",
-                "msg_2Lh9KRb0pzN4LePd3XiA4v12Axj",
-                "finch-timestamp",
-                "1676312382",
-                "finch-signature",
-                "v1,m7y0TV2C+hlHxU42wCieApTSTaA8/047OAplBqxIV/s="
-            )
+            Headers.builder()
+                .put("Finch-Event-Id", "msg_2Lh9KRb0pzN4LePd3XiA4v12Axj")
+                .put("finch-timestamp", "1676312382")
+                .put("finch-signature", "v1,m7y0TV2C+hlHxU42wCieApTSTaA8/047OAplBqxIV/s=")
+                .build()
 
         val event = client.webhooks().unwrap(payload, headers, null)
 
@@ -57,28 +55,22 @@ class WebhookServiceTest {
         val webhookTimestamp = "1676312382"
         val webhookSignature = "m7y0TV2C+hlHxU42wCieApTSTaA8/047OAplBqxIV/s="
         val headers =
-            ImmutableListMultimap.of(
-                "Finch-Event-Id",
-                webhookId,
-                "finch-timestamp",
-                webhookTimestamp,
-                "finch-signature",
-                "v1,$webhookSignature"
-            )
+            Headers.builder()
+                .put("Finch-Event-Id", webhookId)
+                .put("finch-timestamp", webhookTimestamp)
+                .put("finch-signature", "v1,$webhookSignature")
+                .build()
 
         assertThatThrownBy {
                 client
                     .webhooks()
                     .verifySignature(
                         payload,
-                        ImmutableListMultimap.of(
-                            "Finch-Event-Id",
-                            webhookId,
-                            "finch-timestamp",
-                            "1676312022",
-                            "finch-signature",
-                            "v1,$webhookSignature"
-                        ),
+                        Headers.builder()
+                            .put("Finch-Event-Id", webhookId)
+                            .put("finch-timestamp", "1676312022")
+                            .put("finch-signature", "v1,$webhookSignature")
+                            .build(),
                         null
                     )
             }
@@ -90,14 +82,11 @@ class WebhookServiceTest {
                     .webhooks()
                     .verifySignature(
                         payload,
-                        ImmutableListMultimap.of(
-                            "Finch-Event-Id",
-                            webhookId,
-                            "finch-timestamp",
-                            "1676312742",
-                            "finch-signature",
-                            "v1,$webhookSignature"
-                        ),
+                        Headers.builder()
+                            .put("Finch-Event-Id", webhookId)
+                            .put("finch-timestamp", "1676312742")
+                            .put("finch-signature", "v1,$webhookSignature")
+                            .build(),
                         null
                     )
             }
@@ -117,14 +106,11 @@ class WebhookServiceTest {
                     .webhooks()
                     .verifySignature(
                         payload,
-                        ImmutableListMultimap.of(
-                            "Finch-Event-Id",
-                            webhookId,
-                            "finch-timestamp",
-                            webhookTimestamp,
-                            "finch-signature",
-                            "v1,$webhookSignature v1,Zm9v",
-                        ),
+                        Headers.builder()
+                            .put("Finch-Event-Id", webhookId)
+                            .put("finch-timestamp", webhookTimestamp)
+                            .put("finch-signature", "v1,$webhookSignature v1,Zm9v")
+                            .build(),
                         null
                     )
             }
@@ -135,14 +121,11 @@ class WebhookServiceTest {
                     .webhooks()
                     .verifySignature(
                         payload,
-                        ImmutableListMultimap.of(
-                            "Finch-Event-Id",
-                            webhookId,
-                            "finch-timestamp",
-                            webhookTimestamp,
-                            "finch-signature",
-                            "v2,$webhookSignature",
-                        ),
+                        Headers.builder()
+                            .put("Finch-Event-Id", webhookId)
+                            .put("finch-timestamp", webhookTimestamp)
+                            .put("finch-signature", "v2,$webhookSignature")
+                            .build(),
                         null
                     )
             }
@@ -154,14 +137,11 @@ class WebhookServiceTest {
                     .webhooks()
                     .verifySignature(
                         payload,
-                        ImmutableListMultimap.of(
-                            "Finch-Event-Id",
-                            webhookId,
-                            "finch-timestamp",
-                            webhookTimestamp,
-                            "finch-signature",
-                            "v1,$webhookSignature v2,$webhookSignature",
-                        ),
+                        Headers.builder()
+                            .put("Finch-Event-Id", webhookId)
+                            .put("finch-timestamp", webhookTimestamp)
+                            .put("finch-signature", "v1,$webhookSignature v2,$webhookSignature")
+                            .build(),
                         null
                     )
             }
@@ -172,14 +152,11 @@ class WebhookServiceTest {
                     .webhooks()
                     .verifySignature(
                         payload,
-                        ImmutableListMultimap.of(
-                            "Finch-Event-Id",
-                            webhookId,
-                            "finch-timestamp",
-                            webhookTimestamp,
-                            "finch-signature",
-                            webhookSignature,
-                        ),
+                        Headers.builder()
+                            .put("Finch-Event-Id", webhookId)
+                            .put("finch-timestamp", webhookTimestamp)
+                            .put("finch-signature", webhookSignature)
+                            .build(),
                         null
                     )
             }
