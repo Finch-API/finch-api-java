@@ -38,9 +38,9 @@ constructor(
                 .method(HttpMethod.POST)
                 .addPathSegments("sandbox", "connections", "accounts")
                 .putAllQueryParams(clientOptions.queryParams)
-                .putAllQueryParams(params.getQueryParams())
+                .replaceAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
-                .putAllHeaders(params.getHeaders())
+                .replaceAllHeaders(params.getHeaders())
                 .body(json(clientOptions.jsonMapper, params.getBody()))
                 .build()
         return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
@@ -71,9 +71,9 @@ constructor(
                 .method(HttpMethod.PUT)
                 .addPathSegments("sandbox", "connections", "accounts")
                 .putAllQueryParams(clientOptions.queryParams)
-                .putAllQueryParams(params.getQueryParams())
+                .replaceAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
-                .putAllHeaders(params.getHeaders())
+                .replaceAllHeaders(params.getHeaders())
                 .body(json(clientOptions.jsonMapper, params.getBody()))
                 .build()
         return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response

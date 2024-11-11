@@ -60,7 +60,7 @@ constructor(
                 .method(HttpMethod.POST)
                 .addPathSegments("auth", "token")
                 .putAllQueryParams(clientOptions.queryParams)
-                .putAllQueryParams(params.getQueryParams())
+                .replaceAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
                 .putAllHeaders(params.getHeaders())
                 .body(json(clientOptions.jsonMapper, modifiedParams.getBody()))

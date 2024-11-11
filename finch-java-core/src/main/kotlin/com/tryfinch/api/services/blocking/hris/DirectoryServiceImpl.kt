@@ -37,9 +37,9 @@ constructor(
                 .method(HttpMethod.GET)
                 .addPathSegments("employer", "directory")
                 .putAllQueryParams(clientOptions.queryParams)
-                .putAllQueryParams(params.getQueryParams())
+                .replaceAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
-                .putAllHeaders(params.getHeaders())
+                .replaceAllHeaders(params.getHeaders())
                 .build()
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response
@@ -68,9 +68,9 @@ constructor(
                 .method(HttpMethod.GET)
                 .addPathSegments("employer", "directory")
                 .putAllQueryParams(clientOptions.queryParams)
-                .putAllQueryParams(params.getQueryParams())
+                .replaceAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
-                .putAllHeaders(params.getHeaders())
+                .replaceAllHeaders(params.getHeaders())
                 .build()
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response

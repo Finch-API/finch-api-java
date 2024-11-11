@@ -3,10 +3,11 @@
 package com.tryfinch.api.services.blocking
 
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.google.common.collect.ListMultimap
+
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.getRequiredHeader
 import com.tryfinch.api.core.handlers.errorHandler
+import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
@@ -27,7 +28,7 @@ constructor(
 
     override fun unwrap(
         payload: String,
-        headers: ListMultimap<String, String>,
+        headers: Headers,
         secret: String?
     ): WebhookEvent {
         verifySignature(payload, headers, secret)
@@ -40,7 +41,7 @@ constructor(
 
     override fun verifySignature(
         payload: String,
-        headers: ListMultimap<String, String>,
+        headers: Headers,
         secret: String?
     ) {
         val webhookSecret =

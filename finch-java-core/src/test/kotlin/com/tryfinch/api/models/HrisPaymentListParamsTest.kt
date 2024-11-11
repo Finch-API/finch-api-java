@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.models.*
 import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
@@ -24,10 +25,10 @@ class HrisPaymentListParamsTest {
                 .endDate(LocalDate.parse("2021-01-01"))
                 .startDate(LocalDate.parse("2021-01-01"))
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("end_date", listOf("2021-01-01"))
-        expected.put("start_date", listOf("2021-01-01"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("end_date", "2021-01-01")
+        expected.put("start_date", "2021-01-01")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
@@ -37,9 +38,9 @@ class HrisPaymentListParamsTest {
                 .endDate(LocalDate.parse("2021-01-01"))
                 .startDate(LocalDate.parse("2021-01-01"))
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("end_date", listOf("2021-01-01"))
-        expected.put("start_date", listOf("2021-01-01"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("end_date", "2021-01-01")
+        expected.put("start_date", "2021-01-01")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 }
