@@ -23,7 +23,11 @@ class AutomatedServiceTest {
         val automatedCreateResponse =
             automatedService.create(
                 JobAutomatedCreateParams.builder()
-                    .type(JobAutomatedCreateParams.Type.DATA_SYNC_ALL)
+                    .forDataSyncAll(
+                        JobAutomatedCreateParams.DataSyncAll.builder()
+                            .type(JobAutomatedCreateParams.DataSyncAll.Type.DATA_SYNC_ALL)
+                            .build()
+                    )
                     .build()
             )
         println(automatedCreateResponse)
