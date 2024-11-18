@@ -15,12 +15,16 @@ import com.tryfinch.api.models.JobAutomatedRetrieveParams
 interface AutomatedService {
 
     /**
-     * Enqueue an automated job. Currently, only the `data_sync_all` job type is supported, which
-     * will enqueue a job to re-sync all data for a connection. `data_sync_all` has a concurrency
-     * limit of 1 job at a time per connection. This means that if this endpoint is called while a
-     * job is already in progress for this connection, Finch will return the `job_id` of the job
-     * that is currently in progress. Finch allows a fixed window rate limit of 1 forced refresh per
-     * hour per connection.
+     * Enqueue an automated job.
+     *
+     * `data_sync_all`: Enqueue a job to re-sync all data for a connection. `data_sync_all` has a
+     * concurrency limit of 1 job at a time per connection. This means that if this endpoint is
+     * called while a job is already in progress for this connection, Finch will return the `job_id`
+     * of the job that is currently in progress. Finch allows a fixed window rate limit of 1 forced
+     * refresh per hour per connection.
+     *
+     * `w4_data_sync`: Enqueues a job for sync W-4 data for a particular individual, identified by
+     * `individual_id`. This feature is currently in beta.
      *
      * This endpoint is available for _Scale_ tier customers as an add-on. To request access to this
      * endpoint, please contact your Finch account manager.
