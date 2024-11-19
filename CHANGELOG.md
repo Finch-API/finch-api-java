@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.11.0 (2024-11-19)
+
+Full Changelog: [v1.10.0...v1.11.0](https://github.com/Finch-API/finch-api-java/compare/v1.10.0...v1.11.0)
+
+### Features
+
+* **api:** api update ([#329](https://github.com/Finch-API/finch-api-java/issues/329)) ([123d80c](https://github.com/Finch-API/finch-api-java/commit/123d80cd9329a60376368502d17ea6bd3ee8b2b3))
+
+
+### Chores
+
+* rebuild project due to codegen change ([#325](https://github.com/Finch-API/finch-api-java/issues/325)) ([96b384c](https://github.com/Finch-API/finch-api-java/commit/96b384c1117eb07e946349a47dfdb4aeee01b4d7))
+* rebuild project due to codegen change ([#328](https://github.com/Finch-API/finch-api-java/issues/328)) ([11dba94](https://github.com/Finch-API/finch-api-java/commit/11dba9441b91130ed65afd3bdb56e8430002583f))
+* rebuild project due to codegen change ([#330](https://github.com/Finch-API/finch-api-java/issues/330)) ([317e18f](https://github.com/Finch-API/finch-api-java/commit/317e18fa1107e6be1de1f4dfb751a1d565906102))
+
 ## 1.10.0 (2024-11-01)
 
 Full Changelog: [v1.9.0...v1.10.0](https://github.com/Finch-API/finch-api-java/compare/v1.9.0...v1.10.0)
