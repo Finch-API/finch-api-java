@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.11.1 (2024-11-20)
+
+Full Changelog: [v1.11.0...v1.11.1](https://github.com/Finch-API/finch-api-java/compare/v1.11.0...v1.11.1)
+
+### Chores
+
+* **internal:** version bump ([#332](https://github.com/Finch-API/finch-api-java/issues/332)) ([3de23d2](https://github.com/Finch-API/finch-api-java/commit/3de23d2270bd6d2ed39d632dd5c3ee9e76ca97cd))
+
 ## 1.11.0 (2024-11-19)
 
 Full Changelog: [v1.10.0...v1.11.0](https://github.com/Finch-API/finch-api-java/compare/v1.10.0...v1.11.0)
