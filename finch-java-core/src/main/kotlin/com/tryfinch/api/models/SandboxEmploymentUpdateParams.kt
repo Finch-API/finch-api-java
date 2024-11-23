@@ -81,6 +81,12 @@ constructor(
 
     fun title(): Optional<String> = Optional.ofNullable(title)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): SandboxEmploymentUpdateBody {
         return SandboxEmploymentUpdateBody(
@@ -378,25 +384,6 @@ constructor(
             "SandboxEmploymentUpdateBody{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxEmploymentUpdateParams && individualId == other.individualId && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, classCode, customFields, department, employment, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxEmploymentUpdateParams{individualId=$individualId, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -431,27 +418,30 @@ constructor(
 
         @JvmSynthetic
         internal fun from(sandboxEmploymentUpdateParams: SandboxEmploymentUpdateParams) = apply {
-            this.individualId = sandboxEmploymentUpdateParams.individualId
-            this.classCode = sandboxEmploymentUpdateParams.classCode
-            this.customFields(sandboxEmploymentUpdateParams.customFields ?: listOf())
-            this.department = sandboxEmploymentUpdateParams.department
-            this.employment = sandboxEmploymentUpdateParams.employment
-            this.endDate = sandboxEmploymentUpdateParams.endDate
-            this.firstName = sandboxEmploymentUpdateParams.firstName
-            this.income = sandboxEmploymentUpdateParams.income
-            this.incomeHistory(sandboxEmploymentUpdateParams.incomeHistory ?: listOf())
-            this.isActive = sandboxEmploymentUpdateParams.isActive
-            this.lastName = sandboxEmploymentUpdateParams.lastName
-            this.latestRehireDate = sandboxEmploymentUpdateParams.latestRehireDate
-            this.location = sandboxEmploymentUpdateParams.location
-            this.manager = sandboxEmploymentUpdateParams.manager
-            this.middleName = sandboxEmploymentUpdateParams.middleName
-            this.sourceId = sandboxEmploymentUpdateParams.sourceId
-            this.startDate = sandboxEmploymentUpdateParams.startDate
-            this.title = sandboxEmploymentUpdateParams.title
-            additionalHeaders(sandboxEmploymentUpdateParams.additionalHeaders)
-            additionalQueryParams(sandboxEmploymentUpdateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxEmploymentUpdateParams.additionalBodyProperties)
+            individualId = sandboxEmploymentUpdateParams.individualId
+            classCode = sandboxEmploymentUpdateParams.classCode
+            customFields =
+                sandboxEmploymentUpdateParams.customFields?.toMutableList() ?: mutableListOf()
+            department = sandboxEmploymentUpdateParams.department
+            employment = sandboxEmploymentUpdateParams.employment
+            endDate = sandboxEmploymentUpdateParams.endDate
+            firstName = sandboxEmploymentUpdateParams.firstName
+            income = sandboxEmploymentUpdateParams.income
+            incomeHistory =
+                sandboxEmploymentUpdateParams.incomeHistory?.toMutableList() ?: mutableListOf()
+            isActive = sandboxEmploymentUpdateParams.isActive
+            lastName = sandboxEmploymentUpdateParams.lastName
+            latestRehireDate = sandboxEmploymentUpdateParams.latestRehireDate
+            location = sandboxEmploymentUpdateParams.location
+            manager = sandboxEmploymentUpdateParams.manager
+            middleName = sandboxEmploymentUpdateParams.middleName
+            sourceId = sandboxEmploymentUpdateParams.sourceId
+            startDate = sandboxEmploymentUpdateParams.startDate
+            title = sandboxEmploymentUpdateParams.title
+            additionalHeaders = sandboxEmploymentUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxEmploymentUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                sandboxEmploymentUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun individualId(individualId: String) = apply { this.individualId = individualId }
@@ -653,13 +643,13 @@ constructor(
             SandboxEmploymentUpdateParams(
                 checkNotNull(individualId) { "`individualId` is required but was not set" },
                 classCode,
-                if (customFields.size == 0) null else customFields.toImmutable(),
+                customFields.toImmutable().ifEmpty { null },
                 department,
                 employment,
                 endDate,
                 firstName,
                 income,
-                if (incomeHistory.size == 0) null else incomeHistory.toImmutable(),
+                incomeHistory.toImmutable().ifEmpty { null },
                 isActive,
                 lastName,
                 latestRehireDate,
@@ -1129,4 +1119,17 @@ constructor(
 
         override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxEmploymentUpdateParams && individualId == other.individualId && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, classCode, customFields, department, employment, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "SandboxEmploymentUpdateParams{individualId=$individualId, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
