@@ -298,17 +298,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is BenefitsSupport && this.s125Medical == other.s125Medical && this.s125Dental == other.s125Dental && this.s125Vision == other.s125Vision && this.hsaPre == other.hsaPre && this.hsaPost == other.hsaPost && this.fsaMedical == other.fsaMedical && this.fsaDependentCare == other.fsaDependentCare && this.simpleIra == other.simpleIra && this.simple == other.simple && this.commuter == other.commuter && this.customPostTax == other.customPostTax && this.customPreTax == other.customPreTax && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is BenefitsSupport && s125Medical == other.s125Medical && s125Dental == other.s125Dental && s125Vision == other.s125Vision && hsaPre == other.hsaPre && hsaPost == other.hsaPost && fsaMedical == other.fsaMedical && fsaDependentCare == other.fsaDependentCare && simpleIra == other.simpleIra && simple == other.simple && commuter == other.commuter && customPostTax == other.customPostTax && customPreTax == other.customPreTax && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(s125Medical, s125Dental, s125Vision, hsaPre, hsaPost, fsaMedical, fsaDependentCare, simpleIra, simple, commuter, customPostTax, customPreTax, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(s125Medical, s125Dental, s125Vision, hsaPre, hsaPost, fsaMedical, fsaDependentCare, simpleIra, simple, commuter, customPostTax, customPreTax, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "BenefitsSupport{s125Medical=$s125Medical, s125Dental=$s125Dental, s125Vision=$s125Vision, hsaPre=$hsaPre, hsaPost=$hsaPost, fsaMedical=$fsaMedical, fsaDependentCare=$fsaDependentCare, simpleIra=$simpleIra, simple=$simple, commuter=$commuter, customPostTax=$customPostTax, customPreTax=$customPreTax, additionalProperties=$additionalProperties}"

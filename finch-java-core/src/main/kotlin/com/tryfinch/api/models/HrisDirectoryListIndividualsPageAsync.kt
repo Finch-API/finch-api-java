@@ -37,12 +37,10 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisDirectoryListIndividualsPageAsync && this.directoryService == other.directoryService && this.params == other.params && this.response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisDirectoryListIndividualsPageAsync && directoryService == other.directoryService && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(directoryService, params, response) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(directoryService, params, response) /* spotless:on */
 
     override fun toString() =
         "HrisDirectoryListIndividualsPageAsync{directoryService=$directoryService, params=$params, response=$response}"
@@ -135,15 +133,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Response && this.individuals == other.individuals && this.paging == other.paging && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && individuals == other.individuals && paging == other.paging && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(individuals, paging, additionalProperties) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(individuals, paging, additionalProperties) /* spotless:on */
 
         override fun toString() =
-            "HrisDirectoryListIndividualsPageAsync.Response{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
+            "Response{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 

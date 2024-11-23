@@ -286,17 +286,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxIndividualUpdateBody && this.dob == other.dob && this.emails == other.emails && this.encryptedSsn == other.encryptedSsn && this.ethnicity == other.ethnicity && this.firstName == other.firstName && this.gender == other.gender && this.lastName == other.lastName && this.middleName == other.middleName && this.phoneNumbers == other.phoneNumbers && this.preferredName == other.preferredName && this.residence == other.residence && this.ssn == other.ssn && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is SandboxIndividualUpdateBody && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "SandboxIndividualUpdateBody{dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
@@ -313,12 +310,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxIndividualUpdateParams && this.individualId == other.individualId && this.dob == other.dob && this.emails == other.emails && this.encryptedSsn == other.encryptedSsn && this.ethnicity == other.ethnicity && this.firstName == other.firstName && this.gender == other.gender && this.lastName == other.lastName && this.middleName == other.middleName && this.phoneNumbers == other.phoneNumbers && this.preferredName == other.preferredName && this.residence == other.residence && this.ssn == other.ssn && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxIndividualUpdateParams && individualId == other.individualId && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(individualId, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "SandboxIndividualUpdateParams{individualId=$individualId, dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -639,7 +634,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -688,17 +683,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Email && this.data == other.data && this.type == other.type && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Email && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(data, type, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
@@ -717,7 +709,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ethnicity && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Ethnicity && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -815,7 +807,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Gender && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Gender && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -947,7 +939,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -996,17 +988,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PhoneNumber && this.data == other.data && this.type == other.type && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is PhoneNumber && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(data, type, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "PhoneNumber{data=$data, type=$type, additionalProperties=$additionalProperties}"

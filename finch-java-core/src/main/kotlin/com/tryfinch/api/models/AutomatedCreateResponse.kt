@@ -158,17 +158,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AutomatedCreateResponse && this.jobId == other.jobId && this.jobUrl == other.jobUrl && this.allowedRefreshes == other.allowedRefreshes && this.remainingRefreshes == other.remainingRefreshes && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AutomatedCreateResponse && jobId == other.jobId && jobUrl == other.jobUrl && allowedRefreshes == other.allowedRefreshes && remainingRefreshes == other.remainingRefreshes && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(jobId, jobUrl, allowedRefreshes, remainingRefreshes, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(jobId, jobUrl, allowedRefreshes, remainingRefreshes, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "AutomatedCreateResponse{jobId=$jobId, jobUrl=$jobUrl, allowedRefreshes=$allowedRefreshes, remainingRefreshes=$remainingRefreshes, additionalProperties=$additionalProperties}"

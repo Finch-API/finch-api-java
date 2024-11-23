@@ -368,17 +368,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Request && this.method == other.method && this.route == other.route && this.headers == other.headers && this.params == other.params && this.data == other.data && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Request && method == other.method && route == other.route && headers == other.headers && params == other.params && data == other.data && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(method, route, headers, params, data, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(method, route, headers, params, data, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Request{method=$method, route=$route, headers=$headers, params=$params, data=$data, additionalProperties=$additionalProperties}"
@@ -389,17 +386,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RequestForwardingForwardResponse && this.headers == other.headers && this.statusCode == other.statusCode && this.data == other.data && this.request == other.request && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is RequestForwardingForwardResponse && headers == other.headers && statusCode == other.statusCode && data == other.data && request == other.request && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(headers, statusCode, data, request, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(headers, statusCode, data, request, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "RequestForwardingForwardResponse{headers=$headers, statusCode=$statusCode, data=$data, request=$request, additionalProperties=$additionalProperties}"

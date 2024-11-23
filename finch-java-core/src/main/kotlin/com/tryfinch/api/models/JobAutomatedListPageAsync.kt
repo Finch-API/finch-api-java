@@ -37,12 +37,10 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedListPageAsync && this.automatedService == other.automatedService && this.params == other.params && this.response == other.response /* spotless:on */
+        return /* spotless:off */ other is JobAutomatedListPageAsync && automatedService == other.automatedService && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(automatedService, params, response) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(automatedService, params, response) /* spotless:on */
 
     override fun toString() =
         "JobAutomatedListPageAsync{automatedService=$automatedService, params=$params, response=$response}"
@@ -132,15 +130,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Response && this.data == other.data && this.paging == other.paging && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && data == other.data && paging == other.paging && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(data, paging, additionalProperties) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(data, paging, additionalProperties) /* spotless:on */
 
         override fun toString() =
-            "JobAutomatedListPageAsync.Response{data=$data, paging=$paging, additionalProperties=$additionalProperties}"
+            "Response{data=$data, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 
