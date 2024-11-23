@@ -298,7 +298,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ClientType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ClientType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -361,7 +361,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ConnectionType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -410,17 +410,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CreateAccessTokenResponse && this.accessToken == other.accessToken && this.connectionId == other.connectionId && this.customerId == other.customerId && this.accountId == other.accountId && this.clientType == other.clientType && this.companyId == other.companyId && this.connectionType == other.connectionType && this.products == other.products && this.providerId == other.providerId && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is CreateAccessTokenResponse && accessToken == other.accessToken && connectionId == other.connectionId && customerId == other.customerId && accountId == other.accountId && clientType == other.clientType && companyId == other.companyId && connectionType == other.connectionType && products == other.products && providerId == other.providerId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(accessToken, connectionId, customerId, accountId, clientType, companyId, connectionType, products, providerId, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(accessToken, connectionId, customerId, accountId, clientType, companyId, connectionType, products, providerId, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "CreateAccessTokenResponse{accessToken=$accessToken, connectionId=$connectionId, customerId=$customerId, accountId=$accountId, clientType=$clientType, companyId=$companyId, connectionType=$connectionType, products=$products, providerId=$providerId, additionalProperties=$additionalProperties}"

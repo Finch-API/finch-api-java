@@ -279,17 +279,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is OperationSupportMatrix && this.create == other.create && this.update == other.update && this.delete == other.delete && this.read == other.read && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is OperationSupportMatrix && create == other.create && update == other.update && delete == other.delete && read == other.read && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(create, update, delete, read, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(create, update, delete, read, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "OperationSupportMatrix{create=$create, update=$update, delete=$delete, read=$read, additionalProperties=$additionalProperties}"

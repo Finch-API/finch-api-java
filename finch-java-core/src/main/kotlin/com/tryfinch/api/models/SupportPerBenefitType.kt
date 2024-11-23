@@ -115,17 +115,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SupportPerBenefitType && this.companyBenefits == other.companyBenefits && this.individualBenefits == other.individualBenefits && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SupportPerBenefitType && companyBenefits == other.companyBenefits && individualBenefits == other.individualBenefits && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(companyBenefits, individualBenefits, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(companyBenefits, individualBenefits, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "SupportPerBenefitType{companyBenefits=$companyBenefits, individualBenefits=$individualBenefits, additionalProperties=$additionalProperties}"

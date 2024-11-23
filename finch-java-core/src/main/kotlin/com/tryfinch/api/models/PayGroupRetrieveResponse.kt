@@ -160,7 +160,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PayFrequency && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is PayFrequency && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -251,17 +251,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PayGroupRetrieveResponse && this.id == other.id && this.name == other.name && this.payFrequencies == other.payFrequencies && this.individualIds == other.individualIds && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is PayGroupRetrieveResponse && id == other.id && name == other.name && payFrequencies == other.payFrequencies && individualIds == other.individualIds && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, name, payFrequencies, individualIds, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, name, payFrequencies, individualIds, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "PayGroupRetrieveResponse{id=$id, name=$name, payFrequencies=$payFrequencies, individualIds=$individualIds, additionalProperties=$additionalProperties}"

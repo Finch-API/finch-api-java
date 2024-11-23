@@ -216,17 +216,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectSessionNewBody && this.customerId == other.customerId && this.customerName == other.customerName && this.products == other.products && this.customerEmail == other.customerEmail && this.integration == other.integration && this.manual == other.manual && this.minutesToExpire == other.minutesToExpire && this.redirectUri == other.redirectUri && this.sandbox == other.sandbox && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ConnectSessionNewBody && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ConnectSessionNewBody{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
@@ -243,12 +240,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ConnectSessionNewParams && this.customerId == other.customerId && this.customerName == other.customerName && this.products == other.products && this.customerEmail == other.customerEmail && this.integration == other.integration && this.manual == other.manual && this.minutesToExpire == other.minutesToExpire && this.redirectUri == other.redirectUri && this.sandbox == other.sandbox && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ConnectSessionNewParams && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ConnectSessionNewParams{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -470,7 +465,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectProducts && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ConnectProducts && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -628,7 +623,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is AuthMethod && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is AuthMethod && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -689,17 +684,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Integration && this.provider == other.provider && this.authMethod == other.authMethod && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Integration && provider == other.provider && authMethod == other.authMethod && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(provider, authMethod, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(provider, authMethod, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Integration{provider=$provider, authMethod=$authMethod, additionalProperties=$additionalProperties}"
@@ -718,7 +710,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Sandbox && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Sandbox && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
