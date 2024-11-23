@@ -39,6 +39,12 @@ constructor(
 
     fun products(): Optional<List<String>> = Optional.ofNullable(products)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): SandboxConnectionAccountCreateBody {
         return SandboxConnectionAccountCreateBody(
@@ -170,25 +176,6 @@ constructor(
             "SandboxConnectionAccountCreateBody{companyId=$companyId, providerId=$providerId, authenticationType=$authenticationType, products=$products, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxConnectionAccountCreateParams && companyId == other.companyId && providerId == other.providerId && authenticationType == other.authenticationType && products == other.products && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(companyId, providerId, authenticationType, products, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxConnectionAccountCreateParams{companyId=$companyId, providerId=$providerId, authenticationType=$authenticationType, products=$products, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -211,13 +198,16 @@ constructor(
         internal fun from(
             sandboxConnectionAccountCreateParams: SandboxConnectionAccountCreateParams
         ) = apply {
-            this.companyId = sandboxConnectionAccountCreateParams.companyId
-            this.providerId = sandboxConnectionAccountCreateParams.providerId
-            this.authenticationType = sandboxConnectionAccountCreateParams.authenticationType
-            this.products(sandboxConnectionAccountCreateParams.products ?: listOf())
-            additionalHeaders(sandboxConnectionAccountCreateParams.additionalHeaders)
-            additionalQueryParams(sandboxConnectionAccountCreateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxConnectionAccountCreateParams.additionalBodyProperties)
+            companyId = sandboxConnectionAccountCreateParams.companyId
+            providerId = sandboxConnectionAccountCreateParams.providerId
+            authenticationType = sandboxConnectionAccountCreateParams.authenticationType
+            products =
+                sandboxConnectionAccountCreateParams.products?.toMutableList() ?: mutableListOf()
+            additionalHeaders = sandboxConnectionAccountCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                sandboxConnectionAccountCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                sandboxConnectionAccountCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun companyId(companyId: String) = apply { this.companyId = companyId }
@@ -369,7 +359,7 @@ constructor(
                 checkNotNull(companyId) { "`companyId` is required but was not set" },
                 checkNotNull(providerId) { "`providerId` is required but was not set" },
                 authenticationType,
-                if (products.size == 0) null else products.toImmutable(),
+                products.toImmutable().ifEmpty { null },
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -444,4 +434,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxConnectionAccountCreateParams && companyId == other.companyId && providerId == other.providerId && authenticationType == other.authenticationType && products == other.products && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(companyId, providerId, authenticationType, products, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "SandboxConnectionAccountCreateParams{companyId=$companyId, providerId=$providerId, authenticationType=$authenticationType, products=$products, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

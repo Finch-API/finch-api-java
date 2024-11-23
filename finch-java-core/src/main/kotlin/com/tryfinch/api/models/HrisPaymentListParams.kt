@@ -21,6 +21,10 @@ constructor(
 
     fun startDate(): LocalDate = startDate
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -31,23 +35,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisPaymentListParams && endDate == other.endDate && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, startDate, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "HrisPaymentListParams{endDate=$endDate, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -66,10 +53,10 @@ constructor(
 
         @JvmSynthetic
         internal fun from(hrisPaymentListParams: HrisPaymentListParams) = apply {
-            this.endDate = hrisPaymentListParams.endDate
-            this.startDate = hrisPaymentListParams.startDate
-            additionalHeaders(hrisPaymentListParams.additionalHeaders)
-            additionalQueryParams(hrisPaymentListParams.additionalQueryParams)
+            endDate = hrisPaymentListParams.endDate
+            startDate = hrisPaymentListParams.startDate
+            additionalHeaders = hrisPaymentListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = hrisPaymentListParams.additionalQueryParams.toBuilder()
         }
 
         /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
@@ -184,4 +171,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisPaymentListParams && endDate == other.endDate && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, startDate, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "HrisPaymentListParams{endDate=$endDate, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
