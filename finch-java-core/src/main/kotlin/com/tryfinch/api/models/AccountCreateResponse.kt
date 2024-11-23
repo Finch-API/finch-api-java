@@ -214,7 +214,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AuthenticationType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is AuthenticationType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -275,17 +275,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AccountCreateResponse && this.connectionId == other.connectionId && this.companyId == other.companyId && this.providerId == other.providerId && this.accountId == other.accountId && this.authenticationType == other.authenticationType && this.products == other.products && this.accessToken == other.accessToken && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AccountCreateResponse && connectionId == other.connectionId && companyId == other.companyId && providerId == other.providerId && accountId == other.accountId && authenticationType == other.authenticationType && products == other.products && accessToken == other.accessToken && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(connectionId, companyId, providerId, accountId, authenticationType, products, accessToken, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(connectionId, companyId, providerId, accountId, authenticationType, products, accessToken, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "AccountCreateResponse{connectionId=$connectionId, companyId=$companyId, providerId=$providerId, accountId=$accountId, authenticationType=$authenticationType, products=$products, accessToken=$accessToken, additionalProperties=$additionalProperties}"

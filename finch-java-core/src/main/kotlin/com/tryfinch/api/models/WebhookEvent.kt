@@ -123,15 +123,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is WebhookEvent && this.accountUpdateEvent == other.accountUpdateEvent && this.jobCompletionEvent == other.jobCompletionEvent && this.companyEvent == other.companyEvent && this.directoryEvent == other.directoryEvent && this.employmentEvent == other.employmentEvent && this.individualEvent == other.individualEvent && this.paymentEvent == other.paymentEvent && this.payStatementEvent == other.payStatementEvent /* spotless:on */
+        return /* spotless:off */ other is WebhookEvent && accountUpdateEvent == other.accountUpdateEvent && jobCompletionEvent == other.jobCompletionEvent && companyEvent == other.companyEvent && directoryEvent == other.directoryEvent && employmentEvent == other.employmentEvent && individualEvent == other.individualEvent && paymentEvent == other.paymentEvent && payStatementEvent == other.payStatementEvent /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(accountUpdateEvent, jobCompletionEvent, companyEvent, directoryEvent, employmentEvent, individualEvent, paymentEvent, payStatementEvent) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accountUpdateEvent, jobCompletionEvent, companyEvent, directoryEvent, employmentEvent, individualEvent, paymentEvent, payStatementEvent) /* spotless:on */
 
-    override fun toString(): String {
-        return when {
+    override fun toString(): String =
+        when {
             accountUpdateEvent != null -> "WebhookEvent{accountUpdateEvent=$accountUpdateEvent}"
             jobCompletionEvent != null -> "WebhookEvent{jobCompletionEvent=$jobCompletionEvent}"
             companyEvent != null -> "WebhookEvent{companyEvent=$companyEvent}"
@@ -143,7 +141,6 @@ private constructor(
             _json != null -> "WebhookEvent{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid WebhookEvent")
         }
-    }
 
     companion object {
 

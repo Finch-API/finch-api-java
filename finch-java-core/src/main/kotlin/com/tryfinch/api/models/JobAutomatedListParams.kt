@@ -41,12 +41,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedListParams && this.limit == other.limit && this.offset == other.offset && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is JobAutomatedListParams && limit == other.limit && offset == other.offset && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(limit, offset, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(limit, offset, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "JobAutomatedListParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

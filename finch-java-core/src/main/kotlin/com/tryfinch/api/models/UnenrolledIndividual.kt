@@ -239,17 +239,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && this.name == other.name && this.finchCode == other.finchCode && this.message == other.message && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && name == other.name && finchCode == other.finchCode && message == other.message && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, finchCode, message, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, finchCode, message, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Body{name=$name, finchCode=$finchCode, message=$message, additionalProperties=$additionalProperties}"
@@ -260,17 +257,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UnenrolledIndividual && this.individualId == other.individualId && this.code == other.code && this.body == other.body && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is UnenrolledIndividual && individualId == other.individualId && code == other.code && body == other.body && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(individualId, code, body, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(individualId, code, body, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "UnenrolledIndividual{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"

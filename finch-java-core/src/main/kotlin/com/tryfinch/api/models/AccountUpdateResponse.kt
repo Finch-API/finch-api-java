@@ -201,7 +201,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AuthenticationType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is AuthenticationType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -262,17 +262,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AccountUpdateResponse && this.connectionId == other.connectionId && this.accountId == other.accountId && this.authenticationType == other.authenticationType && this.companyId == other.companyId && this.providerId == other.providerId && this.products == other.products && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AccountUpdateResponse && connectionId == other.connectionId && accountId == other.accountId && authenticationType == other.authenticationType && companyId == other.companyId && providerId == other.providerId && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(connectionId, accountId, authenticationType, companyId, providerId, products, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(connectionId, accountId, authenticationType, companyId, providerId, products, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "AccountUpdateResponse{connectionId=$connectionId, accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, providerId=$providerId, products=$products, additionalProperties=$additionalProperties}"

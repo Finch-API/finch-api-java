@@ -310,7 +310,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is HsaContributionLimit && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is HsaContributionLimit && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -359,17 +359,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && this.employeeDeduction == other.employeeDeduction && this.companyContribution == other.companyContribution && this.annualMaximum == other.annualMaximum && this.catchUp == other.catchUp && this.hsaContributionLimit == other.hsaContributionLimit && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && employeeDeduction == other.employeeDeduction && companyContribution == other.companyContribution && annualMaximum == other.annualMaximum && catchUp == other.catchUp && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(employeeDeduction, companyContribution, annualMaximum, catchUp, hsaContributionLimit, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(employeeDeduction, companyContribution, annualMaximum, catchUp, hsaContributionLimit, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Body{employeeDeduction=$employeeDeduction, companyContribution=$companyContribution, annualMaximum=$annualMaximum, catchUp=$catchUp, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
@@ -380,17 +377,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is IndividualBenefit && this.individualId == other.individualId && this.code == other.code && this.body == other.body && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is IndividualBenefit && individualId == other.individualId && code == other.code && body == other.body && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(individualId, code, body, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(individualId, code, body, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "IndividualBenefit{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"

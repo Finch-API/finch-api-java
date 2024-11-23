@@ -100,17 +100,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is HrisEmploymentRetrieveManyBody && this.requests == other.requests && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is HrisEmploymentRetrieveManyBody && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(requests, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(requests, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "HrisEmploymentRetrieveManyBody{requests=$requests, additionalProperties=$additionalProperties}"
@@ -127,12 +124,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisEmploymentRetrieveManyParams && this.requests == other.requests && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is HrisEmploymentRetrieveManyParams && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "HrisEmploymentRetrieveManyParams{requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -370,17 +365,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Request && this.individualId == other.individualId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Request && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(individualId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Request{individualId=$individualId, additionalProperties=$additionalProperties}"

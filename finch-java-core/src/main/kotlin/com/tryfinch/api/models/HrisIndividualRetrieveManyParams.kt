@@ -113,17 +113,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is HrisIndividualRetrieveManyBody && this.options == other.options && this.requests == other.requests && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is HrisIndividualRetrieveManyBody && options == other.options && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(options, requests, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(options, requests, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "HrisIndividualRetrieveManyBody{options=$options, requests=$requests, additionalProperties=$additionalProperties}"
@@ -140,12 +137,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisIndividualRetrieveManyParams && this.options == other.options && this.requests == other.requests && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is HrisIndividualRetrieveManyParams && options == other.options && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(options, requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(options, requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "HrisIndividualRetrieveManyParams{options=$options, requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -373,17 +368,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Options && this.include == other.include && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Options && include == other.include && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(include, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(include, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Options{include=$include, additionalProperties=$additionalProperties}"
@@ -446,17 +438,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Request && this.individualId == other.individualId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Request && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(individualId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Request{individualId=$individualId, additionalProperties=$additionalProperties}"

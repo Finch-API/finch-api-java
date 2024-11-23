@@ -34,12 +34,10 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisIndividualRetrieveManyPage && this.individualsService == other.individualsService && this.params == other.params && this.response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisIndividualRetrieveManyPage && individualsService == other.individualsService && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(individualsService, params, response) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualsService, params, response) /* spotless:on */
 
     override fun toString() =
         "HrisIndividualRetrieveManyPage{individualsService=$individualsService, params=$params, response=$response}"
@@ -107,15 +105,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Response && this.responses == other.responses && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
 
         override fun toString() =
-            "HrisIndividualRetrieveManyPage.Response{responses=$responses, additionalProperties=$additionalProperties}"
+            "Response{responses=$responses, additionalProperties=$additionalProperties}"
 
         companion object {
 

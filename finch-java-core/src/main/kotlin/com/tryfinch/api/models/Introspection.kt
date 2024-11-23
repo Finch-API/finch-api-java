@@ -700,17 +700,14 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ConnectionStatus && this.status == other.status && this.message == other.message && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is ConnectionStatus && status == other.status && message == other.message && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(status, message, additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(status, message, additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() =
                 "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
@@ -729,7 +726,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -796,17 +793,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AuthenticationMethod && this.type == other.type && this.connectionStatus == other.connectionStatus && this.products == other.products && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is AuthenticationMethod && type == other.type && connectionStatus == other.connectionStatus && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(type, connectionStatus, products, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(type, connectionStatus, products, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "AuthenticationMethod{type=$type, connectionStatus=$connectionStatus, products=$products, additionalProperties=$additionalProperties}"
@@ -825,7 +819,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ClientType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ClientType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -966,17 +960,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionStatus && this.status == other.status && this.message == other.message && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ConnectionStatus && status == other.status && message == other.message && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(status, message, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(status, message, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
@@ -995,7 +986,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is ConnectionType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -1044,17 +1035,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Introspection && this.connectionId == other.connectionId && this.connectionStatus == other.connectionStatus && this.clientId == other.clientId && this.clientType == other.clientType && this.connectionType == other.connectionType && this.companyId == other.companyId && this.accountId == other.accountId && this.customerId == other.customerId && this.customerName == other.customerName && this.customerEmail == other.customerEmail && this.authenticationMethods == other.authenticationMethods && this.products == other.products && this.username == other.username && this.providerId == other.providerId && this.payrollProviderId == other.payrollProviderId && this.manual == other.manual && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Introspection && connectionId == other.connectionId && connectionStatus == other.connectionStatus && clientId == other.clientId && clientType == other.clientType && connectionType == other.connectionType && companyId == other.companyId && accountId == other.accountId && customerId == other.customerId && customerName == other.customerName && customerEmail == other.customerEmail && authenticationMethods == other.authenticationMethods && products == other.products && username == other.username && providerId == other.providerId && payrollProviderId == other.payrollProviderId && manual == other.manual && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(connectionId, connectionStatus, clientId, clientType, connectionType, companyId, accountId, customerId, customerName, customerEmail, authenticationMethods, products, username, providerId, payrollProviderId, manual, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(connectionId, connectionStatus, clientId, clientType, connectionType, companyId, accountId, customerId, customerName, customerEmail, authenticationMethods, products, username, providerId, payrollProviderId, manual, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Introspection{connectionId=$connectionId, connectionStatus=$connectionStatus, clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, customerId=$customerId, customerName=$customerName, customerEmail=$customerEmail, authenticationMethods=$authenticationMethods, products=$products, username=$username, providerId=$providerId, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"

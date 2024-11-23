@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is PayrollPayGroupRetrieveParams && this.payGroupId == other.payGroupId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is PayrollPayGroupRetrieveParams && payGroupId == other.payGroupId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(payGroupId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payGroupId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "PayrollPayGroupRetrieveParams{payGroupId=$payGroupId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
