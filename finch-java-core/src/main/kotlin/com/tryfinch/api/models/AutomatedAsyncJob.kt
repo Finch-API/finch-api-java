@@ -270,7 +270,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -351,7 +351,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -394,17 +394,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AutomatedAsyncJob && this.jobId == other.jobId && this.jobUrl == other.jobUrl && this.type == other.type && this.status == other.status && this.createdAt == other.createdAt && this.scheduledAt == other.scheduledAt && this.startedAt == other.startedAt && this.completedAt == other.completedAt && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AutomatedAsyncJob && jobId == other.jobId && jobUrl == other.jobUrl && type == other.type && status == other.status && createdAt == other.createdAt && scheduledAt == other.scheduledAt && startedAt == other.startedAt && completedAt == other.completedAt && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(jobId, jobUrl, type, status, createdAt, scheduledAt, startedAt, completedAt, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(jobId, jobUrl, type, status, createdAt, scheduledAt, startedAt, completedAt, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "AutomatedAsyncJob{jobId=$jobId, jobUrl=$jobUrl, type=$type, status=$status, createdAt=$createdAt, scheduledAt=$scheduledAt, startedAt=$startedAt, completedAt=$completedAt, additionalProperties=$additionalProperties}"

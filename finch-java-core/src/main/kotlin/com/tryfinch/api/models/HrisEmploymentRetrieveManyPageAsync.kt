@@ -35,12 +35,10 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisEmploymentRetrieveManyPageAsync && this.employmentsService == other.employmentsService && this.params == other.params && this.response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisEmploymentRetrieveManyPageAsync && employmentsService == other.employmentsService && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(employmentsService, params, response) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(employmentsService, params, response) /* spotless:on */
 
     override fun toString() =
         "HrisEmploymentRetrieveManyPageAsync{employmentsService=$employmentsService, params=$params, response=$response}"
@@ -111,15 +109,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Response && this.responses == other.responses && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
 
         override fun toString() =
-            "HrisEmploymentRetrieveManyPageAsync.Response{responses=$responses, additionalProperties=$additionalProperties}"
+            "Response{responses=$responses, additionalProperties=$additionalProperties}"
 
         companion object {
 

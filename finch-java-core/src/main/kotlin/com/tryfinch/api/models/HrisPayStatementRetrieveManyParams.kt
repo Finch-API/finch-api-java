@@ -99,17 +99,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is HrisPayStatementRetrieveManyBody && this.requests == other.requests && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is HrisPayStatementRetrieveManyBody && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(requests, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(requests, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "HrisPayStatementRetrieveManyBody{requests=$requests, additionalProperties=$additionalProperties}"
@@ -126,12 +123,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisPayStatementRetrieveManyParams && this.requests == other.requests && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is HrisPayStatementRetrieveManyParams && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "HrisPayStatementRetrieveManyParams{requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -383,17 +378,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Request && this.paymentId == other.paymentId && this.limit == other.limit && this.offset == other.offset && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Request && paymentId == other.paymentId && limit == other.limit && offset == other.offset && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(paymentId, limit, offset, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(paymentId, limit, offset, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Request{paymentId=$paymentId, limit=$limit, offset=$offset, additionalProperties=$additionalProperties}"

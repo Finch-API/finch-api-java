@@ -137,17 +137,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AccessTokenCreateBody && this.code == other.code && this.clientId == other.clientId && this.clientSecret == other.clientSecret && this.redirectUri == other.redirectUri && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is AccessTokenCreateBody && code == other.code && clientId == other.clientId && clientSecret == other.clientSecret && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(code, clientId, clientSecret, redirectUri, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(code, clientId, clientSecret, redirectUri, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "AccessTokenCreateBody{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
@@ -164,12 +161,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is AccessTokenCreateParams && this.code == other.code && this.clientId == other.clientId && this.clientSecret == other.clientSecret && this.redirectUri == other.redirectUri && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is AccessTokenCreateParams && code == other.code && clientId == other.clientId && clientSecret == other.clientSecret && redirectUri == other.redirectUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(code, clientId, clientSecret, redirectUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(code, clientId, clientSecret, redirectUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "AccessTokenCreateParams{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

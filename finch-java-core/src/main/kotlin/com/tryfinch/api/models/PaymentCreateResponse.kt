@@ -112,17 +112,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PaymentCreateResponse && this.paymentId == other.paymentId && this.payDate == other.payDate && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is PaymentCreateResponse && paymentId == other.paymentId && payDate == other.payDate && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(paymentId, payDate, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(paymentId, payDate, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "PaymentCreateResponse{paymentId=$paymentId, payDate=$payDate, additionalProperties=$additionalProperties}"

@@ -219,17 +219,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Location && this.line1 == other.line1 && this.line2 == other.line2 && this.city == other.city && this.state == other.state && this.postalCode == other.postalCode && this.country == other.country && this.name == other.name && this.sourceId == other.sourceId && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Location && line1 == other.line1 && line2 == other.line2 && city == other.city && state == other.state && postalCode == other.postalCode && country == other.country && name == other.name && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(line1, line2, city, state, postalCode, country, name, sourceId, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(line1, line2, city, state, postalCode, country, name, sourceId, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Location{line1=$line1, line2=$line2, city=$city, state=$state, postalCode=$postalCode, country=$country, name=$name, sourceId=$sourceId, additionalProperties=$additionalProperties}"

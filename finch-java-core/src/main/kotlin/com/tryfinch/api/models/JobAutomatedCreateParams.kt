@@ -87,21 +87,18 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is JobAutomatedCreateBody && this.dataSyncAll == other.dataSyncAll && this.w4DataSync == other.w4DataSync /* spotless:on */
+            return /* spotless:off */ other is JobAutomatedCreateBody && dataSyncAll == other.dataSyncAll && w4DataSync == other.w4DataSync /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(dataSyncAll, w4DataSync) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4DataSync) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 dataSyncAll != null -> "JobAutomatedCreateBody{dataSyncAll=$dataSyncAll}"
                 w4DataSync != null -> "JobAutomatedCreateBody{w4DataSync=$w4DataSync}"
                 _json != null -> "JobAutomatedCreateBody{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid JobAutomatedCreateBody")
             }
-        }
 
         companion object {
 
@@ -175,12 +172,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedCreateParams && this.dataSyncAll == other.dataSyncAll && this.w4DataSync == other.w4DataSync && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is JobAutomatedCreateParams && dataSyncAll == other.dataSyncAll && w4DataSync == other.w4DataSync && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(dataSyncAll, w4DataSync, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4DataSync, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "JobAutomatedCreateParams{dataSyncAll=$dataSyncAll, w4DataSync=$w4DataSync, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
@@ -395,7 +390,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -438,17 +433,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is DataSyncAll && this.type == other.type && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is DataSyncAll && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(type, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(type, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "DataSyncAll{type=$type, additionalProperties=$additionalProperties}"
@@ -535,7 +527,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -578,17 +570,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is W4DataSync && this.type == other.type && this.individualId == other.individualId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is W4DataSync && type == other.type && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(type, individualId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(type, individualId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "W4DataSync{type=$type, individualId=$individualId, additionalProperties=$additionalProperties}"

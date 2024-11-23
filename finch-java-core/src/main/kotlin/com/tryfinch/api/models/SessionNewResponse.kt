@@ -112,17 +112,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SessionNewResponse && this.sessionId == other.sessionId && this.connectUrl == other.connectUrl && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SessionNewResponse && sessionId == other.sessionId && connectUrl == other.connectUrl && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(sessionId, connectUrl, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(sessionId, connectUrl, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "SessionNewResponse{sessionId=$sessionId, connectUrl=$connectUrl, additionalProperties=$additionalProperties}"

@@ -47,12 +47,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsParams && this.benefitId == other.benefitId && this.individualIds == other.individualIds && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsParams && benefitId == other.benefitId && individualIds == other.individualIds && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "HrisBenefitIndividualRetrieveManyBenefitsParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

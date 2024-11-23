@@ -191,17 +191,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RequestForwardingForwardBody && this.method == other.method && this.route == other.route && this.data == other.data && this.headers == other.headers && this.params == other.params && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is RequestForwardingForwardBody && method == other.method && route == other.route && data == other.data && headers == other.headers && params == other.params && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(method, route, data, headers, params, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(method, route, data, headers, params, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "RequestForwardingForwardBody{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
@@ -218,12 +215,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is RequestForwardingForwardParams && this.method == other.method && this.route == other.route && this.data == other.data && this.headers == other.headers && this.params == other.params && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is RequestForwardingForwardParams && method == other.method && route == other.route && data == other.data && headers == other.headers && params == other.params && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(method, route, data, headers, params, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(method, route, data, headers, params, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "RequestForwardingForwardParams{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

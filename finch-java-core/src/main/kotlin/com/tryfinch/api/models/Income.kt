@@ -182,7 +182,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Unit && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Unit && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -273,17 +273,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Income && this.unit == other.unit && this.amount == other.amount && this.currency == other.currency && this.effectiveDate == other.effectiveDate && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Income && unit == other.unit && amount == other.amount && currency == other.currency && effectiveDate == other.effectiveDate && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(unit, amount, currency, effectiveDate, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(unit, amount, currency, effectiveDate, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "Income{unit=$unit, amount=$amount, currency=$currency, effectiveDate=$effectiveDate, additionalProperties=$additionalProperties}"
