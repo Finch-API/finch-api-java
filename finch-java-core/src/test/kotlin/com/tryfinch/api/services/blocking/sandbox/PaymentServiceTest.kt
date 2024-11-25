@@ -29,9 +29,9 @@ class PaymentServiceTest {
                                 .earnings(
                                     listOf(
                                         SandboxPaymentCreateParams.PayStatement.Earning.builder()
-                                            .amount(123L)
+                                            .amount(0L)
                                             .currency("currency")
-                                            .hours(42.23)
+                                            .hours(0.0)
                                             .name("name")
                                             .type(
                                                 SandboxPaymentCreateParams.PayStatement.Earning.Type
@@ -44,7 +44,7 @@ class PaymentServiceTest {
                                     listOf(
                                         SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
                                             .builder()
-                                            .amount(123L)
+                                            .amount(0L)
                                             .currency("currency")
                                             .name("name")
                                             .preTax(true)
@@ -56,23 +56,23 @@ class PaymentServiceTest {
                                     listOf(
                                         SandboxPaymentCreateParams.PayStatement.EmployerContribution
                                             .builder()
-                                            .amount(123L)
+                                            .amount(0L)
                                             .currency("currency")
                                             .name("name")
                                             .type(BenefitType._401K)
                                             .build()
                                     )
                                 )
-                                .grossPay(Money.builder().amount(123L).currency("currency").build())
+                                .grossPay(Money.builder().amount(0L).currency("currency").build())
                                 .individualId("individual_id")
-                                .netPay(Money.builder().amount(123L).currency("currency").build())
+                                .netPay(Money.builder().amount(0L).currency("currency").build())
                                 .paymentMethod(
                                     SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
                                 )
                                 .taxes(
                                     listOf(
                                         SandboxPaymentCreateParams.PayStatement.Tax.builder()
-                                            .amount(123L)
+                                            .amount(0L)
                                             .currency("currency")
                                             .employer(true)
                                             .name("name")
@@ -83,7 +83,7 @@ class PaymentServiceTest {
                                             .build()
                                     )
                                 )
-                                .totalHours(42.23)
+                                .totalHours(0.0)
                                 .type(SandboxPaymentCreateParams.PayStatement.Type.REGULAR_PAYROLL)
                                 .build()
                         )

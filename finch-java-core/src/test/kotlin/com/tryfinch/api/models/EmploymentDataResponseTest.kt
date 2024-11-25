@@ -35,7 +35,7 @@ class EmploymentDataResponseTest {
                         .firstName("first_name")
                         .income(
                             Income.builder()
-                                .amount(123L)
+                                .amount(0L)
                                 .currency("currency")
                                 .effectiveDate("effective_date")
                                 .unit(Income.Unit.YEARLY)
@@ -44,7 +44,7 @@ class EmploymentDataResponseTest {
                         .incomeHistory(
                             listOf(
                                 Income.builder()
-                                    .amount(123L)
+                                    .amount(0L)
                                     .currency("currency")
                                     .effectiveDate("effective_date")
                                     .unit(Income.Unit.YEARLY)
@@ -74,7 +74,7 @@ class EmploymentDataResponseTest {
                         .workId("work_id")
                         .build()
                 )
-                .code(123L)
+                .code(0L)
                 .individualId("individual_id")
                 .build()
         assertThat(employmentDataResponse).isNotNull
@@ -102,7 +102,7 @@ class EmploymentDataResponseTest {
                     .firstName("first_name")
                     .income(
                         Income.builder()
-                            .amount(123L)
+                            .amount(0L)
                             .currency("currency")
                             .effectiveDate("effective_date")
                             .unit(Income.Unit.YEARLY)
@@ -111,7 +111,7 @@ class EmploymentDataResponseTest {
                     .incomeHistory(
                         listOf(
                             Income.builder()
-                                .amount(123L)
+                                .amount(0L)
                                 .currency("currency")
                                 .effectiveDate("effective_date")
                                 .unit(Income.Unit.YEARLY)
@@ -141,7 +141,7 @@ class EmploymentDataResponseTest {
                     .workId("work_id")
                     .build()
             )
-        assertThat(employmentDataResponse.code()).contains(123L)
+        assertThat(employmentDataResponse.code()).contains(0L)
         assertThat(employmentDataResponse.individualId()).contains("individual_id")
     }
 }

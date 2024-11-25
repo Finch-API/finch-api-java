@@ -18,7 +18,7 @@ class UnenrolledIndividualTest {
                         .name("name")
                         .build()
                 )
-                .code(123L)
+                .code(0L)
                 .individualId("individual_id")
                 .build()
         assertThat(unenrolledIndividual).isNotNull
@@ -30,7 +30,7 @@ class UnenrolledIndividualTest {
                     .name("name")
                     .build()
             )
-        assertThat(unenrolledIndividual.code()).contains(123L)
+        assertThat(unenrolledIndividual.code()).contains(0L)
         assertThat(unenrolledIndividual.individualId()).contains("individual_id")
     }
 }

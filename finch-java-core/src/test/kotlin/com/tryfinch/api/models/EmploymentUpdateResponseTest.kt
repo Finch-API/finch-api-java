@@ -33,7 +33,7 @@ class EmploymentUpdateResponseTest {
                 .firstName("first_name")
                 .income(
                     Income.builder()
-                        .amount(123L)
+                        .amount(0L)
                         .currency("currency")
                         .effectiveDate("effective_date")
                         .unit(Income.Unit.YEARLY)
@@ -42,7 +42,7 @@ class EmploymentUpdateResponseTest {
                 .incomeHistory(
                     listOf(
                         Income.builder()
-                            .amount(123L)
+                            .amount(0L)
                             .currency("currency")
                             .effectiveDate("effective_date")
                             .unit(Income.Unit.YEARLY)
@@ -94,7 +94,7 @@ class EmploymentUpdateResponseTest {
         assertThat(employmentUpdateResponse.income())
             .contains(
                 Income.builder()
-                    .amount(123L)
+                    .amount(0L)
                     .currency("currency")
                     .effectiveDate("effective_date")
                     .unit(Income.Unit.YEARLY)
@@ -103,7 +103,7 @@ class EmploymentUpdateResponseTest {
         assertThat(employmentUpdateResponse.incomeHistory().get())
             .containsExactly(
                 Income.builder()
-                    .amount(123L)
+                    .amount(0L)
                     .currency("currency")
                     .effectiveDate("effective_date")
                     .unit(Income.Unit.YEARLY)

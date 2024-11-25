@@ -66,7 +66,7 @@ class SandboxDirectoryCreateParamsTest {
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
-                                .amount(123L)
+                                .amount(0L)
                                 .currency("currency")
                                 .effectiveDate("effective_date")
                                 .unit(Income.Unit.YEARLY)
@@ -75,7 +75,7 @@ class SandboxDirectoryCreateParamsTest {
                         .incomeHistory(
                             listOf(
                                 Income.builder()
-                                    .amount(123L)
+                                    .amount(0L)
                                     .currency("currency")
                                     .effectiveDate("effective_date")
                                     .unit(Income.Unit.YEARLY)
@@ -206,7 +206,7 @@ class SandboxDirectoryCreateParamsTest {
                             )
                             .income(
                                 Income.builder()
-                                    .amount(123L)
+                                    .amount(0L)
                                     .currency("currency")
                                     .effectiveDate("effective_date")
                                     .unit(Income.Unit.YEARLY)
@@ -215,7 +215,7 @@ class SandboxDirectoryCreateParamsTest {
                             .incomeHistory(
                                 listOf(
                                     Income.builder()
-                                        .amount(123L)
+                                        .amount(0L)
                                         .currency("currency")
                                         .effectiveDate("effective_date")
                                         .unit(Income.Unit.YEARLY)
@@ -336,7 +336,7 @@ class SandboxDirectoryCreateParamsTest {
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
-                                .amount(123L)
+                                .amount(0L)
                                 .currency("currency")
                                 .effectiveDate("effective_date")
                                 .unit(Income.Unit.YEARLY)
@@ -345,7 +345,7 @@ class SandboxDirectoryCreateParamsTest {
                         .incomeHistory(
                             listOf(
                                 Income.builder()
-                                    .amount(123L)
+                                    .amount(0L)
                                     .currency("currency")
                                     .effectiveDate("effective_date")
                                     .unit(Income.Unit.YEARLY)

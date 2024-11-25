@@ -53,8 +53,8 @@ class ServiceParamsTest {
 
         val params =
             HrisDirectoryListParams.builder()
-                .limit(123L)
-                .offset(123L)
+                .limit(0L)
+                .offset(0L)
                 .additionalHeaders(additionalHeaders)
                 .additionalQueryParams(additionalQueryParams)
                 .build()
@@ -76,7 +76,7 @@ class ServiceParamsTest {
                             .build()
                     )
                 )
-                .paging(Paging.builder().count(123L).offset(123L).build())
+                .paging(Paging.builder().count(0L).offset(0L).build())
                 .build()
 
         stubFor(

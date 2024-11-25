@@ -33,7 +33,7 @@ class SandboxEmploymentUpdateParamsTest {
             .firstName("first_name")
             .income(
                 Income.builder()
-                    .amount(123L)
+                    .amount(0L)
                     .currency("currency")
                     .effectiveDate("effective_date")
                     .unit(Income.Unit.YEARLY)
@@ -42,7 +42,7 @@ class SandboxEmploymentUpdateParamsTest {
             .incomeHistory(
                 listOf(
                     Income.builder()
-                        .amount(123L)
+                        .amount(0L)
                         .currency("currency")
                         .effectiveDate("effective_date")
                         .unit(Income.Unit.YEARLY)
@@ -97,7 +97,7 @@ class SandboxEmploymentUpdateParamsTest {
                 .firstName("first_name")
                 .income(
                     Income.builder()
-                        .amount(123L)
+                        .amount(0L)
                         .currency("currency")
                         .effectiveDate("effective_date")
                         .unit(Income.Unit.YEARLY)
@@ -106,7 +106,7 @@ class SandboxEmploymentUpdateParamsTest {
                 .incomeHistory(
                     listOf(
                         Income.builder()
-                            .amount(123L)
+                            .amount(0L)
                             .currency("currency")
                             .effectiveDate("effective_date")
                             .unit(Income.Unit.YEARLY)
@@ -160,7 +160,7 @@ class SandboxEmploymentUpdateParamsTest {
         assertThat(body.income())
             .isEqualTo(
                 Income.builder()
-                    .amount(123L)
+                    .amount(0L)
                     .currency("currency")
                     .effectiveDate("effective_date")
                     .unit(Income.Unit.YEARLY)
@@ -170,7 +170,7 @@ class SandboxEmploymentUpdateParamsTest {
             .isEqualTo(
                 listOf(
                     Income.builder()
-                        .amount(123L)
+                        .amount(0L)
                         .currency("currency")
                         .effectiveDate("effective_date")
                         .unit(Income.Unit.YEARLY)
