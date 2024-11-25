@@ -13,17 +13,17 @@ class IndividualBenefitTest {
             IndividualBenefit.builder()
                 .body(
                     IndividualBenefit.Body.builder()
-                        .annualMaximum(123L)
+                        .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
                             BenefitContribution.builder()
-                                .amount(123L)
+                                .amount(0L)
                                 .type(BenefitContribution.Type.FIXED)
                                 .build()
                         )
                         .employeeDeduction(
                             BenefitContribution.builder()
-                                .amount(123L)
+                                .amount(0L)
                                 .type(BenefitContribution.Type.FIXED)
                                 .build()
                         )
@@ -32,31 +32,31 @@ class IndividualBenefitTest {
                         )
                         .build()
                 )
-                .code(123L)
+                .code(0L)
                 .individualId("individual_id")
                 .build()
         assertThat(individualBenefit).isNotNull
         assertThat(individualBenefit.body())
             .contains(
                 IndividualBenefit.Body.builder()
-                    .annualMaximum(123L)
+                    .annualMaximum(0L)
                     .catchUp(true)
                     .companyContribution(
                         BenefitContribution.builder()
-                            .amount(123L)
+                            .amount(0L)
                             .type(BenefitContribution.Type.FIXED)
                             .build()
                     )
                     .employeeDeduction(
                         BenefitContribution.builder()
-                            .amount(123L)
+                            .amount(0L)
                             .type(BenefitContribution.Type.FIXED)
                             .build()
                     )
                     .hsaContributionLimit(IndividualBenefit.Body.HsaContributionLimit.INDIVIDUAL)
                     .build()
             )
-        assertThat(individualBenefit.code()).contains(123L)
+        assertThat(individualBenefit.code()).contains(0L)
         assertThat(individualBenefit.individualId()).contains("individual_id")
     }
 }

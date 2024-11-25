@@ -88,7 +88,7 @@ class DirectoryServiceTest {
                                 )
                                 .income(
                                     Income.builder()
-                                        .amount(123L)
+                                        .amount(0L)
                                         .currency("currency")
                                         .effectiveDate("effective_date")
                                         .unit(Income.Unit.YEARLY)
@@ -97,7 +97,7 @@ class DirectoryServiceTest {
                                 .incomeHistory(
                                     listOf(
                                         Income.builder()
-                                            .amount(123L)
+                                            .amount(0L)
                                             .currency("currency")
                                             .effectiveDate("effective_date")
                                             .unit(Income.Unit.YEARLY)
