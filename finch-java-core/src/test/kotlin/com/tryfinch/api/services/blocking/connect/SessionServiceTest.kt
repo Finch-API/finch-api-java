@@ -33,7 +33,7 @@ class SessionServiceTest {
                             .build()
                     )
                     .manual(true)
-                    .minutesToExpire(42.23)
+                    .minutesToExpire(1.0)
                     .redirectUri("redirect_uri")
                     .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                     .build()
@@ -54,7 +54,7 @@ class SessionServiceTest {
             sessionService.reauthenticate(
                 ConnectSessionReauthenticateParams.builder()
                     .connectionId("connection_id")
-                    .minutesToExpire(123L)
+                    .minutesToExpire(0L)
                     .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
                     .redirectUri("https://example.com")
                     .build()

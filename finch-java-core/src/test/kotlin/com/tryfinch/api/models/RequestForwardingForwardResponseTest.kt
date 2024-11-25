@@ -23,7 +23,7 @@ class RequestForwardingForwardResponseTest {
                         .route("route")
                         .build()
                 )
-                .statusCode(123L)
+                .statusCode(0L)
                 .build()
         assertThat(requestForwardingForwardResponse).isNotNull
         assertThat(requestForwardingForwardResponse.data()).contains("data")
@@ -38,6 +38,6 @@ class RequestForwardingForwardResponseTest {
                     .route("route")
                     .build()
             )
-        assertThat(requestForwardingForwardResponse.statusCode()).isEqualTo(123L)
+        assertThat(requestForwardingForwardResponse.statusCode()).isEqualTo(0L)
     }
 }
