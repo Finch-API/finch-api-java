@@ -15,8 +15,8 @@ class HrisPayStatementRetrieveManyParamsTest {
                 listOf(
                     HrisPayStatementRetrieveManyParams.Request.builder()
                         .paymentId("payment_id")
-                        .limit(123L)
-                        .offset(123L)
+                        .limit(0L)
+                        .offset(0L)
                         .build()
                 )
             )
@@ -31,8 +31,8 @@ class HrisPayStatementRetrieveManyParamsTest {
                     listOf(
                         HrisPayStatementRetrieveManyParams.Request.builder()
                             .paymentId("payment_id")
-                            .limit(123L)
-                            .offset(123L)
+                            .limit(0L)
+                            .offset(0L)
                             .build()
                     )
                 )
@@ -44,8 +44,8 @@ class HrisPayStatementRetrieveManyParamsTest {
                 listOf(
                     HrisPayStatementRetrieveManyParams.Request.builder()
                         .paymentId("payment_id")
-                        .limit(123L)
-                        .offset(123L)
+                        .limit(0L)
+                        .offset(0L)
                         .build()
                 )
             )
