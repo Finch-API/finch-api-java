@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.blocking
 
-import com.google.common.collect.ImmutableListMultimap
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.http.Headers
