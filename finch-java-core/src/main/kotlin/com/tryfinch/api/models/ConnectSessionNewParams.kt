@@ -54,6 +54,12 @@ constructor(
 
     fun sandbox(): Optional<Sandbox> = Optional.ofNullable(sandbox)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ConnectSessionNewBody {
         return ConnectSessionNewBody(
@@ -229,25 +235,6 @@ constructor(
             "ConnectSessionNewBody{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ConnectSessionNewParams && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ConnectSessionNewParams{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -273,18 +260,19 @@ constructor(
 
         @JvmSynthetic
         internal fun from(connectSessionNewParams: ConnectSessionNewParams) = apply {
-            this.customerId = connectSessionNewParams.customerId
-            this.customerName = connectSessionNewParams.customerName
-            this.products(connectSessionNewParams.products)
-            this.customerEmail = connectSessionNewParams.customerEmail
-            this.integration = connectSessionNewParams.integration
-            this.manual = connectSessionNewParams.manual
-            this.minutesToExpire = connectSessionNewParams.minutesToExpire
-            this.redirectUri = connectSessionNewParams.redirectUri
-            this.sandbox = connectSessionNewParams.sandbox
-            additionalHeaders(connectSessionNewParams.additionalHeaders)
-            additionalQueryParams(connectSessionNewParams.additionalQueryParams)
-            additionalBodyProperties(connectSessionNewParams.additionalBodyProperties)
+            customerId = connectSessionNewParams.customerId
+            customerName = connectSessionNewParams.customerName
+            products = connectSessionNewParams.products.toMutableList()
+            customerEmail = connectSessionNewParams.customerEmail
+            integration = connectSessionNewParams.integration
+            manual = connectSessionNewParams.manual
+            minutesToExpire = connectSessionNewParams.minutesToExpire
+            redirectUri = connectSessionNewParams.redirectUri
+            sandbox = connectSessionNewParams.sandbox
+            additionalHeaders = connectSessionNewParams.additionalHeaders.toBuilder()
+            additionalQueryParams = connectSessionNewParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                connectSessionNewParams.additionalBodyProperties.toMutableMap()
         }
 
         fun customerId(customerId: String) = apply { this.customerId = customerId }
@@ -439,7 +427,7 @@ constructor(
             ConnectSessionNewParams(
                 checkNotNull(customerId) { "`customerId` is required but was not set" },
                 checkNotNull(customerName) { "`customerName` is required but was not set" },
-                checkNotNull(products) { "`products` is required but was not set" }.toImmutable(),
+                products.toImmutable(),
                 customerEmail,
                 integration,
                 manual,
@@ -753,4 +741,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ConnectSessionNewParams && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ConnectSessionNewParams{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

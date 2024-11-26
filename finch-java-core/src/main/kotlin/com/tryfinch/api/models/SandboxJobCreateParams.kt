@@ -29,6 +29,12 @@ constructor(
 
     fun type(): Type = type
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): SandboxJobCreateBody {
         return SandboxJobCreateBody(type, additionalBodyProperties)
@@ -113,25 +119,6 @@ constructor(
             "SandboxJobCreateBody{type=$type, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxJobCreateParams && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxJobCreateParams{type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -149,10 +136,11 @@ constructor(
 
         @JvmSynthetic
         internal fun from(sandboxJobCreateParams: SandboxJobCreateParams) = apply {
-            this.type = sandboxJobCreateParams.type
-            additionalHeaders(sandboxJobCreateParams.additionalHeaders)
-            additionalQueryParams(sandboxJobCreateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxJobCreateParams.additionalBodyProperties)
+            type = sandboxJobCreateParams.type
+            additionalHeaders = sandboxJobCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxJobCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                sandboxJobCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The type of job to start. Currently the only supported type is `data_sync_all` */
@@ -337,4 +325,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxJobCreateParams && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "SandboxJobCreateParams{type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
