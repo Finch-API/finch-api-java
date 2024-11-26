@@ -3,7 +3,6 @@
 package com.tryfinch.api.services.blocking
 
 import com.fasterxml.jackson.core.JsonProcessingException
-
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.getRequiredHeader
 import com.tryfinch.api.core.handlers.errorHandler
@@ -26,11 +25,7 @@ constructor(
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-    override fun unwrap(
-        payload: String,
-        headers: Headers,
-        secret: String?
-    ): WebhookEvent {
+    override fun unwrap(payload: String, headers: Headers, secret: String?): WebhookEvent {
         verifySignature(payload, headers, secret)
         return try {
             clientOptions.jsonMapper.readValue(payload, WebhookEvent::class.java)
@@ -39,11 +34,7 @@ constructor(
         }
     }
 
-    override fun verifySignature(
-        payload: String,
-        headers: Headers,
-        secret: String?
-    ) {
+    override fun verifySignature(payload: String, headers: Headers, secret: String?) {
         val webhookSecret =
             secret
                 ?: clientOptions.webhookSecret
