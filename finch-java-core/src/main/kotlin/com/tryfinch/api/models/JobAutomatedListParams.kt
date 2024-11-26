@@ -21,6 +21,10 @@ constructor(
 
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -31,23 +35,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is JobAutomatedListParams && limit == other.limit && offset == other.offset && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(limit, offset, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "JobAutomatedListParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -66,10 +53,10 @@ constructor(
 
         @JvmSynthetic
         internal fun from(jobAutomatedListParams: JobAutomatedListParams) = apply {
-            this.limit = jobAutomatedListParams.limit
-            this.offset = jobAutomatedListParams.offset
-            additionalHeaders(jobAutomatedListParams.additionalHeaders)
-            additionalQueryParams(jobAutomatedListParams.additionalQueryParams)
+            limit = jobAutomatedListParams.limit
+            offset = jobAutomatedListParams.offset
+            additionalHeaders = jobAutomatedListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = jobAutomatedListParams.additionalQueryParams.toBuilder()
         }
 
         /** Number of items to return */
@@ -184,4 +171,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is JobAutomatedListParams && limit == other.limit && offset == other.offset && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(limit, offset, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "JobAutomatedListParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

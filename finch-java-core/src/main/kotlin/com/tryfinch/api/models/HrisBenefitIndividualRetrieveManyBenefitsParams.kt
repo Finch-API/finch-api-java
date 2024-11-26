@@ -21,6 +21,10 @@ constructor(
 
     fun individualIds(): Optional<String> = Optional.ofNullable(individualIds)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -37,23 +41,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsParams && benefitId == other.benefitId && individualIds == other.individualIds && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "HrisBenefitIndividualRetrieveManyBenefitsParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -75,12 +62,12 @@ constructor(
             hrisBenefitIndividualRetrieveManyBenefitsParams:
                 HrisBenefitIndividualRetrieveManyBenefitsParams
         ) = apply {
-            this.benefitId = hrisBenefitIndividualRetrieveManyBenefitsParams.benefitId
-            this.individualIds = hrisBenefitIndividualRetrieveManyBenefitsParams.individualIds
-            additionalHeaders(hrisBenefitIndividualRetrieveManyBenefitsParams.additionalHeaders)
-            additionalQueryParams(
-                hrisBenefitIndividualRetrieveManyBenefitsParams.additionalQueryParams
-            )
+            benefitId = hrisBenefitIndividualRetrieveManyBenefitsParams.benefitId
+            individualIds = hrisBenefitIndividualRetrieveManyBenefitsParams.individualIds
+            additionalHeaders =
+                hrisBenefitIndividualRetrieveManyBenefitsParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                hrisBenefitIndividualRetrieveManyBenefitsParams.additionalQueryParams.toBuilder()
         }
 
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
@@ -197,4 +184,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsParams && benefitId == other.benefitId && individualIds == other.individualIds && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "HrisBenefitIndividualRetrieveManyBenefitsParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

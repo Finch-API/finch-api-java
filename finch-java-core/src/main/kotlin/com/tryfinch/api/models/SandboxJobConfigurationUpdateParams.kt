@@ -32,6 +32,12 @@ constructor(
 
     fun type(): Type = type
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): SandboxJobConfigurationUpdateBody {
         return SandboxJobConfigurationUpdateBody(
@@ -134,25 +140,6 @@ constructor(
             "SandboxJobConfigurationUpdateBody{completionStatus=$completionStatus, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxJobConfigurationUpdateParams && completionStatus == other.completionStatus && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(completionStatus, type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxJobConfigurationUpdateParams{completionStatus=$completionStatus, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -173,11 +160,13 @@ constructor(
         internal fun from(
             sandboxJobConfigurationUpdateParams: SandboxJobConfigurationUpdateParams
         ) = apply {
-            this.completionStatus = sandboxJobConfigurationUpdateParams.completionStatus
-            this.type = sandboxJobConfigurationUpdateParams.type
-            additionalHeaders(sandboxJobConfigurationUpdateParams.additionalHeaders)
-            additionalQueryParams(sandboxJobConfigurationUpdateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxJobConfigurationUpdateParams.additionalBodyProperties)
+            completionStatus = sandboxJobConfigurationUpdateParams.completionStatus
+            type = sandboxJobConfigurationUpdateParams.type
+            additionalHeaders = sandboxJobConfigurationUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                sandboxJobConfigurationUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                sandboxJobConfigurationUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun completionStatus(completionStatus: CompletionStatus) = apply {
@@ -435,4 +424,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxJobConfigurationUpdateParams && completionStatus == other.completionStatus && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(completionStatus, type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "SandboxJobConfigurationUpdateParams{completionStatus=$completionStatus, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

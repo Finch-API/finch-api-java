@@ -14,26 +14,13 @@ constructor(
     private val additionalQueryParams: QueryParams,
 ) {
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
-        return /* spotless:off */ other is ProviderListParams && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "ProviderListParams{additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 
@@ -50,8 +37,8 @@ constructor(
 
         @JvmSynthetic
         internal fun from(providerListParams: ProviderListParams) = apply {
-            additionalHeaders(providerListParams.additionalHeaders)
-            additionalQueryParams(providerListParams.additionalQueryParams)
+            additionalHeaders = providerListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = providerListParams.additionalQueryParams.toBuilder()
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -155,4 +142,17 @@ constructor(
         fun build(): ProviderListParams =
             ProviderListParams(additionalHeaders.build(), additionalQueryParams.build())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProviderListParams && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "ProviderListParams{additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

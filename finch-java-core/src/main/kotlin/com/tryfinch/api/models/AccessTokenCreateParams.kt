@@ -35,6 +35,12 @@ constructor(
 
     fun redirectUri(): Optional<String> = Optional.ofNullable(redirectUri)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): AccessTokenCreateBody {
         return AccessTokenCreateBody(
@@ -150,25 +156,6 @@ constructor(
             "AccessTokenCreateBody{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AccessTokenCreateParams && code == other.code && clientId == other.clientId && clientSecret == other.clientSecret && redirectUri == other.redirectUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(code, clientId, clientSecret, redirectUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "AccessTokenCreateParams{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -189,13 +176,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(accessTokenCreateParams: AccessTokenCreateParams) = apply {
-            this.code = accessTokenCreateParams.code
-            this.clientId = accessTokenCreateParams.clientId
-            this.clientSecret = accessTokenCreateParams.clientSecret
-            this.redirectUri = accessTokenCreateParams.redirectUri
-            additionalHeaders(accessTokenCreateParams.additionalHeaders)
-            additionalQueryParams(accessTokenCreateParams.additionalQueryParams)
-            additionalBodyProperties(accessTokenCreateParams.additionalBodyProperties)
+            code = accessTokenCreateParams.code
+            clientId = accessTokenCreateParams.clientId
+            clientSecret = accessTokenCreateParams.clientSecret
+            redirectUri = accessTokenCreateParams.redirectUri
+            additionalHeaders = accessTokenCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = accessTokenCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                accessTokenCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun code(code: String) = apply { this.code = code }
@@ -337,4 +325,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AccessTokenCreateParams && code == other.code && clientId == other.clientId && clientSecret == other.clientSecret && redirectUri == other.redirectUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(code, clientId, clientSecret, redirectUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "AccessTokenCreateParams{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

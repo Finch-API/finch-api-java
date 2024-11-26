@@ -25,6 +25,12 @@ constructor(
 
     fun requests(): List<Request> = requests
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): HrisPayStatementRetrieveManyBody {
         return HrisPayStatementRetrieveManyBody(requests, additionalBodyProperties)
@@ -112,25 +118,6 @@ constructor(
             "HrisPayStatementRetrieveManyBody{requests=$requests, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisPayStatementRetrieveManyParams && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "HrisPayStatementRetrieveManyParams{requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -149,12 +136,12 @@ constructor(
         @JvmSynthetic
         internal fun from(hrisPayStatementRetrieveManyParams: HrisPayStatementRetrieveManyParams) =
             apply {
-                this.requests(hrisPayStatementRetrieveManyParams.requests)
-                additionalHeaders(hrisPayStatementRetrieveManyParams.additionalHeaders)
-                additionalQueryParams(hrisPayStatementRetrieveManyParams.additionalQueryParams)
-                additionalBodyProperties(
-                    hrisPayStatementRetrieveManyParams.additionalBodyProperties
-                )
+                requests = hrisPayStatementRetrieveManyParams.requests.toMutableList()
+                additionalHeaders = hrisPayStatementRetrieveManyParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    hrisPayStatementRetrieveManyParams.additionalQueryParams.toBuilder()
+                additionalBodyProperties =
+                    hrisPayStatementRetrieveManyParams.additionalBodyProperties.toMutableMap()
             }
 
         /** The array of batch requests. */
@@ -288,7 +275,7 @@ constructor(
 
         fun build(): HrisPayStatementRetrieveManyParams =
             HrisPayStatementRetrieveManyParams(
-                checkNotNull(requests) { "`requests` is required but was not set" }.toImmutable(),
+                requests.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -390,4 +377,17 @@ constructor(
         override fun toString() =
             "Request{paymentId=$paymentId, limit=$limit, offset=$offset, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisPayStatementRetrieveManyParams && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "HrisPayStatementRetrieveManyParams{requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

@@ -29,6 +29,12 @@ constructor(
 
     fun description(): Optional<String> = Optional.ofNullable(description)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): HrisBenefitUpdateBody {
         return HrisBenefitUpdateBody(description, additionalBodyProperties)
@@ -118,25 +124,6 @@ constructor(
             "HrisBenefitUpdateBody{description=$description, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisBenefitUpdateParams && benefitId == other.benefitId && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "HrisBenefitUpdateParams{benefitId=$benefitId, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -155,11 +142,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(hrisBenefitUpdateParams: HrisBenefitUpdateParams) = apply {
-            this.benefitId = hrisBenefitUpdateParams.benefitId
-            this.description = hrisBenefitUpdateParams.description
-            additionalHeaders(hrisBenefitUpdateParams.additionalHeaders)
-            additionalQueryParams(hrisBenefitUpdateParams.additionalQueryParams)
-            additionalBodyProperties(hrisBenefitUpdateParams.additionalBodyProperties)
+            benefitId = hrisBenefitUpdateParams.benefitId
+            description = hrisBenefitUpdateParams.description
+            additionalHeaders = hrisBenefitUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = hrisBenefitUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                hrisBenefitUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
@@ -296,4 +284,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisBenefitUpdateParams && benefitId == other.benefitId && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "HrisBenefitUpdateParams{benefitId=$benefitId, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

@@ -28,6 +28,10 @@ constructor(
 
     fun body(): List<IndividualOrEmployment> = body
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic
     internal fun getBody(): List<IndividualOrEmployment> {
         return body
@@ -95,23 +99,6 @@ constructor(
         override fun toString() = "SandboxDirectoryCreateBody{body=$body}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxDirectoryCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "SandboxDirectoryCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -128,9 +115,9 @@ constructor(
 
         @JvmSynthetic
         internal fun from(sandboxDirectoryCreateParams: SandboxDirectoryCreateParams) = apply {
-            this.body(sandboxDirectoryCreateParams.body)
-            additionalHeaders(sandboxDirectoryCreateParams.additionalHeaders)
-            additionalQueryParams(sandboxDirectoryCreateParams.additionalQueryParams)
+            body = sandboxDirectoryCreateParams.body.toMutableList()
+            additionalHeaders = sandboxDirectoryCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxDirectoryCreateParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -248,7 +235,7 @@ constructor(
 
         fun build(): SandboxDirectoryCreateParams =
             SandboxDirectoryCreateParams(
-                checkNotNull(body) { "`body` is required but was not set" }.toImmutable(),
+                body.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -1525,4 +1512,17 @@ constructor(
         override fun toString() =
             "IndividualOrEmployment{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxDirectoryCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "SandboxDirectoryCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

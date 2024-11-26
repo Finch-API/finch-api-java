@@ -17,6 +17,10 @@ constructor(
 
     fun jobId(): String = jobId
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
@@ -27,23 +31,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is JobManualRetrieveParams && jobId == other.jobId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(jobId, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "JobManualRetrieveParams{jobId=$jobId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -61,9 +48,9 @@ constructor(
 
         @JvmSynthetic
         internal fun from(jobManualRetrieveParams: JobManualRetrieveParams) = apply {
-            this.jobId = jobManualRetrieveParams.jobId
-            additionalHeaders(jobManualRetrieveParams.additionalHeaders)
-            additionalQueryParams(jobManualRetrieveParams.additionalQueryParams)
+            jobId = jobManualRetrieveParams.jobId
+            additionalHeaders = jobManualRetrieveParams.additionalHeaders.toBuilder()
+            additionalQueryParams = jobManualRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         fun jobId(jobId: String) = apply { this.jobId = jobId }
@@ -173,4 +160,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is JobManualRetrieveParams && jobId == other.jobId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(jobId, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "JobManualRetrieveParams{jobId=$jobId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -66,6 +66,12 @@ constructor(
 
     fun ssn(): Optional<String> = Optional.ofNullable(ssn)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): SandboxIndividualUpdateBody {
         return SandboxIndividualUpdateBody(
@@ -299,25 +305,6 @@ constructor(
             "SandboxIndividualUpdateBody{dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxIndividualUpdateParams && individualId == other.individualId && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxIndividualUpdateParams{individualId=$individualId, dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -347,22 +334,24 @@ constructor(
 
         @JvmSynthetic
         internal fun from(sandboxIndividualUpdateParams: SandboxIndividualUpdateParams) = apply {
-            this.individualId = sandboxIndividualUpdateParams.individualId
-            this.dob = sandboxIndividualUpdateParams.dob
-            this.emails(sandboxIndividualUpdateParams.emails ?: listOf())
-            this.encryptedSsn = sandboxIndividualUpdateParams.encryptedSsn
-            this.ethnicity = sandboxIndividualUpdateParams.ethnicity
-            this.firstName = sandboxIndividualUpdateParams.firstName
-            this.gender = sandboxIndividualUpdateParams.gender
-            this.lastName = sandboxIndividualUpdateParams.lastName
-            this.middleName = sandboxIndividualUpdateParams.middleName
-            this.phoneNumbers(sandboxIndividualUpdateParams.phoneNumbers ?: listOf())
-            this.preferredName = sandboxIndividualUpdateParams.preferredName
-            this.residence = sandboxIndividualUpdateParams.residence
-            this.ssn = sandboxIndividualUpdateParams.ssn
-            additionalHeaders(sandboxIndividualUpdateParams.additionalHeaders)
-            additionalQueryParams(sandboxIndividualUpdateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxIndividualUpdateParams.additionalBodyProperties)
+            individualId = sandboxIndividualUpdateParams.individualId
+            dob = sandboxIndividualUpdateParams.dob
+            emails = sandboxIndividualUpdateParams.emails?.toMutableList() ?: mutableListOf()
+            encryptedSsn = sandboxIndividualUpdateParams.encryptedSsn
+            ethnicity = sandboxIndividualUpdateParams.ethnicity
+            firstName = sandboxIndividualUpdateParams.firstName
+            gender = sandboxIndividualUpdateParams.gender
+            lastName = sandboxIndividualUpdateParams.lastName
+            middleName = sandboxIndividualUpdateParams.middleName
+            phoneNumbers =
+                sandboxIndividualUpdateParams.phoneNumbers?.toMutableList() ?: mutableListOf()
+            preferredName = sandboxIndividualUpdateParams.preferredName
+            residence = sandboxIndividualUpdateParams.residence
+            ssn = sandboxIndividualUpdateParams.ssn
+            additionalHeaders = sandboxIndividualUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxIndividualUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                sandboxIndividualUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun individualId(individualId: String) = apply { this.individualId = individualId }
@@ -541,14 +530,14 @@ constructor(
             SandboxIndividualUpdateParams(
                 checkNotNull(individualId) { "`individualId` is required but was not set" },
                 dob,
-                if (emails.size == 0) null else emails.toImmutable(),
+                emails.toImmutable().ifEmpty { null },
                 encryptedSsn,
                 ethnicity,
                 firstName,
                 gender,
                 lastName,
                 middleName,
-                if (phoneNumbers.size == 0) null else phoneNumbers.toImmutable(),
+                phoneNumbers.toImmutable().ifEmpty { null },
                 preferredName,
                 residence,
                 ssn,
@@ -1000,4 +989,17 @@ constructor(
         override fun toString() =
             "PhoneNumber{data=$data, type=$type, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxIndividualUpdateParams && individualId == other.individualId && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "SandboxIndividualUpdateParams{individualId=$individualId, dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
