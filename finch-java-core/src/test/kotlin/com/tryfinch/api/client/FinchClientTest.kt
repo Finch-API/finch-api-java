@@ -8,7 +8,6 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.guava.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
