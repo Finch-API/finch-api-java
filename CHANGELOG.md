@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.12.0 (2024-11-27)
+
+Full Changelog: [v1.11.1...v1.12.0](https://github.com/Finch-API/finch-api-java/compare/v1.11.1...v1.12.0)
+
+### Features
+
+* **api:** api update ([#344](https://github.com/Finch-API/finch-api-java/issues/344)) ([995447b](https://github.com/Finch-API/finch-api-java/commit/995447bc6ce0c99dd0fef03af69574ad028fb2cc))
+* derive gpg release key's id via gpg itself ([#341](https://github.com/Finch-API/finch-api-java/issues/341)) ([5d9b02d](https://github.com/Finch-API/finch-api-java/commit/5d9b02de8fa17a49a1d05e71aea488007d6db1a4))
+
+
+### Bug Fixes
+
+* remove reference to removed deps 'guava' ([ab6b83c](https://github.com/Finch-API/finch-api-java/commit/ab6b83ceff97195bced4391a82dc4fafe086ad3e))
+
+
+### Chores
+
+* fix formatting ([a8911c2](https://github.com/Finch-API/finch-api-java/commit/a8911c2030d43fa0de1e13428378a099366a22b4))
+* **internal:** codegen changes ([#340](https://github.com/Finch-API/finch-api-java/issues/340)) ([3c5d768](https://github.com/Finch-API/finch-api-java/commit/3c5d768f7a1511c6625b6008f3140c5a7ad1e3cd))
+* **internal:** codegen changes ([#342](https://github.com/Finch-API/finch-api-java/issues/342)) ([3876694](https://github.com/Finch-API/finch-api-java/commit/3876694b22866aeed1e47ab17264f253001d9290))
+* **internal:** codegen related update ([#335](https://github.com/Finch-API/finch-api-java/issues/335)) ([4c594c8](https://github.com/Finch-API/finch-api-java/commit/4c594c8869c07387731fdde4519575bb93f865e5))
+* **internal:** codegen related update ([#337](https://github.com/Finch-API/finch-api-java/issues/337)) ([586ee38](https://github.com/Finch-API/finch-api-java/commit/586ee38c5744b36d44dd42756cc74bf1d542ca56))
+* **internal:** codegen related update ([#343](https://github.com/Finch-API/finch-api-java/issues/343)) ([2827201](https://github.com/Finch-API/finch-api-java/commit/28272014e7a7c5439b369c92d336c9247f226368))
+* **internal:** update example values ([#339](https://github.com/Finch-API/finch-api-java/issues/339)) ([de78eab](https://github.com/Finch-API/finch-api-java/commit/de78eab92fb90d7d324d99f93f6dbb4d0e7e3cd0))
+
 ## 1.11.1 (2024-11-20)
 
 Full Changelog: [v1.11.0...v1.11.1](https://github.com/Finch-API/finch-api-java/compare/v1.11.0...v1.11.1)
