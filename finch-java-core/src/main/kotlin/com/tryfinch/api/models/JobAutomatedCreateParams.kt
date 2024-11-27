@@ -33,14 +33,14 @@ import kotlin.jvm.optionals.getOrNull
 class JobAutomatedCreateParams
 constructor(
     private val dataSyncAll: DataSyncAll?,
-    private val w4DataSync: W4DataSync?,
+    private val w4FormEmployeeSync: W4FormEmployeeSync?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) {
 
     fun dataSyncAll(): Optional<DataSyncAll> = Optional.ofNullable(dataSyncAll)
 
-    fun w4DataSync(): Optional<W4DataSync> = Optional.ofNullable(w4DataSync)
+    fun w4FormEmployeeSync(): Optional<W4FormEmployeeSync> = Optional.ofNullable(w4FormEmployeeSync)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -48,7 +48,7 @@ constructor(
 
     @JvmSynthetic
     internal fun getBody(): JobAutomatedCreateBody {
-        return JobAutomatedCreateBody(dataSyncAll, w4DataSync)
+        return JobAutomatedCreateBody(dataSyncAll, w4FormEmployeeSync)
     }
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
@@ -60,28 +60,30 @@ constructor(
     class JobAutomatedCreateBody
     internal constructor(
         private val dataSyncAll: DataSyncAll? = null,
-        private val w4DataSync: W4DataSync? = null,
+        private val w4FormEmployeeSync: W4FormEmployeeSync? = null,
         private val _json: JsonValue? = null,
     ) {
 
         fun dataSyncAll(): Optional<DataSyncAll> = Optional.ofNullable(dataSyncAll)
 
-        fun w4DataSync(): Optional<W4DataSync> = Optional.ofNullable(w4DataSync)
+        fun w4FormEmployeeSync(): Optional<W4FormEmployeeSync> =
+            Optional.ofNullable(w4FormEmployeeSync)
 
         fun isDataSyncAll(): Boolean = dataSyncAll != null
 
-        fun isW4DataSync(): Boolean = w4DataSync != null
+        fun isW4FormEmployeeSync(): Boolean = w4FormEmployeeSync != null
 
         fun asDataSyncAll(): DataSyncAll = dataSyncAll.getOrThrow("dataSyncAll")
 
-        fun asW4DataSync(): W4DataSync = w4DataSync.getOrThrow("w4DataSync")
+        fun asW4FormEmployeeSync(): W4FormEmployeeSync =
+            w4FormEmployeeSync.getOrThrow("w4FormEmployeeSync")
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
         fun <T> accept(visitor: Visitor<T>): T {
             return when {
                 dataSyncAll != null -> visitor.visitDataSyncAll(dataSyncAll)
-                w4DataSync != null -> visitor.visitW4DataSync(w4DataSync)
+                w4FormEmployeeSync != null -> visitor.visitW4FormEmployeeSync(w4FormEmployeeSync)
                 else -> visitor.unknown(_json)
             }
         }
@@ -91,15 +93,16 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is JobAutomatedCreateBody && dataSyncAll == other.dataSyncAll && w4DataSync == other.w4DataSync /* spotless:on */
+            return /* spotless:off */ other is JobAutomatedCreateBody && dataSyncAll == other.dataSyncAll && w4FormEmployeeSync == other.w4FormEmployeeSync /* spotless:on */
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4DataSync) /* spotless:on */
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4FormEmployeeSync) /* spotless:on */
 
         override fun toString(): String =
             when {
                 dataSyncAll != null -> "JobAutomatedCreateBody{dataSyncAll=$dataSyncAll}"
-                w4DataSync != null -> "JobAutomatedCreateBody{w4DataSync=$w4DataSync}"
+                w4FormEmployeeSync != null ->
+                    "JobAutomatedCreateBody{w4FormEmployeeSync=$w4FormEmployeeSync}"
                 _json != null -> "JobAutomatedCreateBody{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid JobAutomatedCreateBody")
             }
@@ -111,15 +114,15 @@ constructor(
                 JobAutomatedCreateBody(dataSyncAll = dataSyncAll)
 
             @JvmStatic
-            fun ofW4DataSync(w4DataSync: W4DataSync) =
-                JobAutomatedCreateBody(w4DataSync = w4DataSync)
+            fun ofW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync) =
+                JobAutomatedCreateBody(w4FormEmployeeSync = w4FormEmployeeSync)
         }
 
         interface Visitor<out T> {
 
             fun visitDataSyncAll(dataSyncAll: DataSyncAll): T
 
-            fun visitW4DataSync(w4DataSync: W4DataSync): T
+            fun visitW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync): T
 
             fun unknown(json: JsonValue?): T {
                 throw FinchInvalidDataException("Unknown JobAutomatedCreateBody: $json")
@@ -139,9 +142,9 @@ constructor(
                             return JobAutomatedCreateBody(dataSyncAll = it, _json = json)
                         }
                     }
-                    "w4_data_sync" -> {
-                        tryDeserialize(node, jacksonTypeRef<W4DataSync>())?.let {
-                            return JobAutomatedCreateBody(w4DataSync = it, _json = json)
+                    "w4_form_employee_sync" -> {
+                        tryDeserialize(node, jacksonTypeRef<W4FormEmployeeSync>())?.let {
+                            return JobAutomatedCreateBody(w4FormEmployeeSync = it, _json = json)
                         }
                     }
                 }
@@ -159,7 +162,8 @@ constructor(
             ) {
                 when {
                     value.dataSyncAll != null -> generator.writeObject(value.dataSyncAll)
-                    value.w4DataSync != null -> generator.writeObject(value.w4DataSync)
+                    value.w4FormEmployeeSync != null ->
+                        generator.writeObject(value.w4FormEmployeeSync)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid JobAutomatedCreateBody")
                 }
@@ -178,26 +182,26 @@ constructor(
     class Builder {
 
         private var dataSyncAll: DataSyncAll? = null
-        private var w4DataSync: W4DataSync? = null
+        private var w4FormEmployeeSync: W4FormEmployeeSync? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(jobAutomatedCreateParams: JobAutomatedCreateParams) = apply {
             dataSyncAll = jobAutomatedCreateParams.dataSyncAll
-            w4DataSync = jobAutomatedCreateParams.w4DataSync
+            w4FormEmployeeSync = jobAutomatedCreateParams.w4FormEmployeeSync
             additionalHeaders = jobAutomatedCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
         }
 
         fun forDataSyncAll(dataSyncAll: DataSyncAll) = apply {
             this.dataSyncAll = dataSyncAll
-            this.w4DataSync = null
+            this.w4FormEmployeeSync = null
         }
 
-        fun forW4DataSync(w4DataSync: W4DataSync) = apply {
+        fun forW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync) = apply {
             this.dataSyncAll = null
-            this.w4DataSync = w4DataSync
+            this.w4FormEmployeeSync = w4FormEmployeeSync
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -301,7 +305,7 @@ constructor(
         fun build(): JobAutomatedCreateParams =
             JobAutomatedCreateParams(
                 dataSyncAll,
-                w4DataSync,
+                w4FormEmployeeSync,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -433,9 +437,9 @@ constructor(
             "DataSyncAll{type=$type, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = W4DataSync.Builder::class)
+    @JsonDeserialize(builder = W4FormEmployeeSync.Builder::class)
     @NoAutoDetect
-    class W4DataSync
+    class W4FormEmployeeSync
     private constructor(
         private val type: Type?,
         private val individualId: String?,
@@ -466,10 +470,10 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(w4DataSync: W4DataSync) = apply {
-                this.type = w4DataSync.type
-                this.individualId = w4DataSync.individualId
-                additionalProperties(w4DataSync.additionalProperties)
+            internal fun from(w4FormEmployeeSync: W4FormEmployeeSync) = apply {
+                this.type = w4FormEmployeeSync.type
+                this.individualId = w4FormEmployeeSync.individualId
+                additionalProperties(w4FormEmployeeSync.additionalProperties)
             }
 
             /** The type of job to start. */
@@ -493,8 +497,8 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): W4DataSync =
-                W4DataSync(
+            fun build(): W4FormEmployeeSync =
+                W4FormEmployeeSync(
                     checkNotNull(type) { "`type` is required but was not set" },
                     checkNotNull(individualId) { "`individualId` is required but was not set" },
                     additionalProperties.toImmutable(),
@@ -523,29 +527,29 @@ constructor(
 
             companion object {
 
-                @JvmField val W4_DATA_SYNC = Type(JsonField.of("w4_data_sync"))
+                @JvmField val W4_FORM_EMPLOYEE_SYNC = Type(JsonField.of("w4_form_employee_sync"))
 
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
 
             enum class Known {
-                W4_DATA_SYNC,
+                W4_FORM_EMPLOYEE_SYNC,
             }
 
             enum class Value {
-                W4_DATA_SYNC,
+                W4_FORM_EMPLOYEE_SYNC,
                 _UNKNOWN,
             }
 
             fun value(): Value =
                 when (this) {
-                    W4_DATA_SYNC -> Value.W4_DATA_SYNC
+                    W4_FORM_EMPLOYEE_SYNC -> Value.W4_FORM_EMPLOYEE_SYNC
                     else -> Value._UNKNOWN
                 }
 
             fun known(): Known =
                 when (this) {
-                    W4_DATA_SYNC -> Known.W4_DATA_SYNC
+                    W4_FORM_EMPLOYEE_SYNC -> Known.W4_FORM_EMPLOYEE_SYNC
                     else -> throw FinchInvalidDataException("Unknown Type: $value")
                 }
 
@@ -557,7 +561,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is W4DataSync && type == other.type && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is W4FormEmployeeSync && type == other.type && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -567,7 +571,7 @@ constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "W4DataSync{type=$type, individualId=$individualId, additionalProperties=$additionalProperties}"
+            "W4FormEmployeeSync{type=$type, individualId=$individualId, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -575,11 +579,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedCreateParams && dataSyncAll == other.dataSyncAll && w4DataSync == other.w4DataSync && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is JobAutomatedCreateParams && dataSyncAll == other.dataSyncAll && w4FormEmployeeSync == other.w4FormEmployeeSync && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4DataSync, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4FormEmployeeSync, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "JobAutomatedCreateParams{dataSyncAll=$dataSyncAll, w4DataSync=$w4DataSync, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobAutomatedCreateParams{dataSyncAll=$dataSyncAll, w4FormEmployeeSync=$w4FormEmployeeSync, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
