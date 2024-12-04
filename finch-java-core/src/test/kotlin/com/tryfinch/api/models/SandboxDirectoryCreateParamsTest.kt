@@ -57,6 +57,10 @@ class SandboxDirectoryCreateParamsTest {
                                 )
                                 .build()
                         )
+                        .employmentStatus(
+                            SandboxDirectoryCreateParams.IndividualOrEmployment.EmploymentStatus
+                                .ACTIVE
+                        )
                         .encryptedSsn("encrypted_ssn")
                         .endDate("end_date")
                         .ethnicity(
@@ -195,6 +199,10 @@ class SandboxDirectoryCreateParamsTest {
                                     )
                                     .build()
                             )
+                            .employmentStatus(
+                                SandboxDirectoryCreateParams.IndividualOrEmployment.EmploymentStatus
+                                    .ACTIVE
+                            )
                             .encryptedSsn("encrypted_ssn")
                             .endDate("end_date")
                             .ethnicity(
@@ -326,6 +334,10 @@ class SandboxDirectoryCreateParamsTest {
                                         .EMPLOYEE
                                 )
                                 .build()
+                        )
+                        .employmentStatus(
+                            SandboxDirectoryCreateParams.IndividualOrEmployment.EmploymentStatus
+                                .ACTIVE
                         )
                         .encryptedSsn("encrypted_ssn")
                         .endDate("end_date")
