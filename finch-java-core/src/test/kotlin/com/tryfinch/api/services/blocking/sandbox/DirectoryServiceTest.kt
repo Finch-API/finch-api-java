@@ -75,6 +75,11 @@ class DirectoryServiceTest {
                                         )
                                         .build()
                                 )
+                                .employmentStatus(
+                                    SandboxDirectoryCreateParams.IndividualOrEmployment
+                                        .EmploymentStatus
+                                        .ACTIVE
+                                )
                                 .encryptedSsn("encrypted_ssn")
                                 .endDate("end_date")
                                 .ethnicity(
