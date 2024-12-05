@@ -46,12 +46,7 @@ private constructor(
         "HrisDirectoryListIndividualsPageAsync{directoryService=$directoryService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        if (individuals().isEmpty()) {
-            return false
-        }
-
-        return paging().offset().orElse(0) + individuals().count() <
-            paging().count().orElse(Long.MAX_VALUE)
+        return !individuals().isEmpty()
     }
 
     fun getNextPageParams(): Optional<HrisDirectoryListIndividualsParams> {

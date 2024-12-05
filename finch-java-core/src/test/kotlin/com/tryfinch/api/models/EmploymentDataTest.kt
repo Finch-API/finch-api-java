@@ -29,6 +29,7 @@ class EmploymentDataTest {
                         .type(EmploymentData.Employment.Type.EMPLOYEE)
                         .build()
                 )
+                .employmentStatus(EmploymentData.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
                 .income(
@@ -90,6 +91,8 @@ class EmploymentDataTest {
                     .type(EmploymentData.Employment.Type.EMPLOYEE)
                     .build()
             )
+        assertThat(employmentData.employmentStatus())
+            .contains(EmploymentData.EmploymentStatus.ACTIVE)
         assertThat(employmentData.endDate()).contains("end_date")
         assertThat(employmentData.firstName()).contains("first_name")
         assertThat(employmentData.income())

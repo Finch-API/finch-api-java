@@ -265,6 +265,7 @@ constructor(
         private val endDate: String?,
         private val latestRehireDate: String?,
         private val isActive: Boolean?,
+        private val employmentStatus: EmploymentStatus?,
         private val classCode: String?,
         private val location: Location?,
         private val income: Income?,
@@ -335,6 +336,10 @@ constructor(
         /** `true` if the individual an an active employee or contractor at the company. */
         @JsonProperty("is_active") fun isActive(): Boolean? = isActive
 
+        /** The detailed employment status of the individual. */
+        @JsonProperty("employment_status")
+        fun employmentStatus(): EmploymentStatus? = employmentStatus
+
         /** Worker's compensation classification code for this employee */
         @JsonProperty("class_code") fun classCode(): String? = classCode
 
@@ -392,6 +397,7 @@ constructor(
             private var endDate: String? = null
             private var latestRehireDate: String? = null
             private var isActive: Boolean? = null
+            private var employmentStatus: EmploymentStatus? = null
             private var classCode: String? = null
             private var location: Location? = null
             private var income: Income? = null
@@ -422,6 +428,7 @@ constructor(
                 this.endDate = individualOrEmployment.endDate
                 this.latestRehireDate = individualOrEmployment.latestRehireDate
                 this.isActive = individualOrEmployment.isActive
+                this.employmentStatus = individualOrEmployment.employmentStatus
                 this.classCode = individualOrEmployment.classCode
                 this.location = individualOrEmployment.location
                 this.income = individualOrEmployment.income
@@ -511,6 +518,12 @@ constructor(
             @JsonProperty("is_active")
             fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
 
+            /** The detailed employment status of the individual. */
+            @JsonProperty("employment_status")
+            fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
+                this.employmentStatus = employmentStatus
+            }
+
             /** Worker's compensation classification code for this employee */
             @JsonProperty("class_code")
             fun classCode(classCode: String) = apply { this.classCode = classCode }
@@ -580,6 +593,7 @@ constructor(
                     endDate,
                     latestRehireDate,
                     isActive,
+                    employmentStatus,
                     classCode,
                     location,
                     income,
@@ -1117,6 +1131,93 @@ constructor(
                 "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
         }
 
+        class EmploymentStatus
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is EmploymentStatus && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                @JvmField val ACTIVE = EmploymentStatus(JsonField.of("active"))
+
+                @JvmField val DECEASED = EmploymentStatus(JsonField.of("deceased"))
+
+                @JvmField val LEAVE = EmploymentStatus(JsonField.of("leave"))
+
+                @JvmField val ONBOARDING = EmploymentStatus(JsonField.of("onboarding"))
+
+                @JvmField val PREHIRE = EmploymentStatus(JsonField.of("prehire"))
+
+                @JvmField val RETIRED = EmploymentStatus(JsonField.of("retired"))
+
+                @JvmField val TERMINATED = EmploymentStatus(JsonField.of("terminated"))
+
+                @JvmStatic fun of(value: String) = EmploymentStatus(JsonField.of(value))
+            }
+
+            enum class Known {
+                ACTIVE,
+                DECEASED,
+                LEAVE,
+                ONBOARDING,
+                PREHIRE,
+                RETIRED,
+                TERMINATED,
+            }
+
+            enum class Value {
+                ACTIVE,
+                DECEASED,
+                LEAVE,
+                ONBOARDING,
+                PREHIRE,
+                RETIRED,
+                TERMINATED,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    ACTIVE -> Value.ACTIVE
+                    DECEASED -> Value.DECEASED
+                    LEAVE -> Value.LEAVE
+                    ONBOARDING -> Value.ONBOARDING
+                    PREHIRE -> Value.PREHIRE
+                    RETIRED -> Value.RETIRED
+                    TERMINATED -> Value.TERMINATED
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    ACTIVE -> Known.ACTIVE
+                    DECEASED -> Known.DECEASED
+                    LEAVE -> Known.LEAVE
+                    ONBOARDING -> Known.ONBOARDING
+                    PREHIRE -> Known.PREHIRE
+                    RETIRED -> Known.RETIRED
+                    TERMINATED -> Known.TERMINATED
+                    else -> throw FinchInvalidDataException("Unknown EmploymentStatus: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+        }
+
         class Ethnicity
         @JsonCreator
         private constructor(
@@ -1500,17 +1601,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is IndividualOrEmployment && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && preferredName == other.preferredName && emails == other.emails && phoneNumbers == other.phoneNumbers && gender == other.gender && ethnicity == other.ethnicity && dob == other.dob && ssn == other.ssn && encryptedSsn == other.encryptedSsn && residence == other.residence && title == other.title && manager == other.manager && department == other.department && employment == other.employment && startDate == other.startDate && endDate == other.endDate && latestRehireDate == other.latestRehireDate && isActive == other.isActive && classCode == other.classCode && location == other.location && income == other.income && incomeHistory == other.incomeHistory && customFields == other.customFields && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is IndividualOrEmployment && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && preferredName == other.preferredName && emails == other.emails && phoneNumbers == other.phoneNumbers && gender == other.gender && ethnicity == other.ethnicity && dob == other.dob && ssn == other.ssn && encryptedSsn == other.encryptedSsn && residence == other.residence && title == other.title && manager == other.manager && department == other.department && employment == other.employment && startDate == other.startDate && endDate == other.endDate && latestRehireDate == other.latestRehireDate && isActive == other.isActive && employmentStatus == other.employmentStatus && classCode == other.classCode && location == other.location && income == other.income && incomeHistory == other.incomeHistory && customFields == other.customFields && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(firstName, middleName, lastName, preferredName, emails, phoneNumbers, gender, ethnicity, dob, ssn, encryptedSsn, residence, title, manager, department, employment, startDate, endDate, latestRehireDate, isActive, classCode, location, income, incomeHistory, customFields, sourceId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(firstName, middleName, lastName, preferredName, emails, phoneNumbers, gender, ethnicity, dob, ssn, encryptedSsn, residence, title, manager, department, employment, startDate, endDate, latestRehireDate, isActive, employmentStatus, classCode, location, income, incomeHistory, customFields, sourceId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, employmentStatus=$employmentStatus, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
