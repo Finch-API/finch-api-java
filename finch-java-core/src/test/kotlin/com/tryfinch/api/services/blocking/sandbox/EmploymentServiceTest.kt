@@ -42,6 +42,7 @@ class EmploymentServiceTest {
                             .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                             .build()
                     )
+                    .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
                     .endDate("end_date")
                     .firstName("first_name")
                     .income(
