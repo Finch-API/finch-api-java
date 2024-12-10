@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.0.0 (2024-12-10)
+
+Full Changelog: [v1.12.0...v2.0.0](https://github.com/Finch-API/finch-api-java/compare/v1.12.0...v2.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** numeric enum member type ([#349](https://github.com/Finch-API/finch-api-java/issues/349))
+
+### Features
+
+* **api:** api update ([#348](https://github.com/Finch-API/finch-api-java/issues/348)) ([1f7f08f](https://github.com/Finch-API/finch-api-java/commit/1f7f08fdb0fac4043baa61ea2153529fad1fe8a1))
+* **api:** api update ([#350](https://github.com/Finch-API/finch-api-java/issues/350)) ([76486fd](https://github.com/Finch-API/finch-api-java/commit/76486fd74b4c69f1c1e758226877c50876e4e1dd))
+
+
+### Bug Fixes
+
+* **client:** numeric enum member type ([#349](https://github.com/Finch-API/finch-api-java/issues/349)) ([7705d87](https://github.com/Finch-API/finch-api-java/commit/7705d87e122e0d06a8b88ac45ccca67a96521562))
+
+
+### Chores
+
+* **internal:** codegen related update ([#346](https://github.com/Finch-API/finch-api-java/issues/346)) ([90f7c99](https://github.com/Finch-API/finch-api-java/commit/90f7c993a426713f980b561f8ea0410f6e4079e5))
+
 ## 1.12.0 (2024-11-27)
 
 Full Changelog: [v1.11.1...v1.12.0](https://github.com/Finch-API/finch-api-java/compare/v1.11.1...v1.12.0)

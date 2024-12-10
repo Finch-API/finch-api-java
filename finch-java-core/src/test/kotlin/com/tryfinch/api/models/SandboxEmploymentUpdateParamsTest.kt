@@ -29,6 +29,7 @@ class SandboxEmploymentUpdateParamsTest {
                     .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                     .build()
             )
+            .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
             .endDate("end_date")
             .firstName("first_name")
             .income(
@@ -93,6 +94,7 @@ class SandboxEmploymentUpdateParamsTest {
                         .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                         .build()
                 )
+                .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
                 .income(
@@ -155,6 +157,8 @@ class SandboxEmploymentUpdateParamsTest {
                     .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                     .build()
             )
+        assertThat(body.employmentStatus())
+            .isEqualTo(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
         assertThat(body.endDate()).isEqualTo("end_date")
         assertThat(body.firstName()).isEqualTo("first_name")
         assertThat(body.income())
