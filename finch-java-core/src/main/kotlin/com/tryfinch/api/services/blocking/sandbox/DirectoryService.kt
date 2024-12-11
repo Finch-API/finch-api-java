@@ -4,6 +4,7 @@
 
 package com.tryfinch.api.services.blocking.sandbox
 
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 
