@@ -43,7 +43,7 @@ class DirectoryServiceTest {
                                         .name("name")
                                         .build()
                                 )
-                                .dob("dob")
+                                .dob("01/01/2000")
                                 .emails(
                                     listOf(
                                         SandboxDirectoryCreateParams.IndividualOrEmployment.Email
@@ -86,7 +86,7 @@ class DirectoryServiceTest {
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity
                                         .ASIAN
                                 )
-                                .firstName("first_name")
+                                .firstName("John")
                                 .gender(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Gender
                                         .FEMALE
@@ -110,7 +110,7 @@ class DirectoryServiceTest {
                                     )
                                 )
                                 .isActive(true)
-                                .lastName("last_name")
+                                .lastName("Smith")
                                 .latestRehireDate("latest_rehire_date")
                                 .location(
                                     Location.builder()
