@@ -30,15 +30,13 @@ private constructor(
 
     companion object {
 
-        @JvmField val SUPPORTED = OperationSupport(JsonField.of("supported"))
+        @JvmField val SUPPORTED = of("supported")
 
-        @JvmField
-        val NOT_SUPPORTED_BY_FINCH = OperationSupport(JsonField.of("not_supported_by_finch"))
+        @JvmField val NOT_SUPPORTED_BY_FINCH = of("not_supported_by_finch")
 
-        @JvmField
-        val NOT_SUPPORTED_BY_PROVIDER = OperationSupport(JsonField.of("not_supported_by_provider"))
+        @JvmField val NOT_SUPPORTED_BY_PROVIDER = of("not_supported_by_provider")
 
-        @JvmField val CLIENT_ACCESS_ONLY = OperationSupport(JsonField.of("client_access_only"))
+        @JvmField val CLIENT_ACCESS_ONLY = of("client_access_only")
 
         @JvmStatic fun of(value: String) = OperationSupport(JsonField.of(value))
     }

@@ -319,9 +319,9 @@ private constructor(
 
             companion object {
 
-                @JvmField val INDIVIDUAL = HsaContributionLimit(JsonField.of("individual"))
+                @JvmField val INDIVIDUAL = of("individual")
 
-                @JvmField val FAMILY = HsaContributionLimit(JsonField.of("family"))
+                @JvmField val FAMILY = of("family")
 
                 @JvmStatic fun of(value: String) = HsaContributionLimit(JsonField.of(value))
             }

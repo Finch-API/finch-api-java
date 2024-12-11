@@ -462,21 +462,21 @@ constructor(
 
         companion object {
 
-            @JvmField val COMPANY = ConnectProducts(JsonField.of("company"))
+            @JvmField val COMPANY = of("company")
 
-            @JvmField val DIRECTORY = ConnectProducts(JsonField.of("directory"))
+            @JvmField val DIRECTORY = of("directory")
 
-            @JvmField val INDIVIDUAL = ConnectProducts(JsonField.of("individual"))
+            @JvmField val INDIVIDUAL = of("individual")
 
-            @JvmField val EMPLOYMENT = ConnectProducts(JsonField.of("employment"))
+            @JvmField val EMPLOYMENT = of("employment")
 
-            @JvmField val PAYMENT = ConnectProducts(JsonField.of("payment"))
+            @JvmField val PAYMENT = of("payment")
 
-            @JvmField val PAY_STATEMENT = ConnectProducts(JsonField.of("pay_statement"))
+            @JvmField val PAY_STATEMENT = of("pay_statement")
 
-            @JvmField val BENEFITS = ConnectProducts(JsonField.of("benefits"))
+            @JvmField val BENEFITS = of("benefits")
 
-            @JvmField val SSN = ConnectProducts(JsonField.of("ssn"))
+            @JvmField val SSN = of("ssn")
 
             @JvmStatic fun of(value: String) = ConnectProducts(JsonField.of(value))
         }
@@ -620,13 +620,13 @@ constructor(
 
             companion object {
 
-                @JvmField val ASSISTED = AuthMethod(JsonField.of("assisted"))
+                @JvmField val ASSISTED = of("assisted")
 
-                @JvmField val CREDENTIAL = AuthMethod(JsonField.of("credential"))
+                @JvmField val CREDENTIAL = of("credential")
 
-                @JvmField val OAUTH = AuthMethod(JsonField.of("oauth"))
+                @JvmField val OAUTH = of("oauth")
 
-                @JvmField val API_TOKEN = AuthMethod(JsonField.of("api_token"))
+                @JvmField val API_TOKEN = of("api_token")
 
                 @JvmStatic fun of(value: String) = AuthMethod(JsonField.of(value))
             }
@@ -707,9 +707,9 @@ constructor(
 
         companion object {
 
-            @JvmField val FINCH = Sandbox(JsonField.of("finch"))
+            @JvmField val FINCH = of("finch")
 
-            @JvmField val PROVIDER = Sandbox(JsonField.of("provider"))
+            @JvmField val PROVIDER = of("provider")
 
             @JvmStatic fun of(value: String) = Sandbox(JsonField.of(value))
         }

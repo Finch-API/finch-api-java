@@ -632,9 +632,9 @@ constructor(
 
             companion object {
 
-                @JvmField val WORK = Type(JsonField.of("work"))
+                @JvmField val WORK = of("work")
 
-                @JvmField val PERSONAL = Type(JsonField.of("personal"))
+                @JvmField val PERSONAL = of("personal")
 
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
@@ -707,26 +707,22 @@ constructor(
 
         companion object {
 
-            @JvmField val ASIAN = Ethnicity(JsonField.of("asian"))
+            @JvmField val ASIAN = of("asian")
 
-            @JvmField val WHITE = Ethnicity(JsonField.of("white"))
+            @JvmField val WHITE = of("white")
 
-            @JvmField
-            val BLACK_OR_AFRICAN_AMERICAN = Ethnicity(JsonField.of("black_or_african_american"))
-
-            @JvmField
-            val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER =
-                Ethnicity(JsonField.of("native_hawaiian_or_pacific_islander"))
+            @JvmField val BLACK_OR_AFRICAN_AMERICAN = of("black_or_african_american")
 
             @JvmField
-            val AMERICAN_INDIAN_OR_ALASKA_NATIVE =
-                Ethnicity(JsonField.of("american_indian_or_alaska_native"))
+            val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER = of("native_hawaiian_or_pacific_islander")
 
-            @JvmField val HISPANIC_OR_LATINO = Ethnicity(JsonField.of("hispanic_or_latino"))
+            @JvmField val AMERICAN_INDIAN_OR_ALASKA_NATIVE = of("american_indian_or_alaska_native")
 
-            @JvmField val TWO_OR_MORE_RACES = Ethnicity(JsonField.of("two_or_more_races"))
+            @JvmField val HISPANIC_OR_LATINO = of("hispanic_or_latino")
 
-            @JvmField val DECLINE_TO_SPECIFY = Ethnicity(JsonField.of("decline_to_specify"))
+            @JvmField val TWO_OR_MORE_RACES = of("two_or_more_races")
+
+            @JvmField val DECLINE_TO_SPECIFY = of("decline_to_specify")
 
             @JvmStatic fun of(value: String) = Ethnicity(JsonField.of(value))
         }
@@ -805,13 +801,13 @@ constructor(
 
         companion object {
 
-            @JvmField val FEMALE = Gender(JsonField.of("female"))
+            @JvmField val FEMALE = of("female")
 
-            @JvmField val MALE = Gender(JsonField.of("male"))
+            @JvmField val MALE = of("male")
 
-            @JvmField val OTHER = Gender(JsonField.of("other"))
+            @JvmField val OTHER = of("other")
 
-            @JvmField val DECLINE_TO_SPECIFY = Gender(JsonField.of("decline_to_specify"))
+            @JvmField val DECLINE_TO_SPECIFY = of("decline_to_specify")
 
             @JvmStatic fun of(value: String) = Gender(JsonField.of(value))
         }
@@ -937,9 +933,9 @@ constructor(
 
             companion object {
 
-                @JvmField val WORK = Type(JsonField.of("work"))
+                @JvmField val WORK = of("work")
 
-                @JvmField val PERSONAL = Type(JsonField.of("personal"))
+                @JvmField val PERSONAL = of("personal")
 
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }

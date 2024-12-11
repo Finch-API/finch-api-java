@@ -133,9 +133,9 @@ private constructor(
 
         companion object {
 
-            @JvmField val FIXED = Type(JsonField.of("fixed"))
+            @JvmField val FIXED = of("fixed")
 
-            @JvmField val PERCENT = Type(JsonField.of("percent"))
+            @JvmField val PERCENT = of("percent")
 
             @JvmStatic fun of(value: String) = Type(JsonField.of(value))
         }
