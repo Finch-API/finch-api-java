@@ -610,31 +610,31 @@ constructor(
 
                 companion object {
 
-                    @JvmField val SALARY = Type(JsonField.of("salary"))
+                    @JvmField val SALARY = of("salary")
 
-                    @JvmField val WAGE = Type(JsonField.of("wage"))
+                    @JvmField val WAGE = of("wage")
 
-                    @JvmField val REIMBURSEMENT = Type(JsonField.of("reimbursement"))
+                    @JvmField val REIMBURSEMENT = of("reimbursement")
 
-                    @JvmField val OVERTIME = Type(JsonField.of("overtime"))
+                    @JvmField val OVERTIME = of("overtime")
 
-                    @JvmField val SEVERANCE = Type(JsonField.of("severance"))
+                    @JvmField val SEVERANCE = of("severance")
 
-                    @JvmField val DOUBLE_OVERTIME = Type(JsonField.of("double_overtime"))
+                    @JvmField val DOUBLE_OVERTIME = of("double_overtime")
 
-                    @JvmField val PTO = Type(JsonField.of("pto"))
+                    @JvmField val PTO = of("pto")
 
-                    @JvmField val SICK = Type(JsonField.of("sick"))
+                    @JvmField val SICK = of("sick")
 
-                    @JvmField val BONUS = Type(JsonField.of("bonus"))
+                    @JvmField val BONUS = of("bonus")
 
-                    @JvmField val COMMISSION = Type(JsonField.of("commission"))
+                    @JvmField val COMMISSION = of("commission")
 
-                    @JvmField val TIPS = Type(JsonField.of("tips"))
+                    @JvmField val TIPS = of("tips")
 
-                    @JvmField val _1099 = Type(JsonField.of("1099"))
+                    @JvmField val _1099 = of("1099")
 
-                    @JvmField val OTHER = Type(JsonField.of("other"))
+                    @JvmField val OTHER = of("other")
 
                     @JvmStatic fun of(value: String) = Type(JsonField.of(value))
                 }
@@ -976,9 +976,9 @@ constructor(
 
             companion object {
 
-                @JvmField val CHECK = PaymentMethod(JsonField.of("check"))
+                @JvmField val CHECK = of("check")
 
-                @JvmField val DIRECT_DEPOSIT = PaymentMethod(JsonField.of("direct_deposit"))
+                @JvmField val DIRECT_DEPOSIT = of("direct_deposit")
 
                 @JvmStatic fun of(value: String) = PaymentMethod(JsonField.of(value))
             }
@@ -1133,13 +1133,13 @@ constructor(
 
                 companion object {
 
-                    @JvmField val STATE = Type(JsonField.of("state"))
+                    @JvmField val STATE = of("state")
 
-                    @JvmField val FEDERAL = Type(JsonField.of("federal"))
+                    @JvmField val FEDERAL = of("federal")
 
-                    @JvmField val LOCAL = Type(JsonField.of("local"))
+                    @JvmField val LOCAL = of("local")
 
-                    @JvmField val FICA = Type(JsonField.of("fica"))
+                    @JvmField val FICA = of("fica")
 
                     @JvmStatic fun of(value: String) = Type(JsonField.of(value))
                 }
@@ -1220,11 +1220,11 @@ constructor(
 
             companion object {
 
-                @JvmField val REGULAR_PAYROLL = Type(JsonField.of("regular_payroll"))
+                @JvmField val REGULAR_PAYROLL = of("regular_payroll")
 
-                @JvmField val OFF_CYCLE_PAYROLL = Type(JsonField.of("off_cycle_payroll"))
+                @JvmField val OFF_CYCLE_PAYROLL = of("off_cycle_payroll")
 
-                @JvmField val ONE_TIME_PAYMENT = Type(JsonField.of("one_time_payment"))
+                @JvmField val ONE_TIME_PAYMENT = of("one_time_payment")
 
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }

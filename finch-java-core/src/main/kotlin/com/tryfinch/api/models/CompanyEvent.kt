@@ -285,7 +285,7 @@ private constructor(
 
         companion object {
 
-            @JvmField val COMPANY_UPDATED = EventType(JsonField.of("company.updated"))
+            @JvmField val COMPANY_UPDATED = of("company.updated")
 
             @JvmStatic fun of(value: String) = EventType(JsonField.of(value))
         }
