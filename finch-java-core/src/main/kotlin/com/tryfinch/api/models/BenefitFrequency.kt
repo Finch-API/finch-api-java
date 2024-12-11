@@ -5,7 +5,6 @@ package com.tryfinch.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.errors.FinchInvalidDataException
 
 class BenefitFrequency
