@@ -326,11 +326,11 @@ private constructor(
 
         companion object {
 
-            @JvmField val PRODUCTION = ClientType(JsonField.of("production"))
+            @JvmField val PRODUCTION = of("production")
 
-            @JvmField val DEVELOPMENT = ClientType(JsonField.of("development"))
+            @JvmField val DEVELOPMENT = of("development")
 
-            @JvmField val SANDBOX = ClientType(JsonField.of("sandbox"))
+            @JvmField val SANDBOX = of("sandbox")
 
             @JvmStatic fun of(value: String) = ClientType(JsonField.of(value))
         }
@@ -389,9 +389,9 @@ private constructor(
 
         companion object {
 
-            @JvmField val PROVIDER = ConnectionType(JsonField.of("provider"))
+            @JvmField val PROVIDER = of("provider")
 
-            @JvmField val FINCH = ConnectionType(JsonField.of("finch"))
+            @JvmField val FINCH = of("finch")
 
             @JvmStatic fun of(value: String) = ConnectionType(JsonField.of(value))
         }

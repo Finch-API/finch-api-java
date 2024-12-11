@@ -307,11 +307,11 @@ private constructor(
 
         companion object {
 
-            @JvmField val INDIVIDUAL_CREATED = EventType(JsonField.of("individual.created"))
+            @JvmField val INDIVIDUAL_CREATED = of("individual.created")
 
-            @JvmField val INDIVIDUAL_UPDATED = EventType(JsonField.of("individual.updated"))
+            @JvmField val INDIVIDUAL_UPDATED = of("individual.updated")
 
-            @JvmField val INDIVIDUAL_DELETED = EventType(JsonField.of("individual.deleted"))
+            @JvmField val INDIVIDUAL_DELETED = of("individual.deleted")
 
             @JvmStatic fun of(value: String) = EventType(JsonField.of(value))
         }

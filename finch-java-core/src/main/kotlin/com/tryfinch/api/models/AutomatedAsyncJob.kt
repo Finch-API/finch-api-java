@@ -279,17 +279,17 @@ private constructor(
 
         companion object {
 
-            @JvmField val PENDING = Status(JsonField.of("pending"))
+            @JvmField val PENDING = of("pending")
 
-            @JvmField val IN_PROGRESS = Status(JsonField.of("in_progress"))
+            @JvmField val IN_PROGRESS = of("in_progress")
 
-            @JvmField val COMPLETE = Status(JsonField.of("complete"))
+            @JvmField val COMPLETE = of("complete")
 
-            @JvmField val ERROR = Status(JsonField.of("error"))
+            @JvmField val ERROR = of("error")
 
-            @JvmField val REAUTH_ERROR = Status(JsonField.of("reauth_error"))
+            @JvmField val REAUTH_ERROR = of("reauth_error")
 
-            @JvmField val PERMISSIONS_ERROR = Status(JsonField.of("permissions_error"))
+            @JvmField val PERMISSIONS_ERROR = of("permissions_error")
 
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
@@ -360,7 +360,7 @@ private constructor(
 
         companion object {
 
-            @JvmField val DATA_SYNC_ALL = Type(JsonField.of("data_sync_all"))
+            @JvmField val DATA_SYNC_ALL = of("data_sync_all")
 
             @JvmStatic fun of(value: String) = Type(JsonField.of(value))
         }

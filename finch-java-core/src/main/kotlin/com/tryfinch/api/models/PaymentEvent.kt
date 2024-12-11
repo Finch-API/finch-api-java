@@ -327,11 +327,11 @@ private constructor(
 
         companion object {
 
-            @JvmField val PAYMENT_CREATED = EventType(JsonField.of("payment.created"))
+            @JvmField val PAYMENT_CREATED = of("payment.created")
 
-            @JvmField val PAYMENT_UPDATED = EventType(JsonField.of("payment.updated"))
+            @JvmField val PAYMENT_UPDATED = of("payment.updated")
 
-            @JvmField val PAYMENT_DELETED = EventType(JsonField.of("payment.deleted"))
+            @JvmField val PAYMENT_DELETED = of("payment.deleted")
 
             @JvmStatic fun of(value: String) = EventType(JsonField.of(value))
         }

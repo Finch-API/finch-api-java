@@ -307,11 +307,11 @@ private constructor(
 
         companion object {
 
-            @JvmField val DIRECTORY_CREATED = EventType(JsonField.of("directory.created"))
+            @JvmField val DIRECTORY_CREATED = of("directory.created")
 
-            @JvmField val DIRECTORY_UPDATED = EventType(JsonField.of("directory.updated"))
+            @JvmField val DIRECTORY_UPDATED = of("directory.updated")
 
-            @JvmField val DIRECTORY_DELETED = EventType(JsonField.of("directory.deleted"))
+            @JvmField val DIRECTORY_DELETED = of("directory.deleted")
 
             @JvmStatic fun of(value: String) = EventType(JsonField.of(value))
         }

@@ -576,9 +576,9 @@ constructor(
 
             companion object {
 
-                @JvmField val CHECKING = AccountType(JsonField.of("checking"))
+                @JvmField val CHECKING = of("checking")
 
-                @JvmField val SAVINGS = AccountType(JsonField.of("savings"))
+                @JvmField val SAVINGS = of("savings")
 
                 @JvmStatic fun of(value: String) = AccountType(JsonField.of(value))
             }
@@ -878,11 +878,11 @@ constructor(
 
             companion object {
 
-                @JvmField val S_CORPORATION = Subtype(JsonField.of("s_corporation"))
+                @JvmField val S_CORPORATION = of("s_corporation")
 
-                @JvmField val C_CORPORATION = Subtype(JsonField.of("c_corporation"))
+                @JvmField val C_CORPORATION = of("c_corporation")
 
-                @JvmField val B_CORPORATION = Subtype(JsonField.of("b_corporation"))
+                @JvmField val B_CORPORATION = of("b_corporation")
 
                 @JvmStatic fun of(value: String) = Subtype(JsonField.of(value))
             }
@@ -941,19 +941,19 @@ constructor(
 
             companion object {
 
-                @JvmField val LLC = Type(JsonField.of("llc"))
+                @JvmField val LLC = of("llc")
 
-                @JvmField val LP = Type(JsonField.of("lp"))
+                @JvmField val LP = of("lp")
 
-                @JvmField val CORPORATION = Type(JsonField.of("corporation"))
+                @JvmField val CORPORATION = of("corporation")
 
-                @JvmField val SOLE_PROPRIETOR = Type(JsonField.of("sole_proprietor"))
+                @JvmField val SOLE_PROPRIETOR = of("sole_proprietor")
 
-                @JvmField val NON_PROFIT = Type(JsonField.of("non_profit"))
+                @JvmField val NON_PROFIT = of("non_profit")
 
-                @JvmField val PARTNERSHIP = Type(JsonField.of("partnership"))
+                @JvmField val PARTNERSHIP = of("partnership")
 
-                @JvmField val COOPERATIVE = Type(JsonField.of("cooperative"))
+                @JvmField val COOPERATIVE = of("cooperative")
 
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
