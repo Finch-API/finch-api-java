@@ -30,7 +30,7 @@ class SandboxDirectoryCreateParamsTest {
                                 .name("name")
                                 .build()
                         )
-                        .dob("dob")
+                        .dob("01/01/2000")
                         .emails(
                             listOf(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Email.builder()
@@ -66,7 +66,7 @@ class SandboxDirectoryCreateParamsTest {
                         .ethnicity(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                         )
-                        .firstName("first_name")
+                        .firstName("John")
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
@@ -87,7 +87,7 @@ class SandboxDirectoryCreateParamsTest {
                             )
                         )
                         .isActive(true)
-                        .lastName("last_name")
+                        .lastName("Smith")
                         .latestRehireDate("latest_rehire_date")
                         .location(
                             Location.builder()
@@ -167,7 +167,7 @@ class SandboxDirectoryCreateParamsTest {
                                     .name("name")
                                     .build()
                             )
-                            .dob("dob")
+                            .dob("01/01/2000")
                             .emails(
                                 listOf(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Email
@@ -208,7 +208,7 @@ class SandboxDirectoryCreateParamsTest {
                             .ethnicity(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                             )
-                            .firstName("first_name")
+                            .firstName("John")
                             .gender(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE
                             )
@@ -231,7 +231,7 @@ class SandboxDirectoryCreateParamsTest {
                                 )
                             )
                             .isActive(true)
-                            .lastName("last_name")
+                            .lastName("Smith")
                             .latestRehireDate("latest_rehire_date")
                             .location(
                                 Location.builder()
@@ -308,7 +308,7 @@ class SandboxDirectoryCreateParamsTest {
                                 .name("name")
                                 .build()
                         )
-                        .dob("dob")
+                        .dob("01/01/2000")
                         .emails(
                             listOf(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Email.builder()
@@ -344,7 +344,7 @@ class SandboxDirectoryCreateParamsTest {
                         .ethnicity(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                         )
-                        .firstName("first_name")
+                        .firstName("John")
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
@@ -365,7 +365,7 @@ class SandboxDirectoryCreateParamsTest {
                             )
                         )
                         .isActive(true)
-                        .lastName("last_name")
+                        .lastName("Smith")
                         .latestRehireDate("latest_rehire_date")
                         .location(
                             Location.builder()
