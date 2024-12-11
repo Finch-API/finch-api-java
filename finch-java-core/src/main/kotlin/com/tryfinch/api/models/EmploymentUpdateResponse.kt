@@ -775,17 +775,17 @@ private constructor(
 
             companion object {
 
-                @JvmField val FULL_TIME = Subtype(JsonField.of("full_time"))
+                @JvmField val FULL_TIME = of("full_time")
 
-                @JvmField val INTERN = Subtype(JsonField.of("intern"))
+                @JvmField val INTERN = of("intern")
 
-                @JvmField val PART_TIME = Subtype(JsonField.of("part_time"))
+                @JvmField val PART_TIME = of("part_time")
 
-                @JvmField val TEMP = Subtype(JsonField.of("temp"))
+                @JvmField val TEMP = of("temp")
 
-                @JvmField val SEASONAL = Subtype(JsonField.of("seasonal"))
+                @JvmField val SEASONAL = of("seasonal")
 
-                @JvmField val INDIVIDUAL_CONTRACTOR = Subtype(JsonField.of("individual_contractor"))
+                @JvmField val INDIVIDUAL_CONTRACTOR = of("individual_contractor")
 
                 @JvmStatic fun of(value: String) = Subtype(JsonField.of(value))
             }
@@ -856,9 +856,9 @@ private constructor(
 
             companion object {
 
-                @JvmField val EMPLOYEE = Type(JsonField.of("employee"))
+                @JvmField val EMPLOYEE = of("employee")
 
-                @JvmField val CONTRACTOR = Type(JsonField.of("contractor"))
+                @JvmField val CONTRACTOR = of("contractor")
 
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
@@ -931,19 +931,19 @@ private constructor(
 
         companion object {
 
-            @JvmField val ACTIVE = EmploymentStatus(JsonField.of("active"))
+            @JvmField val ACTIVE = of("active")
 
-            @JvmField val DECEASED = EmploymentStatus(JsonField.of("deceased"))
+            @JvmField val DECEASED = of("deceased")
 
-            @JvmField val LEAVE = EmploymentStatus(JsonField.of("leave"))
+            @JvmField val LEAVE = of("leave")
 
-            @JvmField val ONBOARDING = EmploymentStatus(JsonField.of("onboarding"))
+            @JvmField val ONBOARDING = of("onboarding")
 
-            @JvmField val PREHIRE = EmploymentStatus(JsonField.of("prehire"))
+            @JvmField val PREHIRE = of("prehire")
 
-            @JvmField val RETIRED = EmploymentStatus(JsonField.of("retired"))
+            @JvmField val RETIRED = of("retired")
 
-            @JvmField val TERMINATED = EmploymentStatus(JsonField.of("terminated"))
+            @JvmField val TERMINATED = of("terminated")
 
             @JvmStatic fun of(value: String) = EmploymentStatus(JsonField.of(value))
         }

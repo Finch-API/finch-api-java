@@ -30,18 +30,17 @@ private constructor(
 
     companion object {
 
-        @JvmField val PENDING = ConnectionStatusType(JsonField.of("pending"))
+        @JvmField val PENDING = of("pending")
 
-        @JvmField val PROCESSING = ConnectionStatusType(JsonField.of("processing"))
+        @JvmField val PROCESSING = of("processing")
 
-        @JvmField val CONNECTED = ConnectionStatusType(JsonField.of("connected"))
+        @JvmField val CONNECTED = of("connected")
 
-        @JvmField
-        val ERROR_NO_ACCOUNT_SETUP = ConnectionStatusType(JsonField.of("error_no_account_setup"))
+        @JvmField val ERROR_NO_ACCOUNT_SETUP = of("error_no_account_setup")
 
-        @JvmField val ERROR_PERMISSIONS = ConnectionStatusType(JsonField.of("error_permissions"))
+        @JvmField val ERROR_PERMISSIONS = of("error_permissions")
 
-        @JvmField val REAUTH = ConnectionStatusType(JsonField.of("reauth"))
+        @JvmField val REAUTH = of("reauth")
 
         @JvmStatic fun of(value: String) = ConnectionStatusType(JsonField.of(value))
     }

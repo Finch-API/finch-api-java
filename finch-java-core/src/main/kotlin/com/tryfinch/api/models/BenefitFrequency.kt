@@ -30,11 +30,11 @@ private constructor(
 
     companion object {
 
-        @JvmField val ONE_TIME = BenefitFrequency(JsonField.of("one_time"))
+        @JvmField val ONE_TIME = of("one_time")
 
-        @JvmField val EVERY_PAYCHECK = BenefitFrequency(JsonField.of("every_paycheck"))
+        @JvmField val EVERY_PAYCHECK = of("every_paycheck")
 
-        @JvmField val MONTHLY = BenefitFrequency(JsonField.of("monthly"))
+        @JvmField val MONTHLY = of("monthly")
 
         @JvmStatic fun of(value: String) = BenefitFrequency(JsonField.of(value))
     }

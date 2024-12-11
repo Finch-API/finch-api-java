@@ -30,43 +30,43 @@ private constructor(
 
     companion object {
 
-        @JvmField val _401K = BenefitType(JsonField.of("401k"))
+        @JvmField val _401K = of("401k")
 
-        @JvmField val _401K_ROTH = BenefitType(JsonField.of("401k_roth"))
+        @JvmField val _401K_ROTH = of("401k_roth")
 
-        @JvmField val _401K_LOAN = BenefitType(JsonField.of("401k_loan"))
+        @JvmField val _401K_LOAN = of("401k_loan")
 
-        @JvmField val _403B = BenefitType(JsonField.of("403b"))
+        @JvmField val _403B = of("403b")
 
-        @JvmField val _403B_ROTH = BenefitType(JsonField.of("403b_roth"))
+        @JvmField val _403B_ROTH = of("403b_roth")
 
-        @JvmField val _457 = BenefitType(JsonField.of("457"))
+        @JvmField val _457 = of("457")
 
-        @JvmField val _457_ROTH = BenefitType(JsonField.of("457_roth"))
+        @JvmField val _457_ROTH = of("457_roth")
 
-        @JvmField val S125_MEDICAL = BenefitType(JsonField.of("s125_medical"))
+        @JvmField val S125_MEDICAL = of("s125_medical")
 
-        @JvmField val S125_DENTAL = BenefitType(JsonField.of("s125_dental"))
+        @JvmField val S125_DENTAL = of("s125_dental")
 
-        @JvmField val S125_VISION = BenefitType(JsonField.of("s125_vision"))
+        @JvmField val S125_VISION = of("s125_vision")
 
-        @JvmField val HSA_PRE = BenefitType(JsonField.of("hsa_pre"))
+        @JvmField val HSA_PRE = of("hsa_pre")
 
-        @JvmField val HSA_POST = BenefitType(JsonField.of("hsa_post"))
+        @JvmField val HSA_POST = of("hsa_post")
 
-        @JvmField val FSA_MEDICAL = BenefitType(JsonField.of("fsa_medical"))
+        @JvmField val FSA_MEDICAL = of("fsa_medical")
 
-        @JvmField val FSA_DEPENDENT_CARE = BenefitType(JsonField.of("fsa_dependent_care"))
+        @JvmField val FSA_DEPENDENT_CARE = of("fsa_dependent_care")
 
-        @JvmField val SIMPLE_IRA = BenefitType(JsonField.of("simple_ira"))
+        @JvmField val SIMPLE_IRA = of("simple_ira")
 
-        @JvmField val SIMPLE = BenefitType(JsonField.of("simple"))
+        @JvmField val SIMPLE = of("simple")
 
-        @JvmField val COMMUTER = BenefitType(JsonField.of("commuter"))
+        @JvmField val COMMUTER = of("commuter")
 
-        @JvmField val CUSTOM_POST_TAX = BenefitType(JsonField.of("custom_post_tax"))
+        @JvmField val CUSTOM_POST_TAX = of("custom_post_tax")
 
-        @JvmField val CUSTOM_PRE_TAX = BenefitType(JsonField.of("custom_pre_tax"))
+        @JvmField val CUSTOM_PRE_TAX = of("custom_pre_tax")
 
         @JvmStatic fun of(value: String) = BenefitType(JsonField.of(value))
     }

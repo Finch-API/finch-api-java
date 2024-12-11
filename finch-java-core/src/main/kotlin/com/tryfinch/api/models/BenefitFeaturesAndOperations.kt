@@ -385,9 +385,9 @@ private constructor(
 
             companion object {
 
-                @JvmField val FIXED = CompanyContribution(JsonField.of("fixed"))
+                @JvmField val FIXED = of("fixed")
 
-                @JvmField val PERCENT = CompanyContribution(JsonField.of("percent"))
+                @JvmField val PERCENT = of("percent")
 
                 @JvmStatic fun of(value: String) = CompanyContribution(JsonField.of(value))
             }
@@ -442,9 +442,9 @@ private constructor(
 
             companion object {
 
-                @JvmField val FIXED = EmployeeDeduction(JsonField.of("fixed"))
+                @JvmField val FIXED = of("fixed")
 
-                @JvmField val PERCENT = EmployeeDeduction(JsonField.of("percent"))
+                @JvmField val PERCENT = of("percent")
 
                 @JvmStatic fun of(value: String) = EmployeeDeduction(JsonField.of(value))
             }
@@ -499,9 +499,9 @@ private constructor(
 
             companion object {
 
-                @JvmField val INDIVIDUAL = HsaContributionLimit(JsonField.of("individual"))
+                @JvmField val INDIVIDUAL = of("individual")
 
-                @JvmField val FAMILY = HsaContributionLimit(JsonField.of("family"))
+                @JvmField val FAMILY = of("family")
 
                 @JvmStatic fun of(value: String) = HsaContributionLimit(JsonField.of(value))
             }

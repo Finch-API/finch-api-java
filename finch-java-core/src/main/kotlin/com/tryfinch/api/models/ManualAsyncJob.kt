@@ -144,13 +144,13 @@ private constructor(
 
         companion object {
 
-            @JvmField val PENDING = Status(JsonField.of("pending"))
+            @JvmField val PENDING = of("pending")
 
-            @JvmField val IN_PROGRESS = Status(JsonField.of("in_progress"))
+            @JvmField val IN_PROGRESS = of("in_progress")
 
-            @JvmField val ERROR = Status(JsonField.of("error"))
+            @JvmField val ERROR = of("error")
 
-            @JvmField val COMPLETE = Status(JsonField.of("complete"))
+            @JvmField val COMPLETE = of("complete")
 
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }

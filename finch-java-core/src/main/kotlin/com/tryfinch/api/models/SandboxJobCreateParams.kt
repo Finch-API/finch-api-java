@@ -297,7 +297,7 @@ constructor(
 
         companion object {
 
-            @JvmField val DATA_SYNC_ALL = Type(JsonField.of("data_sync_all"))
+            @JvmField val DATA_SYNC_ALL = of("data_sync_all")
 
             @JvmStatic fun of(value: String) = Type(JsonField.of(value))
         }

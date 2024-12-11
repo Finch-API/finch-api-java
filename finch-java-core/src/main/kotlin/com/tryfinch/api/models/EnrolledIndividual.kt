@@ -277,13 +277,13 @@ private constructor(
 
         companion object {
 
-            @JvmField val OK = Code(JsonField.of(200))
+            @JvmField val OK = of(200)
 
-            @JvmField val CREATED = Code(JsonField.of(201))
+            @JvmField val CREATED = of(201)
 
-            @JvmField val NOT_FOUND = Code(JsonField.of(404))
+            @JvmField val NOT_FOUND = of(404)
 
-            @JvmField val FORBIDDEN = Code(JsonField.of(403))
+            @JvmField val FORBIDDEN = of(403)
 
             @JvmStatic fun of(value: Long) = Code(JsonField.of(value))
         }

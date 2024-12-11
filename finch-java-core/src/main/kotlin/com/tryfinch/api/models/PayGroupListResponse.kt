@@ -154,23 +154,23 @@ private constructor(
 
         companion object {
 
-            @JvmField val ANNUALLY = PayFrequency(JsonField.of("annually"))
+            @JvmField val ANNUALLY = of("annually")
 
-            @JvmField val SEMI_ANNUALLY = PayFrequency(JsonField.of("semi_annually"))
+            @JvmField val SEMI_ANNUALLY = of("semi_annually")
 
-            @JvmField val QUARTERLY = PayFrequency(JsonField.of("quarterly"))
+            @JvmField val QUARTERLY = of("quarterly")
 
-            @JvmField val MONTHLY = PayFrequency(JsonField.of("monthly"))
+            @JvmField val MONTHLY = of("monthly")
 
-            @JvmField val SEMI_MONTHLY = PayFrequency(JsonField.of("semi_monthly"))
+            @JvmField val SEMI_MONTHLY = of("semi_monthly")
 
-            @JvmField val BI_WEEKLY = PayFrequency(JsonField.of("bi_weekly"))
+            @JvmField val BI_WEEKLY = of("bi_weekly")
 
-            @JvmField val WEEKLY = PayFrequency(JsonField.of("weekly"))
+            @JvmField val WEEKLY = of("weekly")
 
-            @JvmField val DAILY = PayFrequency(JsonField.of("daily"))
+            @JvmField val DAILY = of("daily")
 
-            @JvmField val OTHER = PayFrequency(JsonField.of("other"))
+            @JvmField val OTHER = of("other")
 
             @JvmStatic fun of(value: String) = PayFrequency(JsonField.of(value))
         }

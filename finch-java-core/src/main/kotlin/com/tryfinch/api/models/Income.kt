@@ -191,23 +191,23 @@ private constructor(
 
         companion object {
 
-            @JvmField val YEARLY = Unit(JsonField.of("yearly"))
+            @JvmField val YEARLY = of("yearly")
 
-            @JvmField val QUARTERLY = Unit(JsonField.of("quarterly"))
+            @JvmField val QUARTERLY = of("quarterly")
 
-            @JvmField val MONTHLY = Unit(JsonField.of("monthly"))
+            @JvmField val MONTHLY = of("monthly")
 
-            @JvmField val SEMI_MONTHLY = Unit(JsonField.of("semi_monthly"))
+            @JvmField val SEMI_MONTHLY = of("semi_monthly")
 
-            @JvmField val BI_WEEKLY = Unit(JsonField.of("bi_weekly"))
+            @JvmField val BI_WEEKLY = of("bi_weekly")
 
-            @JvmField val WEEKLY = Unit(JsonField.of("weekly"))
+            @JvmField val WEEKLY = of("weekly")
 
-            @JvmField val DAILY = Unit(JsonField.of("daily"))
+            @JvmField val DAILY = of("daily")
 
-            @JvmField val HOURLY = Unit(JsonField.of("hourly"))
+            @JvmField val HOURLY = of("hourly")
 
-            @JvmField val FIXED = Unit(JsonField.of("fixed"))
+            @JvmField val FIXED = of("fixed")
 
             @JvmStatic fun of(value: String) = Unit(JsonField.of(value))
         }

@@ -327,28 +327,17 @@ private constructor(
 
         companion object {
 
-            @JvmField
-            val JOB_BENEFIT_CREATE_COMPLETED =
-                EventType(JsonField.of("job.benefit_create.completed"))
+            @JvmField val JOB_BENEFIT_CREATE_COMPLETED = of("job.benefit_create.completed")
 
-            @JvmField
-            val JOB_BENEFIT_ENROLL_COMPLETED =
-                EventType(JsonField.of("job.benefit_enroll.completed"))
+            @JvmField val JOB_BENEFIT_ENROLL_COMPLETED = of("job.benefit_enroll.completed")
 
-            @JvmField
-            val JOB_BENEFIT_REGISTER_COMPLETED =
-                EventType(JsonField.of("job.benefit_register.completed"))
+            @JvmField val JOB_BENEFIT_REGISTER_COMPLETED = of("job.benefit_register.completed")
 
-            @JvmField
-            val JOB_BENEFIT_UNENROLL_COMPLETED =
-                EventType(JsonField.of("job.benefit_unenroll.completed"))
+            @JvmField val JOB_BENEFIT_UNENROLL_COMPLETED = of("job.benefit_unenroll.completed")
 
-            @JvmField
-            val JOB_BENEFIT_UPDATE_COMPLETED =
-                EventType(JsonField.of("job.benefit_update.completed"))
+            @JvmField val JOB_BENEFIT_UPDATE_COMPLETED = of("job.benefit_update.completed")
 
-            @JvmField
-            val JOB_DATA_SYNC_ALL_COMPLETED = EventType(JsonField.of("job.data_sync_all.completed"))
+            @JvmField val JOB_DATA_SYNC_ALL_COMPLETED = of("job.data_sync_all.completed")
 
             @JvmStatic fun of(value: String) = EventType(JsonField.of(value))
         }
