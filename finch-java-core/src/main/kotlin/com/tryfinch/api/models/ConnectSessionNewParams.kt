@@ -16,7 +16,6 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
-import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
 

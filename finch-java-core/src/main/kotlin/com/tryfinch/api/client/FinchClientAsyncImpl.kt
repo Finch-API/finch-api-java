@@ -4,7 +4,6 @@ package com.tryfinch.api.client
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.getPackageVersion
-import com.tryfinch.api.models.*
 import com.tryfinch.api.services.async.*
 
 class FinchClientAsyncImpl
