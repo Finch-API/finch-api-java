@@ -12,7 +12,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.core.JsonString
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.errors.BadRequestException
@@ -38,7 +38,7 @@ class ErrorHandlingTest {
     private val JSON_MAPPER: JsonMapper = jsonMapper()
 
     private val FINCH_ERROR: FinchError =
-        FinchError.builder().putAdditionalProperty("key", JsonString.of("value")).build()
+        FinchError.builder().putAdditionalProperty("key", JsonValue.from("value")).build()
 
     private lateinit var client: FinchClient
 
