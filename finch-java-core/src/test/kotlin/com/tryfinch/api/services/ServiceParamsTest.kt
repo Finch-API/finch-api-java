@@ -15,9 +15,10 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.jsonMapper
-import com.tryfinch.api.models.*
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
+import com.tryfinch.api.models.IndividualInDirectory
+import com.tryfinch.api.models.Paging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

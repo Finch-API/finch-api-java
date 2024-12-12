@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.client
 
-import com.tryfinch.api.models.*
 import com.tryfinch.api.services.blocking.*
 
 interface FinchClient {
