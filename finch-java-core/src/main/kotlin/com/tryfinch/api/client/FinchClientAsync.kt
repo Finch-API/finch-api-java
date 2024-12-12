@@ -3,7 +3,6 @@
 package com.tryfinch.api.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.models.*
 import com.tryfinch.api.services.async.*
 import java.util.concurrent.CompletableFuture
 

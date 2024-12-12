@@ -25,7 +25,9 @@ import com.tryfinch.api.errors.RateLimitException
 import com.tryfinch.api.errors.UnauthorizedException
 import com.tryfinch.api.errors.UnexpectedStatusCodeException
 import com.tryfinch.api.errors.UnprocessableEntityException
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.Company
+import com.tryfinch.api.models.HrisCompanyRetrieveParams
+import com.tryfinch.api.models.Location
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.InstanceOfAssertFactories
