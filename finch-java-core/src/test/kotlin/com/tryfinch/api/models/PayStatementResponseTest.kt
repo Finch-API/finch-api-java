@@ -49,9 +49,11 @@ class PayStatementResponseTest {
                                                 .build()
                                         )
                                     )
-                                    .grossPay(0.0)
+                                    .grossPay(
+                                        Money.builder().amount(0L).currency("currency").build()
+                                    )
                                     .individualId("individual_id")
-                                    .netPay(0.0)
+                                    .netPay(Money.builder().amount(0L).currency("currency").build())
                                     .paymentMethod(PayStatement.PaymentMethod.CHECK)
                                     .taxes(
                                         listOf(
@@ -114,9 +116,9 @@ class PayStatementResponseTest {
                                             .build()
                                     )
                                 )
-                                .grossPay(0.0)
+                                .grossPay(Money.builder().amount(0L).currency("currency").build())
                                 .individualId("individual_id")
-                                .netPay(0.0)
+                                .netPay(Money.builder().amount(0L).currency("currency").build())
                                 .paymentMethod(PayStatement.PaymentMethod.CHECK)
                                 .taxes(
                                     listOf(
