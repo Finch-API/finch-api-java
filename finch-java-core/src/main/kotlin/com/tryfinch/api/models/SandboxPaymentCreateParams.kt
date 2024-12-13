@@ -334,8 +334,8 @@ constructor(
         private val type: Type?,
         private val paymentMethod: PaymentMethod?,
         private val totalHours: Double?,
-        private val grossPay: Double?,
-        private val netPay: Double?,
+        private val grossPay: Money?,
+        private val netPay: Money?,
         private val earnings: List<Earning?>?,
         private val taxes: List<Tax?>?,
         private val employeeDeductions: List<EmployeeDeduction?>?,
@@ -355,11 +355,9 @@ constructor(
         /** The number of hours worked for this pay period */
         @JsonProperty("total_hours") fun totalHours(): Double? = totalHours
 
-        /** The gross pay for the pay period */
-        @JsonProperty("gross_pay") fun grossPay(): Double? = grossPay
+        @JsonProperty("gross_pay") fun grossPay(): Money? = grossPay
 
-        /** The net pay for the pay period */
-        @JsonProperty("net_pay") fun netPay(): Double? = netPay
+        @JsonProperty("net_pay") fun netPay(): Money? = netPay
 
         /** The array of earnings objects associated with this pay statement */
         @JsonProperty("earnings") fun earnings(): List<Earning?>? = earnings
@@ -391,8 +389,8 @@ constructor(
             private var type: Type? = null
             private var paymentMethod: PaymentMethod? = null
             private var totalHours: Double? = null
-            private var grossPay: Double? = null
-            private var netPay: Double? = null
+            private var grossPay: Money? = null
+            private var netPay: Money? = null
             private var earnings: List<Earning?>? = null
             private var taxes: List<Tax?>? = null
             private var employeeDeductions: List<EmployeeDeduction?>? = null
@@ -431,12 +429,10 @@ constructor(
             @JsonProperty("total_hours")
             fun totalHours(totalHours: Double) = apply { this.totalHours = totalHours }
 
-            /** The gross pay for the pay period */
             @JsonProperty("gross_pay")
-            fun grossPay(grossPay: Double) = apply { this.grossPay = grossPay }
+            fun grossPay(grossPay: Money) = apply { this.grossPay = grossPay }
 
-            /** The net pay for the pay period */
-            @JsonProperty("net_pay") fun netPay(netPay: Double) = apply { this.netPay = netPay }
+            @JsonProperty("net_pay") fun netPay(netPay: Money) = apply { this.netPay = netPay }
 
             /** The array of earnings objects associated with this pay statement */
             @JsonProperty("earnings")
