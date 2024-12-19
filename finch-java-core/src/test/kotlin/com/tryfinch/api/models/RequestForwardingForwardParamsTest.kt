@@ -11,11 +11,10 @@ class RequestForwardingForwardParamsTest {
     @Test
     fun createRequestForwardingForwardParams() {
         RequestForwardingForwardParams.builder()
-            .method("method")
-            .route("route")
-            .data("data")
-            .headers(JsonValue.from(mapOf<String, Any>()))
-            .params(JsonValue.from(mapOf<String, Any>()))
+            .method("POST")
+            .route("/people/search")
+            .headers(JsonValue.from(mapOf("content-type" to "application/json")))
+            .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
             .build()
     }
 
@@ -23,28 +22,28 @@ class RequestForwardingForwardParamsTest {
     fun getBody() {
         val params =
             RequestForwardingForwardParams.builder()
-                .method("method")
-                .route("route")
-                .data("data")
-                .headers(JsonValue.from(mapOf<String, Any>()))
-                .params(JsonValue.from(mapOf<String, Any>()))
+                .method("POST")
+                .route("/people/search")
+                .headers(JsonValue.from(mapOf("content-type" to "application/json")))
+                .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.method()).isEqualTo("method")
-        assertThat(body.route()).isEqualTo("route")
-        assertThat(body.data()).isEqualTo("data")
-        assertThat(body.headers()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(body.params()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(body.method()).isEqualTo("POST")
+        assertThat(body.route()).isEqualTo("/people/search")
+        assertThat(body.headers())
+            .isEqualTo(JsonValue.from(mapOf("content-type" to "application/json")))
+        assertThat(body.params())
+            .isEqualTo(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
     }
 
     @Test
     fun getBodyWithoutOptionalFields() {
         val params =
-            RequestForwardingForwardParams.builder().method("method").route("route").build()
+            RequestForwardingForwardParams.builder().method("POST").route("/people/search").build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.method()).isEqualTo("method")
-        assertThat(body.route()).isEqualTo("route")
+        assertThat(body.method()).isEqualTo("POST")
+        assertThat(body.route()).isEqualTo("/people/search")
     }
 }
