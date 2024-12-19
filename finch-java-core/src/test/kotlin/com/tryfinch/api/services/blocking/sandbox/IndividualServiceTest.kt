@@ -4,7 +4,8 @@ package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.Location
+import com.tryfinch.api.models.SandboxIndividualUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -23,7 +24,7 @@ class IndividualServiceTest {
             individualService.update(
                 SandboxIndividualUpdateParams.builder()
                     .individualId("individual_id")
-                    .dob("dob")
+                    .dob("12/20/1989")
                     .emails(
                         listOf(
                             SandboxIndividualUpdateParams.Email.builder()

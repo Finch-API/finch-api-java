@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/1.12.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/2.0.0)
 
 <!-- x-release-please-end -->
 
@@ -27,7 +27,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:1.12.0")
+implementation("com.tryfinch.api:finch-java:2.0.0")
 ```
 
 #### Maven
@@ -36,7 +36,7 @@ implementation("com.tryfinch.api:finch-java:1.12.0")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-java</artifactId>
-    <version>1.12.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -97,6 +97,24 @@ HrisDirectoryListPage page = client.hris().directory().list();
 for (IndividualInDirectory directory : page.individuals()) {
     System.out.println(directory);
 }
+```
+
+Use the `HrisDirectoryListParams` builder to set parameters:
+
+```java
+HrisDirectoryListParams params = HrisDirectoryListParams.builder()
+    .limit(0L)
+    .offset(0L)
+    .build();
+HrisDirectoryListPage page1 = client.hris().directory().list(params);
+
+// Using the `from` method of the builder you can reuse previous params values:
+HrisDirectoryListPage page2 = client.hris().directory().list(HrisDirectoryListParams.builder()
+    .from(params)
+    .build());
+
+// Or easily get params for the next page by using the helper `getNextPageParams`:
+HrisDirectoryListPage page3 = client.hris().directory().list(params.getNextPageParams(page2));
 ```
 
 See [Pagination](#pagination) below for more information on transparently working with lists of objects without worrying about fetching each page.

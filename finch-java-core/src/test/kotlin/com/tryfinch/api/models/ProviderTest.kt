@@ -830,6 +830,7 @@ class ProviderTest {
                                                     .type(true)
                                                     .build()
                                             )
+                                            .employmentStatus(true)
                                             .endDate(true)
                                             .firstName(true)
                                             .income(
@@ -1819,6 +1820,7 @@ class ProviderTest {
                                             .type(true)
                                             .build()
                                     )
+                                    .employmentStatus(true)
                                     .endDate(true)
                                     .firstName(true)
                                     .income(

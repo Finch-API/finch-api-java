@@ -177,37 +177,25 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Unit && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val YEARLY = Unit(JsonField.of("yearly"))
+            @JvmField val YEARLY = of("yearly")
 
-            @JvmField val QUARTERLY = Unit(JsonField.of("quarterly"))
+            @JvmField val QUARTERLY = of("quarterly")
 
-            @JvmField val MONTHLY = Unit(JsonField.of("monthly"))
+            @JvmField val MONTHLY = of("monthly")
 
-            @JvmField val SEMI_MONTHLY = Unit(JsonField.of("semi_monthly"))
+            @JvmField val SEMI_MONTHLY = of("semi_monthly")
 
-            @JvmField val BI_WEEKLY = Unit(JsonField.of("bi_weekly"))
+            @JvmField val BI_WEEKLY = of("bi_weekly")
 
-            @JvmField val WEEKLY = Unit(JsonField.of("weekly"))
+            @JvmField val WEEKLY = of("weekly")
 
-            @JvmField val DAILY = Unit(JsonField.of("daily"))
+            @JvmField val DAILY = of("daily")
 
-            @JvmField val HOURLY = Unit(JsonField.of("hourly"))
+            @JvmField val HOURLY = of("hourly")
 
-            @JvmField val FIXED = Unit(JsonField.of("fixed"))
+            @JvmField val FIXED = of("fixed")
 
             @JvmStatic fun of(value: String) = Unit(JsonField.of(value))
         }
@@ -266,6 +254,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Unit && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

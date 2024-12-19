@@ -16,7 +16,6 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
-import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
 
@@ -27,6 +26,7 @@ constructor(
     private val customFields: List<CustomField>?,
     private val department: Department?,
     private val employment: Employment?,
+    private val employmentStatus: EmploymentStatus?,
     private val endDate: String?,
     private val firstName: String?,
     private val income: Income?,
@@ -54,6 +54,8 @@ constructor(
     fun department(): Optional<Department> = Optional.ofNullable(department)
 
     fun employment(): Optional<Employment> = Optional.ofNullable(employment)
+
+    fun employmentStatus(): Optional<EmploymentStatus> = Optional.ofNullable(employmentStatus)
 
     fun endDate(): Optional<String> = Optional.ofNullable(endDate)
 
@@ -94,6 +96,7 @@ constructor(
             customFields,
             department,
             employment,
+            employmentStatus,
             endDate,
             firstName,
             income,
@@ -130,6 +133,7 @@ constructor(
         private val customFields: List<CustomField>?,
         private val department: Department?,
         private val employment: Employment?,
+        private val employmentStatus: EmploymentStatus?,
         private val endDate: String?,
         private val firstName: String?,
         private val income: Income?,
@@ -160,6 +164,10 @@ constructor(
 
         /** The employment object. */
         @JsonProperty("employment") fun employment(): Employment? = employment
+
+        /** The detailed employment status of the individual. */
+        @JsonProperty("employment_status")
+        fun employmentStatus(): EmploymentStatus? = employmentStatus
 
         @JsonProperty("end_date") fun endDate(): String? = endDate
 
@@ -217,6 +225,7 @@ constructor(
             private var customFields: List<CustomField>? = null
             private var department: Department? = null
             private var employment: Employment? = null
+            private var employmentStatus: EmploymentStatus? = null
             private var endDate: String? = null
             private var firstName: String? = null
             private var income: Income? = null
@@ -238,6 +247,7 @@ constructor(
                 this.customFields = sandboxEmploymentUpdateBody.customFields
                 this.department = sandboxEmploymentUpdateBody.department
                 this.employment = sandboxEmploymentUpdateBody.employment
+                this.employmentStatus = sandboxEmploymentUpdateBody.employmentStatus
                 this.endDate = sandboxEmploymentUpdateBody.endDate
                 this.firstName = sandboxEmploymentUpdateBody.firstName
                 this.income = sandboxEmploymentUpdateBody.income
@@ -274,6 +284,12 @@ constructor(
             /** The employment object. */
             @JsonProperty("employment")
             fun employment(employment: Employment) = apply { this.employment = employment }
+
+            /** The detailed employment status of the individual. */
+            @JsonProperty("employment_status")
+            fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
+                this.employmentStatus = employmentStatus
+            }
 
             @JsonProperty("end_date")
             fun endDate(endDate: String) = apply { this.endDate = endDate }
@@ -349,6 +365,7 @@ constructor(
                     customFields?.toImmutable(),
                     department,
                     employment,
+                    employmentStatus,
                     endDate,
                     firstName,
                     income,
@@ -371,17 +388,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxEmploymentUpdateBody && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is SandboxEmploymentUpdateBody && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(classCode, customFields, department, employment, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(classCode, customFields, department, employment, employmentStatus, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxEmploymentUpdateBody{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
+            "SandboxEmploymentUpdateBody{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -399,6 +416,7 @@ constructor(
         private var customFields: MutableList<CustomField> = mutableListOf()
         private var department: Department? = null
         private var employment: Employment? = null
+        private var employmentStatus: EmploymentStatus? = null
         private var endDate: String? = null
         private var firstName: String? = null
         private var income: Income? = null
@@ -424,6 +442,7 @@ constructor(
                 sandboxEmploymentUpdateParams.customFields?.toMutableList() ?: mutableListOf()
             department = sandboxEmploymentUpdateParams.department
             employment = sandboxEmploymentUpdateParams.employment
+            employmentStatus = sandboxEmploymentUpdateParams.employmentStatus
             endDate = sandboxEmploymentUpdateParams.endDate
             firstName = sandboxEmploymentUpdateParams.firstName
             income = sandboxEmploymentUpdateParams.income
@@ -469,6 +488,11 @@ constructor(
 
         /** The employment object. */
         fun employment(employment: Employment) = apply { this.employment = employment }
+
+        /** The detailed employment status of the individual. */
+        fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
+            this.employmentStatus = employmentStatus
+        }
 
         fun endDate(endDate: String) = apply { this.endDate = endDate }
 
@@ -646,6 +670,7 @@ constructor(
                 customFields.toImmutable().ifEmpty { null },
                 department,
                 employment,
+                employmentStatus,
                 endDate,
                 firstName,
                 income,
@@ -901,31 +926,19 @@ constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Subtype && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                @JvmField val FULL_TIME = Subtype(JsonField.of("full_time"))
+                @JvmField val FULL_TIME = of("full_time")
 
-                @JvmField val INTERN = Subtype(JsonField.of("intern"))
+                @JvmField val INTERN = of("intern")
 
-                @JvmField val PART_TIME = Subtype(JsonField.of("part_time"))
+                @JvmField val PART_TIME = of("part_time")
 
-                @JvmField val TEMP = Subtype(JsonField.of("temp"))
+                @JvmField val TEMP = of("temp")
 
-                @JvmField val SEASONAL = Subtype(JsonField.of("seasonal"))
+                @JvmField val SEASONAL = of("seasonal")
 
-                @JvmField val INDIVIDUAL_CONTRACTOR = Subtype(JsonField.of("individual_contractor"))
+                @JvmField val INDIVIDUAL_CONTRACTOR = of("individual_contractor")
 
                 @JvmStatic fun of(value: String) = Subtype(JsonField.of(value))
             }
@@ -972,6 +985,18 @@ constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Subtype && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         class Type
@@ -982,23 +1007,11 @@ constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                @JvmField val EMPLOYEE = Type(JsonField.of("employee"))
+                @JvmField val EMPLOYEE = of("employee")
 
-                @JvmField val CONTRACTOR = Type(JsonField.of("contractor"))
+                @JvmField val CONTRACTOR = of("contractor")
 
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
@@ -1029,6 +1042,18 @@ constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1047,6 +1072,93 @@ constructor(
 
         override fun toString() =
             "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
+    }
+
+    class EmploymentStatus
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val ACTIVE = of("active")
+
+            @JvmField val DECEASED = of("deceased")
+
+            @JvmField val LEAVE = of("leave")
+
+            @JvmField val ONBOARDING = of("onboarding")
+
+            @JvmField val PREHIRE = of("prehire")
+
+            @JvmField val RETIRED = of("retired")
+
+            @JvmField val TERMINATED = of("terminated")
+
+            @JvmStatic fun of(value: String) = EmploymentStatus(JsonField.of(value))
+        }
+
+        enum class Known {
+            ACTIVE,
+            DECEASED,
+            LEAVE,
+            ONBOARDING,
+            PREHIRE,
+            RETIRED,
+            TERMINATED,
+        }
+
+        enum class Value {
+            ACTIVE,
+            DECEASED,
+            LEAVE,
+            ONBOARDING,
+            PREHIRE,
+            RETIRED,
+            TERMINATED,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                ACTIVE -> Value.ACTIVE
+                DECEASED -> Value.DECEASED
+                LEAVE -> Value.LEAVE
+                ONBOARDING -> Value.ONBOARDING
+                PREHIRE -> Value.PREHIRE
+                RETIRED -> Value.RETIRED
+                TERMINATED -> Value.TERMINATED
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                ACTIVE -> Known.ACTIVE
+                DECEASED -> Known.DECEASED
+                LEAVE -> Known.LEAVE
+                ONBOARDING -> Known.ONBOARDING
+                PREHIRE -> Known.PREHIRE
+                RETIRED -> Known.RETIRED
+                TERMINATED -> Known.TERMINATED
+                else -> throw FinchInvalidDataException("Unknown EmploymentStatus: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is EmploymentStatus && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     /** The manager object representing the manager of the individual within the org. */
@@ -1125,11 +1237,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxEmploymentUpdateParams && individualId == other.individualId && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxEmploymentUpdateParams && individualId == other.individualId && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, classCode, customFields, department, employment, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, classCode, customFields, department, employment, employmentStatus, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
-        "SandboxEmploymentUpdateParams{individualId=$individualId, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxEmploymentUpdateParams{individualId=$individualId, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
