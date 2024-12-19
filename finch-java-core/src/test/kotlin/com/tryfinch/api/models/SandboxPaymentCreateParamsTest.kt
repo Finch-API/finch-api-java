@@ -30,9 +30,9 @@ class SandboxPaymentCreateParamsTest {
                         .employeeDeductions(
                             listOf(
                                 SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
-                                    .amount(0L)
-                                    .currency("currency")
-                                    .name("name")
+                                    .amount(2000L)
+                                    .currency("usd")
+                                    .name("401k test")
                                     .preTax(true)
                                     .type(BenefitType._401K)
                                     .build()
@@ -50,7 +50,7 @@ class SandboxPaymentCreateParamsTest {
                             )
                         )
                         .grossPay(Money.builder().amount(0L).currency("currency").build())
-                        .individualId("individual_id")
+                        .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
                         .netPay(Money.builder().amount(0L).currency("currency").build())
                         .paymentMethod(SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK)
                         .taxes(
@@ -99,9 +99,9 @@ class SandboxPaymentCreateParamsTest {
                                 listOf(
                                     SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
                                         .builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .name("name")
+                                        .amount(2000L)
+                                        .currency("usd")
+                                        .name("401k test")
                                         .preTax(true)
                                         .type(BenefitType._401K)
                                         .build()
@@ -119,7 +119,7 @@ class SandboxPaymentCreateParamsTest {
                                 )
                             )
                             .grossPay(Money.builder().amount(0L).currency("currency").build())
-                            .individualId("individual_id")
+                            .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
                             .netPay(Money.builder().amount(0L).currency("currency").build())
                             .paymentMethod(
                                 SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
@@ -167,9 +167,9 @@ class SandboxPaymentCreateParamsTest {
                         .employeeDeductions(
                             listOf(
                                 SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
-                                    .amount(0L)
-                                    .currency("currency")
-                                    .name("name")
+                                    .amount(2000L)
+                                    .currency("usd")
+                                    .name("401k test")
                                     .preTax(true)
                                     .type(BenefitType._401K)
                                     .build()
@@ -187,7 +187,7 @@ class SandboxPaymentCreateParamsTest {
                             )
                         )
                         .grossPay(Money.builder().amount(0L).currency("currency").build())
-                        .individualId("individual_id")
+                        .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
                         .netPay(Money.builder().amount(0L).currency("currency").build())
                         .paymentMethod(SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK)
                         .taxes(

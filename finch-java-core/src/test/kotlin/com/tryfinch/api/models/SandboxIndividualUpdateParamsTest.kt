@@ -11,7 +11,7 @@ class SandboxIndividualUpdateParamsTest {
     fun createSandboxIndividualUpdateParams() {
         SandboxIndividualUpdateParams.builder()
             .individualId("individual_id")
-            .dob("dob")
+            .dob("12/20/1989")
             .emails(
                 listOf(
                     SandboxIndividualUpdateParams.Email.builder()
@@ -56,7 +56,7 @@ class SandboxIndividualUpdateParamsTest {
         val params =
             SandboxIndividualUpdateParams.builder()
                 .individualId("individual_id")
-                .dob("dob")
+                .dob("12/20/1989")
                 .emails(
                     listOf(
                         SandboxIndividualUpdateParams.Email.builder()
@@ -96,7 +96,7 @@ class SandboxIndividualUpdateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.dob()).isEqualTo("dob")
+        assertThat(body.dob()).isEqualTo("12/20/1989")
         assertThat(body.emails())
             .isEqualTo(
                 listOf(

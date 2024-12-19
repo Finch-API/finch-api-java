@@ -23,11 +23,10 @@ class RequestForwardingServiceTest {
         val requestForwardingForwardResponse =
             requestForwardingService.forward(
                 RequestForwardingForwardParams.builder()
-                    .method("method")
-                    .route("route")
-                    .data("data")
-                    .headers(JsonValue.from(mapOf<String, Any>()))
-                    .params(JsonValue.from(mapOf<String, Any>()))
+                    .method("POST")
+                    .route("/people/search")
+                    .headers(JsonValue.from(mapOf("content-type" to "application/json")))
+                    .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
                     .build()
             )
         println(requestForwardingForwardResponse)
