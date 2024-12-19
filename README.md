@@ -99,6 +99,24 @@ for (IndividualInDirectory directory : page.individuals()) {
 }
 ```
 
+Use the `HrisDirectoryListParams` builder to set parameters:
+
+```java
+HrisDirectoryListParams params = HrisDirectoryListParams.builder()
+    .limit(0L)
+    .offset(0L)
+    .build();
+HrisDirectoryListPage page1 = client.hris().directory().list(params);
+
+// Using the `from` method of the builder you can reuse previous params values:
+HrisDirectoryListPage page2 = client.hris().directory().list(HrisDirectoryListParams.builder()
+    .from(params)
+    .build());
+
+// Or easily get params for the next page by using the helper `getNextPageParams`:
+HrisDirectoryListPage page3 = client.hris().directory().list(params.getNextPageParams(page2));
+```
+
 See [Pagination](#pagination) below for more information on transparently working with lists of objects without worrying about fetching each page.
 
 ---
