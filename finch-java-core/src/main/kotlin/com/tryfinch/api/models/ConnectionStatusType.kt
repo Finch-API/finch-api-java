@@ -5,7 +5,6 @@ package com.tryfinch.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.errors.FinchInvalidDataException
 
 class ConnectionStatusType
@@ -16,32 +15,19 @@ private constructor(
 
     @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ConnectionStatusType && value == other.value /* spotless:on */
-    }
-
-    override fun hashCode() = value.hashCode()
-
-    override fun toString() = value.toString()
-
     companion object {
 
-        @JvmField val PENDING = ConnectionStatusType(JsonField.of("pending"))
+        @JvmField val PENDING = of("pending")
 
-        @JvmField val PROCESSING = ConnectionStatusType(JsonField.of("processing"))
+        @JvmField val PROCESSING = of("processing")
 
-        @JvmField val CONNECTED = ConnectionStatusType(JsonField.of("connected"))
+        @JvmField val CONNECTED = of("connected")
 
-        @JvmField
-        val ERROR_NO_ACCOUNT_SETUP = ConnectionStatusType(JsonField.of("error_no_account_setup"))
+        @JvmField val ERROR_NO_ACCOUNT_SETUP = of("error_no_account_setup")
 
-        @JvmField val ERROR_PERMISSIONS = ConnectionStatusType(JsonField.of("error_permissions"))
+        @JvmField val ERROR_PERMISSIONS = of("error_permissions")
 
-        @JvmField val REAUTH = ConnectionStatusType(JsonField.of("reauth"))
+        @JvmField val REAUTH = of("reauth")
 
         @JvmStatic fun of(value: String) = ConnectionStatusType(JsonField.of(value))
     }
@@ -88,4 +74,16 @@ private constructor(
         }
 
     fun asString(): String = _value().asStringOrThrow()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ConnectionStatusType && value == other.value /* spotless:on */
+    }
+
+    override fun hashCode() = value.hashCode()
+
+    override fun toString() = value.toString()
 }

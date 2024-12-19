@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -30,7 +29,7 @@ class SandboxDirectoryCreateParamsTest {
                                 .name("name")
                                 .build()
                         )
-                        .dob("dob")
+                        .dob("01/01/2000")
                         .emails(
                             listOf(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Email.builder()
@@ -57,12 +56,16 @@ class SandboxDirectoryCreateParamsTest {
                                 )
                                 .build()
                         )
+                        .employmentStatus(
+                            SandboxDirectoryCreateParams.IndividualOrEmployment.EmploymentStatus
+                                .ACTIVE
+                        )
                         .encryptedSsn("encrypted_ssn")
                         .endDate("end_date")
                         .ethnicity(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                         )
-                        .firstName("first_name")
+                        .firstName("John")
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
@@ -83,7 +86,7 @@ class SandboxDirectoryCreateParamsTest {
                             )
                         )
                         .isActive(true)
-                        .lastName("last_name")
+                        .lastName("Smith")
                         .latestRehireDate("latest_rehire_date")
                         .location(
                             Location.builder()
@@ -163,7 +166,7 @@ class SandboxDirectoryCreateParamsTest {
                                     .name("name")
                                     .build()
                             )
-                            .dob("dob")
+                            .dob("01/01/2000")
                             .emails(
                                 listOf(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Email
@@ -195,12 +198,16 @@ class SandboxDirectoryCreateParamsTest {
                                     )
                                     .build()
                             )
+                            .employmentStatus(
+                                SandboxDirectoryCreateParams.IndividualOrEmployment.EmploymentStatus
+                                    .ACTIVE
+                            )
                             .encryptedSsn("encrypted_ssn")
                             .endDate("end_date")
                             .ethnicity(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                             )
-                            .firstName("first_name")
+                            .firstName("John")
                             .gender(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE
                             )
@@ -223,7 +230,7 @@ class SandboxDirectoryCreateParamsTest {
                                 )
                             )
                             .isActive(true)
-                            .lastName("last_name")
+                            .lastName("Smith")
                             .latestRehireDate("latest_rehire_date")
                             .location(
                                 Location.builder()
@@ -300,7 +307,7 @@ class SandboxDirectoryCreateParamsTest {
                                 .name("name")
                                 .build()
                         )
-                        .dob("dob")
+                        .dob("01/01/2000")
                         .emails(
                             listOf(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Email.builder()
@@ -327,12 +334,16 @@ class SandboxDirectoryCreateParamsTest {
                                 )
                                 .build()
                         )
+                        .employmentStatus(
+                            SandboxDirectoryCreateParams.IndividualOrEmployment.EmploymentStatus
+                                .ACTIVE
+                        )
                         .encryptedSsn("encrypted_ssn")
                         .endDate("end_date")
                         .ethnicity(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                         )
-                        .firstName("first_name")
+                        .firstName("John")
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
@@ -353,7 +364,7 @@ class SandboxDirectoryCreateParamsTest {
                             )
                         )
                         .isActive(true)
-                        .lastName("last_name")
+                        .lastName("Smith")
                         .latestRehireDate("latest_rehire_date")
                         .location(
                             Location.builder()

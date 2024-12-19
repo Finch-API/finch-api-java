@@ -5,7 +5,9 @@ package com.tryfinch.api.services.blocking.sandbox
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.Income
+import com.tryfinch.api.models.Location
+import com.tryfinch.api.models.SandboxDirectoryCreateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -43,7 +45,7 @@ class DirectoryServiceTest {
                                         .name("name")
                                         .build()
                                 )
-                                .dob("dob")
+                                .dob("01/01/2000")
                                 .emails(
                                     listOf(
                                         SandboxDirectoryCreateParams.IndividualOrEmployment.Email
@@ -75,13 +77,18 @@ class DirectoryServiceTest {
                                         )
                                         .build()
                                 )
+                                .employmentStatus(
+                                    SandboxDirectoryCreateParams.IndividualOrEmployment
+                                        .EmploymentStatus
+                                        .ACTIVE
+                                )
                                 .encryptedSsn("encrypted_ssn")
                                 .endDate("end_date")
                                 .ethnicity(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity
                                         .ASIAN
                                 )
-                                .firstName("first_name")
+                                .firstName("John")
                                 .gender(
                                     SandboxDirectoryCreateParams.IndividualOrEmployment.Gender
                                         .FEMALE
@@ -105,7 +112,7 @@ class DirectoryServiceTest {
                                     )
                                 )
                                 .isActive(true)
-                                .lastName("last_name")
+                                .lastName("Smith")
                                 .latestRehireDate("latest_rehire_date")
                                 .location(
                                     Location.builder()

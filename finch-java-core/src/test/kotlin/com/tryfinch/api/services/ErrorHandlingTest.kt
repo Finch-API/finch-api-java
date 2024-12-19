@@ -6,14 +6,13 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.ok
-import com.github.tomakehurst.wiremock.client.WireMock.put
 import com.github.tomakehurst.wiremock.client.WireMock.status
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.core.JsonString
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.errors.BadRequestException
@@ -26,7 +25,9 @@ import com.tryfinch.api.errors.RateLimitException
 import com.tryfinch.api.errors.UnauthorizedException
 import com.tryfinch.api.errors.UnexpectedStatusCodeException
 import com.tryfinch.api.errors.UnprocessableEntityException
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.Company
+import com.tryfinch.api.models.HrisCompanyRetrieveParams
+import com.tryfinch.api.models.Location
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.InstanceOfAssertFactories
@@ -39,7 +40,7 @@ class ErrorHandlingTest {
     private val JSON_MAPPER: JsonMapper = jsonMapper()
 
     private val FINCH_ERROR: FinchError =
-        FinchError.builder().putAdditionalProperty("key", JsonString.of("value")).build()
+        FinchError.builder().putAdditionalProperty("key", JsonValue.from("value")).build()
 
     private lateinit var client: FinchClient
 

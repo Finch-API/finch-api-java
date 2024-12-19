@@ -293,25 +293,13 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is EventType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val DIRECTORY_CREATED = EventType(JsonField.of("directory.created"))
+            @JvmField val DIRECTORY_CREATED = of("directory.created")
 
-            @JvmField val DIRECTORY_UPDATED = EventType(JsonField.of("directory.updated"))
+            @JvmField val DIRECTORY_UPDATED = of("directory.updated")
 
-            @JvmField val DIRECTORY_DELETED = EventType(JsonField.of("directory.deleted"))
+            @JvmField val DIRECTORY_DELETED = of("directory.deleted")
 
             @JvmStatic fun of(value: String) = EventType(JsonField.of(value))
         }
@@ -346,6 +334,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is EventType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

@@ -258,34 +258,22 @@ private constructor(
     class Code
     @JsonCreator
     private constructor(
-        private val value: JsonField<Int>,
+        private val value: JsonField<Long>,
     ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<Int> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Code && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<Long> = value
 
         companion object {
 
-            @JvmField val OK = Code(JsonField.of(200))
+            @JvmField val OK = of(200)
 
-            @JvmField val CREATED = Code(JsonField.of(201))
+            @JvmField val CREATED = of(201)
 
-            @JvmField val NOT_FOUND = Code(JsonField.of(404))
+            @JvmField val NOT_FOUND = of(404)
 
-            @JvmField val FORBIDDEN = Code(JsonField.of(403))
+            @JvmField val FORBIDDEN = of(403)
 
-            @JvmStatic fun of(value: Int) = Code(JsonField.of(value))
+            @JvmStatic fun of(value: Long) = Code(JsonField.of(value))
         }
 
         enum class Known {
@@ -322,6 +310,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Code && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

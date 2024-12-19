@@ -16,7 +16,6 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
-import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
 
@@ -372,35 +371,23 @@ constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is ConnectProducts && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val COMPANY = ConnectProducts(JsonField.of("company"))
+            @JvmField val COMPANY = of("company")
 
-            @JvmField val DIRECTORY = ConnectProducts(JsonField.of("directory"))
+            @JvmField val DIRECTORY = of("directory")
 
-            @JvmField val INDIVIDUAL = ConnectProducts(JsonField.of("individual"))
+            @JvmField val INDIVIDUAL = of("individual")
 
-            @JvmField val EMPLOYMENT = ConnectProducts(JsonField.of("employment"))
+            @JvmField val EMPLOYMENT = of("employment")
 
-            @JvmField val PAYMENT = ConnectProducts(JsonField.of("payment"))
+            @JvmField val PAYMENT = of("payment")
 
-            @JvmField val PAY_STATEMENT = ConnectProducts(JsonField.of("pay_statement"))
+            @JvmField val PAY_STATEMENT = of("pay_statement")
 
-            @JvmField val BENEFITS = ConnectProducts(JsonField.of("benefits"))
+            @JvmField val BENEFITS = of("benefits")
 
-            @JvmField val SSN = ConnectProducts(JsonField.of("ssn"))
+            @JvmField val SSN = of("ssn")
 
             @JvmStatic fun of(value: String) = ConnectProducts(JsonField.of(value))
         }
@@ -455,6 +442,18 @@ constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ConnectProducts && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

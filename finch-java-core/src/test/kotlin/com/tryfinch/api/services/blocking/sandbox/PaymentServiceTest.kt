@@ -4,7 +4,9 @@ package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.BenefitType
+import com.tryfinch.api.models.Money
+import com.tryfinch.api.models.SandboxPaymentCreateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -44,9 +46,9 @@ class PaymentServiceTest {
                                     listOf(
                                         SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
                                             .builder()
-                                            .amount(0L)
-                                            .currency("currency")
-                                            .name("name")
+                                            .amount(2000L)
+                                            .currency("usd")
+                                            .name("401k test")
                                             .preTax(true)
                                             .type(BenefitType._401K)
                                             .build()
@@ -64,7 +66,7 @@ class PaymentServiceTest {
                                     )
                                 )
                                 .grossPay(Money.builder().amount(0L).currency("currency").build())
-                                .individualId("individual_id")
+                                .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
                                 .netPay(Money.builder().amount(0L).currency("currency").build())
                                 .paymentMethod(
                                     SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK

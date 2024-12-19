@@ -1,5 +1,47 @@
 # Changelog
 
+## 2.0.0 (2024-12-19)
+
+Full Changelog: [v1.12.0...v2.0.0](https://github.com/Finch-API/finch-api-java/compare/v1.12.0...v2.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** numeric enum member type ([#349](https://github.com/Finch-API/finch-api-java/issues/349))
+
+### Features
+
+* **api:** api update ([#348](https://github.com/Finch-API/finch-api-java/issues/348)) ([1f7f08f](https://github.com/Finch-API/finch-api-java/commit/1f7f08fdb0fac4043baa61ea2153529fad1fe8a1))
+* **api:** api update ([#350](https://github.com/Finch-API/finch-api-java/issues/350)) ([76486fd](https://github.com/Finch-API/finch-api-java/commit/76486fd74b4c69f1c1e758226877c50876e4e1dd))
+* **api:** api update ([#358](https://github.com/Finch-API/finch-api-java/issues/358)) ([aef03b5](https://github.com/Finch-API/finch-api-java/commit/aef03b5cab006660274c63214e6900a3659ab54d))
+* **api:** api update ([#363](https://github.com/Finch-API/finch-api-java/issues/363)) ([1f2e37b](https://github.com/Finch-API/finch-api-java/commit/1f2e37bd6728a70c0c3a5eb5ddf4485183ea30b7))
+
+
+### Bug Fixes
+
+* **client:** numeric enum member type ([#349](https://github.com/Finch-API/finch-api-java/issues/349)) ([7705d87](https://github.com/Finch-API/finch-api-java/commit/7705d87e122e0d06a8b88ac45ccca67a96521562))
+
+
+### Chores
+
+* **docs:** add example project ([#367](https://github.com/Finch-API/finch-api-java/issues/367)) ([7801ba2](https://github.com/Finch-API/finch-api-java/commit/7801ba2d49fc9131e28ac3c6aeffa719efaa1289))
+* **docs:** fix code block language ([#368](https://github.com/Finch-API/finch-api-java/issues/368)) ([723c35a](https://github.com/Finch-API/finch-api-java/commit/723c35a6b2f504bb3a480e0154537190515d0f1a))
+* **docs:** update readme ([#365](https://github.com/Finch-API/finch-api-java/issues/365)) ([fc4a2ac](https://github.com/Finch-API/finch-api-java/commit/fc4a2aceea8968037cc11a2300bdb2f3296d93d4))
+* **internal:** codegen related update ([#346](https://github.com/Finch-API/finch-api-java/issues/346)) ([90f7c99](https://github.com/Finch-API/finch-api-java/commit/90f7c993a426713f980b561f8ea0410f6e4079e5))
+* **internal:** codegen related update ([#355](https://github.com/Finch-API/finch-api-java/issues/355)) ([1a5d595](https://github.com/Finch-API/finch-api-java/commit/1a5d59579770cb25845c8047e43681aebf457480))
+* **internal:** remove unused and expand used wildcard imports ([#359](https://github.com/Finch-API/finch-api-java/issues/359)) ([c825267](https://github.com/Finch-API/finch-api-java/commit/c825267ecf91ac10db7738b6df7f350d4f36d390))
+* **internal:** remove unused and expand used wildcard imports ([#361](https://github.com/Finch-API/finch-api-java/issues/361)) ([3c80b52](https://github.com/Finch-API/finch-api-java/commit/3c80b52b83abfcce2f99cb3203b0008c02a35d0f))
+* **internal:** remove unused imports ([#354](https://github.com/Finch-API/finch-api-java/issues/354)) ([cddb901](https://github.com/Finch-API/finch-api-java/commit/cddb901f2e7ec7c266ee535511325ff753402384))
+* **test:** remove unused imports ([#356](https://github.com/Finch-API/finch-api-java/issues/356)) ([a313b58](https://github.com/Finch-API/finch-api-java/commit/a313b580708ec7885eb574610b84a1b139202bcf))
+* **test:** use `JsonValue` instead of `JsonString` ([#357](https://github.com/Finch-API/finch-api-java/issues/357)) ([d336f7d](https://github.com/Finch-API/finch-api-java/commit/d336f7d962bea0a56d89a553faf8cc2b1339556a))
+* update example values in tests and docs ([#351](https://github.com/Finch-API/finch-api-java/issues/351)) ([792f3f7](https://github.com/Finch-API/finch-api-java/commit/792f3f76ae6584f9f83924b4cbee31a6067a0b18))
+* update parameter examples in tests and docs ([#364](https://github.com/Finch-API/finch-api-java/issues/364)) ([5fb0cac](https://github.com/Finch-API/finch-api-java/commit/5fb0cac8da7fd4957fbaaacdbc8b46255740b6ce))
+
+
+### Styles
+
+* **internal:** make enum value definitions less verbose ([#352](https://github.com/Finch-API/finch-api-java/issues/352)) ([08a5c64](https://github.com/Finch-API/finch-api-java/commit/08a5c64440d627e115c0cd360675292cab9b53b5))
+* **internal:** move enum identity methods to bottom of class ([#353](https://github.com/Finch-API/finch-api-java/issues/353)) ([bd29c58](https://github.com/Finch-API/finch-api-java/commit/bd29c58c914b831560d94ad7cd60a3ae6cb79742))
+
 ## 1.12.0 (2024-11-27)
 
 Full Changelog: [v1.11.1...v1.12.0](https://github.com/Finch-API/finch-api-java/compare/v1.11.1...v1.12.0)

@@ -5,7 +5,9 @@ package com.tryfinch.api.services.blocking.sandbox
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.Income
+import com.tryfinch.api.models.Location
+import com.tryfinch.api.models.SandboxEmploymentUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -42,6 +44,7 @@ class EmploymentServiceTest {
                             .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                             .build()
                     )
+                    .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
                     .endDate("end_date")
                     .firstName("first_name")
                     .income(
@@ -80,7 +83,7 @@ class EmploymentServiceTest {
                     .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
                     .middleName("middle_name")
                     .sourceId("source_id")
-                    .startDate("start_date")
+                    .startDate("3/4/2020")
                     .title("title")
                     .build()
             )
