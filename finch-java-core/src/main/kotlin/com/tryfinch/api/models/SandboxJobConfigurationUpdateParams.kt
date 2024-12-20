@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -50,13 +50,14 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = SandboxJobConfigurationUpdateBody.Builder::class)
     @NoAutoDetect
     class SandboxJobConfigurationUpdateBody
+    @JsonCreator
     internal constructor(
-        private val completionStatus: CompletionStatus,
-        private val type: Type,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("completion_status") private val completionStatus: CompletionStatus,
+        @JsonProperty("type") private val type: Type,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("completion_status")
@@ -91,19 +92,17 @@ constructor(
                     sandboxJobConfigurationUpdateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("completion_status")
             fun completionStatus(completionStatus: CompletionStatus) = apply {
                 this.completionStatus = completionStatus
             }
 
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

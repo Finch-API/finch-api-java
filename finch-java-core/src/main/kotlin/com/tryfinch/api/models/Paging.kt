@@ -4,24 +4,25 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = Paging.Builder::class)
 @NoAutoDetect
 class Paging
+@JsonCreator
 private constructor(
-    private val count: JsonField<Long>,
-    private val offset: JsonField<Long>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("count") @ExcludeMissing private val count: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("offset") @ExcludeMissing private val offset: JsonField<Long> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The total number of elements for the entire query (not just the given page) */
@@ -74,16 +75,12 @@ private constructor(
         fun count(count: Long) = count(JsonField.of(count))
 
         /** The total number of elements for the entire query (not just the given page) */
-        @JsonProperty("count")
-        @ExcludeMissing
         fun count(count: JsonField<Long>) = apply { this.count = count }
 
         /** The current start index of the returned list of elements */
         fun offset(offset: Long) = offset(JsonField.of(offset))
 
         /** The current start index of the returned list of elements */
-        @JsonProperty("offset")
-        @ExcludeMissing
         fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -91,7 +88,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

@@ -4,22 +4,25 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = UpdateCompanyBenefitResponse.Builder::class)
 @NoAutoDetect
 class UpdateCompanyBenefitResponse
+@JsonCreator
 private constructor(
-    private val benefitId: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("benefit_id")
+    @ExcludeMissing
+    private val benefitId: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun benefitId(): String = benefitId.getRequired("benefit_id")
@@ -59,8 +62,6 @@ private constructor(
 
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
-        @JsonProperty("benefit_id")
-        @ExcludeMissing
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -68,7 +69,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

@@ -6,35 +6,57 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = Payment.Builder::class)
 @NoAutoDetect
 class Payment
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val payPeriod: JsonField<PayPeriod>,
-    private val payDate: JsonField<String>,
-    private val debitDate: JsonField<String>,
-    private val companyDebit: JsonField<Money>,
-    private val grossPay: JsonField<Money>,
-    private val netPay: JsonField<Money>,
-    private val employerTaxes: JsonField<Money>,
-    private val employeeTaxes: JsonField<Money>,
-    private val individualIds: JsonField<List<String>>,
-    private val payGroupIds: JsonField<List<String>>,
-    private val payFrequencies: JsonField<List<PayFrequency>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("pay_period")
+    @ExcludeMissing
+    private val payPeriod: JsonField<PayPeriod> = JsonMissing.of(),
+    @JsonProperty("pay_date")
+    @ExcludeMissing
+    private val payDate: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("debit_date")
+    @ExcludeMissing
+    private val debitDate: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("company_debit")
+    @ExcludeMissing
+    private val companyDebit: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("gross_pay")
+    @ExcludeMissing
+    private val grossPay: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("net_pay")
+    @ExcludeMissing
+    private val netPay: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("employer_taxes")
+    @ExcludeMissing
+    private val employerTaxes: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("employee_taxes")
+    @ExcludeMissing
+    private val employeeTaxes: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("individual_ids")
+    @ExcludeMissing
+    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
+    @JsonProperty("pay_group_ids")
+    @ExcludeMissing
+    private val payGroupIds: JsonField<List<String>> = JsonMissing.of(),
+    @JsonProperty("pay_frequencies")
+    @ExcludeMissing
+    private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The unique id for the payment. */
@@ -169,60 +191,44 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** The unique id for the payment. */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The pay period object. */
         fun payPeriod(payPeriod: PayPeriod) = payPeriod(JsonField.of(payPeriod))
 
         /** The pay period object. */
-        @JsonProperty("pay_period")
-        @ExcludeMissing
         fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply { this.payPeriod = payPeriod }
 
         fun payDate(payDate: String) = payDate(JsonField.of(payDate))
 
-        @JsonProperty("pay_date")
-        @ExcludeMissing
         fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
 
         fun debitDate(debitDate: String) = debitDate(JsonField.of(debitDate))
 
-        @JsonProperty("debit_date")
-        @ExcludeMissing
         fun debitDate(debitDate: JsonField<String>) = apply { this.debitDate = debitDate }
 
         fun companyDebit(companyDebit: Money) = companyDebit(JsonField.of(companyDebit))
 
-        @JsonProperty("company_debit")
-        @ExcludeMissing
         fun companyDebit(companyDebit: JsonField<Money>) = apply {
             this.companyDebit = companyDebit
         }
 
         fun grossPay(grossPay: Money) = grossPay(JsonField.of(grossPay))
 
-        @JsonProperty("gross_pay")
-        @ExcludeMissing
         fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
         fun netPay(netPay: Money) = netPay(JsonField.of(netPay))
 
-        @JsonProperty("net_pay")
-        @ExcludeMissing
         fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
         fun employerTaxes(employerTaxes: Money) = employerTaxes(JsonField.of(employerTaxes))
 
-        @JsonProperty("employer_taxes")
-        @ExcludeMissing
         fun employerTaxes(employerTaxes: JsonField<Money>) = apply {
             this.employerTaxes = employerTaxes
         }
 
         fun employeeTaxes(employeeTaxes: Money) = employeeTaxes(JsonField.of(employeeTaxes))
 
-        @JsonProperty("employee_taxes")
-        @ExcludeMissing
         fun employeeTaxes(employeeTaxes: JsonField<Money>) = apply {
             this.employeeTaxes = employeeTaxes
         }
@@ -231,8 +237,6 @@ private constructor(
         fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
 
         /** Array of every individual on this payment. */
-        @JsonProperty("individual_ids")
-        @ExcludeMissing
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
             this.individualIds = individualIds
         }
@@ -241,8 +245,6 @@ private constructor(
         fun payGroupIds(payGroupIds: List<String>) = payGroupIds(JsonField.of(payGroupIds))
 
         /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
-        @JsonProperty("pay_group_ids")
-        @ExcludeMissing
         fun payGroupIds(payGroupIds: JsonField<List<String>>) = apply {
             this.payGroupIds = payGroupIds
         }
@@ -252,8 +254,6 @@ private constructor(
             payFrequencies(JsonField.of(payFrequencies))
 
         /** List of pay frequencies associated with this payment. */
-        @JsonProperty("pay_frequencies")
-        @ExcludeMissing
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
             this.payFrequencies = payFrequencies
         }
@@ -263,7 +263,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -396,13 +395,18 @@ private constructor(
     }
 
     /** The pay period object. */
-    @JsonDeserialize(builder = PayPeriod.Builder::class)
     @NoAutoDetect
     class PayPeriod
+    @JsonCreator
     private constructor(
-        private val startDate: JsonField<String>,
-        private val endDate: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("start_date")
+        @ExcludeMissing
+        private val startDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("end_date")
+        @ExcludeMissing
+        private val endDate: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
@@ -449,14 +453,10 @@ private constructor(
 
             fun startDate(startDate: String) = startDate(JsonField.of(startDate))
 
-            @JsonProperty("start_date")
-            @ExcludeMissing
             fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
             fun endDate(endDate: String) = endDate(JsonField.of(endDate))
 
-            @JsonProperty("end_date")
-            @ExcludeMissing
             fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -464,7 +464,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

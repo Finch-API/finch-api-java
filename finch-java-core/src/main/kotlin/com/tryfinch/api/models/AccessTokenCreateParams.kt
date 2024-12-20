@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
@@ -55,15 +56,16 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = AccessTokenCreateBody.Builder::class)
     @NoAutoDetect
     class AccessTokenCreateBody
+    @JsonCreator
     internal constructor(
-        private val code: String,
-        private val clientId: String?,
-        private val clientSecret: String?,
-        private val redirectUri: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("code") private val code: String,
+        @JsonProperty("client_id") private val clientId: String?,
+        @JsonProperty("client_secret") private val clientSecret: String?,
+        @JsonProperty("redirect_uri") private val redirectUri: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("code") fun code(): String = code
@@ -104,15 +106,12 @@ constructor(
                 additionalProperties = accessTokenCreateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("code") fun code(code: String) = apply { this.code = code }
+            fun code(code: String) = apply { this.code = code }
 
-            @JsonProperty("client_id")
             fun clientId(clientId: String) = apply { this.clientId = clientId }
 
-            @JsonProperty("client_secret")
             fun clientSecret(clientSecret: String) = apply { this.clientSecret = clientSecret }
 
-            @JsonProperty("redirect_uri")
             fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -120,7 +119,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
