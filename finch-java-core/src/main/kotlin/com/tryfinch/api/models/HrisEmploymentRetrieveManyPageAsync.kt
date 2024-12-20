@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
 import java.util.Objects
@@ -74,12 +75,14 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Response.Builder::class)
     @NoAutoDetect
     class Response
+    @JsonCreator
     constructor(
-        private val responses: JsonField<List<EmploymentDataResponse>>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("responses")
+        private val responses: JsonField<List<EmploymentDataResponse>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         private var validated: Boolean = false
@@ -136,12 +139,10 @@ private constructor(
             fun responses(responses: List<EmploymentDataResponse>) =
                 responses(JsonField.of(responses))
 
-            @JsonProperty("responses")
             fun responses(responses: JsonField<List<EmploymentDataResponse>>) = apply {
                 this.responses = responses
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
             }

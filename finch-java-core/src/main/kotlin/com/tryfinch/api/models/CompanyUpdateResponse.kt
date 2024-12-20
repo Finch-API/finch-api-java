@@ -6,31 +6,45 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = CompanyUpdateResponse.Builder::class)
 @NoAutoDetect
 class CompanyUpdateResponse
+@JsonCreator
 private constructor(
-    private val legalName: JsonField<String>,
-    private val entity: JsonField<Entity>,
-    private val primaryEmail: JsonField<String>,
-    private val primaryPhoneNumber: JsonField<String>,
-    private val departments: JsonField<List<Department?>>,
-    private val ein: JsonField<String>,
-    private val locations: JsonField<List<Location?>>,
-    private val accounts: JsonField<List<Account>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("legal_name")
+    @ExcludeMissing
+    private val legalName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("entity")
+    @ExcludeMissing
+    private val entity: JsonField<Entity> = JsonMissing.of(),
+    @JsonProperty("primary_email")
+    @ExcludeMissing
+    private val primaryEmail: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("primary_phone_number")
+    @ExcludeMissing
+    private val primaryPhoneNumber: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("departments")
+    @ExcludeMissing
+    private val departments: JsonField<List<Department?>> = JsonMissing.of(),
+    @JsonProperty("ein") @ExcludeMissing private val ein: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("locations")
+    @ExcludeMissing
+    private val locations: JsonField<List<Location?>> = JsonMissing.of(),
+    @JsonProperty("accounts")
+    @ExcludeMissing
+    private val accounts: JsonField<List<Account>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The legal name of the company. */
@@ -141,24 +155,18 @@ private constructor(
         fun legalName(legalName: String) = legalName(JsonField.of(legalName))
 
         /** The legal name of the company. */
-        @JsonProperty("legal_name")
-        @ExcludeMissing
         fun legalName(legalName: JsonField<String>) = apply { this.legalName = legalName }
 
         /** The entity type object. */
         fun entity(entity: Entity) = entity(JsonField.of(entity))
 
         /** The entity type object. */
-        @JsonProperty("entity")
-        @ExcludeMissing
         fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
 
         /** The email of the main administrator on the account. */
         fun primaryEmail(primaryEmail: String) = primaryEmail(JsonField.of(primaryEmail))
 
         /** The email of the main administrator on the account. */
-        @JsonProperty("primary_email")
-        @ExcludeMissing
         fun primaryEmail(primaryEmail: JsonField<String>) = apply {
             this.primaryEmail = primaryEmail
         }
@@ -168,8 +176,6 @@ private constructor(
             primaryPhoneNumber(JsonField.of(primaryPhoneNumber))
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-        @JsonProperty("primary_phone_number")
-        @ExcludeMissing
         fun primaryPhoneNumber(primaryPhoneNumber: JsonField<String>) = apply {
             this.primaryPhoneNumber = primaryPhoneNumber
         }
@@ -178,8 +184,6 @@ private constructor(
         fun departments(departments: List<Department?>) = departments(JsonField.of(departments))
 
         /** The array of company departments. */
-        @JsonProperty("departments")
-        @ExcludeMissing
         fun departments(departments: JsonField<List<Department?>>) = apply {
             this.departments = departments
         }
@@ -188,22 +192,16 @@ private constructor(
         fun ein(ein: String) = ein(JsonField.of(ein))
 
         /** The employer identification number. */
-        @JsonProperty("ein")
-        @ExcludeMissing
         fun ein(ein: JsonField<String>) = apply { this.ein = ein }
 
         fun locations(locations: List<Location?>) = locations(JsonField.of(locations))
 
-        @JsonProperty("locations")
-        @ExcludeMissing
         fun locations(locations: JsonField<List<Location?>>) = apply { this.locations = locations }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
         fun accounts(accounts: List<Account>) = accounts(JsonField.of(accounts))
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        @JsonProperty("accounts")
-        @ExcludeMissing
         fun accounts(accounts: JsonField<List<Account>>) = apply { this.accounts = accounts }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -211,7 +209,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -240,16 +237,27 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Account.Builder::class)
     @NoAutoDetect
     class Account
+    @JsonCreator
     private constructor(
-        private val routingNumber: JsonField<String>,
-        private val accountName: JsonField<String>,
-        private val institutionName: JsonField<String>,
-        private val accountType: JsonField<AccountType>,
-        private val accountNumber: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("routing_number")
+        @ExcludeMissing
+        private val routingNumber: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("account_name")
+        @ExcludeMissing
+        private val accountName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("institution_name")
+        @ExcludeMissing
+        private val institutionName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("account_type")
+        @ExcludeMissing
+        private val accountType: JsonField<AccountType> = JsonMissing.of(),
+        @JsonProperty("account_number")
+        @ExcludeMissing
+        private val accountNumber: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /**
@@ -344,8 +352,6 @@ private constructor(
              * A nine-digit code that's based on the U.S. Bank location where your account was
              * opened.
              */
-            @JsonProperty("routing_number")
-            @ExcludeMissing
             fun routingNumber(routingNumber: JsonField<String>) = apply {
                 this.routingNumber = routingNumber
             }
@@ -354,8 +360,6 @@ private constructor(
             fun accountName(accountName: String) = accountName(JsonField.of(accountName))
 
             /** The name of the bank associated in the payroll/HRIS system. */
-            @JsonProperty("account_name")
-            @ExcludeMissing
             fun accountName(accountName: JsonField<String>) = apply {
                 this.accountName = accountName
             }
@@ -365,8 +369,6 @@ private constructor(
                 institutionName(JsonField.of(institutionName))
 
             /** Name of the banking institution. */
-            @JsonProperty("institution_name")
-            @ExcludeMissing
             fun institutionName(institutionName: JsonField<String>) = apply {
                 this.institutionName = institutionName
             }
@@ -375,8 +377,6 @@ private constructor(
             fun accountType(accountType: AccountType) = accountType(JsonField.of(accountType))
 
             /** The type of bank account. */
-            @JsonProperty("account_type")
-            @ExcludeMissing
             fun accountType(accountType: JsonField<AccountType>) = apply {
                 this.accountType = accountType
             }
@@ -385,8 +385,6 @@ private constructor(
             fun accountNumber(accountNumber: String) = accountNumber(JsonField.of(accountNumber))
 
             /** 10-12 digit number to specify the bank account */
-            @JsonProperty("account_number")
-            @ExcludeMissing
             fun accountNumber(accountNumber: JsonField<String>) = apply {
                 this.accountNumber = accountNumber
             }
@@ -396,7 +394,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -497,13 +494,18 @@ private constructor(
             "Account{routingNumber=$routingNumber, accountName=$accountName, institutionName=$institutionName, accountType=$accountType, accountNumber=$accountNumber, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = Department.Builder::class)
     @NoAutoDetect
     class Department
+    @JsonCreator
     private constructor(
-        private val name: JsonField<String>,
-        private val parent: JsonField<Parent>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("parent")
+        @ExcludeMissing
+        private val parent: JsonField<Parent> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The department name. */
@@ -556,16 +558,12 @@ private constructor(
             fun name(name: String) = name(JsonField.of(name))
 
             /** The department name. */
-            @JsonProperty("name")
-            @ExcludeMissing
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The parent department, if present. */
             fun parent(parent: Parent) = parent(JsonField.of(parent))
 
             /** The parent department, if present. */
-            @JsonProperty("parent")
-            @ExcludeMissing
             fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -573,7 +571,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -597,12 +594,15 @@ private constructor(
         }
 
         /** The parent department, if present. */
-        @JsonDeserialize(builder = Parent.Builder::class)
         @NoAutoDetect
         class Parent
+        @JsonCreator
         private constructor(
-            private val name: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The parent department's name. */
@@ -646,8 +646,6 @@ private constructor(
                 fun name(name: String) = name(JsonField.of(name))
 
                 /** The parent department's name. */
-                @JsonProperty("name")
-                @ExcludeMissing
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -655,7 +653,6 @@ private constructor(
                     putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                     additionalProperties.put(key, value)
                 }
@@ -713,13 +710,16 @@ private constructor(
     }
 
     /** The entity type object. */
-    @JsonDeserialize(builder = Entity.Builder::class)
     @NoAutoDetect
     class Entity
+    @JsonCreator
     private constructor(
-        private val type: JsonField<Type>,
-        private val subtype: JsonField<Subtype>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("subtype")
+        @ExcludeMissing
+        private val subtype: JsonField<Subtype> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The tax payer type of the company. */
@@ -772,16 +772,12 @@ private constructor(
             fun type(type: Type) = type(JsonField.of(type))
 
             /** The tax payer type of the company. */
-            @JsonProperty("type")
-            @ExcludeMissing
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** The tax payer subtype of the company. */
             fun subtype(subtype: Subtype) = subtype(JsonField.of(subtype))
 
             /** The tax payer subtype of the company. */
-            @JsonProperty("subtype")
-            @ExcludeMissing
             fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -789,7 +785,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

@@ -4,26 +4,35 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = CompanyBenefit.Builder::class)
 @NoAutoDetect
 class CompanyBenefit
+@JsonCreator
 private constructor(
-    private val benefitId: JsonField<String>,
-    private val type: JsonField<BenefitType>,
-    private val description: JsonField<String>,
-    private val frequency: JsonField<BenefitFrequency>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("benefit_id")
+    @ExcludeMissing
+    private val benefitId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("type")
+    @ExcludeMissing
+    private val type: JsonField<BenefitType> = JsonMissing.of(),
+    @JsonProperty("description")
+    @ExcludeMissing
+    private val description: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("frequency")
+    @ExcludeMissing
+    private val frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun benefitId(): String = benefitId.getRequired("benefit_id")
@@ -88,28 +97,20 @@ private constructor(
 
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
-        @JsonProperty("benefit_id")
-        @ExcludeMissing
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
         /** Type of benefit. */
         fun type(type: BenefitType) = type(JsonField.of(type))
 
         /** Type of benefit. */
-        @JsonProperty("type")
-        @ExcludeMissing
         fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
         fun description(description: String) = description(JsonField.of(description))
 
-        @JsonProperty("description")
-        @ExcludeMissing
         fun description(description: JsonField<String>) = apply { this.description = description }
 
         fun frequency(frequency: BenefitFrequency) = frequency(JsonField.of(frequency))
 
-        @JsonProperty("frequency")
-        @ExcludeMissing
         fun frequency(frequency: JsonField<BenefitFrequency>) = apply { this.frequency = frequency }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -117,7 +118,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

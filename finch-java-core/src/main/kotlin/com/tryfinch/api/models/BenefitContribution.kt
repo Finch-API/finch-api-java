@@ -6,25 +6,25 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = BenefitContribution.Builder::class)
 @NoAutoDetect
 class BenefitContribution
+@JsonCreator
 private constructor(
-    private val type: JsonField<Type>,
-    private val amount: JsonField<Long>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+    @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** Contribution type. */
@@ -77,16 +77,12 @@ private constructor(
         fun type(type: Type) = type(JsonField.of(type))
 
         /** Contribution type. */
-        @JsonProperty("type")
-        @ExcludeMissing
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
         fun amount(amount: Long) = amount(JsonField.of(amount))
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
-        @JsonProperty("amount")
-        @ExcludeMissing
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -94,7 +90,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

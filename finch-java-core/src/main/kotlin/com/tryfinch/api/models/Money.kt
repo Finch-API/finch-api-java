@@ -4,24 +4,27 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = Money.Builder::class)
 @NoAutoDetect
 class Money
+@JsonCreator
 private constructor(
-    private val amount: JsonField<Long>,
-    private val currency: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("currency")
+    @ExcludeMissing
+    private val currency: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** Amount for money object (in cents) */
@@ -72,14 +75,10 @@ private constructor(
         fun amount(amount: Long) = amount(JsonField.of(amount))
 
         /** Amount for money object (in cents) */
-        @JsonProperty("amount")
-        @ExcludeMissing
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         fun currency(currency: String) = currency(JsonField.of(currency))
 
-        @JsonProperty("currency")
-        @ExcludeMissing
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -87,7 +86,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

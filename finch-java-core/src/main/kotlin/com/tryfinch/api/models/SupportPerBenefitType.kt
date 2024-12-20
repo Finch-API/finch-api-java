@@ -4,24 +4,29 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = SupportPerBenefitType.Builder::class)
 @NoAutoDetect
 class SupportPerBenefitType
+@JsonCreator
 private constructor(
-    private val companyBenefits: JsonField<OperationSupportMatrix>,
-    private val individualBenefits: JsonField<OperationSupportMatrix>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("company_benefits")
+    @ExcludeMissing
+    private val companyBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
+    @JsonProperty("individual_benefits")
+    @ExcludeMissing
+    private val individualBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun companyBenefits(): Optional<OperationSupportMatrix> =
@@ -73,8 +78,6 @@ private constructor(
         fun companyBenefits(companyBenefits: OperationSupportMatrix) =
             companyBenefits(JsonField.of(companyBenefits))
 
-        @JsonProperty("company_benefits")
-        @ExcludeMissing
         fun companyBenefits(companyBenefits: JsonField<OperationSupportMatrix>) = apply {
             this.companyBenefits = companyBenefits
         }
@@ -82,8 +85,6 @@ private constructor(
         fun individualBenefits(individualBenefits: OperationSupportMatrix) =
             individualBenefits(JsonField.of(individualBenefits))
 
-        @JsonProperty("individual_benefits")
-        @ExcludeMissing
         fun individualBenefits(individualBenefits: JsonField<OperationSupportMatrix>) = apply {
             this.individualBenefits = individualBenefits
         }
@@ -93,7 +94,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

@@ -6,26 +6,28 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = PayGroupListResponse.Builder::class)
 @NoAutoDetect
 class PayGroupListResponse
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val name: JsonField<String>,
-    private val payFrequencies: JsonField<List<PayFrequency>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("pay_frequencies")
+    @ExcludeMissing
+    private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** Finch id (uuidv4) for the pay group */
@@ -88,14 +90,12 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** Finch id (uuidv4) for the pay group */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Name of the pay group */
         fun name(name: String) = name(JsonField.of(name))
 
         /** Name of the pay group */
-        @JsonProperty("name")
-        @ExcludeMissing
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** List of pay frequencies associated with this pay group */
@@ -103,8 +103,6 @@ private constructor(
             payFrequencies(JsonField.of(payFrequencies))
 
         /** List of pay frequencies associated with this pay group */
-        @JsonProperty("pay_frequencies")
-        @ExcludeMissing
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
             this.payFrequencies = payFrequencies
         }
@@ -114,7 +112,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

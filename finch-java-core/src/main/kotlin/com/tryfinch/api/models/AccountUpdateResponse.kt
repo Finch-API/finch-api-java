@@ -6,29 +6,41 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = AccountUpdateResponse.Builder::class)
 @NoAutoDetect
 class AccountUpdateResponse
+@JsonCreator
 private constructor(
-    private val connectionId: JsonField<String>,
-    private val accountId: JsonField<String>,
-    private val authenticationType: JsonField<AuthenticationType>,
-    private val companyId: JsonField<String>,
-    private val providerId: JsonField<String>,
-    private val products: JsonField<List<String>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    private val accountId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("authentication_type")
+    @ExcludeMissing
+    private val authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    private val companyId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("provider_id")
+    @ExcludeMissing
+    private val providerId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("products")
+    @ExcludeMissing
+    private val products: JsonField<List<String>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The ID of the new connection */
@@ -117,8 +129,6 @@ private constructor(
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
         /** The ID of the new connection */
-        @JsonProperty("connection_id")
-        @ExcludeMissing
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
@@ -127,15 +137,11 @@ private constructor(
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-        @JsonProperty("account_id")
-        @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun authenticationType(authenticationType: AuthenticationType) =
             authenticationType(JsonField.of(authenticationType))
 
-        @JsonProperty("authentication_type")
-        @ExcludeMissing
         fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
             this.authenticationType = authenticationType
         }
@@ -144,22 +150,16 @@ private constructor(
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-        @JsonProperty("company_id")
-        @ExcludeMissing
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** The ID of the provider associated with the `access_token` */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
         /** The ID of the provider associated with the `access_token` */
-        @JsonProperty("provider_id")
-        @ExcludeMissing
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
         fun products(products: List<String>) = products(JsonField.of(products))
 
-        @JsonProperty("products")
-        @ExcludeMissing
         fun products(products: JsonField<List<String>>) = apply { this.products = products }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -167,7 +167,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

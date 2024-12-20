@@ -4,21 +4,23 @@ package com.tryfinch.api.errors
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = FinchError.Builder::class)
 @NoAutoDetect
 class FinchError
+@JsonCreator
 private constructor(
     @JsonAnyGetter
     @ExcludeMissing
+    @JsonAnySetter
     @get:JvmName("additionalProperties")
-    val additionalProperties: Map<String, JsonValue>,
+    val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun toBuilder() = Builder().from(this)
@@ -42,7 +44,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

@@ -6,32 +6,44 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = AutomatedAsyncJob.Builder::class)
 @NoAutoDetect
 class AutomatedAsyncJob
+@JsonCreator
 private constructor(
-    private val jobId: JsonField<String>,
-    private val jobUrl: JsonField<String>,
-    private val type: JsonField<Type>,
-    private val status: JsonField<Status>,
-    private val createdAt: JsonField<OffsetDateTime>,
-    private val scheduledAt: JsonField<OffsetDateTime>,
-    private val startedAt: JsonField<OffsetDateTime>,
-    private val completedAt: JsonField<OffsetDateTime>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("job_url")
+    @ExcludeMissing
+    private val jobUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+    @JsonProperty("status")
+    @ExcludeMissing
+    private val status: JsonField<Status> = JsonMissing.of(),
+    @JsonProperty("created_at")
+    @ExcludeMissing
+    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("scheduled_at")
+    @ExcludeMissing
+    private val scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("started_at")
+    @ExcludeMissing
+    private val startedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("completed_at")
+    @ExcludeMissing
+    private val completedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The id of the job that has been created. */
@@ -151,30 +163,22 @@ private constructor(
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
         /** The id of the job that has been created. */
-        @JsonProperty("job_id")
-        @ExcludeMissing
         fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
 
         /** The url that can be used to retrieve the job status */
-        @JsonProperty("job_url")
-        @ExcludeMissing
         fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
 
         /** Only `data_sync_all` currently supported */
         fun type(type: Type) = type(JsonField.of(type))
 
         /** Only `data_sync_all` currently supported */
-        @JsonProperty("type")
-        @ExcludeMissing
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun status(status: Status) = status(JsonField.of(status))
 
-        @JsonProperty("status")
-        @ExcludeMissing
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /**
@@ -189,8 +193,6 @@ private constructor(
          * connection time. For ad-hoc jobs, this will be the time the creation request was
          * received.
          */
-        @JsonProperty("created_at")
-        @ExcludeMissing
         fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply { this.createdAt = createdAt }
 
         /**
@@ -205,8 +207,6 @@ private constructor(
          * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
          * be null.
          */
-        @JsonProperty("scheduled_at")
-        @ExcludeMissing
         fun scheduledAt(scheduledAt: JsonField<OffsetDateTime>) = apply {
             this.scheduledAt = scheduledAt
         }
@@ -215,16 +215,12 @@ private constructor(
         fun startedAt(startedAt: OffsetDateTime) = startedAt(JsonField.of(startedAt))
 
         /** The datetime a job entered into the job queue. */
-        @JsonProperty("started_at")
-        @ExcludeMissing
         fun startedAt(startedAt: JsonField<OffsetDateTime>) = apply { this.startedAt = startedAt }
 
         /** The datetime the job completed. */
         fun completedAt(completedAt: OffsetDateTime) = completedAt(JsonField.of(completedAt))
 
         /** The datetime the job completed. */
-        @JsonProperty("completed_at")
-        @ExcludeMissing
         fun completedAt(completedAt: JsonField<OffsetDateTime>) = apply {
             this.completedAt = completedAt
         }
@@ -234,7 +230,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

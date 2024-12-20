@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
@@ -47,13 +48,14 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = HrisIndividualRetrieveManyBody.Builder::class)
     @NoAutoDetect
     class HrisIndividualRetrieveManyBody
+    @JsonCreator
     internal constructor(
-        private val options: Options?,
-        private val requests: List<Request>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("options") private val options: Options?,
+        @JsonProperty("requests") private val requests: List<Request>?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("options") fun options(): Optional<Options> = Optional.ofNullable(options)
@@ -87,10 +89,8 @@ constructor(
                         hrisIndividualRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
-            @JsonProperty("options")
             fun options(options: Options) = apply { this.options = options }
 
-            @JsonProperty("requests")
             fun requests(requests: List<Request>) = apply { this.requests = requests }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -98,7 +98,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -307,12 +306,13 @@ constructor(
             )
     }
 
-    @JsonDeserialize(builder = Options.Builder::class)
     @NoAutoDetect
     class Options
+    @JsonCreator
     private constructor(
-        private val include: List<String>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("include") private val include: List<String>?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("include")
@@ -340,7 +340,6 @@ constructor(
                 additionalProperties = options.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("include")
             fun include(include: List<String>) = apply { this.include = include }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -348,7 +347,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -385,12 +383,13 @@ constructor(
             "Options{include=$include, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = Request.Builder::class)
     @NoAutoDetect
     class Request
+    @JsonCreator
     private constructor(
-        private val individualId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("individual_id") private val individualId: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("individual_id")
@@ -418,7 +417,6 @@ constructor(
                 additionalProperties = request.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("individual_id")
             fun individualId(individualId: String) = apply { this.individualId = individualId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -426,7 +424,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
