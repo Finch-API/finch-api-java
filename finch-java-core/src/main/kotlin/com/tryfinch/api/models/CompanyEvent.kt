@@ -30,8 +30,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): Optional<String> =
         Optional.ofNullable(connectionId.getNullable("connection_id"))
@@ -51,13 +49,6 @@ private constructor(
     fun eventType(): Optional<EventType> = Optional.ofNullable(eventType.getNullable("event_type"))
 
     fun data(): Optional<Data> = Optional.ofNullable(data.getNullable("data"))
-
-    fun toBaseWebhookEvent(): BaseWebhookEvent =
-        BaseWebhookEvent.builder()
-            .connectionId(connectionId)
-            .companyId(companyId)
-            .accountId(accountId)
-            .build()
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
@@ -81,6 +72,15 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    fun toBaseWebhookEvent(): BaseWebhookEvent =
+        BaseWebhookEvent.builder()
+            .connectionId(connectionId)
+            .companyId(companyId)
+            .accountId(accountId)
+            .build()
+
+    private var validated: Boolean = false
 
     fun validate(): CompanyEvent = apply {
         if (!validated) {
@@ -111,12 +111,12 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(companyEvent: CompanyEvent) = apply {
-            this.connectionId = companyEvent.connectionId
-            this.companyId = companyEvent.companyId
-            this.accountId = companyEvent.accountId
-            this.eventType = companyEvent.eventType
-            this.data = companyEvent.data
-            additionalProperties(companyEvent.additionalProperties)
+            connectionId = companyEvent.connectionId
+            companyId = companyEvent.companyId
+            accountId = companyEvent.accountId
+            eventType = companyEvent.eventType
+            data = companyEvent.data
+            additionalProperties = companyEvent.additionalProperties.toMutableMap()
         }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
@@ -171,16 +171,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): CompanyEvent =
@@ -201,11 +207,11 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Data = apply {
             if (!validated) {
@@ -226,21 +232,27 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(data: Data) = apply {
-                additionalProperties(data.additionalProperties)
+                additionalProperties = data.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Data = Data(additionalProperties.toImmutable())

@@ -115,7 +115,7 @@ class SandboxCompanyUpdateParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.accounts())
-            .isEqualTo(
+            .contains(
                 listOf(
                     SandboxCompanyUpdateParams.Account.builder()
                         .accountName("account_name")
@@ -127,7 +127,7 @@ class SandboxCompanyUpdateParamsTest {
                 )
             )
         assertThat(body.departments())
-            .isEqualTo(
+            .contains(
                 listOf(
                     SandboxCompanyUpdateParams.Department.builder()
                         .name("name")
@@ -139,17 +139,17 @@ class SandboxCompanyUpdateParamsTest {
                         .build()
                 )
             )
-        assertThat(body.ein()).isEqualTo("ein")
+        assertThat(body.ein()).contains("ein")
         assertThat(body.entity())
-            .isEqualTo(
+            .contains(
                 SandboxCompanyUpdateParams.Entity.builder()
                     .subtype(SandboxCompanyUpdateParams.Entity.Subtype.S_CORPORATION)
                     .type(SandboxCompanyUpdateParams.Entity.Type.LLC)
                     .build()
             )
-        assertThat(body.legalName()).isEqualTo("legal_name")
+        assertThat(body.legalName()).contains("legal_name")
         assertThat(body.locations())
-            .isEqualTo(
+            .contains(
                 listOf(
                     Location.builder()
                         .city("city")
@@ -163,8 +163,8 @@ class SandboxCompanyUpdateParamsTest {
                         .build()
                 )
             )
-        assertThat(body.primaryEmail()).isEqualTo("primary_email")
-        assertThat(body.primaryPhoneNumber()).isEqualTo("primary_phone_number")
+        assertThat(body.primaryEmail()).contains("primary_email")
+        assertThat(body.primaryPhoneNumber()).contains("primary_phone_number")
     }
 
     @Test

@@ -38,8 +38,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     fun s125Medical(): Optional<BenefitFeaturesAndOperations> =
         Optional.ofNullable(s125Medical.getNullable("s125_medical"))
 
@@ -104,6 +102,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): BenefitsSupport = apply {
         if (!validated) {
             s125Medical().map { it.validate() }
@@ -147,19 +147,19 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(benefitsSupport: BenefitsSupport) = apply {
-            this.s125Medical = benefitsSupport.s125Medical
-            this.s125Dental = benefitsSupport.s125Dental
-            this.s125Vision = benefitsSupport.s125Vision
-            this.hsaPre = benefitsSupport.hsaPre
-            this.hsaPost = benefitsSupport.hsaPost
-            this.fsaMedical = benefitsSupport.fsaMedical
-            this.fsaDependentCare = benefitsSupport.fsaDependentCare
-            this.simpleIra = benefitsSupport.simpleIra
-            this.simple = benefitsSupport.simple
-            this.commuter = benefitsSupport.commuter
-            this.customPostTax = benefitsSupport.customPostTax
-            this.customPreTax = benefitsSupport.customPreTax
-            additionalProperties(benefitsSupport.additionalProperties)
+            s125Medical = benefitsSupport.s125Medical
+            s125Dental = benefitsSupport.s125Dental
+            s125Vision = benefitsSupport.s125Vision
+            hsaPre = benefitsSupport.hsaPre
+            hsaPost = benefitsSupport.hsaPost
+            fsaMedical = benefitsSupport.fsaMedical
+            fsaDependentCare = benefitsSupport.fsaDependentCare
+            simpleIra = benefitsSupport.simpleIra
+            simple = benefitsSupport.simple
+            commuter = benefitsSupport.commuter
+            customPostTax = benefitsSupport.customPostTax
+            customPreTax = benefitsSupport.customPreTax
+            additionalProperties = benefitsSupport.additionalProperties.toMutableMap()
         }
 
         fun s125Medical(s125Medical: BenefitFeaturesAndOperations) =
@@ -263,16 +263,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): BenefitsSupport =

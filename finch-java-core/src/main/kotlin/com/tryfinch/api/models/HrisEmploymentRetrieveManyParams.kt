@@ -44,12 +44,12 @@ constructor(
     @NoAutoDetect
     class HrisEmploymentRetrieveManyBody
     internal constructor(
-        private val requests: List<Request>?,
+        private val requests: List<Request>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The array of batch requests. */
-        @JsonProperty("requests") fun requests(): List<Request>? = requests
+        @JsonProperty("requests") fun requests(): List<Request> = requests
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -70,8 +70,9 @@ constructor(
             @JvmSynthetic
             internal fun from(hrisEmploymentRetrieveManyBody: HrisEmploymentRetrieveManyBody) =
                 apply {
-                    this.requests = hrisEmploymentRetrieveManyBody.requests
-                    additionalProperties(hrisEmploymentRetrieveManyBody.additionalProperties)
+                    requests = hrisEmploymentRetrieveManyBody.requests.toMutableList()
+                    additionalProperties =
+                        hrisEmploymentRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
             /** The array of batch requests. */
@@ -80,16 +81,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): HrisEmploymentRetrieveManyBody =
@@ -286,7 +293,7 @@ constructor(
     @NoAutoDetect
     class Request
     private constructor(
-        private val individualId: String?,
+        private val individualId: String,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -295,7 +302,7 @@ constructor(
          * number of `individual_id` to send per request. It is preferantial to send all ids in a
          * single request for Finch to optimize provider rate-limits.
          */
-        @JsonProperty("individual_id") fun individualId(): String? = individualId
+        @JsonProperty("individual_id") fun individualId(): String = individualId
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -315,8 +322,8 @@ constructor(
 
             @JvmSynthetic
             internal fun from(request: Request) = apply {
-                this.individualId = request.individualId
-                additionalProperties(request.additionalProperties)
+                individualId = request.individualId
+                additionalProperties = request.additionalProperties.toMutableMap()
             }
 
             /**
@@ -329,16 +336,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Request =

@@ -29,9 +29,9 @@ class AccessTokenCreateParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
-        assertThat(body.clientId()).isEqualTo("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
-        assertThat(body.clientSecret()).isEqualTo("<your_client_secret>")
-        assertThat(body.redirectUri()).isEqualTo("https://example.com")
+        assertThat(body.clientId()).contains("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
+        assertThat(body.clientSecret()).contains("<your_client_secret>")
+        assertThat(body.redirectUri()).contains("https://example.com")
     }
 
     @Test
