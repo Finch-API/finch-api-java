@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -125,29 +125,30 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = SandboxEmploymentUpdateBody.Builder::class)
     @NoAutoDetect
     class SandboxEmploymentUpdateBody
+    @JsonCreator
     internal constructor(
-        private val classCode: String?,
-        private val customFields: List<CustomField>?,
-        private val department: Department?,
-        private val employment: Employment?,
-        private val employmentStatus: EmploymentStatus?,
-        private val endDate: String?,
-        private val firstName: String?,
-        private val income: Income?,
-        private val incomeHistory: List<Income?>?,
-        private val isActive: Boolean?,
-        private val lastName: String?,
-        private val latestRehireDate: String?,
-        private val location: Location?,
-        private val manager: Manager?,
-        private val middleName: String?,
-        private val sourceId: String?,
-        private val startDate: String?,
-        private val title: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("class_code") private val classCode: String?,
+        @JsonProperty("custom_fields") private val customFields: List<CustomField>?,
+        @JsonProperty("department") private val department: Department?,
+        @JsonProperty("employment") private val employment: Employment?,
+        @JsonProperty("employment_status") private val employmentStatus: EmploymentStatus?,
+        @JsonProperty("end_date") private val endDate: String?,
+        @JsonProperty("first_name") private val firstName: String?,
+        @JsonProperty("income") private val income: Income?,
+        @JsonProperty("income_history") private val incomeHistory: List<Income?>?,
+        @JsonProperty("is_active") private val isActive: Boolean?,
+        @JsonProperty("last_name") private val lastName: String?,
+        @JsonProperty("latest_rehire_date") private val latestRehireDate: String?,
+        @JsonProperty("location") private val location: Location?,
+        @JsonProperty("manager") private val manager: Manager?,
+        @JsonProperty("middle_name") private val middleName: String?,
+        @JsonProperty("source_id") private val sourceId: String?,
+        @JsonProperty("start_date") private val startDate: String?,
+        @JsonProperty("title") private val title: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Worker's compensation classification code for this employee */
@@ -275,37 +276,30 @@ constructor(
             }
 
             /** Worker's compensation classification code for this employee */
-            @JsonProperty("class_code")
             fun classCode(classCode: String) = apply { this.classCode = classCode }
 
             /**
              * Custom fields for the individual. These are fields which are defined by the employer
              * in the system. Custom fields are not currently supported for assisted connections.
              */
-            @JsonProperty("custom_fields")
             fun customFields(customFields: List<CustomField>) = apply {
                 this.customFields = customFields
             }
 
             /** The department object. */
-            @JsonProperty("department")
             fun department(department: Department) = apply { this.department = department }
 
             /** The employment object. */
-            @JsonProperty("employment")
             fun employment(employment: Employment) = apply { this.employment = employment }
 
             /** The detailed employment status of the individual. */
-            @JsonProperty("employment_status")
             fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
                 this.employmentStatus = employmentStatus
             }
 
-            @JsonProperty("end_date")
             fun endDate(endDate: String) = apply { this.endDate = endDate }
 
             /** The legal first name of the individual. */
-            @JsonProperty("first_name")
             fun firstName(firstName: String) = apply { this.firstName = firstName }
 
             /**
@@ -313,54 +307,44 @@ constructor(
              * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
              * information the provider returns.
              */
-            @JsonProperty("income") fun income(income: Income) = apply { this.income = income }
+            fun income(income: Income) = apply { this.income = income }
 
             /** The array of income history. */
-            @JsonProperty("income_history")
             fun incomeHistory(incomeHistory: List<Income?>) = apply {
                 this.incomeHistory = incomeHistory
             }
 
             /** `true` if the individual an an active employee or contractor at the company. */
-            @JsonProperty("is_active")
             fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
 
             /** The legal last name of the individual. */
-            @JsonProperty("last_name")
             fun lastName(lastName: String) = apply { this.lastName = lastName }
 
-            @JsonProperty("latest_rehire_date")
             fun latestRehireDate(latestRehireDate: String) = apply {
                 this.latestRehireDate = latestRehireDate
             }
 
-            @JsonProperty("location")
             fun location(location: Location) = apply { this.location = location }
 
             /** The manager object representing the manager of the individual within the org. */
-            @JsonProperty("manager")
             fun manager(manager: Manager) = apply { this.manager = manager }
 
             /** The legal middle name of the individual. */
-            @JsonProperty("middle_name")
             fun middleName(middleName: String) = apply { this.middleName = middleName }
 
             /** The source system's unique employment identifier for this individual */
-            @JsonProperty("source_id")
             fun sourceId(sourceId: String) = apply { this.sourceId = sourceId }
 
-            @JsonProperty("start_date")
             fun startDate(startDate: String) = apply { this.startDate = startDate }
 
             /** The current title of the individual. */
-            @JsonProperty("title") fun title(title: String) = apply { this.title = title }
+            fun title(title: String) = apply { this.title = title }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -706,13 +690,14 @@ constructor(
             )
     }
 
-    @JsonDeserialize(builder = CustomField.Builder::class)
     @NoAutoDetect
     class CustomField
+    @JsonCreator
     private constructor(
-        private val name: String?,
-        private val value: JsonValue?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name") private val name: String?,
+        @JsonProperty("value") private val value: JsonValue?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
@@ -743,16 +728,15 @@ constructor(
                 additionalProperties = customField.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = apply { this.name = name }
 
-            @JsonProperty("value") fun value(value: JsonValue) = apply { this.value = value }
+            fun value(value: JsonValue) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -794,12 +778,13 @@ constructor(
     }
 
     /** The department object. */
-    @JsonDeserialize(builder = Department.Builder::class)
     @NoAutoDetect
     class Department
+    @JsonCreator
     private constructor(
-        private val name: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name") private val name: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The name of the department associated with the individual. */
@@ -828,14 +813,13 @@ constructor(
             }
 
             /** The name of the department associated with the individual. */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -872,13 +856,14 @@ constructor(
     }
 
     /** The employment object. */
-    @JsonDeserialize(builder = Employment.Builder::class)
     @NoAutoDetect
     class Employment
+    @JsonCreator
     private constructor(
-        private val type: Type?,
-        private val subtype: Subtype?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type?,
+        @JsonProperty("subtype") private val subtype: Subtype?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The main employment type of the individual. */
@@ -915,13 +900,12 @@ constructor(
             }
 
             /** The main employment type of the individual. */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            @JsonProperty("subtype")
             fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -929,7 +913,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -1196,12 +1179,13 @@ constructor(
     }
 
     /** The manager object representing the manager of the individual within the org. */
-    @JsonDeserialize(builder = Manager.Builder::class)
     @NoAutoDetect
     class Manager
+    @JsonCreator
     private constructor(
-        private val id: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("id") private val id: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -1230,14 +1214,13 @@ constructor(
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
-            @JsonProperty("id") fun id(id: String) = apply { this.id = id }
+            fun id(id: String) = apply { this.id = id }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

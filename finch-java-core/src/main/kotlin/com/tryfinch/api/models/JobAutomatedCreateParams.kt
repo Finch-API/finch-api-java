@@ -23,6 +23,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -310,12 +311,13 @@ constructor(
             )
     }
 
-    @JsonDeserialize(builder = DataSyncAll.Builder::class)
     @NoAutoDetect
     class DataSyncAll
+    @JsonCreator
     private constructor(
-        private val type: Type,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of job to start. */
@@ -344,14 +346,13 @@ constructor(
             }
 
             /** The type of job to start. */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -442,13 +443,14 @@ constructor(
             "DataSyncAll{type=$type, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = W4FormEmployeeSync.Builder::class)
     @NoAutoDetect
     class W4FormEmployeeSync
+    @JsonCreator
     private constructor(
-        private val type: Type,
-        private val individualId: String,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonProperty("individual_id") private val individualId: String,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of job to start. */
@@ -482,10 +484,9 @@ constructor(
             }
 
             /** The type of job to start. */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /** The unique ID of the individual for W-4 data sync. */
-            @JsonProperty("individual_id")
             fun individualId(individualId: String) = apply { this.individualId = individualId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -493,7 +494,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

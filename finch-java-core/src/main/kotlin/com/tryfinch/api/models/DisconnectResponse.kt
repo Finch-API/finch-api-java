@@ -4,22 +4,25 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = DisconnectResponse.Builder::class)
 @NoAutoDetect
 class DisconnectResponse
+@JsonCreator
 private constructor(
-    private val status: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("status")
+    @ExcludeMissing
+    private val status: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** If the request is successful, Finch will return “success” (HTTP 200 status). */
@@ -63,8 +66,6 @@ private constructor(
         fun status(status: String) = status(JsonField.of(status))
 
         /** If the request is successful, Finch will return “success” (HTTP 200 status). */
-        @JsonProperty("status")
-        @ExcludeMissing
         fun status(status: JsonField<String>) = apply { this.status = status }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -72,7 +73,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
@@ -51,14 +52,15 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = HrisBenefitCreateBody.Builder::class)
     @NoAutoDetect
     class HrisBenefitCreateBody
+    @JsonCreator
     internal constructor(
-        private val description: String?,
-        private val frequency: BenefitFrequency?,
-        private val type: BenefitType?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("description") private val description: String?,
+        @JsonProperty("frequency") private val frequency: BenefitFrequency?,
+        @JsonProperty("type") private val type: BenefitType?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /**
@@ -105,21 +107,18 @@ constructor(
              * limiting this to <30 characters due to limitations in specific providers (e.g.
              * Justworks).
              */
-            @JsonProperty("description")
             fun description(description: String) = apply { this.description = description }
 
-            @JsonProperty("frequency")
             fun frequency(frequency: BenefitFrequency) = apply { this.frequency = frequency }
 
             /** Type of benefit. */
-            @JsonProperty("type") fun type(type: BenefitType) = apply { this.type = type }
+            fun type(type: BenefitType) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

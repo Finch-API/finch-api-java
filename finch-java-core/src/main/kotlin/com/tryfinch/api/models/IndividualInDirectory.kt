@@ -4,29 +4,42 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = IndividualInDirectory.Builder::class)
 @NoAutoDetect
 class IndividualInDirectory
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val firstName: JsonField<String>,
-    private val middleName: JsonField<String>,
-    private val lastName: JsonField<String>,
-    private val manager: JsonField<Manager>,
-    private val department: JsonField<Department>,
-    private val isActive: JsonField<Boolean>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("first_name")
+    @ExcludeMissing
+    private val firstName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("middle_name")
+    @ExcludeMissing
+    private val middleName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("last_name")
+    @ExcludeMissing
+    private val lastName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("manager")
+    @ExcludeMissing
+    private val manager: JsonField<Manager> = JsonMissing.of(),
+    @JsonProperty("department")
+    @ExcludeMissing
+    private val department: JsonField<Department> = JsonMissing.of(),
+    @JsonProperty("is_active")
+    @ExcludeMissing
+    private val isActive: JsonField<Boolean> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** A stable Finch id (UUID v4) for an individual in the company. */
@@ -125,54 +138,42 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** A stable Finch id (UUID v4) for an individual in the company. */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The legal first name of the individual. */
         fun firstName(firstName: String) = firstName(JsonField.of(firstName))
 
         /** The legal first name of the individual. */
-        @JsonProperty("first_name")
-        @ExcludeMissing
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: String) = middleName(JsonField.of(middleName))
 
         /** The legal middle name of the individual. */
-        @JsonProperty("middle_name")
-        @ExcludeMissing
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String) = lastName(JsonField.of(lastName))
 
         /** The legal last name of the individual. */
-        @JsonProperty("last_name")
-        @ExcludeMissing
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
         /** The manager object. */
         fun manager(manager: Manager) = manager(JsonField.of(manager))
 
         /** The manager object. */
-        @JsonProperty("manager")
-        @ExcludeMissing
         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
         /** The department object. */
         fun department(department: Department) = department(JsonField.of(department))
 
         /** The department object. */
-        @JsonProperty("department")
-        @ExcludeMissing
         fun department(department: JsonField<Department>) = apply { this.department = department }
 
         /** `true` if the individual is an active employee or contractor at the company. */
         fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
 
         /** `true` if the individual is an active employee or contractor at the company. */
-        @JsonProperty("is_active")
-        @ExcludeMissing
         fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -180,7 +181,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -209,12 +209,15 @@ private constructor(
     }
 
     /** The department object. */
-    @JsonDeserialize(builder = Department.Builder::class)
     @NoAutoDetect
     class Department
+    @JsonCreator
     private constructor(
-        private val name: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The name of the department. */
@@ -258,8 +261,6 @@ private constructor(
             fun name(name: String) = name(JsonField.of(name))
 
             /** The name of the department. */
-            @JsonProperty("name")
-            @ExcludeMissing
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -267,7 +268,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -304,12 +304,13 @@ private constructor(
     }
 
     /** The manager object. */
-    @JsonDeserialize(builder = Manager.Builder::class)
     @NoAutoDetect
     class Manager
+    @JsonCreator
     private constructor(
-        private val id: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -353,8 +354,6 @@ private constructor(
             fun id(id: String) = id(JsonField.of(id))
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
-            @JsonProperty("id")
-            @ExcludeMissing
             fun id(id: JsonField<String>) = apply { this.id = id }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -362,7 +361,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

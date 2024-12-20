@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -59,15 +59,16 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = SandboxConnectionCreateBody.Builder::class)
     @NoAutoDetect
     class SandboxConnectionCreateBody
+    @JsonCreator
     internal constructor(
-        private val providerId: String,
-        private val authenticationType: AuthenticationType?,
-        private val employeeSize: Long?,
-        private val products: List<String>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("provider_id") private val providerId: String,
+        @JsonProperty("authentication_type") private val authenticationType: AuthenticationType?,
+        @JsonProperty("employee_size") private val employeeSize: Long?,
+        @JsonProperty("products") private val products: List<String>?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The provider associated with the connection */
@@ -118,10 +119,8 @@ constructor(
             }
 
             /** The provider associated with the connection */
-            @JsonProperty("provider_id")
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
-            @JsonProperty("authentication_type")
             fun authenticationType(authenticationType: AuthenticationType) = apply {
                 this.authenticationType = authenticationType
             }
@@ -131,10 +130,8 @@ constructor(
              * to 20. Note that if this is higher than 100, historical payroll data will not be
              * generated, and instead only one pay period will be created.
              */
-            @JsonProperty("employee_size")
             fun employeeSize(employeeSize: Long) = apply { this.employeeSize = employeeSize }
 
-            @JsonProperty("products")
             fun products(products: List<String>) = apply { this.products = products }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -142,7 +139,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

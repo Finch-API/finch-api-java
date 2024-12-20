@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -23,15 +23,19 @@ import java.util.Optional
  * may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
  * provider returns.
  */
-@JsonDeserialize(builder = Income.Builder::class)
 @NoAutoDetect
 class Income
+@JsonCreator
 private constructor(
-    private val unit: JsonField<Unit>,
-    private val amount: JsonField<Long>,
-    private val currency: JsonField<String>,
-    private val effectiveDate: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("unit") @ExcludeMissing private val unit: JsonField<Unit> = JsonMissing.of(),
+    @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("currency")
+    @ExcludeMissing
+    private val currency: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("effective_date")
+    @ExcludeMissing
+    private val effectiveDate: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /**
@@ -115,32 +119,24 @@ private constructor(
          * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
          * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
          */
-        @JsonProperty("unit")
-        @ExcludeMissing
         fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
 
         /** The income amount in cents. */
         fun amount(amount: Long) = amount(JsonField.of(amount))
 
         /** The income amount in cents. */
-        @JsonProperty("amount")
-        @ExcludeMissing
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         /** The currency code. */
         fun currency(currency: String) = currency(JsonField.of(currency))
 
         /** The currency code. */
-        @JsonProperty("currency")
-        @ExcludeMissing
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         /** The date the income amount went into effect. */
         fun effectiveDate(effectiveDate: String) = effectiveDate(JsonField.of(effectiveDate))
 
         /** The date the income amount went into effect. */
-        @JsonProperty("effective_date")
-        @ExcludeMissing
         fun effectiveDate(effectiveDate: JsonField<String>) = apply {
             this.effectiveDate = effectiveDate
         }
@@ -150,7 +146,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

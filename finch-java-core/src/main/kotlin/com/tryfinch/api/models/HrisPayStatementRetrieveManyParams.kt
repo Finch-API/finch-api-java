@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
@@ -40,12 +41,13 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = HrisPayStatementRetrieveManyBody.Builder::class)
     @NoAutoDetect
     class HrisPayStatementRetrieveManyBody
+    @JsonCreator
     internal constructor(
-        private val requests: List<Request>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("requests") private val requests: List<Request>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The array of batch requests. */
@@ -76,7 +78,6 @@ constructor(
                 }
 
             /** The array of batch requests. */
-            @JsonProperty("requests")
             fun requests(requests: List<Request>) = apply { this.requests = requests }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -84,7 +85,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -289,14 +289,15 @@ constructor(
             )
     }
 
-    @JsonDeserialize(builder = Request.Builder::class)
     @NoAutoDetect
     class Request
+    @JsonCreator
     private constructor(
-        private val paymentId: String,
-        private val limit: Long?,
-        private val offset: Long?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("payment_id") private val paymentId: String,
+        @JsonProperty("limit") private val limit: Long?,
+        @JsonProperty("offset") private val offset: Long?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A stable Finch `id` (UUID v4) for a payment. */
@@ -335,21 +336,19 @@ constructor(
             }
 
             /** A stable Finch `id` (UUID v4) for a payment. */
-            @JsonProperty("payment_id")
             fun paymentId(paymentId: String) = apply { this.paymentId = paymentId }
 
             /** Number of pay statements to return (defaults to all). */
-            @JsonProperty("limit") fun limit(limit: Long) = apply { this.limit = limit }
+            fun limit(limit: Long) = apply { this.limit = limit }
 
             /** Index to start from. */
-            @JsonProperty("offset") fun offset(offset: Long) = apply { this.offset = offset }
+            fun offset(offset: Long) = apply { this.offset = offset }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

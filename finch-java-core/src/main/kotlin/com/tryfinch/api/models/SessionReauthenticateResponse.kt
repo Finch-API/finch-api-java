@@ -4,23 +4,28 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = SessionReauthenticateResponse.Builder::class)
 @NoAutoDetect
 class SessionReauthenticateResponse
+@JsonCreator
 private constructor(
-    private val sessionId: JsonField<String>,
-    private val connectUrl: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("session_id")
+    @ExcludeMissing
+    private val sessionId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connect_url")
+    @ExcludeMissing
+    private val connectUrl: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The unique identifier for the created connect session */
@@ -73,16 +78,12 @@ private constructor(
         fun sessionId(sessionId: String) = sessionId(JsonField.of(sessionId))
 
         /** The unique identifier for the created connect session */
-        @JsonProperty("session_id")
-        @ExcludeMissing
         fun sessionId(sessionId: JsonField<String>) = apply { this.sessionId = sessionId }
 
         /** The Connect URL to redirect the user to for reauthentication */
         fun connectUrl(connectUrl: String) = connectUrl(JsonField.of(connectUrl))
 
         /** The Connect URL to redirect the user to for reauthentication */
-        @JsonProperty("connect_url")
-        @ExcludeMissing
         fun connectUrl(connectUrl: JsonField<String>) = apply { this.connectUrl = connectUrl }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -90,7 +91,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

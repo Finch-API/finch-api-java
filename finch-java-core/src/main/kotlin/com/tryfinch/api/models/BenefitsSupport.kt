@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
@@ -19,23 +20,47 @@ import java.util.Optional
  * Each benefit type and their supported features. If the benefit type is not supported, the
  * property will be null
  */
-@JsonDeserialize(builder = BenefitsSupport.Builder::class)
 @NoAutoDetect
 class BenefitsSupport
+@JsonCreator
 private constructor(
-    private val s125Medical: JsonField<BenefitFeaturesAndOperations>,
-    private val s125Dental: JsonField<BenefitFeaturesAndOperations>,
-    private val s125Vision: JsonField<BenefitFeaturesAndOperations>,
-    private val hsaPre: JsonField<BenefitFeaturesAndOperations>,
-    private val hsaPost: JsonField<BenefitFeaturesAndOperations>,
-    private val fsaMedical: JsonField<BenefitFeaturesAndOperations>,
-    private val fsaDependentCare: JsonField<BenefitFeaturesAndOperations>,
-    private val simpleIra: JsonField<BenefitFeaturesAndOperations>,
-    private val simple: JsonField<BenefitFeaturesAndOperations>,
-    private val commuter: JsonField<BenefitFeaturesAndOperations>,
-    private val customPostTax: JsonField<BenefitFeaturesAndOperations>,
-    private val customPreTax: JsonField<BenefitFeaturesAndOperations>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("s125_medical")
+    @ExcludeMissing
+    private val s125Medical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("s125_dental")
+    @ExcludeMissing
+    private val s125Dental: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("s125_vision")
+    @ExcludeMissing
+    private val s125Vision: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("hsa_pre")
+    @ExcludeMissing
+    private val hsaPre: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("hsa_post")
+    @ExcludeMissing
+    private val hsaPost: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("fsa_medical")
+    @ExcludeMissing
+    private val fsaMedical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("fsa_dependent_care")
+    @ExcludeMissing
+    private val fsaDependentCare: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("simple_ira")
+    @ExcludeMissing
+    private val simpleIra: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("simple")
+    @ExcludeMissing
+    private val simple: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("commuter")
+    @ExcludeMissing
+    private val commuter: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("custom_post_tax")
+    @ExcludeMissing
+    private val customPostTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("custom_pre_tax")
+    @ExcludeMissing
+    private val customPreTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun s125Medical(): Optional<BenefitFeaturesAndOperations> =
@@ -165,8 +190,6 @@ private constructor(
         fun s125Medical(s125Medical: BenefitFeaturesAndOperations) =
             s125Medical(JsonField.of(s125Medical))
 
-        @JsonProperty("s125_medical")
-        @ExcludeMissing
         fun s125Medical(s125Medical: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Medical = s125Medical
         }
@@ -174,8 +197,6 @@ private constructor(
         fun s125Dental(s125Dental: BenefitFeaturesAndOperations) =
             s125Dental(JsonField.of(s125Dental))
 
-        @JsonProperty("s125_dental")
-        @ExcludeMissing
         fun s125Dental(s125Dental: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Dental = s125Dental
         }
@@ -183,22 +204,16 @@ private constructor(
         fun s125Vision(s125Vision: BenefitFeaturesAndOperations) =
             s125Vision(JsonField.of(s125Vision))
 
-        @JsonProperty("s125_vision")
-        @ExcludeMissing
         fun s125Vision(s125Vision: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Vision = s125Vision
         }
 
         fun hsaPre(hsaPre: BenefitFeaturesAndOperations) = hsaPre(JsonField.of(hsaPre))
 
-        @JsonProperty("hsa_pre")
-        @ExcludeMissing
         fun hsaPre(hsaPre: JsonField<BenefitFeaturesAndOperations>) = apply { this.hsaPre = hsaPre }
 
         fun hsaPost(hsaPost: BenefitFeaturesAndOperations) = hsaPost(JsonField.of(hsaPost))
 
-        @JsonProperty("hsa_post")
-        @ExcludeMissing
         fun hsaPost(hsaPost: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.hsaPost = hsaPost
         }
@@ -206,8 +221,6 @@ private constructor(
         fun fsaMedical(fsaMedical: BenefitFeaturesAndOperations) =
             fsaMedical(JsonField.of(fsaMedical))
 
-        @JsonProperty("fsa_medical")
-        @ExcludeMissing
         fun fsaMedical(fsaMedical: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.fsaMedical = fsaMedical
         }
@@ -215,30 +228,22 @@ private constructor(
         fun fsaDependentCare(fsaDependentCare: BenefitFeaturesAndOperations) =
             fsaDependentCare(JsonField.of(fsaDependentCare))
 
-        @JsonProperty("fsa_dependent_care")
-        @ExcludeMissing
         fun fsaDependentCare(fsaDependentCare: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.fsaDependentCare = fsaDependentCare
         }
 
         fun simpleIra(simpleIra: BenefitFeaturesAndOperations) = simpleIra(JsonField.of(simpleIra))
 
-        @JsonProperty("simple_ira")
-        @ExcludeMissing
         fun simpleIra(simpleIra: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.simpleIra = simpleIra
         }
 
         fun simple(simple: BenefitFeaturesAndOperations) = simple(JsonField.of(simple))
 
-        @JsonProperty("simple")
-        @ExcludeMissing
         fun simple(simple: JsonField<BenefitFeaturesAndOperations>) = apply { this.simple = simple }
 
         fun commuter(commuter: BenefitFeaturesAndOperations) = commuter(JsonField.of(commuter))
 
-        @JsonProperty("commuter")
-        @ExcludeMissing
         fun commuter(commuter: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.commuter = commuter
         }
@@ -246,8 +251,6 @@ private constructor(
         fun customPostTax(customPostTax: BenefitFeaturesAndOperations) =
             customPostTax(JsonField.of(customPostTax))
 
-        @JsonProperty("custom_post_tax")
-        @ExcludeMissing
         fun customPostTax(customPostTax: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.customPostTax = customPostTax
         }
@@ -255,8 +258,6 @@ private constructor(
         fun customPreTax(customPreTax: BenefitFeaturesAndOperations) =
             customPreTax(JsonField.of(customPreTax))
 
-        @JsonProperty("custom_pre_tax")
-        @ExcludeMissing
         fun customPreTax(customPreTax: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.customPreTax = customPreTax
         }
@@ -266,7 +267,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

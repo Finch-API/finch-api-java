@@ -6,39 +6,71 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = Introspection.Builder::class)
 @NoAutoDetect
 class Introspection
+@JsonCreator
 private constructor(
-    private val connectionId: JsonField<String>,
-    private val connectionStatus: JsonField<ConnectionStatus>,
-    private val clientId: JsonField<String>,
-    private val clientType: JsonField<ClientType>,
-    private val connectionType: JsonField<ConnectionType>,
-    private val companyId: JsonField<String>,
-    private val accountId: JsonField<String>,
-    private val customerId: JsonField<String>,
-    private val customerName: JsonField<String>,
-    private val customerEmail: JsonField<String>,
-    private val authenticationMethods: JsonField<List<AuthenticationMethod>>,
-    private val products: JsonField<List<String>>,
-    private val username: JsonField<String>,
-    private val providerId: JsonField<String>,
-    private val payrollProviderId: JsonField<String>,
-    private val manual: JsonField<Boolean>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connection_status")
+    @ExcludeMissing
+    private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
+    @JsonProperty("client_id")
+    @ExcludeMissing
+    private val clientId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("client_type")
+    @ExcludeMissing
+    private val clientType: JsonField<ClientType> = JsonMissing.of(),
+    @JsonProperty("connection_type")
+    @ExcludeMissing
+    private val connectionType: JsonField<ConnectionType> = JsonMissing.of(),
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    private val companyId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    private val accountId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("customer_id")
+    @ExcludeMissing
+    private val customerId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("customer_name")
+    @ExcludeMissing
+    private val customerName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("customer_email")
+    @ExcludeMissing
+    private val customerEmail: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("authentication_methods")
+    @ExcludeMissing
+    private val authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of(),
+    @JsonProperty("products")
+    @ExcludeMissing
+    private val products: JsonField<List<String>> = JsonMissing.of(),
+    @JsonProperty("username")
+    @ExcludeMissing
+    private val username: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("provider_id")
+    @ExcludeMissing
+    private val providerId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("payroll_provider_id")
+    @ExcludeMissing
+    private val payrollProviderId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("manual")
+    @ExcludeMissing
+    private val manual: JsonField<Boolean> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The Finch UUID of the connection associated with the `access_token`. */
@@ -268,8 +300,6 @@ private constructor(
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
         /** The Finch UUID of the connection associated with the `access_token`. */
-        @JsonProperty("connection_id")
-        @ExcludeMissing
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
@@ -277,8 +307,6 @@ private constructor(
         fun connectionStatus(connectionStatus: ConnectionStatus) =
             connectionStatus(JsonField.of(connectionStatus))
 
-        @JsonProperty("connection_status")
-        @ExcludeMissing
         fun connectionStatus(connectionStatus: JsonField<ConnectionStatus>) = apply {
             this.connectionStatus = connectionStatus
         }
@@ -287,16 +315,12 @@ private constructor(
         fun clientId(clientId: String) = clientId(JsonField.of(clientId))
 
         /** The client ID of the application associated with the `access_token`. */
-        @JsonProperty("client_id")
-        @ExcludeMissing
         fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
 
         /** The type of application associated with a token. */
         fun clientType(clientType: ClientType) = clientType(JsonField.of(clientType))
 
         /** The type of application associated with a token. */
-        @JsonProperty("client_type")
-        @ExcludeMissing
         fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
 
         /**
@@ -312,8 +336,6 @@ private constructor(
          * - `provider` - connection to an external provider
          * - `finch` - finch-generated data.
          */
-        @JsonProperty("connection_type")
-        @ExcludeMissing
         fun connectionType(connectionType: JsonField<ConnectionType>) = apply {
             this.connectionType = connectionType
         }
@@ -328,8 +350,6 @@ private constructor(
          * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
          * this company ID.
          */
-        @JsonProperty("company_id")
-        @ExcludeMissing
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /**
@@ -342,8 +362,6 @@ private constructor(
          * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
          * this account ID.
          */
-        @JsonProperty("account_id")
-        @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /**
@@ -356,8 +374,6 @@ private constructor(
          * The ID of your customer you provided to Finch when a connect session was created for this
          * connection.
          */
-        @JsonProperty("customer_id")
-        @ExcludeMissing
         fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
         /**
@@ -370,8 +386,6 @@ private constructor(
          * The name of your customer you provided to Finch when a connect session was created for
          * this connection.
          */
-        @JsonProperty("customer_name")
-        @ExcludeMissing
         fun customerName(customerName: JsonField<String>) = apply {
             this.customerName = customerName
         }
@@ -386,8 +400,6 @@ private constructor(
          * The email of your customer you provided to Finch when a connect session was created for
          * this connection.
          */
-        @JsonProperty("customer_email")
-        @ExcludeMissing
         fun customerEmail(customerEmail: JsonField<String>) = apply {
             this.customerEmail = customerEmail
         }
@@ -395,8 +407,6 @@ private constructor(
         fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
             authenticationMethods(JsonField.of(authenticationMethods))
 
-        @JsonProperty("authentication_methods")
-        @ExcludeMissing
         fun authenticationMethods(authenticationMethods: JsonField<List<AuthenticationMethod>>) =
             apply {
                 this.authenticationMethods = authenticationMethods
@@ -406,24 +416,18 @@ private constructor(
         fun products(products: List<String>) = products(JsonField.of(products))
 
         /** An array of the authorized products associated with the `access_token`. */
-        @JsonProperty("products")
-        @ExcludeMissing
         fun products(products: JsonField<List<String>>) = apply { this.products = products }
 
         /** The account username used for login associated with the `access_token`. */
         fun username(username: String) = username(JsonField.of(username))
 
         /** The account username used for login associated with the `access_token`. */
-        @JsonProperty("username")
-        @ExcludeMissing
         fun username(username: JsonField<String>) = apply { this.username = username }
 
         /** The ID of the provider associated with the `access_token`. */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
         /** The ID of the provider associated with the `access_token`. */
-        @JsonProperty("provider_id")
-        @ExcludeMissing
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
         /**
@@ -437,8 +441,6 @@ private constructor(
          * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider
          * ID.
          */
-        @JsonProperty("payroll_provider_id")
-        @ExcludeMissing
         fun payrollProviderId(payrollProviderId: JsonField<String>) = apply {
             this.payrollProviderId = payrollProviderId
         }
@@ -453,8 +455,6 @@ private constructor(
          * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
          * (`true` if using Assisted Connect, `false` if connection is automated)
          */
-        @JsonProperty("manual")
-        @ExcludeMissing
         fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -462,7 +462,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -499,14 +498,19 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = AuthenticationMethod.Builder::class)
     @NoAutoDetect
     class AuthenticationMethod
+    @JsonCreator
     private constructor(
-        private val type: JsonField<Type>,
-        private val connectionStatus: JsonField<ConnectionStatus>,
-        private val products: JsonField<List<String>>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("connection_status")
+        @ExcludeMissing
+        private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        private val products: JsonField<List<String>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of authentication method. */
@@ -570,15 +574,11 @@ private constructor(
             fun type(type: Type) = type(JsonField.of(type))
 
             /** The type of authentication method. */
-            @JsonProperty("type")
-            @ExcludeMissing
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun connectionStatus(connectionStatus: ConnectionStatus) =
                 connectionStatus(JsonField.of(connectionStatus))
 
-            @JsonProperty("connection_status")
-            @ExcludeMissing
             fun connectionStatus(connectionStatus: JsonField<ConnectionStatus>) = apply {
                 this.connectionStatus = connectionStatus
             }
@@ -587,8 +587,6 @@ private constructor(
             fun products(products: List<String>) = products(JsonField.of(products))
 
             /** An array of the authorized products associated with the `access_token`. */
-            @JsonProperty("products")
-            @ExcludeMissing
             fun products(products: JsonField<List<String>>) = apply { this.products = products }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -596,7 +594,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -620,13 +617,18 @@ private constructor(
                 )
         }
 
-        @JsonDeserialize(builder = ConnectionStatus.Builder::class)
         @NoAutoDetect
         class ConnectionStatus
+        @JsonCreator
         private constructor(
-            private val status: JsonField<ConnectionStatusType>,
-            private val message: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("status")
+            @ExcludeMissing
+            private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
+            @JsonProperty("message")
+            @ExcludeMissing
+            private val message: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             fun status(): Optional<ConnectionStatusType> =
@@ -674,14 +676,10 @@ private constructor(
 
                 fun status(status: ConnectionStatusType) = status(JsonField.of(status))
 
-                @JsonProperty("status")
-                @ExcludeMissing
                 fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
                 fun message(message: String) = message(JsonField.of(message))
 
-                @JsonProperty("message")
-                @ExcludeMissing
                 fun message(message: JsonField<String>) = apply { this.message = message }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -689,7 +687,6 @@ private constructor(
                     putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                     additionalProperties.put(key, value)
                 }
@@ -889,13 +886,18 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @JsonDeserialize(builder = ConnectionStatus.Builder::class)
     @NoAutoDetect
     class ConnectionStatus
+    @JsonCreator
     private constructor(
-        private val status: JsonField<ConnectionStatusType>,
-        private val message: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("status")
+        @ExcludeMissing
+        private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
+        @JsonProperty("message")
+        @ExcludeMissing
+        private val message: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun status(): Optional<ConnectionStatusType> =
@@ -943,14 +945,10 @@ private constructor(
 
             fun status(status: ConnectionStatusType) = status(JsonField.of(status))
 
-            @JsonProperty("status")
-            @ExcludeMissing
             fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun message(message: String) = message(JsonField.of(message))
 
-            @JsonProperty("message")
-            @ExcludeMissing
             fun message(message: JsonField<String>) = apply { this.message = message }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -958,7 +956,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

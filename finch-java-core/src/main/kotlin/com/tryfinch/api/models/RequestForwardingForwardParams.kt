@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
@@ -60,16 +61,17 @@ constructor(
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
     /** Forward Request Body */
-    @JsonDeserialize(builder = RequestForwardingForwardBody.Builder::class)
     @NoAutoDetect
     class RequestForwardingForwardBody
+    @JsonCreator
     internal constructor(
-        private val method: String,
-        private val route: String,
-        private val data: String?,
-        private val headers: JsonValue?,
-        private val params: JsonValue?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("method") private val method: String,
+        @JsonProperty("route") private val route: String,
+        @JsonProperty("data") private val data: String?,
+        @JsonProperty("headers") private val headers: JsonValue?,
+        @JsonProperty("params") private val params: JsonValue?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /**
@@ -138,41 +140,39 @@ constructor(
              * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` ,
              * `PUT` , `DELETE` , and `PATCH`.
              */
-            @JsonProperty("method") fun method(method: String) = apply { this.method = method }
+            fun method(method: String) = apply { this.method = method }
 
             /**
              * The URL route path for the forwarded request. This value must begin with a
              * forward-slash ( / ) and may only contain alphanumeric characters, hyphens, and
              * underscores.
              */
-            @JsonProperty("route") fun route(route: String) = apply { this.route = route }
+            fun route(route: String) = apply { this.route = route }
 
             /**
              * The body for the forwarded request. This value must be specified as either a string
              * or a valid JSON object.
              */
-            @JsonProperty("data") fun data(data: String) = apply { this.data = data }
+            fun data(data: String) = apply { this.data = data }
 
             /**
              * The HTTP headers to include on the forwarded request. This value must be specified as
              * an object of key-value pairs. Example: `{"Content-Type": "application/xml",
              * "X-API-Version": "v1" }`
              */
-            @JsonProperty("headers")
             fun headers(headers: JsonValue) = apply { this.headers = headers }
 
             /**
              * The query parameters for the forwarded request. This value must be specified as a
              * valid JSON object rather than a query string.
              */
-            @JsonProperty("params") fun params(params: JsonValue) = apply { this.params = params }
+            fun params(params: JsonValue) = apply { this.params = params }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

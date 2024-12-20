@@ -6,33 +6,51 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = PayStatement.Builder::class)
 @NoAutoDetect
 class PayStatement
+@JsonCreator
 private constructor(
-    private val individualId: JsonField<String>,
-    private val type: JsonField<Type>,
-    private val paymentMethod: JsonField<PaymentMethod>,
-    private val totalHours: JsonField<Double>,
-    private val grossPay: JsonField<Money>,
-    private val netPay: JsonField<Money>,
-    private val earnings: JsonField<List<Earning?>>,
-    private val taxes: JsonField<List<Tax?>>,
-    private val employeeDeductions: JsonField<List<EmployeeDeduction?>>,
-    private val employerContributions: JsonField<List<EmployerContribution?>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    private val individualId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+    @JsonProperty("payment_method")
+    @ExcludeMissing
+    private val paymentMethod: JsonField<PaymentMethod> = JsonMissing.of(),
+    @JsonProperty("total_hours")
+    @ExcludeMissing
+    private val totalHours: JsonField<Double> = JsonMissing.of(),
+    @JsonProperty("gross_pay")
+    @ExcludeMissing
+    private val grossPay: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("net_pay")
+    @ExcludeMissing
+    private val netPay: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("earnings")
+    @ExcludeMissing
+    private val earnings: JsonField<List<Earning?>> = JsonMissing.of(),
+    @JsonProperty("taxes")
+    @ExcludeMissing
+    private val taxes: JsonField<List<Tax?>> = JsonMissing.of(),
+    @JsonProperty("employee_deductions")
+    @ExcludeMissing
+    private val employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
+    @JsonProperty("employer_contributions")
+    @ExcludeMissing
+    private val employerContributions: JsonField<List<EmployerContribution?>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** A stable Finch `id` (UUID v4) for an individual in the company */
@@ -159,8 +177,6 @@ private constructor(
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
         /** A stable Finch `id` (UUID v4) for an individual in the company */
-        @JsonProperty("individual_id")
-        @ExcludeMissing
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
@@ -169,16 +185,12 @@ private constructor(
         fun type(type: Type) = type(JsonField.of(type))
 
         /** The type of the payment associated with the pay statement. */
-        @JsonProperty("type")
-        @ExcludeMissing
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** The payment method. */
         fun paymentMethod(paymentMethod: PaymentMethod) = paymentMethod(JsonField.of(paymentMethod))
 
         /** The payment method. */
-        @JsonProperty("payment_method")
-        @ExcludeMissing
         fun paymentMethod(paymentMethod: JsonField<PaymentMethod>) = apply {
             this.paymentMethod = paymentMethod
         }
@@ -187,36 +199,26 @@ private constructor(
         fun totalHours(totalHours: Double) = totalHours(JsonField.of(totalHours))
 
         /** The number of hours worked for this pay period */
-        @JsonProperty("total_hours")
-        @ExcludeMissing
         fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
 
         fun grossPay(grossPay: Money) = grossPay(JsonField.of(grossPay))
 
-        @JsonProperty("gross_pay")
-        @ExcludeMissing
         fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
         fun netPay(netPay: Money) = netPay(JsonField.of(netPay))
 
-        @JsonProperty("net_pay")
-        @ExcludeMissing
         fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
         /** The array of earnings objects associated with this pay statement */
         fun earnings(earnings: List<Earning?>) = earnings(JsonField.of(earnings))
 
         /** The array of earnings objects associated with this pay statement */
-        @JsonProperty("earnings")
-        @ExcludeMissing
         fun earnings(earnings: JsonField<List<Earning?>>) = apply { this.earnings = earnings }
 
         /** The array of taxes objects associated with this pay statement. */
         fun taxes(taxes: List<Tax?>) = taxes(JsonField.of(taxes))
 
         /** The array of taxes objects associated with this pay statement. */
-        @JsonProperty("taxes")
-        @ExcludeMissing
         fun taxes(taxes: JsonField<List<Tax?>>) = apply { this.taxes = taxes }
 
         /** The array of deductions objects associated with this pay statement. */
@@ -224,8 +226,6 @@ private constructor(
             employeeDeductions(JsonField.of(employeeDeductions))
 
         /** The array of deductions objects associated with this pay statement. */
-        @JsonProperty("employee_deductions")
-        @ExcludeMissing
         fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) = apply {
             this.employeeDeductions = employeeDeductions
         }
@@ -233,8 +233,6 @@ private constructor(
         fun employerContributions(employerContributions: List<EmployerContribution?>) =
             employerContributions(JsonField.of(employerContributions))
 
-        @JsonProperty("employer_contributions")
-        @ExcludeMissing
         fun employerContributions(employerContributions: JsonField<List<EmployerContribution?>>) =
             apply {
                 this.employerContributions = employerContributions
@@ -245,7 +243,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -276,16 +273,25 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Earning.Builder::class)
     @NoAutoDetect
     class Earning
+    @JsonCreator
     private constructor(
-        private val type: JsonField<Type>,
-        private val name: JsonField<String>,
-        private val amount: JsonField<Long>,
-        private val currency: JsonField<String>,
-        private val hours: JsonField<Double>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("amount")
+        @ExcludeMissing
+        private val amount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("currency")
+        @ExcludeMissing
+        private val currency: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("hours")
+        @ExcludeMissing
+        private val hours: JsonField<Double> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of earning. */
@@ -371,32 +377,24 @@ private constructor(
             fun type(type: Type) = type(JsonField.of(type))
 
             /** The type of earning. */
-            @JsonProperty("type")
-            @ExcludeMissing
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** The exact name of the deduction from the pay statement. */
             fun name(name: String) = name(JsonField.of(name))
 
             /** The exact name of the deduction from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The earnings amount in cents. */
             fun amount(amount: Long) = amount(JsonField.of(amount))
 
             /** The earnings amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             /** The earnings currency code. */
             fun currency(currency: String) = currency(JsonField.of(currency))
 
             /** The earnings currency code. */
-            @JsonProperty("currency")
-            @ExcludeMissing
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
             /**
@@ -409,8 +407,6 @@ private constructor(
              * The number of hours associated with this earning. (For salaried employees, this could
              * be hours per pay period, `0` or `null`, depending on the provider).
              */
-            @JsonProperty("hours")
-            @ExcludeMissing
             fun hours(hours: JsonField<Double>) = apply { this.hours = hours }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -418,7 +414,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -585,16 +580,27 @@ private constructor(
             "Earning{type=$type, name=$name, amount=$amount, currency=$currency, hours=$hours, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = EmployeeDeduction.Builder::class)
     @NoAutoDetect
     class EmployeeDeduction
+    @JsonCreator
     private constructor(
-        private val name: JsonField<String>,
-        private val amount: JsonField<Long>,
-        private val currency: JsonField<String>,
-        private val preTax: JsonField<Boolean>,
-        private val type: JsonField<BenefitType>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("amount")
+        @ExcludeMissing
+        private val amount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("currency")
+        @ExcludeMissing
+        private val currency: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("pre_tax")
+        @ExcludeMissing
+        private val preTax: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("type")
+        @ExcludeMissing
+        private val type: JsonField<BenefitType> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The deduction name from the pay statement. */
@@ -674,40 +680,30 @@ private constructor(
             fun name(name: String) = name(JsonField.of(name))
 
             /** The deduction name from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The deduction amount in cents. */
             fun amount(amount: Long) = amount(JsonField.of(amount))
 
             /** The deduction amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             /** The deduction currency. */
             fun currency(currency: String) = currency(JsonField.of(currency))
 
             /** The deduction currency. */
-            @JsonProperty("currency")
-            @ExcludeMissing
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
             /** Boolean indicating if the deduction is pre-tax. */
             fun preTax(preTax: Boolean) = preTax(JsonField.of(preTax))
 
             /** Boolean indicating if the deduction is pre-tax. */
-            @JsonProperty("pre_tax")
-            @ExcludeMissing
             fun preTax(preTax: JsonField<Boolean>) = apply { this.preTax = preTax }
 
             /** Type of benefit. */
             fun type(type: BenefitType) = type(JsonField.of(type))
 
             /** Type of benefit. */
-            @JsonProperty("type")
-            @ExcludeMissing
             fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -715,7 +711,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -759,15 +754,24 @@ private constructor(
             "EmployeeDeduction{name=$name, amount=$amount, currency=$currency, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = EmployerContribution.Builder::class)
     @NoAutoDetect
     class EmployerContribution
+    @JsonCreator
     private constructor(
-        private val name: JsonField<String>,
-        private val amount: JsonField<Long>,
-        private val currency: JsonField<String>,
-        private val type: JsonField<BenefitType>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("amount")
+        @ExcludeMissing
+        private val amount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("currency")
+        @ExcludeMissing
+        private val currency: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("type")
+        @ExcludeMissing
+        private val type: JsonField<BenefitType> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The contribution name from the pay statement. */
@@ -838,32 +842,24 @@ private constructor(
             fun name(name: String) = name(JsonField.of(name))
 
             /** The contribution name from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The contribution amount in cents. */
             fun amount(amount: Long) = amount(JsonField.of(amount))
 
             /** The contribution amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             /** The contribution currency. */
             fun currency(currency: String) = currency(JsonField.of(currency))
 
             /** The contribution currency. */
-            @JsonProperty("currency")
-            @ExcludeMissing
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
             /** Type of benefit. */
             fun type(type: BenefitType) = type(JsonField.of(type))
 
             /** Type of benefit. */
-            @JsonProperty("type")
-            @ExcludeMissing
             fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -871,7 +867,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -971,16 +966,25 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @JsonDeserialize(builder = Tax.Builder::class)
     @NoAutoDetect
     class Tax
+    @JsonCreator
     private constructor(
-        private val type: JsonField<Type>,
-        private val name: JsonField<String>,
-        private val employer: JsonField<Boolean>,
-        private val amount: JsonField<Long>,
-        private val currency: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("employer")
+        @ExcludeMissing
+        private val employer: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("amount")
+        @ExcludeMissing
+        private val amount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("currency")
+        @ExcludeMissing
+        private val currency: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of taxes. */
@@ -1060,40 +1064,30 @@ private constructor(
             fun type(type: Type) = type(JsonField.of(type))
 
             /** The type of taxes. */
-            @JsonProperty("type")
-            @ExcludeMissing
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** The exact name of tax from the pay statement. */
             fun name(name: String) = name(JsonField.of(name))
 
             /** The exact name of tax from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** `true` if the amount is paid by the employers. */
             fun employer(employer: Boolean) = employer(JsonField.of(employer))
 
             /** `true` if the amount is paid by the employers. */
-            @JsonProperty("employer")
-            @ExcludeMissing
             fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
 
             /** The tax amount in cents. */
             fun amount(amount: Long) = amount(JsonField.of(amount))
 
             /** The tax amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             /** The currency code. */
             fun currency(currency: String) = currency(JsonField.of(currency))
 
             /** The currency code. */
-            @JsonProperty("currency")
-            @ExcludeMissing
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1101,7 +1095,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
