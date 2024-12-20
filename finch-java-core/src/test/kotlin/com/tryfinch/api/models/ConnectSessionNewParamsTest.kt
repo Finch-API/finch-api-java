@@ -52,18 +52,18 @@ class ConnectSessionNewParamsTest {
         assertThat(body.customerName()).isEqualTo("x")
         assertThat(body.products())
             .isEqualTo(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
-        assertThat(body.customerEmail()).isEqualTo("dev@stainlessapi.com")
+        assertThat(body.customerEmail()).contains("dev@stainlessapi.com")
         assertThat(body.integration())
-            .isEqualTo(
+            .contains(
                 ConnectSessionNewParams.Integration.builder()
                     .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .provider("provider")
                     .build()
             )
-        assertThat(body.manual()).isEqualTo(true)
-        assertThat(body.minutesToExpire()).isEqualTo(1.0)
-        assertThat(body.redirectUri()).isEqualTo("redirect_uri")
-        assertThat(body.sandbox()).isEqualTo(ConnectSessionNewParams.Sandbox.FINCH)
+        assertThat(body.manual()).contains(true)
+        assertThat(body.minutesToExpire()).contains(1.0)
+        assertThat(body.redirectUri()).contains("redirect_uri")
+        assertThat(body.sandbox()).contains(ConnectSessionNewParams.Sandbox.FINCH)
     }
 
     @Test

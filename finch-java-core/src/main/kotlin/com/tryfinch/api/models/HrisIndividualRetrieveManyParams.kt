@@ -56,9 +56,10 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        @JsonProperty("options") fun options(): Options? = options
+        @JsonProperty("options") fun options(): Optional<Options> = Optional.ofNullable(options)
 
-        @JsonProperty("requests") fun requests(): List<Request>? = requests
+        @JsonProperty("requests")
+        fun requests(): Optional<List<Request>> = Optional.ofNullable(requests)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -80,9 +81,10 @@ constructor(
             @JvmSynthetic
             internal fun from(hrisIndividualRetrieveManyBody: HrisIndividualRetrieveManyBody) =
                 apply {
-                    this.options = hrisIndividualRetrieveManyBody.options
-                    this.requests = hrisIndividualRetrieveManyBody.requests
-                    additionalProperties(hrisIndividualRetrieveManyBody.additionalProperties)
+                    options = hrisIndividualRetrieveManyBody.options
+                    requests = hrisIndividualRetrieveManyBody.requests?.toMutableList()
+                    additionalProperties =
+                        hrisIndividualRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
             @JsonProperty("options")
@@ -93,16 +95,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): HrisIndividualRetrieveManyBody =
@@ -307,7 +315,8 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        @JsonProperty("include") fun include(): List<String>? = include
+        @JsonProperty("include")
+        fun include(): Optional<List<String>> = Optional.ofNullable(include)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -327,8 +336,8 @@ constructor(
 
             @JvmSynthetic
             internal fun from(options: Options) = apply {
-                this.include = options.include
-                additionalProperties(options.additionalProperties)
+                include = options.include?.toMutableList()
+                additionalProperties = options.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("include")
@@ -336,16 +345,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Options =
@@ -378,7 +393,8 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        @JsonProperty("individual_id") fun individualId(): String? = individualId
+        @JsonProperty("individual_id")
+        fun individualId(): Optional<String> = Optional.ofNullable(individualId)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -398,8 +414,8 @@ constructor(
 
             @JvmSynthetic
             internal fun from(request: Request) = apply {
-                this.individualId = request.individualId
-                additionalProperties(request.additionalProperties)
+                individualId = request.individualId
+                additionalProperties = request.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("individual_id")
@@ -407,16 +423,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Request = Request(individualId, additionalProperties.toImmutable())

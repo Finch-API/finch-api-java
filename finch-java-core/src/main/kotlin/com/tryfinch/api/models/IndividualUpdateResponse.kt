@@ -38,8 +38,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** The legal first name of the individual. */
     fun firstName(): Optional<String> = Optional.ofNullable(firstName.getNullable("first_name"))
 
@@ -133,6 +131,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): IndividualUpdateResponse = apply {
         if (!validated) {
             firstName()
@@ -178,20 +178,20 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(individualUpdateResponse: IndividualUpdateResponse) = apply {
-            this.firstName = individualUpdateResponse.firstName
-            this.middleName = individualUpdateResponse.middleName
-            this.lastName = individualUpdateResponse.lastName
-            this.preferredName = individualUpdateResponse.preferredName
-            this.emails = individualUpdateResponse.emails
-            this.phoneNumbers = individualUpdateResponse.phoneNumbers
-            this.gender = individualUpdateResponse.gender
-            this.ethnicity = individualUpdateResponse.ethnicity
-            this.dob = individualUpdateResponse.dob
-            this.ssn = individualUpdateResponse.ssn
-            this.encryptedSsn = individualUpdateResponse.encryptedSsn
-            this.residence = individualUpdateResponse.residence
-            this.id = individualUpdateResponse.id
-            additionalProperties(individualUpdateResponse.additionalProperties)
+            firstName = individualUpdateResponse.firstName
+            middleName = individualUpdateResponse.middleName
+            lastName = individualUpdateResponse.lastName
+            preferredName = individualUpdateResponse.preferredName
+            emails = individualUpdateResponse.emails
+            phoneNumbers = individualUpdateResponse.phoneNumbers
+            gender = individualUpdateResponse.gender
+            ethnicity = individualUpdateResponse.ethnicity
+            dob = individualUpdateResponse.dob
+            ssn = individualUpdateResponse.ssn
+            encryptedSsn = individualUpdateResponse.encryptedSsn
+            residence = individualUpdateResponse.residence
+            id = individualUpdateResponse.id
+            additionalProperties = individualUpdateResponse.additionalProperties.toMutableMap()
         }
 
         /** The legal first name of the individual. */
@@ -313,16 +313,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): IndividualUpdateResponse =
@@ -353,8 +359,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
@@ -366,6 +370,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Email = apply {
             if (!validated) {
@@ -390,9 +396,9 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(email: Email) = apply {
-                this.data = email.data
-                this.type = email.type
-                additionalProperties(email.additionalProperties)
+                data = email.data
+                type = email.type
+                additionalProperties = email.additionalProperties.toMutableMap()
             }
 
             fun data(data: String) = data(JsonField.of(data))
@@ -409,16 +415,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Email =
@@ -676,8 +688,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
@@ -689,6 +699,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): PhoneNumber = apply {
             if (!validated) {
@@ -713,9 +725,9 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(phoneNumber: PhoneNumber) = apply {
-                this.data = phoneNumber.data
-                this.type = phoneNumber.type
-                additionalProperties(phoneNumber.additionalProperties)
+                data = phoneNumber.data
+                type = phoneNumber.type
+                additionalProperties = phoneNumber.additionalProperties.toMutableMap()
             }
 
             fun data(data: String) = data(JsonField.of(data))
@@ -732,16 +744,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): PhoneNumber =

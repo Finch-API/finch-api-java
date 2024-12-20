@@ -137,9 +137,9 @@ class SandboxEmploymentUpdateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.classCode()).isEqualTo("class_code")
+        assertThat(body.classCode()).contains("class_code")
         assertThat(body.customFields())
-            .isEqualTo(
+            .contains(
                 listOf(
                     SandboxEmploymentUpdateParams.CustomField.builder()
                         .name("name")
@@ -148,20 +148,20 @@ class SandboxEmploymentUpdateParamsTest {
                 )
             )
         assertThat(body.department())
-            .isEqualTo(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
+            .contains(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
         assertThat(body.employment())
-            .isEqualTo(
+            .contains(
                 SandboxEmploymentUpdateParams.Employment.builder()
                     .subtype(SandboxEmploymentUpdateParams.Employment.Subtype.FULL_TIME)
                     .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                     .build()
             )
         assertThat(body.employmentStatus())
-            .isEqualTo(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
-        assertThat(body.endDate()).isEqualTo("end_date")
-        assertThat(body.firstName()).isEqualTo("first_name")
+            .contains(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
+        assertThat(body.endDate()).contains("end_date")
+        assertThat(body.firstName()).contains("first_name")
         assertThat(body.income())
-            .isEqualTo(
+            .contains(
                 Income.builder()
                     .amount(0L)
                     .currency("currency")
@@ -170,7 +170,7 @@ class SandboxEmploymentUpdateParamsTest {
                     .build()
             )
         assertThat(body.incomeHistory())
-            .isEqualTo(
+            .contains(
                 listOf(
                     Income.builder()
                         .amount(0L)
@@ -180,11 +180,11 @@ class SandboxEmploymentUpdateParamsTest {
                         .build()
                 )
             )
-        assertThat(body.isActive()).isEqualTo(true)
-        assertThat(body.lastName()).isEqualTo("last_name")
-        assertThat(body.latestRehireDate()).isEqualTo("latest_rehire_date")
+        assertThat(body.isActive()).contains(true)
+        assertThat(body.lastName()).contains("last_name")
+        assertThat(body.latestRehireDate()).contains("latest_rehire_date")
         assertThat(body.location())
-            .isEqualTo(
+            .contains(
                 Location.builder()
                     .city("city")
                     .country("country")
@@ -197,11 +197,11 @@ class SandboxEmploymentUpdateParamsTest {
                     .build()
             )
         assertThat(body.manager())
-            .isEqualTo(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
-        assertThat(body.middleName()).isEqualTo("middle_name")
-        assertThat(body.sourceId()).isEqualTo("source_id")
-        assertThat(body.startDate()).isEqualTo("3/4/2020")
-        assertThat(body.title()).isEqualTo("title")
+            .contains(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
+        assertThat(body.middleName()).contains("middle_name")
+        assertThat(body.sourceId()).contains("source_id")
+        assertThat(body.startDate()).contains("3/4/2020")
+        assertThat(body.title()).contains("title")
     }
 
     @Test

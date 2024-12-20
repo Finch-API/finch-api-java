@@ -59,7 +59,8 @@ constructor(
     ) {
 
         /** Array of individual_ids to unenroll. */
-        @JsonProperty("individual_ids") fun individualIds(): List<String>? = individualIds
+        @JsonProperty("individual_ids")
+        fun individualIds(): Optional<List<String>> = Optional.ofNullable(individualIds)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -81,8 +82,9 @@ constructor(
             internal fun from(
                 hrisBenefitIndividualUnenrollManyBody: HrisBenefitIndividualUnenrollManyBody
             ) = apply {
-                this.individualIds = hrisBenefitIndividualUnenrollManyBody.individualIds
-                additionalProperties(hrisBenefitIndividualUnenrollManyBody.additionalProperties)
+                individualIds = hrisBenefitIndividualUnenrollManyBody.individualIds?.toMutableList()
+                additionalProperties =
+                    hrisBenefitIndividualUnenrollManyBody.additionalProperties.toMutableMap()
             }
 
             /** Array of individual_ids to unenroll. */
@@ -93,16 +95,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): HrisBenefitIndividualUnenrollManyBody =

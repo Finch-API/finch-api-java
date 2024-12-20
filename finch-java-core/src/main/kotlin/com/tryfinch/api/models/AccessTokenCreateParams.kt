@@ -59,20 +59,22 @@ constructor(
     @NoAutoDetect
     class AccessTokenCreateBody
     internal constructor(
-        private val code: String?,
+        private val code: String,
         private val clientId: String?,
         private val clientSecret: String?,
         private val redirectUri: String?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        @JsonProperty("code") fun code(): String? = code
+        @JsonProperty("code") fun code(): String = code
 
-        @JsonProperty("client_id") fun clientId(): String? = clientId
+        @JsonProperty("client_id") fun clientId(): Optional<String> = Optional.ofNullable(clientId)
 
-        @JsonProperty("client_secret") fun clientSecret(): String? = clientSecret
+        @JsonProperty("client_secret")
+        fun clientSecret(): Optional<String> = Optional.ofNullable(clientSecret)
 
-        @JsonProperty("redirect_uri") fun redirectUri(): String? = redirectUri
+        @JsonProperty("redirect_uri")
+        fun redirectUri(): Optional<String> = Optional.ofNullable(redirectUri)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -95,11 +97,11 @@ constructor(
 
             @JvmSynthetic
             internal fun from(accessTokenCreateBody: AccessTokenCreateBody) = apply {
-                this.code = accessTokenCreateBody.code
-                this.clientId = accessTokenCreateBody.clientId
-                this.clientSecret = accessTokenCreateBody.clientSecret
-                this.redirectUri = accessTokenCreateBody.redirectUri
-                additionalProperties(accessTokenCreateBody.additionalProperties)
+                code = accessTokenCreateBody.code
+                clientId = accessTokenCreateBody.clientId
+                clientSecret = accessTokenCreateBody.clientSecret
+                redirectUri = accessTokenCreateBody.redirectUri
+                additionalProperties = accessTokenCreateBody.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("code") fun code(code: String) = apply { this.code = code }
@@ -115,16 +117,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): AccessTokenCreateBody =

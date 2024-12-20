@@ -29,10 +29,10 @@ class ConnectSessionReauthenticateParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.connectionId()).isEqualTo("connection_id")
-        assertThat(body.minutesToExpire()).isEqualTo(0L)
+        assertThat(body.minutesToExpire()).contains(0L)
         assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
-        assertThat(body.redirectUri()).isEqualTo("https://example.com")
+            .contains(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+        assertThat(body.redirectUri()).contains("https://example.com")
     }
 
     @Test
