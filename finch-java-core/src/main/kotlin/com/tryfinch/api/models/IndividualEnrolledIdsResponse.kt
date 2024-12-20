@@ -4,23 +4,28 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = IndividualEnrolledIdsResponse.Builder::class)
 @NoAutoDetect
 class IndividualEnrolledIdsResponse
+@JsonCreator
 private constructor(
-    private val benefitId: JsonField<String>,
-    private val individualIds: JsonField<List<String>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("benefit_id")
+    @ExcludeMissing
+    private val benefitId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("individual_ids")
+    @ExcludeMissing
+    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun benefitId(): String = benefitId.getRequired("benefit_id")
@@ -67,14 +72,10 @@ private constructor(
 
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
-        @JsonProperty("benefit_id")
-        @ExcludeMissing
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
         fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
 
-        @JsonProperty("individual_ids")
-        @ExcludeMissing
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
             this.individualIds = individualIds
         }
@@ -84,7 +85,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

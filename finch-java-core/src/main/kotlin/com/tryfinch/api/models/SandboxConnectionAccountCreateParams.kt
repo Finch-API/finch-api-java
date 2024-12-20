@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -59,15 +59,16 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = SandboxConnectionAccountCreateBody.Builder::class)
     @NoAutoDetect
     class SandboxConnectionAccountCreateBody
+    @JsonCreator
     internal constructor(
-        private val companyId: String,
-        private val providerId: String,
-        private val authenticationType: AuthenticationType?,
-        private val products: List<String>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("company_id") private val companyId: String,
+        @JsonProperty("provider_id") private val providerId: String,
+        @JsonProperty("authentication_type") private val authenticationType: AuthenticationType?,
+        @JsonProperty("products") private val products: List<String>?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("company_id") fun companyId(): String = companyId
@@ -117,14 +118,11 @@ constructor(
                     sandboxConnectionAccountCreateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("company_id")
             fun companyId(companyId: String) = apply { this.companyId = companyId }
 
             /** The provider associated with the `access_token` */
-            @JsonProperty("provider_id")
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
-            @JsonProperty("authentication_type")
             fun authenticationType(authenticationType: AuthenticationType) = apply {
                 this.authenticationType = authenticationType
             }
@@ -133,7 +131,6 @@ constructor(
              * Optional, defaults to Organization products (`company`, `directory`, `employment`,
              * `individual`)
              */
-            @JsonProperty("products")
             fun products(products: List<String>) = apply { this.products = products }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -141,7 +138,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

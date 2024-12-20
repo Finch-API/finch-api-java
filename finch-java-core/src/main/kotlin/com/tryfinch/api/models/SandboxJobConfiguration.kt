@@ -6,24 +6,26 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
-@JsonDeserialize(builder = SandboxJobConfiguration.Builder::class)
 @NoAutoDetect
 class SandboxJobConfiguration
+@JsonCreator
 private constructor(
-    private val type: JsonField<Type>,
-    private val completionStatus: JsonField<CompletionStatus>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+    @JsonProperty("completion_status")
+    @ExcludeMissing
+    private val completionStatus: JsonField<CompletionStatus> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun type(): Type = type.getRequired("type")
@@ -70,15 +72,11 @@ private constructor(
 
         fun type(type: Type) = type(JsonField.of(type))
 
-        @JsonProperty("type")
-        @ExcludeMissing
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun completionStatus(completionStatus: CompletionStatus) =
             completionStatus(JsonField.of(completionStatus))
 
-        @JsonProperty("completion_status")
-        @ExcludeMissing
         fun completionStatus(completionStatus: JsonField<CompletionStatus>) = apply {
             this.completionStatus = completionStatus
         }
@@ -88,7 +86,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
@@ -40,12 +41,13 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = SandboxConnectionAccountUpdateBody.Builder::class)
     @NoAutoDetect
     class SandboxConnectionAccountUpdateBody
+    @JsonCreator
     internal constructor(
-        private val connectionStatus: ConnectionStatusType?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("connection_status") private val connectionStatus: ConnectionStatusType?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("connection_status")
@@ -77,7 +79,6 @@ constructor(
                     sandboxConnectionAccountUpdateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("connection_status")
             fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
                 this.connectionStatus = connectionStatus
             }
@@ -87,7 +88,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

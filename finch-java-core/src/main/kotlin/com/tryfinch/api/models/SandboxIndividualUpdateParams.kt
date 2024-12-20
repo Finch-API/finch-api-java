@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -101,23 +101,24 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = SandboxIndividualUpdateBody.Builder::class)
     @NoAutoDetect
     class SandboxIndividualUpdateBody
+    @JsonCreator
     internal constructor(
-        private val dob: String?,
-        private val emails: List<Email>?,
-        private val encryptedSsn: String?,
-        private val ethnicity: Ethnicity?,
-        private val firstName: String?,
-        private val gender: Gender?,
-        private val lastName: String?,
-        private val middleName: String?,
-        private val phoneNumbers: List<PhoneNumber?>?,
-        private val preferredName: String?,
-        private val residence: Location?,
-        private val ssn: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("dob") private val dob: String?,
+        @JsonProperty("emails") private val emails: List<Email>?,
+        @JsonProperty("encrypted_ssn") private val encryptedSsn: String?,
+        @JsonProperty("ethnicity") private val ethnicity: Ethnicity?,
+        @JsonProperty("first_name") private val firstName: String?,
+        @JsonProperty("gender") private val gender: Gender?,
+        @JsonProperty("last_name") private val lastName: String?,
+        @JsonProperty("middle_name") private val middleName: String?,
+        @JsonProperty("phone_numbers") private val phoneNumbers: List<PhoneNumber?>?,
+        @JsonProperty("preferred_name") private val preferredName: String?,
+        @JsonProperty("residence") private val residence: Location?,
+        @JsonProperty("ssn") private val ssn: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("dob") fun dob(): Optional<String> = Optional.ofNullable(dob)
@@ -212,47 +213,39 @@ constructor(
                     sandboxIndividualUpdateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("dob") fun dob(dob: String) = apply { this.dob = dob }
+            fun dob(dob: String) = apply { this.dob = dob }
 
-            @JsonProperty("emails") fun emails(emails: List<Email>) = apply { this.emails = emails }
+            fun emails(emails: List<Email>) = apply { this.emails = emails }
 
             /**
              * Social Security Number of the individual in **encrypted** format. This field is only
              * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param
              * set in the body.
              */
-            @JsonProperty("encrypted_ssn")
             fun encryptedSsn(encryptedSsn: String) = apply { this.encryptedSsn = encryptedSsn }
 
             /** The EEOC-defined ethnicity of the individual. */
-            @JsonProperty("ethnicity")
             fun ethnicity(ethnicity: Ethnicity) = apply { this.ethnicity = ethnicity }
 
             /** The legal first name of the individual. */
-            @JsonProperty("first_name")
             fun firstName(firstName: String) = apply { this.firstName = firstName }
 
             /** The gender of the individual. */
-            @JsonProperty("gender") fun gender(gender: Gender) = apply { this.gender = gender }
+            fun gender(gender: Gender) = apply { this.gender = gender }
 
             /** The legal last name of the individual. */
-            @JsonProperty("last_name")
             fun lastName(lastName: String) = apply { this.lastName = lastName }
 
             /** The legal middle name of the individual. */
-            @JsonProperty("middle_name")
             fun middleName(middleName: String) = apply { this.middleName = middleName }
 
-            @JsonProperty("phone_numbers")
             fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
                 this.phoneNumbers = phoneNumbers
             }
 
             /** The preferred name of the individual. */
-            @JsonProperty("preferred_name")
             fun preferredName(preferredName: String) = apply { this.preferredName = preferredName }
 
-            @JsonProperty("residence")
             fun residence(residence: Location) = apply { this.residence = residence }
 
             /**
@@ -260,14 +253,13 @@ constructor(
              * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
              * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
              */
-            @JsonProperty("ssn") fun ssn(ssn: String) = apply { this.ssn = ssn }
+            fun ssn(ssn: String) = apply { this.ssn = ssn }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -560,13 +552,14 @@ constructor(
             )
     }
 
-    @JsonDeserialize(builder = Email.Builder::class)
     @NoAutoDetect
     class Email
+    @JsonCreator
     private constructor(
-        private val data: String?,
-        private val type: Type?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("data") private val data: String?,
+        @JsonProperty("type") private val type: Type?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("data") fun data(): Optional<String> = Optional.ofNullable(data)
@@ -597,16 +590,15 @@ constructor(
                 additionalProperties = email.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("data") fun data(data: String) = apply { this.data = data }
+            fun data(data: String) = apply { this.data = data }
 
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -867,13 +859,14 @@ constructor(
         override fun toString() = value.toString()
     }
 
-    @JsonDeserialize(builder = PhoneNumber.Builder::class)
     @NoAutoDetect
     class PhoneNumber
+    @JsonCreator
     private constructor(
-        private val data: String?,
-        private val type: Type?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("data") private val data: String?,
+        @JsonProperty("type") private val type: Type?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("data") fun data(): Optional<String> = Optional.ofNullable(data)
@@ -904,16 +897,15 @@ constructor(
                 additionalProperties = phoneNumber.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("data") fun data(data: String) = apply { this.data = data }
+            fun data(data: String) = apply { this.data = data }
 
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

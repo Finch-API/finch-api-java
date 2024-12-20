@@ -6,28 +6,36 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = PayStatementEvent.Builder::class)
 @NoAutoDetect
 class PayStatementEvent
+@JsonCreator
 private constructor(
-    private val connectionId: JsonField<String>,
-    private val companyId: JsonField<String>,
-    private val accountId: JsonField<String>,
-    private val eventType: JsonField<EventType>,
-    private val data: JsonField<Data>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    private val companyId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    private val accountId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("event_type")
+    @ExcludeMissing
+    private val eventType: JsonField<EventType> = JsonMissing.of(),
+    @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** Unique Finch ID of the connection associated with the webhook event. */
@@ -123,8 +131,6 @@ private constructor(
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
         /** Unique Finch ID of the connection associated with the webhook event. */
-        @JsonProperty("connection_id")
-        @ExcludeMissing
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
@@ -139,8 +145,6 @@ private constructor(
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
-        @JsonProperty("company_id")
-        @ExcludeMissing
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /**
@@ -153,20 +157,14 @@ private constructor(
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
-        @JsonProperty("account_id")
-        @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun eventType(eventType: EventType) = eventType(JsonField.of(eventType))
 
-        @JsonProperty("event_type")
-        @ExcludeMissing
         fun eventType(eventType: JsonField<EventType>) = apply { this.eventType = eventType }
 
         fun data(data: Data) = data(JsonField.of(data))
 
-        @JsonProperty("data")
-        @ExcludeMissing
         fun data(data: JsonField<Data>) = apply { this.data = data }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -174,7 +172,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -200,13 +197,18 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Data.Builder::class)
     @NoAutoDetect
     class Data
+    @JsonCreator
     private constructor(
-        private val paymentId: JsonField<String>,
-        private val individualId: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("payment_id")
+        @ExcludeMissing
+        private val paymentId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        private val individualId: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The ID of the payment associated with the pay statement. */
@@ -260,16 +262,12 @@ private constructor(
             fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
 
             /** The ID of the payment associated with the pay statement. */
-            @JsonProperty("payment_id")
-            @ExcludeMissing
             fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
             /** The ID of the individual associated with the pay statement. */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
             /** The ID of the individual associated with the pay statement. */
-            @JsonProperty("individual_id")
-            @ExcludeMissing
             fun individualId(individualId: JsonField<String>) = apply {
                 this.individualId = individualId
             }
@@ -279,7 +277,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

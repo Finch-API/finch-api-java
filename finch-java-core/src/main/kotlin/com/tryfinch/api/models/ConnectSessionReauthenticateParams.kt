@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -59,15 +59,16 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = ConnectSessionReauthenticateBody.Builder::class)
     @NoAutoDetect
     class ConnectSessionReauthenticateBody
+    @JsonCreator
     internal constructor(
-        private val connectionId: String,
-        private val minutesToExpire: Long?,
-        private val products: List<ConnectProducts>?,
-        private val redirectUri: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("connection_id") private val connectionId: String,
+        @JsonProperty("minutes_to_expire") private val minutesToExpire: Long?,
+        @JsonProperty("products") private val products: List<ConnectProducts>?,
+        @JsonProperty("redirect_uri") private val redirectUri: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The ID of the existing connection to reauthenticate */
@@ -118,24 +119,20 @@ constructor(
                 }
 
             /** The ID of the existing connection to reauthenticate */
-            @JsonProperty("connection_id")
             fun connectionId(connectionId: String) = apply { this.connectionId = connectionId }
 
             /**
              * The number of minutes until the session expires (defaults to 20,160, which is 14
              * days)
              */
-            @JsonProperty("minutes_to_expire")
             fun minutesToExpire(minutesToExpire: Long) = apply {
                 this.minutesToExpire = minutesToExpire
             }
 
             /** The products to request access to (optional for reauthentication) */
-            @JsonProperty("products")
             fun products(products: List<ConnectProducts>) = apply { this.products = products }
 
             /** The URI to redirect to after the Connect flow is completed */
-            @JsonProperty("redirect_uri")
             fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -143,7 +140,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

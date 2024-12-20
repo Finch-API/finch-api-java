@@ -6,36 +6,56 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = Individual.Builder::class)
 @NoAutoDetect
 class Individual
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val firstName: JsonField<String>,
-    private val middleName: JsonField<String>,
-    private val lastName: JsonField<String>,
-    private val preferredName: JsonField<String>,
-    private val emails: JsonField<List<Email>>,
-    private val phoneNumbers: JsonField<List<PhoneNumber?>>,
-    private val gender: JsonField<Gender>,
-    private val ethnicity: JsonField<Ethnicity>,
-    private val dob: JsonField<String>,
-    private val residence: JsonField<Location>,
-    private val ssn: JsonField<String>,
-    private val encryptedSsn: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("first_name")
+    @ExcludeMissing
+    private val firstName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("middle_name")
+    @ExcludeMissing
+    private val middleName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("last_name")
+    @ExcludeMissing
+    private val lastName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("preferred_name")
+    @ExcludeMissing
+    private val preferredName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("emails")
+    @ExcludeMissing
+    private val emails: JsonField<List<Email>> = JsonMissing.of(),
+    @JsonProperty("phone_numbers")
+    @ExcludeMissing
+    private val phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of(),
+    @JsonProperty("gender")
+    @ExcludeMissing
+    private val gender: JsonField<Gender> = JsonMissing.of(),
+    @JsonProperty("ethnicity")
+    @ExcludeMissing
+    private val ethnicity: JsonField<Ethnicity> = JsonMissing.of(),
+    @JsonProperty("dob") @ExcludeMissing private val dob: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("residence")
+    @ExcludeMissing
+    private val residence: JsonField<Location> = JsonMissing.of(),
+    @JsonProperty("ssn") @ExcludeMissing private val ssn: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("encrypted_ssn")
+    @ExcludeMissing
+    private val encryptedSsn: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -198,53 +218,41 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The legal first name of the individual. */
         fun firstName(firstName: String) = firstName(JsonField.of(firstName))
 
         /** The legal first name of the individual. */
-        @JsonProperty("first_name")
-        @ExcludeMissing
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: String) = middleName(JsonField.of(middleName))
 
         /** The legal middle name of the individual. */
-        @JsonProperty("middle_name")
-        @ExcludeMissing
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String) = lastName(JsonField.of(lastName))
 
         /** The legal last name of the individual. */
-        @JsonProperty("last_name")
-        @ExcludeMissing
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
         /** The preferred name of the individual. */
         fun preferredName(preferredName: String) = preferredName(JsonField.of(preferredName))
 
         /** The preferred name of the individual. */
-        @JsonProperty("preferred_name")
-        @ExcludeMissing
         fun preferredName(preferredName: JsonField<String>) = apply {
             this.preferredName = preferredName
         }
 
         fun emails(emails: List<Email>) = emails(JsonField.of(emails))
 
-        @JsonProperty("emails")
-        @ExcludeMissing
         fun emails(emails: JsonField<List<Email>>) = apply { this.emails = emails }
 
         fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) =
             phoneNumbers(JsonField.of(phoneNumbers))
 
-        @JsonProperty("phone_numbers")
-        @ExcludeMissing
         fun phoneNumbers(phoneNumbers: JsonField<List<PhoneNumber?>>) = apply {
             this.phoneNumbers = phoneNumbers
         }
@@ -253,28 +261,20 @@ private constructor(
         fun gender(gender: Gender) = gender(JsonField.of(gender))
 
         /** The gender of the individual. */
-        @JsonProperty("gender")
-        @ExcludeMissing
         fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
 
         /** The EEOC-defined ethnicity of the individual. */
         fun ethnicity(ethnicity: Ethnicity) = ethnicity(JsonField.of(ethnicity))
 
         /** The EEOC-defined ethnicity of the individual. */
-        @JsonProperty("ethnicity")
-        @ExcludeMissing
         fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { this.ethnicity = ethnicity }
 
         fun dob(dob: String) = dob(JsonField.of(dob))
 
-        @JsonProperty("dob")
-        @ExcludeMissing
         fun dob(dob: JsonField<String>) = apply { this.dob = dob }
 
         fun residence(residence: Location) = residence(JsonField.of(residence))
 
-        @JsonProperty("residence")
-        @ExcludeMissing
         fun residence(residence: JsonField<Location>) = apply { this.residence = residence }
 
         /**
@@ -289,8 +289,6 @@ private constructor(
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
-        @JsonProperty("ssn")
-        @ExcludeMissing
         fun ssn(ssn: JsonField<String>) = apply { this.ssn = ssn }
 
         /**
@@ -305,8 +303,6 @@ private constructor(
          * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
          * in the body.
          */
-        @JsonProperty("encrypted_ssn")
-        @ExcludeMissing
         fun encryptedSsn(encryptedSsn: JsonField<String>) = apply {
             this.encryptedSsn = encryptedSsn
         }
@@ -316,7 +312,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -350,13 +345,16 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Email.Builder::class)
     @NoAutoDetect
     class Email
+    @JsonCreator
     private constructor(
-        private val data: JsonField<String>,
-        private val type: JsonField<Type>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("data")
+        @ExcludeMissing
+        private val data: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
@@ -403,14 +401,10 @@ private constructor(
 
             fun data(data: String) = data(JsonField.of(data))
 
-            @JsonProperty("data")
-            @ExcludeMissing
             fun data(data: JsonField<String>) = apply { this.data = data }
 
             fun type(type: Type) = type(JsonField.of(type))
 
-            @JsonProperty("type")
-            @ExcludeMissing
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -418,7 +412,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -679,13 +672,16 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @JsonDeserialize(builder = PhoneNumber.Builder::class)
     @NoAutoDetect
     class PhoneNumber
+    @JsonCreator
     private constructor(
-        private val data: JsonField<String>,
-        private val type: JsonField<Type>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("data")
+        @ExcludeMissing
+        private val data: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
@@ -732,14 +728,10 @@ private constructor(
 
             fun data(data: String) = data(JsonField.of(data))
 
-            @JsonProperty("data")
-            @ExcludeMissing
             fun data(data: JsonField<String>) = apply { this.data = data }
 
             fun type(type: Type) = type(JsonField.of(type))
 
-            @JsonProperty("type")
-            @ExcludeMissing
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -747,7 +739,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
