@@ -314,12 +314,12 @@ constructor(
     @NoAutoDetect
     class DataSyncAll
     private constructor(
-        private val type: Type?,
+        private val type: Type,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The type of job to start. */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -339,8 +339,8 @@ constructor(
 
             @JvmSynthetic
             internal fun from(dataSyncAll: DataSyncAll) = apply {
-                this.type = dataSyncAll.type
-                additionalProperties(dataSyncAll.additionalProperties)
+                type = dataSyncAll.type
+                additionalProperties = dataSyncAll.additionalProperties.toMutableMap()
             }
 
             /** The type of job to start. */
@@ -348,16 +348,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): DataSyncAll =
@@ -440,16 +446,16 @@ constructor(
     @NoAutoDetect
     class W4FormEmployeeSync
     private constructor(
-        private val type: Type?,
-        private val individualId: String?,
+        private val type: Type,
+        private val individualId: String,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The type of job to start. */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         /** The unique ID of the individual for W-4 data sync. */
-        @JsonProperty("individual_id") fun individualId(): String? = individualId
+        @JsonProperty("individual_id") fun individualId(): String = individualId
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -470,9 +476,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(w4FormEmployeeSync: W4FormEmployeeSync) = apply {
-                this.type = w4FormEmployeeSync.type
-                this.individualId = w4FormEmployeeSync.individualId
-                additionalProperties(w4FormEmployeeSync.additionalProperties)
+                type = w4FormEmployeeSync.type
+                individualId = w4FormEmployeeSync.individualId
+                additionalProperties = w4FormEmployeeSync.additionalProperties.toMutableMap()
             }
 
             /** The type of job to start. */
@@ -484,16 +490,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): W4FormEmployeeSync =

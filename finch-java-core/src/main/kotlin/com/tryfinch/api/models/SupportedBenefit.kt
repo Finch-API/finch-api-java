@@ -33,8 +33,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** Type of benefit. */
     fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
 
@@ -107,6 +105,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): SupportedBenefit = apply {
         if (!validated) {
             type()
@@ -142,15 +142,15 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(supportedBenefit: SupportedBenefit) = apply {
-            this.type = supportedBenefit.type
-            this.description = supportedBenefit.description
-            this.frequencies = supportedBenefit.frequencies
-            this.employeeDeduction = supportedBenefit.employeeDeduction
-            this.companyContribution = supportedBenefit.companyContribution
-            this.annualMaximum = supportedBenefit.annualMaximum
-            this.catchUp = supportedBenefit.catchUp
-            this.hsaContributionLimit = supportedBenefit.hsaContributionLimit
-            additionalProperties(supportedBenefit.additionalProperties)
+            type = supportedBenefit.type
+            description = supportedBenefit.description
+            frequencies = supportedBenefit.frequencies
+            employeeDeduction = supportedBenefit.employeeDeduction
+            companyContribution = supportedBenefit.companyContribution
+            annualMaximum = supportedBenefit.annualMaximum
+            catchUp = supportedBenefit.catchUp
+            hsaContributionLimit = supportedBenefit.hsaContributionLimit
+            additionalProperties = supportedBenefit.additionalProperties.toMutableMap()
         }
 
         /** Type of benefit. */
@@ -249,16 +249,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): SupportedBenefit =

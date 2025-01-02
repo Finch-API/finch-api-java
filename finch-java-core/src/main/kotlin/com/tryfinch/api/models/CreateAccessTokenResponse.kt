@@ -35,8 +35,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** The access token for the connection. */
     fun accessToken(): String = accessToken.getRequired("access_token")
 
@@ -115,6 +113,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): CreateAccessTokenResponse = apply {
         if (!validated) {
             accessToken()
@@ -154,17 +154,17 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(createAccessTokenResponse: CreateAccessTokenResponse) = apply {
-            this.accessToken = createAccessTokenResponse.accessToken
-            this.tokenType = createAccessTokenResponse.tokenType
-            this.connectionId = createAccessTokenResponse.connectionId
-            this.customerId = createAccessTokenResponse.customerId
-            this.accountId = createAccessTokenResponse.accountId
-            this.clientType = createAccessTokenResponse.clientType
-            this.companyId = createAccessTokenResponse.companyId
-            this.connectionType = createAccessTokenResponse.connectionType
-            this.products = createAccessTokenResponse.products
-            this.providerId = createAccessTokenResponse.providerId
-            additionalProperties(createAccessTokenResponse.additionalProperties)
+            accessToken = createAccessTokenResponse.accessToken
+            tokenType = createAccessTokenResponse.tokenType
+            connectionId = createAccessTokenResponse.connectionId
+            customerId = createAccessTokenResponse.customerId
+            accountId = createAccessTokenResponse.accountId
+            clientType = createAccessTokenResponse.clientType
+            companyId = createAccessTokenResponse.companyId
+            connectionType = createAccessTokenResponse.connectionType
+            products = createAccessTokenResponse.products
+            providerId = createAccessTokenResponse.providerId
+            additionalProperties = createAccessTokenResponse.additionalProperties.toMutableMap()
         }
 
         /** The access token for the connection. */
@@ -276,16 +276,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): CreateAccessTokenResponse =

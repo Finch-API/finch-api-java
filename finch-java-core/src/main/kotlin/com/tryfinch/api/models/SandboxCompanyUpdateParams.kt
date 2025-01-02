@@ -91,27 +91,33 @@ constructor(
     ) {
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        @JsonProperty("accounts") fun accounts(): List<Account>? = accounts
+        @JsonProperty("accounts")
+        fun accounts(): Optional<List<Account>> = Optional.ofNullable(accounts)
 
         /** The array of company departments. */
-        @JsonProperty("departments") fun departments(): List<Department?>? = departments
+        @JsonProperty("departments")
+        fun departments(): Optional<List<Department?>> = Optional.ofNullable(departments)
 
         /** The employer identification number. */
-        @JsonProperty("ein") fun ein(): String? = ein
+        @JsonProperty("ein") fun ein(): Optional<String> = Optional.ofNullable(ein)
 
         /** The entity type object. */
-        @JsonProperty("entity") fun entity(): Entity? = entity
+        @JsonProperty("entity") fun entity(): Optional<Entity> = Optional.ofNullable(entity)
 
         /** The legal name of the company. */
-        @JsonProperty("legal_name") fun legalName(): String? = legalName
+        @JsonProperty("legal_name")
+        fun legalName(): Optional<String> = Optional.ofNullable(legalName)
 
-        @JsonProperty("locations") fun locations(): List<Location?>? = locations
+        @JsonProperty("locations")
+        fun locations(): Optional<List<Location?>> = Optional.ofNullable(locations)
 
         /** The email of the main administrator on the account. */
-        @JsonProperty("primary_email") fun primaryEmail(): String? = primaryEmail
+        @JsonProperty("primary_email")
+        fun primaryEmail(): Optional<String> = Optional.ofNullable(primaryEmail)
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-        @JsonProperty("primary_phone_number") fun primaryPhoneNumber(): String? = primaryPhoneNumber
+        @JsonProperty("primary_phone_number")
+        fun primaryPhoneNumber(): Optional<String> = Optional.ofNullable(primaryPhoneNumber)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -138,15 +144,15 @@ constructor(
 
             @JvmSynthetic
             internal fun from(sandboxCompanyUpdateBody: SandboxCompanyUpdateBody) = apply {
-                this.accounts = sandboxCompanyUpdateBody.accounts
-                this.departments = sandboxCompanyUpdateBody.departments
-                this.ein = sandboxCompanyUpdateBody.ein
-                this.entity = sandboxCompanyUpdateBody.entity
-                this.legalName = sandboxCompanyUpdateBody.legalName
-                this.locations = sandboxCompanyUpdateBody.locations
-                this.primaryEmail = sandboxCompanyUpdateBody.primaryEmail
-                this.primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
-                additionalProperties(sandboxCompanyUpdateBody.additionalProperties)
+                accounts = sandboxCompanyUpdateBody.accounts?.toMutableList()
+                departments = sandboxCompanyUpdateBody.departments?.toMutableList()
+                ein = sandboxCompanyUpdateBody.ein
+                entity = sandboxCompanyUpdateBody.entity
+                legalName = sandboxCompanyUpdateBody.legalName
+                locations = sandboxCompanyUpdateBody.locations?.toMutableList()
+                primaryEmail = sandboxCompanyUpdateBody.primaryEmail
+                primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
+                additionalProperties = sandboxCompanyUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
@@ -184,16 +190,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxCompanyUpdateBody =
@@ -459,19 +471,24 @@ constructor(
         /**
          * A nine-digit code that's based on the U.S. Bank location where your account was opened.
          */
-        @JsonProperty("routing_number") fun routingNumber(): String? = routingNumber
+        @JsonProperty("routing_number")
+        fun routingNumber(): Optional<String> = Optional.ofNullable(routingNumber)
 
         /** The name of the bank associated in the payroll/HRIS system. */
-        @JsonProperty("account_name") fun accountName(): String? = accountName
+        @JsonProperty("account_name")
+        fun accountName(): Optional<String> = Optional.ofNullable(accountName)
 
         /** Name of the banking institution. */
-        @JsonProperty("institution_name") fun institutionName(): String? = institutionName
+        @JsonProperty("institution_name")
+        fun institutionName(): Optional<String> = Optional.ofNullable(institutionName)
 
         /** The type of bank account. */
-        @JsonProperty("account_type") fun accountType(): AccountType? = accountType
+        @JsonProperty("account_type")
+        fun accountType(): Optional<AccountType> = Optional.ofNullable(accountType)
 
         /** 10-12 digit number to specify the bank account */
-        @JsonProperty("account_number") fun accountNumber(): String? = accountNumber
+        @JsonProperty("account_number")
+        fun accountNumber(): Optional<String> = Optional.ofNullable(accountNumber)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -495,12 +512,12 @@ constructor(
 
             @JvmSynthetic
             internal fun from(account: Account) = apply {
-                this.routingNumber = account.routingNumber
-                this.accountName = account.accountName
-                this.institutionName = account.institutionName
-                this.accountType = account.accountType
-                this.accountNumber = account.accountNumber
-                additionalProperties(account.additionalProperties)
+                routingNumber = account.routingNumber
+                accountName = account.accountName
+                institutionName = account.institutionName
+                accountType = account.accountType
+                accountNumber = account.accountNumber
+                additionalProperties = account.additionalProperties.toMutableMap()
             }
 
             /**
@@ -530,16 +547,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Account =
@@ -638,10 +661,10 @@ constructor(
     ) {
 
         /** The department name. */
-        @JsonProperty("name") fun name(): String? = name
+        @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
 
         /** The parent department, if present. */
-        @JsonProperty("parent") fun parent(): Parent? = parent
+        @JsonProperty("parent") fun parent(): Optional<Parent> = Optional.ofNullable(parent)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -662,9 +685,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(department: Department) = apply {
-                this.name = department.name
-                this.parent = department.parent
-                additionalProperties(department.additionalProperties)
+                name = department.name
+                parent = department.parent
+                additionalProperties = department.additionalProperties.toMutableMap()
             }
 
             /** The department name. */
@@ -675,16 +698,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Department =
@@ -705,7 +734,7 @@ constructor(
         ) {
 
             /** The parent department's name. */
-            @JsonProperty("name") fun name(): String? = name
+            @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -725,8 +754,8 @@ constructor(
 
                 @JvmSynthetic
                 internal fun from(parent: Parent) = apply {
-                    this.name = parent.name
-                    additionalProperties(parent.additionalProperties)
+                    name = parent.name
+                    additionalProperties = parent.additionalProperties.toMutableMap()
                 }
 
                 /** The parent department's name. */
@@ -734,18 +763,26 @@ constructor(
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Parent = Parent(name, additionalProperties.toImmutable())
             }
@@ -797,10 +834,10 @@ constructor(
     ) {
 
         /** The tax payer type of the company. */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
         /** The tax payer subtype of the company. */
-        @JsonProperty("subtype") fun subtype(): Subtype? = subtype
+        @JsonProperty("subtype") fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -821,9 +858,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(entity: Entity) = apply {
-                this.type = entity.type
-                this.subtype = entity.subtype
-                additionalProperties(entity.additionalProperties)
+                type = entity.type
+                subtype = entity.subtype
+                additionalProperties = entity.additionalProperties.toMutableMap()
             }
 
             /** The tax payer type of the company. */
@@ -835,16 +872,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Entity =

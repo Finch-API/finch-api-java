@@ -26,8 +26,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /**
      * - `supported`: This operation is supported by both the provider and Finch
      * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
@@ -120,6 +118,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): OperationSupportMatrix = apply {
         if (!validated) {
             create()
@@ -147,11 +147,11 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(operationSupportMatrix: OperationSupportMatrix) = apply {
-            this.create = operationSupportMatrix.create
-            this.update = operationSupportMatrix.update
-            this.delete = operationSupportMatrix.delete
-            this.read = operationSupportMatrix.read
-            additionalProperties(operationSupportMatrix.additionalProperties)
+            create = operationSupportMatrix.create
+            update = operationSupportMatrix.update
+            delete = operationSupportMatrix.delete
+            read = operationSupportMatrix.read
+            additionalProperties = operationSupportMatrix.additionalProperties.toMutableMap()
         }
 
         /**
@@ -252,16 +252,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): OperationSupportMatrix =

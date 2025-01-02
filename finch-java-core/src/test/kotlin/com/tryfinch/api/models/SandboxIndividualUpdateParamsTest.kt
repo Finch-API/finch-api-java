@@ -96,9 +96,9 @@ class SandboxIndividualUpdateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.dob()).isEqualTo("12/20/1989")
+        assertThat(body.dob()).contains("12/20/1989")
         assertThat(body.emails())
-            .isEqualTo(
+            .contains(
                 listOf(
                     SandboxIndividualUpdateParams.Email.builder()
                         .data("data")
@@ -106,14 +106,14 @@ class SandboxIndividualUpdateParamsTest {
                         .build()
                 )
             )
-        assertThat(body.encryptedSsn()).isEqualTo("encrypted_ssn")
-        assertThat(body.ethnicity()).isEqualTo(SandboxIndividualUpdateParams.Ethnicity.ASIAN)
-        assertThat(body.firstName()).isEqualTo("first_name")
-        assertThat(body.gender()).isEqualTo(SandboxIndividualUpdateParams.Gender.FEMALE)
-        assertThat(body.lastName()).isEqualTo("last_name")
-        assertThat(body.middleName()).isEqualTo("middle_name")
+        assertThat(body.encryptedSsn()).contains("encrypted_ssn")
+        assertThat(body.ethnicity()).contains(SandboxIndividualUpdateParams.Ethnicity.ASIAN)
+        assertThat(body.firstName()).contains("first_name")
+        assertThat(body.gender()).contains(SandboxIndividualUpdateParams.Gender.FEMALE)
+        assertThat(body.lastName()).contains("last_name")
+        assertThat(body.middleName()).contains("middle_name")
         assertThat(body.phoneNumbers())
-            .isEqualTo(
+            .contains(
                 listOf(
                     SandboxIndividualUpdateParams.PhoneNumber.builder()
                         .data("data")
@@ -121,9 +121,9 @@ class SandboxIndividualUpdateParamsTest {
                         .build()
                 )
             )
-        assertThat(body.preferredName()).isEqualTo("preferred_name")
+        assertThat(body.preferredName()).contains("preferred_name")
         assertThat(body.residence())
-            .isEqualTo(
+            .contains(
                 Location.builder()
                     .city("city")
                     .country("country")
@@ -135,7 +135,7 @@ class SandboxIndividualUpdateParamsTest {
                     .state("state")
                     .build()
             )
-        assertThat(body.ssn()).isEqualTo("ssn")
+        assertThat(body.ssn()).contains("ssn")
     }
 
     @Test

@@ -17,6 +17,7 @@ import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
+import java.util.Optional
 
 class SandboxDirectoryCreateParams
 constructor(
@@ -48,14 +49,14 @@ constructor(
     @NoAutoDetect
     class SandboxDirectoryCreateBody
     internal constructor(
-        private val body: List<IndividualOrEmployment>?,
+        private val body: List<IndividualOrEmployment>,
     ) {
 
         /**
          * Array of individuals to create. Takes all combined fields from `/individual` and
          * `/employment` endpoints. All fields are optional.
          */
-        @JsonProperty("body") fun body(): List<IndividualOrEmployment>? = body
+        @JsonProperty("body") fun body(): List<IndividualOrEmployment> = body
 
         fun toBuilder() = Builder().from(this)
 
@@ -70,7 +71,7 @@ constructor(
 
             @JvmSynthetic
             internal fun from(sandboxDirectoryCreateBody: SandboxDirectoryCreateBody) = apply {
-                this.body = sandboxDirectoryCreateBody.body
+                body = sandboxDirectoryCreateBody.body.toMutableList()
             }
 
             /**
@@ -79,6 +80,11 @@ constructor(
              */
             @JsonProperty("body")
             fun body(body: List<IndividualOrEmployment>) = apply { this.body = body }
+
+            fun build(): SandboxDirectoryCreateBody =
+                SandboxDirectoryCreateBody(
+                    checkNotNull(body) { "`body` is required but was not set" }.toImmutable()
+                )
         }
 
         override fun equals(other: Any?): Boolean {
@@ -275,93 +281,107 @@ constructor(
     ) {
 
         /** The legal first name of the individual. */
-        @JsonProperty("first_name") fun firstName(): String? = firstName
+        @JsonProperty("first_name")
+        fun firstName(): Optional<String> = Optional.ofNullable(firstName)
 
         /** The legal middle name of the individual. */
-        @JsonProperty("middle_name") fun middleName(): String? = middleName
+        @JsonProperty("middle_name")
+        fun middleName(): Optional<String> = Optional.ofNullable(middleName)
 
         /** The legal last name of the individual. */
-        @JsonProperty("last_name") fun lastName(): String? = lastName
+        @JsonProperty("last_name") fun lastName(): Optional<String> = Optional.ofNullable(lastName)
 
         /** The preferred name of the individual. */
-        @JsonProperty("preferred_name") fun preferredName(): String? = preferredName
+        @JsonProperty("preferred_name")
+        fun preferredName(): Optional<String> = Optional.ofNullable(preferredName)
 
-        @JsonProperty("emails") fun emails(): List<Email>? = emails
+        @JsonProperty("emails") fun emails(): Optional<List<Email>> = Optional.ofNullable(emails)
 
-        @JsonProperty("phone_numbers") fun phoneNumbers(): List<PhoneNumber?>? = phoneNumbers
+        @JsonProperty("phone_numbers")
+        fun phoneNumbers(): Optional<List<PhoneNumber?>> = Optional.ofNullable(phoneNumbers)
 
         /** The gender of the individual. */
-        @JsonProperty("gender") fun gender(): Gender? = gender
+        @JsonProperty("gender") fun gender(): Optional<Gender> = Optional.ofNullable(gender)
 
         /** The EEOC-defined ethnicity of the individual. */
-        @JsonProperty("ethnicity") fun ethnicity(): Ethnicity? = ethnicity
+        @JsonProperty("ethnicity")
+        fun ethnicity(): Optional<Ethnicity> = Optional.ofNullable(ethnicity)
 
-        @JsonProperty("dob") fun dob(): String? = dob
+        @JsonProperty("dob") fun dob(): Optional<String> = Optional.ofNullable(dob)
 
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
-        @JsonProperty("ssn") fun ssn(): String? = ssn
+        @JsonProperty("ssn") fun ssn(): Optional<String> = Optional.ofNullable(ssn)
 
         /**
          * Social Security Number of the individual in **encrypted** format. This field is only
          * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
          * in the body.
          */
-        @JsonProperty("encrypted_ssn") fun encryptedSsn(): String? = encryptedSsn
+        @JsonProperty("encrypted_ssn")
+        fun encryptedSsn(): Optional<String> = Optional.ofNullable(encryptedSsn)
 
-        @JsonProperty("residence") fun residence(): Location? = residence
+        @JsonProperty("residence")
+        fun residence(): Optional<Location> = Optional.ofNullable(residence)
 
         /** The current title of the individual. */
-        @JsonProperty("title") fun title(): String? = title
+        @JsonProperty("title") fun title(): Optional<String> = Optional.ofNullable(title)
 
         /** The manager object representing the manager of the individual within the org. */
-        @JsonProperty("manager") fun manager(): Manager? = manager
+        @JsonProperty("manager") fun manager(): Optional<Manager> = Optional.ofNullable(manager)
 
         /** The department object. */
-        @JsonProperty("department") fun department(): Department? = department
+        @JsonProperty("department")
+        fun department(): Optional<Department> = Optional.ofNullable(department)
 
         /** The employment object. */
-        @JsonProperty("employment") fun employment(): Employment? = employment
+        @JsonProperty("employment")
+        fun employment(): Optional<Employment> = Optional.ofNullable(employment)
 
-        @JsonProperty("start_date") fun startDate(): String? = startDate
+        @JsonProperty("start_date")
+        fun startDate(): Optional<String> = Optional.ofNullable(startDate)
 
-        @JsonProperty("end_date") fun endDate(): String? = endDate
+        @JsonProperty("end_date") fun endDate(): Optional<String> = Optional.ofNullable(endDate)
 
-        @JsonProperty("latest_rehire_date") fun latestRehireDate(): String? = latestRehireDate
+        @JsonProperty("latest_rehire_date")
+        fun latestRehireDate(): Optional<String> = Optional.ofNullable(latestRehireDate)
 
         /** `true` if the individual an an active employee or contractor at the company. */
-        @JsonProperty("is_active") fun isActive(): Boolean? = isActive
+        @JsonProperty("is_active") fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive)
 
         /** The detailed employment status of the individual. */
         @JsonProperty("employment_status")
-        fun employmentStatus(): EmploymentStatus? = employmentStatus
+        fun employmentStatus(): Optional<EmploymentStatus> = Optional.ofNullable(employmentStatus)
 
         /** Worker's compensation classification code for this employee */
-        @JsonProperty("class_code") fun classCode(): String? = classCode
+        @JsonProperty("class_code")
+        fun classCode(): Optional<String> = Optional.ofNullable(classCode)
 
-        @JsonProperty("location") fun location(): Location? = location
+        @JsonProperty("location") fun location(): Optional<Location> = Optional.ofNullable(location)
 
         /**
          * The employee's income as reported by the provider. This may not always be annualized
          * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
          * information the provider returns.
          */
-        @JsonProperty("income") fun income(): Income? = income
+        @JsonProperty("income") fun income(): Optional<Income> = Optional.ofNullable(income)
 
         /** The array of income history. */
-        @JsonProperty("income_history") fun incomeHistory(): List<Income?>? = incomeHistory
+        @JsonProperty("income_history")
+        fun incomeHistory(): Optional<List<Income?>> = Optional.ofNullable(incomeHistory)
 
         /**
          * Custom fields for the individual. These are fields which are defined by the employer in
          * the system. Custom fields are not currently supported for assisted connections.
          */
-        @JsonProperty("custom_fields") fun customFields(): List<CustomField>? = customFields
+        @JsonProperty("custom_fields")
+        fun customFields(): Optional<List<CustomField>> = Optional.ofNullable(customFields)
 
         /** The source system's unique employment identifier for this individual */
-        @JsonProperty("source_id") fun sourceId(): String? = sourceId
+        @JsonProperty("source_id") fun sourceId(): Optional<String> = Optional.ofNullable(sourceId)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -407,34 +427,34 @@ constructor(
 
             @JvmSynthetic
             internal fun from(individualOrEmployment: IndividualOrEmployment) = apply {
-                this.firstName = individualOrEmployment.firstName
-                this.middleName = individualOrEmployment.middleName
-                this.lastName = individualOrEmployment.lastName
-                this.preferredName = individualOrEmployment.preferredName
-                this.emails = individualOrEmployment.emails
-                this.phoneNumbers = individualOrEmployment.phoneNumbers
-                this.gender = individualOrEmployment.gender
-                this.ethnicity = individualOrEmployment.ethnicity
-                this.dob = individualOrEmployment.dob
-                this.ssn = individualOrEmployment.ssn
-                this.encryptedSsn = individualOrEmployment.encryptedSsn
-                this.residence = individualOrEmployment.residence
-                this.title = individualOrEmployment.title
-                this.manager = individualOrEmployment.manager
-                this.department = individualOrEmployment.department
-                this.employment = individualOrEmployment.employment
-                this.startDate = individualOrEmployment.startDate
-                this.endDate = individualOrEmployment.endDate
-                this.latestRehireDate = individualOrEmployment.latestRehireDate
-                this.isActive = individualOrEmployment.isActive
-                this.employmentStatus = individualOrEmployment.employmentStatus
-                this.classCode = individualOrEmployment.classCode
-                this.location = individualOrEmployment.location
-                this.income = individualOrEmployment.income
-                this.incomeHistory = individualOrEmployment.incomeHistory
-                this.customFields = individualOrEmployment.customFields
-                this.sourceId = individualOrEmployment.sourceId
-                additionalProperties(individualOrEmployment.additionalProperties)
+                firstName = individualOrEmployment.firstName
+                middleName = individualOrEmployment.middleName
+                lastName = individualOrEmployment.lastName
+                preferredName = individualOrEmployment.preferredName
+                emails = individualOrEmployment.emails?.toMutableList()
+                phoneNumbers = individualOrEmployment.phoneNumbers?.toMutableList()
+                gender = individualOrEmployment.gender
+                ethnicity = individualOrEmployment.ethnicity
+                dob = individualOrEmployment.dob
+                ssn = individualOrEmployment.ssn
+                encryptedSsn = individualOrEmployment.encryptedSsn
+                residence = individualOrEmployment.residence
+                title = individualOrEmployment.title
+                manager = individualOrEmployment.manager
+                department = individualOrEmployment.department
+                employment = individualOrEmployment.employment
+                startDate = individualOrEmployment.startDate
+                endDate = individualOrEmployment.endDate
+                latestRehireDate = individualOrEmployment.latestRehireDate
+                isActive = individualOrEmployment.isActive
+                employmentStatus = individualOrEmployment.employmentStatus
+                classCode = individualOrEmployment.classCode
+                location = individualOrEmployment.location
+                income = individualOrEmployment.income
+                incomeHistory = individualOrEmployment.incomeHistory?.toMutableList()
+                customFields = individualOrEmployment.customFields?.toMutableList()
+                sourceId = individualOrEmployment.sourceId
+                additionalProperties = individualOrEmployment.additionalProperties.toMutableMap()
             }
 
             /** The legal first name of the individual. */
@@ -558,16 +578,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): IndividualOrEmployment =
@@ -612,9 +638,9 @@ constructor(
             private val additionalProperties: Map<String, JsonValue>,
         ) {
 
-            @JsonProperty("name") fun name(): String? = name
+            @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
 
-            @JsonProperty("value") fun value(): JsonValue? = value
+            @JsonProperty("value") fun value(): Optional<JsonValue> = Optional.ofNullable(value)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -635,9 +661,9 @@ constructor(
 
                 @JvmSynthetic
                 internal fun from(customField: CustomField) = apply {
-                    this.name = customField.name
-                    this.value = customField.value
-                    additionalProperties(customField.additionalProperties)
+                    name = customField.name
+                    value = customField.value
+                    additionalProperties = customField.additionalProperties.toMutableMap()
                 }
 
                 @JsonProperty("name") fun name(name: String) = apply { this.name = name }
@@ -646,18 +672,26 @@ constructor(
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): CustomField =
                     CustomField(
@@ -695,7 +729,7 @@ constructor(
         ) {
 
             /** The name of the department associated with the individual. */
-            @JsonProperty("name") fun name(): String? = name
+            @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -715,8 +749,8 @@ constructor(
 
                 @JvmSynthetic
                 internal fun from(department: Department) = apply {
-                    this.name = department.name
-                    additionalProperties(department.additionalProperties)
+                    name = department.name
+                    additionalProperties = department.additionalProperties.toMutableMap()
                 }
 
                 /** The name of the department associated with the individual. */
@@ -724,18 +758,26 @@ constructor(
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Department = Department(name, additionalProperties.toImmutable())
             }
@@ -767,9 +809,9 @@ constructor(
             private val additionalProperties: Map<String, JsonValue>,
         ) {
 
-            @JsonProperty("data") fun data(): String? = data
+            @JsonProperty("data") fun data(): Optional<String> = Optional.ofNullable(data)
 
-            @JsonProperty("type") fun type(): Type? = type
+            @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -790,9 +832,9 @@ constructor(
 
                 @JvmSynthetic
                 internal fun from(email: Email) = apply {
-                    this.data = email.data
-                    this.type = email.type
-                    additionalProperties(email.additionalProperties)
+                    data = email.data
+                    type = email.type
+                    additionalProperties = email.additionalProperties.toMutableMap()
                 }
 
                 @JsonProperty("data") fun data(data: String) = apply { this.data = data }
@@ -801,18 +843,26 @@ constructor(
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Email =
                     Email(
@@ -908,13 +958,13 @@ constructor(
         ) {
 
             /** The main employment type of the individual. */
-            @JsonProperty("type") fun type(): Type? = type
+            @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            @JsonProperty("subtype") fun subtype(): Subtype? = subtype
+            @JsonProperty("subtype") fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -935,9 +985,9 @@ constructor(
 
                 @JvmSynthetic
                 internal fun from(employment: Employment) = apply {
-                    this.type = employment.type
-                    this.subtype = employment.subtype
-                    additionalProperties(employment.additionalProperties)
+                    type = employment.type
+                    subtype = employment.subtype
+                    additionalProperties = employment.additionalProperties.toMutableMap()
                 }
 
                 /** The main employment type of the individual. */
@@ -952,18 +1002,26 @@ constructor(
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Employment =
                     Employment(
@@ -1390,7 +1448,7 @@ constructor(
         ) {
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
-            @JsonProperty("id") fun id(): String? = id
+            @JsonProperty("id") fun id(): Optional<String> = Optional.ofNullable(id)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -1410,8 +1468,8 @@ constructor(
 
                 @JvmSynthetic
                 internal fun from(manager: Manager) = apply {
-                    this.id = manager.id
-                    additionalProperties(manager.additionalProperties)
+                    id = manager.id
+                    additionalProperties = manager.additionalProperties.toMutableMap()
                 }
 
                 /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -1419,18 +1477,26 @@ constructor(
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Manager = Manager(id, additionalProperties.toImmutable())
             }
@@ -1461,9 +1527,9 @@ constructor(
             private val additionalProperties: Map<String, JsonValue>,
         ) {
 
-            @JsonProperty("data") fun data(): String? = data
+            @JsonProperty("data") fun data(): Optional<String> = Optional.ofNullable(data)
 
-            @JsonProperty("type") fun type(): Type? = type
+            @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -1484,9 +1550,9 @@ constructor(
 
                 @JvmSynthetic
                 internal fun from(phoneNumber: PhoneNumber) = apply {
-                    this.data = phoneNumber.data
-                    this.type = phoneNumber.type
-                    additionalProperties(phoneNumber.additionalProperties)
+                    data = phoneNumber.data
+                    type = phoneNumber.type
+                    additionalProperties = phoneNumber.additionalProperties.toMutableMap()
                 }
 
                 @JsonProperty("data") fun data(data: String) = apply { this.data = data }
@@ -1495,18 +1561,26 @@ constructor(
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): PhoneNumber =
                     PhoneNumber(

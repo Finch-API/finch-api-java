@@ -64,8 +64,8 @@ constructor(
     @NoAutoDetect
     class RequestForwardingForwardBody
     internal constructor(
-        private val method: String?,
-        private val route: String?,
+        private val method: String,
+        private val route: String,
         private val data: String?,
         private val headers: JsonValue?,
         private val params: JsonValue?,
@@ -76,32 +76,32 @@ constructor(
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
          * `DELETE` , and `PATCH`.
          */
-        @JsonProperty("method") fun method(): String? = method
+        @JsonProperty("method") fun method(): String = method
 
         /**
          * The URL route path for the forwarded request. This value must begin with a forward-slash
          * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
          */
-        @JsonProperty("route") fun route(): String? = route
+        @JsonProperty("route") fun route(): String = route
 
         /**
          * The body for the forwarded request. This value must be specified as either a string or a
          * valid JSON object.
          */
-        @JsonProperty("data") fun data(): String? = data
+        @JsonProperty("data") fun data(): Optional<String> = Optional.ofNullable(data)
 
         /**
          * The HTTP headers to include on the forwarded request. This value must be specified as an
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
          */
-        @JsonProperty("headers") fun headers(): JsonValue? = headers
+        @JsonProperty("headers") fun headers(): Optional<JsonValue> = Optional.ofNullable(headers)
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
-        @JsonProperty("params") fun params(): JsonValue? = params
+        @JsonProperty("params") fun params(): Optional<JsonValue> = Optional.ofNullable(params)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -125,12 +125,13 @@ constructor(
 
             @JvmSynthetic
             internal fun from(requestForwardingForwardBody: RequestForwardingForwardBody) = apply {
-                this.method = requestForwardingForwardBody.method
-                this.route = requestForwardingForwardBody.route
-                this.data = requestForwardingForwardBody.data
-                this.headers = requestForwardingForwardBody.headers
-                this.params = requestForwardingForwardBody.params
-                additionalProperties(requestForwardingForwardBody.additionalProperties)
+                method = requestForwardingForwardBody.method
+                route = requestForwardingForwardBody.route
+                data = requestForwardingForwardBody.data
+                headers = requestForwardingForwardBody.headers
+                params = requestForwardingForwardBody.params
+                additionalProperties =
+                    requestForwardingForwardBody.additionalProperties.toMutableMap()
             }
 
             /**
@@ -168,16 +169,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): RequestForwardingForwardBody =

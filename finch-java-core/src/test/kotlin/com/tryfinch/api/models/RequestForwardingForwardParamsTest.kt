@@ -32,9 +32,9 @@ class RequestForwardingForwardParamsTest {
         assertThat(body.method()).isEqualTo("POST")
         assertThat(body.route()).isEqualTo("/people/search")
         assertThat(body.headers())
-            .isEqualTo(JsonValue.from(mapOf("content-type" to "application/json")))
+            .contains(JsonValue.from(mapOf("content-type" to "application/json")))
         assertThat(body.params())
-            .isEqualTo(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+            .contains(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
     }
 
     @Test

@@ -37,8 +37,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** The unique id for the payment. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -107,6 +105,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): Payment = apply {
         if (!validated) {
             id()
@@ -150,19 +150,19 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(payment: Payment) = apply {
-            this.id = payment.id
-            this.payPeriod = payment.payPeriod
-            this.payDate = payment.payDate
-            this.debitDate = payment.debitDate
-            this.companyDebit = payment.companyDebit
-            this.grossPay = payment.grossPay
-            this.netPay = payment.netPay
-            this.employerTaxes = payment.employerTaxes
-            this.employeeTaxes = payment.employeeTaxes
-            this.individualIds = payment.individualIds
-            this.payGroupIds = payment.payGroupIds
-            this.payFrequencies = payment.payFrequencies
-            additionalProperties(payment.additionalProperties)
+            id = payment.id
+            payPeriod = payment.payPeriod
+            payDate = payment.payDate
+            debitDate = payment.debitDate
+            companyDebit = payment.companyDebit
+            grossPay = payment.grossPay
+            netPay = payment.netPay
+            employerTaxes = payment.employerTaxes
+            employeeTaxes = payment.employeeTaxes
+            individualIds = payment.individualIds
+            payGroupIds = payment.payGroupIds
+            payFrequencies = payment.payFrequencies
+            additionalProperties = payment.additionalProperties.toMutableMap()
         }
 
         /** The unique id for the payment. */
@@ -260,16 +260,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): Payment =
@@ -399,8 +405,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
 
         fun endDate(): Optional<String> = Optional.ofNullable(endDate.getNullable("end_date"))
@@ -412,6 +416,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): PayPeriod = apply {
             if (!validated) {
@@ -436,9 +442,9 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(payPeriod: PayPeriod) = apply {
-                this.startDate = payPeriod.startDate
-                this.endDate = payPeriod.endDate
-                additionalProperties(payPeriod.additionalProperties)
+                startDate = payPeriod.startDate
+                endDate = payPeriod.endDate
+                additionalProperties = payPeriod.additionalProperties.toMutableMap()
             }
 
             fun startDate(startDate: String) = startDate(JsonField.of(startDate))
@@ -455,16 +461,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): PayPeriod =

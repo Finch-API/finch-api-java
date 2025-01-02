@@ -38,8 +38,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** A stable Finch `id` (UUID v4) for an individual in the company. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -133,6 +131,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): Individual = apply {
         if (!validated) {
             id()
@@ -178,20 +178,20 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(individual: Individual) = apply {
-            this.id = individual.id
-            this.firstName = individual.firstName
-            this.middleName = individual.middleName
-            this.lastName = individual.lastName
-            this.preferredName = individual.preferredName
-            this.emails = individual.emails
-            this.phoneNumbers = individual.phoneNumbers
-            this.gender = individual.gender
-            this.ethnicity = individual.ethnicity
-            this.dob = individual.dob
-            this.residence = individual.residence
-            this.ssn = individual.ssn
-            this.encryptedSsn = individual.encryptedSsn
-            additionalProperties(individual.additionalProperties)
+            id = individual.id
+            firstName = individual.firstName
+            middleName = individual.middleName
+            lastName = individual.lastName
+            preferredName = individual.preferredName
+            emails = individual.emails
+            phoneNumbers = individual.phoneNumbers
+            gender = individual.gender
+            ethnicity = individual.ethnicity
+            dob = individual.dob
+            residence = individual.residence
+            ssn = individual.ssn
+            encryptedSsn = individual.encryptedSsn
+            additionalProperties = individual.additionalProperties.toMutableMap()
         }
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -313,16 +313,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): Individual =
@@ -353,8 +359,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
@@ -366,6 +370,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Email = apply {
             if (!validated) {
@@ -390,9 +396,9 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(email: Email) = apply {
-                this.data = email.data
-                this.type = email.type
-                additionalProperties(email.additionalProperties)
+                data = email.data
+                type = email.type
+                additionalProperties = email.additionalProperties.toMutableMap()
             }
 
             fun data(data: String) = data(JsonField.of(data))
@@ -409,16 +415,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Email =
@@ -676,8 +688,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
@@ -689,6 +699,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): PhoneNumber = apply {
             if (!validated) {
@@ -713,9 +725,9 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(phoneNumber: PhoneNumber) = apply {
-                this.data = phoneNumber.data
-                this.type = phoneNumber.type
-                additionalProperties(phoneNumber.additionalProperties)
+                data = phoneNumber.data
+                type = phoneNumber.type
+                additionalProperties = phoneNumber.additionalProperties.toMutableMap()
             }
 
             fun data(data: String) = data(JsonField.of(data))
@@ -732,16 +744,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): PhoneNumber =

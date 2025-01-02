@@ -23,8 +23,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
     fun individualIds(): List<String> = individualIds.getRequired("individual_ids")
@@ -36,6 +34,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): IndividualEnrolledIdsResponse = apply {
         if (!validated) {
@@ -60,9 +60,9 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(individualEnrolledIdsResponse: IndividualEnrolledIdsResponse) = apply {
-            this.benefitId = individualEnrolledIdsResponse.benefitId
-            this.individualIds = individualEnrolledIdsResponse.individualIds
-            additionalProperties(individualEnrolledIdsResponse.additionalProperties)
+            benefitId = individualEnrolledIdsResponse.benefitId
+            individualIds = individualEnrolledIdsResponse.individualIds
+            additionalProperties = individualEnrolledIdsResponse.additionalProperties.toMutableMap()
         }
 
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
@@ -81,16 +81,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): IndividualEnrolledIdsResponse =

@@ -29,8 +29,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** A stable Finch id (UUID v4) for an individual in the company. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -78,6 +76,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): IndividualInDirectory = apply {
         if (!validated) {
             id()
@@ -111,14 +111,14 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(individualInDirectory: IndividualInDirectory) = apply {
-            this.id = individualInDirectory.id
-            this.firstName = individualInDirectory.firstName
-            this.middleName = individualInDirectory.middleName
-            this.lastName = individualInDirectory.lastName
-            this.manager = individualInDirectory.manager
-            this.department = individualInDirectory.department
-            this.isActive = individualInDirectory.isActive
-            additionalProperties(individualInDirectory.additionalProperties)
+            id = individualInDirectory.id
+            firstName = individualInDirectory.firstName
+            middleName = individualInDirectory.middleName
+            lastName = individualInDirectory.lastName
+            manager = individualInDirectory.manager
+            department = individualInDirectory.department
+            isActive = individualInDirectory.isActive
+            additionalProperties = individualInDirectory.additionalProperties.toMutableMap()
         }
 
         /** A stable Finch id (UUID v4) for an individual in the company. */
@@ -177,16 +177,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): IndividualInDirectory =
@@ -211,8 +217,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** The name of the department. */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
@@ -222,6 +226,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Department = apply {
             if (!validated) {
@@ -244,8 +250,8 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(department: Department) = apply {
-                this.name = department.name
-                additionalProperties(department.additionalProperties)
+                name = department.name
+                additionalProperties = department.additionalProperties.toMutableMap()
             }
 
             /** The name of the department. */
@@ -258,16 +264,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Department = Department(name, additionalProperties.toImmutable())
@@ -300,8 +312,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -311,6 +321,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Manager = apply {
             if (!validated) {
@@ -333,8 +345,8 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(manager: Manager) = apply {
-                this.id = manager.id
-                additionalProperties(manager.additionalProperties)
+                id = manager.id
+                additionalProperties = manager.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -347,16 +359,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Manager = Manager(id, additionalProperties.toImmutable())

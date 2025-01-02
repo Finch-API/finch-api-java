@@ -26,8 +26,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /**
      * The HTTP status code of the forwarded request’s response, exactly received from the
      * underlying integration’s API. This value will be returned as an integer.
@@ -74,6 +72,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): RequestForwardingForwardResponse = apply {
         if (!validated) {
             statusCode()
@@ -101,11 +101,12 @@ private constructor(
         @JvmSynthetic
         internal fun from(requestForwardingForwardResponse: RequestForwardingForwardResponse) =
             apply {
-                this.headers = requestForwardingForwardResponse.headers
-                this.statusCode = requestForwardingForwardResponse.statusCode
-                this.data = requestForwardingForwardResponse.data
-                this.request = requestForwardingForwardResponse.request
-                additionalProperties(requestForwardingForwardResponse.additionalProperties)
+                headers = requestForwardingForwardResponse.headers
+                statusCode = requestForwardingForwardResponse.statusCode
+                data = requestForwardingForwardResponse.data
+                request = requestForwardingForwardResponse.request
+                additionalProperties =
+                    requestForwardingForwardResponse.additionalProperties.toMutableMap()
             }
 
         /**
@@ -162,16 +163,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): RequestForwardingForwardResponse =
@@ -198,8 +205,6 @@ private constructor(
         private val data: JsonField<String>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
-
-        private var validated: Boolean = false
 
         /**
          * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
@@ -249,6 +254,8 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Request = apply {
             if (!validated) {
                 method()
@@ -276,12 +283,12 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(request: Request) = apply {
-                this.method = request.method
-                this.route = request.route
-                this.headers = request.headers
-                this.params = request.params
-                this.data = request.data
-                additionalProperties(request.additionalProperties)
+                method = request.method
+                route = request.route
+                headers = request.headers
+                params = request.params
+                data = request.data
+                additionalProperties = request.additionalProperties.toMutableMap()
             }
 
             /**
@@ -340,16 +347,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Request =

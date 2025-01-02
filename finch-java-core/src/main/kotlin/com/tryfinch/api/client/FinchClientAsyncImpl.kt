@@ -170,9 +170,9 @@ constructor(
                 .clock(clientOptions.clock)
                 .baseUrl(clientOptions.baseUrl)
                 .accessToken(accessToken)
-                .clientId(clientOptions.clientId)
-                .clientSecret(clientOptions.clientSecret)
-                .webhookSecret(clientOptions.webhookSecret)
+                .apply { clientOptions.clientId?.let(::clientId) }
+                .apply { clientOptions.clientSecret?.let(::clientSecret) }
+                .apply { clientOptions.webhookSecret?.let(::webhookSecret) }
                 .headers(clientOptions.headers)
                 .responseValidation(clientOptions.responseValidation)
                 .build()
