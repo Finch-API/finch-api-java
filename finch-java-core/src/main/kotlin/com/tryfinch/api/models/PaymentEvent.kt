@@ -30,8 +30,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): Optional<String> =
         Optional.ofNullable(connectionId.getNullable("connection_id"))
@@ -51,13 +49,6 @@ private constructor(
     fun eventType(): Optional<EventType> = Optional.ofNullable(eventType.getNullable("event_type"))
 
     fun data(): Optional<PaymentIdentifiers> = Optional.ofNullable(data.getNullable("data"))
-
-    fun toBaseWebhookEvent(): BaseWebhookEvent =
-        BaseWebhookEvent.builder()
-            .connectionId(connectionId)
-            .companyId(companyId)
-            .accountId(accountId)
-            .build()
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
@@ -81,6 +72,15 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    fun toBaseWebhookEvent(): BaseWebhookEvent =
+        BaseWebhookEvent.builder()
+            .connectionId(connectionId)
+            .companyId(companyId)
+            .accountId(accountId)
+            .build()
+
+    private var validated: Boolean = false
 
     fun validate(): PaymentEvent = apply {
         if (!validated) {
@@ -111,12 +111,12 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(paymentEvent: PaymentEvent) = apply {
-            this.connectionId = paymentEvent.connectionId
-            this.companyId = paymentEvent.companyId
-            this.accountId = paymentEvent.accountId
-            this.eventType = paymentEvent.eventType
-            this.data = paymentEvent.data
-            additionalProperties(paymentEvent.additionalProperties)
+            connectionId = paymentEvent.connectionId
+            companyId = paymentEvent.companyId
+            accountId = paymentEvent.accountId
+            eventType = paymentEvent.eventType
+            data = paymentEvent.data
+            additionalProperties = paymentEvent.additionalProperties.toMutableMap()
         }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
@@ -171,16 +171,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): PaymentEvent =
@@ -203,8 +209,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** The ID of the payment. */
         fun paymentId(): String = paymentId.getRequired("payment_id")
 
@@ -220,6 +224,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): PaymentIdentifiers = apply {
             if (!validated) {
@@ -244,9 +250,9 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(paymentIdentifiers: PaymentIdentifiers) = apply {
-                this.paymentId = paymentIdentifiers.paymentId
-                this.payDate = paymentIdentifiers.payDate
-                additionalProperties(paymentIdentifiers.additionalProperties)
+                paymentId = paymentIdentifiers.paymentId
+                payDate = paymentIdentifiers.payDate
+                additionalProperties = paymentIdentifiers.additionalProperties.toMutableMap()
             }
 
             /** The ID of the payment. */
@@ -267,16 +273,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): PaymentIdentifiers =

@@ -83,9 +83,9 @@ constructor(
     @NoAutoDetect
     class ConnectSessionNewBody
     internal constructor(
-        private val customerId: String?,
-        private val customerName: String?,
-        private val products: List<ConnectProducts>?,
+        private val customerId: String,
+        private val customerName: String,
+        private val products: List<ConnectProducts>,
         private val customerEmail: String?,
         private val integration: Integration?,
         private val manual: Boolean?,
@@ -95,26 +95,30 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        @JsonProperty("customer_id") fun customerId(): String? = customerId
+        @JsonProperty("customer_id") fun customerId(): String = customerId
 
-        @JsonProperty("customer_name") fun customerName(): String? = customerName
+        @JsonProperty("customer_name") fun customerName(): String = customerName
 
-        @JsonProperty("products") fun products(): List<ConnectProducts>? = products
+        @JsonProperty("products") fun products(): List<ConnectProducts> = products
 
-        @JsonProperty("customer_email") fun customerEmail(): String? = customerEmail
+        @JsonProperty("customer_email")
+        fun customerEmail(): Optional<String> = Optional.ofNullable(customerEmail)
 
-        @JsonProperty("integration") fun integration(): Integration? = integration
+        @JsonProperty("integration")
+        fun integration(): Optional<Integration> = Optional.ofNullable(integration)
 
-        @JsonProperty("manual") fun manual(): Boolean? = manual
+        @JsonProperty("manual") fun manual(): Optional<Boolean> = Optional.ofNullable(manual)
 
         /**
          * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
          */
-        @JsonProperty("minutes_to_expire") fun minutesToExpire(): Double? = minutesToExpire
+        @JsonProperty("minutes_to_expire")
+        fun minutesToExpire(): Optional<Double> = Optional.ofNullable(minutesToExpire)
 
-        @JsonProperty("redirect_uri") fun redirectUri(): String? = redirectUri
+        @JsonProperty("redirect_uri")
+        fun redirectUri(): Optional<String> = Optional.ofNullable(redirectUri)
 
-        @JsonProperty("sandbox") fun sandbox(): Sandbox? = sandbox
+        @JsonProperty("sandbox") fun sandbox(): Optional<Sandbox> = Optional.ofNullable(sandbox)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -142,16 +146,16 @@ constructor(
 
             @JvmSynthetic
             internal fun from(connectSessionNewBody: ConnectSessionNewBody) = apply {
-                this.customerId = connectSessionNewBody.customerId
-                this.customerName = connectSessionNewBody.customerName
-                this.products = connectSessionNewBody.products
-                this.customerEmail = connectSessionNewBody.customerEmail
-                this.integration = connectSessionNewBody.integration
-                this.manual = connectSessionNewBody.manual
-                this.minutesToExpire = connectSessionNewBody.minutesToExpire
-                this.redirectUri = connectSessionNewBody.redirectUri
-                this.sandbox = connectSessionNewBody.sandbox
-                additionalProperties(connectSessionNewBody.additionalProperties)
+                customerId = connectSessionNewBody.customerId
+                customerName = connectSessionNewBody.customerName
+                products = connectSessionNewBody.products.toMutableList()
+                customerEmail = connectSessionNewBody.customerEmail
+                integration = connectSessionNewBody.integration
+                manual = connectSessionNewBody.manual
+                minutesToExpire = connectSessionNewBody.minutesToExpire
+                redirectUri = connectSessionNewBody.redirectUri
+                sandbox = connectSessionNewBody.sandbox
+                additionalProperties = connectSessionNewBody.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("customer_id")
@@ -188,16 +192,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): ConnectSessionNewBody =
@@ -541,9 +551,10 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        @JsonProperty("provider") fun provider(): String? = provider
+        @JsonProperty("provider") fun provider(): Optional<String> = Optional.ofNullable(provider)
 
-        @JsonProperty("auth_method") fun authMethod(): AuthMethod? = authMethod
+        @JsonProperty("auth_method")
+        fun authMethod(): Optional<AuthMethod> = Optional.ofNullable(authMethod)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -564,9 +575,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(integration: Integration) = apply {
-                this.provider = integration.provider
-                this.authMethod = integration.authMethod
-                additionalProperties(integration.additionalProperties)
+                provider = integration.provider
+                authMethod = integration.authMethod
+                additionalProperties = integration.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("provider")
@@ -577,16 +588,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Integration =

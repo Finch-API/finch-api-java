@@ -63,7 +63,7 @@ constructor(
     @NoAutoDetect
     class SandboxConnectionCreateBody
     internal constructor(
-        private val providerId: String?,
+        private val providerId: String,
         private val authenticationType: AuthenticationType?,
         private val employeeSize: Long?,
         private val products: List<String>?,
@@ -71,19 +71,22 @@ constructor(
     ) {
 
         /** The provider associated with the connection */
-        @JsonProperty("provider_id") fun providerId(): String? = providerId
+        @JsonProperty("provider_id") fun providerId(): String = providerId
 
         @JsonProperty("authentication_type")
-        fun authenticationType(): AuthenticationType? = authenticationType
+        fun authenticationType(): Optional<AuthenticationType> =
+            Optional.ofNullable(authenticationType)
 
         /**
          * Optional: the size of the employer to be created with this connection. Defaults to 20.
          * Note that if this is higher than 100, historical payroll data will not be generated, and
          * instead only one pay period will be created.
          */
-        @JsonProperty("employee_size") fun employeeSize(): Long? = employeeSize
+        @JsonProperty("employee_size")
+        fun employeeSize(): Optional<Long> = Optional.ofNullable(employeeSize)
 
-        @JsonProperty("products") fun products(): List<String>? = products
+        @JsonProperty("products")
+        fun products(): Optional<List<String>> = Optional.ofNullable(products)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -106,11 +109,12 @@ constructor(
 
             @JvmSynthetic
             internal fun from(sandboxConnectionCreateBody: SandboxConnectionCreateBody) = apply {
-                this.providerId = sandboxConnectionCreateBody.providerId
-                this.authenticationType = sandboxConnectionCreateBody.authenticationType
-                this.employeeSize = sandboxConnectionCreateBody.employeeSize
-                this.products = sandboxConnectionCreateBody.products
-                additionalProperties(sandboxConnectionCreateBody.additionalProperties)
+                providerId = sandboxConnectionCreateBody.providerId
+                authenticationType = sandboxConnectionCreateBody.authenticationType
+                employeeSize = sandboxConnectionCreateBody.employeeSize
+                products = sandboxConnectionCreateBody.products?.toMutableList()
+                additionalProperties =
+                    sandboxConnectionCreateBody.additionalProperties.toMutableMap()
             }
 
             /** The provider associated with the connection */
@@ -135,16 +139,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxConnectionCreateBody =

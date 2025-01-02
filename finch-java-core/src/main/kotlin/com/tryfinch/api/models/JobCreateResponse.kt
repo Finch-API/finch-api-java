@@ -25,8 +25,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** The id of the job that has been created. */
     fun jobId(): String = jobId.getRequired("job_id")
 
@@ -57,6 +55,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): JobCreateResponse = apply {
         if (!validated) {
             jobId()
@@ -84,11 +84,11 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(jobCreateResponse: JobCreateResponse) = apply {
-            this.jobId = jobCreateResponse.jobId
-            this.jobUrl = jobCreateResponse.jobUrl
-            this.allowedRefreshes = jobCreateResponse.allowedRefreshes
-            this.remainingRefreshes = jobCreateResponse.remainingRefreshes
-            additionalProperties(jobCreateResponse.additionalProperties)
+            jobId = jobCreateResponse.jobId
+            jobUrl = jobCreateResponse.jobUrl
+            allowedRefreshes = jobCreateResponse.allowedRefreshes
+            remainingRefreshes = jobCreateResponse.remainingRefreshes
+            additionalProperties = jobCreateResponse.additionalProperties.toMutableMap()
         }
 
         /** The id of the job that has been created. */
@@ -131,16 +131,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): JobCreateResponse =

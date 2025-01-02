@@ -13,6 +13,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
+import java.util.Optional
 
 class HrisPayStatementRetrieveManyParams
 constructor(
@@ -43,12 +44,12 @@ constructor(
     @NoAutoDetect
     class HrisPayStatementRetrieveManyBody
     internal constructor(
-        private val requests: List<Request>?,
+        private val requests: List<Request>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The array of batch requests. */
-        @JsonProperty("requests") fun requests(): List<Request>? = requests
+        @JsonProperty("requests") fun requests(): List<Request> = requests
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -69,8 +70,9 @@ constructor(
             @JvmSynthetic
             internal fun from(hrisPayStatementRetrieveManyBody: HrisPayStatementRetrieveManyBody) =
                 apply {
-                    this.requests = hrisPayStatementRetrieveManyBody.requests
-                    additionalProperties(hrisPayStatementRetrieveManyBody.additionalProperties)
+                    requests = hrisPayStatementRetrieveManyBody.requests.toMutableList()
+                    additionalProperties =
+                        hrisPayStatementRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
             /** The array of batch requests. */
@@ -79,16 +81,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): HrisPayStatementRetrieveManyBody =
@@ -285,20 +293,20 @@ constructor(
     @NoAutoDetect
     class Request
     private constructor(
-        private val paymentId: String?,
+        private val paymentId: String,
         private val limit: Long?,
         private val offset: Long?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** A stable Finch `id` (UUID v4) for a payment. */
-        @JsonProperty("payment_id") fun paymentId(): String? = paymentId
+        @JsonProperty("payment_id") fun paymentId(): String = paymentId
 
         /** Number of pay statements to return (defaults to all). */
-        @JsonProperty("limit") fun limit(): Long? = limit
+        @JsonProperty("limit") fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
         /** Index to start from. */
-        @JsonProperty("offset") fun offset(): Long? = offset
+        @JsonProperty("offset") fun offset(): Optional<Long> = Optional.ofNullable(offset)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -320,10 +328,10 @@ constructor(
 
             @JvmSynthetic
             internal fun from(request: Request) = apply {
-                this.paymentId = request.paymentId
-                this.limit = request.limit
-                this.offset = request.offset
-                additionalProperties(request.additionalProperties)
+                paymentId = request.paymentId
+                limit = request.limit
+                offset = request.offset
+                additionalProperties = request.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for a payment. */
@@ -338,16 +346,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Request =

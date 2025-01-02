@@ -65,12 +65,14 @@ constructor(
          * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
          * this to <30 characters due to limitations in specific providers (e.g. Justworks).
          */
-        @JsonProperty("description") fun description(): String? = description
+        @JsonProperty("description")
+        fun description(): Optional<String> = Optional.ofNullable(description)
 
-        @JsonProperty("frequency") fun frequency(): BenefitFrequency? = frequency
+        @JsonProperty("frequency")
+        fun frequency(): Optional<BenefitFrequency> = Optional.ofNullable(frequency)
 
         /** Type of benefit. */
-        @JsonProperty("type") fun type(): BenefitType? = type
+        @JsonProperty("type") fun type(): Optional<BenefitType> = Optional.ofNullable(type)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -92,10 +94,10 @@ constructor(
 
             @JvmSynthetic
             internal fun from(hrisBenefitCreateBody: HrisBenefitCreateBody) = apply {
-                this.description = hrisBenefitCreateBody.description
-                this.frequency = hrisBenefitCreateBody.frequency
-                this.type = hrisBenefitCreateBody.type
-                additionalProperties(hrisBenefitCreateBody.additionalProperties)
+                description = hrisBenefitCreateBody.description
+                frequency = hrisBenefitCreateBody.frequency
+                type = hrisBenefitCreateBody.type
+                additionalProperties = hrisBenefitCreateBody.additionalProperties.toMutableMap()
             }
 
             /**
@@ -114,16 +116,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): HrisBenefitCreateBody =
