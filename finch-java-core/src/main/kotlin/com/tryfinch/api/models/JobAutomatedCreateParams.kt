@@ -32,24 +32,20 @@ import kotlin.jvm.optionals.getOrNull
 
 class JobAutomatedCreateParams
 constructor(
-    private val dataSyncAll: DataSyncAll?,
-    private val w4FormEmployeeSync: W4FormEmployeeSync?,
+    private val body: JobAutomatedCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) {
 
-    fun dataSyncAll(): Optional<DataSyncAll> = Optional.ofNullable(dataSyncAll)
+    fun dataSyncAll(): Optional<DataSyncAll> = body.dataSyncAll()
 
-    fun w4FormEmployeeSync(): Optional<W4FormEmployeeSync> = Optional.ofNullable(w4FormEmployeeSync)
+    fun w4FormEmployeeSync(): Optional<W4FormEmployeeSync> = body.w4FormEmployeeSync()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getBody(): JobAutomatedCreateBody {
-        return JobAutomatedCreateBody(dataSyncAll, w4FormEmployeeSync)
-    }
+    @JvmSynthetic internal fun getBody(): JobAutomatedCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -181,27 +177,23 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var dataSyncAll: DataSyncAll? = null
-        private var w4FormEmployeeSync: W4FormEmployeeSync? = null
+        private var body: JobAutomatedCreateBody? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(jobAutomatedCreateParams: JobAutomatedCreateParams) = apply {
-            dataSyncAll = jobAutomatedCreateParams.dataSyncAll
-            w4FormEmployeeSync = jobAutomatedCreateParams.w4FormEmployeeSync
+            body = jobAutomatedCreateParams.body
             additionalHeaders = jobAutomatedCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
         }
 
         fun forDataSyncAll(dataSyncAll: DataSyncAll) = apply {
-            this.dataSyncAll = dataSyncAll
-            this.w4FormEmployeeSync = null
+            body = JobAutomatedCreateBody.ofDataSyncAll(dataSyncAll)
         }
 
         fun forW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync) = apply {
-            this.dataSyncAll = null
-            this.w4FormEmployeeSync = w4FormEmployeeSync
+            body = JobAutomatedCreateBody.ofW4FormEmployeeSync(w4FormEmployeeSync)
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -304,8 +296,7 @@ constructor(
 
         fun build(): JobAutomatedCreateParams =
             JobAutomatedCreateParams(
-                dataSyncAll,
-                w4FormEmployeeSync,
+                body ?: JobAutomatedCreateBody(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -590,11 +581,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedCreateParams && dataSyncAll == other.dataSyncAll && w4FormEmployeeSync == other.w4FormEmployeeSync && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is JobAutomatedCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4FormEmployeeSync, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "JobAutomatedCreateParams{dataSyncAll=$dataSyncAll, w4FormEmployeeSync=$w4FormEmployeeSync, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobAutomatedCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

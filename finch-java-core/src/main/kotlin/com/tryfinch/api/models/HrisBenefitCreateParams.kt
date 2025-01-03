@@ -18,35 +18,29 @@ import java.util.Optional
 
 class HrisBenefitCreateParams
 constructor(
-    private val description: String?,
-    private val frequency: BenefitFrequency?,
-    private val type: BenefitType?,
+    private val body: HrisBenefitCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun description(): Optional<String> = Optional.ofNullable(description)
+    /**
+     * Name of the benefit as it appears in the provider and pay statements. Recommend limiting this
+     * to <30 characters due to limitations in specific providers (e.g. Justworks).
+     */
+    fun description(): Optional<String> = body.description()
 
-    fun frequency(): Optional<BenefitFrequency> = Optional.ofNullable(frequency)
+    fun frequency(): Optional<BenefitFrequency> = body.frequency()
 
-    fun type(): Optional<BenefitType> = Optional.ofNullable(type)
+    /** Type of benefit. */
+    fun type(): Optional<BenefitType> = body.type()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): HrisBenefitCreateBody {
-        return HrisBenefitCreateBody(
-            description,
-            frequency,
-            type,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): HrisBenefitCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -170,34 +164,27 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var description: String? = null
-        private var frequency: BenefitFrequency? = null
-        private var type: BenefitType? = null
+        private var body: HrisBenefitCreateBody.Builder = HrisBenefitCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(hrisBenefitCreateParams: HrisBenefitCreateParams) = apply {
-            description = hrisBenefitCreateParams.description
-            frequency = hrisBenefitCreateParams.frequency
-            type = hrisBenefitCreateParams.type
+            body = hrisBenefitCreateParams.body.toBuilder()
             additionalHeaders = hrisBenefitCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisBenefitCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                hrisBenefitCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /**
          * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
          * this to <30 characters due to limitations in specific providers (e.g. Justworks).
          */
-        fun description(description: String) = apply { this.description = description }
+        fun description(description: String) = apply { body.description(description) }
 
-        fun frequency(frequency: BenefitFrequency) = apply { this.frequency = frequency }
+        fun frequency(frequency: BenefitFrequency) = apply { body.frequency(frequency) }
 
         /** Type of benefit. */
-        fun type(type: BenefitType) = apply { this.type = type }
+        fun type(type: BenefitType) = apply { body.type(type) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -298,35 +285,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): HrisBenefitCreateParams =
             HrisBenefitCreateParams(
-                description,
-                frequency,
-                type,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -335,11 +316,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisBenefitCreateParams && description == other.description && frequency == other.frequency && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is HrisBenefitCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(description, frequency, type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "HrisBenefitCreateParams{description=$description, frequency=$frequency, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisBenefitCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

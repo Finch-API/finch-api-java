@@ -26,82 +26,21 @@ constructor(
     private val additionalQueryParams: QueryParams,
 ) {
 
+    /**
+     * Array of individuals to create. Takes all combined fields from `/individual` and
+     * `/employment` endpoints. All fields are optional.
+     */
     fun body(): List<IndividualOrEmployment> = body
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getBody(): List<IndividualOrEmployment> {
-        return body
-    }
+    @JvmSynthetic internal fun getBody(): List<IndividualOrEmployment> = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    /**
-     * Array of individuals to create. Takes all combined fields from `/individual` and
-     * `/employment` endpoints. All fields are optional.
-     */
-    @NoAutoDetect
-    class SandboxDirectoryCreateBody
-    @JsonCreator
-    internal constructor(
-        @JsonProperty("body") private val body: List<IndividualOrEmployment>,
-    ) {
-
-        /**
-         * Array of individuals to create. Takes all combined fields from `/individual` and
-         * `/employment` endpoints. All fields are optional.
-         */
-        @JsonProperty("body") fun body(): List<IndividualOrEmployment> = body
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var body: List<IndividualOrEmployment>? = null
-
-            @JvmSynthetic
-            internal fun from(sandboxDirectoryCreateBody: SandboxDirectoryCreateBody) = apply {
-                body = sandboxDirectoryCreateBody.body.toMutableList()
-            }
-
-            /**
-             * Array of individuals to create. Takes all combined fields from `/individual` and
-             * `/employment` endpoints. All fields are optional.
-             */
-            fun body(body: List<IndividualOrEmployment>) = apply { this.body = body }
-
-            fun build(): SandboxDirectoryCreateBody =
-                SandboxDirectoryCreateBody(
-                    checkNotNull(body) { "`body` is required but was not set" }.toImmutable()
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is SandboxDirectoryCreateBody && body == other.body /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(body) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() = "SandboxDirectoryCreateBody{body=$body}"
-    }
 
     fun toBuilder() = Builder().from(this)
 
@@ -113,7 +52,7 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var body: MutableList<IndividualOrEmployment> = mutableListOf()
+        private var body: MutableList<IndividualOrEmployment>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -128,16 +67,15 @@ constructor(
          * Array of individuals to create. Takes all combined fields from `/individual` and
          * `/employment` endpoints. All fields are optional.
          */
-        fun body(body: List<IndividualOrEmployment>) = apply {
-            this.body.clear()
-            this.body.addAll(body)
-        }
+        fun body(body: List<IndividualOrEmployment>) = apply { this.body = body.toMutableList() }
 
         /**
          * Array of individuals to create. Takes all combined fields from `/individual` and
          * `/employment` endpoints. All fields are optional.
          */
-        fun addBody(body: IndividualOrEmployment) = apply { this.body.add(body) }
+        fun addBody(body: IndividualOrEmployment) = apply {
+            this.body = (this.body ?: mutableListOf()).apply { add(body) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -239,7 +177,7 @@ constructor(
 
         fun build(): SandboxDirectoryCreateParams =
             SandboxDirectoryCreateParams(
-                body.toImmutable(),
+                checkNotNull(body) { "`body` is required but was not set" }.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -400,8 +338,8 @@ constructor(
             private var middleName: String? = null
             private var lastName: String? = null
             private var preferredName: String? = null
-            private var emails: List<Email>? = null
-            private var phoneNumbers: List<PhoneNumber?>? = null
+            private var emails: MutableList<Email>? = null
+            private var phoneNumbers: MutableList<PhoneNumber?>? = null
             private var gender: Gender? = null
             private var ethnicity: Ethnicity? = null
             private var dob: String? = null
@@ -420,8 +358,8 @@ constructor(
             private var classCode: String? = null
             private var location: Location? = null
             private var income: Income? = null
-            private var incomeHistory: List<Income?>? = null
-            private var customFields: List<CustomField>? = null
+            private var incomeHistory: MutableList<Income?>? = null
+            private var customFields: MutableList<CustomField>? = null
             private var sourceId: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -469,10 +407,18 @@ constructor(
             /** The preferred name of the individual. */
             fun preferredName(preferredName: String) = apply { this.preferredName = preferredName }
 
-            fun emails(emails: List<Email>) = apply { this.emails = emails }
+            fun emails(emails: List<Email>) = apply { this.emails = emails.toMutableList() }
+
+            fun addEmail(email: Email) = apply {
+                emails = (emails ?: mutableListOf()).apply { add(email) }
+            }
 
             fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
-                this.phoneNumbers = phoneNumbers
+                this.phoneNumbers = phoneNumbers.toMutableList()
+            }
+
+            fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
+                phoneNumbers = (phoneNumbers ?: mutableListOf()).apply { add(phoneNumber) }
             }
 
             /** The gender of the individual. */
@@ -541,7 +487,13 @@ constructor(
 
             /** The array of income history. */
             fun incomeHistory(incomeHistory: List<Income?>) = apply {
-                this.incomeHistory = incomeHistory
+                this.incomeHistory = incomeHistory.toMutableList()
+            }
+
+            /** The array of income history. */
+            fun addIncomeHistory(incomeHistory: Income) = apply {
+                this.incomeHistory =
+                    (this.incomeHistory ?: mutableListOf()).apply { add(incomeHistory) }
             }
 
             /**
@@ -549,7 +501,15 @@ constructor(
              * in the system. Custom fields are not currently supported for assisted connections.
              */
             fun customFields(customFields: List<CustomField>) = apply {
-                this.customFields = customFields
+                this.customFields = customFields.toMutableList()
+            }
+
+            /**
+             * Custom fields for the individual. These are fields which are defined by the employer
+             * in the system. Custom fields are not currently supported for assisted connections.
+             */
+            fun addCustomField(customField: CustomField) = apply {
+                customFields = (customFields ?: mutableListOf()).apply { add(customField) }
             }
 
             /** The source system's unique employment identifier for this individual */
