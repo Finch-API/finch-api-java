@@ -18,6 +18,10 @@ constructor(
 
     fun benefitId(): String = benefitId
 
+    /**
+     * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
+     * individuals
+     */
     fun individualIds(): Optional<String> = Optional.ofNullable(individualIds)
 
     fun _additionalHeaders(): Headers = additionalHeaders

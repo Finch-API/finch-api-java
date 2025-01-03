@@ -18,39 +18,26 @@ import java.util.Optional
 
 class AccessTokenCreateParams
 constructor(
-    private val code: String,
-    private val clientId: String?,
-    private val clientSecret: String?,
-    private val redirectUri: String?,
+    private val body: AccessTokenCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun code(): String = code
+    fun code(): String = body.code()
 
-    fun clientId(): Optional<String> = Optional.ofNullable(clientId)
+    fun clientId(): Optional<String> = body.clientId()
 
-    fun clientSecret(): Optional<String> = Optional.ofNullable(clientSecret)
+    fun clientSecret(): Optional<String> = body.clientSecret()
 
-    fun redirectUri(): Optional<String> = Optional.ofNullable(redirectUri)
+    fun redirectUri(): Optional<String> = body.redirectUri()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): AccessTokenCreateBody {
-        return AccessTokenCreateBody(
-            code,
-            clientId,
-            clientSecret,
-            redirectUri,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): AccessTokenCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -171,33 +158,24 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var code: String? = null
-        private var clientId: String? = null
-        private var clientSecret: String? = null
-        private var redirectUri: String? = null
+        private var body: AccessTokenCreateBody.Builder = AccessTokenCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(accessTokenCreateParams: AccessTokenCreateParams) = apply {
-            code = accessTokenCreateParams.code
-            clientId = accessTokenCreateParams.clientId
-            clientSecret = accessTokenCreateParams.clientSecret
-            redirectUri = accessTokenCreateParams.redirectUri
+            body = accessTokenCreateParams.body.toBuilder()
             additionalHeaders = accessTokenCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = accessTokenCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                accessTokenCreateParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun code(code: String) = apply { this.code = code }
+        fun code(code: String) = apply { body.code(code) }
 
-        fun clientId(clientId: String) = apply { this.clientId = clientId }
+        fun clientId(clientId: String) = apply { body.clientId(clientId) }
 
-        fun clientSecret(clientSecret: String) = apply { this.clientSecret = clientSecret }
+        fun clientSecret(clientSecret: String) = apply { body.clientSecret(clientSecret) }
 
-        fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
+        fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -298,36 +276,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): AccessTokenCreateParams =
             AccessTokenCreateParams(
-                checkNotNull(code) { "`code` is required but was not set" },
-                clientId,
-                clientSecret,
-                redirectUri,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -336,11 +307,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is AccessTokenCreateParams && code == other.code && clientId == other.clientId && clientSecret == other.clientSecret && redirectUri == other.redirectUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is AccessTokenCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(code, clientId, clientSecret, redirectUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "AccessTokenCreateParams{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "AccessTokenCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

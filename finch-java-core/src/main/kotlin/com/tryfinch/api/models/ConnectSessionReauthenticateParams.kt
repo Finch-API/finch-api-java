@@ -21,39 +21,30 @@ import java.util.Optional
 
 class ConnectSessionReauthenticateParams
 constructor(
-    private val connectionId: String,
-    private val minutesToExpire: Long?,
-    private val products: List<ConnectProducts>?,
-    private val redirectUri: String?,
+    private val body: ConnectSessionReauthenticateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun connectionId(): String = connectionId
+    /** The ID of the existing connection to reauthenticate */
+    fun connectionId(): String = body.connectionId()
 
-    fun minutesToExpire(): Optional<Long> = Optional.ofNullable(minutesToExpire)
+    /** The number of minutes until the session expires (defaults to 20,160, which is 14 days) */
+    fun minutesToExpire(): Optional<Long> = body.minutesToExpire()
 
-    fun products(): Optional<List<ConnectProducts>> = Optional.ofNullable(products)
+    /** The products to request access to (optional for reauthentication) */
+    fun products(): Optional<List<ConnectProducts>> = body.products()
 
-    fun redirectUri(): Optional<String> = Optional.ofNullable(redirectUri)
+    /** The URI to redirect to after the Connect flow is completed */
+    fun redirectUri(): Optional<String> = body.redirectUri()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): ConnectSessionReauthenticateBody {
-        return ConnectSessionReauthenticateBody(
-            connectionId,
-            minutesToExpire,
-            products,
-            redirectUri,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): ConnectSessionReauthenticateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -103,7 +94,7 @@ constructor(
 
             private var connectionId: String? = null
             private var minutesToExpire: Long? = null
-            private var products: List<ConnectProducts>? = null
+            private var products: MutableList<ConnectProducts>? = null
             private var redirectUri: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -130,7 +121,14 @@ constructor(
             }
 
             /** The products to request access to (optional for reauthentication) */
-            fun products(products: List<ConnectProducts>) = apply { this.products = products }
+            fun products(products: List<ConnectProducts>) = apply {
+                this.products = products.toMutableList()
+            }
+
+            /** The products to request access to (optional for reauthentication) */
+            fun addProduct(product: ConnectProducts) = apply {
+                products = (products ?: mutableListOf()).apply { add(product) }
+            }
 
             /** The URI to redirect to after the Connect flow is completed */
             fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
@@ -192,50 +190,36 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var connectionId: String? = null
-        private var minutesToExpire: Long? = null
-        private var products: MutableList<ConnectProducts> = mutableListOf()
-        private var redirectUri: String? = null
+        private var body: ConnectSessionReauthenticateBody.Builder =
+            ConnectSessionReauthenticateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(connectSessionReauthenticateParams: ConnectSessionReauthenticateParams) =
             apply {
-                connectionId = connectSessionReauthenticateParams.connectionId
-                minutesToExpire = connectSessionReauthenticateParams.minutesToExpire
-                products =
-                    connectSessionReauthenticateParams.products?.toMutableList() ?: mutableListOf()
-                redirectUri = connectSessionReauthenticateParams.redirectUri
+                body = connectSessionReauthenticateParams.body.toBuilder()
                 additionalHeaders = connectSessionReauthenticateParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
                     connectSessionReauthenticateParams.additionalQueryParams.toBuilder()
-                additionalBodyProperties =
-                    connectSessionReauthenticateParams.additionalBodyProperties.toMutableMap()
             }
 
         /** The ID of the existing connection to reauthenticate */
-        fun connectionId(connectionId: String) = apply { this.connectionId = connectionId }
+        fun connectionId(connectionId: String) = apply { body.connectionId(connectionId) }
 
         /**
          * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
          */
-        fun minutesToExpire(minutesToExpire: Long) = apply {
-            this.minutesToExpire = minutesToExpire
-        }
+        fun minutesToExpire(minutesToExpire: Long) = apply { body.minutesToExpire(minutesToExpire) }
 
         /** The products to request access to (optional for reauthentication) */
-        fun products(products: List<ConnectProducts>) = apply {
-            this.products.clear()
-            this.products.addAll(products)
-        }
+        fun products(products: List<ConnectProducts>) = apply { body.products(products) }
 
         /** The products to request access to (optional for reauthentication) */
-        fun addProduct(product: ConnectProducts) = apply { this.products.add(product) }
+        fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
         /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
+        fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -336,36 +320,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): ConnectSessionReauthenticateParams =
             ConnectSessionReauthenticateParams(
-                checkNotNull(connectionId) { "`connectionId` is required but was not set" },
-                minutesToExpire,
-                products.toImmutable().ifEmpty { null },
-                redirectUri,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -467,11 +444,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ConnectSessionReauthenticateParams && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ConnectSessionReauthenticateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(connectionId, minutesToExpire, products, redirectUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ConnectSessionReauthenticateParams{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ConnectSessionReauthenticateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

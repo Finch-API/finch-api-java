@@ -17,24 +17,21 @@ import java.util.Objects
 
 class HrisEmploymentRetrieveManyParams
 constructor(
-    private val requests: List<Request>,
+    private val body: HrisEmploymentRetrieveManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun requests(): List<Request> = requests
+    /** The array of batch requests. */
+    fun requests(): List<Request> = body.requests()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): HrisEmploymentRetrieveManyBody {
-        return HrisEmploymentRetrieveManyBody(requests, additionalBodyProperties)
-    }
+    @JvmSynthetic internal fun getBody(): HrisEmploymentRetrieveManyBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -66,7 +63,7 @@ constructor(
 
         class Builder {
 
-            private var requests: List<Request>? = null
+            private var requests: MutableList<Request>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -78,7 +75,14 @@ constructor(
                 }
 
             /** The array of batch requests. */
-            fun requests(requests: List<Request>) = apply { this.requests = requests }
+            fun requests(requests: List<Request>) = apply {
+                this.requests = requests.toMutableList()
+            }
+
+            /** The array of batch requests. */
+            fun addRequest(request: Request) = apply {
+                requests = (requests ?: mutableListOf()).apply { add(request) }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -135,30 +139,25 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var requests: MutableList<Request> = mutableListOf()
+        private var body: HrisEmploymentRetrieveManyBody.Builder =
+            HrisEmploymentRetrieveManyBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(hrisEmploymentRetrieveManyParams: HrisEmploymentRetrieveManyParams) =
             apply {
-                requests = hrisEmploymentRetrieveManyParams.requests.toMutableList()
+                body = hrisEmploymentRetrieveManyParams.body.toBuilder()
                 additionalHeaders = hrisEmploymentRetrieveManyParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
                     hrisEmploymentRetrieveManyParams.additionalQueryParams.toBuilder()
-                additionalBodyProperties =
-                    hrisEmploymentRetrieveManyParams.additionalBodyProperties.toMutableMap()
             }
 
         /** The array of batch requests. */
-        fun requests(requests: List<Request>) = apply {
-            this.requests.clear()
-            this.requests.addAll(requests)
-        }
+        fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
         /** The array of batch requests. */
-        fun addRequest(request: Request) = apply { this.requests.add(request) }
+        fun addRequest(request: Request) = apply { body.addRequest(request) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -259,33 +258,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): HrisEmploymentRetrieveManyParams =
             HrisEmploymentRetrieveManyParams(
-                requests.toImmutable(),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -383,11 +378,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisEmploymentRetrieveManyParams && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is HrisEmploymentRetrieveManyParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "HrisEmploymentRetrieveManyParams{requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisEmploymentRetrieveManyParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
