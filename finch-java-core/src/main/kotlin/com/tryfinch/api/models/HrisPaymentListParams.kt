@@ -16,8 +16,10 @@ constructor(
     private val additionalQueryParams: QueryParams,
 ) {
 
+    /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
     fun endDate(): LocalDate = endDate
 
+    /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
     fun startDate(): LocalDate = startDate
 
     fun _additionalHeaders(): Headers = additionalHeaders

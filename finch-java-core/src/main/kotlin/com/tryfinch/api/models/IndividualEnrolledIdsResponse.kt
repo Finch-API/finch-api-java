@@ -4,26 +4,29 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = IndividualEnrolledIdsResponse.Builder::class)
 @NoAutoDetect
 class IndividualEnrolledIdsResponse
+@JsonCreator
 private constructor(
-    private val benefitId: JsonField<String>,
-    private val individualIds: JsonField<List<String>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("benefit_id")
+    @ExcludeMissing
+    private val benefitId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("individual_ids")
+    @ExcludeMissing
+    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
@@ -36,6 +39,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): IndividualEnrolledIdsResponse = apply {
         if (!validated) {
@@ -60,37 +65,38 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(individualEnrolledIdsResponse: IndividualEnrolledIdsResponse) = apply {
-            this.benefitId = individualEnrolledIdsResponse.benefitId
-            this.individualIds = individualEnrolledIdsResponse.individualIds
-            additionalProperties(individualEnrolledIdsResponse.additionalProperties)
+            benefitId = individualEnrolledIdsResponse.benefitId
+            individualIds = individualEnrolledIdsResponse.individualIds
+            additionalProperties = individualEnrolledIdsResponse.additionalProperties.toMutableMap()
         }
 
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
-        @JsonProperty("benefit_id")
-        @ExcludeMissing
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
         fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
 
-        @JsonProperty("individual_ids")
-        @ExcludeMissing
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
             this.individualIds = individualIds
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): IndividualEnrolledIdsResponse =

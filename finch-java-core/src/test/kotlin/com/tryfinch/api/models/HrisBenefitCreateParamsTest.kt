@@ -26,9 +26,9 @@ class HrisBenefitCreateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.description()).isEqualTo("description")
-        assertThat(body.frequency()).isEqualTo(BenefitFrequency.ONE_TIME)
-        assertThat(body.type()).isEqualTo(BenefitType._401K)
+        assertThat(body.description()).contains("description")
+        assertThat(body.frequency()).contains(BenefitFrequency.ONE_TIME)
+        assertThat(body.type()).contains(BenefitType._401K)
     }
 
     @Test

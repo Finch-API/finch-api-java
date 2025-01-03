@@ -43,11 +43,11 @@ class HrisIndividualRetrieveManyParamsTest {
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.options())
-            .isEqualTo(
+            .contains(
                 HrisIndividualRetrieveManyParams.Options.builder().include(listOf("string")).build()
             )
         assertThat(body.requests())
-            .isEqualTo(
+            .contains(
                 listOf(
                     HrisIndividualRetrieveManyParams.Request.builder()
                         .individualId("individual_id")

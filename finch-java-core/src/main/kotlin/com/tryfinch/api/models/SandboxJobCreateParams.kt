@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,45 +13,44 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 class SandboxJobCreateParams
 constructor(
-    private val type: Type,
+    private val body: SandboxJobCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun type(): Type = type
+    /** The type of job to start. Currently the only supported type is `data_sync_all` */
+    fun type(): Type = body.type()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): SandboxJobCreateBody {
-        return SandboxJobCreateBody(type, additionalBodyProperties)
-    }
+    @JvmSynthetic internal fun getBody(): SandboxJobCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = SandboxJobCreateBody.Builder::class)
     @NoAutoDetect
     class SandboxJobCreateBody
+    @JsonCreator
     internal constructor(
-        private val type: Type?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of job to start. Currently the only supported type is `data_sync_all` */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -72,25 +70,30 @@ constructor(
 
             @JvmSynthetic
             internal fun from(sandboxJobCreateBody: SandboxJobCreateBody) = apply {
-                this.type = sandboxJobCreateBody.type
-                additionalProperties(sandboxJobCreateBody.additionalProperties)
+                type = sandboxJobCreateBody.type
+                additionalProperties = sandboxJobCreateBody.additionalProperties.toMutableMap()
             }
 
             /** The type of job to start. Currently the only supported type is `data_sync_all` */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxJobCreateBody =
@@ -128,22 +131,19 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var type: Type? = null
+        private var body: SandboxJobCreateBody.Builder = SandboxJobCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sandboxJobCreateParams: SandboxJobCreateParams) = apply {
-            type = sandboxJobCreateParams.type
+            body = sandboxJobCreateParams.body.toBuilder()
             additionalHeaders = sandboxJobCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxJobCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxJobCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The type of job to start. Currently the only supported type is `data_sync_all` */
-        fun type(type: Type) = apply { this.type = type }
+        fun type(type: Type) = apply { body.type(type) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -244,33 +244,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxJobCreateParams =
             SandboxJobCreateParams(
-                checkNotNull(type) { "`type` is required but was not set" },
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -330,11 +326,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxJobCreateParams && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxJobCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxJobCreateParams{type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxJobCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

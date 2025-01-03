@@ -23,6 +23,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -31,24 +32,20 @@ import kotlin.jvm.optionals.getOrNull
 
 class JobAutomatedCreateParams
 constructor(
-    private val dataSyncAll: DataSyncAll?,
-    private val w4FormEmployeeSync: W4FormEmployeeSync?,
+    private val body: JobAutomatedCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) {
 
-    fun dataSyncAll(): Optional<DataSyncAll> = Optional.ofNullable(dataSyncAll)
+    fun dataSyncAll(): Optional<DataSyncAll> = body.dataSyncAll()
 
-    fun w4FormEmployeeSync(): Optional<W4FormEmployeeSync> = Optional.ofNullable(w4FormEmployeeSync)
+    fun w4FormEmployeeSync(): Optional<W4FormEmployeeSync> = body.w4FormEmployeeSync()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getBody(): JobAutomatedCreateBody {
-        return JobAutomatedCreateBody(dataSyncAll, w4FormEmployeeSync)
-    }
+    @JvmSynthetic internal fun getBody(): JobAutomatedCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -180,27 +177,23 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var dataSyncAll: DataSyncAll? = null
-        private var w4FormEmployeeSync: W4FormEmployeeSync? = null
+        private var body: JobAutomatedCreateBody? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(jobAutomatedCreateParams: JobAutomatedCreateParams) = apply {
-            dataSyncAll = jobAutomatedCreateParams.dataSyncAll
-            w4FormEmployeeSync = jobAutomatedCreateParams.w4FormEmployeeSync
+            body = jobAutomatedCreateParams.body
             additionalHeaders = jobAutomatedCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
         }
 
         fun forDataSyncAll(dataSyncAll: DataSyncAll) = apply {
-            this.dataSyncAll = dataSyncAll
-            this.w4FormEmployeeSync = null
+            body = JobAutomatedCreateBody.ofDataSyncAll(dataSyncAll)
         }
 
         fun forW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync) = apply {
-            this.dataSyncAll = null
-            this.w4FormEmployeeSync = w4FormEmployeeSync
+            body = JobAutomatedCreateBody.ofW4FormEmployeeSync(w4FormEmployeeSync)
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -303,23 +296,23 @@ constructor(
 
         fun build(): JobAutomatedCreateParams =
             JobAutomatedCreateParams(
-                dataSyncAll,
-                w4FormEmployeeSync,
+                body ?: JobAutomatedCreateBody(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
 
-    @JsonDeserialize(builder = DataSyncAll.Builder::class)
     @NoAutoDetect
     class DataSyncAll
+    @JsonCreator
     private constructor(
-        private val type: Type?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of job to start. */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -339,25 +332,30 @@ constructor(
 
             @JvmSynthetic
             internal fun from(dataSyncAll: DataSyncAll) = apply {
-                this.type = dataSyncAll.type
-                additionalProperties(dataSyncAll.additionalProperties)
+                type = dataSyncAll.type
+                additionalProperties = dataSyncAll.additionalProperties.toMutableMap()
             }
 
             /** The type of job to start. */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): DataSyncAll =
@@ -436,20 +434,21 @@ constructor(
             "DataSyncAll{type=$type, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = W4FormEmployeeSync.Builder::class)
     @NoAutoDetect
     class W4FormEmployeeSync
+    @JsonCreator
     private constructor(
-        private val type: Type?,
-        private val individualId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonProperty("individual_id") private val individualId: String,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of job to start. */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         /** The unique ID of the individual for W-4 data sync. */
-        @JsonProperty("individual_id") fun individualId(): String? = individualId
+        @JsonProperty("individual_id") fun individualId(): String = individualId
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -470,30 +469,34 @@ constructor(
 
             @JvmSynthetic
             internal fun from(w4FormEmployeeSync: W4FormEmployeeSync) = apply {
-                this.type = w4FormEmployeeSync.type
-                this.individualId = w4FormEmployeeSync.individualId
-                additionalProperties(w4FormEmployeeSync.additionalProperties)
+                type = w4FormEmployeeSync.type
+                individualId = w4FormEmployeeSync.individualId
+                additionalProperties = w4FormEmployeeSync.additionalProperties.toMutableMap()
             }
 
             /** The type of job to start. */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /** The unique ID of the individual for W-4 data sync. */
-            @JsonProperty("individual_id")
             fun individualId(individualId: String) = apply { this.individualId = individualId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): W4FormEmployeeSync =
@@ -578,11 +581,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedCreateParams && dataSyncAll == other.dataSyncAll && w4FormEmployeeSync == other.w4FormEmployeeSync && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is JobAutomatedCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4FormEmployeeSync, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "JobAutomatedCreateParams{dataSyncAll=$dataSyncAll, w4FormEmployeeSync=$w4FormEmployeeSync, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobAutomatedCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

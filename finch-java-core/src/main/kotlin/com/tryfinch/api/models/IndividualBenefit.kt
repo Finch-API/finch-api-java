@@ -6,29 +6,29 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = IndividualBenefit.Builder::class)
 @NoAutoDetect
 class IndividualBenefit
+@JsonCreator
 private constructor(
-    private val individualId: JsonField<String>,
-    private val code: JsonField<Long>,
-    private val body: JsonField<Body>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    private val individualId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
@@ -46,6 +46,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): IndividualBenefit = apply {
         if (!validated) {
@@ -72,44 +74,43 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(individualBenefit: IndividualBenefit) = apply {
-            this.individualId = individualBenefit.individualId
-            this.code = individualBenefit.code
-            this.body = individualBenefit.body
-            additionalProperties(individualBenefit.additionalProperties)
+            individualId = individualBenefit.individualId
+            code = individualBenefit.code
+            body = individualBenefit.body
+            additionalProperties = individualBenefit.additionalProperties.toMutableMap()
         }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-        @JsonProperty("individual_id")
-        @ExcludeMissing
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
 
         fun code(code: Long) = code(JsonField.of(code))
 
-        @JsonProperty("code")
-        @ExcludeMissing
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun body(body: Body) = body(JsonField.of(body))
 
-        @JsonProperty("body")
-        @ExcludeMissing
         fun body(body: JsonField<Body>) = apply { this.body = body }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): IndividualBenefit =
@@ -121,19 +122,28 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Body.Builder::class)
     @NoAutoDetect
     class Body
+    @JsonCreator
     private constructor(
-        private val employeeDeduction: JsonField<BenefitContribution>,
-        private val companyContribution: JsonField<BenefitContribution>,
-        private val annualMaximum: JsonField<Long>,
-        private val catchUp: JsonField<Boolean>,
-        private val hsaContributionLimit: JsonField<HsaContributionLimit>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("employee_deduction")
+        @ExcludeMissing
+        private val employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of(),
+        @JsonProperty("company_contribution")
+        @ExcludeMissing
+        private val companyContribution: JsonField<BenefitContribution> = JsonMissing.of(),
+        @JsonProperty("annual_maximum")
+        @ExcludeMissing
+        private val annualMaximum: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("catch_up")
+        @ExcludeMissing
+        private val catchUp: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("hsa_contribution_limit")
+        @ExcludeMissing
+        private val hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
 
         fun employeeDeduction(): Optional<BenefitContribution> =
             Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
@@ -181,6 +191,8 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Body = apply {
             if (!validated) {
                 employeeDeduction().map { it.validate() }
@@ -210,19 +222,17 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                this.employeeDeduction = body.employeeDeduction
-                this.companyContribution = body.companyContribution
-                this.annualMaximum = body.annualMaximum
-                this.catchUp = body.catchUp
-                this.hsaContributionLimit = body.hsaContributionLimit
-                additionalProperties(body.additionalProperties)
+                employeeDeduction = body.employeeDeduction
+                companyContribution = body.companyContribution
+                annualMaximum = body.annualMaximum
+                catchUp = body.catchUp
+                hsaContributionLimit = body.hsaContributionLimit
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             fun employeeDeduction(employeeDeduction: BenefitContribution) =
                 employeeDeduction(JsonField.of(employeeDeduction))
 
-            @JsonProperty("employee_deduction")
-            @ExcludeMissing
             fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
                 this.employeeDeduction = employeeDeduction
             }
@@ -230,8 +240,6 @@ private constructor(
             fun companyContribution(companyContribution: BenefitContribution) =
                 companyContribution(JsonField.of(companyContribution))
 
-            @JsonProperty("company_contribution")
-            @ExcludeMissing
             fun companyContribution(companyContribution: JsonField<BenefitContribution>) = apply {
                 this.companyContribution = companyContribution
             }
@@ -240,8 +248,6 @@ private constructor(
             fun annualMaximum(annualMaximum: Long) = annualMaximum(JsonField.of(annualMaximum))
 
             /** If the benefit supports annual maximum, the amount in cents for this individual. */
-            @JsonProperty("annual_maximum")
-            @ExcludeMissing
             fun annualMaximum(annualMaximum: JsonField<Long>) = apply {
                 this.annualMaximum = annualMaximum
             }
@@ -256,8 +262,6 @@ private constructor(
              * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
              * this individual.
              */
-            @JsonProperty("catch_up")
-            @ExcludeMissing
             fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
 
             /** Type for HSA contribution limit if the benefit is a HSA. */
@@ -265,8 +269,6 @@ private constructor(
                 hsaContributionLimit(JsonField.of(hsaContributionLimit))
 
             /** Type for HSA contribution limit if the benefit is a HSA. */
-            @JsonProperty("hsa_contribution_limit")
-            @ExcludeMissing
             fun hsaContributionLimit(hsaContributionLimit: JsonField<HsaContributionLimit>) =
                 apply {
                     this.hsaContributionLimit = hsaContributionLimit
@@ -274,16 +276,21 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Body =

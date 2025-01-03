@@ -6,28 +6,26 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = BenefitContribution.Builder::class)
 @NoAutoDetect
 class BenefitContribution
+@JsonCreator
 private constructor(
-    private val type: JsonField<Type>,
-    private val amount: JsonField<Long>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+    @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** Contribution type. */
     fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
@@ -44,6 +42,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): BenefitContribution = apply {
         if (!validated) {
@@ -68,39 +68,40 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(benefitContribution: BenefitContribution) = apply {
-            this.type = benefitContribution.type
-            this.amount = benefitContribution.amount
-            additionalProperties(benefitContribution.additionalProperties)
+            type = benefitContribution.type
+            amount = benefitContribution.amount
+            additionalProperties = benefitContribution.additionalProperties.toMutableMap()
         }
 
         /** Contribution type. */
         fun type(type: Type) = type(JsonField.of(type))
 
         /** Contribution type. */
-        @JsonProperty("type")
-        @ExcludeMissing
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
         fun amount(amount: Long) = amount(JsonField.of(amount))
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
-        @JsonProperty("amount")
-        @ExcludeMissing
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): BenefitContribution =

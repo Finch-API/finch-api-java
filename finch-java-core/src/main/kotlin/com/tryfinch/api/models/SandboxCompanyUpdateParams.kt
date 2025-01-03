@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -21,97 +21,90 @@ import java.util.Optional
 
 class SandboxCompanyUpdateParams
 constructor(
-    private val accounts: List<Account>?,
-    private val departments: List<Department?>?,
-    private val ein: String?,
-    private val entity: Entity?,
-    private val legalName: String?,
-    private val locations: List<Location?>?,
-    private val primaryEmail: String?,
-    private val primaryPhoneNumber: String?,
+    private val body: SandboxCompanyUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun accounts(): Optional<List<Account>> = Optional.ofNullable(accounts)
+    /** An array of bank account objects associated with the payroll/HRIS system. */
+    fun accounts(): Optional<List<Account>> = body.accounts()
 
-    fun departments(): Optional<List<Department?>> = Optional.ofNullable(departments)
+    /** The array of company departments. */
+    fun departments(): Optional<List<Department?>> = body.departments()
 
-    fun ein(): Optional<String> = Optional.ofNullable(ein)
+    /** The employer identification number. */
+    fun ein(): Optional<String> = body.ein()
 
-    fun entity(): Optional<Entity> = Optional.ofNullable(entity)
+    /** The entity type object. */
+    fun entity(): Optional<Entity> = body.entity()
 
-    fun legalName(): Optional<String> = Optional.ofNullable(legalName)
+    /** The legal name of the company. */
+    fun legalName(): Optional<String> = body.legalName()
 
-    fun locations(): Optional<List<Location?>> = Optional.ofNullable(locations)
+    fun locations(): Optional<List<Location?>> = body.locations()
 
-    fun primaryEmail(): Optional<String> = Optional.ofNullable(primaryEmail)
+    /** The email of the main administrator on the account. */
+    fun primaryEmail(): Optional<String> = body.primaryEmail()
 
-    fun primaryPhoneNumber(): Optional<String> = Optional.ofNullable(primaryPhoneNumber)
+    /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+    fun primaryPhoneNumber(): Optional<String> = body.primaryPhoneNumber()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): SandboxCompanyUpdateBody {
-        return SandboxCompanyUpdateBody(
-            accounts,
-            departments,
-            ein,
-            entity,
-            legalName,
-            locations,
-            primaryEmail,
-            primaryPhoneNumber,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): SandboxCompanyUpdateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = SandboxCompanyUpdateBody.Builder::class)
     @NoAutoDetect
     class SandboxCompanyUpdateBody
+    @JsonCreator
     internal constructor(
-        private val accounts: List<Account>?,
-        private val departments: List<Department?>?,
-        private val ein: String?,
-        private val entity: Entity?,
-        private val legalName: String?,
-        private val locations: List<Location?>?,
-        private val primaryEmail: String?,
-        private val primaryPhoneNumber: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("accounts") private val accounts: List<Account>?,
+        @JsonProperty("departments") private val departments: List<Department?>?,
+        @JsonProperty("ein") private val ein: String?,
+        @JsonProperty("entity") private val entity: Entity?,
+        @JsonProperty("legal_name") private val legalName: String?,
+        @JsonProperty("locations") private val locations: List<Location?>?,
+        @JsonProperty("primary_email") private val primaryEmail: String?,
+        @JsonProperty("primary_phone_number") private val primaryPhoneNumber: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        @JsonProperty("accounts") fun accounts(): List<Account>? = accounts
+        @JsonProperty("accounts")
+        fun accounts(): Optional<List<Account>> = Optional.ofNullable(accounts)
 
         /** The array of company departments. */
-        @JsonProperty("departments") fun departments(): List<Department?>? = departments
+        @JsonProperty("departments")
+        fun departments(): Optional<List<Department?>> = Optional.ofNullable(departments)
 
         /** The employer identification number. */
-        @JsonProperty("ein") fun ein(): String? = ein
+        @JsonProperty("ein") fun ein(): Optional<String> = Optional.ofNullable(ein)
 
         /** The entity type object. */
-        @JsonProperty("entity") fun entity(): Entity? = entity
+        @JsonProperty("entity") fun entity(): Optional<Entity> = Optional.ofNullable(entity)
 
         /** The legal name of the company. */
-        @JsonProperty("legal_name") fun legalName(): String? = legalName
+        @JsonProperty("legal_name")
+        fun legalName(): Optional<String> = Optional.ofNullable(legalName)
 
-        @JsonProperty("locations") fun locations(): List<Location?>? = locations
+        @JsonProperty("locations")
+        fun locations(): Optional<List<Location?>> = Optional.ofNullable(locations)
 
         /** The email of the main administrator on the account. */
-        @JsonProperty("primary_email") fun primaryEmail(): String? = primaryEmail
+        @JsonProperty("primary_email")
+        fun primaryEmail(): Optional<String> = Optional.ofNullable(primaryEmail)
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-        @JsonProperty("primary_phone_number") fun primaryPhoneNumber(): String? = primaryPhoneNumber
+        @JsonProperty("primary_phone_number")
+        fun primaryPhoneNumber(): Optional<String> = Optional.ofNullable(primaryPhoneNumber)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -126,74 +119,91 @@ constructor(
 
         class Builder {
 
-            private var accounts: List<Account>? = null
-            private var departments: List<Department?>? = null
+            private var accounts: MutableList<Account>? = null
+            private var departments: MutableList<Department?>? = null
             private var ein: String? = null
             private var entity: Entity? = null
             private var legalName: String? = null
-            private var locations: List<Location?>? = null
+            private var locations: MutableList<Location?>? = null
             private var primaryEmail: String? = null
             private var primaryPhoneNumber: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(sandboxCompanyUpdateBody: SandboxCompanyUpdateBody) = apply {
-                this.accounts = sandboxCompanyUpdateBody.accounts
-                this.departments = sandboxCompanyUpdateBody.departments
-                this.ein = sandboxCompanyUpdateBody.ein
-                this.entity = sandboxCompanyUpdateBody.entity
-                this.legalName = sandboxCompanyUpdateBody.legalName
-                this.locations = sandboxCompanyUpdateBody.locations
-                this.primaryEmail = sandboxCompanyUpdateBody.primaryEmail
-                this.primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
-                additionalProperties(sandboxCompanyUpdateBody.additionalProperties)
+                accounts = sandboxCompanyUpdateBody.accounts?.toMutableList()
+                departments = sandboxCompanyUpdateBody.departments?.toMutableList()
+                ein = sandboxCompanyUpdateBody.ein
+                entity = sandboxCompanyUpdateBody.entity
+                legalName = sandboxCompanyUpdateBody.legalName
+                locations = sandboxCompanyUpdateBody.locations?.toMutableList()
+                primaryEmail = sandboxCompanyUpdateBody.primaryEmail
+                primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
+                additionalProperties = sandboxCompanyUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
-            @JsonProperty("accounts")
-            fun accounts(accounts: List<Account>) = apply { this.accounts = accounts }
+            fun accounts(accounts: List<Account>) = apply {
+                this.accounts = accounts.toMutableList()
+            }
+
+            /** An array of bank account objects associated with the payroll/HRIS system. */
+            fun addAccount(account: Account) = apply {
+                accounts = (accounts ?: mutableListOf()).apply { add(account) }
+            }
 
             /** The array of company departments. */
-            @JsonProperty("departments")
             fun departments(departments: List<Department?>) = apply {
-                this.departments = departments
+                this.departments = departments.toMutableList()
+            }
+
+            /** The array of company departments. */
+            fun addDepartment(department: Department) = apply {
+                departments = (departments ?: mutableListOf()).apply { add(department) }
             }
 
             /** The employer identification number. */
-            @JsonProperty("ein") fun ein(ein: String) = apply { this.ein = ein }
+            fun ein(ein: String) = apply { this.ein = ein }
 
             /** The entity type object. */
-            @JsonProperty("entity") fun entity(entity: Entity) = apply { this.entity = entity }
+            fun entity(entity: Entity) = apply { this.entity = entity }
 
             /** The legal name of the company. */
-            @JsonProperty("legal_name")
             fun legalName(legalName: String) = apply { this.legalName = legalName }
 
-            @JsonProperty("locations")
-            fun locations(locations: List<Location?>) = apply { this.locations = locations }
+            fun locations(locations: List<Location?>) = apply {
+                this.locations = locations.toMutableList()
+            }
+
+            fun addLocation(location: Location) = apply {
+                locations = (locations ?: mutableListOf()).apply { add(location) }
+            }
 
             /** The email of the main administrator on the account. */
-            @JsonProperty("primary_email")
             fun primaryEmail(primaryEmail: String) = apply { this.primaryEmail = primaryEmail }
 
             /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-            @JsonProperty("primary_phone_number")
             fun primaryPhoneNumber(primaryPhoneNumber: String) = apply {
                 this.primaryPhoneNumber = primaryPhoneNumber
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxCompanyUpdateBody =
@@ -238,74 +248,48 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var accounts: MutableList<Account> = mutableListOf()
-        private var departments: MutableList<Department?> = mutableListOf()
-        private var ein: String? = null
-        private var entity: Entity? = null
-        private var legalName: String? = null
-        private var locations: MutableList<Location?> = mutableListOf()
-        private var primaryEmail: String? = null
-        private var primaryPhoneNumber: String? = null
+        private var body: SandboxCompanyUpdateBody.Builder = SandboxCompanyUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sandboxCompanyUpdateParams: SandboxCompanyUpdateParams) = apply {
-            accounts = sandboxCompanyUpdateParams.accounts?.toMutableList() ?: mutableListOf()
-            departments = sandboxCompanyUpdateParams.departments?.toMutableList() ?: mutableListOf()
-            ein = sandboxCompanyUpdateParams.ein
-            entity = sandboxCompanyUpdateParams.entity
-            legalName = sandboxCompanyUpdateParams.legalName
-            locations = sandboxCompanyUpdateParams.locations?.toMutableList() ?: mutableListOf()
-            primaryEmail = sandboxCompanyUpdateParams.primaryEmail
-            primaryPhoneNumber = sandboxCompanyUpdateParams.primaryPhoneNumber
+            body = sandboxCompanyUpdateParams.body.toBuilder()
             additionalHeaders = sandboxCompanyUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxCompanyUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxCompanyUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        fun accounts(accounts: List<Account>) = apply {
-            this.accounts.clear()
-            this.accounts.addAll(accounts)
-        }
+        fun accounts(accounts: List<Account>) = apply { body.accounts(accounts) }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        fun addAccount(account: Account) = apply { this.accounts.add(account) }
+        fun addAccount(account: Account) = apply { body.addAccount(account) }
 
         /** The array of company departments. */
-        fun departments(departments: List<Department?>) = apply {
-            this.departments.clear()
-            this.departments.addAll(departments)
-        }
+        fun departments(departments: List<Department?>) = apply { body.departments(departments) }
 
         /** The array of company departments. */
-        fun addDepartment(department: Department) = apply { this.departments.add(department) }
+        fun addDepartment(department: Department) = apply { body.addDepartment(department) }
 
         /** The employer identification number. */
-        fun ein(ein: String) = apply { this.ein = ein }
+        fun ein(ein: String) = apply { body.ein(ein) }
 
         /** The entity type object. */
-        fun entity(entity: Entity) = apply { this.entity = entity }
+        fun entity(entity: Entity) = apply { body.entity(entity) }
 
         /** The legal name of the company. */
-        fun legalName(legalName: String) = apply { this.legalName = legalName }
+        fun legalName(legalName: String) = apply { body.legalName(legalName) }
 
-        fun locations(locations: List<Location?>) = apply {
-            this.locations.clear()
-            this.locations.addAll(locations)
-        }
+        fun locations(locations: List<Location?>) = apply { body.locations(locations) }
 
-        fun addLocation(location: Location) = apply { this.locations.add(location) }
+        fun addLocation(location: Location) = apply { body.addLocation(location) }
 
         /** The email of the main administrator on the account. */
-        fun primaryEmail(primaryEmail: String) = apply { this.primaryEmail = primaryEmail }
+        fun primaryEmail(primaryEmail: String) = apply { body.primaryEmail(primaryEmail) }
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
         fun primaryPhoneNumber(primaryPhoneNumber: String) = apply {
-            this.primaryPhoneNumber = primaryPhoneNumber
+            body.primaryPhoneNumber(primaryPhoneNumber)
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -407,71 +391,66 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxCompanyUpdateParams =
             SandboxCompanyUpdateParams(
-                accounts.toImmutable().ifEmpty { null },
-                departments.toImmutable().ifEmpty { null },
-                ein,
-                entity,
-                legalName,
-                locations.toImmutable().ifEmpty { null },
-                primaryEmail,
-                primaryPhoneNumber,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
-    @JsonDeserialize(builder = Account.Builder::class)
     @NoAutoDetect
     class Account
+    @JsonCreator
     private constructor(
-        private val routingNumber: String?,
-        private val accountName: String?,
-        private val institutionName: String?,
-        private val accountType: AccountType?,
-        private val accountNumber: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("routing_number") private val routingNumber: String?,
+        @JsonProperty("account_name") private val accountName: String?,
+        @JsonProperty("institution_name") private val institutionName: String?,
+        @JsonProperty("account_type") private val accountType: AccountType?,
+        @JsonProperty("account_number") private val accountNumber: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /**
          * A nine-digit code that's based on the U.S. Bank location where your account was opened.
          */
-        @JsonProperty("routing_number") fun routingNumber(): String? = routingNumber
+        @JsonProperty("routing_number")
+        fun routingNumber(): Optional<String> = Optional.ofNullable(routingNumber)
 
         /** The name of the bank associated in the payroll/HRIS system. */
-        @JsonProperty("account_name") fun accountName(): String? = accountName
+        @JsonProperty("account_name")
+        fun accountName(): Optional<String> = Optional.ofNullable(accountName)
 
         /** Name of the banking institution. */
-        @JsonProperty("institution_name") fun institutionName(): String? = institutionName
+        @JsonProperty("institution_name")
+        fun institutionName(): Optional<String> = Optional.ofNullable(institutionName)
 
         /** The type of bank account. */
-        @JsonProperty("account_type") fun accountType(): AccountType? = accountType
+        @JsonProperty("account_type")
+        fun accountType(): Optional<AccountType> = Optional.ofNullable(accountType)
 
         /** 10-12 digit number to specify the bank account */
-        @JsonProperty("account_number") fun accountNumber(): String? = accountNumber
+        @JsonProperty("account_number")
+        fun accountNumber(): Optional<String> = Optional.ofNullable(accountNumber)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -495,51 +474,51 @@ constructor(
 
             @JvmSynthetic
             internal fun from(account: Account) = apply {
-                this.routingNumber = account.routingNumber
-                this.accountName = account.accountName
-                this.institutionName = account.institutionName
-                this.accountType = account.accountType
-                this.accountNumber = account.accountNumber
-                additionalProperties(account.additionalProperties)
+                routingNumber = account.routingNumber
+                accountName = account.accountName
+                institutionName = account.institutionName
+                accountType = account.accountType
+                accountNumber = account.accountNumber
+                additionalProperties = account.additionalProperties.toMutableMap()
             }
 
             /**
              * A nine-digit code that's based on the U.S. Bank location where your account was
              * opened.
              */
-            @JsonProperty("routing_number")
             fun routingNumber(routingNumber: String) = apply { this.routingNumber = routingNumber }
 
             /** The name of the bank associated in the payroll/HRIS system. */
-            @JsonProperty("account_name")
             fun accountName(accountName: String) = apply { this.accountName = accountName }
 
             /** Name of the banking institution. */
-            @JsonProperty("institution_name")
             fun institutionName(institutionName: String) = apply {
                 this.institutionName = institutionName
             }
 
             /** The type of bank account. */
-            @JsonProperty("account_type")
             fun accountType(accountType: AccountType) = apply { this.accountType = accountType }
 
             /** 10-12 digit number to specify the bank account */
-            @JsonProperty("account_number")
             fun accountNumber(accountNumber: String) = apply { this.accountNumber = accountNumber }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Account =
@@ -628,20 +607,21 @@ constructor(
             "Account{routingNumber=$routingNumber, accountName=$accountName, institutionName=$institutionName, accountType=$accountType, accountNumber=$accountNumber, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = Department.Builder::class)
     @NoAutoDetect
     class Department
+    @JsonCreator
     private constructor(
-        private val name: String?,
-        private val parent: Parent?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name") private val name: String?,
+        @JsonProperty("parent") private val parent: Parent?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The department name. */
-        @JsonProperty("name") fun name(): String? = name
+        @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
 
         /** The parent department, if present. */
-        @JsonProperty("parent") fun parent(): Parent? = parent
+        @JsonProperty("parent") fun parent(): Optional<Parent> = Optional.ofNullable(parent)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -662,29 +642,34 @@ constructor(
 
             @JvmSynthetic
             internal fun from(department: Department) = apply {
-                this.name = department.name
-                this.parent = department.parent
-                additionalProperties(department.additionalProperties)
+                name = department.name
+                parent = department.parent
+                additionalProperties = department.additionalProperties.toMutableMap()
             }
 
             /** The department name. */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = apply { this.name = name }
 
             /** The parent department, if present. */
-            @JsonProperty("parent") fun parent(parent: Parent) = apply { this.parent = parent }
+            fun parent(parent: Parent) = apply { this.parent = parent }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Department =
@@ -696,16 +681,17 @@ constructor(
         }
 
         /** The parent department, if present. */
-        @JsonDeserialize(builder = Parent.Builder::class)
         @NoAutoDetect
         class Parent
+        @JsonCreator
         private constructor(
-            private val name: String?,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("name") private val name: String?,
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The parent department's name. */
-            @JsonProperty("name") fun name(): String? = name
+            @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -725,27 +711,34 @@ constructor(
 
                 @JvmSynthetic
                 internal fun from(parent: Parent) = apply {
-                    this.name = parent.name
-                    additionalProperties(parent.additionalProperties)
+                    name = parent.name
+                    additionalProperties = parent.additionalProperties.toMutableMap()
                 }
 
                 /** The parent department's name. */
-                @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+                fun name(name: String) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Parent = Parent(name, additionalProperties.toImmutable())
             }
@@ -787,20 +780,21 @@ constructor(
     }
 
     /** The entity type object. */
-    @JsonDeserialize(builder = Entity.Builder::class)
     @NoAutoDetect
     class Entity
+    @JsonCreator
     private constructor(
-        private val type: Type?,
-        private val subtype: Subtype?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type?,
+        @JsonProperty("subtype") private val subtype: Subtype?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The tax payer type of the company. */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
         /** The tax payer subtype of the company. */
-        @JsonProperty("subtype") fun subtype(): Subtype? = subtype
+        @JsonProperty("subtype") fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -821,30 +815,34 @@ constructor(
 
             @JvmSynthetic
             internal fun from(entity: Entity) = apply {
-                this.type = entity.type
-                this.subtype = entity.subtype
-                additionalProperties(entity.additionalProperties)
+                type = entity.type
+                subtype = entity.subtype
+                additionalProperties = entity.additionalProperties.toMutableMap()
             }
 
             /** The tax payer type of the company. */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /** The tax payer subtype of the company. */
-            @JsonProperty("subtype")
             fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Entity =
@@ -1028,11 +1026,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxCompanyUpdateParams && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxCompanyUpdateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accounts, departments, ein, entity, legalName, locations, primaryEmail, primaryPhoneNumber, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxCompanyUpdateParams{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxCompanyUpdateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

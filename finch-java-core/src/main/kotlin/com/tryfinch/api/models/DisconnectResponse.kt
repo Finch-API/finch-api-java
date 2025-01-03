@@ -4,25 +4,26 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = DisconnectResponse.Builder::class)
 @NoAutoDetect
 class DisconnectResponse
+@JsonCreator
 private constructor(
-    private val status: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("status")
+    @ExcludeMissing
+    private val status: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** If the request is successful, Finch will return “success” (HTTP 200 status). */
     fun status(): String = status.getRequired("status")
@@ -33,6 +34,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): DisconnectResponse = apply {
         if (!validated) {
@@ -55,30 +58,33 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(disconnectResponse: DisconnectResponse) = apply {
-            this.status = disconnectResponse.status
-            additionalProperties(disconnectResponse.additionalProperties)
+            status = disconnectResponse.status
+            additionalProperties = disconnectResponse.additionalProperties.toMutableMap()
         }
 
         /** If the request is successful, Finch will return “success” (HTTP 200 status). */
         fun status(status: String) = status(JsonField.of(status))
 
         /** If the request is successful, Finch will return “success” (HTTP 200 status). */
-        @JsonProperty("status")
-        @ExcludeMissing
         fun status(status: JsonField<String>) = apply { this.status = status }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): DisconnectResponse =

@@ -4,27 +4,30 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = PayStatementResponseBody.Builder::class)
 @NoAutoDetect
 class PayStatementResponseBody
+@JsonCreator
 private constructor(
-    private val paging: JsonField<Paging>,
-    private val payStatements: JsonField<List<PayStatement>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("paging")
+    @ExcludeMissing
+    private val paging: JsonField<Paging> = JsonMissing.of(),
+    @JsonProperty("pay_statements")
+    @ExcludeMissing
+    private val payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun paging(): Optional<Paging> = Optional.ofNullable(paging.getNullable("paging"))
 
@@ -40,6 +43,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): PayStatementResponseBody = apply {
         if (!validated) {
@@ -64,15 +69,13 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(payStatementResponseBody: PayStatementResponseBody) = apply {
-            this.paging = payStatementResponseBody.paging
-            this.payStatements = payStatementResponseBody.payStatements
-            additionalProperties(payStatementResponseBody.additionalProperties)
+            paging = payStatementResponseBody.paging
+            payStatements = payStatementResponseBody.payStatements
+            additionalProperties = payStatementResponseBody.additionalProperties.toMutableMap()
         }
 
         fun paging(paging: Paging) = paging(JsonField.of(paging))
 
-        @JsonProperty("paging")
-        @ExcludeMissing
         fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
         /** The array of pay statements for the current payment. */
@@ -80,24 +83,27 @@ private constructor(
             payStatements(JsonField.of(payStatements))
 
         /** The array of pay statements for the current payment. */
-        @JsonProperty("pay_statements")
-        @ExcludeMissing
         fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
             this.payStatements = payStatements
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): PayStatementResponseBody =

@@ -22,7 +22,7 @@ class SandboxConnectionAccountUpdateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.connectionStatus()).isEqualTo(ConnectionStatusType.PENDING)
+        assertThat(body.connectionStatus()).contains(ConnectionStatusType.PENDING)
     }
 
     @Test

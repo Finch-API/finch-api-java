@@ -4,26 +4,29 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = SessionNewResponse.Builder::class)
 @NoAutoDetect
 class SessionNewResponse
+@JsonCreator
 private constructor(
-    private val sessionId: JsonField<String>,
-    private val connectUrl: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("session_id")
+    @ExcludeMissing
+    private val sessionId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connect_url")
+    @ExcludeMissing
+    private val connectUrl: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** The unique identifier for the created connect session */
     fun sessionId(): String = sessionId.getRequired("session_id")
@@ -40,6 +43,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): SessionNewResponse = apply {
         if (!validated) {
@@ -64,39 +69,40 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(sessionNewResponse: SessionNewResponse) = apply {
-            this.sessionId = sessionNewResponse.sessionId
-            this.connectUrl = sessionNewResponse.connectUrl
-            additionalProperties(sessionNewResponse.additionalProperties)
+            sessionId = sessionNewResponse.sessionId
+            connectUrl = sessionNewResponse.connectUrl
+            additionalProperties = sessionNewResponse.additionalProperties.toMutableMap()
         }
 
         /** The unique identifier for the created connect session */
         fun sessionId(sessionId: String) = sessionId(JsonField.of(sessionId))
 
         /** The unique identifier for the created connect session */
-        @JsonProperty("session_id")
-        @ExcludeMissing
         fun sessionId(sessionId: JsonField<String>) = apply { this.sessionId = sessionId }
 
         /** The Connect URL to redirect the user to for authentication */
         fun connectUrl(connectUrl: String) = connectUrl(JsonField.of(connectUrl))
 
         /** The Connect URL to redirect the user to for authentication */
-        @JsonProperty("connect_url")
-        @ExcludeMissing
         fun connectUrl(connectUrl: JsonField<String>) = apply { this.connectUrl = connectUrl }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): SessionNewResponse =

@@ -4,28 +4,31 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = IndividualResponse.Builder::class)
 @NoAutoDetect
 class IndividualResponse
+@JsonCreator
 private constructor(
-    private val individualId: JsonField<String>,
-    private val code: JsonField<Long>,
-    private val body: JsonField<Individual>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    private val individualId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("body")
+    @ExcludeMissing
+    private val body: JsonField<Individual> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
@@ -43,6 +46,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): IndividualResponse = apply {
         if (!validated) {
@@ -69,44 +74,43 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(individualResponse: IndividualResponse) = apply {
-            this.individualId = individualResponse.individualId
-            this.code = individualResponse.code
-            this.body = individualResponse.body
-            additionalProperties(individualResponse.additionalProperties)
+            individualId = individualResponse.individualId
+            code = individualResponse.code
+            body = individualResponse.body
+            additionalProperties = individualResponse.additionalProperties.toMutableMap()
         }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-        @JsonProperty("individual_id")
-        @ExcludeMissing
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
 
         fun code(code: Long) = code(JsonField.of(code))
 
-        @JsonProperty("code")
-        @ExcludeMissing
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun body(body: Individual) = body(JsonField.of(body))
 
-        @JsonProperty("body")
-        @ExcludeMissing
         fun body(body: JsonField<Individual>) = apply { this.body = body }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): IndividualResponse =

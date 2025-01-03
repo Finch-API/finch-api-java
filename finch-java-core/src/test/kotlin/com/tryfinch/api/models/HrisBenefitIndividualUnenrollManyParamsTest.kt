@@ -24,7 +24,7 @@ class HrisBenefitIndividualUnenrollManyParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.individualIds()).isEqualTo(listOf("string"))
+        assertThat(body.individualIds()).contains(listOf("string"))
     }
 
     @Test

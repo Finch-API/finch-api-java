@@ -4,28 +4,33 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = BaseWebhookEvent.Builder::class)
 @NoAutoDetect
 class BaseWebhookEvent
+@JsonCreator
 private constructor(
-    private val connectionId: JsonField<String>,
-    private val companyId: JsonField<String>,
-    private val accountId: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    private val companyId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    private val accountId: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): Optional<String> =
@@ -62,6 +67,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): BaseWebhookEvent = apply {
         if (!validated) {
             connectionId()
@@ -87,18 +94,16 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(baseWebhookEvent: BaseWebhookEvent) = apply {
-            this.connectionId = baseWebhookEvent.connectionId
-            this.companyId = baseWebhookEvent.companyId
-            this.accountId = baseWebhookEvent.accountId
-            additionalProperties(baseWebhookEvent.additionalProperties)
+            connectionId = baseWebhookEvent.connectionId
+            companyId = baseWebhookEvent.companyId
+            accountId = baseWebhookEvent.accountId
+            additionalProperties = baseWebhookEvent.additionalProperties.toMutableMap()
         }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
         /** Unique Finch ID of the connection associated with the webhook event. */
-        @JsonProperty("connection_id")
-        @ExcludeMissing
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
@@ -113,8 +118,6 @@ private constructor(
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
-        @JsonProperty("company_id")
-        @ExcludeMissing
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /**
@@ -127,22 +130,25 @@ private constructor(
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
-        @JsonProperty("account_id")
-        @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): BaseWebhookEvent =

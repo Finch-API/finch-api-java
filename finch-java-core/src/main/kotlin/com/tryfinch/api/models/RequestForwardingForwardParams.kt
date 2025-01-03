@@ -4,104 +4,112 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
 class RequestForwardingForwardParams
 constructor(
-    private val method: String,
-    private val route: String,
-    private val data: String?,
-    private val headers: JsonValue?,
-    private val params: JsonValue?,
+    private val body: RequestForwardingForwardBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun method(): String = method
+    /**
+     * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
+     * `DELETE` , and `PATCH`.
+     */
+    fun method(): String = body.method()
 
-    fun route(): String = route
+    /**
+     * The URL route path for the forwarded request. This value must begin with a forward-slash ( /
+     * ) and may only contain alphanumeric characters, hyphens, and underscores.
+     */
+    fun route(): String = body.route()
 
-    fun data(): Optional<String> = Optional.ofNullable(data)
+    /**
+     * The body for the forwarded request. This value must be specified as either a string or a
+     * valid JSON object.
+     */
+    fun data(): Optional<String> = body.data()
 
-    fun headers(): Optional<JsonValue> = Optional.ofNullable(headers)
+    /**
+     * The HTTP headers to include on the forwarded request. This value must be specified as an
+     * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
+     * "v1" }`
+     */
+    fun headers(): Optional<JsonValue> = body.headers()
 
-    fun params(): Optional<JsonValue> = Optional.ofNullable(params)
+    /**
+     * The query parameters for the forwarded request. This value must be specified as a valid JSON
+     * object rather than a query string.
+     */
+    fun params(): Optional<JsonValue> = body.params()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): RequestForwardingForwardBody {
-        return RequestForwardingForwardBody(
-            method,
-            route,
-            data,
-            headers,
-            params,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): RequestForwardingForwardBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
     /** Forward Request Body */
-    @JsonDeserialize(builder = RequestForwardingForwardBody.Builder::class)
     @NoAutoDetect
     class RequestForwardingForwardBody
+    @JsonCreator
     internal constructor(
-        private val method: String?,
-        private val route: String?,
-        private val data: String?,
-        private val headers: JsonValue?,
-        private val params: JsonValue?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("method") private val method: String,
+        @JsonProperty("route") private val route: String,
+        @JsonProperty("data") private val data: String?,
+        @JsonProperty("headers") private val headers: JsonValue?,
+        @JsonProperty("params") private val params: JsonValue?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /**
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
          * `DELETE` , and `PATCH`.
          */
-        @JsonProperty("method") fun method(): String? = method
+        @JsonProperty("method") fun method(): String = method
 
         /**
          * The URL route path for the forwarded request. This value must begin with a forward-slash
          * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
          */
-        @JsonProperty("route") fun route(): String? = route
+        @JsonProperty("route") fun route(): String = route
 
         /**
          * The body for the forwarded request. This value must be specified as either a string or a
          * valid JSON object.
          */
-        @JsonProperty("data") fun data(): String? = data
+        @JsonProperty("data") fun data(): Optional<String> = Optional.ofNullable(data)
 
         /**
          * The HTTP headers to include on the forwarded request. This value must be specified as an
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
          */
-        @JsonProperty("headers") fun headers(): JsonValue? = headers
+        @JsonProperty("headers") fun headers(): Optional<JsonValue> = Optional.ofNullable(headers)
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
-        @JsonProperty("params") fun params(): JsonValue? = params
+        @JsonProperty("params") fun params(): Optional<JsonValue> = Optional.ofNullable(params)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -125,59 +133,64 @@ constructor(
 
             @JvmSynthetic
             internal fun from(requestForwardingForwardBody: RequestForwardingForwardBody) = apply {
-                this.method = requestForwardingForwardBody.method
-                this.route = requestForwardingForwardBody.route
-                this.data = requestForwardingForwardBody.data
-                this.headers = requestForwardingForwardBody.headers
-                this.params = requestForwardingForwardBody.params
-                additionalProperties(requestForwardingForwardBody.additionalProperties)
+                method = requestForwardingForwardBody.method
+                route = requestForwardingForwardBody.route
+                data = requestForwardingForwardBody.data
+                headers = requestForwardingForwardBody.headers
+                params = requestForwardingForwardBody.params
+                additionalProperties =
+                    requestForwardingForwardBody.additionalProperties.toMutableMap()
             }
 
             /**
              * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` ,
              * `PUT` , `DELETE` , and `PATCH`.
              */
-            @JsonProperty("method") fun method(method: String) = apply { this.method = method }
+            fun method(method: String) = apply { this.method = method }
 
             /**
              * The URL route path for the forwarded request. This value must begin with a
              * forward-slash ( / ) and may only contain alphanumeric characters, hyphens, and
              * underscores.
              */
-            @JsonProperty("route") fun route(route: String) = apply { this.route = route }
+            fun route(route: String) = apply { this.route = route }
 
             /**
              * The body for the forwarded request. This value must be specified as either a string
              * or a valid JSON object.
              */
-            @JsonProperty("data") fun data(data: String) = apply { this.data = data }
+            fun data(data: String) = apply { this.data = data }
 
             /**
              * The HTTP headers to include on the forwarded request. This value must be specified as
              * an object of key-value pairs. Example: `{"Content-Type": "application/xml",
              * "X-API-Version": "v1" }`
              */
-            @JsonProperty("headers")
             fun headers(headers: JsonValue) = apply { this.headers = headers }
 
             /**
              * The query parameters for the forwarded request. This value must be specified as a
              * valid JSON object rather than a query string.
              */
-            @JsonProperty("params") fun params(params: JsonValue) = apply { this.params = params }
+            fun params(params: JsonValue) = apply { this.params = params }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): RequestForwardingForwardBody =
@@ -219,58 +232,48 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var method: String? = null
-        private var route: String? = null
-        private var data: String? = null
-        private var headers: JsonValue? = null
-        private var params: JsonValue? = null
+        private var body: RequestForwardingForwardBody.Builder =
+            RequestForwardingForwardBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(requestForwardingForwardParams: RequestForwardingForwardParams) = apply {
-            method = requestForwardingForwardParams.method
-            route = requestForwardingForwardParams.route
-            data = requestForwardingForwardParams.data
-            headers = requestForwardingForwardParams.headers
-            params = requestForwardingForwardParams.params
+            body = requestForwardingForwardParams.body.toBuilder()
             additionalHeaders = requestForwardingForwardParams.additionalHeaders.toBuilder()
             additionalQueryParams = requestForwardingForwardParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                requestForwardingForwardParams.additionalBodyProperties.toMutableMap()
         }
 
         /**
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
          * `DELETE` , and `PATCH`.
          */
-        fun method(method: String) = apply { this.method = method }
+        fun method(method: String) = apply { body.method(method) }
 
         /**
          * The URL route path for the forwarded request. This value must begin with a forward-slash
          * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
          */
-        fun route(route: String) = apply { this.route = route }
+        fun route(route: String) = apply { body.route(route) }
 
         /**
          * The body for the forwarded request. This value must be specified as either a string or a
          * valid JSON object.
          */
-        fun data(data: String) = apply { this.data = data }
+        fun data(data: String) = apply { body.data(data) }
 
         /**
          * The HTTP headers to include on the forwarded request. This value must be specified as an
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
          */
-        fun headers(headers: JsonValue) = apply { this.headers = headers }
+        fun headers(headers: JsonValue) = apply { body.headers(headers) }
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
-        fun params(params: JsonValue) = apply { this.params = params }
+        fun params(params: JsonValue) = apply { body.params(params) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -371,37 +374,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): RequestForwardingForwardParams =
             RequestForwardingForwardParams(
-                checkNotNull(method) { "`method` is required but was not set" },
-                checkNotNull(route) { "`route` is required but was not set" },
-                data,
-                headers,
-                params,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -410,11 +405,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is RequestForwardingForwardParams && method == other.method && route == other.route && data == other.data && headers == other.headers && params == other.params && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is RequestForwardingForwardParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(method, route, data, headers, params, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "RequestForwardingForwardParams{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "RequestForwardingForwardParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

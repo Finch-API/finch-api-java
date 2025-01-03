@@ -146,9 +146,9 @@ class SandboxPaymentCreateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.endDate()).isEqualTo("end_date")
+        assertThat(body.endDate()).contains("end_date")
         assertThat(body.payStatements())
-            .isEqualTo(
+            .contains(
                 listOf(
                     SandboxPaymentCreateParams.PayStatement.builder()
                         .earnings(
@@ -206,7 +206,7 @@ class SandboxPaymentCreateParamsTest {
                         .build()
                 )
             )
-        assertThat(body.startDate()).isEqualTo("start_date")
+        assertThat(body.startDate()).contains("start_date")
     }
 
     @Test

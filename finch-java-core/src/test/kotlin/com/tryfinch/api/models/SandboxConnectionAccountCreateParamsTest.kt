@@ -33,8 +33,8 @@ class SandboxConnectionAccountCreateParamsTest {
         assertThat(body.companyId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
-            .isEqualTo(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
-        assertThat(body.products()).isEqualTo(listOf("string"))
+            .contains(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
+        assertThat(body.products()).contains(listOf("string"))
     }
 
     @Test

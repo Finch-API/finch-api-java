@@ -6,27 +6,27 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
-@JsonDeserialize(builder = SandboxJobConfiguration.Builder::class)
 @NoAutoDetect
 class SandboxJobConfiguration
+@JsonCreator
 private constructor(
-    private val type: JsonField<Type>,
-    private val completionStatus: JsonField<CompletionStatus>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+    @JsonProperty("completion_status")
+    @ExcludeMissing
+    private val completionStatus: JsonField<CompletionStatus> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun type(): Type = type.getRequired("type")
 
@@ -39,6 +39,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): SandboxJobConfiguration = apply {
         if (!validated) {
@@ -63,38 +65,39 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(sandboxJobConfiguration: SandboxJobConfiguration) = apply {
-            this.type = sandboxJobConfiguration.type
-            this.completionStatus = sandboxJobConfiguration.completionStatus
-            additionalProperties(sandboxJobConfiguration.additionalProperties)
+            type = sandboxJobConfiguration.type
+            completionStatus = sandboxJobConfiguration.completionStatus
+            additionalProperties = sandboxJobConfiguration.additionalProperties.toMutableMap()
         }
 
         fun type(type: Type) = type(JsonField.of(type))
 
-        @JsonProperty("type")
-        @ExcludeMissing
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun completionStatus(completionStatus: CompletionStatus) =
             completionStatus(JsonField.of(completionStatus))
 
-        @JsonProperty("completion_status")
-        @ExcludeMissing
         fun completionStatus(completionStatus: JsonField<CompletionStatus>) = apply {
             this.completionStatus = completionStatus
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): SandboxJobConfiguration =

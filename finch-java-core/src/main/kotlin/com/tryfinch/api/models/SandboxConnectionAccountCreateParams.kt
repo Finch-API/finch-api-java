@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -21,68 +21,63 @@ import java.util.Optional
 
 class SandboxConnectionAccountCreateParams
 constructor(
-    private val companyId: String,
-    private val providerId: String,
-    private val authenticationType: AuthenticationType?,
-    private val products: List<String>?,
+    private val body: SandboxConnectionAccountCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun companyId(): String = companyId
+    fun companyId(): String = body.companyId()
 
-    fun providerId(): String = providerId
+    /** The provider associated with the `access_token` */
+    fun providerId(): String = body.providerId()
 
-    fun authenticationType(): Optional<AuthenticationType> = Optional.ofNullable(authenticationType)
+    fun authenticationType(): Optional<AuthenticationType> = body.authenticationType()
 
-    fun products(): Optional<List<String>> = Optional.ofNullable(products)
+    /**
+     * Optional, defaults to Organization products (`company`, `directory`, `employment`,
+     * `individual`)
+     */
+    fun products(): Optional<List<String>> = body.products()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): SandboxConnectionAccountCreateBody {
-        return SandboxConnectionAccountCreateBody(
-            companyId,
-            providerId,
-            authenticationType,
-            products,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): SandboxConnectionAccountCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = SandboxConnectionAccountCreateBody.Builder::class)
     @NoAutoDetect
     class SandboxConnectionAccountCreateBody
+    @JsonCreator
     internal constructor(
-        private val companyId: String?,
-        private val providerId: String?,
-        private val authenticationType: AuthenticationType?,
-        private val products: List<String>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("company_id") private val companyId: String,
+        @JsonProperty("provider_id") private val providerId: String,
+        @JsonProperty("authentication_type") private val authenticationType: AuthenticationType?,
+        @JsonProperty("products") private val products: List<String>?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("company_id") fun companyId(): String? = companyId
+        @JsonProperty("company_id") fun companyId(): String = companyId
 
         /** The provider associated with the `access_token` */
-        @JsonProperty("provider_id") fun providerId(): String? = providerId
+        @JsonProperty("provider_id") fun providerId(): String = providerId
 
         @JsonProperty("authentication_type")
-        fun authenticationType(): AuthenticationType? = authenticationType
+        fun authenticationType(): Optional<AuthenticationType> =
+            Optional.ofNullable(authenticationType)
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
-        @JsonProperty("products") fun products(): List<String>? = products
+        @JsonProperty("products")
+        fun products(): Optional<List<String>> = Optional.ofNullable(products)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -100,28 +95,26 @@ constructor(
             private var companyId: String? = null
             private var providerId: String? = null
             private var authenticationType: AuthenticationType? = null
-            private var products: List<String>? = null
+            private var products: MutableList<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(
                 sandboxConnectionAccountCreateBody: SandboxConnectionAccountCreateBody
             ) = apply {
-                this.companyId = sandboxConnectionAccountCreateBody.companyId
-                this.providerId = sandboxConnectionAccountCreateBody.providerId
-                this.authenticationType = sandboxConnectionAccountCreateBody.authenticationType
-                this.products = sandboxConnectionAccountCreateBody.products
-                additionalProperties(sandboxConnectionAccountCreateBody.additionalProperties)
+                companyId = sandboxConnectionAccountCreateBody.companyId
+                providerId = sandboxConnectionAccountCreateBody.providerId
+                authenticationType = sandboxConnectionAccountCreateBody.authenticationType
+                products = sandboxConnectionAccountCreateBody.products?.toMutableList()
+                additionalProperties =
+                    sandboxConnectionAccountCreateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("company_id")
             fun companyId(companyId: String) = apply { this.companyId = companyId }
 
             /** The provider associated with the `access_token` */
-            @JsonProperty("provider_id")
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
-            @JsonProperty("authentication_type")
             fun authenticationType(authenticationType: AuthenticationType) = apply {
                 this.authenticationType = authenticationType
             }
@@ -130,21 +123,35 @@ constructor(
              * Optional, defaults to Organization products (`company`, `directory`, `employment`,
              * `individual`)
              */
-            @JsonProperty("products")
-            fun products(products: List<String>) = apply { this.products = products }
+            fun products(products: List<String>) = apply {
+                this.products = products.toMutableList()
+            }
+
+            /**
+             * Optional, defaults to Organization products (`company`, `directory`, `employment`,
+             * `individual`)
+             */
+            fun addProduct(product: String) = apply {
+                products = (products ?: mutableListOf()).apply { add(product) }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxConnectionAccountCreateBody =
@@ -185,53 +192,41 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var companyId: String? = null
-        private var providerId: String? = null
-        private var authenticationType: AuthenticationType? = null
-        private var products: MutableList<String> = mutableListOf()
+        private var body: SandboxConnectionAccountCreateBody.Builder =
+            SandboxConnectionAccountCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(
             sandboxConnectionAccountCreateParams: SandboxConnectionAccountCreateParams
         ) = apply {
-            companyId = sandboxConnectionAccountCreateParams.companyId
-            providerId = sandboxConnectionAccountCreateParams.providerId
-            authenticationType = sandboxConnectionAccountCreateParams.authenticationType
-            products =
-                sandboxConnectionAccountCreateParams.products?.toMutableList() ?: mutableListOf()
+            body = sandboxConnectionAccountCreateParams.body.toBuilder()
             additionalHeaders = sandboxConnectionAccountCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams =
                 sandboxConnectionAccountCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxConnectionAccountCreateParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun companyId(companyId: String) = apply { this.companyId = companyId }
+        fun companyId(companyId: String) = apply { body.companyId(companyId) }
 
         /** The provider associated with the `access_token` */
-        fun providerId(providerId: String) = apply { this.providerId = providerId }
+        fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
         fun authenticationType(authenticationType: AuthenticationType) = apply {
-            this.authenticationType = authenticationType
+            body.authenticationType(authenticationType)
         }
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
-        fun products(products: List<String>) = apply {
-            this.products.clear()
-            this.products.addAll(products)
-        }
+        fun products(products: List<String>) = apply { body.products(products) }
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
-        fun addProduct(product: String) = apply { this.products.add(product) }
+        fun addProduct(product: String) = apply { body.addProduct(product) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -332,36 +327,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxConnectionAccountCreateParams =
             SandboxConnectionAccountCreateParams(
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
-                checkNotNull(providerId) { "`providerId` is required but was not set" },
-                authenticationType,
-                products.toImmutable().ifEmpty { null },
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -439,11 +427,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxConnectionAccountCreateParams && companyId == other.companyId && providerId == other.providerId && authenticationType == other.authenticationType && products == other.products && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxConnectionAccountCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(companyId, providerId, authenticationType, products, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxConnectionAccountCreateParams{companyId=$companyId, providerId=$providerId, authenticationType=$authenticationType, products=$products, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxConnectionAccountCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

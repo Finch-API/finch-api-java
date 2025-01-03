@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
 import java.util.Objects
@@ -86,13 +87,15 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Response.Builder::class)
     @NoAutoDetect
     class Response
+    @JsonCreator
     constructor(
-        private val individuals: JsonField<List<IndividualInDirectory>>,
-        private val paging: JsonField<Paging>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("individuals")
+        private val individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of(),
+        @JsonProperty("paging") private val paging: JsonField<Paging> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         private var validated: Boolean = false
@@ -157,17 +160,14 @@ private constructor(
             fun individuals(individuals: List<IndividualInDirectory>) =
                 individuals(JsonField.of(individuals))
 
-            @JsonProperty("individuals")
             fun individuals(individuals: JsonField<List<IndividualInDirectory>>) = apply {
                 this.individuals = individuals
             }
 
             fun paging(paging: Paging) = paging(JsonField.of(paging))
 
-            @JsonProperty("paging")
             fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
             }

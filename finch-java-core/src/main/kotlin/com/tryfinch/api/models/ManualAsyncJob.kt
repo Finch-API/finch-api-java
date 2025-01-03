@@ -6,29 +6,31 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = ManualAsyncJob.Builder::class)
 @NoAutoDetect
 class ManualAsyncJob
+@JsonCreator
 private constructor(
-    private val jobId: JsonField<String>,
-    private val status: JsonField<Status>,
-    private val body: JsonField<List<JsonValue>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("status")
+    @ExcludeMissing
+    private val status: JsonField<Status> = JsonMissing.of(),
+    @JsonProperty("body")
+    @ExcludeMissing
+    private val body: JsonField<List<JsonValue>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun jobId(): String = jobId.getRequired("job_id")
 
@@ -47,6 +49,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): ManualAsyncJob = apply {
         if (!validated) {
@@ -73,44 +77,43 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(manualAsyncJob: ManualAsyncJob) = apply {
-            this.jobId = manualAsyncJob.jobId
-            this.status = manualAsyncJob.status
-            this.body = manualAsyncJob.body
-            additionalProperties(manualAsyncJob.additionalProperties)
+            jobId = manualAsyncJob.jobId
+            status = manualAsyncJob.status
+            body = manualAsyncJob.body
+            additionalProperties = manualAsyncJob.additionalProperties.toMutableMap()
         }
 
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
-        @JsonProperty("job_id")
-        @ExcludeMissing
         fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         fun status(status: Status) = status(JsonField.of(status))
 
-        @JsonProperty("status")
-        @ExcludeMissing
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** Specific information about the job, such as individual statuses for batch jobs. */
         fun body(body: List<JsonValue>) = body(JsonField.of(body))
 
         /** Specific information about the job, such as individual statuses for batch jobs. */
-        @JsonProperty("body")
-        @ExcludeMissing
         fun body(body: JsonField<List<JsonValue>>) = apply { this.body = body }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): ManualAsyncJob =

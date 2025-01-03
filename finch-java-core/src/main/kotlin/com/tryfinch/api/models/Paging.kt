@@ -4,27 +4,26 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = Paging.Builder::class)
 @NoAutoDetect
 class Paging
+@JsonCreator
 private constructor(
-    private val count: JsonField<Long>,
-    private val offset: JsonField<Long>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("count") @ExcludeMissing private val count: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("offset") @ExcludeMissing private val offset: JsonField<Long> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /** The total number of elements for the entire query (not just the given page) */
     fun count(): Optional<Long> = Optional.ofNullable(count.getNullable("count"))
@@ -41,6 +40,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): Paging = apply {
         if (!validated) {
@@ -65,39 +66,40 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(paging: Paging) = apply {
-            this.count = paging.count
-            this.offset = paging.offset
-            additionalProperties(paging.additionalProperties)
+            count = paging.count
+            offset = paging.offset
+            additionalProperties = paging.additionalProperties.toMutableMap()
         }
 
         /** The total number of elements for the entire query (not just the given page) */
         fun count(count: Long) = count(JsonField.of(count))
 
         /** The total number of elements for the entire query (not just the given page) */
-        @JsonProperty("count")
-        @ExcludeMissing
         fun count(count: JsonField<Long>) = apply { this.count = count }
 
         /** The current start index of the returned list of elements */
         fun offset(offset: Long) = offset(JsonField.of(offset))
 
         /** The current start index of the returned list of elements */
-        @JsonProperty("offset")
-        @ExcludeMissing
         fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): Paging =

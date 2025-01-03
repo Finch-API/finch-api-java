@@ -164,13 +164,13 @@ private constructor(
 
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
-        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
+        fun accessToken(accessToken: String) = apply { this.accessToken = accessToken }
 
-        fun clientId(clientId: String?) = apply { this.clientId = clientId }
+        fun clientId(clientId: String) = apply { this.clientId = clientId }
 
-        fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
+        fun clientSecret(clientSecret: String) = apply { this.clientSecret = clientSecret }
 
-        fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
+        fun webhookSecret(webhookSecret: String) = apply { this.webhookSecret = webhookSecret }
 
         fun fromEnv() = apply {
             System.getenv("FINCH_CLIENT_ID")?.let { clientId(it) }

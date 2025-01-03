@@ -21,7 +21,7 @@ class HrisBenefitUpdateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.description()).isEqualTo("description")
+        assertThat(body.description()).contains("description")
     }
 
     @Test

@@ -47,15 +47,14 @@ constructor(
     class Builder {
 
         private var individualId: String? = null
-        private var payFrequencies: MutableList<String> = mutableListOf()
+        private var payFrequencies: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(payrollPayGroupListParams: PayrollPayGroupListParams) = apply {
             individualId = payrollPayGroupListParams.individualId
-            payFrequencies =
-                payrollPayGroupListParams.payFrequencies?.toMutableList() ?: mutableListOf()
+            payFrequencies = payrollPayGroupListParams.payFrequencies?.toMutableList()
             additionalHeaders = payrollPayGroupListParams.additionalHeaders.toBuilder()
             additionalQueryParams = payrollPayGroupListParams.additionalQueryParams.toBuilder()
         }
@@ -63,11 +62,12 @@ constructor(
         fun individualId(individualId: String) = apply { this.individualId = individualId }
 
         fun payFrequencies(payFrequencies: List<String>) = apply {
-            this.payFrequencies.clear()
-            this.payFrequencies.addAll(payFrequencies)
+            this.payFrequencies = payFrequencies.toMutableList()
         }
 
-        fun addPayFrequency(payFrequency: String) = apply { this.payFrequencies.add(payFrequency) }
+        fun addPayFrequency(payFrequency: String) = apply {
+            payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -170,7 +170,7 @@ constructor(
         fun build(): PayrollPayGroupListParams =
             PayrollPayGroupListParams(
                 individualId,
-                payFrequencies.toImmutable().ifEmpty { null },
+                payFrequencies?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
