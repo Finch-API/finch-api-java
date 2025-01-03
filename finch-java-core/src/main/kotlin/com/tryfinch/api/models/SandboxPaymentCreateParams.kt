@@ -21,35 +21,24 @@ import java.util.Optional
 
 class SandboxPaymentCreateParams
 constructor(
-    private val endDate: String?,
-    private val payStatements: List<PayStatement>?,
-    private val startDate: String?,
+    private val body: SandboxPaymentCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun endDate(): Optional<String> = Optional.ofNullable(endDate)
+    fun endDate(): Optional<String> = body.endDate()
 
-    fun payStatements(): Optional<List<PayStatement>> = Optional.ofNullable(payStatements)
+    fun payStatements(): Optional<List<PayStatement>> = body.payStatements()
 
-    fun startDate(): Optional<String> = Optional.ofNullable(startDate)
+    fun startDate(): Optional<String> = body.startDate()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): SandboxPaymentCreateBody {
-        return SandboxPaymentCreateBody(
-            endDate,
-            payStatements,
-            startDate,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): SandboxPaymentCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -92,7 +81,7 @@ constructor(
         class Builder {
 
             private var endDate: String? = null
-            private var payStatements: List<PayStatement>? = null
+            private var payStatements: MutableList<PayStatement>? = null
             private var startDate: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -107,7 +96,11 @@ constructor(
             fun endDate(endDate: String) = apply { this.endDate = endDate }
 
             fun payStatements(payStatements: List<PayStatement>) = apply {
-                this.payStatements = payStatements
+                this.payStatements = payStatements.toMutableList()
+            }
+
+            fun addPayStatement(payStatement: PayStatement) = apply {
+                payStatements = (payStatements ?: mutableListOf()).apply { add(payStatement) }
             }
 
             fun startDate(startDate: String) = apply { this.startDate = startDate }
@@ -168,37 +161,28 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var endDate: String? = null
-        private var payStatements: MutableList<PayStatement> = mutableListOf()
-        private var startDate: String? = null
+        private var body: SandboxPaymentCreateBody.Builder = SandboxPaymentCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sandboxPaymentCreateParams: SandboxPaymentCreateParams) = apply {
-            endDate = sandboxPaymentCreateParams.endDate
-            payStatements =
-                sandboxPaymentCreateParams.payStatements?.toMutableList() ?: mutableListOf()
-            startDate = sandboxPaymentCreateParams.startDate
+            body = sandboxPaymentCreateParams.body.toBuilder()
             additionalHeaders = sandboxPaymentCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxPaymentCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxPaymentCreateParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun endDate(endDate: String) = apply { this.endDate = endDate }
+        fun endDate(endDate: String) = apply { body.endDate(endDate) }
 
         fun payStatements(payStatements: List<PayStatement>) = apply {
-            this.payStatements.clear()
-            this.payStatements.addAll(payStatements)
+            body.payStatements(payStatements)
         }
 
         fun addPayStatement(payStatement: PayStatement) = apply {
-            this.payStatements.add(payStatement)
+            body.addPayStatement(payStatement)
         }
 
-        fun startDate(startDate: String) = apply { this.startDate = startDate }
+        fun startDate(startDate: String) = apply { body.startDate(startDate) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -299,35 +283,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxPaymentCreateParams =
             SandboxPaymentCreateParams(
-                endDate,
-                payStatements.toImmutable().ifEmpty { null },
-                startDate,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -405,10 +383,10 @@ constructor(
             private var totalHours: Double? = null
             private var grossPay: Money? = null
             private var netPay: Money? = null
-            private var earnings: List<Earning?>? = null
-            private var taxes: List<Tax?>? = null
-            private var employeeDeductions: List<EmployeeDeduction?>? = null
-            private var employerContributions: List<EmployerContribution?>? = null
+            private var earnings: MutableList<Earning?>? = null
+            private var taxes: MutableList<Tax?>? = null
+            private var employeeDeductions: MutableList<EmployeeDeduction?>? = null
+            private var employerContributions: MutableList<EmployerContribution?>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -445,18 +423,39 @@ constructor(
             fun netPay(netPay: Money) = apply { this.netPay = netPay }
 
             /** The array of earnings objects associated with this pay statement */
-            fun earnings(earnings: List<Earning?>) = apply { this.earnings = earnings }
+            fun earnings(earnings: List<Earning?>) = apply {
+                this.earnings = earnings.toMutableList()
+            }
+
+            /** The array of earnings objects associated with this pay statement */
+            fun addEarning(earning: Earning) = apply {
+                earnings = (earnings ?: mutableListOf()).apply { add(earning) }
+            }
 
             /** The array of taxes objects associated with this pay statement. */
-            fun taxes(taxes: List<Tax?>) = apply { this.taxes = taxes }
+            fun taxes(taxes: List<Tax?>) = apply { this.taxes = taxes.toMutableList() }
+
+            /** The array of taxes objects associated with this pay statement. */
+            fun addTax(tax: Tax) = apply { taxes = (taxes ?: mutableListOf()).apply { add(tax) } }
 
             /** The array of deductions objects associated with this pay statement. */
             fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>) = apply {
-                this.employeeDeductions = employeeDeductions
+                this.employeeDeductions = employeeDeductions.toMutableList()
+            }
+
+            /** The array of deductions objects associated with this pay statement. */
+            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
+                employeeDeductions =
+                    (employeeDeductions ?: mutableListOf()).apply { add(employeeDeduction) }
             }
 
             fun employerContributions(employerContributions: List<EmployerContribution?>) = apply {
-                this.employerContributions = employerContributions
+                this.employerContributions = employerContributions.toMutableList()
+            }
+
+            fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
+                employerContributions =
+                    (employerContributions ?: mutableListOf()).apply { add(employerContribution) }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1326,11 +1325,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxPaymentCreateParams && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxPaymentCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, payStatements, startDate, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxPaymentCreateParams{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxPaymentCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

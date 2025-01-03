@@ -21,55 +21,41 @@ import java.util.Optional
 
 class SandboxCompanyUpdateParams
 constructor(
-    private val accounts: List<Account>?,
-    private val departments: List<Department?>?,
-    private val ein: String?,
-    private val entity: Entity?,
-    private val legalName: String?,
-    private val locations: List<Location?>?,
-    private val primaryEmail: String?,
-    private val primaryPhoneNumber: String?,
+    private val body: SandboxCompanyUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun accounts(): Optional<List<Account>> = Optional.ofNullable(accounts)
+    /** An array of bank account objects associated with the payroll/HRIS system. */
+    fun accounts(): Optional<List<Account>> = body.accounts()
 
-    fun departments(): Optional<List<Department?>> = Optional.ofNullable(departments)
+    /** The array of company departments. */
+    fun departments(): Optional<List<Department?>> = body.departments()
 
-    fun ein(): Optional<String> = Optional.ofNullable(ein)
+    /** The employer identification number. */
+    fun ein(): Optional<String> = body.ein()
 
-    fun entity(): Optional<Entity> = Optional.ofNullable(entity)
+    /** The entity type object. */
+    fun entity(): Optional<Entity> = body.entity()
 
-    fun legalName(): Optional<String> = Optional.ofNullable(legalName)
+    /** The legal name of the company. */
+    fun legalName(): Optional<String> = body.legalName()
 
-    fun locations(): Optional<List<Location?>> = Optional.ofNullable(locations)
+    fun locations(): Optional<List<Location?>> = body.locations()
 
-    fun primaryEmail(): Optional<String> = Optional.ofNullable(primaryEmail)
+    /** The email of the main administrator on the account. */
+    fun primaryEmail(): Optional<String> = body.primaryEmail()
 
-    fun primaryPhoneNumber(): Optional<String> = Optional.ofNullable(primaryPhoneNumber)
+    /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+    fun primaryPhoneNumber(): Optional<String> = body.primaryPhoneNumber()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): SandboxCompanyUpdateBody {
-        return SandboxCompanyUpdateBody(
-            accounts,
-            departments,
-            ein,
-            entity,
-            legalName,
-            locations,
-            primaryEmail,
-            primaryPhoneNumber,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): SandboxCompanyUpdateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -133,12 +119,12 @@ constructor(
 
         class Builder {
 
-            private var accounts: List<Account>? = null
-            private var departments: List<Department?>? = null
+            private var accounts: MutableList<Account>? = null
+            private var departments: MutableList<Department?>? = null
             private var ein: String? = null
             private var entity: Entity? = null
             private var legalName: String? = null
-            private var locations: List<Location?>? = null
+            private var locations: MutableList<Location?>? = null
             private var primaryEmail: String? = null
             private var primaryPhoneNumber: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -157,11 +143,23 @@ constructor(
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
-            fun accounts(accounts: List<Account>) = apply { this.accounts = accounts }
+            fun accounts(accounts: List<Account>) = apply {
+                this.accounts = accounts.toMutableList()
+            }
+
+            /** An array of bank account objects associated with the payroll/HRIS system. */
+            fun addAccount(account: Account) = apply {
+                accounts = (accounts ?: mutableListOf()).apply { add(account) }
+            }
 
             /** The array of company departments. */
             fun departments(departments: List<Department?>) = apply {
-                this.departments = departments
+                this.departments = departments.toMutableList()
+            }
+
+            /** The array of company departments. */
+            fun addDepartment(department: Department) = apply {
+                departments = (departments ?: mutableListOf()).apply { add(department) }
             }
 
             /** The employer identification number. */
@@ -173,7 +171,13 @@ constructor(
             /** The legal name of the company. */
             fun legalName(legalName: String) = apply { this.legalName = legalName }
 
-            fun locations(locations: List<Location?>) = apply { this.locations = locations }
+            fun locations(locations: List<Location?>) = apply {
+                this.locations = locations.toMutableList()
+            }
+
+            fun addLocation(location: Location) = apply {
+                locations = (locations ?: mutableListOf()).apply { add(location) }
+            }
 
             /** The email of the main administrator on the account. */
             fun primaryEmail(primaryEmail: String) = apply { this.primaryEmail = primaryEmail }
@@ -244,74 +248,48 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var accounts: MutableList<Account> = mutableListOf()
-        private var departments: MutableList<Department?> = mutableListOf()
-        private var ein: String? = null
-        private var entity: Entity? = null
-        private var legalName: String? = null
-        private var locations: MutableList<Location?> = mutableListOf()
-        private var primaryEmail: String? = null
-        private var primaryPhoneNumber: String? = null
+        private var body: SandboxCompanyUpdateBody.Builder = SandboxCompanyUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sandboxCompanyUpdateParams: SandboxCompanyUpdateParams) = apply {
-            accounts = sandboxCompanyUpdateParams.accounts?.toMutableList() ?: mutableListOf()
-            departments = sandboxCompanyUpdateParams.departments?.toMutableList() ?: mutableListOf()
-            ein = sandboxCompanyUpdateParams.ein
-            entity = sandboxCompanyUpdateParams.entity
-            legalName = sandboxCompanyUpdateParams.legalName
-            locations = sandboxCompanyUpdateParams.locations?.toMutableList() ?: mutableListOf()
-            primaryEmail = sandboxCompanyUpdateParams.primaryEmail
-            primaryPhoneNumber = sandboxCompanyUpdateParams.primaryPhoneNumber
+            body = sandboxCompanyUpdateParams.body.toBuilder()
             additionalHeaders = sandboxCompanyUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxCompanyUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxCompanyUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        fun accounts(accounts: List<Account>) = apply {
-            this.accounts.clear()
-            this.accounts.addAll(accounts)
-        }
+        fun accounts(accounts: List<Account>) = apply { body.accounts(accounts) }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        fun addAccount(account: Account) = apply { this.accounts.add(account) }
+        fun addAccount(account: Account) = apply { body.addAccount(account) }
 
         /** The array of company departments. */
-        fun departments(departments: List<Department?>) = apply {
-            this.departments.clear()
-            this.departments.addAll(departments)
-        }
+        fun departments(departments: List<Department?>) = apply { body.departments(departments) }
 
         /** The array of company departments. */
-        fun addDepartment(department: Department) = apply { this.departments.add(department) }
+        fun addDepartment(department: Department) = apply { body.addDepartment(department) }
 
         /** The employer identification number. */
-        fun ein(ein: String) = apply { this.ein = ein }
+        fun ein(ein: String) = apply { body.ein(ein) }
 
         /** The entity type object. */
-        fun entity(entity: Entity) = apply { this.entity = entity }
+        fun entity(entity: Entity) = apply { body.entity(entity) }
 
         /** The legal name of the company. */
-        fun legalName(legalName: String) = apply { this.legalName = legalName }
+        fun legalName(legalName: String) = apply { body.legalName(legalName) }
 
-        fun locations(locations: List<Location?>) = apply {
-            this.locations.clear()
-            this.locations.addAll(locations)
-        }
+        fun locations(locations: List<Location?>) = apply { body.locations(locations) }
 
-        fun addLocation(location: Location) = apply { this.locations.add(location) }
+        fun addLocation(location: Location) = apply { body.addLocation(location) }
 
         /** The email of the main administrator on the account. */
-        fun primaryEmail(primaryEmail: String) = apply { this.primaryEmail = primaryEmail }
+        fun primaryEmail(primaryEmail: String) = apply { body.primaryEmail(primaryEmail) }
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
         fun primaryPhoneNumber(primaryPhoneNumber: String) = apply {
-            this.primaryPhoneNumber = primaryPhoneNumber
+            body.primaryPhoneNumber(primaryPhoneNumber)
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -413,40 +391,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxCompanyUpdateParams =
             SandboxCompanyUpdateParams(
-                accounts.toImmutable().ifEmpty { null },
-                departments.toImmutable().ifEmpty { null },
-                ein,
-                entity,
-                legalName,
-                locations.toImmutable().ifEmpty { null },
-                primaryEmail,
-                primaryPhoneNumber,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -1059,11 +1026,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxCompanyUpdateParams && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxCompanyUpdateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accounts, departments, ein, entity, legalName, locations, primaryEmail, primaryPhoneNumber, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxCompanyUpdateParams{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxCompanyUpdateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
