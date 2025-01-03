@@ -16,8 +16,10 @@ constructor(
     private val additionalQueryParams: QueryParams,
 ) {
 
+    /** Number of employees to return (defaults to all) */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
+    /** Index to start from (defaults to 0) */
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
 
     fun _additionalHeaders(): Headers = additionalHeaders

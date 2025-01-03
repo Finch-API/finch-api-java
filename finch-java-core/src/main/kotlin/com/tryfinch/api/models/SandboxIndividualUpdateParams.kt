@@ -22,73 +22,60 @@ import java.util.Optional
 class SandboxIndividualUpdateParams
 constructor(
     private val individualId: String,
-    private val dob: String?,
-    private val emails: List<Email>?,
-    private val encryptedSsn: String?,
-    private val ethnicity: Ethnicity?,
-    private val firstName: String?,
-    private val gender: Gender?,
-    private val lastName: String?,
-    private val middleName: String?,
-    private val phoneNumbers: List<PhoneNumber?>?,
-    private val preferredName: String?,
-    private val residence: Location?,
-    private val ssn: String?,
+    private val body: SandboxIndividualUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun individualId(): String = individualId
 
-    fun dob(): Optional<String> = Optional.ofNullable(dob)
+    fun dob(): Optional<String> = body.dob()
 
-    fun emails(): Optional<List<Email>> = Optional.ofNullable(emails)
+    fun emails(): Optional<List<Email>> = body.emails()
 
-    fun encryptedSsn(): Optional<String> = Optional.ofNullable(encryptedSsn)
+    /**
+     * Social Security Number of the individual in **encrypted** format. This field is only
+     * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
+     * the body.
+     */
+    fun encryptedSsn(): Optional<String> = body.encryptedSsn()
 
-    fun ethnicity(): Optional<Ethnicity> = Optional.ofNullable(ethnicity)
+    /** The EEOC-defined ethnicity of the individual. */
+    fun ethnicity(): Optional<Ethnicity> = body.ethnicity()
 
-    fun firstName(): Optional<String> = Optional.ofNullable(firstName)
+    /** The legal first name of the individual. */
+    fun firstName(): Optional<String> = body.firstName()
 
-    fun gender(): Optional<Gender> = Optional.ofNullable(gender)
+    /** The gender of the individual. */
+    fun gender(): Optional<Gender> = body.gender()
 
-    fun lastName(): Optional<String> = Optional.ofNullable(lastName)
+    /** The legal last name of the individual. */
+    fun lastName(): Optional<String> = body.lastName()
 
-    fun middleName(): Optional<String> = Optional.ofNullable(middleName)
+    /** The legal middle name of the individual. */
+    fun middleName(): Optional<String> = body.middleName()
 
-    fun phoneNumbers(): Optional<List<PhoneNumber?>> = Optional.ofNullable(phoneNumbers)
+    fun phoneNumbers(): Optional<List<PhoneNumber?>> = body.phoneNumbers()
 
-    fun preferredName(): Optional<String> = Optional.ofNullable(preferredName)
+    /** The preferred name of the individual. */
+    fun preferredName(): Optional<String> = body.preferredName()
 
-    fun residence(): Optional<Location> = Optional.ofNullable(residence)
+    fun residence(): Optional<Location> = body.residence()
 
-    fun ssn(): Optional<String> = Optional.ofNullable(ssn)
+    /**
+     * Social Security Number of the individual. This field is only available with the `ssn` scope
+     * enabled and the `options: { include: ['ssn'] }` param set in the body.
+     * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+     */
+    fun ssn(): Optional<String> = body.ssn()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): SandboxIndividualUpdateBody {
-        return SandboxIndividualUpdateBody(
-            dob,
-            emails,
-            encryptedSsn,
-            ethnicity,
-            firstName,
-            gender,
-            lastName,
-            middleName,
-            phoneNumbers,
-            preferredName,
-            residence,
-            ssn,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): SandboxIndividualUpdateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -182,14 +169,14 @@ constructor(
         class Builder {
 
             private var dob: String? = null
-            private var emails: List<Email>? = null
+            private var emails: MutableList<Email>? = null
             private var encryptedSsn: String? = null
             private var ethnicity: Ethnicity? = null
             private var firstName: String? = null
             private var gender: Gender? = null
             private var lastName: String? = null
             private var middleName: String? = null
-            private var phoneNumbers: List<PhoneNumber?>? = null
+            private var phoneNumbers: MutableList<PhoneNumber?>? = null
             private var preferredName: String? = null
             private var residence: Location? = null
             private var ssn: String? = null
@@ -215,7 +202,11 @@ constructor(
 
             fun dob(dob: String) = apply { this.dob = dob }
 
-            fun emails(emails: List<Email>) = apply { this.emails = emails }
+            fun emails(emails: List<Email>) = apply { this.emails = emails.toMutableList() }
+
+            fun addEmail(email: Email) = apply {
+                emails = (emails ?: mutableListOf()).apply { add(email) }
+            }
 
             /**
              * Social Security Number of the individual in **encrypted** format. This field is only
@@ -240,7 +231,11 @@ constructor(
             fun middleName(middleName: String) = apply { this.middleName = middleName }
 
             fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
-                this.phoneNumbers = phoneNumbers
+                this.phoneNumbers = phoneNumbers.toMutableList()
+            }
+
+            fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
+                phoneNumbers = (phoneNumbers ?: mutableListOf()).apply { add(phoneNumber) }
             }
 
             /** The preferred name of the individual. */
@@ -321,95 +316,66 @@ constructor(
     class Builder {
 
         private var individualId: String? = null
-        private var dob: String? = null
-        private var emails: MutableList<Email> = mutableListOf()
-        private var encryptedSsn: String? = null
-        private var ethnicity: Ethnicity? = null
-        private var firstName: String? = null
-        private var gender: Gender? = null
-        private var lastName: String? = null
-        private var middleName: String? = null
-        private var phoneNumbers: MutableList<PhoneNumber?> = mutableListOf()
-        private var preferredName: String? = null
-        private var residence: Location? = null
-        private var ssn: String? = null
+        private var body: SandboxIndividualUpdateBody.Builder =
+            SandboxIndividualUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sandboxIndividualUpdateParams: SandboxIndividualUpdateParams) = apply {
             individualId = sandboxIndividualUpdateParams.individualId
-            dob = sandboxIndividualUpdateParams.dob
-            emails = sandboxIndividualUpdateParams.emails?.toMutableList() ?: mutableListOf()
-            encryptedSsn = sandboxIndividualUpdateParams.encryptedSsn
-            ethnicity = sandboxIndividualUpdateParams.ethnicity
-            firstName = sandboxIndividualUpdateParams.firstName
-            gender = sandboxIndividualUpdateParams.gender
-            lastName = sandboxIndividualUpdateParams.lastName
-            middleName = sandboxIndividualUpdateParams.middleName
-            phoneNumbers =
-                sandboxIndividualUpdateParams.phoneNumbers?.toMutableList() ?: mutableListOf()
-            preferredName = sandboxIndividualUpdateParams.preferredName
-            residence = sandboxIndividualUpdateParams.residence
-            ssn = sandboxIndividualUpdateParams.ssn
+            body = sandboxIndividualUpdateParams.body.toBuilder()
             additionalHeaders = sandboxIndividualUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxIndividualUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxIndividualUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun individualId(individualId: String) = apply { this.individualId = individualId }
 
-        fun dob(dob: String) = apply { this.dob = dob }
+        fun dob(dob: String) = apply { body.dob(dob) }
 
-        fun emails(emails: List<Email>) = apply {
-            this.emails.clear()
-            this.emails.addAll(emails)
-        }
+        fun emails(emails: List<Email>) = apply { body.emails(emails) }
 
-        fun addEmail(email: Email) = apply { this.emails.add(email) }
+        fun addEmail(email: Email) = apply { body.addEmail(email) }
 
         /**
          * Social Security Number of the individual in **encrypted** format. This field is only
          * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
          * in the body.
          */
-        fun encryptedSsn(encryptedSsn: String) = apply { this.encryptedSsn = encryptedSsn }
+        fun encryptedSsn(encryptedSsn: String) = apply { body.encryptedSsn(encryptedSsn) }
 
         /** The EEOC-defined ethnicity of the individual. */
-        fun ethnicity(ethnicity: Ethnicity) = apply { this.ethnicity = ethnicity }
+        fun ethnicity(ethnicity: Ethnicity) = apply { body.ethnicity(ethnicity) }
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: String) = apply { this.firstName = firstName }
+        fun firstName(firstName: String) = apply { body.firstName(firstName) }
 
         /** The gender of the individual. */
-        fun gender(gender: Gender) = apply { this.gender = gender }
+        fun gender(gender: Gender) = apply { body.gender(gender) }
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: String) = apply { this.lastName = lastName }
+        fun lastName(lastName: String) = apply { body.lastName(lastName) }
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = apply { this.middleName = middleName }
+        fun middleName(middleName: String) = apply { body.middleName(middleName) }
 
         fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
-            this.phoneNumbers.clear()
-            this.phoneNumbers.addAll(phoneNumbers)
+            body.phoneNumbers(phoneNumbers)
         }
 
-        fun addPhoneNumber(phoneNumber: PhoneNumber) = apply { this.phoneNumbers.add(phoneNumber) }
+        fun addPhoneNumber(phoneNumber: PhoneNumber) = apply { body.addPhoneNumber(phoneNumber) }
 
         /** The preferred name of the individual. */
-        fun preferredName(preferredName: String) = apply { this.preferredName = preferredName }
+        fun preferredName(preferredName: String) = apply { body.preferredName(preferredName) }
 
-        fun residence(residence: Location) = apply { this.residence = residence }
+        fun residence(residence: Location) = apply { body.residence(residence) }
 
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
-        fun ssn(ssn: String) = apply { this.ssn = ssn }
+        fun ssn(ssn: String) = apply { body.ssn(ssn) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -510,45 +476,30 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxIndividualUpdateParams =
             SandboxIndividualUpdateParams(
                 checkNotNull(individualId) { "`individualId` is required but was not set" },
-                dob,
-                emails.toImmutable().ifEmpty { null },
-                encryptedSsn,
-                ethnicity,
-                firstName,
-                gender,
-                lastName,
-                middleName,
-                phoneNumbers.toImmutable().ifEmpty { null },
-                preferredName,
-                residence,
-                ssn,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -1008,11 +959,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxIndividualUpdateParams && individualId == other.individualId && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxIndividualUpdateParams && individualId == other.individualId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxIndividualUpdateParams{individualId=$individualId, dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxIndividualUpdateParams{individualId=$individualId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
