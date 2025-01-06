@@ -256,15 +256,25 @@ constructor(
             }
 
             /** Worker's compensation classification code for this employee */
-            fun classCode(classCode: String) = apply { this.classCode = classCode }
+            fun classCode(classCode: String?) = apply { this.classCode = classCode }
+
+            /** Worker's compensation classification code for this employee */
+            fun classCode(classCode: Optional<String>) = classCode(classCode.orElse(null))
 
             /**
              * Custom fields for the individual. These are fields which are defined by the employer
              * in the system. Custom fields are not currently supported for assisted connections.
              */
-            fun customFields(customFields: List<CustomField>) = apply {
-                this.customFields = customFields.toMutableList()
+            fun customFields(customFields: List<CustomField>?) = apply {
+                this.customFields = customFields?.toMutableList()
             }
+
+            /**
+             * Custom fields for the individual. These are fields which are defined by the employer
+             * in the system. Custom fields are not currently supported for assisted connections.
+             */
+            fun customFields(customFields: Optional<List<CustomField>>) =
+                customFields(customFields.orElse(null))
 
             /**
              * Custom fields for the individual. These are fields which are defined by the employer
@@ -275,32 +285,58 @@ constructor(
             }
 
             /** The department object. */
-            fun department(department: Department) = apply { this.department = department }
+            fun department(department: Department?) = apply { this.department = department }
+
+            /** The department object. */
+            fun department(department: Optional<Department>) = department(department.orElse(null))
 
             /** The employment object. */
-            fun employment(employment: Employment) = apply { this.employment = employment }
+            fun employment(employment: Employment?) = apply { this.employment = employment }
+
+            /** The employment object. */
+            fun employment(employment: Optional<Employment>) = employment(employment.orElse(null))
 
             /** The detailed employment status of the individual. */
-            fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
+            fun employmentStatus(employmentStatus: EmploymentStatus?) = apply {
                 this.employmentStatus = employmentStatus
             }
 
-            fun endDate(endDate: String) = apply { this.endDate = endDate }
+            /** The detailed employment status of the individual. */
+            fun employmentStatus(employmentStatus: Optional<EmploymentStatus>) =
+                employmentStatus(employmentStatus.orElse(null))
+
+            fun endDate(endDate: String?) = apply { this.endDate = endDate }
+
+            fun endDate(endDate: Optional<String>) = endDate(endDate.orElse(null))
 
             /** The legal first name of the individual. */
-            fun firstName(firstName: String) = apply { this.firstName = firstName }
+            fun firstName(firstName: String?) = apply { this.firstName = firstName }
+
+            /** The legal first name of the individual. */
+            fun firstName(firstName: Optional<String>) = firstName(firstName.orElse(null))
 
             /**
              * The employee's income as reported by the provider. This may not always be annualized
              * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
              * information the provider returns.
              */
-            fun income(income: Income) = apply { this.income = income }
+            fun income(income: Income?) = apply { this.income = income }
+
+            /**
+             * The employee's income as reported by the provider. This may not always be annualized
+             * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
+             * information the provider returns.
+             */
+            fun income(income: Optional<Income>) = income(income.orElse(null))
 
             /** The array of income history. */
-            fun incomeHistory(incomeHistory: List<Income?>) = apply {
-                this.incomeHistory = incomeHistory.toMutableList()
+            fun incomeHistory(incomeHistory: List<Income?>?) = apply {
+                this.incomeHistory = incomeHistory?.toMutableList()
             }
+
+            /** The array of income history. */
+            fun incomeHistory(incomeHistory: Optional<List<Income?>>) =
+                incomeHistory(incomeHistory.orElse(null))
 
             /** The array of income history. */
             fun addIncomeHistory(incomeHistory: Income) = apply {
@@ -309,30 +345,59 @@ constructor(
             }
 
             /** `true` if the individual an an active employee or contractor at the company. */
-            fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
+            fun isActive(isActive: Boolean?) = apply { this.isActive = isActive }
+
+            /** `true` if the individual an an active employee or contractor at the company. */
+            fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
+
+            /** `true` if the individual an an active employee or contractor at the company. */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun isActive(isActive: Optional<Boolean>) = isActive(isActive.orElse(null) as Boolean?)
 
             /** The legal last name of the individual. */
-            fun lastName(lastName: String) = apply { this.lastName = lastName }
+            fun lastName(lastName: String?) = apply { this.lastName = lastName }
 
-            fun latestRehireDate(latestRehireDate: String) = apply {
+            /** The legal last name of the individual. */
+            fun lastName(lastName: Optional<String>) = lastName(lastName.orElse(null))
+
+            fun latestRehireDate(latestRehireDate: String?) = apply {
                 this.latestRehireDate = latestRehireDate
             }
 
-            fun location(location: Location) = apply { this.location = location }
+            fun latestRehireDate(latestRehireDate: Optional<String>) =
+                latestRehireDate(latestRehireDate.orElse(null))
+
+            fun location(location: Location?) = apply { this.location = location }
+
+            fun location(location: Optional<Location>) = location(location.orElse(null))
 
             /** The manager object representing the manager of the individual within the org. */
-            fun manager(manager: Manager) = apply { this.manager = manager }
+            fun manager(manager: Manager?) = apply { this.manager = manager }
+
+            /** The manager object representing the manager of the individual within the org. */
+            fun manager(manager: Optional<Manager>) = manager(manager.orElse(null))
 
             /** The legal middle name of the individual. */
-            fun middleName(middleName: String) = apply { this.middleName = middleName }
+            fun middleName(middleName: String?) = apply { this.middleName = middleName }
+
+            /** The legal middle name of the individual. */
+            fun middleName(middleName: Optional<String>) = middleName(middleName.orElse(null))
 
             /** The source system's unique employment identifier for this individual */
-            fun sourceId(sourceId: String) = apply { this.sourceId = sourceId }
+            fun sourceId(sourceId: String?) = apply { this.sourceId = sourceId }
 
-            fun startDate(startDate: String) = apply { this.startDate = startDate }
+            /** The source system's unique employment identifier for this individual */
+            fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.orElse(null))
+
+            fun startDate(startDate: String?) = apply { this.startDate = startDate }
+
+            fun startDate(startDate: Optional<String>) = startDate(startDate.orElse(null))
 
             /** The current title of the individual. */
-            fun title(title: String) = apply { this.title = title }
+            fun title(title: String?) = apply { this.title = title }
+
+            /** The current title of the individual. */
+            fun title(title: Optional<String>) = title(title.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -422,15 +487,25 @@ constructor(
         fun individualId(individualId: String) = apply { this.individualId = individualId }
 
         /** Worker's compensation classification code for this employee */
-        fun classCode(classCode: String) = apply { body.classCode(classCode) }
+        fun classCode(classCode: String?) = apply { body.classCode(classCode) }
+
+        /** Worker's compensation classification code for this employee */
+        fun classCode(classCode: Optional<String>) = classCode(classCode.orElse(null))
 
         /**
          * Custom fields for the individual. These are fields which are defined by the employer in
          * the system. Custom fields are not currently supported for assisted connections.
          */
-        fun customFields(customFields: List<CustomField>) = apply {
+        fun customFields(customFields: List<CustomField>?) = apply {
             body.customFields(customFields)
         }
+
+        /**
+         * Custom fields for the individual. These are fields which are defined by the employer in
+         * the system. Custom fields are not currently supported for assisted connections.
+         */
+        fun customFields(customFields: Optional<List<CustomField>>) =
+            customFields(customFields.orElse(null))
 
         /**
          * Custom fields for the individual. These are fields which are defined by the employer in
@@ -439,61 +514,116 @@ constructor(
         fun addCustomField(customField: CustomField) = apply { body.addCustomField(customField) }
 
         /** The department object. */
-        fun department(department: Department) = apply { body.department(department) }
+        fun department(department: Department?) = apply { body.department(department) }
+
+        /** The department object. */
+        fun department(department: Optional<Department>) = department(department.orElse(null))
 
         /** The employment object. */
-        fun employment(employment: Employment) = apply { body.employment(employment) }
+        fun employment(employment: Employment?) = apply { body.employment(employment) }
+
+        /** The employment object. */
+        fun employment(employment: Optional<Employment>) = employment(employment.orElse(null))
 
         /** The detailed employment status of the individual. */
-        fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
+        fun employmentStatus(employmentStatus: EmploymentStatus?) = apply {
             body.employmentStatus(employmentStatus)
         }
 
-        fun endDate(endDate: String) = apply { body.endDate(endDate) }
+        /** The detailed employment status of the individual. */
+        fun employmentStatus(employmentStatus: Optional<EmploymentStatus>) =
+            employmentStatus(employmentStatus.orElse(null))
+
+        fun endDate(endDate: String?) = apply { body.endDate(endDate) }
+
+        fun endDate(endDate: Optional<String>) = endDate(endDate.orElse(null))
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: String) = apply { body.firstName(firstName) }
+        fun firstName(firstName: String?) = apply { body.firstName(firstName) }
+
+        /** The legal first name of the individual. */
+        fun firstName(firstName: Optional<String>) = firstName(firstName.orElse(null))
 
         /**
          * The employee's income as reported by the provider. This may not always be annualized
          * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
          * information the provider returns.
          */
-        fun income(income: Income) = apply { body.income(income) }
+        fun income(income: Income?) = apply { body.income(income) }
+
+        /**
+         * The employee's income as reported by the provider. This may not always be annualized
+         * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
+         * information the provider returns.
+         */
+        fun income(income: Optional<Income>) = income(income.orElse(null))
 
         /** The array of income history. */
-        fun incomeHistory(incomeHistory: List<Income?>) = apply {
+        fun incomeHistory(incomeHistory: List<Income?>?) = apply {
             body.incomeHistory(incomeHistory)
         }
+
+        /** The array of income history. */
+        fun incomeHistory(incomeHistory: Optional<List<Income?>>) =
+            incomeHistory(incomeHistory.orElse(null))
 
         /** The array of income history. */
         fun addIncomeHistory(incomeHistory: Income) = apply { body.addIncomeHistory(incomeHistory) }
 
         /** `true` if the individual an an active employee or contractor at the company. */
-        fun isActive(isActive: Boolean) = apply { body.isActive(isActive) }
+        fun isActive(isActive: Boolean?) = apply { body.isActive(isActive) }
+
+        /** `true` if the individual an an active employee or contractor at the company. */
+        fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
+
+        /** `true` if the individual an an active employee or contractor at the company. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun isActive(isActive: Optional<Boolean>) = isActive(isActive.orElse(null) as Boolean?)
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: String) = apply { body.lastName(lastName) }
+        fun lastName(lastName: String?) = apply { body.lastName(lastName) }
 
-        fun latestRehireDate(latestRehireDate: String) = apply {
+        /** The legal last name of the individual. */
+        fun lastName(lastName: Optional<String>) = lastName(lastName.orElse(null))
+
+        fun latestRehireDate(latestRehireDate: String?) = apply {
             body.latestRehireDate(latestRehireDate)
         }
 
-        fun location(location: Location) = apply { body.location(location) }
+        fun latestRehireDate(latestRehireDate: Optional<String>) =
+            latestRehireDate(latestRehireDate.orElse(null))
+
+        fun location(location: Location?) = apply { body.location(location) }
+
+        fun location(location: Optional<Location>) = location(location.orElse(null))
 
         /** The manager object representing the manager of the individual within the org. */
-        fun manager(manager: Manager) = apply { body.manager(manager) }
+        fun manager(manager: Manager?) = apply { body.manager(manager) }
+
+        /** The manager object representing the manager of the individual within the org. */
+        fun manager(manager: Optional<Manager>) = manager(manager.orElse(null))
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = apply { body.middleName(middleName) }
+        fun middleName(middleName: String?) = apply { body.middleName(middleName) }
+
+        /** The legal middle name of the individual. */
+        fun middleName(middleName: Optional<String>) = middleName(middleName.orElse(null))
 
         /** The source system's unique employment identifier for this individual */
-        fun sourceId(sourceId: String) = apply { body.sourceId(sourceId) }
+        fun sourceId(sourceId: String?) = apply { body.sourceId(sourceId) }
 
-        fun startDate(startDate: String) = apply { body.startDate(startDate) }
+        /** The source system's unique employment identifier for this individual */
+        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.orElse(null))
+
+        fun startDate(startDate: String?) = apply { body.startDate(startDate) }
+
+        fun startDate(startDate: Optional<String>) = startDate(startDate.orElse(null))
 
         /** The current title of the individual. */
-        fun title(title: String) = apply { body.title(title) }
+        fun title(title: String?) = apply { body.title(title) }
+
+        /** The current title of the individual. */
+        fun title(title: Optional<String>) = title(title.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -659,9 +789,13 @@ constructor(
                 additionalProperties = customField.additionalProperties.toMutableMap()
             }
 
-            fun name(name: String) = apply { this.name = name }
+            fun name(name: String?) = apply { this.name = name }
 
-            fun value(value: JsonValue) = apply { this.value = value }
+            fun name(name: Optional<String>) = name(name.orElse(null))
+
+            fun value(value: JsonValue?) = apply { this.value = value }
+
+            fun value(value: Optional<JsonValue>) = value(value.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -744,7 +878,10 @@ constructor(
             }
 
             /** The name of the department associated with the individual. */
-            fun name(name: String) = apply { this.name = name }
+            fun name(name: String?) = apply { this.name = name }
+
+            /** The name of the department associated with the individual. */
+            fun name(name: Optional<String>) = name(name.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -834,10 +971,19 @@ constructor(
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
+            fun subtype(subtype: Subtype?) = apply { this.subtype = subtype }
+
+            /**
+             * The secondary employment type of the individual. Options: `full_time`, `part_time`,
+             * `intern`, `temp`, `seasonal` and `individual_contractor`.
+             */
+            fun subtype(subtype: Optional<Subtype>) = subtype(subtype.orElse(null))
 
             /** The main employment type of the individual. */
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type?) = apply { this.type = type }
+
+            /** The main employment type of the individual. */
+            fun type(type: Optional<Type>) = type(type.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1145,7 +1291,10 @@ constructor(
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
-            fun id(id: String) = apply { this.id = id }
+            fun id(id: String?) = apply { this.id = id }
+
+            /** A stable Finch `id` (UUID v4) for an individual in the company. */
+            fun id(id: Optional<String>) = id(id.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

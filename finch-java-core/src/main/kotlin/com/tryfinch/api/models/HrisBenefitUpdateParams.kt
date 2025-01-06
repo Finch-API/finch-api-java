@@ -84,7 +84,10 @@ constructor(
             }
 
             /** Updated name or description. */
-            fun description(description: String) = apply { this.description = description }
+            fun description(description: String?) = apply { this.description = description }
+
+            /** Updated name or description. */
+            fun description(description: Optional<String>) = description(description.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -153,7 +156,10 @@ constructor(
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
 
         /** Updated name or description. */
-        fun description(description: String) = apply { body.description(description) }
+        fun description(description: String?) = apply { body.description(description) }
+
+        /** Updated name or description. */
+        fun description(description: Optional<String>) = description(description.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

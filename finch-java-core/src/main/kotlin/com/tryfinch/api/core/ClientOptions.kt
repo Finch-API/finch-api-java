@@ -10,6 +10,7 @@ import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.http.RetryingHttpClient
 import java.time.Clock
 import java.util.Base64
+import java.util.Optional
 
 class ClientOptions
 private constructor(
@@ -164,13 +165,22 @@ private constructor(
 
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
-        fun accessToken(accessToken: String) = apply { this.accessToken = accessToken }
+        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
 
-        fun clientId(clientId: String) = apply { this.clientId = clientId }
+        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.orElse(null))
 
-        fun clientSecret(clientSecret: String) = apply { this.clientSecret = clientSecret }
+        fun clientId(clientId: String?) = apply { this.clientId = clientId }
 
-        fun webhookSecret(webhookSecret: String) = apply { this.webhookSecret = webhookSecret }
+        fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
+
+        fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
+
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.orElse(null))
+
+        fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
+
+        fun webhookSecret(webhookSecret: Optional<String>) =
+            webhookSecret(webhookSecret.orElse(null))
 
         fun fromEnv() = apply {
             System.getenv("FINCH_CLIENT_ID")?.let { clientId(it) }
