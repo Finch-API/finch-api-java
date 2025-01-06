@@ -95,11 +95,18 @@ constructor(
 
             fun code(code: String) = apply { this.code = code }
 
-            fun clientId(clientId: String) = apply { this.clientId = clientId }
+            fun clientId(clientId: String?) = apply { this.clientId = clientId }
 
-            fun clientSecret(clientSecret: String) = apply { this.clientSecret = clientSecret }
+            fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
 
-            fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
+            fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
+
+            fun clientSecret(clientSecret: Optional<String>) =
+                clientSecret(clientSecret.orElse(null))
+
+            fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
+
+            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -171,11 +178,17 @@ constructor(
 
         fun code(code: String) = apply { body.code(code) }
 
-        fun clientId(clientId: String) = apply { body.clientId(clientId) }
+        fun clientId(clientId: String?) = apply { body.clientId(clientId) }
 
-        fun clientSecret(clientSecret: String) = apply { body.clientSecret(clientSecret) }
+        fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
 
-        fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
+        fun clientSecret(clientSecret: String?) = apply { body.clientSecret(clientSecret) }
+
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.orElse(null))
+
+        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
+
+        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

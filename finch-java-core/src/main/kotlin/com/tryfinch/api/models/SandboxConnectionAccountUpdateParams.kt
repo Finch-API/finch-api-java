@@ -75,9 +75,12 @@ constructor(
                     sandboxConnectionAccountUpdateBody.additionalProperties.toMutableMap()
             }
 
-            fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
+            fun connectionStatus(connectionStatus: ConnectionStatusType?) = apply {
                 this.connectionStatus = connectionStatus
             }
+
+            fun connectionStatus(connectionStatus: Optional<ConnectionStatusType>) =
+                connectionStatus(connectionStatus.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -148,9 +151,12 @@ constructor(
                 sandboxConnectionAccountUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
+        fun connectionStatus(connectionStatus: ConnectionStatusType?) = apply {
             body.connectionStatus(connectionStatus)
         }
+
+        fun connectionStatus(connectionStatus: Optional<ConnectionStatusType>) =
+            connectionStatus(connectionStatus.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

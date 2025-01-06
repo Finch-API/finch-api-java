@@ -116,14 +116,32 @@ constructor(
              * The number of minutes until the session expires (defaults to 20,160, which is 14
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Long) = apply {
+            fun minutesToExpire(minutesToExpire: Long?) = apply {
                 this.minutesToExpire = minutesToExpire
             }
 
+            /**
+             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * days)
+             */
+            fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
+
+            /**
+             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * days)
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun minutesToExpire(minutesToExpire: Optional<Long>) =
+                minutesToExpire(minutesToExpire.orElse(null) as Long?)
+
             /** The products to request access to (optional for reauthentication) */
-            fun products(products: List<ConnectProducts>) = apply {
-                this.products = products.toMutableList()
+            fun products(products: List<ConnectProducts>?) = apply {
+                this.products = products?.toMutableList()
             }
+
+            /** The products to request access to (optional for reauthentication) */
+            fun products(products: Optional<List<ConnectProducts>>) =
+                products(products.orElse(null))
 
             /** The products to request access to (optional for reauthentication) */
             fun addProduct(product: ConnectProducts) = apply {
@@ -131,7 +149,10 @@ constructor(
             }
 
             /** The URI to redirect to after the Connect flow is completed */
-            fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
+            fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
+
+            /** The URI to redirect to after the Connect flow is completed */
+            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -210,16 +231,36 @@ constructor(
         /**
          * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
          */
-        fun minutesToExpire(minutesToExpire: Long) = apply { body.minutesToExpire(minutesToExpire) }
+        fun minutesToExpire(minutesToExpire: Long?) = apply {
+            body.minutesToExpire(minutesToExpire)
+        }
+
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
+        fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
+
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun minutesToExpire(minutesToExpire: Optional<Long>) =
+            minutesToExpire(minutesToExpire.orElse(null) as Long?)
 
         /** The products to request access to (optional for reauthentication) */
-        fun products(products: List<ConnectProducts>) = apply { body.products(products) }
+        fun products(products: List<ConnectProducts>?) = apply { body.products(products) }
+
+        /** The products to request access to (optional for reauthentication) */
+        fun products(products: Optional<List<ConnectProducts>>) = products(products.orElse(null))
 
         /** The products to request access to (optional for reauthentication) */
         fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
         /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
+        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
+
+        /** The URI to redirect to after the Connect flow is completed */
+        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

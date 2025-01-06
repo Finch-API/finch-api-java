@@ -87,9 +87,13 @@ constructor(
             }
 
             /** Array of individual_ids to unenroll. */
-            fun individualIds(individualIds: List<String>) = apply {
-                this.individualIds = individualIds.toMutableList()
+            fun individualIds(individualIds: List<String>?) = apply {
+                this.individualIds = individualIds?.toMutableList()
             }
+
+            /** Array of individual_ids to unenroll. */
+            fun individualIds(individualIds: Optional<List<String>>) =
+                individualIds(individualIds.orElse(null))
 
             /** Array of individual_ids to unenroll. */
             fun addIndividualId(individualId: String) = apply {
@@ -171,7 +175,13 @@ constructor(
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
 
         /** Array of individual_ids to unenroll. */
-        fun individualIds(individualIds: List<String>) = apply { body.individualIds(individualIds) }
+        fun individualIds(individualIds: List<String>?) = apply {
+            body.individualIds(individualIds)
+        }
+
+        /** Array of individual_ids to unenroll. */
+        fun individualIds(individualIds: Optional<List<String>>) =
+            individualIds(individualIds.orElse(null))
 
         /** Array of individual_ids to unenroll. */
         fun addIndividualId(individualId: String) = apply { body.addIndividualId(individualId) }
