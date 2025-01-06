@@ -93,17 +93,24 @@ constructor(
                 additionalProperties = sandboxPaymentCreateBody.additionalProperties.toMutableMap()
             }
 
-            fun endDate(endDate: String) = apply { this.endDate = endDate }
+            fun endDate(endDate: String?) = apply { this.endDate = endDate }
 
-            fun payStatements(payStatements: List<PayStatement>) = apply {
-                this.payStatements = payStatements.toMutableList()
+            fun endDate(endDate: Optional<String>) = endDate(endDate.orElse(null))
+
+            fun payStatements(payStatements: List<PayStatement>?) = apply {
+                this.payStatements = payStatements?.toMutableList()
             }
+
+            fun payStatements(payStatements: Optional<List<PayStatement>>) =
+                payStatements(payStatements.orElse(null))
 
             fun addPayStatement(payStatement: PayStatement) = apply {
                 payStatements = (payStatements ?: mutableListOf()).apply { add(payStatement) }
             }
 
-            fun startDate(startDate: String) = apply { this.startDate = startDate }
+            fun startDate(startDate: String?) = apply { this.startDate = startDate }
+
+            fun startDate(startDate: Optional<String>) = startDate(startDate.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -172,17 +179,24 @@ constructor(
             additionalQueryParams = sandboxPaymentCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun endDate(endDate: String) = apply { body.endDate(endDate) }
+        fun endDate(endDate: String?) = apply { body.endDate(endDate) }
 
-        fun payStatements(payStatements: List<PayStatement>) = apply {
+        fun endDate(endDate: Optional<String>) = endDate(endDate.orElse(null))
+
+        fun payStatements(payStatements: List<PayStatement>?) = apply {
             body.payStatements(payStatements)
         }
+
+        fun payStatements(payStatements: Optional<List<PayStatement>>) =
+            payStatements(payStatements.orElse(null))
 
         fun addPayStatement(payStatement: PayStatement) = apply {
             body.addPayStatement(payStatement)
         }
 
-        fun startDate(startDate: String) = apply { body.startDate(startDate) }
+        fun startDate(startDate: String?) = apply { body.startDate(startDate) }
+
+        fun startDate(startDate: Optional<String>) = startDate(startDate.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -405,9 +419,12 @@ constructor(
             }
 
             /** The array of earnings objects associated with this pay statement */
-            fun earnings(earnings: List<Earning?>) = apply {
-                this.earnings = earnings.toMutableList()
+            fun earnings(earnings: List<Earning?>?) = apply {
+                this.earnings = earnings?.toMutableList()
             }
+
+            /** The array of earnings objects associated with this pay statement */
+            fun earnings(earnings: Optional<List<Earning?>>) = earnings(earnings.orElse(null))
 
             /** The array of earnings objects associated with this pay statement */
             fun addEarning(earning: Earning) = apply {
@@ -415,9 +432,13 @@ constructor(
             }
 
             /** The array of deductions objects associated with this pay statement. */
-            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>) = apply {
-                this.employeeDeductions = employeeDeductions.toMutableList()
+            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) = apply {
+                this.employeeDeductions = employeeDeductions?.toMutableList()
             }
+
+            /** The array of deductions objects associated with this pay statement. */
+            fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction?>>) =
+                employeeDeductions(employeeDeductions.orElse(null))
 
             /** The array of deductions objects associated with this pay statement. */
             fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
@@ -425,38 +446,68 @@ constructor(
                     (employeeDeductions ?: mutableListOf()).apply { add(employeeDeduction) }
             }
 
-            fun employerContributions(employerContributions: List<EmployerContribution?>) = apply {
-                this.employerContributions = employerContributions.toMutableList()
+            fun employerContributions(employerContributions: List<EmployerContribution?>?) = apply {
+                this.employerContributions = employerContributions?.toMutableList()
             }
+
+            fun employerContributions(
+                employerContributions: Optional<List<EmployerContribution?>>
+            ) = employerContributions(employerContributions.orElse(null))
 
             fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
                 employerContributions =
                     (employerContributions ?: mutableListOf()).apply { add(employerContribution) }
             }
 
-            fun grossPay(grossPay: Money) = apply { this.grossPay = grossPay }
+            fun grossPay(grossPay: Money?) = apply { this.grossPay = grossPay }
+
+            fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.orElse(null))
 
             /** A stable Finch `id` (UUID v4) for an individual in the company */
-            fun individualId(individualId: String) = apply { this.individualId = individualId }
+            fun individualId(individualId: String?) = apply { this.individualId = individualId }
 
-            fun netPay(netPay: Money) = apply { this.netPay = netPay }
+            /** A stable Finch `id` (UUID v4) for an individual in the company */
+            fun individualId(individualId: Optional<String>) =
+                individualId(individualId.orElse(null))
+
+            fun netPay(netPay: Money?) = apply { this.netPay = netPay }
+
+            fun netPay(netPay: Optional<Money>) = netPay(netPay.orElse(null))
 
             /** The payment method. */
-            fun paymentMethod(paymentMethod: PaymentMethod) = apply {
+            fun paymentMethod(paymentMethod: PaymentMethod?) = apply {
                 this.paymentMethod = paymentMethod
             }
 
+            /** The payment method. */
+            fun paymentMethod(paymentMethod: Optional<PaymentMethod>) =
+                paymentMethod(paymentMethod.orElse(null))
+
             /** The array of taxes objects associated with this pay statement. */
-            fun taxes(taxes: List<Tax?>) = apply { this.taxes = taxes.toMutableList() }
+            fun taxes(taxes: List<Tax?>?) = apply { this.taxes = taxes?.toMutableList() }
+
+            /** The array of taxes objects associated with this pay statement. */
+            fun taxes(taxes: Optional<List<Tax?>>) = taxes(taxes.orElse(null))
 
             /** The array of taxes objects associated with this pay statement. */
             fun addTax(tax: Tax) = apply { taxes = (taxes ?: mutableListOf()).apply { add(tax) } }
 
             /** The number of hours worked for this pay period */
-            fun totalHours(totalHours: Double) = apply { this.totalHours = totalHours }
+            fun totalHours(totalHours: Double?) = apply { this.totalHours = totalHours }
+
+            /** The number of hours worked for this pay period */
+            fun totalHours(totalHours: Double) = totalHours(totalHours as Double?)
+
+            /** The number of hours worked for this pay period */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun totalHours(totalHours: Optional<Double>) =
+                totalHours(totalHours.orElse(null) as Double?)
 
             /** The type of the payment associated with the pay statement. */
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type?) = apply { this.type = type }
+
+            /** The type of the payment associated with the pay statement. */
+            fun type(type: Optional<Type>) = type(type.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -556,22 +607,51 @@ constructor(
                 }
 
                 /** The earnings amount in cents. */
-                fun amount(amount: Long) = apply { this.amount = amount }
+                fun amount(amount: Long?) = apply { this.amount = amount }
+
+                /** The earnings amount in cents. */
+                fun amount(amount: Long) = amount(amount as Long?)
+
+                /** The earnings amount in cents. */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
                 /** The earnings currency code. */
-                fun currency(currency: String) = apply { this.currency = currency }
+                fun currency(currency: String?) = apply { this.currency = currency }
+
+                /** The earnings currency code. */
+                fun currency(currency: Optional<String>) = currency(currency.orElse(null))
 
                 /**
                  * The number of hours associated with this earning. (For salaried employees, this
                  * could be hours per pay period, `0` or `null`, depending on the provider).
                  */
-                fun hours(hours: Double) = apply { this.hours = hours }
+                fun hours(hours: Double?) = apply { this.hours = hours }
+
+                /**
+                 * The number of hours associated with this earning. (For salaried employees, this
+                 * could be hours per pay period, `0` or `null`, depending on the provider).
+                 */
+                fun hours(hours: Double) = hours(hours as Double?)
+
+                /**
+                 * The number of hours associated with this earning. (For salaried employees, this
+                 * could be hours per pay period, `0` or `null`, depending on the provider).
+                 */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun hours(hours: Optional<Double>) = hours(hours.orElse(null) as Double?)
 
                 /** The exact name of the deduction from the pay statement. */
-                fun name(name: String) = apply { this.name = name }
+                fun name(name: String?) = apply { this.name = name }
+
+                /** The exact name of the deduction from the pay statement. */
+                fun name(name: Optional<String>) = name(name.orElse(null))
 
                 /** The type of earning. */
-                fun type(type: Type) = apply { this.type = type }
+                fun type(type: Type?) = apply { this.type = type }
+
+                /** The type of earning. */
+                fun type(type: Optional<Type>) = type(type.orElse(null))
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -807,19 +887,42 @@ constructor(
                 }
 
                 /** The deduction amount in cents. */
-                fun amount(amount: Long) = apply { this.amount = amount }
+                fun amount(amount: Long?) = apply { this.amount = amount }
+
+                /** The deduction amount in cents. */
+                fun amount(amount: Long) = amount(amount as Long?)
+
+                /** The deduction amount in cents. */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
                 /** The deduction currency. */
-                fun currency(currency: String) = apply { this.currency = currency }
+                fun currency(currency: String?) = apply { this.currency = currency }
+
+                /** The deduction currency. */
+                fun currency(currency: Optional<String>) = currency(currency.orElse(null))
 
                 /** The deduction name from the pay statement. */
-                fun name(name: String) = apply { this.name = name }
+                fun name(name: String?) = apply { this.name = name }
+
+                /** The deduction name from the pay statement. */
+                fun name(name: Optional<String>) = name(name.orElse(null))
 
                 /** Boolean indicating if the deduction is pre-tax. */
-                fun preTax(preTax: Boolean) = apply { this.preTax = preTax }
+                fun preTax(preTax: Boolean?) = apply { this.preTax = preTax }
+
+                /** Boolean indicating if the deduction is pre-tax. */
+                fun preTax(preTax: Boolean) = preTax(preTax as Boolean?)
+
+                /** Boolean indicating if the deduction is pre-tax. */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun preTax(preTax: Optional<Boolean>) = preTax(preTax.orElse(null) as Boolean?)
 
                 /** Type of benefit. */
-                fun type(type: BenefitType) = apply { this.type = type }
+                fun type(type: BenefitType?) = apply { this.type = type }
+
+                /** Type of benefit. */
+                fun type(type: Optional<BenefitType>) = type(type.orElse(null))
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -926,16 +1029,32 @@ constructor(
                 }
 
                 /** The contribution amount in cents. */
-                fun amount(amount: Long) = apply { this.amount = amount }
+                fun amount(amount: Long?) = apply { this.amount = amount }
+
+                /** The contribution amount in cents. */
+                fun amount(amount: Long) = amount(amount as Long?)
+
+                /** The contribution amount in cents. */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
                 /** The contribution currency. */
-                fun currency(currency: String) = apply { this.currency = currency }
+                fun currency(currency: String?) = apply { this.currency = currency }
+
+                /** The contribution currency. */
+                fun currency(currency: Optional<String>) = currency(currency.orElse(null))
 
                 /** The contribution name from the pay statement. */
-                fun name(name: String) = apply { this.name = name }
+                fun name(name: String?) = apply { this.name = name }
+
+                /** The contribution name from the pay statement. */
+                fun name(name: Optional<String>) = name(name.orElse(null))
 
                 /** Type of benefit. */
-                fun type(type: BenefitType) = apply { this.type = type }
+                fun type(type: BenefitType?) = apply { this.type = type }
+
+                /** Type of benefit. */
+                fun type(type: Optional<BenefitType>) = type(type.orElse(null))
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1105,19 +1224,43 @@ constructor(
                 }
 
                 /** The tax amount in cents. */
-                fun amount(amount: Long) = apply { this.amount = amount }
+                fun amount(amount: Long?) = apply { this.amount = amount }
+
+                /** The tax amount in cents. */
+                fun amount(amount: Long) = amount(amount as Long?)
+
+                /** The tax amount in cents. */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
                 /** The currency code. */
-                fun currency(currency: String) = apply { this.currency = currency }
+                fun currency(currency: String?) = apply { this.currency = currency }
+
+                /** The currency code. */
+                fun currency(currency: Optional<String>) = currency(currency.orElse(null))
 
                 /** `true` if the amount is paid by the employers. */
-                fun employer(employer: Boolean) = apply { this.employer = employer }
+                fun employer(employer: Boolean?) = apply { this.employer = employer }
+
+                /** `true` if the amount is paid by the employers. */
+                fun employer(employer: Boolean) = employer(employer as Boolean?)
+
+                /** `true` if the amount is paid by the employers. */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun employer(employer: Optional<Boolean>) =
+                    employer(employer.orElse(null) as Boolean?)
 
                 /** The exact name of tax from the pay statement. */
-                fun name(name: String) = apply { this.name = name }
+                fun name(name: String?) = apply { this.name = name }
+
+                /** The exact name of tax from the pay statement. */
+                fun name(name: Optional<String>) = name(name.orElse(null))
 
                 /** The type of taxes. */
-                fun type(type: Type) = apply { this.type = type }
+                fun type(type: Type?) = apply { this.type = type }
+
+                /** The type of taxes. */
+                fun type(type: Optional<Type>) = type(type.orElse(null))
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()

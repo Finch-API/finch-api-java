@@ -80,11 +80,15 @@ constructor(
                         hrisIndividualRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
-            fun options(options: Options) = apply { this.options = options }
+            fun options(options: Options?) = apply { this.options = options }
 
-            fun requests(requests: List<Request>) = apply {
-                this.requests = requests.toMutableList()
+            fun options(options: Optional<Options>) = options(options.orElse(null))
+
+            fun requests(requests: List<Request>?) = apply {
+                this.requests = requests?.toMutableList()
             }
+
+            fun requests(requests: Optional<List<Request>>) = requests(requests.orElse(null))
 
             fun addRequest(request: Request) = apply {
                 requests = (requests ?: mutableListOf()).apply { add(request) }
@@ -159,9 +163,13 @@ constructor(
                     hrisIndividualRetrieveManyParams.additionalQueryParams.toBuilder()
             }
 
-        fun options(options: Options) = apply { body.options(options) }
+        fun options(options: Options?) = apply { body.options(options) }
 
-        fun requests(requests: List<Request>) = apply { body.requests(requests) }
+        fun options(options: Optional<Options>) = options(options.orElse(null))
+
+        fun requests(requests: List<Request>?) = apply { body.requests(requests) }
+
+        fun requests(requests: Optional<List<Request>>) = requests(requests.orElse(null))
 
         fun addRequest(request: Request) = apply { body.addRequest(request) }
 
@@ -324,7 +332,9 @@ constructor(
                 additionalProperties = options.additionalProperties.toMutableMap()
             }
 
-            fun include(include: List<String>) = apply { this.include = include.toMutableList() }
+            fun include(include: List<String>?) = apply { this.include = include?.toMutableList() }
+
+            fun include(include: Optional<List<String>>) = include(include.orElse(null))
 
             fun addInclude(include: String) = apply {
                 this.include = (this.include ?: mutableListOf()).apply { add(include) }
@@ -405,7 +415,10 @@ constructor(
                 additionalProperties = request.additionalProperties.toMutableMap()
             }
 
-            fun individualId(individualId: String) = apply { this.individualId = individualId }
+            fun individualId(individualId: String?) = apply { this.individualId = individualId }
+
+            fun individualId(individualId: Optional<String>) =
+                individualId(individualId.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

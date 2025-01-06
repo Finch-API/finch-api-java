@@ -59,11 +59,16 @@ constructor(
             additionalQueryParams = payrollPayGroupListParams.additionalQueryParams.toBuilder()
         }
 
-        fun individualId(individualId: String) = apply { this.individualId = individualId }
+        fun individualId(individualId: String?) = apply { this.individualId = individualId }
 
-        fun payFrequencies(payFrequencies: List<String>) = apply {
-            this.payFrequencies = payFrequencies.toMutableList()
+        fun individualId(individualId: Optional<String>) = individualId(individualId.orElse(null))
+
+        fun payFrequencies(payFrequencies: List<String>?) = apply {
+            this.payFrequencies = payFrequencies?.toMutableList()
         }
+
+        fun payFrequencies(payFrequencies: Optional<List<String>>) =
+            payFrequencies(payFrequencies.orElse(null))
 
         fun addPayFrequency(payFrequency: String) = apply {
             payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }

@@ -63,10 +63,24 @@ constructor(
             }
 
         /** Number of employees to return (defaults to all) */
-        fun limit(limit: Long) = apply { this.limit = limit }
+        fun limit(limit: Long?) = apply { this.limit = limit }
+
+        /** Number of employees to return (defaults to all) */
+        fun limit(limit: Long) = limit(limit as Long?)
+
+        /** Number of employees to return (defaults to all) */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
 
         /** Index to start from (defaults to 0) */
-        fun offset(offset: Long) = apply { this.offset = offset }
+        fun offset(offset: Long?) = apply { this.offset = offset }
+
+        /** Index to start from (defaults to 0) */
+        fun offset(offset: Long) = offset(offset as Long?)
+
+        /** Index to start from (defaults to 0) */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun offset(offset: Optional<Long>) = offset(offset.orElse(null) as Long?)
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
