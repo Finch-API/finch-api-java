@@ -11,6 +11,7 @@ import com.tryfinch.api.core.http.QueryParams
 import java.net.Proxy
 import java.time.Clock
 import java.time.Duration
+import java.util.Optional
 
 class FinchOkHttpClientAsync private constructor() {
 
@@ -128,15 +129,24 @@ class FinchOkHttpClientAsync private constructor() {
             clientOptions.responseValidation(responseValidation)
         }
 
-        fun accessToken(accessToken: String) = apply { clientOptions.accessToken(accessToken) }
+        fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
 
-        fun clientId(clientId: String) = apply { clientOptions.clientId(clientId) }
+        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.orElse(null))
 
-        fun clientSecret(clientSecret: String) = apply { clientOptions.clientSecret(clientSecret) }
+        fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
 
-        fun webhookSecret(webhookSecret: String) = apply {
+        fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
+
+        fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
+
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.orElse(null))
+
+        fun webhookSecret(webhookSecret: String?) = apply {
             clientOptions.webhookSecret(webhookSecret)
         }
+
+        fun webhookSecret(webhookSecret: Optional<String>) =
+            webhookSecret(webhookSecret.orElse(null))
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 

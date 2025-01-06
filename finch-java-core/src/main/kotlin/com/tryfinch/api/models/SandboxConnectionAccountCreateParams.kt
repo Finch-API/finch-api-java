@@ -115,17 +115,26 @@ constructor(
             /** The provider associated with the `access_token` */
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
-            fun authenticationType(authenticationType: AuthenticationType) = apply {
+            fun authenticationType(authenticationType: AuthenticationType?) = apply {
                 this.authenticationType = authenticationType
+            }
+
+            fun authenticationType(authenticationType: Optional<AuthenticationType>) =
+                authenticationType(authenticationType.orElse(null))
+
+            /**
+             * Optional, defaults to Organization products (`company`, `directory`, `employment`,
+             * `individual`)
+             */
+            fun products(products: List<String>?) = apply {
+                this.products = products?.toMutableList()
             }
 
             /**
              * Optional, defaults to Organization products (`company`, `directory`, `employment`,
              * `individual`)
              */
-            fun products(products: List<String>) = apply {
-                this.products = products.toMutableList()
-            }
+            fun products(products: Optional<List<String>>) = products(products.orElse(null))
 
             /**
              * Optional, defaults to Organization products (`company`, `directory`, `employment`,
@@ -212,15 +221,24 @@ constructor(
         /** The provider associated with the `access_token` */
         fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
-        fun authenticationType(authenticationType: AuthenticationType) = apply {
+        fun authenticationType(authenticationType: AuthenticationType?) = apply {
             body.authenticationType(authenticationType)
         }
+
+        fun authenticationType(authenticationType: Optional<AuthenticationType>) =
+            authenticationType(authenticationType.orElse(null))
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
-        fun products(products: List<String>) = apply { body.products(products) }
+        fun products(products: List<String>?) = apply { body.products(products) }
+
+        /**
+         * Optional, defaults to Organization products (`company`, `directory`, `employment`,
+         * `individual`)
+         */
+        fun products(products: Optional<List<String>>) = products(products.orElse(null))
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,

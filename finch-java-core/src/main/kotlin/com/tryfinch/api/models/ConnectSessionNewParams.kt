@@ -149,23 +149,53 @@ constructor(
                 products = (products ?: mutableListOf()).apply { add(product) }
             }
 
-            fun customerEmail(customerEmail: String) = apply { this.customerEmail = customerEmail }
+            fun customerEmail(customerEmail: String?) = apply { this.customerEmail = customerEmail }
 
-            fun integration(integration: Integration) = apply { this.integration = integration }
+            fun customerEmail(customerEmail: Optional<String>) =
+                customerEmail(customerEmail.orElse(null))
 
-            fun manual(manual: Boolean) = apply { this.manual = manual }
+            fun integration(integration: Integration?) = apply { this.integration = integration }
+
+            fun integration(integration: Optional<Integration>) =
+                integration(integration.orElse(null))
+
+            fun manual(manual: Boolean?) = apply { this.manual = manual }
+
+            fun manual(manual: Boolean) = manual(manual as Boolean?)
+
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun manual(manual: Optional<Boolean>) = manual(manual.orElse(null) as Boolean?)
 
             /**
              * The number of minutes until the session expires (defaults to 20,160, which is 14
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Double) = apply {
+            fun minutesToExpire(minutesToExpire: Double?) = apply {
                 this.minutesToExpire = minutesToExpire
             }
 
-            fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
+            /**
+             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * days)
+             */
+            fun minutesToExpire(minutesToExpire: Double) =
+                minutesToExpire(minutesToExpire as Double?)
 
-            fun sandbox(sandbox: Sandbox) = apply { this.sandbox = sandbox }
+            /**
+             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * days)
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun minutesToExpire(minutesToExpire: Optional<Double>) =
+                minutesToExpire(minutesToExpire.orElse(null) as Double?)
+
+            fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
+
+            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+
+            fun sandbox(sandbox: Sandbox?) = apply { this.sandbox = sandbox }
+
+            fun sandbox(sandbox: Optional<Sandbox>) = sandbox(sandbox.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -249,22 +279,48 @@ constructor(
 
         fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
-        fun customerEmail(customerEmail: String) = apply { body.customerEmail(customerEmail) }
+        fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
 
-        fun integration(integration: Integration) = apply { body.integration(integration) }
+        fun customerEmail(customerEmail: Optional<String>) =
+            customerEmail(customerEmail.orElse(null))
 
-        fun manual(manual: Boolean) = apply { body.manual(manual) }
+        fun integration(integration: Integration?) = apply { body.integration(integration) }
+
+        fun integration(integration: Optional<Integration>) = integration(integration.orElse(null))
+
+        fun manual(manual: Boolean?) = apply { body.manual(manual) }
+
+        fun manual(manual: Boolean) = manual(manual as Boolean?)
+
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun manual(manual: Optional<Boolean>) = manual(manual.orElse(null) as Boolean?)
 
         /**
          * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
          */
-        fun minutesToExpire(minutesToExpire: Double) = apply {
+        fun minutesToExpire(minutesToExpire: Double?) = apply {
             body.minutesToExpire(minutesToExpire)
         }
 
-        fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
+        fun minutesToExpire(minutesToExpire: Double) = minutesToExpire(minutesToExpire as Double?)
 
-        fun sandbox(sandbox: Sandbox) = apply { body.sandbox(sandbox) }
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun minutesToExpire(minutesToExpire: Optional<Double>) =
+            minutesToExpire(minutesToExpire.orElse(null) as Double?)
+
+        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
+
+        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+
+        fun sandbox(sandbox: Sandbox?) = apply { body.sandbox(sandbox) }
+
+        fun sandbox(sandbox: Optional<Sandbox>) = sandbox(sandbox.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -523,9 +579,13 @@ constructor(
                 additionalProperties = integration.additionalProperties.toMutableMap()
             }
 
-            fun authMethod(authMethod: AuthMethod) = apply { this.authMethod = authMethod }
+            fun authMethod(authMethod: AuthMethod?) = apply { this.authMethod = authMethod }
 
-            fun provider(provider: String) = apply { this.provider = provider }
+            fun authMethod(authMethod: Optional<AuthMethod>) = authMethod(authMethod.orElse(null))
+
+            fun provider(provider: String?) = apply { this.provider = provider }
+
+            fun provider(provider: Optional<String>) = provider(provider.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
