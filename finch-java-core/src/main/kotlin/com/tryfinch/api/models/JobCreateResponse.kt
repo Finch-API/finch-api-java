@@ -19,18 +19,21 @@ import java.util.Objects
 class JobCreateResponse
 @JsonCreator
 private constructor(
+    @JsonProperty("allowed_refreshes")
+    @ExcludeMissing
+    private val allowedRefreshes: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("job_url")
     @ExcludeMissing
     private val jobUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("allowed_refreshes")
-    @ExcludeMissing
-    private val allowedRefreshes: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("remaining_refreshes")
     @ExcludeMissing
     private val remainingRefreshes: JsonField<Long> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
+
+    /** The number of allowed refreshes per hour (per hour, fixed window) */
+    fun allowedRefreshes(): Long = allowedRefreshes.getRequired("allowed_refreshes")
 
     /** The id of the job that has been created. */
     fun jobId(): String = jobId.getRequired("job_id")
@@ -38,20 +41,17 @@ private constructor(
     /** The url that can be used to retrieve the job status */
     fun jobUrl(): String = jobUrl.getRequired("job_url")
 
-    /** The number of allowed refreshes per hour (per hour, fixed window) */
-    fun allowedRefreshes(): Long = allowedRefreshes.getRequired("allowed_refreshes")
-
     /** The number of remaining refreshes available (per hour, fixed window) */
     fun remainingRefreshes(): Long = remainingRefreshes.getRequired("remaining_refreshes")
+
+    /** The number of allowed refreshes per hour (per hour, fixed window) */
+    @JsonProperty("allowed_refreshes") @ExcludeMissing fun _allowedRefreshes() = allowedRefreshes
 
     /** The id of the job that has been created. */
     @JsonProperty("job_id") @ExcludeMissing fun _jobId() = jobId
 
     /** The url that can be used to retrieve the job status */
     @JsonProperty("job_url") @ExcludeMissing fun _jobUrl() = jobUrl
-
-    /** The number of allowed refreshes per hour (per hour, fixed window) */
-    @JsonProperty("allowed_refreshes") @ExcludeMissing fun _allowedRefreshes() = allowedRefreshes
 
     /** The number of remaining refreshes available (per hour, fixed window) */
     @JsonProperty("remaining_refreshes")
@@ -66,9 +66,9 @@ private constructor(
 
     fun validate(): JobCreateResponse = apply {
         if (!validated) {
+            allowedRefreshes()
             jobId()
             jobUrl()
-            allowedRefreshes()
             remainingRefreshes()
             validated = true
         }
@@ -83,19 +83,28 @@ private constructor(
 
     class Builder {
 
+        private var allowedRefreshes: JsonField<Long> = JsonMissing.of()
         private var jobId: JsonField<String> = JsonMissing.of()
         private var jobUrl: JsonField<String> = JsonMissing.of()
-        private var allowedRefreshes: JsonField<Long> = JsonMissing.of()
         private var remainingRefreshes: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(jobCreateResponse: JobCreateResponse) = apply {
+            allowedRefreshes = jobCreateResponse.allowedRefreshes
             jobId = jobCreateResponse.jobId
             jobUrl = jobCreateResponse.jobUrl
-            allowedRefreshes = jobCreateResponse.allowedRefreshes
             remainingRefreshes = jobCreateResponse.remainingRefreshes
             additionalProperties = jobCreateResponse.additionalProperties.toMutableMap()
+        }
+
+        /** The number of allowed refreshes per hour (per hour, fixed window) */
+        fun allowedRefreshes(allowedRefreshes: Long) =
+            allowedRefreshes(JsonField.of(allowedRefreshes))
+
+        /** The number of allowed refreshes per hour (per hour, fixed window) */
+        fun allowedRefreshes(allowedRefreshes: JsonField<Long>) = apply {
+            this.allowedRefreshes = allowedRefreshes
         }
 
         /** The id of the job that has been created. */
@@ -109,15 +118,6 @@ private constructor(
 
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
-
-        /** The number of allowed refreshes per hour (per hour, fixed window) */
-        fun allowedRefreshes(allowedRefreshes: Long) =
-            allowedRefreshes(JsonField.of(allowedRefreshes))
-
-        /** The number of allowed refreshes per hour (per hour, fixed window) */
-        fun allowedRefreshes(allowedRefreshes: JsonField<Long>) = apply {
-            this.allowedRefreshes = allowedRefreshes
-        }
 
         /** The number of remaining refreshes available (per hour, fixed window) */
         fun remainingRefreshes(remainingRefreshes: Long) =
@@ -149,9 +149,9 @@ private constructor(
 
         fun build(): JobCreateResponse =
             JobCreateResponse(
+                allowedRefreshes,
                 jobId,
                 jobUrl,
-                allowedRefreshes,
                 remainingRefreshes,
                 additionalProperties.toImmutable(),
             )
@@ -162,15 +162,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobCreateResponse && jobId == other.jobId && jobUrl == other.jobUrl && allowedRefreshes == other.allowedRefreshes && remainingRefreshes == other.remainingRefreshes && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is JobCreateResponse && allowedRefreshes == other.allowedRefreshes && jobId == other.jobId && jobUrl == other.jobUrl && remainingRefreshes == other.remainingRefreshes && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(jobId, jobUrl, allowedRefreshes, remainingRefreshes, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(allowedRefreshes, jobId, jobUrl, remainingRefreshes, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "JobCreateResponse{jobId=$jobId, jobUrl=$jobUrl, allowedRefreshes=$allowedRefreshes, remainingRefreshes=$remainingRefreshes, additionalProperties=$additionalProperties}"
+        "JobCreateResponse{allowedRefreshes=$allowedRefreshes, jobId=$jobId, jobUrl=$jobUrl, remainingRefreshes=$remainingRefreshes, additionalProperties=$additionalProperties}"
 }

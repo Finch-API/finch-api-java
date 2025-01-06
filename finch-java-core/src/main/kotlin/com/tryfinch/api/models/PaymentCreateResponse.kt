@@ -19,26 +19,26 @@ import java.util.Objects
 class PaymentCreateResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("payment_id")
-    @ExcludeMissing
-    private val paymentId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("pay_date")
     @ExcludeMissing
     private val payDate: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("payment_id")
+    @ExcludeMissing
+    private val paymentId: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /** The ID of the payment. */
-    fun paymentId(): String = paymentId.getRequired("payment_id")
 
     /** The date of the payment. */
     fun payDate(): String = payDate.getRequired("pay_date")
 
     /** The ID of the payment. */
-    @JsonProperty("payment_id") @ExcludeMissing fun _paymentId() = paymentId
+    fun paymentId(): String = paymentId.getRequired("payment_id")
 
     /** The date of the payment. */
     @JsonProperty("pay_date") @ExcludeMissing fun _payDate() = payDate
+
+    /** The ID of the payment. */
+    @JsonProperty("payment_id") @ExcludeMissing fun _paymentId() = paymentId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -48,8 +48,8 @@ private constructor(
 
     fun validate(): PaymentCreateResponse = apply {
         if (!validated) {
-            paymentId()
             payDate()
+            paymentId()
             validated = true
         }
     }
@@ -63,28 +63,28 @@ private constructor(
 
     class Builder {
 
-        private var paymentId: JsonField<String> = JsonMissing.of()
         private var payDate: JsonField<String> = JsonMissing.of()
+        private var paymentId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(paymentCreateResponse: PaymentCreateResponse) = apply {
-            paymentId = paymentCreateResponse.paymentId
             payDate = paymentCreateResponse.payDate
+            paymentId = paymentCreateResponse.paymentId
             additionalProperties = paymentCreateResponse.additionalProperties.toMutableMap()
         }
-
-        /** The ID of the payment. */
-        fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
-
-        /** The ID of the payment. */
-        fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
         /** The date of the payment. */
         fun payDate(payDate: String) = payDate(JsonField.of(payDate))
 
         /** The date of the payment. */
         fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
+
+        /** The ID of the payment. */
+        fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
+
+        /** The ID of the payment. */
+        fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -107,8 +107,8 @@ private constructor(
 
         fun build(): PaymentCreateResponse =
             PaymentCreateResponse(
-                paymentId,
                 payDate,
+                paymentId,
                 additionalProperties.toImmutable(),
             )
     }
@@ -118,15 +118,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PaymentCreateResponse && paymentId == other.paymentId && payDate == other.payDate && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is PaymentCreateResponse && payDate == other.payDate && paymentId == other.paymentId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(paymentId, payDate, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(payDate, paymentId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PaymentCreateResponse{paymentId=$paymentId, payDate=$payDate, additionalProperties=$additionalProperties}"
+        "PaymentCreateResponse{payDate=$payDate, paymentId=$paymentId, additionalProperties=$additionalProperties}"
 }

@@ -22,29 +22,29 @@ import java.util.Optional
 class ManualAsyncJob
 @JsonCreator
 private constructor(
+    @JsonProperty("body")
+    @ExcludeMissing
+    private val body: JsonField<List<JsonValue>> = JsonMissing.of(),
     @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("status")
     @ExcludeMissing
     private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("body")
-    @ExcludeMissing
-    private val body: JsonField<List<JsonValue>> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
+
+    /** Specific information about the job, such as individual statuses for batch jobs. */
+    fun body(): Optional<List<JsonValue>> = Optional.ofNullable(body.getNullable("body"))
 
     fun jobId(): String = jobId.getRequired("job_id")
 
     fun status(): Status = status.getRequired("status")
 
     /** Specific information about the job, such as individual statuses for batch jobs. */
-    fun body(): Optional<List<JsonValue>> = Optional.ofNullable(body.getNullable("body"))
+    @JsonProperty("body") @ExcludeMissing fun _body() = body
 
     @JsonProperty("job_id") @ExcludeMissing fun _jobId() = jobId
 
     @JsonProperty("status") @ExcludeMissing fun _status() = status
-
-    /** Specific information about the job, such as individual statuses for batch jobs. */
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -54,9 +54,9 @@ private constructor(
 
     fun validate(): ManualAsyncJob = apply {
         if (!validated) {
+            body()
             jobId()
             status()
-            body()
             validated = true
         }
     }
@@ -70,18 +70,24 @@ private constructor(
 
     class Builder {
 
+        private var body: JsonField<List<JsonValue>> = JsonMissing.of()
         private var jobId: JsonField<String> = JsonMissing.of()
         private var status: JsonField<Status> = JsonMissing.of()
-        private var body: JsonField<List<JsonValue>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(manualAsyncJob: ManualAsyncJob) = apply {
+            body = manualAsyncJob.body
             jobId = manualAsyncJob.jobId
             status = manualAsyncJob.status
-            body = manualAsyncJob.body
             additionalProperties = manualAsyncJob.additionalProperties.toMutableMap()
         }
+
+        /** Specific information about the job, such as individual statuses for batch jobs. */
+        fun body(body: List<JsonValue>) = body(JsonField.of(body))
+
+        /** Specific information about the job, such as individual statuses for batch jobs. */
+        fun body(body: JsonField<List<JsonValue>>) = apply { this.body = body }
 
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
@@ -90,12 +96,6 @@ private constructor(
         fun status(status: Status) = status(JsonField.of(status))
 
         fun status(status: JsonField<Status>) = apply { this.status = status }
-
-        /** Specific information about the job, such as individual statuses for batch jobs. */
-        fun body(body: List<JsonValue>) = body(JsonField.of(body))
-
-        /** Specific information about the job, such as individual statuses for batch jobs. */
-        fun body(body: JsonField<List<JsonValue>>) = apply { this.body = body }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -118,9 +118,9 @@ private constructor(
 
         fun build(): ManualAsyncJob =
             ManualAsyncJob(
+                body.map { it.toImmutable() },
                 jobId,
                 status,
-                body.map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }
@@ -199,15 +199,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ManualAsyncJob && jobId == other.jobId && status == other.status && body == other.body && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ManualAsyncJob && body == other.body && jobId == other.jobId && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(jobId, status, body, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(body, jobId, status, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ManualAsyncJob{jobId=$jobId, status=$status, body=$body, additionalProperties=$additionalProperties}"
+        "ManualAsyncJob{body=$body, jobId=$jobId, status=$status, additionalProperties=$additionalProperties}"
 }

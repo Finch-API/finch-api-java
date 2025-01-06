@@ -27,7 +27,6 @@ import java.util.Optional
 class Income
 @JsonCreator
 private constructor(
-    @JsonProperty("unit") @ExcludeMissing private val unit: JsonField<Unit> = JsonMissing.of(),
     @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("currency")
     @ExcludeMissing
@@ -35,14 +34,9 @@ private constructor(
     @JsonProperty("effective_date")
     @ExcludeMissing
     private val effectiveDate: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("unit") @ExcludeMissing private val unit: JsonField<Unit> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /**
-     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
-     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
-     */
-    fun unit(): Optional<Unit> = Optional.ofNullable(unit.getNullable("unit"))
 
     /** The income amount in cents. */
     fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
@@ -58,7 +52,7 @@ private constructor(
      * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
      * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
      */
-    @JsonProperty("unit") @ExcludeMissing fun _unit() = unit
+    fun unit(): Optional<Unit> = Optional.ofNullable(unit.getNullable("unit"))
 
     /** The income amount in cents. */
     @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
@@ -69,6 +63,12 @@ private constructor(
     /** The date the income amount went into effect. */
     @JsonProperty("effective_date") @ExcludeMissing fun _effectiveDate() = effectiveDate
 
+    /**
+     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     */
+    @JsonProperty("unit") @ExcludeMissing fun _unit() = unit
+
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -77,10 +77,10 @@ private constructor(
 
     fun validate(): Income = apply {
         if (!validated) {
-            unit()
             amount()
             currency()
             effectiveDate()
+            unit()
             validated = true
         }
     }
@@ -94,32 +94,20 @@ private constructor(
 
     class Builder {
 
-        private var unit: JsonField<Unit> = JsonMissing.of()
         private var amount: JsonField<Long> = JsonMissing.of()
         private var currency: JsonField<String> = JsonMissing.of()
         private var effectiveDate: JsonField<String> = JsonMissing.of()
+        private var unit: JsonField<Unit> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(income: Income) = apply {
-            unit = income.unit
             amount = income.amount
             currency = income.currency
             effectiveDate = income.effectiveDate
+            unit = income.unit
             additionalProperties = income.additionalProperties.toMutableMap()
         }
-
-        /**
-         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
-         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
-         */
-        fun unit(unit: Unit) = unit(JsonField.of(unit))
-
-        /**
-         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
-         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
-         */
-        fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
 
         /** The income amount in cents. */
         fun amount(amount: Long) = amount(JsonField.of(amount))
@@ -140,6 +128,18 @@ private constructor(
         fun effectiveDate(effectiveDate: JsonField<String>) = apply {
             this.effectiveDate = effectiveDate
         }
+
+        /**
+         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+         */
+        fun unit(unit: Unit) = unit(JsonField.of(unit))
+
+        /**
+         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+         */
+        fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -162,10 +162,10 @@ private constructor(
 
         fun build(): Income =
             Income(
-                unit,
                 amount,
                 currency,
                 effectiveDate,
+                unit,
                 additionalProperties.toImmutable(),
             )
     }
@@ -274,15 +274,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Income && unit == other.unit && amount == other.amount && currency == other.currency && effectiveDate == other.effectiveDate && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Income && amount == other.amount && currency == other.currency && effectiveDate == other.effectiveDate && unit == other.unit && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(unit, amount, currency, effectiveDate, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(amount, currency, effectiveDate, unit, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Income{unit=$unit, amount=$amount, currency=$currency, effectiveDate=$effectiveDate, additionalProperties=$additionalProperties}"
+        "Income{amount=$amount, currency=$currency, effectiveDate=$effectiveDate, unit=$unit, additionalProperties=$additionalProperties}"
 }
