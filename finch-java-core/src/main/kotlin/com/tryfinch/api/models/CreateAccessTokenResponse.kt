@@ -25,15 +25,6 @@ private constructor(
     @JsonProperty("access_token")
     @ExcludeMissing
     private val accessToken: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("token_type")
-    @ExcludeMissing
-    private val tokenType: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("customer_id")
-    @ExcludeMissing
-    private val customerId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("account_id")
     @ExcludeMissing
     private val accountId: JsonField<String> = JsonMissing.of(),
@@ -43,6 +34,9 @@ private constructor(
     @JsonProperty("company_id")
     @ExcludeMissing
     private val companyId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("connection_type")
     @ExcludeMissing
     private val connectionType: JsonField<ConnectionType> = JsonMissing.of(),
@@ -52,23 +46,17 @@ private constructor(
     @JsonProperty("provider_id")
     @ExcludeMissing
     private val providerId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("customer_id")
+    @ExcludeMissing
+    private val customerId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("token_type")
+    @ExcludeMissing
+    private val tokenType: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The access token for the connection. */
     fun accessToken(): String = accessToken.getRequired("access_token")
-
-    /** The RFC 8693 token type (Finch uses `bearer` tokens) */
-    fun tokenType(): Optional<String> = Optional.ofNullable(tokenType.getNullable("token_type"))
-
-    /** The Finch UUID of the connection associated with the `access_token`. */
-    fun connectionId(): String = connectionId.getRequired("connection_id")
-
-    /**
-     * The ID of your customer you provided to Finch when a connect session was created for this
-     * connection.
-     */
-    fun customerId(): Optional<String> = Optional.ofNullable(customerId.getNullable("customer_id"))
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
     fun accountId(): String = accountId.getRequired("account_id")
@@ -78,6 +66,9 @@ private constructor(
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID. */
     fun companyId(): String = companyId.getRequired("company_id")
+
+    /** The Finch UUID of the connection associated with the `access_token`. */
+    fun connectionId(): String = connectionId.getRequired("connection_id")
 
     /**
      * The type of the connection associated with the token.
@@ -92,20 +83,17 @@ private constructor(
     /** The ID of the provider associated with the `access_token`. */
     fun providerId(): String = providerId.getRequired("provider_id")
 
-    /** The access token for the connection. */
-    @JsonProperty("access_token") @ExcludeMissing fun _accessToken() = accessToken
-
-    /** The RFC 8693 token type (Finch uses `bearer` tokens) */
-    @JsonProperty("token_type") @ExcludeMissing fun _tokenType() = tokenType
-
-    /** The Finch UUID of the connection associated with the `access_token`. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
-
     /**
      * The ID of your customer you provided to Finch when a connect session was created for this
      * connection.
      */
-    @JsonProperty("customer_id") @ExcludeMissing fun _customerId() = customerId
+    fun customerId(): Optional<String> = Optional.ofNullable(customerId.getNullable("customer_id"))
+
+    /** The RFC 8693 token type (Finch uses `bearer` tokens) */
+    fun tokenType(): Optional<String> = Optional.ofNullable(tokenType.getNullable("token_type"))
+
+    /** The access token for the connection. */
+    @JsonProperty("access_token") @ExcludeMissing fun _accessToken() = accessToken
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
@@ -115,6 +103,9 @@ private constructor(
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID. */
     @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+
+    /** The Finch UUID of the connection associated with the `access_token`. */
+    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
 
     /**
      * The type of the connection associated with the token.
@@ -129,6 +120,15 @@ private constructor(
     /** The ID of the provider associated with the `access_token`. */
     @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
 
+    /**
+     * The ID of your customer you provided to Finch when a connect session was created for this
+     * connection.
+     */
+    @JsonProperty("customer_id") @ExcludeMissing fun _customerId() = customerId
+
+    /** The RFC 8693 token type (Finch uses `bearer` tokens) */
+    @JsonProperty("token_type") @ExcludeMissing fun _tokenType() = tokenType
+
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -138,15 +138,15 @@ private constructor(
     fun validate(): CreateAccessTokenResponse = apply {
         if (!validated) {
             accessToken()
-            tokenType()
-            connectionId()
-            customerId()
             accountId()
             clientType()
             companyId()
+            connectionId()
             connectionType()
             products()
             providerId()
+            customerId()
+            tokenType()
             validated = true
         }
     }
@@ -161,29 +161,29 @@ private constructor(
     class Builder {
 
         private var accessToken: JsonField<String> = JsonMissing.of()
-        private var tokenType: JsonField<String> = JsonMissing.of()
-        private var connectionId: JsonField<String> = JsonMissing.of()
-        private var customerId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
         private var clientType: JsonField<ClientType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
+        private var connectionId: JsonField<String> = JsonMissing.of()
         private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
         private var providerId: JsonField<String> = JsonMissing.of()
+        private var customerId: JsonField<String> = JsonMissing.of()
+        private var tokenType: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(createAccessTokenResponse: CreateAccessTokenResponse) = apply {
             accessToken = createAccessTokenResponse.accessToken
-            tokenType = createAccessTokenResponse.tokenType
-            connectionId = createAccessTokenResponse.connectionId
-            customerId = createAccessTokenResponse.customerId
             accountId = createAccessTokenResponse.accountId
             clientType = createAccessTokenResponse.clientType
             companyId = createAccessTokenResponse.companyId
+            connectionId = createAccessTokenResponse.connectionId
             connectionType = createAccessTokenResponse.connectionType
             products = createAccessTokenResponse.products
             providerId = createAccessTokenResponse.providerId
+            customerId = createAccessTokenResponse.customerId
+            tokenType = createAccessTokenResponse.tokenType
             additionalProperties = createAccessTokenResponse.additionalProperties.toMutableMap()
         }
 
@@ -192,32 +192,6 @@ private constructor(
 
         /** The access token for the connection. */
         fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
-
-        /** The RFC 8693 token type (Finch uses `bearer` tokens) */
-        fun tokenType(tokenType: String) = tokenType(JsonField.of(tokenType))
-
-        /** The RFC 8693 token type (Finch uses `bearer` tokens) */
-        fun tokenType(tokenType: JsonField<String>) = apply { this.tokenType = tokenType }
-
-        /** The Finch UUID of the connection associated with the `access_token`. */
-        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
-
-        /** The Finch UUID of the connection associated with the `access_token`. */
-        fun connectionId(connectionId: JsonField<String>) = apply {
-            this.connectionId = connectionId
-        }
-
-        /**
-         * The ID of your customer you provided to Finch when a connect session was created for this
-         * connection.
-         */
-        fun customerId(customerId: String) = customerId(JsonField.of(customerId))
-
-        /**
-         * The ID of your customer you provided to Finch when a connect session was created for this
-         * connection.
-         */
-        fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID.
@@ -244,6 +218,14 @@ private constructor(
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID.
          */
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+
+        /** The Finch UUID of the connection associated with the `access_token`. */
+        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+
+        /** The Finch UUID of the connection associated with the `access_token`. */
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            this.connectionId = connectionId
+        }
 
         /**
          * The type of the connection associated with the token.
@@ -274,6 +256,24 @@ private constructor(
         /** The ID of the provider associated with the `access_token`. */
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
+        /**
+         * The ID of your customer you provided to Finch when a connect session was created for this
+         * connection.
+         */
+        fun customerId(customerId: String) = customerId(JsonField.of(customerId))
+
+        /**
+         * The ID of your customer you provided to Finch when a connect session was created for this
+         * connection.
+         */
+        fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
+
+        /** The RFC 8693 token type (Finch uses `bearer` tokens) */
+        fun tokenType(tokenType: String) = tokenType(JsonField.of(tokenType))
+
+        /** The RFC 8693 token type (Finch uses `bearer` tokens) */
+        fun tokenType(tokenType: JsonField<String>) = apply { this.tokenType = tokenType }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -296,15 +296,15 @@ private constructor(
         fun build(): CreateAccessTokenResponse =
             CreateAccessTokenResponse(
                 accessToken,
-                tokenType,
-                connectionId,
-                customerId,
                 accountId,
                 clientType,
                 companyId,
+                connectionId,
                 connectionType,
                 products.map { it.toImmutable() },
                 providerId,
+                customerId,
+                tokenType,
                 additionalProperties.toImmutable(),
             )
     }
@@ -434,15 +434,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CreateAccessTokenResponse && accessToken == other.accessToken && tokenType == other.tokenType && connectionId == other.connectionId && customerId == other.customerId && accountId == other.accountId && clientType == other.clientType && companyId == other.companyId && connectionType == other.connectionType && products == other.products && providerId == other.providerId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is CreateAccessTokenResponse && accessToken == other.accessToken && accountId == other.accountId && clientType == other.clientType && companyId == other.companyId && connectionId == other.connectionId && connectionType == other.connectionType && products == other.products && providerId == other.providerId && customerId == other.customerId && tokenType == other.tokenType && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(accessToken, tokenType, connectionId, customerId, accountId, clientType, companyId, connectionType, products, providerId, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(accessToken, accountId, clientType, companyId, connectionId, connectionType, products, providerId, customerId, tokenType, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CreateAccessTokenResponse{accessToken=$accessToken, tokenType=$tokenType, connectionId=$connectionId, customerId=$customerId, accountId=$accountId, clientType=$clientType, companyId=$companyId, connectionType=$connectionType, products=$products, providerId=$providerId, additionalProperties=$additionalProperties}"
+        "CreateAccessTokenResponse{accessToken=$accessToken, accountId=$accountId, clientType=$clientType, companyId=$companyId, connectionId=$connectionId, connectionType=$connectionType, products=$products, providerId=$providerId, customerId=$customerId, tokenType=$tokenType, additionalProperties=$additionalProperties}"
 }

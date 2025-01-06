@@ -20,28 +20,28 @@ import java.util.Optional
 class UnenrolledIndividual
 @JsonCreator
 private constructor(
+    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
+    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("individual_id")
     @ExcludeMissing
     private val individualId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    fun individualId(): Optional<String> =
-        Optional.ofNullable(individualId.getNullable("individual_id"))
+    fun body(): Optional<Body> = Optional.ofNullable(body.getNullable("body"))
 
     /** HTTP status code */
     fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
 
-    fun body(): Optional<Body> = Optional.ofNullable(body.getNullable("body"))
+    fun individualId(): Optional<String> =
+        Optional.ofNullable(individualId.getNullable("individual_id"))
 
-    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+    @JsonProperty("body") @ExcludeMissing fun _body() = body
 
     /** HTTP status code */
     @JsonProperty("code") @ExcludeMissing fun _code() = code
 
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -51,9 +51,9 @@ private constructor(
 
     fun validate(): UnenrolledIndividual = apply {
         if (!validated) {
-            individualId()
-            code()
             body().map { it.validate() }
+            code()
+            individualId()
             validated = true
         }
     }
@@ -67,24 +67,22 @@ private constructor(
 
     class Builder {
 
-        private var individualId: JsonField<String> = JsonMissing.of()
-        private var code: JsonField<Long> = JsonMissing.of()
         private var body: JsonField<Body> = JsonMissing.of()
+        private var code: JsonField<Long> = JsonMissing.of()
+        private var individualId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(unenrolledIndividual: UnenrolledIndividual) = apply {
-            individualId = unenrolledIndividual.individualId
-            code = unenrolledIndividual.code
             body = unenrolledIndividual.body
+            code = unenrolledIndividual.code
+            individualId = unenrolledIndividual.individualId
             additionalProperties = unenrolledIndividual.additionalProperties.toMutableMap()
         }
 
-        fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+        fun body(body: Body) = body(JsonField.of(body))
 
-        fun individualId(individualId: JsonField<String>) = apply {
-            this.individualId = individualId
-        }
+        fun body(body: JsonField<Body>) = apply { this.body = body }
 
         /** HTTP status code */
         fun code(code: Long) = code(JsonField.of(code))
@@ -92,9 +90,11 @@ private constructor(
         /** HTTP status code */
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
-        fun body(body: Body) = body(JsonField.of(body))
+        fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-        fun body(body: JsonField<Body>) = apply { this.body = body }
+        fun individualId(individualId: JsonField<String>) = apply {
+            this.individualId = individualId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -117,9 +117,9 @@ private constructor(
 
         fun build(): UnenrolledIndividual =
             UnenrolledIndividual(
-                individualId,
-                code,
                 body,
+                code,
+                individualId,
                 additionalProperties.toImmutable(),
             )
     }
@@ -128,21 +128,18 @@ private constructor(
     class Body
     @JsonCreator
     private constructor(
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("finch_code")
         @ExcludeMissing
         private val finchCode: JsonField<String> = JsonMissing.of(),
         @JsonProperty("message")
         @ExcludeMissing
         private val message: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        /** Identifier indicating whether the benefit was newly enrolled or updated. */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /** A descriptive identifier for the response. */
         fun finchCode(): Optional<String> = Optional.ofNullable(finchCode.getNullable("finch_code"))
@@ -151,13 +148,16 @@ private constructor(
         fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
 
         /** Identifier indicating whether the benefit was newly enrolled or updated. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /** A descriptive identifier for the response. */
         @JsonProperty("finch_code") @ExcludeMissing fun _finchCode() = finchCode
 
         /** Short description in English that provides more information about the response. */
         @JsonProperty("message") @ExcludeMissing fun _message() = message
+
+        /** Identifier indicating whether the benefit was newly enrolled or updated. */
+        @JsonProperty("name") @ExcludeMissing fun _name() = name
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -167,9 +167,9 @@ private constructor(
 
         fun validate(): Body = apply {
             if (!validated) {
-                name()
                 finchCode()
                 message()
+                name()
                 validated = true
             }
         }
@@ -183,24 +183,18 @@ private constructor(
 
         class Builder {
 
-            private var name: JsonField<String> = JsonMissing.of()
             private var finchCode: JsonField<String> = JsonMissing.of()
             private var message: JsonField<String> = JsonMissing.of()
+            private var name: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                name = body.name
                 finchCode = body.finchCode
                 message = body.message
+                name = body.name
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
-
-            /** Identifier indicating whether the benefit was newly enrolled or updated. */
-            fun name(name: String) = name(JsonField.of(name))
-
-            /** Identifier indicating whether the benefit was newly enrolled or updated. */
-            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** A descriptive identifier for the response. */
             fun finchCode(finchCode: String) = finchCode(JsonField.of(finchCode))
@@ -213,6 +207,12 @@ private constructor(
 
             /** Short description in English that provides more information about the response. */
             fun message(message: JsonField<String>) = apply { this.message = message }
+
+            /** Identifier indicating whether the benefit was newly enrolled or updated. */
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** Identifier indicating whether the benefit was newly enrolled or updated. */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -235,9 +235,9 @@ private constructor(
 
             fun build(): Body =
                 Body(
-                    name,
                     finchCode,
                     message,
+                    name,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -247,17 +247,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && name == other.name && finchCode == other.finchCode && message == other.message && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && finchCode == other.finchCode && message == other.message && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(name, finchCode, message, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(finchCode, message, name, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{name=$name, finchCode=$finchCode, message=$message, additionalProperties=$additionalProperties}"
+            "Body{finchCode=$finchCode, message=$message, name=$name, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -265,15 +265,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UnenrolledIndividual && individualId == other.individualId && code == other.code && body == other.body && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is UnenrolledIndividual && body == other.body && code == other.code && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(individualId, code, body, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(body, code, individualId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "UnenrolledIndividual{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"
+        "UnenrolledIndividual{body=$body, code=$code, individualId=$individualId, additionalProperties=$additionalProperties}"
 }

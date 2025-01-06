@@ -791,20 +791,20 @@ constructor(
     class Employment
     @JsonCreator
     private constructor(
-        @JsonProperty("type") private val type: Type?,
         @JsonProperty("subtype") private val subtype: Subtype?,
+        @JsonProperty("type") private val type: Type?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        /** The main employment type of the individual. */
-        @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
         /**
          * The secondary employment type of the individual. Options: `full_time`, `part_time`,
          * `intern`, `temp`, `seasonal` and `individual_contractor`.
          */
         @JsonProperty("subtype") fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype)
+
+        /** The main employment type of the individual. */
+        @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -819,25 +819,25 @@ constructor(
 
         class Builder {
 
-            private var type: Type? = null
             private var subtype: Subtype? = null
+            private var type: Type? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(employment: Employment) = apply {
-                type = employment.type
                 subtype = employment.subtype
+                type = employment.type
                 additionalProperties = employment.additionalProperties.toMutableMap()
             }
-
-            /** The main employment type of the individual. */
-            fun type(type: Type) = apply { this.type = type }
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
             fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
+
+            /** The main employment type of the individual. */
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -860,8 +860,8 @@ constructor(
 
             fun build(): Employment =
                 Employment(
-                    type,
                     subtype,
+                    type,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -1009,17 +1009,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Employment && type == other.type && subtype == other.subtype && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Employment && subtype == other.subtype && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(type, subtype, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(subtype, type, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
+            "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
     class EmploymentStatus

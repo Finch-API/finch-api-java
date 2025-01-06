@@ -438,17 +438,17 @@ constructor(
     class W4FormEmployeeSync
     @JsonCreator
     private constructor(
-        @JsonProperty("type") private val type: Type,
         @JsonProperty("individual_id") private val individualId: String,
+        @JsonProperty("type") private val type: Type,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The type of job to start. */
-        @JsonProperty("type") fun type(): Type = type
-
         /** The unique ID of the individual for W-4 data sync. */
         @JsonProperty("individual_id") fun individualId(): String = individualId
+
+        /** The type of job to start. */
+        @JsonProperty("type") fun type(): Type = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -463,22 +463,22 @@ constructor(
 
         class Builder {
 
-            private var type: Type? = null
             private var individualId: String? = null
+            private var type: Type? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(w4FormEmployeeSync: W4FormEmployeeSync) = apply {
-                type = w4FormEmployeeSync.type
                 individualId = w4FormEmployeeSync.individualId
+                type = w4FormEmployeeSync.type
                 additionalProperties = w4FormEmployeeSync.additionalProperties.toMutableMap()
             }
 
-            /** The type of job to start. */
-            fun type(type: Type) = apply { this.type = type }
-
             /** The unique ID of the individual for W-4 data sync. */
             fun individualId(individualId: String) = apply { this.individualId = individualId }
+
+            /** The type of job to start. */
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -501,8 +501,8 @@ constructor(
 
             fun build(): W4FormEmployeeSync =
                 W4FormEmployeeSync(
-                    checkNotNull(type) { "`type` is required but was not set" },
                     checkNotNull(individualId) { "`individualId` is required but was not set" },
+                    checkNotNull(type) { "`type` is required but was not set" },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -563,17 +563,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is W4FormEmployeeSync && type == other.type && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is W4FormEmployeeSync && individualId == other.individualId && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(type, individualId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(individualId, type, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "W4FormEmployeeSync{type=$type, individualId=$individualId, additionalProperties=$additionalProperties}"
+            "W4FormEmployeeSync{individualId=$individualId, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

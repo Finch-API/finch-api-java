@@ -20,27 +20,27 @@ import java.util.Optional
 class PayStatementResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("payment_id")
-    @ExcludeMissing
-    private val paymentId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("body")
     @ExcludeMissing
     private val body: JsonField<PayStatementResponseBody> = JsonMissing.of(),
+    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("payment_id")
+    @ExcludeMissing
+    private val paymentId: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    fun paymentId(): Optional<String> = Optional.ofNullable(paymentId.getNullable("payment_id"))
+    fun body(): Optional<PayStatementResponseBody> = Optional.ofNullable(body.getNullable("body"))
 
     fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
 
-    fun body(): Optional<PayStatementResponseBody> = Optional.ofNullable(body.getNullable("body"))
+    fun paymentId(): Optional<String> = Optional.ofNullable(paymentId.getNullable("payment_id"))
 
-    @JsonProperty("payment_id") @ExcludeMissing fun _paymentId() = paymentId
+    @JsonProperty("body") @ExcludeMissing fun _body() = body
 
     @JsonProperty("code") @ExcludeMissing fun _code() = code
 
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("payment_id") @ExcludeMissing fun _paymentId() = paymentId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -50,9 +50,9 @@ private constructor(
 
     fun validate(): PayStatementResponse = apply {
         if (!validated) {
-            paymentId()
-            code()
             body().map { it.validate() }
+            code()
+            paymentId()
             validated = true
         }
     }
@@ -66,30 +66,30 @@ private constructor(
 
     class Builder {
 
-        private var paymentId: JsonField<String> = JsonMissing.of()
-        private var code: JsonField<Long> = JsonMissing.of()
         private var body: JsonField<PayStatementResponseBody> = JsonMissing.of()
+        private var code: JsonField<Long> = JsonMissing.of()
+        private var paymentId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(payStatementResponse: PayStatementResponse) = apply {
-            paymentId = payStatementResponse.paymentId
-            code = payStatementResponse.code
             body = payStatementResponse.body
+            code = payStatementResponse.code
+            paymentId = payStatementResponse.paymentId
             additionalProperties = payStatementResponse.additionalProperties.toMutableMap()
         }
 
-        fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
+        fun body(body: PayStatementResponseBody) = body(JsonField.of(body))
 
-        fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
+        fun body(body: JsonField<PayStatementResponseBody>) = apply { this.body = body }
 
         fun code(code: Long) = code(JsonField.of(code))
 
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
-        fun body(body: PayStatementResponseBody) = body(JsonField.of(body))
+        fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
 
-        fun body(body: JsonField<PayStatementResponseBody>) = apply { this.body = body }
+        fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -112,9 +112,9 @@ private constructor(
 
         fun build(): PayStatementResponse =
             PayStatementResponse(
-                paymentId,
-                code,
                 body,
+                code,
+                paymentId,
                 additionalProperties.toImmutable(),
             )
     }
@@ -124,15 +124,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PayStatementResponse && paymentId == other.paymentId && code == other.code && body == other.body && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is PayStatementResponse && body == other.body && code == other.code && paymentId == other.paymentId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(paymentId, code, body, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(body, code, paymentId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PayStatementResponse{paymentId=$paymentId, code=$code, body=$body, additionalProperties=$additionalProperties}"
+        "PayStatementResponse{body=$body, code=$code, paymentId=$paymentId, additionalProperties=$additionalProperties}"
 }

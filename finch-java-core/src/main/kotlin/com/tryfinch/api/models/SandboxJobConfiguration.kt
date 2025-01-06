@@ -21,20 +21,20 @@ import java.util.Objects
 class SandboxJobConfiguration
 @JsonCreator
 private constructor(
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
     @JsonProperty("completion_status")
     @ExcludeMissing
     private val completionStatus: JsonField<CompletionStatus> = JsonMissing.of(),
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    fun type(): Type = type.getRequired("type")
-
     fun completionStatus(): CompletionStatus = completionStatus.getRequired("completion_status")
 
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    fun type(): Type = type.getRequired("type")
 
     @JsonProperty("completion_status") @ExcludeMissing fun _completionStatus() = completionStatus
+
+    @JsonProperty("type") @ExcludeMissing fun _type() = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -44,8 +44,8 @@ private constructor(
 
     fun validate(): SandboxJobConfiguration = apply {
         if (!validated) {
-            type()
             completionStatus()
+            type()
             validated = true
         }
     }
@@ -59,20 +59,16 @@ private constructor(
 
     class Builder {
 
-        private var type: JsonField<Type> = JsonMissing.of()
         private var completionStatus: JsonField<CompletionStatus> = JsonMissing.of()
+        private var type: JsonField<Type> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sandboxJobConfiguration: SandboxJobConfiguration) = apply {
-            type = sandboxJobConfiguration.type
             completionStatus = sandboxJobConfiguration.completionStatus
+            type = sandboxJobConfiguration.type
             additionalProperties = sandboxJobConfiguration.additionalProperties.toMutableMap()
         }
-
-        fun type(type: Type) = type(JsonField.of(type))
-
-        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun completionStatus(completionStatus: CompletionStatus) =
             completionStatus(JsonField.of(completionStatus))
@@ -80,6 +76,10 @@ private constructor(
         fun completionStatus(completionStatus: JsonField<CompletionStatus>) = apply {
             this.completionStatus = completionStatus
         }
+
+        fun type(type: Type) = type(JsonField.of(type))
+
+        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -102,8 +102,8 @@ private constructor(
 
         fun build(): SandboxJobConfiguration =
             SandboxJobConfiguration(
-                type,
                 completionStatus,
+                type,
                 additionalProperties.toImmutable(),
             )
     }
@@ -233,15 +233,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxJobConfiguration && type == other.type && completionStatus == other.completionStatus && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxJobConfiguration && completionStatus == other.completionStatus && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(type, completionStatus, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(completionStatus, type, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SandboxJobConfiguration{type=$type, completionStatus=$completionStatus, additionalProperties=$additionalProperties}"
+        "SandboxJobConfiguration{completionStatus=$completionStatus, type=$type, additionalProperties=$additionalProperties}"
 }

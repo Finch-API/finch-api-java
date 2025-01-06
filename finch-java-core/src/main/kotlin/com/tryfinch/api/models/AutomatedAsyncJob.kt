@@ -23,45 +23,44 @@ import java.util.Optional
 class AutomatedAsyncJob
 @JsonCreator
 private constructor(
+    @JsonProperty("completed_at")
+    @ExcludeMissing
+    private val completedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("created_at")
+    @ExcludeMissing
+    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
     @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("job_url")
     @ExcludeMissing
     private val jobUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("created_at")
-    @ExcludeMissing
-    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
     @JsonProperty("scheduled_at")
     @ExcludeMissing
     private val scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of(),
     @JsonProperty("started_at")
     @ExcludeMissing
     private val startedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("completed_at")
+    @JsonProperty("status")
     @ExcludeMissing
-    private val completedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    private val status: JsonField<Status> = JsonMissing.of(),
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The id of the job that has been created. */
-    fun jobId(): String = jobId.getRequired("job_id")
-
-    /** The url that can be used to retrieve the job status */
-    fun jobUrl(): String = jobUrl.getRequired("job_url")
-
-    /** Only `data_sync_all` currently supported */
-    fun type(): Type = type.getRequired("type")
-
-    fun status(): Status = status.getRequired("status")
+    /** The datetime the job completed. */
+    fun completedAt(): Optional<OffsetDateTime> =
+        Optional.ofNullable(completedAt.getNullable("completed_at"))
 
     /**
      * The datetime when the job was created. for scheduled jobs, this will be the initial
      * connection time. For ad-hoc jobs, this will be the time the creation request was received.
      */
     fun createdAt(): OffsetDateTime = createdAt.getRequired("created_at")
+
+    /** The id of the job that has been created. */
+    fun jobId(): String = jobId.getRequired("job_id")
+
+    /** The url that can be used to retrieve the job status */
+    fun jobUrl(): String = jobUrl.getRequired("job_url")
 
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
@@ -74,26 +73,25 @@ private constructor(
     fun startedAt(): Optional<OffsetDateTime> =
         Optional.ofNullable(startedAt.getNullable("started_at"))
 
-    /** The datetime the job completed. */
-    fun completedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(completedAt.getNullable("completed_at"))
-
-    /** The id of the job that has been created. */
-    @JsonProperty("job_id") @ExcludeMissing fun _jobId() = jobId
-
-    /** The url that can be used to retrieve the job status */
-    @JsonProperty("job_url") @ExcludeMissing fun _jobUrl() = jobUrl
+    fun status(): Status = status.getRequired("status")
 
     /** Only `data_sync_all` currently supported */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    fun type(): Type = type.getRequired("type")
 
-    @JsonProperty("status") @ExcludeMissing fun _status() = status
+    /** The datetime the job completed. */
+    @JsonProperty("completed_at") @ExcludeMissing fun _completedAt() = completedAt
 
     /**
      * The datetime when the job was created. for scheduled jobs, this will be the initial
      * connection time. For ad-hoc jobs, this will be the time the creation request was received.
      */
     @JsonProperty("created_at") @ExcludeMissing fun _createdAt() = createdAt
+
+    /** The id of the job that has been created. */
+    @JsonProperty("job_id") @ExcludeMissing fun _jobId() = jobId
+
+    /** The url that can be used to retrieve the job status */
+    @JsonProperty("job_url") @ExcludeMissing fun _jobUrl() = jobUrl
 
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
@@ -104,8 +102,10 @@ private constructor(
     /** The datetime a job entered into the job queue. */
     @JsonProperty("started_at") @ExcludeMissing fun _startedAt() = startedAt
 
-    /** The datetime the job completed. */
-    @JsonProperty("completed_at") @ExcludeMissing fun _completedAt() = completedAt
+    @JsonProperty("status") @ExcludeMissing fun _status() = status
+
+    /** Only `data_sync_all` currently supported */
+    @JsonProperty("type") @ExcludeMissing fun _type() = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -115,14 +115,14 @@ private constructor(
 
     fun validate(): AutomatedAsyncJob = apply {
         if (!validated) {
+            completedAt()
+            createdAt()
             jobId()
             jobUrl()
-            type()
-            status()
-            createdAt()
             scheduledAt()
             startedAt()
-            completedAt()
+            status()
+            type()
             validated = true
         }
     }
@@ -136,50 +136,36 @@ private constructor(
 
     class Builder {
 
+        private var completedAt: JsonField<OffsetDateTime> = JsonMissing.of()
+        private var createdAt: JsonField<OffsetDateTime> = JsonMissing.of()
         private var jobId: JsonField<String> = JsonMissing.of()
         private var jobUrl: JsonField<String> = JsonMissing.of()
-        private var type: JsonField<Type> = JsonMissing.of()
-        private var status: JsonField<Status> = JsonMissing.of()
-        private var createdAt: JsonField<OffsetDateTime> = JsonMissing.of()
         private var scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of()
         private var startedAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var completedAt: JsonField<OffsetDateTime> = JsonMissing.of()
+        private var status: JsonField<Status> = JsonMissing.of()
+        private var type: JsonField<Type> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(automatedAsyncJob: AutomatedAsyncJob) = apply {
+            completedAt = automatedAsyncJob.completedAt
+            createdAt = automatedAsyncJob.createdAt
             jobId = automatedAsyncJob.jobId
             jobUrl = automatedAsyncJob.jobUrl
-            type = automatedAsyncJob.type
-            status = automatedAsyncJob.status
-            createdAt = automatedAsyncJob.createdAt
             scheduledAt = automatedAsyncJob.scheduledAt
             startedAt = automatedAsyncJob.startedAt
-            completedAt = automatedAsyncJob.completedAt
+            status = automatedAsyncJob.status
+            type = automatedAsyncJob.type
             additionalProperties = automatedAsyncJob.additionalProperties.toMutableMap()
         }
 
-        /** The id of the job that has been created. */
-        fun jobId(jobId: String) = jobId(JsonField.of(jobId))
+        /** The datetime the job completed. */
+        fun completedAt(completedAt: OffsetDateTime) = completedAt(JsonField.of(completedAt))
 
-        /** The id of the job that has been created. */
-        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
-
-        /** The url that can be used to retrieve the job status */
-        fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
-
-        /** The url that can be used to retrieve the job status */
-        fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
-
-        /** Only `data_sync_all` currently supported */
-        fun type(type: Type) = type(JsonField.of(type))
-
-        /** Only `data_sync_all` currently supported */
-        fun type(type: JsonField<Type>) = apply { this.type = type }
-
-        fun status(status: Status) = status(JsonField.of(status))
-
-        fun status(status: JsonField<Status>) = apply { this.status = status }
+        /** The datetime the job completed. */
+        fun completedAt(completedAt: JsonField<OffsetDateTime>) = apply {
+            this.completedAt = completedAt
+        }
 
         /**
          * The datetime when the job was created. for scheduled jobs, this will be the initial
@@ -194,6 +180,18 @@ private constructor(
          * received.
          */
         fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply { this.createdAt = createdAt }
+
+        /** The id of the job that has been created. */
+        fun jobId(jobId: String) = jobId(JsonField.of(jobId))
+
+        /** The id of the job that has been created. */
+        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
+
+        /** The url that can be used to retrieve the job status */
+        fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
+
+        /** The url that can be used to retrieve the job status */
+        fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
 
         /**
          * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
@@ -217,13 +215,15 @@ private constructor(
         /** The datetime a job entered into the job queue. */
         fun startedAt(startedAt: JsonField<OffsetDateTime>) = apply { this.startedAt = startedAt }
 
-        /** The datetime the job completed. */
-        fun completedAt(completedAt: OffsetDateTime) = completedAt(JsonField.of(completedAt))
+        fun status(status: Status) = status(JsonField.of(status))
 
-        /** The datetime the job completed. */
-        fun completedAt(completedAt: JsonField<OffsetDateTime>) = apply {
-            this.completedAt = completedAt
-        }
+        fun status(status: JsonField<Status>) = apply { this.status = status }
+
+        /** Only `data_sync_all` currently supported */
+        fun type(type: Type) = type(JsonField.of(type))
+
+        /** Only `data_sync_all` currently supported */
+        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -246,14 +246,14 @@ private constructor(
 
         fun build(): AutomatedAsyncJob =
             AutomatedAsyncJob(
+                completedAt,
+                createdAt,
                 jobId,
                 jobUrl,
-                type,
-                status,
-                createdAt,
                 scheduledAt,
                 startedAt,
-                completedAt,
+                status,
+                type,
                 additionalProperties.toImmutable(),
             )
     }
@@ -395,15 +395,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AutomatedAsyncJob && jobId == other.jobId && jobUrl == other.jobUrl && type == other.type && status == other.status && createdAt == other.createdAt && scheduledAt == other.scheduledAt && startedAt == other.startedAt && completedAt == other.completedAt && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AutomatedAsyncJob && completedAt == other.completedAt && createdAt == other.createdAt && jobId == other.jobId && jobUrl == other.jobUrl && scheduledAt == other.scheduledAt && startedAt == other.startedAt && status == other.status && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(jobId, jobUrl, type, status, createdAt, scheduledAt, startedAt, completedAt, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(completedAt, createdAt, jobId, jobUrl, scheduledAt, startedAt, status, type, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "AutomatedAsyncJob{jobId=$jobId, jobUrl=$jobUrl, type=$type, status=$status, createdAt=$createdAt, scheduledAt=$scheduledAt, startedAt=$startedAt, completedAt=$completedAt, additionalProperties=$additionalProperties}"
+        "AutomatedAsyncJob{completedAt=$completedAt, createdAt=$createdAt, jobId=$jobId, jobUrl=$jobUrl, scheduledAt=$scheduledAt, startedAt=$startedAt, status=$status, type=$type, additionalProperties=$additionalProperties}"
 }

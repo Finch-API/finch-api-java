@@ -187,72 +187,63 @@ constructor(
     class IndividualOrEmployment
     @JsonCreator
     private constructor(
-        @JsonProperty("first_name") private val firstName: String?,
-        @JsonProperty("middle_name") private val middleName: String?,
-        @JsonProperty("last_name") private val lastName: String?,
-        @JsonProperty("preferred_name") private val preferredName: String?,
-        @JsonProperty("emails") private val emails: List<Email>?,
-        @JsonProperty("phone_numbers") private val phoneNumbers: List<PhoneNumber?>?,
-        @JsonProperty("gender") private val gender: Gender?,
-        @JsonProperty("ethnicity") private val ethnicity: Ethnicity?,
-        @JsonProperty("dob") private val dob: String?,
-        @JsonProperty("ssn") private val ssn: String?,
-        @JsonProperty("encrypted_ssn") private val encryptedSsn: String?,
-        @JsonProperty("residence") private val residence: Location?,
-        @JsonProperty("title") private val title: String?,
-        @JsonProperty("manager") private val manager: Manager?,
-        @JsonProperty("department") private val department: Department?,
-        @JsonProperty("employment") private val employment: Employment?,
-        @JsonProperty("start_date") private val startDate: String?,
-        @JsonProperty("end_date") private val endDate: String?,
-        @JsonProperty("latest_rehire_date") private val latestRehireDate: String?,
-        @JsonProperty("is_active") private val isActive: Boolean?,
-        @JsonProperty("employment_status") private val employmentStatus: EmploymentStatus?,
         @JsonProperty("class_code") private val classCode: String?,
-        @JsonProperty("location") private val location: Location?,
+        @JsonProperty("custom_fields") private val customFields: List<CustomField>?,
+        @JsonProperty("department") private val department: Department?,
+        @JsonProperty("dob") private val dob: String?,
+        @JsonProperty("emails") private val emails: List<Email>?,
+        @JsonProperty("employment") private val employment: Employment?,
+        @JsonProperty("employment_status") private val employmentStatus: EmploymentStatus?,
+        @JsonProperty("encrypted_ssn") private val encryptedSsn: String?,
+        @JsonProperty("end_date") private val endDate: String?,
+        @JsonProperty("ethnicity") private val ethnicity: Ethnicity?,
+        @JsonProperty("first_name") private val firstName: String?,
+        @JsonProperty("gender") private val gender: Gender?,
         @JsonProperty("income") private val income: Income?,
         @JsonProperty("income_history") private val incomeHistory: List<Income?>?,
-        @JsonProperty("custom_fields") private val customFields: List<CustomField>?,
+        @JsonProperty("is_active") private val isActive: Boolean?,
+        @JsonProperty("last_name") private val lastName: String?,
+        @JsonProperty("latest_rehire_date") private val latestRehireDate: String?,
+        @JsonProperty("location") private val location: Location?,
+        @JsonProperty("manager") private val manager: Manager?,
+        @JsonProperty("middle_name") private val middleName: String?,
+        @JsonProperty("phone_numbers") private val phoneNumbers: List<PhoneNumber?>?,
+        @JsonProperty("preferred_name") private val preferredName: String?,
+        @JsonProperty("residence") private val residence: Location?,
         @JsonProperty("source_id") private val sourceId: String?,
+        @JsonProperty("ssn") private val ssn: String?,
+        @JsonProperty("start_date") private val startDate: String?,
+        @JsonProperty("title") private val title: String?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The legal first name of the individual. */
-        @JsonProperty("first_name")
-        fun firstName(): Optional<String> = Optional.ofNullable(firstName)
+        /** Worker's compensation classification code for this employee */
+        @JsonProperty("class_code")
+        fun classCode(): Optional<String> = Optional.ofNullable(classCode)
 
-        /** The legal middle name of the individual. */
-        @JsonProperty("middle_name")
-        fun middleName(): Optional<String> = Optional.ofNullable(middleName)
+        /**
+         * Custom fields for the individual. These are fields which are defined by the employer in
+         * the system. Custom fields are not currently supported for assisted connections.
+         */
+        @JsonProperty("custom_fields")
+        fun customFields(): Optional<List<CustomField>> = Optional.ofNullable(customFields)
 
-        /** The legal last name of the individual. */
-        @JsonProperty("last_name") fun lastName(): Optional<String> = Optional.ofNullable(lastName)
-
-        /** The preferred name of the individual. */
-        @JsonProperty("preferred_name")
-        fun preferredName(): Optional<String> = Optional.ofNullable(preferredName)
-
-        @JsonProperty("emails") fun emails(): Optional<List<Email>> = Optional.ofNullable(emails)
-
-        @JsonProperty("phone_numbers")
-        fun phoneNumbers(): Optional<List<PhoneNumber?>> = Optional.ofNullable(phoneNumbers)
-
-        /** The gender of the individual. */
-        @JsonProperty("gender") fun gender(): Optional<Gender> = Optional.ofNullable(gender)
-
-        /** The EEOC-defined ethnicity of the individual. */
-        @JsonProperty("ethnicity")
-        fun ethnicity(): Optional<Ethnicity> = Optional.ofNullable(ethnicity)
+        /** The department object. */
+        @JsonProperty("department")
+        fun department(): Optional<Department> = Optional.ofNullable(department)
 
         @JsonProperty("dob") fun dob(): Optional<String> = Optional.ofNullable(dob)
 
-        /**
-         * Social Security Number of the individual. This field is only available with the `ssn`
-         * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
-         * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
-         */
-        @JsonProperty("ssn") fun ssn(): Optional<String> = Optional.ofNullable(ssn)
+        @JsonProperty("emails") fun emails(): Optional<List<Email>> = Optional.ofNullable(emails)
+
+        /** The employment object. */
+        @JsonProperty("employment")
+        fun employment(): Optional<Employment> = Optional.ofNullable(employment)
+
+        /** The detailed employment status of the individual. */
+        @JsonProperty("employment_status")
+        fun employmentStatus(): Optional<EmploymentStatus> = Optional.ofNullable(employmentStatus)
 
         /**
          * Social Security Number of the individual in **encrypted** format. This field is only
@@ -262,43 +253,18 @@ constructor(
         @JsonProperty("encrypted_ssn")
         fun encryptedSsn(): Optional<String> = Optional.ofNullable(encryptedSsn)
 
-        @JsonProperty("residence")
-        fun residence(): Optional<Location> = Optional.ofNullable(residence)
-
-        /** The current title of the individual. */
-        @JsonProperty("title") fun title(): Optional<String> = Optional.ofNullable(title)
-
-        /** The manager object representing the manager of the individual within the org. */
-        @JsonProperty("manager") fun manager(): Optional<Manager> = Optional.ofNullable(manager)
-
-        /** The department object. */
-        @JsonProperty("department")
-        fun department(): Optional<Department> = Optional.ofNullable(department)
-
-        /** The employment object. */
-        @JsonProperty("employment")
-        fun employment(): Optional<Employment> = Optional.ofNullable(employment)
-
-        @JsonProperty("start_date")
-        fun startDate(): Optional<String> = Optional.ofNullable(startDate)
-
         @JsonProperty("end_date") fun endDate(): Optional<String> = Optional.ofNullable(endDate)
 
-        @JsonProperty("latest_rehire_date")
-        fun latestRehireDate(): Optional<String> = Optional.ofNullable(latestRehireDate)
+        /** The EEOC-defined ethnicity of the individual. */
+        @JsonProperty("ethnicity")
+        fun ethnicity(): Optional<Ethnicity> = Optional.ofNullable(ethnicity)
 
-        /** `true` if the individual an an active employee or contractor at the company. */
-        @JsonProperty("is_active") fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive)
+        /** The legal first name of the individual. */
+        @JsonProperty("first_name")
+        fun firstName(): Optional<String> = Optional.ofNullable(firstName)
 
-        /** The detailed employment status of the individual. */
-        @JsonProperty("employment_status")
-        fun employmentStatus(): Optional<EmploymentStatus> = Optional.ofNullable(employmentStatus)
-
-        /** Worker's compensation classification code for this employee */
-        @JsonProperty("class_code")
-        fun classCode(): Optional<String> = Optional.ofNullable(classCode)
-
-        @JsonProperty("location") fun location(): Optional<Location> = Optional.ofNullable(location)
+        /** The gender of the individual. */
+        @JsonProperty("gender") fun gender(): Optional<Gender> = Optional.ofNullable(gender)
 
         /**
          * The employee's income as reported by the provider. This may not always be annualized
@@ -311,15 +277,49 @@ constructor(
         @JsonProperty("income_history")
         fun incomeHistory(): Optional<List<Income?>> = Optional.ofNullable(incomeHistory)
 
-        /**
-         * Custom fields for the individual. These are fields which are defined by the employer in
-         * the system. Custom fields are not currently supported for assisted connections.
-         */
-        @JsonProperty("custom_fields")
-        fun customFields(): Optional<List<CustomField>> = Optional.ofNullable(customFields)
+        /** `true` if the individual an an active employee or contractor at the company. */
+        @JsonProperty("is_active") fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive)
+
+        /** The legal last name of the individual. */
+        @JsonProperty("last_name") fun lastName(): Optional<String> = Optional.ofNullable(lastName)
+
+        @JsonProperty("latest_rehire_date")
+        fun latestRehireDate(): Optional<String> = Optional.ofNullable(latestRehireDate)
+
+        @JsonProperty("location") fun location(): Optional<Location> = Optional.ofNullable(location)
+
+        /** The manager object representing the manager of the individual within the org. */
+        @JsonProperty("manager") fun manager(): Optional<Manager> = Optional.ofNullable(manager)
+
+        /** The legal middle name of the individual. */
+        @JsonProperty("middle_name")
+        fun middleName(): Optional<String> = Optional.ofNullable(middleName)
+
+        @JsonProperty("phone_numbers")
+        fun phoneNumbers(): Optional<List<PhoneNumber?>> = Optional.ofNullable(phoneNumbers)
+
+        /** The preferred name of the individual. */
+        @JsonProperty("preferred_name")
+        fun preferredName(): Optional<String> = Optional.ofNullable(preferredName)
+
+        @JsonProperty("residence")
+        fun residence(): Optional<Location> = Optional.ofNullable(residence)
 
         /** The source system's unique employment identifier for this individual */
         @JsonProperty("source_id") fun sourceId(): Optional<String> = Optional.ofNullable(sourceId)
+
+        /**
+         * Social Security Number of the individual. This field is only available with the `ssn`
+         * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
+         * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+         */
+        @JsonProperty("ssn") fun ssn(): Optional<String> = Optional.ofNullable(ssn)
+
+        @JsonProperty("start_date")
+        fun startDate(): Optional<String> = Optional.ofNullable(startDate)
+
+        /** The current title of the individual. */
+        @JsonProperty("title") fun title(): Optional<String> = Optional.ofNullable(title)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -334,78 +334,90 @@ constructor(
 
         class Builder {
 
-            private var firstName: String? = null
-            private var middleName: String? = null
-            private var lastName: String? = null
-            private var preferredName: String? = null
-            private var emails: MutableList<Email>? = null
-            private var phoneNumbers: MutableList<PhoneNumber?>? = null
-            private var gender: Gender? = null
-            private var ethnicity: Ethnicity? = null
-            private var dob: String? = null
-            private var ssn: String? = null
-            private var encryptedSsn: String? = null
-            private var residence: Location? = null
-            private var title: String? = null
-            private var manager: Manager? = null
-            private var department: Department? = null
-            private var employment: Employment? = null
-            private var startDate: String? = null
-            private var endDate: String? = null
-            private var latestRehireDate: String? = null
-            private var isActive: Boolean? = null
-            private var employmentStatus: EmploymentStatus? = null
             private var classCode: String? = null
-            private var location: Location? = null
+            private var customFields: MutableList<CustomField>? = null
+            private var department: Department? = null
+            private var dob: String? = null
+            private var emails: MutableList<Email>? = null
+            private var employment: Employment? = null
+            private var employmentStatus: EmploymentStatus? = null
+            private var encryptedSsn: String? = null
+            private var endDate: String? = null
+            private var ethnicity: Ethnicity? = null
+            private var firstName: String? = null
+            private var gender: Gender? = null
             private var income: Income? = null
             private var incomeHistory: MutableList<Income?>? = null
-            private var customFields: MutableList<CustomField>? = null
+            private var isActive: Boolean? = null
+            private var lastName: String? = null
+            private var latestRehireDate: String? = null
+            private var location: Location? = null
+            private var manager: Manager? = null
+            private var middleName: String? = null
+            private var phoneNumbers: MutableList<PhoneNumber?>? = null
+            private var preferredName: String? = null
+            private var residence: Location? = null
             private var sourceId: String? = null
+            private var ssn: String? = null
+            private var startDate: String? = null
+            private var title: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(individualOrEmployment: IndividualOrEmployment) = apply {
-                firstName = individualOrEmployment.firstName
-                middleName = individualOrEmployment.middleName
-                lastName = individualOrEmployment.lastName
-                preferredName = individualOrEmployment.preferredName
-                emails = individualOrEmployment.emails?.toMutableList()
-                phoneNumbers = individualOrEmployment.phoneNumbers?.toMutableList()
-                gender = individualOrEmployment.gender
-                ethnicity = individualOrEmployment.ethnicity
-                dob = individualOrEmployment.dob
-                ssn = individualOrEmployment.ssn
-                encryptedSsn = individualOrEmployment.encryptedSsn
-                residence = individualOrEmployment.residence
-                title = individualOrEmployment.title
-                manager = individualOrEmployment.manager
-                department = individualOrEmployment.department
-                employment = individualOrEmployment.employment
-                startDate = individualOrEmployment.startDate
-                endDate = individualOrEmployment.endDate
-                latestRehireDate = individualOrEmployment.latestRehireDate
-                isActive = individualOrEmployment.isActive
-                employmentStatus = individualOrEmployment.employmentStatus
                 classCode = individualOrEmployment.classCode
-                location = individualOrEmployment.location
+                customFields = individualOrEmployment.customFields?.toMutableList()
+                department = individualOrEmployment.department
+                dob = individualOrEmployment.dob
+                emails = individualOrEmployment.emails?.toMutableList()
+                employment = individualOrEmployment.employment
+                employmentStatus = individualOrEmployment.employmentStatus
+                encryptedSsn = individualOrEmployment.encryptedSsn
+                endDate = individualOrEmployment.endDate
+                ethnicity = individualOrEmployment.ethnicity
+                firstName = individualOrEmployment.firstName
+                gender = individualOrEmployment.gender
                 income = individualOrEmployment.income
                 incomeHistory = individualOrEmployment.incomeHistory?.toMutableList()
-                customFields = individualOrEmployment.customFields?.toMutableList()
+                isActive = individualOrEmployment.isActive
+                lastName = individualOrEmployment.lastName
+                latestRehireDate = individualOrEmployment.latestRehireDate
+                location = individualOrEmployment.location
+                manager = individualOrEmployment.manager
+                middleName = individualOrEmployment.middleName
+                phoneNumbers = individualOrEmployment.phoneNumbers?.toMutableList()
+                preferredName = individualOrEmployment.preferredName
+                residence = individualOrEmployment.residence
                 sourceId = individualOrEmployment.sourceId
+                ssn = individualOrEmployment.ssn
+                startDate = individualOrEmployment.startDate
+                title = individualOrEmployment.title
                 additionalProperties = individualOrEmployment.additionalProperties.toMutableMap()
             }
 
-            /** The legal first name of the individual. */
-            fun firstName(firstName: String) = apply { this.firstName = firstName }
+            /** Worker's compensation classification code for this employee */
+            fun classCode(classCode: String) = apply { this.classCode = classCode }
 
-            /** The legal middle name of the individual. */
-            fun middleName(middleName: String) = apply { this.middleName = middleName }
+            /**
+             * Custom fields for the individual. These are fields which are defined by the employer
+             * in the system. Custom fields are not currently supported for assisted connections.
+             */
+            fun customFields(customFields: List<CustomField>) = apply {
+                this.customFields = customFields.toMutableList()
+            }
 
-            /** The legal last name of the individual. */
-            fun lastName(lastName: String) = apply { this.lastName = lastName }
+            /**
+             * Custom fields for the individual. These are fields which are defined by the employer
+             * in the system. Custom fields are not currently supported for assisted connections.
+             */
+            fun addCustomField(customField: CustomField) = apply {
+                customFields = (customFields ?: mutableListOf()).apply { add(customField) }
+            }
 
-            /** The preferred name of the individual. */
-            fun preferredName(preferredName: String) = apply { this.preferredName = preferredName }
+            /** The department object. */
+            fun department(department: Department) = apply { this.department = department }
+
+            fun dob(dob: String) = apply { this.dob = dob }
 
             fun emails(emails: List<Email>) = apply { this.emails = emails.toMutableList() }
 
@@ -413,28 +425,13 @@ constructor(
                 emails = (emails ?: mutableListOf()).apply { add(email) }
             }
 
-            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
-                this.phoneNumbers = phoneNumbers.toMutableList()
+            /** The employment object. */
+            fun employment(employment: Employment) = apply { this.employment = employment }
+
+            /** The detailed employment status of the individual. */
+            fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
+                this.employmentStatus = employmentStatus
             }
-
-            fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
-                phoneNumbers = (phoneNumbers ?: mutableListOf()).apply { add(phoneNumber) }
-            }
-
-            /** The gender of the individual. */
-            fun gender(gender: Gender) = apply { this.gender = gender }
-
-            /** The EEOC-defined ethnicity of the individual. */
-            fun ethnicity(ethnicity: Ethnicity) = apply { this.ethnicity = ethnicity }
-
-            fun dob(dob: String) = apply { this.dob = dob }
-
-            /**
-             * Social Security Number of the individual. This field is only available with the `ssn`
-             * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
-             * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
-             */
-            fun ssn(ssn: String) = apply { this.ssn = ssn }
 
             /**
              * Social Security Number of the individual in **encrypted** format. This field is only
@@ -443,40 +440,16 @@ constructor(
              */
             fun encryptedSsn(encryptedSsn: String) = apply { this.encryptedSsn = encryptedSsn }
 
-            fun residence(residence: Location) = apply { this.residence = residence }
-
-            /** The current title of the individual. */
-            fun title(title: String) = apply { this.title = title }
-
-            /** The manager object representing the manager of the individual within the org. */
-            fun manager(manager: Manager) = apply { this.manager = manager }
-
-            /** The department object. */
-            fun department(department: Department) = apply { this.department = department }
-
-            /** The employment object. */
-            fun employment(employment: Employment) = apply { this.employment = employment }
-
-            fun startDate(startDate: String) = apply { this.startDate = startDate }
-
             fun endDate(endDate: String) = apply { this.endDate = endDate }
 
-            fun latestRehireDate(latestRehireDate: String) = apply {
-                this.latestRehireDate = latestRehireDate
-            }
+            /** The EEOC-defined ethnicity of the individual. */
+            fun ethnicity(ethnicity: Ethnicity) = apply { this.ethnicity = ethnicity }
 
-            /** `true` if the individual an an active employee or contractor at the company. */
-            fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
+            /** The legal first name of the individual. */
+            fun firstName(firstName: String) = apply { this.firstName = firstName }
 
-            /** The detailed employment status of the individual. */
-            fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
-                this.employmentStatus = employmentStatus
-            }
-
-            /** Worker's compensation classification code for this employee */
-            fun classCode(classCode: String) = apply { this.classCode = classCode }
-
-            fun location(location: Location) = apply { this.location = location }
+            /** The gender of the individual. */
+            fun gender(gender: Gender) = apply { this.gender = gender }
 
             /**
              * The employee's income as reported by the provider. This may not always be annualized
@@ -496,24 +469,51 @@ constructor(
                     (this.incomeHistory ?: mutableListOf()).apply { add(incomeHistory) }
             }
 
-            /**
-             * Custom fields for the individual. These are fields which are defined by the employer
-             * in the system. Custom fields are not currently supported for assisted connections.
-             */
-            fun customFields(customFields: List<CustomField>) = apply {
-                this.customFields = customFields.toMutableList()
+            /** `true` if the individual an an active employee or contractor at the company. */
+            fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
+
+            /** The legal last name of the individual. */
+            fun lastName(lastName: String) = apply { this.lastName = lastName }
+
+            fun latestRehireDate(latestRehireDate: String) = apply {
+                this.latestRehireDate = latestRehireDate
             }
 
-            /**
-             * Custom fields for the individual. These are fields which are defined by the employer
-             * in the system. Custom fields are not currently supported for assisted connections.
-             */
-            fun addCustomField(customField: CustomField) = apply {
-                customFields = (customFields ?: mutableListOf()).apply { add(customField) }
+            fun location(location: Location) = apply { this.location = location }
+
+            /** The manager object representing the manager of the individual within the org. */
+            fun manager(manager: Manager) = apply { this.manager = manager }
+
+            /** The legal middle name of the individual. */
+            fun middleName(middleName: String) = apply { this.middleName = middleName }
+
+            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
+                this.phoneNumbers = phoneNumbers.toMutableList()
             }
+
+            fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
+                phoneNumbers = (phoneNumbers ?: mutableListOf()).apply { add(phoneNumber) }
+            }
+
+            /** The preferred name of the individual. */
+            fun preferredName(preferredName: String) = apply { this.preferredName = preferredName }
+
+            fun residence(residence: Location) = apply { this.residence = residence }
 
             /** The source system's unique employment identifier for this individual */
             fun sourceId(sourceId: String) = apply { this.sourceId = sourceId }
+
+            /**
+             * Social Security Number of the individual. This field is only available with the `ssn`
+             * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
+             * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+             */
+            fun ssn(ssn: String) = apply { this.ssn = ssn }
+
+            fun startDate(startDate: String) = apply { this.startDate = startDate }
+
+            /** The current title of the individual. */
+            fun title(title: String) = apply { this.title = title }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -536,33 +536,33 @@ constructor(
 
             fun build(): IndividualOrEmployment =
                 IndividualOrEmployment(
-                    firstName,
-                    middleName,
-                    lastName,
-                    preferredName,
-                    emails?.toImmutable(),
-                    phoneNumbers?.toImmutable(),
-                    gender,
-                    ethnicity,
-                    dob,
-                    ssn,
-                    encryptedSsn,
-                    residence,
-                    title,
-                    manager,
-                    department,
-                    employment,
-                    startDate,
-                    endDate,
-                    latestRehireDate,
-                    isActive,
-                    employmentStatus,
                     classCode,
-                    location,
+                    customFields?.toImmutable(),
+                    department,
+                    dob,
+                    emails?.toImmutable(),
+                    employment,
+                    employmentStatus,
+                    encryptedSsn,
+                    endDate,
+                    ethnicity,
+                    firstName,
+                    gender,
                     income,
                     incomeHistory?.toImmutable(),
-                    customFields?.toImmutable(),
+                    isActive,
+                    lastName,
+                    latestRehireDate,
+                    location,
+                    manager,
+                    middleName,
+                    phoneNumbers?.toImmutable(),
+                    preferredName,
+                    residence,
                     sourceId,
+                    ssn,
+                    startDate,
+                    title,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -890,20 +890,20 @@ constructor(
         class Employment
         @JsonCreator
         private constructor(
-            @JsonProperty("type") private val type: Type?,
             @JsonProperty("subtype") private val subtype: Subtype?,
+            @JsonProperty("type") private val type: Type?,
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            /** The main employment type of the individual. */
-            @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
             @JsonProperty("subtype") fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype)
+
+            /** The main employment type of the individual. */
+            @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -918,25 +918,25 @@ constructor(
 
             class Builder {
 
-                private var type: Type? = null
                 private var subtype: Subtype? = null
+                private var type: Type? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(employment: Employment) = apply {
-                    type = employment.type
                     subtype = employment.subtype
+                    type = employment.type
                     additionalProperties = employment.additionalProperties.toMutableMap()
                 }
-
-                /** The main employment type of the individual. */
-                fun type(type: Type) = apply { this.type = type }
 
                 /**
                  * The secondary employment type of the individual. Options: `full_time`,
                  * `part_time`, `intern`, `temp`, `seasonal` and `individual_contractor`.
                  */
                 fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
+
+                /** The main employment type of the individual. */
+                fun type(type: Type) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -962,8 +962,8 @@ constructor(
 
                 fun build(): Employment =
                     Employment(
-                        type,
                         subtype,
+                        type,
                         additionalProperties.toImmutable(),
                     )
             }
@@ -1111,17 +1111,17 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Employment && type == other.type && subtype == other.subtype && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Employment && subtype == other.subtype && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(type, subtype, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(subtype, type, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
+                "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
         }
 
         class EmploymentStatus
@@ -1607,17 +1607,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is IndividualOrEmployment && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && preferredName == other.preferredName && emails == other.emails && phoneNumbers == other.phoneNumbers && gender == other.gender && ethnicity == other.ethnicity && dob == other.dob && ssn == other.ssn && encryptedSsn == other.encryptedSsn && residence == other.residence && title == other.title && manager == other.manager && department == other.department && employment == other.employment && startDate == other.startDate && endDate == other.endDate && latestRehireDate == other.latestRehireDate && isActive == other.isActive && employmentStatus == other.employmentStatus && classCode == other.classCode && location == other.location && income == other.income && incomeHistory == other.incomeHistory && customFields == other.customFields && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is IndividualOrEmployment && classCode == other.classCode && customFields == other.customFields && department == other.department && dob == other.dob && emails == other.emails && employment == other.employment && employmentStatus == other.employmentStatus && encryptedSsn == other.encryptedSsn && endDate == other.endDate && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && sourceId == other.sourceId && ssn == other.ssn && startDate == other.startDate && title == other.title && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(firstName, middleName, lastName, preferredName, emails, phoneNumbers, gender, ethnicity, dob, ssn, encryptedSsn, residence, title, manager, department, employment, startDate, endDate, latestRehireDate, isActive, employmentStatus, classCode, location, income, incomeHistory, customFields, sourceId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(classCode, customFields, department, dob, emails, employment, employmentStatus, encryptedSsn, endDate, ethnicity, firstName, gender, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, phoneNumbers, preferredName, residence, sourceId, ssn, startDate, title, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, employmentStatus=$employmentStatus, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

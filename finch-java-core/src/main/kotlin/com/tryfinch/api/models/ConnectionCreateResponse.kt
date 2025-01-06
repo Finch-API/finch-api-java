@@ -22,41 +22,34 @@ import java.util.Optional
 class ConnectionCreateResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("connection_id")
+    @JsonProperty("access_token")
     @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    private val companyId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("provider_id")
-    @ExcludeMissing
-    private val providerId: JsonField<String> = JsonMissing.of(),
+    private val accessToken: JsonField<String> = JsonMissing.of(),
     @JsonProperty("account_id")
     @ExcludeMissing
     private val accountId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("authentication_type")
     @ExcludeMissing
     private val authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    private val companyId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("products")
     @ExcludeMissing
     private val products: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("access_token")
+    @JsonProperty("provider_id")
     @ExcludeMissing
-    private val accessToken: JsonField<String> = JsonMissing.of(),
+    private val providerId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("token_type")
     @ExcludeMissing
     private val tokenType: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The ID of the new connection */
-    fun connectionId(): String = connectionId.getRequired("connection_id")
-
-    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    fun companyId(): String = companyId.getRequired("company_id")
-
-    /** The ID of the provider associated with the `access_token`. */
-    fun providerId(): String = providerId.getRequired("provider_id")
+    fun accessToken(): String = accessToken.getRequired("access_token")
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     fun accountId(): String = accountId.getRequired("account_id")
@@ -64,20 +57,20 @@ private constructor(
     fun authenticationType(): AuthenticationType =
         authenticationType.getRequired("authentication_type")
 
+    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+    fun companyId(): String = companyId.getRequired("company_id")
+
+    /** The ID of the new connection */
+    fun connectionId(): String = connectionId.getRequired("connection_id")
+
     fun products(): List<String> = products.getRequired("products")
 
-    fun accessToken(): String = accessToken.getRequired("access_token")
+    /** The ID of the provider associated with the `access_token`. */
+    fun providerId(): String = providerId.getRequired("provider_id")
 
     fun tokenType(): Optional<String> = Optional.ofNullable(tokenType.getNullable("token_type"))
 
-    /** The ID of the new connection */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
-
-    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
-
-    /** The ID of the provider associated with the `access_token`. */
-    @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
+    @JsonProperty("access_token") @ExcludeMissing fun _accessToken() = accessToken
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
@@ -86,9 +79,16 @@ private constructor(
     @ExcludeMissing
     fun _authenticationType() = authenticationType
 
+    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+
+    /** The ID of the new connection */
+    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+
     @JsonProperty("products") @ExcludeMissing fun _products() = products
 
-    @JsonProperty("access_token") @ExcludeMissing fun _accessToken() = accessToken
+    /** The ID of the provider associated with the `access_token`. */
+    @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
 
     @JsonProperty("token_type") @ExcludeMissing fun _tokenType() = tokenType
 
@@ -100,13 +100,13 @@ private constructor(
 
     fun validate(): ConnectionCreateResponse = apply {
         if (!validated) {
-            connectionId()
-            companyId()
-            providerId()
+            accessToken()
             accountId()
             authenticationType()
+            companyId()
+            connectionId()
             products()
-            accessToken()
+            providerId()
             tokenType()
             validated = true
         }
@@ -121,48 +121,32 @@ private constructor(
 
     class Builder {
 
-        private var connectionId: JsonField<String> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
-        private var providerId: JsonField<String> = JsonMissing.of()
+        private var accessToken: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
         private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
+        private var companyId: JsonField<String> = JsonMissing.of()
+        private var connectionId: JsonField<String> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
-        private var accessToken: JsonField<String> = JsonMissing.of()
+        private var providerId: JsonField<String> = JsonMissing.of()
         private var tokenType: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(connectionCreateResponse: ConnectionCreateResponse) = apply {
-            connectionId = connectionCreateResponse.connectionId
-            companyId = connectionCreateResponse.companyId
-            providerId = connectionCreateResponse.providerId
+            accessToken = connectionCreateResponse.accessToken
             accountId = connectionCreateResponse.accountId
             authenticationType = connectionCreateResponse.authenticationType
+            companyId = connectionCreateResponse.companyId
+            connectionId = connectionCreateResponse.connectionId
             products = connectionCreateResponse.products
-            accessToken = connectionCreateResponse.accessToken
+            providerId = connectionCreateResponse.providerId
             tokenType = connectionCreateResponse.tokenType
             additionalProperties = connectionCreateResponse.additionalProperties.toMutableMap()
         }
 
-        /** The ID of the new connection */
-        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+        fun accessToken(accessToken: String) = accessToken(JsonField.of(accessToken))
 
-        /** The ID of the new connection */
-        fun connectionId(connectionId: JsonField<String>) = apply {
-            this.connectionId = connectionId
-        }
-
-        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
-
-        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
-
-        /** The ID of the provider associated with the `access_token`. */
-        fun providerId(providerId: String) = providerId(JsonField.of(providerId))
-
-        /** The ID of the provider associated with the `access_token`. */
-        fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+        fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
@@ -177,13 +161,29 @@ private constructor(
             this.authenticationType = authenticationType
         }
 
+        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
+
+        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+
+        /** The ID of the new connection */
+        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+
+        /** The ID of the new connection */
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            this.connectionId = connectionId
+        }
+
         fun products(products: List<String>) = products(JsonField.of(products))
 
         fun products(products: JsonField<List<String>>) = apply { this.products = products }
 
-        fun accessToken(accessToken: String) = accessToken(JsonField.of(accessToken))
+        /** The ID of the provider associated with the `access_token`. */
+        fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
-        fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
+        /** The ID of the provider associated with the `access_token`. */
+        fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
         fun tokenType(tokenType: String) = tokenType(JsonField.of(tokenType))
 
@@ -210,13 +210,13 @@ private constructor(
 
         fun build(): ConnectionCreateResponse =
             ConnectionCreateResponse(
-                connectionId,
-                companyId,
-                providerId,
+                accessToken,
                 accountId,
                 authenticationType,
+                companyId,
+                connectionId,
                 products.map { it.toImmutable() },
-                accessToken,
+                providerId,
                 tokenType,
                 additionalProperties.toImmutable(),
             )
@@ -296,15 +296,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ConnectionCreateResponse && connectionId == other.connectionId && companyId == other.companyId && providerId == other.providerId && accountId == other.accountId && authenticationType == other.authenticationType && products == other.products && accessToken == other.accessToken && tokenType == other.tokenType && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ConnectionCreateResponse && accessToken == other.accessToken && accountId == other.accountId && authenticationType == other.authenticationType && companyId == other.companyId && connectionId == other.connectionId && products == other.products && providerId == other.providerId && tokenType == other.tokenType && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(connectionId, companyId, providerId, accountId, authenticationType, products, accessToken, tokenType, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(accessToken, accountId, authenticationType, companyId, connectionId, products, providerId, tokenType, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ConnectionCreateResponse{connectionId=$connectionId, companyId=$companyId, providerId=$providerId, accountId=$accountId, authenticationType=$authenticationType, products=$products, accessToken=$accessToken, tokenType=$tokenType, additionalProperties=$additionalProperties}"
+        "ConnectionCreateResponse{accessToken=$accessToken, accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, connectionId=$connectionId, products=$products, providerId=$providerId, tokenType=$tokenType, additionalProperties=$additionalProperties}"
 }
