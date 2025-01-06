@@ -22,18 +22,20 @@ class PayGroupRetrieveResponse
 @JsonCreator
 private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("individual_ids")
+    @ExcludeMissing
+    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
     @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
     @JsonProperty("pay_frequencies")
     @ExcludeMissing
     private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
-    @JsonProperty("individual_ids")
-    @ExcludeMissing
-    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** Finch id (uuidv4) for the pay group */
     fun id(): String = id.getRequired("id")
+
+    fun individualIds(): List<String> = individualIds.getRequired("individual_ids")
 
     /** Name of the pay group */
     fun name(): String = name.getRequired("name")
@@ -41,18 +43,16 @@ private constructor(
     /** List of pay frequencies associated with this pay group */
     fun payFrequencies(): List<PayFrequency> = payFrequencies.getRequired("pay_frequencies")
 
-    fun individualIds(): List<String> = individualIds.getRequired("individual_ids")
-
     /** Finch id (uuidv4) for the pay group */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
+
+    @JsonProperty("individual_ids") @ExcludeMissing fun _individualIds() = individualIds
 
     /** Name of the pay group */
     @JsonProperty("name") @ExcludeMissing fun _name() = name
 
     /** List of pay frequencies associated with this pay group */
     @JsonProperty("pay_frequencies") @ExcludeMissing fun _payFrequencies() = payFrequencies
-
-    @JsonProperty("individual_ids") @ExcludeMissing fun _individualIds() = individualIds
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -63,9 +63,9 @@ private constructor(
     fun validate(): PayGroupRetrieveResponse = apply {
         if (!validated) {
             id()
+            individualIds()
             name()
             payFrequencies()
-            individualIds()
             validated = true
         }
     }
@@ -80,17 +80,17 @@ private constructor(
     class Builder {
 
         private var id: JsonField<String> = JsonMissing.of()
+        private var individualIds: JsonField<List<String>> = JsonMissing.of()
         private var name: JsonField<String> = JsonMissing.of()
         private var payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of()
-        private var individualIds: JsonField<List<String>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(payGroupRetrieveResponse: PayGroupRetrieveResponse) = apply {
             id = payGroupRetrieveResponse.id
+            individualIds = payGroupRetrieveResponse.individualIds
             name = payGroupRetrieveResponse.name
             payFrequencies = payGroupRetrieveResponse.payFrequencies
-            individualIds = payGroupRetrieveResponse.individualIds
             additionalProperties = payGroupRetrieveResponse.additionalProperties.toMutableMap()
         }
 
@@ -99,6 +99,12 @@ private constructor(
 
         /** Finch id (uuidv4) for the pay group */
         fun id(id: JsonField<String>) = apply { this.id = id }
+
+        fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
+
+        fun individualIds(individualIds: JsonField<List<String>>) = apply {
+            this.individualIds = individualIds
+        }
 
         /** Name of the pay group */
         fun name(name: String) = name(JsonField.of(name))
@@ -113,12 +119,6 @@ private constructor(
         /** List of pay frequencies associated with this pay group */
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
             this.payFrequencies = payFrequencies
-        }
-
-        fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
-
-        fun individualIds(individualIds: JsonField<List<String>>) = apply {
-            this.individualIds = individualIds
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -143,9 +143,9 @@ private constructor(
         fun build(): PayGroupRetrieveResponse =
             PayGroupRetrieveResponse(
                 id,
+                individualIds.map { it.toImmutable() },
                 name,
                 payFrequencies.map { it.toImmutable() },
-                individualIds.map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }
@@ -254,15 +254,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PayGroupRetrieveResponse && id == other.id && name == other.name && payFrequencies == other.payFrequencies && individualIds == other.individualIds && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is PayGroupRetrieveResponse && id == other.id && individualIds == other.individualIds && name == other.name && payFrequencies == other.payFrequencies && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, name, payFrequencies, individualIds, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, individualIds, name, payFrequencies, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PayGroupRetrieveResponse{id=$id, name=$name, payFrequencies=$payFrequencies, individualIds=$individualIds, additionalProperties=$additionalProperties}"
+        "PayGroupRetrieveResponse{id=$id, individualIds=$individualIds, name=$name, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
 }

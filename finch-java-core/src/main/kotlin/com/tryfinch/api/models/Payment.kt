@@ -23,105 +23,105 @@ class Payment
 @JsonCreator
 private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("pay_period")
-    @ExcludeMissing
-    private val payPeriod: JsonField<PayPeriod> = JsonMissing.of(),
-    @JsonProperty("pay_date")
-    @ExcludeMissing
-    private val payDate: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("debit_date")
-    @ExcludeMissing
-    private val debitDate: JsonField<String> = JsonMissing.of(),
     @JsonProperty("company_debit")
     @ExcludeMissing
     private val companyDebit: JsonField<Money> = JsonMissing.of(),
-    @JsonProperty("gross_pay")
+    @JsonProperty("debit_date")
     @ExcludeMissing
-    private val grossPay: JsonField<Money> = JsonMissing.of(),
-    @JsonProperty("net_pay")
-    @ExcludeMissing
-    private val netPay: JsonField<Money> = JsonMissing.of(),
-    @JsonProperty("employer_taxes")
-    @ExcludeMissing
-    private val employerTaxes: JsonField<Money> = JsonMissing.of(),
+    private val debitDate: JsonField<String> = JsonMissing.of(),
     @JsonProperty("employee_taxes")
     @ExcludeMissing
     private val employeeTaxes: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("employer_taxes")
+    @ExcludeMissing
+    private val employerTaxes: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("gross_pay")
+    @ExcludeMissing
+    private val grossPay: JsonField<Money> = JsonMissing.of(),
     @JsonProperty("individual_ids")
     @ExcludeMissing
     private val individualIds: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("pay_group_ids")
+    @JsonProperty("net_pay")
     @ExcludeMissing
-    private val payGroupIds: JsonField<List<String>> = JsonMissing.of(),
+    private val netPay: JsonField<Money> = JsonMissing.of(),
+    @JsonProperty("pay_date")
+    @ExcludeMissing
+    private val payDate: JsonField<String> = JsonMissing.of(),
     @JsonProperty("pay_frequencies")
     @ExcludeMissing
     private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
+    @JsonProperty("pay_group_ids")
+    @ExcludeMissing
+    private val payGroupIds: JsonField<List<String>> = JsonMissing.of(),
+    @JsonProperty("pay_period")
+    @ExcludeMissing
+    private val payPeriod: JsonField<PayPeriod> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The unique id for the payment. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
-    /** The pay period object. */
-    fun payPeriod(): Optional<PayPeriod> = Optional.ofNullable(payPeriod.getNullable("pay_period"))
-
-    fun payDate(): Optional<String> = Optional.ofNullable(payDate.getNullable("pay_date"))
-
-    fun debitDate(): Optional<String> = Optional.ofNullable(debitDate.getNullable("debit_date"))
-
     fun companyDebit(): Optional<Money> =
         Optional.ofNullable(companyDebit.getNullable("company_debit"))
 
-    fun grossPay(): Optional<Money> = Optional.ofNullable(grossPay.getNullable("gross_pay"))
+    fun debitDate(): Optional<String> = Optional.ofNullable(debitDate.getNullable("debit_date"))
 
-    fun netPay(): Optional<Money> = Optional.ofNullable(netPay.getNullable("net_pay"))
+    fun employeeTaxes(): Optional<Money> =
+        Optional.ofNullable(employeeTaxes.getNullable("employee_taxes"))
 
     fun employerTaxes(): Optional<Money> =
         Optional.ofNullable(employerTaxes.getNullable("employer_taxes"))
 
-    fun employeeTaxes(): Optional<Money> =
-        Optional.ofNullable(employeeTaxes.getNullable("employee_taxes"))
+    fun grossPay(): Optional<Money> = Optional.ofNullable(grossPay.getNullable("gross_pay"))
 
     /** Array of every individual on this payment. */
     fun individualIds(): Optional<List<String>> =
         Optional.ofNullable(individualIds.getNullable("individual_ids"))
 
-    /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
-    fun payGroupIds(): Optional<List<String>> =
-        Optional.ofNullable(payGroupIds.getNullable("pay_group_ids"))
+    fun netPay(): Optional<Money> = Optional.ofNullable(netPay.getNullable("net_pay"))
+
+    fun payDate(): Optional<String> = Optional.ofNullable(payDate.getNullable("pay_date"))
 
     /** List of pay frequencies associated with this payment. */
     fun payFrequencies(): Optional<List<PayFrequency>> =
         Optional.ofNullable(payFrequencies.getNullable("pay_frequencies"))
 
+    /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+    fun payGroupIds(): Optional<List<String>> =
+        Optional.ofNullable(payGroupIds.getNullable("pay_group_ids"))
+
+    /** The pay period object. */
+    fun payPeriod(): Optional<PayPeriod> = Optional.ofNullable(payPeriod.getNullable("pay_period"))
+
     /** The unique id for the payment. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
 
-    /** The pay period object. */
-    @JsonProperty("pay_period") @ExcludeMissing fun _payPeriod() = payPeriod
-
-    @JsonProperty("pay_date") @ExcludeMissing fun _payDate() = payDate
+    @JsonProperty("company_debit") @ExcludeMissing fun _companyDebit() = companyDebit
 
     @JsonProperty("debit_date") @ExcludeMissing fun _debitDate() = debitDate
 
-    @JsonProperty("company_debit") @ExcludeMissing fun _companyDebit() = companyDebit
-
-    @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
-
-    @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
+    @JsonProperty("employee_taxes") @ExcludeMissing fun _employeeTaxes() = employeeTaxes
 
     @JsonProperty("employer_taxes") @ExcludeMissing fun _employerTaxes() = employerTaxes
 
-    @JsonProperty("employee_taxes") @ExcludeMissing fun _employeeTaxes() = employeeTaxes
+    @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
 
     /** Array of every individual on this payment. */
     @JsonProperty("individual_ids") @ExcludeMissing fun _individualIds() = individualIds
 
-    /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
-    @JsonProperty("pay_group_ids") @ExcludeMissing fun _payGroupIds() = payGroupIds
+    @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
+
+    @JsonProperty("pay_date") @ExcludeMissing fun _payDate() = payDate
 
     /** List of pay frequencies associated with this payment. */
     @JsonProperty("pay_frequencies") @ExcludeMissing fun _payFrequencies() = payFrequencies
+
+    /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+    @JsonProperty("pay_group_ids") @ExcludeMissing fun _payGroupIds() = payGroupIds
+
+    /** The pay period object. */
+    @JsonProperty("pay_period") @ExcludeMissing fun _payPeriod() = payPeriod
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -132,17 +132,17 @@ private constructor(
     fun validate(): Payment = apply {
         if (!validated) {
             id()
-            payPeriod().map { it.validate() }
-            payDate()
-            debitDate()
             companyDebit().map { it.validate() }
-            grossPay().map { it.validate() }
-            netPay().map { it.validate() }
-            employerTaxes().map { it.validate() }
+            debitDate()
             employeeTaxes().map { it.validate() }
+            employerTaxes().map { it.validate() }
+            grossPay().map { it.validate() }
             individualIds()
-            payGroupIds()
+            netPay().map { it.validate() }
+            payDate()
             payFrequencies()
+            payGroupIds()
+            payPeriod().map { it.validate() }
             validated = true
         }
     }
@@ -157,33 +157,33 @@ private constructor(
     class Builder {
 
         private var id: JsonField<String> = JsonMissing.of()
-        private var payPeriod: JsonField<PayPeriod> = JsonMissing.of()
-        private var payDate: JsonField<String> = JsonMissing.of()
-        private var debitDate: JsonField<String> = JsonMissing.of()
         private var companyDebit: JsonField<Money> = JsonMissing.of()
-        private var grossPay: JsonField<Money> = JsonMissing.of()
-        private var netPay: JsonField<Money> = JsonMissing.of()
-        private var employerTaxes: JsonField<Money> = JsonMissing.of()
+        private var debitDate: JsonField<String> = JsonMissing.of()
         private var employeeTaxes: JsonField<Money> = JsonMissing.of()
+        private var employerTaxes: JsonField<Money> = JsonMissing.of()
+        private var grossPay: JsonField<Money> = JsonMissing.of()
         private var individualIds: JsonField<List<String>> = JsonMissing.of()
-        private var payGroupIds: JsonField<List<String>> = JsonMissing.of()
+        private var netPay: JsonField<Money> = JsonMissing.of()
+        private var payDate: JsonField<String> = JsonMissing.of()
         private var payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of()
+        private var payGroupIds: JsonField<List<String>> = JsonMissing.of()
+        private var payPeriod: JsonField<PayPeriod> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(payment: Payment) = apply {
             id = payment.id
-            payPeriod = payment.payPeriod
-            payDate = payment.payDate
-            debitDate = payment.debitDate
             companyDebit = payment.companyDebit
-            grossPay = payment.grossPay
-            netPay = payment.netPay
-            employerTaxes = payment.employerTaxes
+            debitDate = payment.debitDate
             employeeTaxes = payment.employeeTaxes
+            employerTaxes = payment.employerTaxes
+            grossPay = payment.grossPay
             individualIds = payment.individualIds
-            payGroupIds = payment.payGroupIds
+            netPay = payment.netPay
+            payDate = payment.payDate
             payFrequencies = payment.payFrequencies
+            payGroupIds = payment.payGroupIds
+            payPeriod = payment.payPeriod
             additionalProperties = payment.additionalProperties.toMutableMap()
         }
 
@@ -193,39 +193,15 @@ private constructor(
         /** The unique id for the payment. */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
-        /** The pay period object. */
-        fun payPeriod(payPeriod: PayPeriod) = payPeriod(JsonField.of(payPeriod))
-
-        /** The pay period object. */
-        fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply { this.payPeriod = payPeriod }
-
-        fun payDate(payDate: String) = payDate(JsonField.of(payDate))
-
-        fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
-
-        fun debitDate(debitDate: String) = debitDate(JsonField.of(debitDate))
-
-        fun debitDate(debitDate: JsonField<String>) = apply { this.debitDate = debitDate }
-
         fun companyDebit(companyDebit: Money) = companyDebit(JsonField.of(companyDebit))
 
         fun companyDebit(companyDebit: JsonField<Money>) = apply {
             this.companyDebit = companyDebit
         }
 
-        fun grossPay(grossPay: Money) = grossPay(JsonField.of(grossPay))
+        fun debitDate(debitDate: String) = debitDate(JsonField.of(debitDate))
 
-        fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
-
-        fun netPay(netPay: Money) = netPay(JsonField.of(netPay))
-
-        fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
-
-        fun employerTaxes(employerTaxes: Money) = employerTaxes(JsonField.of(employerTaxes))
-
-        fun employerTaxes(employerTaxes: JsonField<Money>) = apply {
-            this.employerTaxes = employerTaxes
-        }
+        fun debitDate(debitDate: JsonField<String>) = apply { this.debitDate = debitDate }
 
         fun employeeTaxes(employeeTaxes: Money) = employeeTaxes(JsonField.of(employeeTaxes))
 
@@ -233,12 +209,39 @@ private constructor(
             this.employeeTaxes = employeeTaxes
         }
 
+        fun employerTaxes(employerTaxes: Money) = employerTaxes(JsonField.of(employerTaxes))
+
+        fun employerTaxes(employerTaxes: JsonField<Money>) = apply {
+            this.employerTaxes = employerTaxes
+        }
+
+        fun grossPay(grossPay: Money) = grossPay(JsonField.of(grossPay))
+
+        fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
+
         /** Array of every individual on this payment. */
         fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
 
         /** Array of every individual on this payment. */
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
             this.individualIds = individualIds
+        }
+
+        fun netPay(netPay: Money) = netPay(JsonField.of(netPay))
+
+        fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
+
+        fun payDate(payDate: String) = payDate(JsonField.of(payDate))
+
+        fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
+
+        /** List of pay frequencies associated with this payment. */
+        fun payFrequencies(payFrequencies: List<PayFrequency>) =
+            payFrequencies(JsonField.of(payFrequencies))
+
+        /** List of pay frequencies associated with this payment. */
+        fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
+            this.payFrequencies = payFrequencies
         }
 
         /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
@@ -249,14 +252,11 @@ private constructor(
             this.payGroupIds = payGroupIds
         }
 
-        /** List of pay frequencies associated with this payment. */
-        fun payFrequencies(payFrequencies: List<PayFrequency>) =
-            payFrequencies(JsonField.of(payFrequencies))
+        /** The pay period object. */
+        fun payPeriod(payPeriod: PayPeriod) = payPeriod(JsonField.of(payPeriod))
 
-        /** List of pay frequencies associated with this payment. */
-        fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
-            this.payFrequencies = payFrequencies
-        }
+        /** The pay period object. */
+        fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply { this.payPeriod = payPeriod }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -280,17 +280,17 @@ private constructor(
         fun build(): Payment =
             Payment(
                 id,
-                payPeriod,
-                payDate,
-                debitDate,
                 companyDebit,
-                grossPay,
-                netPay,
-                employerTaxes,
+                debitDate,
                 employeeTaxes,
+                employerTaxes,
+                grossPay,
                 individualIds.map { it.toImmutable() },
-                payGroupIds.map { it.toImmutable() },
+                netPay,
+                payDate,
                 payFrequencies.map { it.toImmutable() },
+                payGroupIds.map { it.toImmutable() },
+                payPeriod,
                 additionalProperties.toImmutable(),
             )
     }
@@ -399,23 +399,23 @@ private constructor(
     class PayPeriod
     @JsonCreator
     private constructor(
-        @JsonProperty("start_date")
-        @ExcludeMissing
-        private val startDate: JsonField<String> = JsonMissing.of(),
         @JsonProperty("end_date")
         @ExcludeMissing
         private val endDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("start_date")
+        @ExcludeMissing
+        private val startDate: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
-
         fun endDate(): Optional<String> = Optional.ofNullable(endDate.getNullable("end_date"))
 
-        @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
+        fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
 
         @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
+
+        @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -425,8 +425,8 @@ private constructor(
 
         fun validate(): PayPeriod = apply {
             if (!validated) {
-                startDate()
                 endDate()
+                startDate()
                 validated = true
             }
         }
@@ -440,24 +440,24 @@ private constructor(
 
         class Builder {
 
-            private var startDate: JsonField<String> = JsonMissing.of()
             private var endDate: JsonField<String> = JsonMissing.of()
+            private var startDate: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(payPeriod: PayPeriod) = apply {
-                startDate = payPeriod.startDate
                 endDate = payPeriod.endDate
+                startDate = payPeriod.startDate
                 additionalProperties = payPeriod.additionalProperties.toMutableMap()
             }
-
-            fun startDate(startDate: String) = startDate(JsonField.of(startDate))
-
-            fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
             fun endDate(endDate: String) = endDate(JsonField.of(endDate))
 
             fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
+
+            fun startDate(startDate: String) = startDate(JsonField.of(startDate))
+
+            fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -480,8 +480,8 @@ private constructor(
 
             fun build(): PayPeriod =
                 PayPeriod(
-                    startDate,
                     endDate,
+                    startDate,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -491,17 +491,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PayPeriod && startDate == other.startDate && endDate == other.endDate && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is PayPeriod && endDate == other.endDate && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(startDate, endDate, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(endDate, startDate, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "PayPeriod{startDate=$startDate, endDate=$endDate, additionalProperties=$additionalProperties}"
+            "PayPeriod{endDate=$endDate, startDate=$startDate, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -509,15 +509,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Payment && id == other.id && payPeriod == other.payPeriod && payDate == other.payDate && debitDate == other.debitDate && companyDebit == other.companyDebit && grossPay == other.grossPay && netPay == other.netPay && employerTaxes == other.employerTaxes && employeeTaxes == other.employeeTaxes && individualIds == other.individualIds && payGroupIds == other.payGroupIds && payFrequencies == other.payFrequencies && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Payment && id == other.id && companyDebit == other.companyDebit && debitDate == other.debitDate && employeeTaxes == other.employeeTaxes && employerTaxes == other.employerTaxes && grossPay == other.grossPay && individualIds == other.individualIds && netPay == other.netPay && payDate == other.payDate && payFrequencies == other.payFrequencies && payGroupIds == other.payGroupIds && payPeriod == other.payPeriod && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, payPeriod, payDate, debitDate, companyDebit, grossPay, netPay, employerTaxes, employeeTaxes, individualIds, payGroupIds, payFrequencies, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, companyDebit, debitDate, employeeTaxes, employerTaxes, grossPay, individualIds, netPay, payDate, payFrequencies, payGroupIds, payPeriod, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Payment{id=$id, payPeriod=$payPeriod, payDate=$payDate, debitDate=$debitDate, companyDebit=$companyDebit, grossPay=$grossPay, netPay=$netPay, employerTaxes=$employerTaxes, employeeTaxes=$employeeTaxes, individualIds=$individualIds, payGroupIds=$payGroupIds, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
+        "Payment{id=$id, companyDebit=$companyDebit, debitDate=$debitDate, employeeTaxes=$employeeTaxes, employerTaxes=$employerTaxes, grossPay=$grossPay, individualIds=$individualIds, netPay=$netPay, payDate=$payDate, payFrequencies=$payFrequencies, payGroupIds=$payGroupIds, payPeriod=$payPeriod, additionalProperties=$additionalProperties}"
 }

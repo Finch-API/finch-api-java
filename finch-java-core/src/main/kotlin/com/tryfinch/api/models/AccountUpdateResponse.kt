@@ -22,9 +22,6 @@ import java.util.Optional
 class AccountUpdateResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("account_id")
     @ExcludeMissing
     private val accountId: JsonField<String> = JsonMissing.of(),
@@ -34,18 +31,17 @@ private constructor(
     @JsonProperty("company_id")
     @ExcludeMissing
     private val companyId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("provider_id")
-    @ExcludeMissing
-    private val providerId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("products")
     @ExcludeMissing
     private val products: JsonField<List<String>> = JsonMissing.of(),
+    @JsonProperty("provider_id")
+    @ExcludeMissing
+    private val providerId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /** The ID of the new connection */
-    fun connectionId(): Optional<String> =
-        Optional.ofNullable(connectionId.getNullable("connection_id"))
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     fun accountId(): String = accountId.getRequired("account_id")
@@ -56,13 +52,14 @@ private constructor(
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     fun companyId(): String = companyId.getRequired("company_id")
 
+    fun products(): List<String> = products.getRequired("products")
+
     /** The ID of the provider associated with the `access_token` */
     fun providerId(): String = providerId.getRequired("provider_id")
 
-    fun products(): List<String> = products.getRequired("products")
-
     /** The ID of the new connection */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    fun connectionId(): Optional<String> =
+        Optional.ofNullable(connectionId.getNullable("connection_id"))
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
@@ -74,10 +71,13 @@ private constructor(
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
 
+    @JsonProperty("products") @ExcludeMissing fun _products() = products
+
     /** The ID of the provider associated with the `access_token` */
     @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
 
-    @JsonProperty("products") @ExcludeMissing fun _products() = products
+    /** The ID of the new connection */
+    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -87,12 +87,12 @@ private constructor(
 
     fun validate(): AccountUpdateResponse = apply {
         if (!validated) {
-            connectionId()
             accountId()
             authenticationType()
             companyId()
-            providerId()
             products()
+            providerId()
+            connectionId()
             validated = true
         }
     }
@@ -106,31 +106,23 @@ private constructor(
 
     class Builder {
 
-        private var connectionId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
         private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
-        private var providerId: JsonField<String> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
+        private var providerId: JsonField<String> = JsonMissing.of()
+        private var connectionId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(accountUpdateResponse: AccountUpdateResponse) = apply {
-            connectionId = accountUpdateResponse.connectionId
             accountId = accountUpdateResponse.accountId
             authenticationType = accountUpdateResponse.authenticationType
             companyId = accountUpdateResponse.companyId
-            providerId = accountUpdateResponse.providerId
             products = accountUpdateResponse.products
+            providerId = accountUpdateResponse.providerId
+            connectionId = accountUpdateResponse.connectionId
             additionalProperties = accountUpdateResponse.additionalProperties.toMutableMap()
-        }
-
-        /** The ID of the new connection */
-        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
-
-        /** The ID of the new connection */
-        fun connectionId(connectionId: JsonField<String>) = apply {
-            this.connectionId = connectionId
         }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
@@ -152,15 +144,23 @@ private constructor(
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
+        fun products(products: List<String>) = products(JsonField.of(products))
+
+        fun products(products: JsonField<List<String>>) = apply { this.products = products }
+
         /** The ID of the provider associated with the `access_token` */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
         /** The ID of the provider associated with the `access_token` */
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
-        fun products(products: List<String>) = products(JsonField.of(products))
+        /** The ID of the new connection */
+        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
-        fun products(products: JsonField<List<String>>) = apply { this.products = products }
+        /** The ID of the new connection */
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            this.connectionId = connectionId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -183,12 +183,12 @@ private constructor(
 
         fun build(): AccountUpdateResponse =
             AccountUpdateResponse(
-                connectionId,
                 accountId,
                 authenticationType,
                 companyId,
-                providerId,
                 products.map { it.toImmutable() },
+                providerId,
+                connectionId,
                 additionalProperties.toImmutable(),
             )
     }
@@ -267,15 +267,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AccountUpdateResponse && connectionId == other.connectionId && accountId == other.accountId && authenticationType == other.authenticationType && companyId == other.companyId && providerId == other.providerId && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AccountUpdateResponse && accountId == other.accountId && authenticationType == other.authenticationType && companyId == other.companyId && products == other.products && providerId == other.providerId && connectionId == other.connectionId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(connectionId, accountId, authenticationType, companyId, providerId, products, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(accountId, authenticationType, companyId, products, providerId, connectionId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "AccountUpdateResponse{connectionId=$connectionId, accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, providerId=$providerId, products=$products, additionalProperties=$additionalProperties}"
+        "AccountUpdateResponse{accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, products=$products, providerId=$providerId, connectionId=$connectionId, additionalProperties=$additionalProperties}"
 }

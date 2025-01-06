@@ -22,26 +22,26 @@ import java.util.Optional
 class IndividualBenefit
 @JsonCreator
 private constructor(
+    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
+    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("individual_id")
     @ExcludeMissing
     private val individualId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
+
+    fun body(): Optional<Body> = Optional.ofNullable(body.getNullable("body"))
+
+    fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
 
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
 
-    fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
-
-    fun body(): Optional<Body> = Optional.ofNullable(body.getNullable("body"))
-
-    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+    @JsonProperty("body") @ExcludeMissing fun _body() = body
 
     @JsonProperty("code") @ExcludeMissing fun _code() = code
 
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -51,9 +51,9 @@ private constructor(
 
     fun validate(): IndividualBenefit = apply {
         if (!validated) {
-            individualId()
-            code()
             body().map { it.validate() }
+            code()
+            individualId()
             validated = true
         }
     }
@@ -67,32 +67,32 @@ private constructor(
 
     class Builder {
 
-        private var individualId: JsonField<String> = JsonMissing.of()
-        private var code: JsonField<Long> = JsonMissing.of()
         private var body: JsonField<Body> = JsonMissing.of()
+        private var code: JsonField<Long> = JsonMissing.of()
+        private var individualId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(individualBenefit: IndividualBenefit) = apply {
-            individualId = individualBenefit.individualId
-            code = individualBenefit.code
             body = individualBenefit.body
+            code = individualBenefit.code
+            individualId = individualBenefit.individualId
             additionalProperties = individualBenefit.additionalProperties.toMutableMap()
         }
+
+        fun body(body: Body) = body(JsonField.of(body))
+
+        fun body(body: JsonField<Body>) = apply { this.body = body }
+
+        fun code(code: Long) = code(JsonField.of(code))
+
+        fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
-
-        fun code(code: Long) = code(JsonField.of(code))
-
-        fun code(code: JsonField<Long>) = apply { this.code = code }
-
-        fun body(body: Body) = body(JsonField.of(body))
-
-        fun body(body: JsonField<Body>) = apply { this.body = body }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -115,9 +115,9 @@ private constructor(
 
         fun build(): IndividualBenefit =
             IndividualBenefit(
-                individualId,
-                code,
                 body,
+                code,
+                individualId,
                 additionalProperties.toImmutable(),
             )
     }
@@ -126,30 +126,24 @@ private constructor(
     class Body
     @JsonCreator
     private constructor(
-        @JsonProperty("employee_deduction")
-        @ExcludeMissing
-        private val employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of(),
-        @JsonProperty("company_contribution")
-        @ExcludeMissing
-        private val companyContribution: JsonField<BenefitContribution> = JsonMissing.of(),
         @JsonProperty("annual_maximum")
         @ExcludeMissing
         private val annualMaximum: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("catch_up")
         @ExcludeMissing
         private val catchUp: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("company_contribution")
+        @ExcludeMissing
+        private val companyContribution: JsonField<BenefitContribution> = JsonMissing.of(),
+        @JsonProperty("employee_deduction")
+        @ExcludeMissing
+        private val employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of(),
         @JsonProperty("hsa_contribution_limit")
         @ExcludeMissing
         private val hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        fun employeeDeduction(): Optional<BenefitContribution> =
-            Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
-
-        fun companyContribution(): Optional<BenefitContribution> =
-            Optional.ofNullable(companyContribution.getNullable("company_contribution"))
 
         /** If the benefit supports annual maximum, the amount in cents for this individual. */
         fun annualMaximum(): Optional<Long> =
@@ -161,17 +155,15 @@ private constructor(
          */
         fun catchUp(): Optional<Boolean> = Optional.ofNullable(catchUp.getNullable("catch_up"))
 
+        fun companyContribution(): Optional<BenefitContribution> =
+            Optional.ofNullable(companyContribution.getNullable("company_contribution"))
+
+        fun employeeDeduction(): Optional<BenefitContribution> =
+            Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
+
         /** Type for HSA contribution limit if the benefit is a HSA. */
         fun hsaContributionLimit(): Optional<HsaContributionLimit> =
             Optional.ofNullable(hsaContributionLimit.getNullable("hsa_contribution_limit"))
-
-        @JsonProperty("employee_deduction")
-        @ExcludeMissing
-        fun _employeeDeduction() = employeeDeduction
-
-        @JsonProperty("company_contribution")
-        @ExcludeMissing
-        fun _companyContribution() = companyContribution
 
         /** If the benefit supports annual maximum, the amount in cents for this individual. */
         @JsonProperty("annual_maximum") @ExcludeMissing fun _annualMaximum() = annualMaximum
@@ -181,6 +173,14 @@ private constructor(
          * individual.
          */
         @JsonProperty("catch_up") @ExcludeMissing fun _catchUp() = catchUp
+
+        @JsonProperty("company_contribution")
+        @ExcludeMissing
+        fun _companyContribution() = companyContribution
+
+        @JsonProperty("employee_deduction")
+        @ExcludeMissing
+        fun _employeeDeduction() = employeeDeduction
 
         /** Type for HSA contribution limit if the benefit is a HSA. */
         @JsonProperty("hsa_contribution_limit")
@@ -195,10 +195,10 @@ private constructor(
 
         fun validate(): Body = apply {
             if (!validated) {
-                employeeDeduction().map { it.validate() }
-                companyContribution().map { it.validate() }
                 annualMaximum()
                 catchUp()
+                companyContribution().map { it.validate() }
+                employeeDeduction().map { it.validate() }
                 hsaContributionLimit()
                 validated = true
             }
@@ -213,35 +213,21 @@ private constructor(
 
         class Builder {
 
-            private var employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of()
-            private var companyContribution: JsonField<BenefitContribution> = JsonMissing.of()
             private var annualMaximum: JsonField<Long> = JsonMissing.of()
             private var catchUp: JsonField<Boolean> = JsonMissing.of()
+            private var companyContribution: JsonField<BenefitContribution> = JsonMissing.of()
+            private var employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of()
             private var hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                employeeDeduction = body.employeeDeduction
-                companyContribution = body.companyContribution
                 annualMaximum = body.annualMaximum
                 catchUp = body.catchUp
+                companyContribution = body.companyContribution
+                employeeDeduction = body.employeeDeduction
                 hsaContributionLimit = body.hsaContributionLimit
                 additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            fun employeeDeduction(employeeDeduction: BenefitContribution) =
-                employeeDeduction(JsonField.of(employeeDeduction))
-
-            fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
-                this.employeeDeduction = employeeDeduction
-            }
-
-            fun companyContribution(companyContribution: BenefitContribution) =
-                companyContribution(JsonField.of(companyContribution))
-
-            fun companyContribution(companyContribution: JsonField<BenefitContribution>) = apply {
-                this.companyContribution = companyContribution
             }
 
             /** If the benefit supports annual maximum, the amount in cents for this individual. */
@@ -263,6 +249,20 @@ private constructor(
              * this individual.
              */
             fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
+
+            fun companyContribution(companyContribution: BenefitContribution) =
+                companyContribution(JsonField.of(companyContribution))
+
+            fun companyContribution(companyContribution: JsonField<BenefitContribution>) = apply {
+                this.companyContribution = companyContribution
+            }
+
+            fun employeeDeduction(employeeDeduction: BenefitContribution) =
+                employeeDeduction(JsonField.of(employeeDeduction))
+
+            fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
+                this.employeeDeduction = employeeDeduction
+            }
 
             /** Type for HSA contribution limit if the benefit is a HSA. */
             fun hsaContributionLimit(hsaContributionLimit: HsaContributionLimit) =
@@ -295,10 +295,10 @@ private constructor(
 
             fun build(): Body =
                 Body(
-                    employeeDeduction,
-                    companyContribution,
                     annualMaximum,
                     catchUp,
+                    companyContribution,
+                    employeeDeduction,
                     hsaContributionLimit,
                     additionalProperties.toImmutable(),
                 )
@@ -366,17 +366,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && employeeDeduction == other.employeeDeduction && companyContribution == other.companyContribution && annualMaximum == other.annualMaximum && catchUp == other.catchUp && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && employeeDeduction == other.employeeDeduction && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(employeeDeduction, companyContribution, annualMaximum, catchUp, hsaContributionLimit, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(annualMaximum, catchUp, companyContribution, employeeDeduction, hsaContributionLimit, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{employeeDeduction=$employeeDeduction, companyContribution=$companyContribution, annualMaximum=$annualMaximum, catchUp=$catchUp, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
+            "Body{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, employeeDeduction=$employeeDeduction, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -384,15 +384,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is IndividualBenefit && individualId == other.individualId && code == other.code && body == other.body && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is IndividualBenefit && body == other.body && code == other.code && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(individualId, code, body, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(body, code, individualId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "IndividualBenefit{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"
+        "IndividualBenefit{body=$body, code=$code, individualId=$individualId, additionalProperties=$additionalProperties}"
 }
