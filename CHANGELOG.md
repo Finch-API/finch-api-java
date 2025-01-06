@@ -1,5 +1,34 @@
 # Changelog
 
+## 3.0.0 (2025-01-06)
+
+Full Changelog: [v2.0.0...v3.0.0](https://github.com/Finch-API/finch-api-java/compare/v2.0.0...v3.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** switch query params objects to use `QueryParams` ([#369](https://github.com/Finch-API/finch-api-java/issues/369))
+
+### Features
+
+* **client:** allow passing null or optional for nullable fields ([#379](https://github.com/Finch-API/finch-api-java/issues/379)) ([e4f8ca9](https://github.com/Finch-API/finch-api-java/commit/e4f8ca9dd0387833aa49d7a386bf806cf2af597b))
+
+
+### Chores
+
+* **internal:** codegen related update ([#374](https://github.com/Finch-API/finch-api-java/issues/374)) ([720b466](https://github.com/Finch-API/finch-api-java/commit/720b4664e700de2ddc5438a6ef3b0b9a4e882b32))
+* **internal:** codegen related update ([#376](https://github.com/Finch-API/finch-api-java/issues/376)) ([e61b257](https://github.com/Finch-API/finch-api-java/commit/e61b257b31e6824ceabe52c3d01e97a76ea7d0b2))
+
+
+### Styles
+
+* **internal:** sort fields ([#377](https://github.com/Finch-API/finch-api-java/issues/377)) ([0d8e0c9](https://github.com/Finch-API/finch-api-java/commit/0d8e0c980e77ceb4870ae930a22bc893249596b2))
+
+
+### Refactors
+
+* **client:** switch query params objects to use `QueryParams` ([#369](https://github.com/Finch-API/finch-api-java/issues/369)) ([af3c693](https://github.com/Finch-API/finch-api-java/commit/af3c693140281966f4162675c137b93bdcbf0014))
+* **internal:** use constructor to deserialize json ([#371](https://github.com/Finch-API/finch-api-java/issues/371)) ([418c911](https://github.com/Finch-API/finch-api-java/commit/418c911946742d49875c927b53dd86ddd750d59a))
+
 ## 2.0.0 (2024-12-19)
 
 Full Changelog: [v1.12.0...v2.0.0](https://github.com/Finch-API/finch-api-java/compare/v1.12.0...v2.0.0)
