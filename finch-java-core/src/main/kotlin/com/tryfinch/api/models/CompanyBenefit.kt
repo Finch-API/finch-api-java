@@ -23,22 +23,19 @@ private constructor(
     @JsonProperty("benefit_id")
     @ExcludeMissing
     private val benefitId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("type")
-    @ExcludeMissing
-    private val type: JsonField<BenefitType> = JsonMissing.of(),
     @JsonProperty("description")
     @ExcludeMissing
     private val description: JsonField<String> = JsonMissing.of(),
     @JsonProperty("frequency")
     @ExcludeMissing
     private val frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
+    @JsonProperty("type")
+    @ExcludeMissing
+    private val type: JsonField<BenefitType> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun benefitId(): String = benefitId.getRequired("benefit_id")
-
-    /** Type of benefit. */
-    fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
 
     fun description(): Optional<String> =
         Optional.ofNullable(description.getNullable("description"))
@@ -46,14 +43,17 @@ private constructor(
     fun frequency(): Optional<BenefitFrequency> =
         Optional.ofNullable(frequency.getNullable("frequency"))
 
-    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId() = benefitId
-
     /** Type of benefit. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
+
+    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId() = benefitId
 
     @JsonProperty("description") @ExcludeMissing fun _description() = description
 
     @JsonProperty("frequency") @ExcludeMissing fun _frequency() = frequency
+
+    /** Type of benefit. */
+    @JsonProperty("type") @ExcludeMissing fun _type() = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -64,9 +64,9 @@ private constructor(
     fun validate(): CompanyBenefit = apply {
         if (!validated) {
             benefitId()
-            type()
             description()
             frequency()
+            type()
             validated = true
         }
     }
@@ -81,29 +81,23 @@ private constructor(
     class Builder {
 
         private var benefitId: JsonField<String> = JsonMissing.of()
-        private var type: JsonField<BenefitType> = JsonMissing.of()
         private var description: JsonField<String> = JsonMissing.of()
         private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
+        private var type: JsonField<BenefitType> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(companyBenefit: CompanyBenefit) = apply {
             benefitId = companyBenefit.benefitId
-            type = companyBenefit.type
             description = companyBenefit.description
             frequency = companyBenefit.frequency
+            type = companyBenefit.type
             additionalProperties = companyBenefit.additionalProperties.toMutableMap()
         }
 
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
-
-        /** Type of benefit. */
-        fun type(type: BenefitType) = type(JsonField.of(type))
-
-        /** Type of benefit. */
-        fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
         fun description(description: String) = description(JsonField.of(description))
 
@@ -112,6 +106,12 @@ private constructor(
         fun frequency(frequency: BenefitFrequency) = frequency(JsonField.of(frequency))
 
         fun frequency(frequency: JsonField<BenefitFrequency>) = apply { this.frequency = frequency }
+
+        /** Type of benefit. */
+        fun type(type: BenefitType) = type(JsonField.of(type))
+
+        /** Type of benefit. */
+        fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -135,9 +135,9 @@ private constructor(
         fun build(): CompanyBenefit =
             CompanyBenefit(
                 benefitId,
-                type,
                 description,
                 frequency,
+                type,
                 additionalProperties.toImmutable(),
             )
     }
@@ -147,15 +147,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CompanyBenefit && benefitId == other.benefitId && type == other.type && description == other.description && frequency == other.frequency && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is CompanyBenefit && benefitId == other.benefitId && description == other.description && frequency == other.frequency && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(benefitId, type, description, frequency, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(benefitId, description, frequency, type, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CompanyBenefit{benefitId=$benefitId, type=$type, description=$description, frequency=$frequency, additionalProperties=$additionalProperties}"
+        "CompanyBenefit{benefitId=$benefitId, description=$description, frequency=$frequency, type=$type, additionalProperties=$additionalProperties}"
 }

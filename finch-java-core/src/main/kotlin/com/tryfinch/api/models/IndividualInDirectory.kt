@@ -21,35 +21,39 @@ class IndividualInDirectory
 @JsonCreator
 private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("department")
+    @ExcludeMissing
+    private val department: JsonField<Department> = JsonMissing.of(),
     @JsonProperty("first_name")
     @ExcludeMissing
     private val firstName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("middle_name")
+    @JsonProperty("is_active")
     @ExcludeMissing
-    private val middleName: JsonField<String> = JsonMissing.of(),
+    private val isActive: JsonField<Boolean> = JsonMissing.of(),
     @JsonProperty("last_name")
     @ExcludeMissing
     private val lastName: JsonField<String> = JsonMissing.of(),
     @JsonProperty("manager")
     @ExcludeMissing
     private val manager: JsonField<Manager> = JsonMissing.of(),
-    @JsonProperty("department")
+    @JsonProperty("middle_name")
     @ExcludeMissing
-    private val department: JsonField<Department> = JsonMissing.of(),
-    @JsonProperty("is_active")
-    @ExcludeMissing
-    private val isActive: JsonField<Boolean> = JsonMissing.of(),
+    private val middleName: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** A stable Finch id (UUID v4) for an individual in the company. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
+    /** The department object. */
+    fun department(): Optional<Department> =
+        Optional.ofNullable(department.getNullable("department"))
+
     /** The legal first name of the individual. */
     fun firstName(): Optional<String> = Optional.ofNullable(firstName.getNullable("first_name"))
 
-    /** The legal middle name of the individual. */
-    fun middleName(): Optional<String> = Optional.ofNullable(middleName.getNullable("middle_name"))
+    /** `true` if the individual is an active employee or contractor at the company. */
+    fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive.getNullable("is_active"))
 
     /** The legal last name of the individual. */
     fun lastName(): Optional<String> = Optional.ofNullable(lastName.getNullable("last_name"))
@@ -57,21 +61,20 @@ private constructor(
     /** The manager object. */
     fun manager(): Optional<Manager> = Optional.ofNullable(manager.getNullable("manager"))
 
-    /** The department object. */
-    fun department(): Optional<Department> =
-        Optional.ofNullable(department.getNullable("department"))
-
-    /** `true` if the individual is an active employee or contractor at the company. */
-    fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive.getNullable("is_active"))
+    /** The legal middle name of the individual. */
+    fun middleName(): Optional<String> = Optional.ofNullable(middleName.getNullable("middle_name"))
 
     /** A stable Finch id (UUID v4) for an individual in the company. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
 
+    /** The department object. */
+    @JsonProperty("department") @ExcludeMissing fun _department() = department
+
     /** The legal first name of the individual. */
     @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
 
-    /** The legal middle name of the individual. */
-    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+    /** `true` if the individual is an active employee or contractor at the company. */
+    @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
 
     /** The legal last name of the individual. */
     @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
@@ -79,11 +82,8 @@ private constructor(
     /** The manager object. */
     @JsonProperty("manager") @ExcludeMissing fun _manager() = manager
 
-    /** The department object. */
-    @JsonProperty("department") @ExcludeMissing fun _department() = department
-
-    /** `true` if the individual is an active employee or contractor at the company. */
-    @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
+    /** The legal middle name of the individual. */
+    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -94,12 +94,12 @@ private constructor(
     fun validate(): IndividualInDirectory = apply {
         if (!validated) {
             id()
+            department().map { it.validate() }
             firstName()
-            middleName()
+            isActive()
             lastName()
             manager().map { it.validate() }
-            department().map { it.validate() }
-            isActive()
+            middleName()
             validated = true
         }
     }
@@ -114,23 +114,23 @@ private constructor(
     class Builder {
 
         private var id: JsonField<String> = JsonMissing.of()
+        private var department: JsonField<Department> = JsonMissing.of()
         private var firstName: JsonField<String> = JsonMissing.of()
-        private var middleName: JsonField<String> = JsonMissing.of()
+        private var isActive: JsonField<Boolean> = JsonMissing.of()
         private var lastName: JsonField<String> = JsonMissing.of()
         private var manager: JsonField<Manager> = JsonMissing.of()
-        private var department: JsonField<Department> = JsonMissing.of()
-        private var isActive: JsonField<Boolean> = JsonMissing.of()
+        private var middleName: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(individualInDirectory: IndividualInDirectory) = apply {
             id = individualInDirectory.id
+            department = individualInDirectory.department
             firstName = individualInDirectory.firstName
-            middleName = individualInDirectory.middleName
+            isActive = individualInDirectory.isActive
             lastName = individualInDirectory.lastName
             manager = individualInDirectory.manager
-            department = individualInDirectory.department
-            isActive = individualInDirectory.isActive
+            middleName = individualInDirectory.middleName
             additionalProperties = individualInDirectory.additionalProperties.toMutableMap()
         }
 
@@ -140,17 +140,23 @@ private constructor(
         /** A stable Finch id (UUID v4) for an individual in the company. */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
+        /** The department object. */
+        fun department(department: Department) = department(JsonField.of(department))
+
+        /** The department object. */
+        fun department(department: JsonField<Department>) = apply { this.department = department }
+
         /** The legal first name of the individual. */
         fun firstName(firstName: String) = firstName(JsonField.of(firstName))
 
         /** The legal first name of the individual. */
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
-        /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = middleName(JsonField.of(middleName))
+        /** `true` if the individual is an active employee or contractor at the company. */
+        fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
 
-        /** The legal middle name of the individual. */
-        fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
+        /** `true` if the individual is an active employee or contractor at the company. */
+        fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String) = lastName(JsonField.of(lastName))
@@ -164,17 +170,11 @@ private constructor(
         /** The manager object. */
         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
-        /** The department object. */
-        fun department(department: Department) = department(JsonField.of(department))
+        /** The legal middle name of the individual. */
+        fun middleName(middleName: String) = middleName(JsonField.of(middleName))
 
-        /** The department object. */
-        fun department(department: JsonField<Department>) = apply { this.department = department }
-
-        /** `true` if the individual is an active employee or contractor at the company. */
-        fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
-
-        /** `true` if the individual is an active employee or contractor at the company. */
-        fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
+        /** The legal middle name of the individual. */
+        fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -198,12 +198,12 @@ private constructor(
         fun build(): IndividualInDirectory =
             IndividualInDirectory(
                 id,
+                department,
                 firstName,
-                middleName,
+                isActive,
                 lastName,
                 manager,
-                department,
-                isActive,
+                middleName,
                 additionalProperties.toImmutable(),
             )
     }
@@ -400,15 +400,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is IndividualInDirectory && id == other.id && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && manager == other.manager && department == other.department && isActive == other.isActive && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is IndividualInDirectory && id == other.id && department == other.department && firstName == other.firstName && isActive == other.isActive && lastName == other.lastName && manager == other.manager && middleName == other.middleName && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, firstName, middleName, lastName, manager, department, isActive, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, department, firstName, isActive, lastName, manager, middleName, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "IndividualInDirectory{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, manager=$manager, department=$department, isActive=$isActive, additionalProperties=$additionalProperties}"
+        "IndividualInDirectory{id=$id, department=$department, firstName=$firstName, isActive=$isActive, lastName=$lastName, manager=$manager, middleName=$middleName, additionalProperties=$additionalProperties}"
 }

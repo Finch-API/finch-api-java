@@ -23,69 +23,77 @@ class Individual
 @JsonCreator
 private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("first_name")
-    @ExcludeMissing
-    private val firstName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("middle_name")
-    @ExcludeMissing
-    private val middleName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("last_name")
-    @ExcludeMissing
-    private val lastName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("preferred_name")
-    @ExcludeMissing
-    private val preferredName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("dob") @ExcludeMissing private val dob: JsonField<String> = JsonMissing.of(),
     @JsonProperty("emails")
     @ExcludeMissing
     private val emails: JsonField<List<Email>> = JsonMissing.of(),
-    @JsonProperty("phone_numbers")
+    @JsonProperty("encrypted_ssn")
     @ExcludeMissing
-    private val phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of(),
-    @JsonProperty("gender")
-    @ExcludeMissing
-    private val gender: JsonField<Gender> = JsonMissing.of(),
+    private val encryptedSsn: JsonField<String> = JsonMissing.of(),
     @JsonProperty("ethnicity")
     @ExcludeMissing
     private val ethnicity: JsonField<Ethnicity> = JsonMissing.of(),
-    @JsonProperty("dob") @ExcludeMissing private val dob: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("first_name")
+    @ExcludeMissing
+    private val firstName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("gender")
+    @ExcludeMissing
+    private val gender: JsonField<Gender> = JsonMissing.of(),
+    @JsonProperty("last_name")
+    @ExcludeMissing
+    private val lastName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("middle_name")
+    @ExcludeMissing
+    private val middleName: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("phone_numbers")
+    @ExcludeMissing
+    private val phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of(),
+    @JsonProperty("preferred_name")
+    @ExcludeMissing
+    private val preferredName: JsonField<String> = JsonMissing.of(),
     @JsonProperty("residence")
     @ExcludeMissing
     private val residence: JsonField<Location> = JsonMissing.of(),
     @JsonProperty("ssn") @ExcludeMissing private val ssn: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("encrypted_ssn")
-    @ExcludeMissing
-    private val encryptedSsn: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** A stable Finch `id` (UUID v4) for an individual in the company. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
-    /** The legal first name of the individual. */
-    fun firstName(): Optional<String> = Optional.ofNullable(firstName.getNullable("first_name"))
-
-    /** The legal middle name of the individual. */
-    fun middleName(): Optional<String> = Optional.ofNullable(middleName.getNullable("middle_name"))
-
-    /** The legal last name of the individual. */
-    fun lastName(): Optional<String> = Optional.ofNullable(lastName.getNullable("last_name"))
-
-    /** The preferred name of the individual. */
-    fun preferredName(): Optional<String> =
-        Optional.ofNullable(preferredName.getNullable("preferred_name"))
+    fun dob(): Optional<String> = Optional.ofNullable(dob.getNullable("dob"))
 
     fun emails(): Optional<List<Email>> = Optional.ofNullable(emails.getNullable("emails"))
 
-    fun phoneNumbers(): Optional<List<PhoneNumber?>> =
-        Optional.ofNullable(phoneNumbers.getNullable("phone_numbers"))
-
-    /** The gender of the individual. */
-    fun gender(): Optional<Gender> = Optional.ofNullable(gender.getNullable("gender"))
+    /**
+     * Social Security Number of the individual in **encrypted** format. This field is only
+     * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
+     * the body.
+     */
+    fun encryptedSsn(): Optional<String> =
+        Optional.ofNullable(encryptedSsn.getNullable("encrypted_ssn"))
 
     /** The EEOC-defined ethnicity of the individual. */
     fun ethnicity(): Optional<Ethnicity> = Optional.ofNullable(ethnicity.getNullable("ethnicity"))
 
-    fun dob(): Optional<String> = Optional.ofNullable(dob.getNullable("dob"))
+    /** The legal first name of the individual. */
+    fun firstName(): Optional<String> = Optional.ofNullable(firstName.getNullable("first_name"))
+
+    /** The gender of the individual. */
+    fun gender(): Optional<Gender> = Optional.ofNullable(gender.getNullable("gender"))
+
+    /** The legal last name of the individual. */
+    fun lastName(): Optional<String> = Optional.ofNullable(lastName.getNullable("last_name"))
+
+    /** The legal middle name of the individual. */
+    fun middleName(): Optional<String> = Optional.ofNullable(middleName.getNullable("middle_name"))
+
+    fun phoneNumbers(): Optional<List<PhoneNumber?>> =
+        Optional.ofNullable(phoneNumbers.getNullable("phone_numbers"))
+
+    /** The preferred name of the individual. */
+    fun preferredName(): Optional<String> =
+        Optional.ofNullable(preferredName.getNullable("preferred_name"))
 
     fun residence(): Optional<Location> = Optional.ofNullable(residence.getNullable("residence"))
 
@@ -96,40 +104,39 @@ private constructor(
      */
     fun ssn(): Optional<String> = Optional.ofNullable(ssn.getNullable("ssn"))
 
+    /** A stable Finch `id` (UUID v4) for an individual in the company. */
+    @JsonProperty("id") @ExcludeMissing fun _id() = id
+
+    @JsonProperty("dob") @ExcludeMissing fun _dob() = dob
+
+    @JsonProperty("emails") @ExcludeMissing fun _emails() = emails
+
     /**
      * Social Security Number of the individual in **encrypted** format. This field is only
      * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
      * the body.
      */
-    fun encryptedSsn(): Optional<String> =
-        Optional.ofNullable(encryptedSsn.getNullable("encrypted_ssn"))
-
-    /** A stable Finch `id` (UUID v4) for an individual in the company. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
-
-    /** The legal first name of the individual. */
-    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
-
-    /** The legal middle name of the individual. */
-    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
-
-    /** The legal last name of the individual. */
-    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
-
-    /** The preferred name of the individual. */
-    @JsonProperty("preferred_name") @ExcludeMissing fun _preferredName() = preferredName
-
-    @JsonProperty("emails") @ExcludeMissing fun _emails() = emails
-
-    @JsonProperty("phone_numbers") @ExcludeMissing fun _phoneNumbers() = phoneNumbers
-
-    /** The gender of the individual. */
-    @JsonProperty("gender") @ExcludeMissing fun _gender() = gender
+    @JsonProperty("encrypted_ssn") @ExcludeMissing fun _encryptedSsn() = encryptedSsn
 
     /** The EEOC-defined ethnicity of the individual. */
     @JsonProperty("ethnicity") @ExcludeMissing fun _ethnicity() = ethnicity
 
-    @JsonProperty("dob") @ExcludeMissing fun _dob() = dob
+    /** The legal first name of the individual. */
+    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+
+    /** The gender of the individual. */
+    @JsonProperty("gender") @ExcludeMissing fun _gender() = gender
+
+    /** The legal last name of the individual. */
+    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+
+    /** The legal middle name of the individual. */
+    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+
+    @JsonProperty("phone_numbers") @ExcludeMissing fun _phoneNumbers() = phoneNumbers
+
+    /** The preferred name of the individual. */
+    @JsonProperty("preferred_name") @ExcludeMissing fun _preferredName() = preferredName
 
     @JsonProperty("residence") @ExcludeMissing fun _residence() = residence
 
@@ -140,13 +147,6 @@ private constructor(
      */
     @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
 
-    /**
-     * Social Security Number of the individual in **encrypted** format. This field is only
-     * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
-     * the body.
-     */
-    @JsonProperty("encrypted_ssn") @ExcludeMissing fun _encryptedSsn() = encryptedSsn
-
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -156,18 +156,18 @@ private constructor(
     fun validate(): Individual = apply {
         if (!validated) {
             id()
-            firstName()
-            middleName()
-            lastName()
-            preferredName()
-            emails().map { it.forEach { it.validate() } }
-            phoneNumbers().map { it.forEach { it?.validate() } }
-            gender()
-            ethnicity()
             dob()
+            emails().map { it.forEach { it.validate() } }
+            encryptedSsn()
+            ethnicity()
+            firstName()
+            gender()
+            lastName()
+            middleName()
+            phoneNumbers().map { it.forEach { it?.validate() } }
+            preferredName()
             residence().map { it.validate() }
             ssn()
-            encryptedSsn()
             validated = true
         }
     }
@@ -182,35 +182,35 @@ private constructor(
     class Builder {
 
         private var id: JsonField<String> = JsonMissing.of()
-        private var firstName: JsonField<String> = JsonMissing.of()
-        private var middleName: JsonField<String> = JsonMissing.of()
-        private var lastName: JsonField<String> = JsonMissing.of()
-        private var preferredName: JsonField<String> = JsonMissing.of()
-        private var emails: JsonField<List<Email>> = JsonMissing.of()
-        private var phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of()
-        private var gender: JsonField<Gender> = JsonMissing.of()
-        private var ethnicity: JsonField<Ethnicity> = JsonMissing.of()
         private var dob: JsonField<String> = JsonMissing.of()
+        private var emails: JsonField<List<Email>> = JsonMissing.of()
+        private var encryptedSsn: JsonField<String> = JsonMissing.of()
+        private var ethnicity: JsonField<Ethnicity> = JsonMissing.of()
+        private var firstName: JsonField<String> = JsonMissing.of()
+        private var gender: JsonField<Gender> = JsonMissing.of()
+        private var lastName: JsonField<String> = JsonMissing.of()
+        private var middleName: JsonField<String> = JsonMissing.of()
+        private var phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of()
+        private var preferredName: JsonField<String> = JsonMissing.of()
         private var residence: JsonField<Location> = JsonMissing.of()
         private var ssn: JsonField<String> = JsonMissing.of()
-        private var encryptedSsn: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(individual: Individual) = apply {
             id = individual.id
-            firstName = individual.firstName
-            middleName = individual.middleName
-            lastName = individual.lastName
-            preferredName = individual.preferredName
-            emails = individual.emails
-            phoneNumbers = individual.phoneNumbers
-            gender = individual.gender
-            ethnicity = individual.ethnicity
             dob = individual.dob
+            emails = individual.emails
+            encryptedSsn = individual.encryptedSsn
+            ethnicity = individual.ethnicity
+            firstName = individual.firstName
+            gender = individual.gender
+            lastName = individual.lastName
+            middleName = individual.middleName
+            phoneNumbers = individual.phoneNumbers
+            preferredName = individual.preferredName
             residence = individual.residence
             ssn = individual.ssn
-            encryptedSsn = individual.encryptedSsn
             additionalProperties = individual.additionalProperties.toMutableMap()
         }
 
@@ -220,17 +220,47 @@ private constructor(
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
+        fun dob(dob: String) = dob(JsonField.of(dob))
+
+        fun dob(dob: JsonField<String>) = apply { this.dob = dob }
+
+        fun emails(emails: List<Email>) = emails(JsonField.of(emails))
+
+        fun emails(emails: JsonField<List<Email>>) = apply { this.emails = emails }
+
+        /**
+         * Social Security Number of the individual in **encrypted** format. This field is only
+         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
+         * in the body.
+         */
+        fun encryptedSsn(encryptedSsn: String) = encryptedSsn(JsonField.of(encryptedSsn))
+
+        /**
+         * Social Security Number of the individual in **encrypted** format. This field is only
+         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
+         * in the body.
+         */
+        fun encryptedSsn(encryptedSsn: JsonField<String>) = apply {
+            this.encryptedSsn = encryptedSsn
+        }
+
+        /** The EEOC-defined ethnicity of the individual. */
+        fun ethnicity(ethnicity: Ethnicity) = ethnicity(JsonField.of(ethnicity))
+
+        /** The EEOC-defined ethnicity of the individual. */
+        fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { this.ethnicity = ethnicity }
+
         /** The legal first name of the individual. */
         fun firstName(firstName: String) = firstName(JsonField.of(firstName))
 
         /** The legal first name of the individual. */
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
-        /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = middleName(JsonField.of(middleName))
+        /** The gender of the individual. */
+        fun gender(gender: Gender) = gender(JsonField.of(gender))
 
-        /** The legal middle name of the individual. */
-        fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
+        /** The gender of the individual. */
+        fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String) = lastName(JsonField.of(lastName))
@@ -238,17 +268,11 @@ private constructor(
         /** The legal last name of the individual. */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
-        /** The preferred name of the individual. */
-        fun preferredName(preferredName: String) = preferredName(JsonField.of(preferredName))
+        /** The legal middle name of the individual. */
+        fun middleName(middleName: String) = middleName(JsonField.of(middleName))
 
-        /** The preferred name of the individual. */
-        fun preferredName(preferredName: JsonField<String>) = apply {
-            this.preferredName = preferredName
-        }
-
-        fun emails(emails: List<Email>) = emails(JsonField.of(emails))
-
-        fun emails(emails: JsonField<List<Email>>) = apply { this.emails = emails }
+        /** The legal middle name of the individual. */
+        fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
         fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) =
             phoneNumbers(JsonField.of(phoneNumbers))
@@ -257,21 +281,13 @@ private constructor(
             this.phoneNumbers = phoneNumbers
         }
 
-        /** The gender of the individual. */
-        fun gender(gender: Gender) = gender(JsonField.of(gender))
+        /** The preferred name of the individual. */
+        fun preferredName(preferredName: String) = preferredName(JsonField.of(preferredName))
 
-        /** The gender of the individual. */
-        fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
-
-        /** The EEOC-defined ethnicity of the individual. */
-        fun ethnicity(ethnicity: Ethnicity) = ethnicity(JsonField.of(ethnicity))
-
-        /** The EEOC-defined ethnicity of the individual. */
-        fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { this.ethnicity = ethnicity }
-
-        fun dob(dob: String) = dob(JsonField.of(dob))
-
-        fun dob(dob: JsonField<String>) = apply { this.dob = dob }
+        /** The preferred name of the individual. */
+        fun preferredName(preferredName: JsonField<String>) = apply {
+            this.preferredName = preferredName
+        }
 
         fun residence(residence: Location) = residence(JsonField.of(residence))
 
@@ -290,22 +306,6 @@ private constructor(
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
         fun ssn(ssn: JsonField<String>) = apply { this.ssn = ssn }
-
-        /**
-         * Social Security Number of the individual in **encrypted** format. This field is only
-         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
-         * in the body.
-         */
-        fun encryptedSsn(encryptedSsn: String) = encryptedSsn(JsonField.of(encryptedSsn))
-
-        /**
-         * Social Security Number of the individual in **encrypted** format. This field is only
-         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
-         * in the body.
-         */
-        fun encryptedSsn(encryptedSsn: JsonField<String>) = apply {
-            this.encryptedSsn = encryptedSsn
-        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -329,18 +329,18 @@ private constructor(
         fun build(): Individual =
             Individual(
                 id,
-                firstName,
-                middleName,
-                lastName,
-                preferredName,
-                emails.map { it.toImmutable() },
-                phoneNumbers.map { it.toImmutable() },
-                gender,
-                ethnicity,
                 dob,
+                emails.map { it.toImmutable() },
+                encryptedSsn,
+                ethnicity,
+                firstName,
+                gender,
+                lastName,
+                middleName,
+                phoneNumbers.map { it.toImmutable() },
+                preferredName,
                 residence,
                 ssn,
-                encryptedSsn,
                 additionalProperties.toImmutable(),
             )
     }
@@ -841,15 +841,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Individual && id == other.id && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && preferredName == other.preferredName && emails == other.emails && phoneNumbers == other.phoneNumbers && gender == other.gender && ethnicity == other.ethnicity && dob == other.dob && residence == other.residence && ssn == other.ssn && encryptedSsn == other.encryptedSsn && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Individual && id == other.id && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, firstName, middleName, lastName, preferredName, emails, phoneNumbers, gender, ethnicity, dob, residence, ssn, encryptedSsn, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Individual{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, residence=$residence, ssn=$ssn, encryptedSsn=$encryptedSsn, additionalProperties=$additionalProperties}"
+        "Individual{id=$id, dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
 }

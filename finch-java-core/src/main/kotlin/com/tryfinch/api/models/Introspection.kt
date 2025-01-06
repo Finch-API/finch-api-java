@@ -22,67 +22,82 @@ import java.util.Optional
 class Introspection
 @JsonCreator
 private constructor(
-    @JsonProperty("connection_id")
+    @JsonProperty("account_id")
     @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_status")
+    private val accountId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("authentication_methods")
     @ExcludeMissing
-    private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
+    private val authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of(),
     @JsonProperty("client_id")
     @ExcludeMissing
     private val clientId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("client_type")
     @ExcludeMissing
     private val clientType: JsonField<ClientType> = JsonMissing.of(),
-    @JsonProperty("connection_type")
-    @ExcludeMissing
-    private val connectionType: JsonField<ConnectionType> = JsonMissing.of(),
     @JsonProperty("company_id")
     @ExcludeMissing
     private val companyId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("account_id")
+    @JsonProperty("connection_id")
     @ExcludeMissing
-    private val accountId: JsonField<String> = JsonMissing.of(),
+    private val connectionId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connection_status")
+    @ExcludeMissing
+    private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
+    @JsonProperty("connection_type")
+    @ExcludeMissing
+    private val connectionType: JsonField<ConnectionType> = JsonMissing.of(),
+    @JsonProperty("customer_email")
+    @ExcludeMissing
+    private val customerEmail: JsonField<String> = JsonMissing.of(),
     @JsonProperty("customer_id")
     @ExcludeMissing
     private val customerId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("customer_name")
     @ExcludeMissing
     private val customerName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("customer_email")
-    @ExcludeMissing
-    private val customerEmail: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("authentication_methods")
-    @ExcludeMissing
-    private val authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of(),
-    @JsonProperty("products")
-    @ExcludeMissing
-    private val products: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("username")
-    @ExcludeMissing
-    private val username: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("provider_id")
-    @ExcludeMissing
-    private val providerId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("payroll_provider_id")
-    @ExcludeMissing
-    private val payrollProviderId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("manual")
     @ExcludeMissing
     private val manual: JsonField<Boolean> = JsonMissing.of(),
+    @JsonProperty("payroll_provider_id")
+    @ExcludeMissing
+    private val payrollProviderId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("products")
+    @ExcludeMissing
+    private val products: JsonField<List<String>> = JsonMissing.of(),
+    @JsonProperty("provider_id")
+    @ExcludeMissing
+    private val providerId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("username")
+    @ExcludeMissing
+    private val username: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The Finch UUID of the connection associated with the `access_token`. */
-    fun connectionId(): String = connectionId.getRequired("connection_id")
+    /**
+     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
+     * account ID.
+     */
+    fun accountId(): String = accountId.getRequired("account_id")
 
-    fun connectionStatus(): ConnectionStatus = connectionStatus.getRequired("connection_status")
+    fun authenticationMethods(): List<AuthenticationMethod> =
+        authenticationMethods.getRequired("authentication_methods")
 
     /** The client ID of the application associated with the `access_token`. */
     fun clientId(): String = clientId.getRequired("client_id")
 
     /** The type of application associated with a token. */
     fun clientType(): ClientType = clientType.getRequired("client_type")
+
+    /**
+     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
+     * company ID.
+     */
+    fun companyId(): String = companyId.getRequired("company_id")
+
+    /** The Finch UUID of the connection associated with the `access_token`. */
+    fun connectionId(): String = connectionId.getRequired("connection_id")
+
+    fun connectionStatus(): ConnectionStatus = connectionStatus.getRequired("connection_status")
 
     /**
      * The type of the connection associated with the token.
@@ -92,16 +107,11 @@ private constructor(
     fun connectionType(): ConnectionType = connectionType.getRequired("connection_type")
 
     /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * company ID.
+     * The email of your customer you provided to Finch when a connect session was created for this
+     * connection.
      */
-    fun companyId(): String = companyId.getRequired("company_id")
-
-    /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * account ID.
-     */
-    fun accountId(): String = accountId.getRequired("account_id")
+    fun customerEmail(): Optional<String> =
+        Optional.ofNullable(customerEmail.getNullable("customer_email"))
 
     /**
      * The ID of your customer you provided to Finch when a connect session was created for this
@@ -117,45 +127,51 @@ private constructor(
         Optional.ofNullable(customerName.getNullable("customer_name"))
 
     /**
-     * The email of your customer you provided to Finch when a connect session was created for this
-     * connection.
+     * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
+     * (`true` if using Assisted Connect, `false` if connection is automated)
      */
-    fun customerEmail(): Optional<String> =
-        Optional.ofNullable(customerEmail.getNullable("customer_email"))
-
-    fun authenticationMethods(): List<AuthenticationMethod> =
-        authenticationMethods.getRequired("authentication_methods")
-
-    /** An array of the authorized products associated with the `access_token`. */
-    fun products(): List<String> = products.getRequired("products")
-
-    /** The account username used for login associated with the `access_token`. */
-    fun username(): String = username.getRequired("username")
-
-    /** The ID of the provider associated with the `access_token`. */
-    fun providerId(): String = providerId.getRequired("provider_id")
+    fun manual(): Boolean = manual.getRequired("manual")
 
     /**
      * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
      */
     fun payrollProviderId(): String = payrollProviderId.getRequired("payroll_provider_id")
 
+    /** An array of the authorized products associated with the `access_token`. */
+    fun products(): List<String> = products.getRequired("products")
+
+    /** The ID of the provider associated with the `access_token`. */
+    fun providerId(): String = providerId.getRequired("provider_id")
+
+    /** The account username used for login associated with the `access_token`. */
+    fun username(): String = username.getRequired("username")
+
     /**
-     * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
-     * (`true` if using Assisted Connect, `false` if connection is automated)
+     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
+     * account ID.
      */
-    fun manual(): Boolean = manual.getRequired("manual")
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
 
-    /** The Finch UUID of the connection associated with the `access_token`. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
-
-    @JsonProperty("connection_status") @ExcludeMissing fun _connectionStatus() = connectionStatus
+    @JsonProperty("authentication_methods")
+    @ExcludeMissing
+    fun _authenticationMethods() = authenticationMethods
 
     /** The client ID of the application associated with the `access_token`. */
     @JsonProperty("client_id") @ExcludeMissing fun _clientId() = clientId
 
     /** The type of application associated with a token. */
     @JsonProperty("client_type") @ExcludeMissing fun _clientType() = clientType
+
+    /**
+     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
+     * company ID.
+     */
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+
+    /** The Finch UUID of the connection associated with the `access_token`. */
+    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+
+    @JsonProperty("connection_status") @ExcludeMissing fun _connectionStatus() = connectionStatus
 
     /**
      * The type of the connection associated with the token.
@@ -165,16 +181,10 @@ private constructor(
     @JsonProperty("connection_type") @ExcludeMissing fun _connectionType() = connectionType
 
     /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * company ID.
+     * The email of your customer you provided to Finch when a connect session was created for this
+     * connection.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
-
-    /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * account ID.
-     */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    @JsonProperty("customer_email") @ExcludeMissing fun _customerEmail() = customerEmail
 
     /**
      * The ID of your customer you provided to Finch when a connect session was created for this
@@ -189,23 +199,10 @@ private constructor(
     @JsonProperty("customer_name") @ExcludeMissing fun _customerName() = customerName
 
     /**
-     * The email of your customer you provided to Finch when a connect session was created for this
-     * connection.
+     * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
+     * (`true` if using Assisted Connect, `false` if connection is automated)
      */
-    @JsonProperty("customer_email") @ExcludeMissing fun _customerEmail() = customerEmail
-
-    @JsonProperty("authentication_methods")
-    @ExcludeMissing
-    fun _authenticationMethods() = authenticationMethods
-
-    /** An array of the authorized products associated with the `access_token`. */
-    @JsonProperty("products") @ExcludeMissing fun _products() = products
-
-    /** The account username used for login associated with the `access_token`. */
-    @JsonProperty("username") @ExcludeMissing fun _username() = username
-
-    /** The ID of the provider associated with the `access_token`. */
-    @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
+    @JsonProperty("manual") @ExcludeMissing fun _manual() = manual
 
     /**
      * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
@@ -214,11 +211,14 @@ private constructor(
     @ExcludeMissing
     fun _payrollProviderId() = payrollProviderId
 
-    /**
-     * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
-     * (`true` if using Assisted Connect, `false` if connection is automated)
-     */
-    @JsonProperty("manual") @ExcludeMissing fun _manual() = manual
+    /** An array of the authorized products associated with the `access_token`. */
+    @JsonProperty("products") @ExcludeMissing fun _products() = products
+
+    /** The ID of the provider associated with the `access_token`. */
+    @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
+
+    /** The account username used for login associated with the `access_token`. */
+    @JsonProperty("username") @ExcludeMissing fun _username() = username
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -228,22 +228,22 @@ private constructor(
 
     fun validate(): Introspection = apply {
         if (!validated) {
-            connectionId()
-            connectionStatus().validate()
+            accountId()
+            authenticationMethods().forEach { it.validate() }
             clientId()
             clientType()
-            connectionType()
             companyId()
-            accountId()
+            connectionId()
+            connectionStatus().validate()
+            connectionType()
+            customerEmail()
             customerId()
             customerName()
-            customerEmail()
-            authenticationMethods().forEach { it.validate() }
-            products()
-            username()
-            providerId()
-            payrollProviderId()
             manual()
+            payrollProviderId()
+            products()
+            providerId()
+            username()
             validated = true
         }
     }
@@ -257,44 +257,88 @@ private constructor(
 
     class Builder {
 
-        private var connectionId: JsonField<String> = JsonMissing.of()
-        private var connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of()
+        private var accountId: JsonField<String> = JsonMissing.of()
+        private var authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of()
         private var clientId: JsonField<String> = JsonMissing.of()
         private var clientType: JsonField<ClientType> = JsonMissing.of()
-        private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
-        private var accountId: JsonField<String> = JsonMissing.of()
+        private var connectionId: JsonField<String> = JsonMissing.of()
+        private var connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of()
+        private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
+        private var customerEmail: JsonField<String> = JsonMissing.of()
         private var customerId: JsonField<String> = JsonMissing.of()
         private var customerName: JsonField<String> = JsonMissing.of()
-        private var customerEmail: JsonField<String> = JsonMissing.of()
-        private var authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of()
-        private var products: JsonField<List<String>> = JsonMissing.of()
-        private var username: JsonField<String> = JsonMissing.of()
-        private var providerId: JsonField<String> = JsonMissing.of()
-        private var payrollProviderId: JsonField<String> = JsonMissing.of()
         private var manual: JsonField<Boolean> = JsonMissing.of()
+        private var payrollProviderId: JsonField<String> = JsonMissing.of()
+        private var products: JsonField<List<String>> = JsonMissing.of()
+        private var providerId: JsonField<String> = JsonMissing.of()
+        private var username: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(introspection: Introspection) = apply {
-            connectionId = introspection.connectionId
-            connectionStatus = introspection.connectionStatus
+            accountId = introspection.accountId
+            authenticationMethods = introspection.authenticationMethods
             clientId = introspection.clientId
             clientType = introspection.clientType
-            connectionType = introspection.connectionType
             companyId = introspection.companyId
-            accountId = introspection.accountId
+            connectionId = introspection.connectionId
+            connectionStatus = introspection.connectionStatus
+            connectionType = introspection.connectionType
+            customerEmail = introspection.customerEmail
             customerId = introspection.customerId
             customerName = introspection.customerName
-            customerEmail = introspection.customerEmail
-            authenticationMethods = introspection.authenticationMethods
-            products = introspection.products
-            username = introspection.username
-            providerId = introspection.providerId
-            payrollProviderId = introspection.payrollProviderId
             manual = introspection.manual
+            payrollProviderId = introspection.payrollProviderId
+            products = introspection.products
+            providerId = introspection.providerId
+            username = introspection.username
             additionalProperties = introspection.additionalProperties.toMutableMap()
         }
+
+        /**
+         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
+         * this account ID.
+         */
+        fun accountId(accountId: String) = accountId(JsonField.of(accountId))
+
+        /**
+         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
+         * this account ID.
+         */
+        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
+
+        fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
+            authenticationMethods(JsonField.of(authenticationMethods))
+
+        fun authenticationMethods(authenticationMethods: JsonField<List<AuthenticationMethod>>) =
+            apply {
+                this.authenticationMethods = authenticationMethods
+            }
+
+        /** The client ID of the application associated with the `access_token`. */
+        fun clientId(clientId: String) = clientId(JsonField.of(clientId))
+
+        /** The client ID of the application associated with the `access_token`. */
+        fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
+
+        /** The type of application associated with a token. */
+        fun clientType(clientType: ClientType) = clientType(JsonField.of(clientType))
+
+        /** The type of application associated with a token. */
+        fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
+
+        /**
+         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
+         * this company ID.
+         */
+        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
+
+        /**
+         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
+         * this company ID.
+         */
+        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** The Finch UUID of the connection associated with the `access_token`. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
@@ -310,18 +354,6 @@ private constructor(
         fun connectionStatus(connectionStatus: JsonField<ConnectionStatus>) = apply {
             this.connectionStatus = connectionStatus
         }
-
-        /** The client ID of the application associated with the `access_token`. */
-        fun clientId(clientId: String) = clientId(JsonField.of(clientId))
-
-        /** The client ID of the application associated with the `access_token`. */
-        fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
-
-        /** The type of application associated with a token. */
-        fun clientType(clientType: ClientType) = clientType(JsonField.of(clientType))
-
-        /** The type of application associated with a token. */
-        fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
 
         /**
          * The type of the connection associated with the token.
@@ -341,28 +373,18 @@ private constructor(
         }
 
         /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this company ID.
+         * The email of your customer you provided to Finch when a connect session was created for
+         * this connection.
          */
-        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
+        fun customerEmail(customerEmail: String) = customerEmail(JsonField.of(customerEmail))
 
         /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this company ID.
+         * The email of your customer you provided to Finch when a connect session was created for
+         * this connection.
          */
-        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
-
-        /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this account ID.
-         */
-        fun accountId(accountId: String) = accountId(JsonField.of(accountId))
-
-        /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this account ID.
-         */
-        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
+        fun customerEmail(customerEmail: JsonField<String>) = apply {
+            this.customerEmail = customerEmail
+        }
 
         /**
          * The ID of your customer you provided to Finch when a connect session was created for this
@@ -391,44 +413,16 @@ private constructor(
         }
 
         /**
-         * The email of your customer you provided to Finch when a connect session was created for
-         * this connection.
+         * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
+         * (`true` if using Assisted Connect, `false` if connection is automated)
          */
-        fun customerEmail(customerEmail: String) = customerEmail(JsonField.of(customerEmail))
+        fun manual(manual: Boolean) = manual(JsonField.of(manual))
 
         /**
-         * The email of your customer you provided to Finch when a connect session was created for
-         * this connection.
+         * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
+         * (`true` if using Assisted Connect, `false` if connection is automated)
          */
-        fun customerEmail(customerEmail: JsonField<String>) = apply {
-            this.customerEmail = customerEmail
-        }
-
-        fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
-            authenticationMethods(JsonField.of(authenticationMethods))
-
-        fun authenticationMethods(authenticationMethods: JsonField<List<AuthenticationMethod>>) =
-            apply {
-                this.authenticationMethods = authenticationMethods
-            }
-
-        /** An array of the authorized products associated with the `access_token`. */
-        fun products(products: List<String>) = products(JsonField.of(products))
-
-        /** An array of the authorized products associated with the `access_token`. */
-        fun products(products: JsonField<List<String>>) = apply { this.products = products }
-
-        /** The account username used for login associated with the `access_token`. */
-        fun username(username: String) = username(JsonField.of(username))
-
-        /** The account username used for login associated with the `access_token`. */
-        fun username(username: JsonField<String>) = apply { this.username = username }
-
-        /** The ID of the provider associated with the `access_token`. */
-        fun providerId(providerId: String) = providerId(JsonField.of(providerId))
-
-        /** The ID of the provider associated with the `access_token`. */
-        fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+        fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
         /**
          * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider
@@ -445,17 +439,23 @@ private constructor(
             this.payrollProviderId = payrollProviderId
         }
 
-        /**
-         * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
-         * (`true` if using Assisted Connect, `false` if connection is automated)
-         */
-        fun manual(manual: Boolean) = manual(JsonField.of(manual))
+        /** An array of the authorized products associated with the `access_token`. */
+        fun products(products: List<String>) = products(JsonField.of(products))
 
-        /**
-         * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
-         * (`true` if using Assisted Connect, `false` if connection is automated)
-         */
-        fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
+        /** An array of the authorized products associated with the `access_token`. */
+        fun products(products: JsonField<List<String>>) = apply { this.products = products }
+
+        /** The ID of the provider associated with the `access_token`. */
+        fun providerId(providerId: String) = providerId(JsonField.of(providerId))
+
+        /** The ID of the provider associated with the `access_token`. */
+        fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+
+        /** The account username used for login associated with the `access_token`. */
+        fun username(username: String) = username(JsonField.of(username))
+
+        /** The account username used for login associated with the `access_token`. */
+        fun username(username: JsonField<String>) = apply { this.username = username }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -478,22 +478,22 @@ private constructor(
 
         fun build(): Introspection =
             Introspection(
-                connectionId,
-                connectionStatus,
+                accountId,
+                authenticationMethods.map { it.toImmutable() },
                 clientId,
                 clientType,
-                connectionType,
                 companyId,
-                accountId,
+                connectionId,
+                connectionStatus,
+                connectionType,
+                customerEmail,
                 customerId,
                 customerName,
-                customerEmail,
-                authenticationMethods.map { it.toImmutable() },
-                products.map { it.toImmutable() },
-                username,
-                providerId,
-                payrollProviderId,
                 manual,
+                payrollProviderId,
+                products.map { it.toImmutable() },
+                providerId,
+                username,
                 additionalProperties.toImmutable(),
             )
     }
@@ -502,19 +502,16 @@ private constructor(
     class AuthenticationMethod
     @JsonCreator
     private constructor(
-        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonProperty("connection_status")
         @ExcludeMissing
         private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
         @JsonProperty("products")
         @ExcludeMissing
         private val products: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        /** The type of authentication method. */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
         fun connectionStatus(): Optional<ConnectionStatus> =
             Optional.ofNullable(connectionStatus.getNullable("connection_status"))
@@ -524,7 +521,7 @@ private constructor(
             Optional.ofNullable(products.getNullable("products"))
 
         /** The type of authentication method. */
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
+        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
         @JsonProperty("connection_status")
         @ExcludeMissing
@@ -532,6 +529,9 @@ private constructor(
 
         /** An array of the authorized products associated with the `access_token`. */
         @JsonProperty("products") @ExcludeMissing fun _products() = products
+
+        /** The type of authentication method. */
+        @JsonProperty("type") @ExcludeMissing fun _type() = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -541,9 +541,9 @@ private constructor(
 
         fun validate(): AuthenticationMethod = apply {
             if (!validated) {
-                type()
                 connectionStatus().map { it.validate() }
                 products()
+                type()
                 validated = true
             }
         }
@@ -557,24 +557,18 @@ private constructor(
 
         class Builder {
 
-            private var type: JsonField<Type> = JsonMissing.of()
             private var connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of()
             private var products: JsonField<List<String>> = JsonMissing.of()
+            private var type: JsonField<Type> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(authenticationMethod: AuthenticationMethod) = apply {
-                type = authenticationMethod.type
                 connectionStatus = authenticationMethod.connectionStatus
                 products = authenticationMethod.products
+                type = authenticationMethod.type
                 additionalProperties = authenticationMethod.additionalProperties.toMutableMap()
             }
-
-            /** The type of authentication method. */
-            fun type(type: Type) = type(JsonField.of(type))
-
-            /** The type of authentication method. */
-            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun connectionStatus(connectionStatus: ConnectionStatus) =
                 connectionStatus(JsonField.of(connectionStatus))
@@ -588,6 +582,12 @@ private constructor(
 
             /** An array of the authorized products associated with the `access_token`. */
             fun products(products: JsonField<List<String>>) = apply { this.products = products }
+
+            /** The type of authentication method. */
+            fun type(type: Type) = type(JsonField.of(type))
+
+            /** The type of authentication method. */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -610,9 +610,9 @@ private constructor(
 
             fun build(): AuthenticationMethod =
                 AuthenticationMethod(
-                    type,
                     connectionStatus,
                     products.map { it.toImmutable() },
+                    type,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -621,24 +621,24 @@ private constructor(
         class ConnectionStatus
         @JsonCreator
         private constructor(
-            @JsonProperty("status")
-            @ExcludeMissing
-            private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
             @JsonProperty("message")
             @ExcludeMissing
             private val message: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("status")
+            @ExcludeMissing
+            private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+
             fun status(): Optional<ConnectionStatusType> =
                 Optional.ofNullable(status.getNullable("status"))
 
-            fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+            @JsonProperty("message") @ExcludeMissing fun _message() = message
 
             @JsonProperty("status") @ExcludeMissing fun _status() = status
-
-            @JsonProperty("message") @ExcludeMissing fun _message() = message
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -648,8 +648,8 @@ private constructor(
 
             fun validate(): ConnectionStatus = apply {
                 if (!validated) {
-                    status()
                     message()
+                    status()
                     validated = true
                 }
             }
@@ -663,24 +663,24 @@ private constructor(
 
             class Builder {
 
-                private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
                 private var message: JsonField<String> = JsonMissing.of()
+                private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(connectionStatus: ConnectionStatus) = apply {
-                    status = connectionStatus.status
                     message = connectionStatus.message
+                    status = connectionStatus.status
                     additionalProperties = connectionStatus.additionalProperties.toMutableMap()
                 }
-
-                fun status(status: ConnectionStatusType) = status(JsonField.of(status))
-
-                fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
                 fun message(message: String) = message(JsonField.of(message))
 
                 fun message(message: JsonField<String>) = apply { this.message = message }
+
+                fun status(status: ConnectionStatusType) = status(JsonField.of(status))
+
+                fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -706,8 +706,8 @@ private constructor(
 
                 fun build(): ConnectionStatus =
                     ConnectionStatus(
-                        status,
                         message,
+                        status,
                         additionalProperties.toImmutable(),
                     )
             }
@@ -717,17 +717,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ConnectionStatus && status == other.status && message == other.message && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is ConnectionStatus && message == other.message && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(status, message, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(message, status, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
+                "ConnectionStatus{message=$message, status=$status, additionalProperties=$additionalProperties}"
         }
 
         class Type
@@ -810,17 +810,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AuthenticationMethod && type == other.type && connectionStatus == other.connectionStatus && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is AuthenticationMethod && connectionStatus == other.connectionStatus && products == other.products && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(type, connectionStatus, products, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(connectionStatus, products, type, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "AuthenticationMethod{type=$type, connectionStatus=$connectionStatus, products=$products, additionalProperties=$additionalProperties}"
+            "AuthenticationMethod{connectionStatus=$connectionStatus, products=$products, type=$type, additionalProperties=$additionalProperties}"
     }
 
     class ClientType
@@ -890,24 +890,24 @@ private constructor(
     class ConnectionStatus
     @JsonCreator
     private constructor(
-        @JsonProperty("status")
-        @ExcludeMissing
-        private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
         @JsonProperty("message")
         @ExcludeMissing
         private val message: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status")
+        @ExcludeMissing
+        private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+
         fun status(): Optional<ConnectionStatusType> =
             Optional.ofNullable(status.getNullable("status"))
 
-        fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+        @JsonProperty("message") @ExcludeMissing fun _message() = message
 
         @JsonProperty("status") @ExcludeMissing fun _status() = status
-
-        @JsonProperty("message") @ExcludeMissing fun _message() = message
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -917,8 +917,8 @@ private constructor(
 
         fun validate(): ConnectionStatus = apply {
             if (!validated) {
-                status()
                 message()
+                status()
                 validated = true
             }
         }
@@ -932,24 +932,24 @@ private constructor(
 
         class Builder {
 
-            private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var message: JsonField<String> = JsonMissing.of()
+            private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(connectionStatus: ConnectionStatus) = apply {
-                status = connectionStatus.status
                 message = connectionStatus.message
+                status = connectionStatus.status
                 additionalProperties = connectionStatus.additionalProperties.toMutableMap()
             }
-
-            fun status(status: ConnectionStatusType) = status(JsonField.of(status))
-
-            fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun message(message: String) = message(JsonField.of(message))
 
             fun message(message: JsonField<String>) = apply { this.message = message }
+
+            fun status(status: ConnectionStatusType) = status(JsonField.of(status))
+
+            fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -972,8 +972,8 @@ private constructor(
 
             fun build(): ConnectionStatus =
                 ConnectionStatus(
-                    status,
                     message,
+                    status,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -983,17 +983,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionStatus && status == other.status && message == other.message && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ConnectionStatus && message == other.message && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(status, message, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(message, status, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
+            "ConnectionStatus{message=$message, status=$status, additionalProperties=$additionalProperties}"
     }
 
     class ConnectionType
@@ -1058,15 +1058,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Introspection && connectionId == other.connectionId && connectionStatus == other.connectionStatus && clientId == other.clientId && clientType == other.clientType && connectionType == other.connectionType && companyId == other.companyId && accountId == other.accountId && customerId == other.customerId && customerName == other.customerName && customerEmail == other.customerEmail && authenticationMethods == other.authenticationMethods && products == other.products && username == other.username && providerId == other.providerId && payrollProviderId == other.payrollProviderId && manual == other.manual && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Introspection && accountId == other.accountId && authenticationMethods == other.authenticationMethods && clientId == other.clientId && clientType == other.clientType && companyId == other.companyId && connectionId == other.connectionId && connectionStatus == other.connectionStatus && connectionType == other.connectionType && customerEmail == other.customerEmail && customerId == other.customerId && customerName == other.customerName && manual == other.manual && payrollProviderId == other.payrollProviderId && products == other.products && providerId == other.providerId && username == other.username && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(connectionId, connectionStatus, clientId, clientType, connectionType, companyId, accountId, customerId, customerName, customerEmail, authenticationMethods, products, username, providerId, payrollProviderId, manual, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(accountId, authenticationMethods, clientId, clientType, companyId, connectionId, connectionStatus, connectionType, customerEmail, customerId, customerName, manual, payrollProviderId, products, providerId, username, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Introspection{connectionId=$connectionId, connectionStatus=$connectionStatus, clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, customerId=$customerId, customerName=$customerName, customerEmail=$customerEmail, authenticationMethods=$authenticationMethods, products=$products, username=$username, providerId=$providerId, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
+        "Introspection{accountId=$accountId, authenticationMethods=$authenticationMethods, clientId=$clientId, clientType=$clientType, companyId=$companyId, connectionId=$connectionId, connectionStatus=$connectionStatus, connectionType=$connectionType, customerEmail=$customerEmail, customerId=$customerId, customerName=$customerName, manual=$manual, payrollProviderId=$payrollProviderId, products=$products, providerId=$providerId, username=$username, additionalProperties=$additionalProperties}"
 }

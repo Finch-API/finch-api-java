@@ -19,26 +19,26 @@ import java.util.Objects
 class SessionNewResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("session_id")
-    @ExcludeMissing
-    private val sessionId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("connect_url")
     @ExcludeMissing
     private val connectUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("session_id")
+    @ExcludeMissing
+    private val sessionId: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /** The unique identifier for the created connect session */
-    fun sessionId(): String = sessionId.getRequired("session_id")
 
     /** The Connect URL to redirect the user to for authentication */
     fun connectUrl(): String = connectUrl.getRequired("connect_url")
 
     /** The unique identifier for the created connect session */
-    @JsonProperty("session_id") @ExcludeMissing fun _sessionId() = sessionId
+    fun sessionId(): String = sessionId.getRequired("session_id")
 
     /** The Connect URL to redirect the user to for authentication */
     @JsonProperty("connect_url") @ExcludeMissing fun _connectUrl() = connectUrl
+
+    /** The unique identifier for the created connect session */
+    @JsonProperty("session_id") @ExcludeMissing fun _sessionId() = sessionId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -48,8 +48,8 @@ private constructor(
 
     fun validate(): SessionNewResponse = apply {
         if (!validated) {
-            sessionId()
             connectUrl()
+            sessionId()
             validated = true
         }
     }
@@ -63,28 +63,28 @@ private constructor(
 
     class Builder {
 
-        private var sessionId: JsonField<String> = JsonMissing.of()
         private var connectUrl: JsonField<String> = JsonMissing.of()
+        private var sessionId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sessionNewResponse: SessionNewResponse) = apply {
-            sessionId = sessionNewResponse.sessionId
             connectUrl = sessionNewResponse.connectUrl
+            sessionId = sessionNewResponse.sessionId
             additionalProperties = sessionNewResponse.additionalProperties.toMutableMap()
         }
-
-        /** The unique identifier for the created connect session */
-        fun sessionId(sessionId: String) = sessionId(JsonField.of(sessionId))
-
-        /** The unique identifier for the created connect session */
-        fun sessionId(sessionId: JsonField<String>) = apply { this.sessionId = sessionId }
 
         /** The Connect URL to redirect the user to for authentication */
         fun connectUrl(connectUrl: String) = connectUrl(JsonField.of(connectUrl))
 
         /** The Connect URL to redirect the user to for authentication */
         fun connectUrl(connectUrl: JsonField<String>) = apply { this.connectUrl = connectUrl }
+
+        /** The unique identifier for the created connect session */
+        fun sessionId(sessionId: String) = sessionId(JsonField.of(sessionId))
+
+        /** The unique identifier for the created connect session */
+        fun sessionId(sessionId: JsonField<String>) = apply { this.sessionId = sessionId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -107,8 +107,8 @@ private constructor(
 
         fun build(): SessionNewResponse =
             SessionNewResponse(
-                sessionId,
                 connectUrl,
+                sessionId,
                 additionalProperties.toImmutable(),
             )
     }
@@ -118,15 +118,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SessionNewResponse && sessionId == other.sessionId && connectUrl == other.connectUrl && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SessionNewResponse && connectUrl == other.connectUrl && sessionId == other.sessionId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(sessionId, connectUrl, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(connectUrl, sessionId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SessionNewResponse{sessionId=$sessionId, connectUrl=$connectUrl, additionalProperties=$additionalProperties}"
+        "SessionNewResponse{connectUrl=$connectUrl, sessionId=$sessionId, additionalProperties=$additionalProperties}"
 }
