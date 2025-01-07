@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -33,11 +34,17 @@ constructor(
 
     fun startDate(): Optional<String> = body.startDate()
 
+    fun _endDate(): JsonField<String> = body._endDate()
+
+    fun _payStatements(): JsonField<List<PayStatement>> = body._payStatements()
+
+    fun _startDate(): JsonField<String> = body._startDate()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): SandboxPaymentCreateBody = body
 
@@ -53,24 +60,48 @@ constructor(
     class SandboxPaymentCreateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("end_date") private val endDate: String?,
-        @JsonProperty("pay_statements") private val payStatements: List<PayStatement>?,
-        @JsonProperty("start_date") private val startDate: String?,
+        @JsonProperty("end_date")
+        @ExcludeMissing
+        private val endDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("pay_statements")
+        @ExcludeMissing
+        private val payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
+        @JsonProperty("start_date")
+        @ExcludeMissing
+        private val startDate: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("end_date") fun endDate(): Optional<String> = Optional.ofNullable(endDate)
+        fun endDate(): Optional<String> = Optional.ofNullable(endDate.getNullable("end_date"))
+
+        fun payStatements(): Optional<List<PayStatement>> =
+            Optional.ofNullable(payStatements.getNullable("pay_statements"))
+
+        fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
+
+        @JsonProperty("end_date") @ExcludeMissing fun _endDate(): JsonField<String> = endDate
 
         @JsonProperty("pay_statements")
-        fun payStatements(): Optional<List<PayStatement>> = Optional.ofNullable(payStatements)
+        @ExcludeMissing
+        fun _payStatements(): JsonField<List<PayStatement>> = payStatements
 
-        @JsonProperty("start_date")
-        fun startDate(): Optional<String> = Optional.ofNullable(startDate)
+        @JsonProperty("start_date") @ExcludeMissing fun _startDate(): JsonField<String> = startDate
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): SandboxPaymentCreateBody = apply {
+            if (!validated) {
+                endDate()
+                payStatements().map { it.forEach { it.validate() } }
+                startDate()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -81,37 +112,46 @@ constructor(
 
         class Builder {
 
-            private var endDate: String? = null
-            private var payStatements: MutableList<PayStatement>? = null
-            private var startDate: String? = null
+            private var endDate: JsonField<String> = JsonMissing.of()
+            private var payStatements: JsonField<MutableList<PayStatement>>? = null
+            private var startDate: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(sandboxPaymentCreateBody: SandboxPaymentCreateBody) = apply {
                 endDate = sandboxPaymentCreateBody.endDate
-                payStatements = sandboxPaymentCreateBody.payStatements?.toMutableList()
+                payStatements = sandboxPaymentCreateBody.payStatements.map { it.toMutableList() }
                 startDate = sandboxPaymentCreateBody.startDate
                 additionalProperties = sandboxPaymentCreateBody.additionalProperties.toMutableMap()
             }
 
-            fun endDate(endDate: String?) = apply { this.endDate = endDate }
+            fun endDate(endDate: String) = endDate(JsonField.of(endDate))
 
-            fun endDate(endDate: Optional<String>) = endDate(endDate.orElse(null))
+            fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
 
-            fun payStatements(payStatements: List<PayStatement>?) = apply {
-                this.payStatements = payStatements?.toMutableList()
+            fun payStatements(payStatements: List<PayStatement>) =
+                payStatements(JsonField.of(payStatements))
+
+            fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
+                this.payStatements = payStatements.map { it.toMutableList() }
             }
-
-            fun payStatements(payStatements: Optional<List<PayStatement>>) =
-                payStatements(payStatements.orElse(null))
 
             fun addPayStatement(payStatement: PayStatement) = apply {
-                payStatements = (payStatements ?: mutableListOf()).apply { add(payStatement) }
+                payStatements =
+                    (payStatements ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(payStatement)
+                    }
             }
 
-            fun startDate(startDate: String?) = apply { this.startDate = startDate }
+            fun startDate(startDate: String) = startDate(JsonField.of(startDate))
 
-            fun startDate(startDate: Optional<String>) = startDate(startDate.orElse(null))
+            fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -135,7 +175,7 @@ constructor(
             fun build(): SandboxPaymentCreateBody =
                 SandboxPaymentCreateBody(
                     endDate,
-                    payStatements?.toImmutable(),
+                    (payStatements ?: JsonMissing.of()).map { it.toImmutable() },
                     startDate,
                     additionalProperties.toImmutable(),
                 )
@@ -180,24 +220,44 @@ constructor(
             additionalQueryParams = sandboxPaymentCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun endDate(endDate: String?) = apply { body.endDate(endDate) }
+        fun endDate(endDate: String) = apply { body.endDate(endDate) }
 
-        fun endDate(endDate: Optional<String>) = endDate(endDate.orElse(null))
+        fun endDate(endDate: JsonField<String>) = apply { body.endDate(endDate) }
 
-        fun payStatements(payStatements: List<PayStatement>?) = apply {
+        fun payStatements(payStatements: List<PayStatement>) = apply {
             body.payStatements(payStatements)
         }
 
-        fun payStatements(payStatements: Optional<List<PayStatement>>) =
-            payStatements(payStatements.orElse(null))
+        fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
+            body.payStatements(payStatements)
+        }
 
         fun addPayStatement(payStatement: PayStatement) = apply {
             body.addPayStatement(payStatement)
         }
 
-        fun startDate(startDate: String?) = apply { body.startDate(startDate) }
+        fun startDate(startDate: String) = apply { body.startDate(startDate) }
 
-        fun startDate(startDate: Optional<String>) = startDate(startDate.orElse(null))
+        fun startDate(startDate: JsonField<String>) = apply { body.startDate(startDate) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -297,25 +357,6 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
-
         fun build(): SandboxPaymentCreateParams =
             SandboxPaymentCreateParams(
                 body.build(),
@@ -328,60 +369,132 @@ constructor(
     class PayStatement
     @JsonCreator
     private constructor(
-        @JsonProperty("earnings") private val earnings: List<Earning?>?,
+        @JsonProperty("earnings")
+        @ExcludeMissing
+        private val earnings: JsonField<List<Earning?>> = JsonMissing.of(),
         @JsonProperty("employee_deductions")
-        private val employeeDeductions: List<EmployeeDeduction?>?,
+        @ExcludeMissing
+        private val employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
         @JsonProperty("employer_contributions")
-        private val employerContributions: List<EmployerContribution?>?,
-        @JsonProperty("gross_pay") private val grossPay: Money?,
-        @JsonProperty("individual_id") private val individualId: String?,
-        @JsonProperty("net_pay") private val netPay: Money?,
-        @JsonProperty("payment_method") private val paymentMethod: PaymentMethod?,
-        @JsonProperty("taxes") private val taxes: List<Tax?>?,
-        @JsonProperty("total_hours") private val totalHours: Double?,
-        @JsonProperty("type") private val type: Type?,
+        @ExcludeMissing
+        private val employerContributions: JsonField<List<EmployerContribution?>> =
+            JsonMissing.of(),
+        @JsonProperty("gross_pay")
+        @ExcludeMissing
+        private val grossPay: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        private val individualId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("net_pay")
+        @ExcludeMissing
+        private val netPay: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("payment_method")
+        @ExcludeMissing
+        private val paymentMethod: JsonField<PaymentMethod> = JsonMissing.of(),
+        @JsonProperty("taxes")
+        @ExcludeMissing
+        private val taxes: JsonField<List<Tax?>> = JsonMissing.of(),
+        @JsonProperty("total_hours")
+        @ExcludeMissing
+        private val totalHours: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The array of earnings objects associated with this pay statement */
+        fun earnings(): Optional<List<Earning?>> =
+            Optional.ofNullable(earnings.getNullable("earnings"))
+
+        /** The array of deductions objects associated with this pay statement. */
+        fun employeeDeductions(): Optional<List<EmployeeDeduction?>> =
+            Optional.ofNullable(employeeDeductions.getNullable("employee_deductions"))
+
+        fun employerContributions(): Optional<List<EmployerContribution?>> =
+            Optional.ofNullable(employerContributions.getNullable("employer_contributions"))
+
+        fun grossPay(): Optional<Money> = Optional.ofNullable(grossPay.getNullable("gross_pay"))
+
+        /** A stable Finch `id` (UUID v4) for an individual in the company */
+        fun individualId(): Optional<String> =
+            Optional.ofNullable(individualId.getNullable("individual_id"))
+
+        fun netPay(): Optional<Money> = Optional.ofNullable(netPay.getNullable("net_pay"))
+
+        /** The payment method. */
+        fun paymentMethod(): Optional<PaymentMethod> =
+            Optional.ofNullable(paymentMethod.getNullable("payment_method"))
+
+        /** The array of taxes objects associated with this pay statement. */
+        fun taxes(): Optional<List<Tax?>> = Optional.ofNullable(taxes.getNullable("taxes"))
+
+        /** The number of hours worked for this pay period */
+        fun totalHours(): Optional<Double> =
+            Optional.ofNullable(totalHours.getNullable("total_hours"))
+
+        /** The type of the payment associated with the pay statement. */
+        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+
+        /** The array of earnings objects associated with this pay statement */
         @JsonProperty("earnings")
-        fun earnings(): Optional<List<Earning?>> = Optional.ofNullable(earnings)
+        @ExcludeMissing
+        fun _earnings(): JsonField<List<Earning?>> = earnings
 
         /** The array of deductions objects associated with this pay statement. */
         @JsonProperty("employee_deductions")
-        fun employeeDeductions(): Optional<List<EmployeeDeduction?>> =
-            Optional.ofNullable(employeeDeductions)
+        @ExcludeMissing
+        fun _employeeDeductions(): JsonField<List<EmployeeDeduction?>> = employeeDeductions
 
         @JsonProperty("employer_contributions")
-        fun employerContributions(): Optional<List<EmployerContribution?>> =
-            Optional.ofNullable(employerContributions)
+        @ExcludeMissing
+        fun _employerContributions(): JsonField<List<EmployerContribution?>> = employerContributions
 
-        @JsonProperty("gross_pay") fun grossPay(): Optional<Money> = Optional.ofNullable(grossPay)
+        @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay(): JsonField<Money> = grossPay
 
         /** A stable Finch `id` (UUID v4) for an individual in the company */
         @JsonProperty("individual_id")
-        fun individualId(): Optional<String> = Optional.ofNullable(individualId)
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
 
-        @JsonProperty("net_pay") fun netPay(): Optional<Money> = Optional.ofNullable(netPay)
+        @JsonProperty("net_pay") @ExcludeMissing fun _netPay(): JsonField<Money> = netPay
 
         /** The payment method. */
         @JsonProperty("payment_method")
-        fun paymentMethod(): Optional<PaymentMethod> = Optional.ofNullable(paymentMethod)
+        @ExcludeMissing
+        fun _paymentMethod(): JsonField<PaymentMethod> = paymentMethod
 
         /** The array of taxes objects associated with this pay statement. */
-        @JsonProperty("taxes") fun taxes(): Optional<List<Tax?>> = Optional.ofNullable(taxes)
+        @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax?>> = taxes
 
         /** The number of hours worked for this pay period */
         @JsonProperty("total_hours")
-        fun totalHours(): Optional<Double> = Optional.ofNullable(totalHours)
+        @ExcludeMissing
+        fun _totalHours(): JsonField<Double> = totalHours
 
         /** The type of the payment associated with the pay statement. */
-        @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): PayStatement = apply {
+            if (!validated) {
+                earnings().map { it.forEach { it?.validate() } }
+                employeeDeductions().map { it.forEach { it?.validate() } }
+                employerContributions().map { it.forEach { it?.validate() } }
+                grossPay().map { it.validate() }
+                individualId()
+                netPay().map { it.validate() }
+                paymentMethod()
+                taxes().map { it.forEach { it?.validate() } }
+                totalHours()
+                type()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -392,109 +505,173 @@ constructor(
 
         class Builder {
 
-            private var earnings: MutableList<Earning?>? = null
-            private var employeeDeductions: MutableList<EmployeeDeduction?>? = null
-            private var employerContributions: MutableList<EmployerContribution?>? = null
-            private var grossPay: Money? = null
-            private var individualId: String? = null
-            private var netPay: Money? = null
-            private var paymentMethod: PaymentMethod? = null
-            private var taxes: MutableList<Tax?>? = null
-            private var totalHours: Double? = null
-            private var type: Type? = null
+            private var earnings: JsonField<MutableList<Earning?>>? = null
+            private var employeeDeductions: JsonField<MutableList<EmployeeDeduction?>>? = null
+            private var employerContributions: JsonField<MutableList<EmployerContribution?>>? = null
+            private var grossPay: JsonField<Money> = JsonMissing.of()
+            private var individualId: JsonField<String> = JsonMissing.of()
+            private var netPay: JsonField<Money> = JsonMissing.of()
+            private var paymentMethod: JsonField<PaymentMethod> = JsonMissing.of()
+            private var taxes: JsonField<MutableList<Tax?>>? = null
+            private var totalHours: JsonField<Double> = JsonMissing.of()
+            private var type: JsonField<Type> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(payStatement: PayStatement) = apply {
-                earnings = payStatement.earnings?.toMutableList()
-                employeeDeductions = payStatement.employeeDeductions?.toMutableList()
-                employerContributions = payStatement.employerContributions?.toMutableList()
+                earnings = payStatement.earnings.map { it.toMutableList() }
+                employeeDeductions = payStatement.employeeDeductions.map { it.toMutableList() }
+                employerContributions =
+                    payStatement.employerContributions.map { it.toMutableList() }
                 grossPay = payStatement.grossPay
                 individualId = payStatement.individualId
                 netPay = payStatement.netPay
                 paymentMethod = payStatement.paymentMethod
-                taxes = payStatement.taxes?.toMutableList()
+                taxes = payStatement.taxes.map { it.toMutableList() }
                 totalHours = payStatement.totalHours
                 type = payStatement.type
                 additionalProperties = payStatement.additionalProperties.toMutableMap()
             }
 
             /** The array of earnings objects associated with this pay statement */
-            fun earnings(earnings: List<Earning?>?) = apply {
-                this.earnings = earnings?.toMutableList()
-            }
+            fun earnings(earnings: List<Earning?>?) = earnings(JsonField.ofNullable(earnings))
 
             /** The array of earnings objects associated with this pay statement */
             fun earnings(earnings: Optional<List<Earning?>>) = earnings(earnings.orElse(null))
 
             /** The array of earnings objects associated with this pay statement */
+            fun earnings(earnings: JsonField<List<Earning?>>) = apply {
+                this.earnings = earnings.map { it.toMutableList() }
+            }
+
+            /** The array of earnings objects associated with this pay statement */
             fun addEarning(earning: Earning) = apply {
-                earnings = (earnings ?: mutableListOf()).apply { add(earning) }
+                earnings =
+                    (earnings ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(earning)
+                    }
             }
 
             /** The array of deductions objects associated with this pay statement. */
-            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) = apply {
-                this.employeeDeductions = employeeDeductions?.toMutableList()
-            }
+            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) =
+                employeeDeductions(JsonField.ofNullable(employeeDeductions))
 
             /** The array of deductions objects associated with this pay statement. */
             fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction?>>) =
                 employeeDeductions(employeeDeductions.orElse(null))
 
             /** The array of deductions objects associated with this pay statement. */
+            fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) =
+                apply {
+                    this.employeeDeductions = employeeDeductions.map { it.toMutableList() }
+                }
+
+            /** The array of deductions objects associated with this pay statement. */
             fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
                 employeeDeductions =
-                    (employeeDeductions ?: mutableListOf()).apply { add(employeeDeduction) }
+                    (employeeDeductions ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(employeeDeduction)
+                    }
             }
 
-            fun employerContributions(employerContributions: List<EmployerContribution?>?) = apply {
-                this.employerContributions = employerContributions?.toMutableList()
-            }
+            fun employerContributions(employerContributions: List<EmployerContribution?>?) =
+                employerContributions(JsonField.ofNullable(employerContributions))
 
             fun employerContributions(
                 employerContributions: Optional<List<EmployerContribution?>>
             ) = employerContributions(employerContributions.orElse(null))
 
-            fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
-                employerContributions =
-                    (employerContributions ?: mutableListOf()).apply { add(employerContribution) }
+            fun employerContributions(
+                employerContributions: JsonField<List<EmployerContribution?>>
+            ) = apply {
+                this.employerContributions = employerContributions.map { it.toMutableList() }
             }
 
-            fun grossPay(grossPay: Money?) = apply { this.grossPay = grossPay }
+            fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
+                employerContributions =
+                    (employerContributions ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(employerContribution)
+                    }
+            }
+
+            fun grossPay(grossPay: Money?) = grossPay(JsonField.ofNullable(grossPay))
 
             fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.orElse(null))
 
-            /** A stable Finch `id` (UUID v4) for an individual in the company */
-            fun individualId(individualId: String?) = apply { this.individualId = individualId }
+            fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company */
-            fun individualId(individualId: Optional<String>) =
-                individualId(individualId.orElse(null))
+            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-            fun netPay(netPay: Money?) = apply { this.netPay = netPay }
+            /** A stable Finch `id` (UUID v4) for an individual in the company */
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
+
+            fun netPay(netPay: Money?) = netPay(JsonField.ofNullable(netPay))
 
             fun netPay(netPay: Optional<Money>) = netPay(netPay.orElse(null))
 
+            fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
+
             /** The payment method. */
-            fun paymentMethod(paymentMethod: PaymentMethod?) = apply {
-                this.paymentMethod = paymentMethod
-            }
+            fun paymentMethod(paymentMethod: PaymentMethod?) =
+                paymentMethod(JsonField.ofNullable(paymentMethod))
 
             /** The payment method. */
             fun paymentMethod(paymentMethod: Optional<PaymentMethod>) =
                 paymentMethod(paymentMethod.orElse(null))
 
+            /** The payment method. */
+            fun paymentMethod(paymentMethod: JsonField<PaymentMethod>) = apply {
+                this.paymentMethod = paymentMethod
+            }
+
             /** The array of taxes objects associated with this pay statement. */
-            fun taxes(taxes: List<Tax?>?) = apply { this.taxes = taxes?.toMutableList() }
+            fun taxes(taxes: List<Tax?>?) = taxes(JsonField.ofNullable(taxes))
 
             /** The array of taxes objects associated with this pay statement. */
             fun taxes(taxes: Optional<List<Tax?>>) = taxes(taxes.orElse(null))
 
             /** The array of taxes objects associated with this pay statement. */
-            fun addTax(tax: Tax) = apply { taxes = (taxes ?: mutableListOf()).apply { add(tax) } }
+            fun taxes(taxes: JsonField<List<Tax?>>) = apply {
+                this.taxes = taxes.map { it.toMutableList() }
+            }
+
+            /** The array of taxes objects associated with this pay statement. */
+            fun addTax(tax: Tax) = apply {
+                taxes =
+                    (taxes ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(tax)
+                    }
+            }
 
             /** The number of hours worked for this pay period */
-            fun totalHours(totalHours: Double?) = apply { this.totalHours = totalHours }
+            fun totalHours(totalHours: Double?) = totalHours(JsonField.ofNullable(totalHours))
 
             /** The number of hours worked for this pay period */
             fun totalHours(totalHours: Double) = totalHours(totalHours as Double?)
@@ -504,11 +681,17 @@ constructor(
             fun totalHours(totalHours: Optional<Double>) =
                 totalHours(totalHours.orElse(null) as Double?)
 
+            /** The number of hours worked for this pay period */
+            fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
+
             /** The type of the payment associated with the pay statement. */
-            fun type(type: Type?) = apply { this.type = type }
+            fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             /** The type of the payment associated with the pay statement. */
             fun type(type: Optional<Type>) = type(type.orElse(null))
+
+            /** The type of the payment associated with the pay statement. */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -531,14 +714,14 @@ constructor(
 
             fun build(): PayStatement =
                 PayStatement(
-                    earnings?.toImmutable(),
-                    employeeDeductions?.toImmutable(),
-                    employerContributions?.toImmutable(),
+                    (earnings ?: JsonMissing.of()).map { it.toImmutable() },
+                    (employeeDeductions ?: JsonMissing.of()).map { it.toImmutable() },
+                    (employerContributions ?: JsonMissing.of()).map { it.toImmutable() },
                     grossPay,
                     individualId,
                     netPay,
                     paymentMethod,
-                    taxes?.toImmutable(),
+                    (taxes ?: JsonMissing.of()).map { it.toImmutable() },
                     totalHours,
                     type,
                     additionalProperties.toImmutable(),
@@ -549,37 +732,77 @@ constructor(
         class Earning
         @JsonCreator
         private constructor(
-            @JsonProperty("amount") private val amount: Long?,
-            @JsonProperty("currency") private val currency: String?,
-            @JsonProperty("hours") private val hours: Double?,
-            @JsonProperty("name") private val name: String?,
-            @JsonProperty("type") private val type: Type?,
+            @JsonProperty("amount")
+            @ExcludeMissing
+            private val amount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            private val currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("hours")
+            @ExcludeMissing
+            private val hours: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<Type> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The earnings amount in cents. */
-            @JsonProperty("amount") fun amount(): Optional<Long> = Optional.ofNullable(amount)
+            fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
             /** The earnings currency code. */
-            @JsonProperty("currency")
-            fun currency(): Optional<String> = Optional.ofNullable(currency)
+            fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
             /**
              * The number of hours associated with this earning. (For salaried employees, this could
              * be hours per pay period, `0` or `null`, depending on the provider).
              */
-            @JsonProperty("hours") fun hours(): Optional<Double> = Optional.ofNullable(hours)
+            fun hours(): Optional<Double> = Optional.ofNullable(hours.getNullable("hours"))
 
             /** The exact name of the deduction from the pay statement. */
-            @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
+            fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
             /** The type of earning. */
-            @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
+            fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+
+            /** The earnings amount in cents. */
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+            /** The earnings currency code. */
+            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
+
+            /**
+             * The number of hours associated with this earning. (For salaried employees, this could
+             * be hours per pay period, `0` or `null`, depending on the provider).
+             */
+            @JsonProperty("hours") @ExcludeMissing fun _hours(): JsonField<Double> = hours
+
+            /** The exact name of the deduction from the pay statement. */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /** The type of earning. */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): Earning = apply {
+                if (!validated) {
+                    amount()
+                    currency()
+                    hours()
+                    name()
+                    type()
+                    validated = true
+                }
+            }
 
             fun toBuilder() = Builder().from(this)
 
@@ -590,11 +813,11 @@ constructor(
 
             class Builder {
 
-                private var amount: Long? = null
-                private var currency: String? = null
-                private var hours: Double? = null
-                private var name: String? = null
-                private var type: Type? = null
+                private var amount: JsonField<Long> = JsonMissing.of()
+                private var currency: JsonField<String> = JsonMissing.of()
+                private var hours: JsonField<Double> = JsonMissing.of()
+                private var name: JsonField<String> = JsonMissing.of()
+                private var type: JsonField<Type> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -608,7 +831,7 @@ constructor(
                 }
 
                 /** The earnings amount in cents. */
-                fun amount(amount: Long?) = apply { this.amount = amount }
+                fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
                 /** The earnings amount in cents. */
                 fun amount(amount: Long) = amount(amount as Long?)
@@ -617,17 +840,23 @@ constructor(
                 @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
+                /** The earnings amount in cents. */
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
                 /** The earnings currency code. */
-                fun currency(currency: String?) = apply { this.currency = currency }
+                fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
                 /** The earnings currency code. */
                 fun currency(currency: Optional<String>) = currency(currency.orElse(null))
+
+                /** The earnings currency code. */
+                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
                 /**
                  * The number of hours associated with this earning. (For salaried employees, this
                  * could be hours per pay period, `0` or `null`, depending on the provider).
                  */
-                fun hours(hours: Double?) = apply { this.hours = hours }
+                fun hours(hours: Double?) = hours(JsonField.ofNullable(hours))
 
                 /**
                  * The number of hours associated with this earning. (For salaried employees, this
@@ -642,17 +871,29 @@ constructor(
                 @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun hours(hours: Optional<Double>) = hours(hours.orElse(null) as Double?)
 
+                /**
+                 * The number of hours associated with this earning. (For salaried employees, this
+                 * could be hours per pay period, `0` or `null`, depending on the provider).
+                 */
+                fun hours(hours: JsonField<Double>) = apply { this.hours = hours }
+
                 /** The exact name of the deduction from the pay statement. */
-                fun name(name: String?) = apply { this.name = name }
+                fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The exact name of the deduction from the pay statement. */
                 fun name(name: Optional<String>) = name(name.orElse(null))
 
+                /** The exact name of the deduction from the pay statement. */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
                 /** The type of earning. */
-                fun type(type: Type?) = apply { this.type = type }
+                fun type(type: Type?) = type(JsonField.ofNullable(type))
 
                 /** The type of earning. */
                 fun type(type: Optional<Type>) = type(type.orElse(null))
+
+                /** The type of earning. */
+                fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -832,34 +1073,71 @@ constructor(
         class EmployeeDeduction
         @JsonCreator
         private constructor(
-            @JsonProperty("amount") private val amount: Long?,
-            @JsonProperty("currency") private val currency: String?,
-            @JsonProperty("name") private val name: String?,
-            @JsonProperty("pre_tax") private val preTax: Boolean?,
-            @JsonProperty("type") private val type: BenefitType?,
+            @JsonProperty("amount")
+            @ExcludeMissing
+            private val amount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            private val currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("pre_tax")
+            @ExcludeMissing
+            private val preTax: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<BenefitType> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The deduction amount in cents. */
-            @JsonProperty("amount") fun amount(): Optional<Long> = Optional.ofNullable(amount)
+            fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
             /** The deduction currency. */
-            @JsonProperty("currency")
-            fun currency(): Optional<String> = Optional.ofNullable(currency)
+            fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
             /** The deduction name from the pay statement. */
-            @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
+            fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
             /** Boolean indicating if the deduction is pre-tax. */
-            @JsonProperty("pre_tax") fun preTax(): Optional<Boolean> = Optional.ofNullable(preTax)
+            fun preTax(): Optional<Boolean> = Optional.ofNullable(preTax.getNullable("pre_tax"))
 
             /** Type of benefit. */
-            @JsonProperty("type") fun type(): Optional<BenefitType> = Optional.ofNullable(type)
+            fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
+
+            /** The deduction amount in cents. */
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+            /** The deduction currency. */
+            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
+
+            /** The deduction name from the pay statement. */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /** Boolean indicating if the deduction is pre-tax. */
+            @JsonProperty("pre_tax") @ExcludeMissing fun _preTax(): JsonField<Boolean> = preTax
+
+            /** Type of benefit. */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): EmployeeDeduction = apply {
+                if (!validated) {
+                    amount()
+                    currency()
+                    name()
+                    preTax()
+                    type()
+                    validated = true
+                }
+            }
 
             fun toBuilder() = Builder().from(this)
 
@@ -870,11 +1148,11 @@ constructor(
 
             class Builder {
 
-                private var amount: Long? = null
-                private var currency: String? = null
-                private var name: String? = null
-                private var preTax: Boolean? = null
-                private var type: BenefitType? = null
+                private var amount: JsonField<Long> = JsonMissing.of()
+                private var currency: JsonField<String> = JsonMissing.of()
+                private var name: JsonField<String> = JsonMissing.of()
+                private var preTax: JsonField<Boolean> = JsonMissing.of()
+                private var type: JsonField<BenefitType> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -888,7 +1166,7 @@ constructor(
                 }
 
                 /** The deduction amount in cents. */
-                fun amount(amount: Long?) = apply { this.amount = amount }
+                fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
                 /** The deduction amount in cents. */
                 fun amount(amount: Long) = amount(amount as Long?)
@@ -897,20 +1175,29 @@ constructor(
                 @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
+                /** The deduction amount in cents. */
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
                 /** The deduction currency. */
-                fun currency(currency: String?) = apply { this.currency = currency }
+                fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
                 /** The deduction currency. */
                 fun currency(currency: Optional<String>) = currency(currency.orElse(null))
 
+                /** The deduction currency. */
+                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+
                 /** The deduction name from the pay statement. */
-                fun name(name: String?) = apply { this.name = name }
+                fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The deduction name from the pay statement. */
                 fun name(name: Optional<String>) = name(name.orElse(null))
 
+                /** The deduction name from the pay statement. */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
                 /** Boolean indicating if the deduction is pre-tax. */
-                fun preTax(preTax: Boolean?) = apply { this.preTax = preTax }
+                fun preTax(preTax: Boolean?) = preTax(JsonField.ofNullable(preTax))
 
                 /** Boolean indicating if the deduction is pre-tax. */
                 fun preTax(preTax: Boolean) = preTax(preTax as Boolean?)
@@ -919,11 +1206,17 @@ constructor(
                 @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun preTax(preTax: Optional<Boolean>) = preTax(preTax.orElse(null) as Boolean?)
 
+                /** Boolean indicating if the deduction is pre-tax. */
+                fun preTax(preTax: JsonField<Boolean>) = apply { this.preTax = preTax }
+
                 /** Type of benefit. */
-                fun type(type: BenefitType?) = apply { this.type = type }
+                fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
                 /** Type of benefit. */
                 fun type(type: Optional<BenefitType>) = type(type.orElse(null))
+
+                /** Type of benefit. */
+                fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -980,30 +1273,61 @@ constructor(
         class EmployerContribution
         @JsonCreator
         private constructor(
-            @JsonProperty("amount") private val amount: Long?,
-            @JsonProperty("currency") private val currency: String?,
-            @JsonProperty("name") private val name: String?,
-            @JsonProperty("type") private val type: BenefitType?,
+            @JsonProperty("amount")
+            @ExcludeMissing
+            private val amount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            private val currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<BenefitType> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The contribution amount in cents. */
-            @JsonProperty("amount") fun amount(): Optional<Long> = Optional.ofNullable(amount)
+            fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
             /** The contribution currency. */
-            @JsonProperty("currency")
-            fun currency(): Optional<String> = Optional.ofNullable(currency)
+            fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
             /** The contribution name from the pay statement. */
-            @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
+            fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
             /** Type of benefit. */
-            @JsonProperty("type") fun type(): Optional<BenefitType> = Optional.ofNullable(type)
+            fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
+
+            /** The contribution amount in cents. */
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+            /** The contribution currency. */
+            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
+
+            /** The contribution name from the pay statement. */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /** Type of benefit. */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): EmployerContribution = apply {
+                if (!validated) {
+                    amount()
+                    currency()
+                    name()
+                    type()
+                    validated = true
+                }
+            }
 
             fun toBuilder() = Builder().from(this)
 
@@ -1014,10 +1338,10 @@ constructor(
 
             class Builder {
 
-                private var amount: Long? = null
-                private var currency: String? = null
-                private var name: String? = null
-                private var type: BenefitType? = null
+                private var amount: JsonField<Long> = JsonMissing.of()
+                private var currency: JsonField<String> = JsonMissing.of()
+                private var name: JsonField<String> = JsonMissing.of()
+                private var type: JsonField<BenefitType> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -1030,7 +1354,7 @@ constructor(
                 }
 
                 /** The contribution amount in cents. */
-                fun amount(amount: Long?) = apply { this.amount = amount }
+                fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
                 /** The contribution amount in cents. */
                 fun amount(amount: Long) = amount(amount as Long?)
@@ -1039,23 +1363,35 @@ constructor(
                 @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
+                /** The contribution amount in cents. */
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
                 /** The contribution currency. */
-                fun currency(currency: String?) = apply { this.currency = currency }
+                fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
                 /** The contribution currency. */
                 fun currency(currency: Optional<String>) = currency(currency.orElse(null))
 
+                /** The contribution currency. */
+                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+
                 /** The contribution name from the pay statement. */
-                fun name(name: String?) = apply { this.name = name }
+                fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The contribution name from the pay statement. */
                 fun name(name: Optional<String>) = name(name.orElse(null))
 
+                /** The contribution name from the pay statement. */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
                 /** Type of benefit. */
-                fun type(type: BenefitType?) = apply { this.type = type }
+                fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
                 /** Type of benefit. */
                 fun type(type: Optional<BenefitType>) = type(type.orElse(null))
+
+                /** Type of benefit. */
+                fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1168,35 +1504,72 @@ constructor(
         class Tax
         @JsonCreator
         private constructor(
-            @JsonProperty("amount") private val amount: Long?,
-            @JsonProperty("currency") private val currency: String?,
-            @JsonProperty("employer") private val employer: Boolean?,
-            @JsonProperty("name") private val name: String?,
-            @JsonProperty("type") private val type: Type?,
+            @JsonProperty("amount")
+            @ExcludeMissing
+            private val amount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            private val currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("employer")
+            @ExcludeMissing
+            private val employer: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<Type> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The tax amount in cents. */
-            @JsonProperty("amount") fun amount(): Optional<Long> = Optional.ofNullable(amount)
+            fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
             /** The currency code. */
-            @JsonProperty("currency")
-            fun currency(): Optional<String> = Optional.ofNullable(currency)
+            fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
             /** `true` if the amount is paid by the employers. */
-            @JsonProperty("employer")
-            fun employer(): Optional<Boolean> = Optional.ofNullable(employer)
+            fun employer(): Optional<Boolean> =
+                Optional.ofNullable(employer.getNullable("employer"))
 
             /** The exact name of tax from the pay statement. */
-            @JsonProperty("name") fun name(): Optional<String> = Optional.ofNullable(name)
+            fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
             /** The type of taxes. */
-            @JsonProperty("type") fun type(): Optional<Type> = Optional.ofNullable(type)
+            fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+
+            /** The tax amount in cents. */
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+            /** The currency code. */
+            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
+
+            /** `true` if the amount is paid by the employers. */
+            @JsonProperty("employer") @ExcludeMissing fun _employer(): JsonField<Boolean> = employer
+
+            /** The exact name of tax from the pay statement. */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /** The type of taxes. */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): Tax = apply {
+                if (!validated) {
+                    amount()
+                    currency()
+                    employer()
+                    name()
+                    type()
+                    validated = true
+                }
+            }
 
             fun toBuilder() = Builder().from(this)
 
@@ -1207,11 +1580,11 @@ constructor(
 
             class Builder {
 
-                private var amount: Long? = null
-                private var currency: String? = null
-                private var employer: Boolean? = null
-                private var name: String? = null
-                private var type: Type? = null
+                private var amount: JsonField<Long> = JsonMissing.of()
+                private var currency: JsonField<String> = JsonMissing.of()
+                private var employer: JsonField<Boolean> = JsonMissing.of()
+                private var name: JsonField<String> = JsonMissing.of()
+                private var type: JsonField<Type> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -1225,7 +1598,7 @@ constructor(
                 }
 
                 /** The tax amount in cents. */
-                fun amount(amount: Long?) = apply { this.amount = amount }
+                fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
                 /** The tax amount in cents. */
                 fun amount(amount: Long) = amount(amount as Long?)
@@ -1234,14 +1607,20 @@ constructor(
                 @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
+                /** The tax amount in cents. */
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
                 /** The currency code. */
-                fun currency(currency: String?) = apply { this.currency = currency }
+                fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
                 /** The currency code. */
                 fun currency(currency: Optional<String>) = currency(currency.orElse(null))
 
+                /** The currency code. */
+                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+
                 /** `true` if the amount is paid by the employers. */
-                fun employer(employer: Boolean?) = apply { this.employer = employer }
+                fun employer(employer: Boolean?) = employer(JsonField.ofNullable(employer))
 
                 /** `true` if the amount is paid by the employers. */
                 fun employer(employer: Boolean) = employer(employer as Boolean?)
@@ -1251,17 +1630,26 @@ constructor(
                 fun employer(employer: Optional<Boolean>) =
                     employer(employer.orElse(null) as Boolean?)
 
+                /** `true` if the amount is paid by the employers. */
+                fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
+
                 /** The exact name of tax from the pay statement. */
-                fun name(name: String?) = apply { this.name = name }
+                fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The exact name of tax from the pay statement. */
                 fun name(name: Optional<String>) = name(name.orElse(null))
 
+                /** The exact name of tax from the pay statement. */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
                 /** The type of taxes. */
-                fun type(type: Type?) = apply { this.type = type }
+                fun type(type: Type?) = type(JsonField.ofNullable(type))
 
                 /** The type of taxes. */
                 fun type(type: Optional<Type>) = type(type.orElse(null))
+
+                /** The type of taxes. */
+                fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()

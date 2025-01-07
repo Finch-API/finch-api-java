@@ -40,11 +40,11 @@ private constructor(
     fun status(): Status = status.getRequired("status")
 
     /** Specific information about the job, such as individual statuses for batch jobs. */
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<List<JsonValue>> = body
 
-    @JsonProperty("job_id") @ExcludeMissing fun _jobId() = jobId
+    @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
-    @JsonProperty("status") @ExcludeMissing fun _status() = status
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -70,24 +70,43 @@ private constructor(
 
     class Builder {
 
-        private var body: JsonField<List<JsonValue>> = JsonMissing.of()
-        private var jobId: JsonField<String> = JsonMissing.of()
-        private var status: JsonField<Status> = JsonMissing.of()
+        private var body: JsonField<MutableList<JsonValue>>? = null
+        private var jobId: JsonField<String>? = null
+        private var status: JsonField<Status>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(manualAsyncJob: ManualAsyncJob) = apply {
-            body = manualAsyncJob.body
+            body = manualAsyncJob.body.map { it.toMutableList() }
             jobId = manualAsyncJob.jobId
             status = manualAsyncJob.status
             additionalProperties = manualAsyncJob.additionalProperties.toMutableMap()
         }
 
         /** Specific information about the job, such as individual statuses for batch jobs. */
-        fun body(body: List<JsonValue>) = body(JsonField.of(body))
+        fun body(body: List<JsonValue>?) = body(JsonField.ofNullable(body))
 
         /** Specific information about the job, such as individual statuses for batch jobs. */
-        fun body(body: JsonField<List<JsonValue>>) = apply { this.body = body }
+        fun body(body: Optional<List<JsonValue>>) = body(body.orElse(null))
+
+        /** Specific information about the job, such as individual statuses for batch jobs. */
+        fun body(body: JsonField<List<JsonValue>>) = apply {
+            this.body = body.map { it.toMutableList() }
+        }
+
+        /** Specific information about the job, such as individual statuses for batch jobs. */
+        fun addBody(body: JsonValue) = apply {
+            this.body =
+                (this.body ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(body)
+                }
+        }
 
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
@@ -118,9 +137,10 @@ private constructor(
 
         fun build(): ManualAsyncJob =
             ManualAsyncJob(
-                body.map { it.toImmutable() },
-                jobId,
-                status,
+                checkNotNull(body) { "`body` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(jobId) { "`jobId` is required but was not set" },
+                checkNotNull(status) { "`status` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }

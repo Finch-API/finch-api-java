@@ -150,75 +150,87 @@ private constructor(
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * account ID.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     @JsonProperty("authentication_methods")
     @ExcludeMissing
-    fun _authenticationMethods() = authenticationMethods
+    fun _authenticationMethods(): JsonField<List<AuthenticationMethod>> = authenticationMethods
 
     /** The client ID of the application associated with the `access_token`. */
-    @JsonProperty("client_id") @ExcludeMissing fun _clientId() = clientId
+    @JsonProperty("client_id") @ExcludeMissing fun _clientId(): JsonField<String> = clientId
 
     /** The type of application associated with a token. */
-    @JsonProperty("client_type") @ExcludeMissing fun _clientType() = clientType
+    @JsonProperty("client_type")
+    @ExcludeMissing
+    fun _clientType(): JsonField<ClientType> = clientType
 
     /**
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * company ID.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /** The Finch UUID of the connection associated with the `access_token`. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    fun _connectionId(): JsonField<String> = connectionId
 
-    @JsonProperty("connection_status") @ExcludeMissing fun _connectionStatus() = connectionStatus
+    @JsonProperty("connection_status")
+    @ExcludeMissing
+    fun _connectionStatus(): JsonField<ConnectionStatus> = connectionStatus
 
     /**
      * The type of the connection associated with the token.
      * - `provider` - connection to an external provider
      * - `finch` - finch-generated data.
      */
-    @JsonProperty("connection_type") @ExcludeMissing fun _connectionType() = connectionType
+    @JsonProperty("connection_type")
+    @ExcludeMissing
+    fun _connectionType(): JsonField<ConnectionType> = connectionType
 
     /**
      * The email of your customer you provided to Finch when a connect session was created for this
      * connection.
      */
-    @JsonProperty("customer_email") @ExcludeMissing fun _customerEmail() = customerEmail
+    @JsonProperty("customer_email")
+    @ExcludeMissing
+    fun _customerEmail(): JsonField<String> = customerEmail
 
     /**
      * The ID of your customer you provided to Finch when a connect session was created for this
      * connection.
      */
-    @JsonProperty("customer_id") @ExcludeMissing fun _customerId() = customerId
+    @JsonProperty("customer_id") @ExcludeMissing fun _customerId(): JsonField<String> = customerId
 
     /**
      * The name of your customer you provided to Finch when a connect session was created for this
      * connection.
      */
-    @JsonProperty("customer_name") @ExcludeMissing fun _customerName() = customerName
+    @JsonProperty("customer_name")
+    @ExcludeMissing
+    fun _customerName(): JsonField<String> = customerName
 
     /**
      * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
      * (`true` if using Assisted Connect, `false` if connection is automated)
      */
-    @JsonProperty("manual") @ExcludeMissing fun _manual() = manual
+    @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
 
     /**
      * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
      */
     @JsonProperty("payroll_provider_id")
     @ExcludeMissing
-    fun _payrollProviderId() = payrollProviderId
+    fun _payrollProviderId(): JsonField<String> = payrollProviderId
 
     /** An array of the authorized products associated with the `access_token`. */
-    @JsonProperty("products") @ExcludeMissing fun _products() = products
+    @JsonProperty("products") @ExcludeMissing fun _products(): JsonField<List<String>> = products
 
     /** The ID of the provider associated with the `access_token`. */
-    @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
+    @JsonProperty("provider_id") @ExcludeMissing fun _providerId(): JsonField<String> = providerId
 
     /** The account username used for login associated with the `access_token`. */
-    @JsonProperty("username") @ExcludeMissing fun _username() = username
+    @JsonProperty("username") @ExcludeMissing fun _username(): JsonField<String> = username
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -257,28 +269,28 @@ private constructor(
 
     class Builder {
 
-        private var accountId: JsonField<String> = JsonMissing.of()
-        private var authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of()
-        private var clientId: JsonField<String> = JsonMissing.of()
-        private var clientType: JsonField<ClientType> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
-        private var connectionId: JsonField<String> = JsonMissing.of()
-        private var connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of()
-        private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
-        private var customerEmail: JsonField<String> = JsonMissing.of()
-        private var customerId: JsonField<String> = JsonMissing.of()
-        private var customerName: JsonField<String> = JsonMissing.of()
-        private var manual: JsonField<Boolean> = JsonMissing.of()
-        private var payrollProviderId: JsonField<String> = JsonMissing.of()
-        private var products: JsonField<List<String>> = JsonMissing.of()
-        private var providerId: JsonField<String> = JsonMissing.of()
-        private var username: JsonField<String> = JsonMissing.of()
+        private var accountId: JsonField<String>? = null
+        private var authenticationMethods: JsonField<MutableList<AuthenticationMethod>>? = null
+        private var clientId: JsonField<String>? = null
+        private var clientType: JsonField<ClientType>? = null
+        private var companyId: JsonField<String>? = null
+        private var connectionId: JsonField<String>? = null
+        private var connectionStatus: JsonField<ConnectionStatus>? = null
+        private var connectionType: JsonField<ConnectionType>? = null
+        private var customerEmail: JsonField<String>? = null
+        private var customerId: JsonField<String>? = null
+        private var customerName: JsonField<String>? = null
+        private var manual: JsonField<Boolean>? = null
+        private var payrollProviderId: JsonField<String>? = null
+        private var products: JsonField<MutableList<String>>? = null
+        private var providerId: JsonField<String>? = null
+        private var username: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(introspection: Introspection) = apply {
             accountId = introspection.accountId
-            authenticationMethods = introspection.authenticationMethods
+            authenticationMethods = introspection.authenticationMethods.map { it.toMutableList() }
             clientId = introspection.clientId
             clientType = introspection.clientType
             companyId = introspection.companyId
@@ -290,7 +302,7 @@ private constructor(
             customerName = introspection.customerName
             manual = introspection.manual
             payrollProviderId = introspection.payrollProviderId
-            products = introspection.products
+            products = introspection.products.map { it.toMutableList() }
             providerId = introspection.providerId
             username = introspection.username
             additionalProperties = introspection.additionalProperties.toMutableMap()
@@ -313,8 +325,21 @@ private constructor(
 
         fun authenticationMethods(authenticationMethods: JsonField<List<AuthenticationMethod>>) =
             apply {
-                this.authenticationMethods = authenticationMethods
+                this.authenticationMethods = authenticationMethods.map { it.toMutableList() }
             }
+
+        fun addAuthenticationMethod(authenticationMethod: AuthenticationMethod) = apply {
+            authenticationMethods =
+                (authenticationMethods ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(authenticationMethod)
+                }
+        }
 
         /** The client ID of the application associated with the `access_token`. */
         fun clientId(clientId: String) = clientId(JsonField.of(clientId))
@@ -376,7 +401,15 @@ private constructor(
          * The email of your customer you provided to Finch when a connect session was created for
          * this connection.
          */
-        fun customerEmail(customerEmail: String) = customerEmail(JsonField.of(customerEmail))
+        fun customerEmail(customerEmail: String?) =
+            customerEmail(JsonField.ofNullable(customerEmail))
+
+        /**
+         * The email of your customer you provided to Finch when a connect session was created for
+         * this connection.
+         */
+        fun customerEmail(customerEmail: Optional<String>) =
+            customerEmail(customerEmail.orElse(null))
 
         /**
          * The email of your customer you provided to Finch when a connect session was created for
@@ -390,7 +423,13 @@ private constructor(
          * The ID of your customer you provided to Finch when a connect session was created for this
          * connection.
          */
-        fun customerId(customerId: String) = customerId(JsonField.of(customerId))
+        fun customerId(customerId: String?) = customerId(JsonField.ofNullable(customerId))
+
+        /**
+         * The ID of your customer you provided to Finch when a connect session was created for this
+         * connection.
+         */
+        fun customerId(customerId: Optional<String>) = customerId(customerId.orElse(null))
 
         /**
          * The ID of your customer you provided to Finch when a connect session was created for this
@@ -402,7 +441,13 @@ private constructor(
          * The name of your customer you provided to Finch when a connect session was created for
          * this connection.
          */
-        fun customerName(customerName: String) = customerName(JsonField.of(customerName))
+        fun customerName(customerName: String?) = customerName(JsonField.ofNullable(customerName))
+
+        /**
+         * The name of your customer you provided to Finch when a connect session was created for
+         * this connection.
+         */
+        fun customerName(customerName: Optional<String>) = customerName(customerName.orElse(null))
 
         /**
          * The name of your customer you provided to Finch when a connect session was created for
@@ -443,7 +488,23 @@ private constructor(
         fun products(products: List<String>) = products(JsonField.of(products))
 
         /** An array of the authorized products associated with the `access_token`. */
-        fun products(products: JsonField<List<String>>) = apply { this.products = products }
+        fun products(products: JsonField<List<String>>) = apply {
+            this.products = products.map { it.toMutableList() }
+        }
+
+        /** An array of the authorized products associated with the `access_token`. */
+        fun addProduct(product: String) = apply {
+            products =
+                (products ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(product)
+                }
+        }
 
         /** The ID of the provider associated with the `access_token`. */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
@@ -478,22 +539,28 @@ private constructor(
 
         fun build(): Introspection =
             Introspection(
-                accountId,
-                authenticationMethods.map { it.toImmutable() },
-                clientId,
-                clientType,
-                companyId,
-                connectionId,
-                connectionStatus,
-                connectionType,
-                customerEmail,
-                customerId,
-                customerName,
-                manual,
-                payrollProviderId,
-                products.map { it.toImmutable() },
-                providerId,
-                username,
+                checkNotNull(accountId) { "`accountId` is required but was not set" },
+                checkNotNull(authenticationMethods) {
+                        "`authenticationMethods` is required but was not set"
+                    }
+                    .map { it.toImmutable() },
+                checkNotNull(clientId) { "`clientId` is required but was not set" },
+                checkNotNull(clientType) { "`clientType` is required but was not set" },
+                checkNotNull(companyId) { "`companyId` is required but was not set" },
+                checkNotNull(connectionId) { "`connectionId` is required but was not set" },
+                checkNotNull(connectionStatus) { "`connectionStatus` is required but was not set" },
+                checkNotNull(connectionType) { "`connectionType` is required but was not set" },
+                checkNotNull(customerEmail) { "`customerEmail` is required but was not set" },
+                checkNotNull(customerId) { "`customerId` is required but was not set" },
+                checkNotNull(customerName) { "`customerName` is required but was not set" },
+                checkNotNull(manual) { "`manual` is required but was not set" },
+                checkNotNull(payrollProviderId) {
+                    "`payrollProviderId` is required but was not set"
+                },
+                checkNotNull(products) { "`products` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(providerId) { "`providerId` is required but was not set" },
+                checkNotNull(username) { "`username` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }
@@ -525,13 +592,15 @@ private constructor(
 
         @JsonProperty("connection_status")
         @ExcludeMissing
-        fun _connectionStatus() = connectionStatus
+        fun _connectionStatus(): JsonField<ConnectionStatus> = connectionStatus
 
         /** An array of the authorized products associated with the `access_token`. */
-        @JsonProperty("products") @ExcludeMissing fun _products() = products
+        @JsonProperty("products")
+        @ExcludeMissing
+        fun _products(): JsonField<List<String>> = products
 
         /** The type of authentication method. */
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -558,14 +627,14 @@ private constructor(
         class Builder {
 
             private var connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of()
-            private var products: JsonField<List<String>> = JsonMissing.of()
+            private var products: JsonField<MutableList<String>>? = null
             private var type: JsonField<Type> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(authenticationMethod: AuthenticationMethod) = apply {
                 connectionStatus = authenticationMethod.connectionStatus
-                products = authenticationMethod.products
+                products = authenticationMethod.products.map { it.toMutableList() }
                 type = authenticationMethod.type
                 additionalProperties = authenticationMethod.additionalProperties.toMutableMap()
             }
@@ -581,7 +650,23 @@ private constructor(
             fun products(products: List<String>) = products(JsonField.of(products))
 
             /** An array of the authorized products associated with the `access_token`. */
-            fun products(products: JsonField<List<String>>) = apply { this.products = products }
+            fun products(products: JsonField<List<String>>) = apply {
+                this.products = products.map { it.toMutableList() }
+            }
+
+            /** An array of the authorized products associated with the `access_token`. */
+            fun addProduct(product: String) = apply {
+                products =
+                    (products ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(product)
+                    }
+            }
 
             /** The type of authentication method. */
             fun type(type: Type) = type(JsonField.of(type))
@@ -611,7 +696,7 @@ private constructor(
             fun build(): AuthenticationMethod =
                 AuthenticationMethod(
                     connectionStatus,
-                    products.map { it.toImmutable() },
+                    (products ?: JsonMissing.of()).map { it.toImmutable() },
                     type,
                     additionalProperties.toImmutable(),
                 )
@@ -636,9 +721,11 @@ private constructor(
             fun status(): Optional<ConnectionStatusType> =
                 Optional.ofNullable(status.getNullable("status"))
 
-            @JsonProperty("message") @ExcludeMissing fun _message() = message
+            @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
-            @JsonProperty("status") @ExcludeMissing fun _status() = status
+            @JsonProperty("status")
+            @ExcludeMissing
+            fun _status(): JsonField<ConnectionStatusType> = status
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -905,9 +992,11 @@ private constructor(
         fun status(): Optional<ConnectionStatusType> =
             Optional.ofNullable(status.getNullable("status"))
 
-        @JsonProperty("message") @ExcludeMissing fun _message() = message
+        @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
-        @JsonProperty("status") @ExcludeMissing fun _status() = status
+        @JsonProperty("status")
+        @ExcludeMissing
+        fun _status(): JsonField<ConnectionStatusType> = status
 
         @JsonAnyGetter
         @ExcludeMissing

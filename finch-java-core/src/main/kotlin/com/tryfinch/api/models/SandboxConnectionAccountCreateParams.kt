@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -40,11 +41,24 @@ constructor(
      */
     fun products(): Optional<List<String>> = body.products()
 
+    fun _companyId(): JsonField<String> = body._companyId()
+
+    /** The provider associated with the `access_token` */
+    fun _providerId(): JsonField<String> = body._providerId()
+
+    fun _authenticationType(): JsonField<AuthenticationType> = body._authenticationType()
+
+    /**
+     * Optional, defaults to Organization products (`company`, `directory`, `employment`,
+     * `individual`)
+     */
+    fun _products(): JsonField<List<String>> = body._products()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): SandboxConnectionAccountCreateBody = body
 
@@ -56,33 +70,71 @@ constructor(
     class SandboxConnectionAccountCreateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("company_id") private val companyId: String,
-        @JsonProperty("provider_id") private val providerId: String,
-        @JsonProperty("authentication_type") private val authenticationType: AuthenticationType?,
-        @JsonProperty("products") private val products: List<String>?,
+        @JsonProperty("company_id")
+        @ExcludeMissing
+        private val companyId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        private val providerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("authentication_type")
+        @ExcludeMissing
+        private val authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        private val products: JsonField<List<String>> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("company_id") fun companyId(): String = companyId
+        fun companyId(): String = companyId.getRequired("company_id")
 
         /** The provider associated with the `access_token` */
-        @JsonProperty("provider_id") fun providerId(): String = providerId
+        fun providerId(): String = providerId.getRequired("provider_id")
+
+        fun authenticationType(): Optional<AuthenticationType> =
+            Optional.ofNullable(authenticationType.getNullable("authentication_type"))
+
+        /**
+         * Optional, defaults to Organization products (`company`, `directory`, `employment`,
+         * `individual`)
+         */
+        fun products(): Optional<List<String>> =
+            Optional.ofNullable(products.getNullable("products"))
+
+        @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+
+        /** The provider associated with the `access_token` */
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        fun _providerId(): JsonField<String> = providerId
 
         @JsonProperty("authentication_type")
-        fun authenticationType(): Optional<AuthenticationType> =
-            Optional.ofNullable(authenticationType)
+        @ExcludeMissing
+        fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
         @JsonProperty("products")
-        fun products(): Optional<List<String>> = Optional.ofNullable(products)
+        @ExcludeMissing
+        fun _products(): JsonField<List<String>> = products
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): SandboxConnectionAccountCreateBody = apply {
+            if (!validated) {
+                companyId()
+                providerId()
+                authenticationType()
+                products()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -93,10 +145,10 @@ constructor(
 
         class Builder {
 
-            private var companyId: String? = null
-            private var providerId: String? = null
-            private var authenticationType: AuthenticationType? = null
-            private var products: MutableList<String>? = null
+            private var companyId: JsonField<String>? = null
+            private var providerId: JsonField<String>? = null
+            private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
+            private var products: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -106,43 +158,57 @@ constructor(
                 companyId = sandboxConnectionAccountCreateBody.companyId
                 providerId = sandboxConnectionAccountCreateBody.providerId
                 authenticationType = sandboxConnectionAccountCreateBody.authenticationType
-                products = sandboxConnectionAccountCreateBody.products?.toMutableList()
+                products = sandboxConnectionAccountCreateBody.products.map { it.toMutableList() }
                 additionalProperties =
                     sandboxConnectionAccountCreateBody.additionalProperties.toMutableMap()
             }
 
-            fun companyId(companyId: String) = apply { this.companyId = companyId }
+            fun companyId(companyId: String) = companyId(JsonField.of(companyId))
+
+            fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
             /** The provider associated with the `access_token` */
-            fun providerId(providerId: String) = apply { this.providerId = providerId }
+            fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
-            fun authenticationType(authenticationType: AuthenticationType?) = apply {
+            /** The provider associated with the `access_token` */
+            fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+
+            fun authenticationType(authenticationType: AuthenticationType) =
+                authenticationType(JsonField.of(authenticationType))
+
+            fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
                 this.authenticationType = authenticationType
             }
 
-            fun authenticationType(authenticationType: Optional<AuthenticationType>) =
-                authenticationType(authenticationType.orElse(null))
+            /**
+             * Optional, defaults to Organization products (`company`, `directory`, `employment`,
+             * `individual`)
+             */
+            fun products(products: List<String>) = products(JsonField.of(products))
 
             /**
              * Optional, defaults to Organization products (`company`, `directory`, `employment`,
              * `individual`)
              */
-            fun products(products: List<String>?) = apply {
-                this.products = products?.toMutableList()
+            fun products(products: JsonField<List<String>>) = apply {
+                this.products = products.map { it.toMutableList() }
             }
-
-            /**
-             * Optional, defaults to Organization products (`company`, `directory`, `employment`,
-             * `individual`)
-             */
-            fun products(products: Optional<List<String>>) = products(products.orElse(null))
 
             /**
              * Optional, defaults to Organization products (`company`, `directory`, `employment`,
              * `individual`)
              */
             fun addProduct(product: String) = apply {
-                products = (products ?: mutableListOf()).apply { add(product) }
+                products =
+                    (products ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(product)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -169,7 +235,7 @@ constructor(
                     checkNotNull(companyId) { "`companyId` is required but was not set" },
                     checkNotNull(providerId) { "`providerId` is required but was not set" },
                     authenticationType,
-                    products?.toImmutable(),
+                    (products ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -219,33 +285,58 @@ constructor(
 
         fun companyId(companyId: String) = apply { body.companyId(companyId) }
 
+        fun companyId(companyId: JsonField<String>) = apply { body.companyId(companyId) }
+
         /** The provider associated with the `access_token` */
         fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
-        fun authenticationType(authenticationType: AuthenticationType?) = apply {
+        /** The provider associated with the `access_token` */
+        fun providerId(providerId: JsonField<String>) = apply { body.providerId(providerId) }
+
+        fun authenticationType(authenticationType: AuthenticationType) = apply {
             body.authenticationType(authenticationType)
         }
 
-        fun authenticationType(authenticationType: Optional<AuthenticationType>) =
-            authenticationType(authenticationType.orElse(null))
+        fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
+            body.authenticationType(authenticationType)
+        }
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
-        fun products(products: List<String>?) = apply { body.products(products) }
+        fun products(products: List<String>) = apply { body.products(products) }
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
-        fun products(products: Optional<List<String>>) = products(products.orElse(null))
+        fun products(products: JsonField<List<String>>) = apply { body.products(products) }
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
         fun addProduct(product: String) = apply { body.addProduct(product) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -343,25 +434,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxConnectionAccountCreateParams =

@@ -32,9 +32,11 @@ private constructor(
 
     fun individualIds(): List<String> = individualIds.getRequired("individual_ids")
 
-    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId() = benefitId
+    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
 
-    @JsonProperty("individual_ids") @ExcludeMissing fun _individualIds() = individualIds
+    @JsonProperty("individual_ids")
+    @ExcludeMissing
+    fun _individualIds(): JsonField<List<String>> = individualIds
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -59,14 +61,14 @@ private constructor(
 
     class Builder {
 
-        private var benefitId: JsonField<String> = JsonMissing.of()
-        private var individualIds: JsonField<List<String>> = JsonMissing.of()
+        private var benefitId: JsonField<String>? = null
+        private var individualIds: JsonField<MutableList<String>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(individualEnrolledIdsResponse: IndividualEnrolledIdsResponse) = apply {
             benefitId = individualEnrolledIdsResponse.benefitId
-            individualIds = individualEnrolledIdsResponse.individualIds
+            individualIds = individualEnrolledIdsResponse.individualIds.map { it.toMutableList() }
             additionalProperties = individualEnrolledIdsResponse.additionalProperties.toMutableMap()
         }
 
@@ -77,7 +79,20 @@ private constructor(
         fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
 
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
-            this.individualIds = individualIds
+            this.individualIds = individualIds.map { it.toMutableList() }
+        }
+
+        fun addIndividualId(individualId: String) = apply {
+            individualIds =
+                (individualIds ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(individualId)
+                }
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -101,8 +116,9 @@ private constructor(
 
         fun build(): IndividualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse(
-                benefitId,
-                individualIds.map { it.toImmutable() },
+                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
+                checkNotNull(individualIds) { "`individualIds` is required but was not set" }
+                    .map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }

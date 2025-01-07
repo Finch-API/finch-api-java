@@ -32,9 +32,11 @@ private constructor(
 
     fun type(): Type = type.getRequired("type")
 
-    @JsonProperty("completion_status") @ExcludeMissing fun _completionStatus() = completionStatus
+    @JsonProperty("completion_status")
+    @ExcludeMissing
+    fun _completionStatus(): JsonField<CompletionStatus> = completionStatus
 
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -59,8 +61,8 @@ private constructor(
 
     class Builder {
 
-        private var completionStatus: JsonField<CompletionStatus> = JsonMissing.of()
-        private var type: JsonField<Type> = JsonMissing.of()
+        private var completionStatus: JsonField<CompletionStatus>? = null
+        private var type: JsonField<Type>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -102,8 +104,8 @@ private constructor(
 
         fun build(): SandboxJobConfiguration =
             SandboxJobConfiguration(
-                completionStatus,
-                type,
+                checkNotNull(completionStatus) { "`completionStatus` is required but was not set" },
+                checkNotNull(type) { "`type` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }

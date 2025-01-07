@@ -32,10 +32,10 @@ private constructor(
     fun offset(): Optional<Long> = Optional.ofNullable(offset.getNullable("offset"))
 
     /** The total number of elements for the entire query (not just the given page) */
-    @JsonProperty("count") @ExcludeMissing fun _count() = count
+    @JsonProperty("count") @ExcludeMissing fun _count(): JsonField<Long> = count
 
     /** The current start index of the returned list of elements */
-    @JsonProperty("offset") @ExcludeMissing fun _offset() = offset
+    @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
     @JsonAnyGetter
     @ExcludeMissing

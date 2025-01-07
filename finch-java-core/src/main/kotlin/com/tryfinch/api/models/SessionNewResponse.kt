@@ -35,10 +35,10 @@ private constructor(
     fun sessionId(): String = sessionId.getRequired("session_id")
 
     /** The Connect URL to redirect the user to for authentication */
-    @JsonProperty("connect_url") @ExcludeMissing fun _connectUrl() = connectUrl
+    @JsonProperty("connect_url") @ExcludeMissing fun _connectUrl(): JsonField<String> = connectUrl
 
     /** The unique identifier for the created connect session */
-    @JsonProperty("session_id") @ExcludeMissing fun _sessionId() = sessionId
+    @JsonProperty("session_id") @ExcludeMissing fun _sessionId(): JsonField<String> = sessionId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -63,8 +63,8 @@ private constructor(
 
     class Builder {
 
-        private var connectUrl: JsonField<String> = JsonMissing.of()
-        private var sessionId: JsonField<String> = JsonMissing.of()
+        private var connectUrl: JsonField<String>? = null
+        private var sessionId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -107,8 +107,8 @@ private constructor(
 
         fun build(): SessionNewResponse =
             SessionNewResponse(
-                connectUrl,
-                sessionId,
+                checkNotNull(connectUrl) { "`connectUrl` is required but was not set" },
+                checkNotNull(sessionId) { "`sessionId` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }

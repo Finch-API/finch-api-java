@@ -79,6 +79,29 @@ private constructor(
 
         fun baseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
 
+        fun responseValidation(responseValidation: Boolean) = apply {
+            this.responseValidation = responseValidation
+        }
+
+        fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
+
+        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
+
+        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.orElse(null))
+
+        fun clientId(clientId: String?) = apply { this.clientId = clientId }
+
+        fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
+
+        fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
+
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.orElse(null))
+
+        fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
+
+        fun webhookSecret(webhookSecret: Optional<String>) =
+            webhookSecret(webhookSecret.orElse(null))
+
         fun headers(headers: Headers) = apply {
             this.headers.clear()
             putAllHeaders(headers)
@@ -158,29 +181,6 @@ private constructor(
         fun removeQueryParams(key: String) = apply { queryParams.remove(key) }
 
         fun removeAllQueryParams(keys: Set<String>) = apply { queryParams.removeAll(keys) }
-
-        fun responseValidation(responseValidation: Boolean) = apply {
-            this.responseValidation = responseValidation
-        }
-
-        fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
-
-        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
-
-        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.orElse(null))
-
-        fun clientId(clientId: String?) = apply { this.clientId = clientId }
-
-        fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
-
-        fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
-
-        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.orElse(null))
-
-        fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
-
-        fun webhookSecret(webhookSecret: Optional<String>) =
-            webhookSecret(webhookSecret.orElse(null))
 
         fun fromEnv() = apply {
             System.getenv("FINCH_CLIENT_ID")?.let { clientId(it) }

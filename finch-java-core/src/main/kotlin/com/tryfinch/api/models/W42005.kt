@@ -42,13 +42,13 @@ private constructor(
     fun year(): Optional<Double> = Optional.ofNullable(year.getNullable("year"))
 
     /** Detailed information specific to the 2005 W4 form. */
-    @JsonProperty("data") @ExcludeMissing fun _data() = data
+    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
     /** Specifies the form type, indicating that this document is a 2005 W4 form. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     /** The tax year this W4 document applies to. */
-    @JsonProperty("year") @ExcludeMissing fun _year() = year
+    @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -100,7 +100,14 @@ private constructor(
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** The tax year this W4 document applies to. */
-        fun year(year: Double) = year(JsonField.of(year))
+        fun year(year: Double?) = year(JsonField.ofNullable(year))
+
+        /** The tax year this W4 document applies to. */
+        fun year(year: Double) = year(year as Double?)
+
+        /** The tax year this W4 document applies to. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun year(year: Optional<Double>) = year(year.orElse(null) as Double?)
 
         /** The tax year this W4 document applies to. */
         fun year(year: JsonField<Double>) = apply { this.year = year }
@@ -180,21 +187,27 @@ private constructor(
         /** Additional withholding amount (in cents). */
         @JsonProperty("additional_withholding")
         @ExcludeMissing
-        fun _additionalWithholding() = additionalWithholding
+        fun _additionalWithholding(): JsonField<Long> = additionalWithholding
 
         /** Indicates exemption status from federal tax withholding. */
-        @JsonProperty("exemption") @ExcludeMissing fun _exemption() = exemption
+        @JsonProperty("exemption")
+        @ExcludeMissing
+        fun _exemption(): JsonField<Exemption> = exemption
 
         /** The individual's filing status for tax purposes. */
-        @JsonProperty("filing_status") @ExcludeMissing fun _filingStatus() = filingStatus
+        @JsonProperty("filing_status")
+        @ExcludeMissing
+        fun _filingStatus(): JsonField<FilingStatus> = filingStatus
 
         /** The unique identifier for the individual associated with this 2005 W4 form. */
-        @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
 
         /** Total number of allowances claimed (in cents). */
         @JsonProperty("total_number_of_allowances")
         @ExcludeMissing
-        fun _totalNumberOfAllowances() = totalNumberOfAllowances
+        fun _totalNumberOfAllowances(): JsonField<Long> = totalNumberOfAllowances
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -240,8 +253,17 @@ private constructor(
             }
 
             /** Additional withholding amount (in cents). */
+            fun additionalWithholding(additionalWithholding: Long?) =
+                additionalWithholding(JsonField.ofNullable(additionalWithholding))
+
+            /** Additional withholding amount (in cents). */
             fun additionalWithholding(additionalWithholding: Long) =
-                additionalWithholding(JsonField.of(additionalWithholding))
+                additionalWithholding(additionalWithholding as Long?)
+
+            /** Additional withholding amount (in cents). */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun additionalWithholding(additionalWithholding: Optional<Long>) =
+                additionalWithholding(additionalWithholding.orElse(null) as Long?)
 
             /** Additional withholding amount (in cents). */
             fun additionalWithholding(additionalWithholding: JsonField<Long>) = apply {
@@ -271,8 +293,17 @@ private constructor(
             }
 
             /** Total number of allowances claimed (in cents). */
+            fun totalNumberOfAllowances(totalNumberOfAllowances: Long?) =
+                totalNumberOfAllowances(JsonField.ofNullable(totalNumberOfAllowances))
+
+            /** Total number of allowances claimed (in cents). */
             fun totalNumberOfAllowances(totalNumberOfAllowances: Long) =
-                totalNumberOfAllowances(JsonField.of(totalNumberOfAllowances))
+                totalNumberOfAllowances(totalNumberOfAllowances as Long?)
+
+            /** Total number of allowances claimed (in cents). */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun totalNumberOfAllowances(totalNumberOfAllowances: Optional<Long>) =
+                totalNumberOfAllowances(totalNumberOfAllowances.orElse(null) as Long?)
 
             /** Total number of allowances claimed (in cents). */
             fun totalNumberOfAllowances(totalNumberOfAllowances: JsonField<Long>) = apply {

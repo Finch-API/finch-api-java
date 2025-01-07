@@ -93,41 +93,49 @@ private constructor(
     fun tokenType(): Optional<String> = Optional.ofNullable(tokenType.getNullable("token_type"))
 
     /** The access token for the connection. */
-    @JsonProperty("access_token") @ExcludeMissing fun _accessToken() = accessToken
+    @JsonProperty("access_token")
+    @ExcludeMissing
+    fun _accessToken(): JsonField<String> = accessToken
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     /** The type of application associated with a token. */
-    @JsonProperty("client_type") @ExcludeMissing fun _clientType() = clientType
+    @JsonProperty("client_type")
+    @ExcludeMissing
+    fun _clientType(): JsonField<ClientType> = clientType
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID. */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /** The Finch UUID of the connection associated with the `access_token`. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    fun _connectionId(): JsonField<String> = connectionId
 
     /**
      * The type of the connection associated with the token.
      * - `provider` - connection to an external provider
      * - `finch` - finch-generated data.
      */
-    @JsonProperty("connection_type") @ExcludeMissing fun _connectionType() = connectionType
+    @JsonProperty("connection_type")
+    @ExcludeMissing
+    fun _connectionType(): JsonField<ConnectionType> = connectionType
 
     /** An array of the authorized products associated with the `access_token`. */
-    @JsonProperty("products") @ExcludeMissing fun _products() = products
+    @JsonProperty("products") @ExcludeMissing fun _products(): JsonField<List<String>> = products
 
     /** The ID of the provider associated with the `access_token`. */
-    @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
+    @JsonProperty("provider_id") @ExcludeMissing fun _providerId(): JsonField<String> = providerId
 
     /**
      * The ID of your customer you provided to Finch when a connect session was created for this
      * connection.
      */
-    @JsonProperty("customer_id") @ExcludeMissing fun _customerId() = customerId
+    @JsonProperty("customer_id") @ExcludeMissing fun _customerId(): JsonField<String> = customerId
 
     /** The RFC 8693 token type (Finch uses `bearer` tokens) */
-    @JsonProperty("token_type") @ExcludeMissing fun _tokenType() = tokenType
+    @JsonProperty("token_type") @ExcludeMissing fun _tokenType(): JsonField<String> = tokenType
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -160,14 +168,14 @@ private constructor(
 
     class Builder {
 
-        private var accessToken: JsonField<String> = JsonMissing.of()
-        private var accountId: JsonField<String> = JsonMissing.of()
-        private var clientType: JsonField<ClientType> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
-        private var connectionId: JsonField<String> = JsonMissing.of()
-        private var connectionType: JsonField<ConnectionType> = JsonMissing.of()
-        private var products: JsonField<List<String>> = JsonMissing.of()
-        private var providerId: JsonField<String> = JsonMissing.of()
+        private var accessToken: JsonField<String>? = null
+        private var accountId: JsonField<String>? = null
+        private var clientType: JsonField<ClientType>? = null
+        private var companyId: JsonField<String>? = null
+        private var connectionId: JsonField<String>? = null
+        private var connectionType: JsonField<ConnectionType>? = null
+        private var products: JsonField<MutableList<String>>? = null
+        private var providerId: JsonField<String>? = null
         private var customerId: JsonField<String> = JsonMissing.of()
         private var tokenType: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -180,7 +188,7 @@ private constructor(
             companyId = createAccessTokenResponse.companyId
             connectionId = createAccessTokenResponse.connectionId
             connectionType = createAccessTokenResponse.connectionType
-            products = createAccessTokenResponse.products
+            products = createAccessTokenResponse.products.map { it.toMutableList() }
             providerId = createAccessTokenResponse.providerId
             customerId = createAccessTokenResponse.customerId
             tokenType = createAccessTokenResponse.tokenType
@@ -248,7 +256,23 @@ private constructor(
         fun products(products: List<String>) = products(JsonField.of(products))
 
         /** An array of the authorized products associated with the `access_token`. */
-        fun products(products: JsonField<List<String>>) = apply { this.products = products }
+        fun products(products: JsonField<List<String>>) = apply {
+            this.products = products.map { it.toMutableList() }
+        }
+
+        /** An array of the authorized products associated with the `access_token`. */
+        fun addProduct(product: String) = apply {
+            products =
+                (products ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(product)
+                }
+        }
 
         /** The ID of the provider associated with the `access_token`. */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
@@ -260,7 +284,13 @@ private constructor(
          * The ID of your customer you provided to Finch when a connect session was created for this
          * connection.
          */
-        fun customerId(customerId: String) = customerId(JsonField.of(customerId))
+        fun customerId(customerId: String?) = customerId(JsonField.ofNullable(customerId))
+
+        /**
+         * The ID of your customer you provided to Finch when a connect session was created for this
+         * connection.
+         */
+        fun customerId(customerId: Optional<String>) = customerId(customerId.orElse(null))
 
         /**
          * The ID of your customer you provided to Finch when a connect session was created for this
@@ -295,14 +325,15 @@ private constructor(
 
         fun build(): CreateAccessTokenResponse =
             CreateAccessTokenResponse(
-                accessToken,
-                accountId,
-                clientType,
-                companyId,
-                connectionId,
-                connectionType,
-                products.map { it.toImmutable() },
-                providerId,
+                checkNotNull(accessToken) { "`accessToken` is required but was not set" },
+                checkNotNull(accountId) { "`accountId` is required but was not set" },
+                checkNotNull(clientType) { "`clientType` is required but was not set" },
+                checkNotNull(companyId) { "`companyId` is required but was not set" },
+                checkNotNull(connectionId) { "`connectionId` is required but was not set" },
+                checkNotNull(connectionType) { "`connectionType` is required but was not set" },
+                checkNotNull(products) { "`products` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(providerId) { "`providerId` is required but was not set" },
                 customerId,
                 tokenType,
                 additionalProperties.toImmutable(),

@@ -55,19 +55,21 @@ private constructor(
     fun unit(): Optional<Unit> = Optional.ofNullable(unit.getNullable("unit"))
 
     /** The income amount in cents. */
-    @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
     /** The currency code. */
-    @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+    @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
     /** The date the income amount went into effect. */
-    @JsonProperty("effective_date") @ExcludeMissing fun _effectiveDate() = effectiveDate
+    @JsonProperty("effective_date")
+    @ExcludeMissing
+    fun _effectiveDate(): JsonField<String> = effectiveDate
 
     /**
      * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
      * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
      */
-    @JsonProperty("unit") @ExcludeMissing fun _unit() = unit
+    @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Unit> = unit
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -110,19 +112,34 @@ private constructor(
         }
 
         /** The income amount in cents. */
-        fun amount(amount: Long) = amount(JsonField.of(amount))
+        fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
+
+        /** The income amount in cents. */
+        fun amount(amount: Long) = amount(amount as Long?)
+
+        /** The income amount in cents. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
         /** The income amount in cents. */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         /** The currency code. */
-        fun currency(currency: String) = currency(JsonField.of(currency))
+        fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
+
+        /** The currency code. */
+        fun currency(currency: Optional<String>) = currency(currency.orElse(null))
 
         /** The currency code. */
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         /** The date the income amount went into effect. */
-        fun effectiveDate(effectiveDate: String) = effectiveDate(JsonField.of(effectiveDate))
+        fun effectiveDate(effectiveDate: String?) =
+            effectiveDate(JsonField.ofNullable(effectiveDate))
+
+        /** The date the income amount went into effect. */
+        fun effectiveDate(effectiveDate: Optional<String>) =
+            effectiveDate(effectiveDate.orElse(null))
 
         /** The date the income amount went into effect. */
         fun effectiveDate(effectiveDate: JsonField<String>) = apply {
@@ -133,7 +150,13 @@ private constructor(
          * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
          * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
          */
-        fun unit(unit: Unit) = unit(JsonField.of(unit))
+        fun unit(unit: Unit?) = unit(JsonField.ofNullable(unit))
+
+        /**
+         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+         */
+        fun unit(unit: Optional<Unit>) = unit(unit.orElse(null))
 
         /**
          * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,

@@ -62,22 +62,24 @@ private constructor(
         Optional.ofNullable(connectionId.getNullable("connection_id"))
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     @JsonProperty("authentication_type")
     @ExcludeMissing
-    fun _authenticationType() = authenticationType
+    fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
-    @JsonProperty("products") @ExcludeMissing fun _products() = products
+    @JsonProperty("products") @ExcludeMissing fun _products(): JsonField<List<String>> = products
 
     /** The ID of the provider associated with the `access_token` */
-    @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
+    @JsonProperty("provider_id") @ExcludeMissing fun _providerId(): JsonField<String> = providerId
 
     /** The ID of the new connection */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    fun _connectionId(): JsonField<String> = connectionId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -106,11 +108,11 @@ private constructor(
 
     class Builder {
 
-        private var accountId: JsonField<String> = JsonMissing.of()
-        private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
-        private var products: JsonField<List<String>> = JsonMissing.of()
-        private var providerId: JsonField<String> = JsonMissing.of()
+        private var accountId: JsonField<String>? = null
+        private var authenticationType: JsonField<AuthenticationType>? = null
+        private var companyId: JsonField<String>? = null
+        private var products: JsonField<MutableList<String>>? = null
+        private var providerId: JsonField<String>? = null
         private var connectionId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -119,7 +121,7 @@ private constructor(
             accountId = accountUpdateResponse.accountId
             authenticationType = accountUpdateResponse.authenticationType
             companyId = accountUpdateResponse.companyId
-            products = accountUpdateResponse.products
+            products = accountUpdateResponse.products.map { it.toMutableList() }
             providerId = accountUpdateResponse.providerId
             connectionId = accountUpdateResponse.connectionId
             additionalProperties = accountUpdateResponse.additionalProperties.toMutableMap()
@@ -146,7 +148,22 @@ private constructor(
 
         fun products(products: List<String>) = products(JsonField.of(products))
 
-        fun products(products: JsonField<List<String>>) = apply { this.products = products }
+        fun products(products: JsonField<List<String>>) = apply {
+            this.products = products.map { it.toMutableList() }
+        }
+
+        fun addProduct(product: String) = apply {
+            products =
+                (products ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(product)
+                }
+        }
 
         /** The ID of the provider associated with the `access_token` */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
@@ -183,11 +200,14 @@ private constructor(
 
         fun build(): AccountUpdateResponse =
             AccountUpdateResponse(
-                accountId,
-                authenticationType,
-                companyId,
-                products.map { it.toImmutable() },
-                providerId,
+                checkNotNull(accountId) { "`accountId` is required but was not set" },
+                checkNotNull(authenticationType) {
+                    "`authenticationType` is required but was not set"
+                },
+                checkNotNull(companyId) { "`companyId` is required but was not set" },
+                checkNotNull(products) { "`products` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(providerId) { "`providerId` is required but was not set" },
                 connectionId,
                 additionalProperties.toImmutable(),
             )
