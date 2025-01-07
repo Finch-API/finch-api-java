@@ -19,6 +19,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
+/** Add a new sandbox payment */
 class SandboxPaymentCreateParams
 constructor(
     private val body: SandboxPaymentCreateBody,

@@ -7,6 +7,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/** Read account information associated with an `access_token` */
 class AccountIntrospectParams
 constructor(
     private val additionalHeaders: Headers,

@@ -15,6 +15,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
+/** Read individual employment and income data */
 class HrisEmploymentRetrieveManyParams
 constructor(
     private val body: HrisEmploymentRetrieveManyBody,

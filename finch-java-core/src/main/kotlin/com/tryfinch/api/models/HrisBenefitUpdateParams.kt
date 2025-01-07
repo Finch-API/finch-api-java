@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Updates an existing company-wide deduction or contribution */
 class HrisBenefitUpdateParams
 constructor(
     private val benefitId: String,

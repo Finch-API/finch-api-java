@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyParams
 constructor(
     private val body: HrisIndividualRetrieveManyBody,

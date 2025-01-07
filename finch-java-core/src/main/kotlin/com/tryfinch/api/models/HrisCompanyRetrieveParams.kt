@@ -7,6 +7,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/** Read basic company data */
 class HrisCompanyRetrieveParams
 constructor(
     private val additionalHeaders: Headers,

@@ -16,6 +16,10 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Update an existing sandbox account. Change the connection status to understand how the Finch API
+ * responds.
+ */
 class SandboxConnectionAccountUpdateParams
 constructor(
     private val body: SandboxConnectionAccountUpdateBody,

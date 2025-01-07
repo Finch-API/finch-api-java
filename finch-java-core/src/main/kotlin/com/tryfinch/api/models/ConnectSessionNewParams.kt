@@ -19,6 +19,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
+/** Create a new connect session for an employer */
 class ConnectSessionNewParams
 constructor(
     private val body: ConnectSessionNewBody,
