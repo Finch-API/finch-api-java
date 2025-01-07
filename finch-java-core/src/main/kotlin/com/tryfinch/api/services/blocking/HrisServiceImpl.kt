@@ -9,6 +9,8 @@ import com.tryfinch.api.services.blocking.hris.CompanyService
 import com.tryfinch.api.services.blocking.hris.CompanyServiceImpl
 import com.tryfinch.api.services.blocking.hris.DirectoryService
 import com.tryfinch.api.services.blocking.hris.DirectoryServiceImpl
+import com.tryfinch.api.services.blocking.hris.DocumentService
+import com.tryfinch.api.services.blocking.hris.DocumentServiceImpl
 import com.tryfinch.api.services.blocking.hris.EmploymentService
 import com.tryfinch.api.services.blocking.hris.EmploymentServiceImpl
 import com.tryfinch.api.services.blocking.hris.IndividualService
@@ -37,6 +39,8 @@ constructor(
         PayStatementServiceImpl(clientOptions)
     }
 
+    private val documents: DocumentService by lazy { DocumentServiceImpl(clientOptions) }
+
     private val benefits: BenefitService by lazy { BenefitServiceImpl(clientOptions) }
 
     override fun company(): CompanyService = company
@@ -50,6 +54,8 @@ constructor(
     override fun payments(): PaymentService = payments
 
     override fun payStatements(): PayStatementService = payStatements
+
+    override fun documents(): DocumentService = documents
 
     override fun benefits(): BenefitService = benefits
 }
