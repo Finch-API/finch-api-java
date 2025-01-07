@@ -27,7 +27,7 @@ private constructor(
 
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
-    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId() = benefitId
+    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -51,7 +51,7 @@ private constructor(
 
     class Builder {
 
-        private var benefitId: JsonField<String> = JsonMissing.of()
+        private var benefitId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -84,7 +84,10 @@ private constructor(
         }
 
         fun build(): UpdateCompanyBenefitResponse =
-            UpdateCompanyBenefitResponse(benefitId, additionalProperties.toImmutable())
+            UpdateCompanyBenefitResponse(
+                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
+                additionalProperties.toImmutable()
+            )
     }
 
     override fun equals(other: Any?): Boolean {

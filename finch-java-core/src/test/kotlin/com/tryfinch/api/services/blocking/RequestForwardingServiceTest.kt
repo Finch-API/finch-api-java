@@ -25,6 +25,7 @@ class RequestForwardingServiceTest {
                 RequestForwardingForwardParams.builder()
                     .method("POST")
                     .route("/people/search")
+                    .data(null)
                     .headers(JsonValue.from(mapOf("content-type" to "application/json")))
                     .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
                     .build()

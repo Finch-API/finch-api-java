@@ -36,12 +36,14 @@ private constructor(
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
 
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<Body> = body
 
     /** HTTP status code */
-    @JsonProperty("code") @ExcludeMissing fun _code() = code
+    @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
-    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    fun _individualId(): JsonField<String> = individualId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -151,13 +153,13 @@ private constructor(
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /** A descriptive identifier for the response. */
-        @JsonProperty("finch_code") @ExcludeMissing fun _finchCode() = finchCode
+        @JsonProperty("finch_code") @ExcludeMissing fun _finchCode(): JsonField<String> = finchCode
 
         /** Short description in English that provides more information about the response. */
-        @JsonProperty("message") @ExcludeMissing fun _message() = message
+        @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
         /** Identifier indicating whether the benefit was newly enrolled or updated. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -197,19 +199,28 @@ private constructor(
             }
 
             /** A descriptive identifier for the response. */
-            fun finchCode(finchCode: String) = finchCode(JsonField.of(finchCode))
+            fun finchCode(finchCode: String?) = finchCode(JsonField.ofNullable(finchCode))
+
+            /** A descriptive identifier for the response. */
+            fun finchCode(finchCode: Optional<String>) = finchCode(finchCode.orElse(null))
 
             /** A descriptive identifier for the response. */
             fun finchCode(finchCode: JsonField<String>) = apply { this.finchCode = finchCode }
 
             /** Short description in English that provides more information about the response. */
-            fun message(message: String) = message(JsonField.of(message))
+            fun message(message: String?) = message(JsonField.ofNullable(message))
+
+            /** Short description in English that provides more information about the response. */
+            fun message(message: Optional<String>) = message(message.orElse(null))
 
             /** Short description in English that provides more information about the response. */
             fun message(message: JsonField<String>) = apply { this.message = message }
 
             /** Identifier indicating whether the benefit was newly enrolled or updated. */
-            fun name(name: String) = name(JsonField.of(name))
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /** Identifier indicating whether the benefit was newly enrolled or updated. */
+            fun name(name: Optional<String>) = name(name.orElse(null))
 
             /** Identifier indicating whether the benefit was newly enrolled or updated. */
             fun name(name: JsonField<String>) = apply { this.name = name }

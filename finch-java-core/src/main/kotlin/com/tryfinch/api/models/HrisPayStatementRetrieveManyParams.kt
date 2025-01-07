@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -31,11 +33,14 @@ constructor(
     /** The array of batch requests. */
     fun requests(): List<Request> = body.requests()
 
+    /** The array of batch requests. */
+    fun _requests(): JsonField<List<Request>> = body._requests()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): HrisPayStatementRetrieveManyBody = body
 
@@ -47,17 +52,33 @@ constructor(
     class HrisPayStatementRetrieveManyBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("requests") private val requests: List<Request>,
+        @JsonProperty("requests")
+        @ExcludeMissing
+        private val requests: JsonField<List<Request>> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The array of batch requests. */
-        @JsonProperty("requests") fun requests(): List<Request> = requests
+        fun requests(): List<Request> = requests.getRequired("requests")
+
+        /** The array of batch requests. */
+        @JsonProperty("requests")
+        @ExcludeMissing
+        fun _requests(): JsonField<List<Request>> = requests
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): HrisPayStatementRetrieveManyBody = apply {
+            if (!validated) {
+                requests().forEach { it.validate() }
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -68,25 +89,37 @@ constructor(
 
         class Builder {
 
-            private var requests: MutableList<Request>? = null
+            private var requests: JsonField<MutableList<Request>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(hrisPayStatementRetrieveManyBody: HrisPayStatementRetrieveManyBody) =
                 apply {
-                    requests = hrisPayStatementRetrieveManyBody.requests.toMutableList()
+                    requests = hrisPayStatementRetrieveManyBody.requests.map { it.toMutableList() }
                     additionalProperties =
                         hrisPayStatementRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
             /** The array of batch requests. */
-            fun requests(requests: List<Request>) = apply {
-                this.requests = requests.toMutableList()
+            fun requests(requests: List<Request>) = requests(JsonField.of(requests))
+
+            /** The array of batch requests. */
+            fun requests(requests: JsonField<List<Request>>) = apply {
+                this.requests = requests.map { it.toMutableList() }
             }
 
             /** The array of batch requests. */
             fun addRequest(request: Request) = apply {
-                requests = (requests ?: mutableListOf()).apply { add(request) }
+                requests =
+                    (requests ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(request)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -111,7 +144,7 @@ constructor(
             fun build(): HrisPayStatementRetrieveManyBody =
                 HrisPayStatementRetrieveManyBody(
                     checkNotNull(requests) { "`requests` is required but was not set" }
-                        .toImmutable(),
+                        .map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -162,7 +195,29 @@ constructor(
         fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
         /** The array of batch requests. */
+        fun requests(requests: JsonField<List<Request>>) = apply { body.requests(requests) }
+
+        /** The array of batch requests. */
         fun addRequest(request: Request) = apply { body.addRequest(request) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -262,25 +317,6 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
-
         fun build(): HrisPayStatementRetrieveManyParams =
             HrisPayStatementRetrieveManyParams(
                 body.build(),
@@ -293,25 +329,51 @@ constructor(
     class Request
     @JsonCreator
     private constructor(
-        @JsonProperty("payment_id") private val paymentId: String,
-        @JsonProperty("limit") private val limit: Long?,
-        @JsonProperty("offset") private val offset: Long?,
+        @JsonProperty("payment_id")
+        @ExcludeMissing
+        private val paymentId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("limit")
+        @ExcludeMissing
+        private val limit: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("offset")
+        @ExcludeMissing
+        private val offset: JsonField<Long> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A stable Finch `id` (UUID v4) for a payment. */
-        @JsonProperty("payment_id") fun paymentId(): String = paymentId
+        fun paymentId(): String = paymentId.getRequired("payment_id")
 
         /** Number of pay statements to return (defaults to all). */
-        @JsonProperty("limit") fun limit(): Optional<Long> = Optional.ofNullable(limit)
+        fun limit(): Optional<Long> = Optional.ofNullable(limit.getNullable("limit"))
 
         /** Index to start from. */
-        @JsonProperty("offset") fun offset(): Optional<Long> = Optional.ofNullable(offset)
+        fun offset(): Optional<Long> = Optional.ofNullable(offset.getNullable("offset"))
+
+        /** A stable Finch `id` (UUID v4) for a payment. */
+        @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
+
+        /** Number of pay statements to return (defaults to all). */
+        @JsonProperty("limit") @ExcludeMissing fun _limit(): JsonField<Long> = limit
+
+        /** Index to start from. */
+        @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Request = apply {
+            if (!validated) {
+                paymentId()
+                limit()
+                offset()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -322,9 +384,9 @@ constructor(
 
         class Builder {
 
-            private var paymentId: String? = null
-            private var limit: Long? = null
-            private var offset: Long? = null
+            private var paymentId: JsonField<String>? = null
+            private var limit: JsonField<Long> = JsonMissing.of()
+            private var offset: JsonField<Long> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -336,27 +398,22 @@ constructor(
             }
 
             /** A stable Finch `id` (UUID v4) for a payment. */
-            fun paymentId(paymentId: String) = apply { this.paymentId = paymentId }
+            fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
+
+            /** A stable Finch `id` (UUID v4) for a payment. */
+            fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
             /** Number of pay statements to return (defaults to all). */
-            fun limit(limit: Long?) = apply { this.limit = limit }
+            fun limit(limit: Long) = limit(JsonField.of(limit))
 
             /** Number of pay statements to return (defaults to all). */
-            fun limit(limit: Long) = limit(limit as Long?)
-
-            /** Number of pay statements to return (defaults to all). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+            fun limit(limit: JsonField<Long>) = apply { this.limit = limit }
 
             /** Index to start from. */
-            fun offset(offset: Long?) = apply { this.offset = offset }
+            fun offset(offset: Long) = offset(JsonField.of(offset))
 
             /** Index to start from. */
-            fun offset(offset: Long) = offset(offset as Long?)
-
-            /** Index to start from. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun offset(offset: Optional<Long>) = offset(offset.orElse(null) as Long?)
+            fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

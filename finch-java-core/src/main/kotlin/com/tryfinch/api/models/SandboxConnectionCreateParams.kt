@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -41,11 +42,25 @@ constructor(
 
     fun products(): Optional<List<String>> = body.products()
 
+    /** The provider associated with the connection */
+    fun _providerId(): JsonField<String> = body._providerId()
+
+    fun _authenticationType(): JsonField<AuthenticationType> = body._authenticationType()
+
+    /**
+     * Optional: the size of the employer to be created with this connection. Defaults to 20. Note
+     * that if this is higher than 100, historical payroll data will not be generated, and instead
+     * only one pay period will be created.
+     */
+    fun _employeeSize(): JsonField<Long> = body._employeeSize()
+
+    fun _products(): JsonField<List<String>> = body._products()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): SandboxConnectionCreateBody = body
 
@@ -57,20 +72,47 @@ constructor(
     class SandboxConnectionCreateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("provider_id") private val providerId: String,
-        @JsonProperty("authentication_type") private val authenticationType: AuthenticationType?,
-        @JsonProperty("employee_size") private val employeeSize: Long?,
-        @JsonProperty("products") private val products: List<String>?,
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        private val providerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("authentication_type")
+        @ExcludeMissing
+        private val authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
+        @JsonProperty("employee_size")
+        @ExcludeMissing
+        private val employeeSize: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        private val products: JsonField<List<String>> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The provider associated with the connection */
-        @JsonProperty("provider_id") fun providerId(): String = providerId
+        fun providerId(): String = providerId.getRequired("provider_id")
+
+        fun authenticationType(): Optional<AuthenticationType> =
+            Optional.ofNullable(authenticationType.getNullable("authentication_type"))
+
+        /**
+         * Optional: the size of the employer to be created with this connection. Defaults to 20.
+         * Note that if this is higher than 100, historical payroll data will not be generated, and
+         * instead only one pay period will be created.
+         */
+        fun employeeSize(): Optional<Long> =
+            Optional.ofNullable(employeeSize.getNullable("employee_size"))
+
+        fun products(): Optional<List<String>> =
+            Optional.ofNullable(products.getNullable("products"))
+
+        /** The provider associated with the connection */
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        fun _providerId(): JsonField<String> = providerId
 
         @JsonProperty("authentication_type")
-        fun authenticationType(): Optional<AuthenticationType> =
-            Optional.ofNullable(authenticationType)
+        @ExcludeMissing
+        fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
 
         /**
          * Optional: the size of the employer to be created with this connection. Defaults to 20.
@@ -78,14 +120,28 @@ constructor(
          * instead only one pay period will be created.
          */
         @JsonProperty("employee_size")
-        fun employeeSize(): Optional<Long> = Optional.ofNullable(employeeSize)
+        @ExcludeMissing
+        fun _employeeSize(): JsonField<Long> = employeeSize
 
         @JsonProperty("products")
-        fun products(): Optional<List<String>> = Optional.ofNullable(products)
+        @ExcludeMissing
+        fun _products(): JsonField<List<String>> = products
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): SandboxConnectionCreateBody = apply {
+            if (!validated) {
+                providerId()
+                authenticationType()
+                employeeSize()
+                products()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -96,10 +152,10 @@ constructor(
 
         class Builder {
 
-            private var providerId: String? = null
-            private var authenticationType: AuthenticationType? = null
-            private var employeeSize: Long? = null
-            private var products: MutableList<String>? = null
+            private var providerId: JsonField<String>? = null
+            private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
+            private var employeeSize: JsonField<Long> = JsonMissing.of()
+            private var products: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -107,52 +163,57 @@ constructor(
                 providerId = sandboxConnectionCreateBody.providerId
                 authenticationType = sandboxConnectionCreateBody.authenticationType
                 employeeSize = sandboxConnectionCreateBody.employeeSize
-                products = sandboxConnectionCreateBody.products?.toMutableList()
+                products = sandboxConnectionCreateBody.products.map { it.toMutableList() }
                 additionalProperties =
                     sandboxConnectionCreateBody.additionalProperties.toMutableMap()
             }
 
             /** The provider associated with the connection */
-            fun providerId(providerId: String) = apply { this.providerId = providerId }
+            fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
-            fun authenticationType(authenticationType: AuthenticationType?) = apply {
+            /** The provider associated with the connection */
+            fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+
+            fun authenticationType(authenticationType: AuthenticationType) =
+                authenticationType(JsonField.of(authenticationType))
+
+            fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
                 this.authenticationType = authenticationType
             }
 
-            fun authenticationType(authenticationType: Optional<AuthenticationType>) =
-                authenticationType(authenticationType.orElse(null))
+            /**
+             * Optional: the size of the employer to be created with this connection. Defaults
+             * to 20. Note that if this is higher than 100, historical payroll data will not be
+             * generated, and instead only one pay period will be created.
+             */
+            fun employeeSize(employeeSize: Long) = employeeSize(JsonField.of(employeeSize))
 
             /**
              * Optional: the size of the employer to be created with this connection. Defaults
              * to 20. Note that if this is higher than 100, historical payroll data will not be
              * generated, and instead only one pay period will be created.
              */
-            fun employeeSize(employeeSize: Long?) = apply { this.employeeSize = employeeSize }
-
-            /**
-             * Optional: the size of the employer to be created with this connection. Defaults
-             * to 20. Note that if this is higher than 100, historical payroll data will not be
-             * generated, and instead only one pay period will be created.
-             */
-            fun employeeSize(employeeSize: Long) = employeeSize(employeeSize as Long?)
-
-            /**
-             * Optional: the size of the employer to be created with this connection. Defaults
-             * to 20. Note that if this is higher than 100, historical payroll data will not be
-             * generated, and instead only one pay period will be created.
-             */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun employeeSize(employeeSize: Optional<Long>) =
-                employeeSize(employeeSize.orElse(null) as Long?)
-
-            fun products(products: List<String>?) = apply {
-                this.products = products?.toMutableList()
+            fun employeeSize(employeeSize: JsonField<Long>) = apply {
+                this.employeeSize = employeeSize
             }
 
-            fun products(products: Optional<List<String>>) = products(products.orElse(null))
+            fun products(products: List<String>) = products(JsonField.of(products))
+
+            fun products(products: JsonField<List<String>>) = apply {
+                this.products = products.map { it.toMutableList() }
+            }
 
             fun addProduct(product: String) = apply {
-                products = (products ?: mutableListOf()).apply { add(product) }
+                products =
+                    (products ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(product)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -179,7 +240,7 @@ constructor(
                     checkNotNull(providerId) { "`providerId` is required but was not set" },
                     authenticationType,
                     employeeSize,
-                    products?.toImmutable(),
+                    (products ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -227,41 +288,55 @@ constructor(
         /** The provider associated with the connection */
         fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
-        fun authenticationType(authenticationType: AuthenticationType?) = apply {
+        /** The provider associated with the connection */
+        fun providerId(providerId: JsonField<String>) = apply { body.providerId(providerId) }
+
+        fun authenticationType(authenticationType: AuthenticationType) = apply {
             body.authenticationType(authenticationType)
         }
 
-        fun authenticationType(authenticationType: Optional<AuthenticationType>) =
-            authenticationType(authenticationType.orElse(null))
+        fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
+            body.authenticationType(authenticationType)
+        }
 
         /**
          * Optional: the size of the employer to be created with this connection. Defaults to 20.
          * Note that if this is higher than 100, historical payroll data will not be generated, and
          * instead only one pay period will be created.
          */
-        fun employeeSize(employeeSize: Long?) = apply { body.employeeSize(employeeSize) }
+        fun employeeSize(employeeSize: Long) = apply { body.employeeSize(employeeSize) }
 
         /**
          * Optional: the size of the employer to be created with this connection. Defaults to 20.
          * Note that if this is higher than 100, historical payroll data will not be generated, and
          * instead only one pay period will be created.
          */
-        fun employeeSize(employeeSize: Long) = employeeSize(employeeSize as Long?)
+        fun employeeSize(employeeSize: JsonField<Long>) = apply { body.employeeSize(employeeSize) }
 
-        /**
-         * Optional: the size of the employer to be created with this connection. Defaults to 20.
-         * Note that if this is higher than 100, historical payroll data will not be generated, and
-         * instead only one pay period will be created.
-         */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun employeeSize(employeeSize: Optional<Long>) =
-            employeeSize(employeeSize.orElse(null) as Long?)
+        fun products(products: List<String>) = apply { body.products(products) }
 
-        fun products(products: List<String>?) = apply { body.products(products) }
-
-        fun products(products: Optional<List<String>>) = products(products.orElse(null))
+        fun products(products: JsonField<List<String>>) = apply { body.products(products) }
 
         fun addProduct(product: String) = apply { body.addProduct(product) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -359,25 +434,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxConnectionCreateParams =

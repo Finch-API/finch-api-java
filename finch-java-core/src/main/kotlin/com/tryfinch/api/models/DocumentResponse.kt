@@ -55,25 +55,27 @@ private constructor(
     fun year(): Optional<Double> = Optional.ofNullable(year.getNullable("year"))
 
     /** A stable Finch id for the document. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
      * The ID of the individual associated with the document. This will be null for employer-level
      * documents.
      */
-    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    fun _individualId(): JsonField<String> = individualId
 
     /** The type of document. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     /**
      * A URL to access the document. Format:
      * `https://api.tryfinch.com/employer/documents/:document_id`.
      */
-    @JsonProperty("url") @ExcludeMissing fun _url() = url
+    @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
     /** The year the document applies to, if available. */
-    @JsonProperty("year") @ExcludeMissing fun _year() = year
+    @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -128,7 +130,13 @@ private constructor(
          * The ID of the individual associated with the document. This will be null for
          * employer-level documents.
          */
-        fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+        fun individualId(individualId: String?) = individualId(JsonField.ofNullable(individualId))
+
+        /**
+         * The ID of the individual associated with the document. This will be null for
+         * employer-level documents.
+         */
+        fun individualId(individualId: Optional<String>) = individualId(individualId.orElse(null))
 
         /**
          * The ID of the individual associated with the document. This will be null for
@@ -157,7 +165,14 @@ private constructor(
         fun url(url: JsonField<String>) = apply { this.url = url }
 
         /** The year the document applies to, if available. */
-        fun year(year: Double) = year(JsonField.of(year))
+        fun year(year: Double?) = year(JsonField.ofNullable(year))
+
+        /** The year the document applies to, if available. */
+        fun year(year: Double) = year(year as Double?)
+
+        /** The year the document applies to, if available. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun year(year: Optional<Double>) = year(year.orElse(null) as Double?)
 
         /** The year the document applies to, if available. */
         fun year(year: JsonField<Double>) = apply { this.year = year }

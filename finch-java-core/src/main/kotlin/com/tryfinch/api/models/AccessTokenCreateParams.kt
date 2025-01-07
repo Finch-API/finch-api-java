@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -32,11 +34,19 @@ constructor(
 
     fun redirectUri(): Optional<String> = body.redirectUri()
 
+    fun _code(): JsonField<String> = body._code()
+
+    fun _clientId(): JsonField<String> = body._clientId()
+
+    fun _clientSecret(): JsonField<String> = body._clientSecret()
+
+    fun _redirectUri(): JsonField<String> = body._redirectUri()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): AccessTokenCreateBody = body
 
@@ -48,27 +58,59 @@ constructor(
     class AccessTokenCreateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("code") private val code: String,
-        @JsonProperty("client_id") private val clientId: String?,
-        @JsonProperty("client_secret") private val clientSecret: String?,
-        @JsonProperty("redirect_uri") private val redirectUri: String?,
+        @JsonProperty("code")
+        @ExcludeMissing
+        private val code: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("client_id")
+        @ExcludeMissing
+        private val clientId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("client_secret")
+        @ExcludeMissing
+        private val clientSecret: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("redirect_uri")
+        @ExcludeMissing
+        private val redirectUri: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("code") fun code(): String = code
+        fun code(): String = code.getRequired("code")
 
-        @JsonProperty("client_id") fun clientId(): Optional<String> = Optional.ofNullable(clientId)
+        fun clientId(): Optional<String> = Optional.ofNullable(clientId.getNullable("client_id"))
+
+        fun clientSecret(): Optional<String> =
+            Optional.ofNullable(clientSecret.getNullable("client_secret"))
+
+        fun redirectUri(): Optional<String> =
+            Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
+
+        @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
+
+        @JsonProperty("client_id") @ExcludeMissing fun _clientId(): JsonField<String> = clientId
 
         @JsonProperty("client_secret")
-        fun clientSecret(): Optional<String> = Optional.ofNullable(clientSecret)
+        @ExcludeMissing
+        fun _clientSecret(): JsonField<String> = clientSecret
 
         @JsonProperty("redirect_uri")
-        fun redirectUri(): Optional<String> = Optional.ofNullable(redirectUri)
+        @ExcludeMissing
+        fun _redirectUri(): JsonField<String> = redirectUri
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): AccessTokenCreateBody = apply {
+            if (!validated) {
+                code()
+                clientId()
+                clientSecret()
+                redirectUri()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -79,10 +121,10 @@ constructor(
 
         class Builder {
 
-            private var code: String? = null
-            private var clientId: String? = null
-            private var clientSecret: String? = null
-            private var redirectUri: String? = null
+            private var code: JsonField<String>? = null
+            private var clientId: JsonField<String> = JsonMissing.of()
+            private var clientSecret: JsonField<String> = JsonMissing.of()
+            private var redirectUri: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -94,20 +136,25 @@ constructor(
                 additionalProperties = accessTokenCreateBody.additionalProperties.toMutableMap()
             }
 
-            fun code(code: String) = apply { this.code = code }
+            fun code(code: String) = code(JsonField.of(code))
 
-            fun clientId(clientId: String?) = apply { this.clientId = clientId }
+            fun code(code: JsonField<String>) = apply { this.code = code }
 
-            fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
+            fun clientId(clientId: String) = clientId(JsonField.of(clientId))
 
-            fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
+            fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
 
-            fun clientSecret(clientSecret: Optional<String>) =
-                clientSecret(clientSecret.orElse(null))
+            fun clientSecret(clientSecret: String) = clientSecret(JsonField.of(clientSecret))
 
-            fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
+            fun clientSecret(clientSecret: JsonField<String>) = apply {
+                this.clientSecret = clientSecret
+            }
 
-            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+            fun redirectUri(redirectUri: String) = redirectUri(JsonField.of(redirectUri))
+
+            fun redirectUri(redirectUri: JsonField<String>) = apply {
+                this.redirectUri = redirectUri
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -179,17 +226,40 @@ constructor(
 
         fun code(code: String) = apply { body.code(code) }
 
-        fun clientId(clientId: String?) = apply { body.clientId(clientId) }
+        fun code(code: JsonField<String>) = apply { body.code(code) }
 
-        fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
+        fun clientId(clientId: String) = apply { body.clientId(clientId) }
 
-        fun clientSecret(clientSecret: String?) = apply { body.clientSecret(clientSecret) }
+        fun clientId(clientId: JsonField<String>) = apply { body.clientId(clientId) }
 
-        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.orElse(null))
+        fun clientSecret(clientSecret: String) = apply { body.clientSecret(clientSecret) }
 
-        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
+        fun clientSecret(clientSecret: JsonField<String>) = apply {
+            body.clientSecret(clientSecret)
+        }
 
-        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+        fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
+
+        fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -287,25 +357,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): AccessTokenCreateParams =

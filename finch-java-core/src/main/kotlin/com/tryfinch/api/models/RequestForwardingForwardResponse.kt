@@ -39,6 +39,12 @@ private constructor(
     fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
     /**
+     * The HTTP headers of the forwarded request’s response, exactly as received from the underlying
+     * integration’s API.
+     */
+    @JsonProperty("headers") @ExcludeMissing fun _headers(): JsonValue = headers
+
+    /**
      * An object containing details of your original forwarded request, for your ease of reference.
      */
     fun request(): Request = request.getRequired("request")
@@ -54,24 +60,18 @@ private constructor(
      * received from the underlying integration’s API. This field may be null in the case where the
      * upstream system’s response is empty.
      */
-    @JsonProperty("data") @ExcludeMissing fun _data() = data
-
-    /**
-     * The HTTP headers of the forwarded request’s response, exactly as received from the underlying
-     * integration’s API.
-     */
-    @JsonProperty("headers") @ExcludeMissing fun _headers() = headers
+    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
     /**
      * An object containing details of your original forwarded request, for your ease of reference.
      */
-    @JsonProperty("request") @ExcludeMissing fun _request() = request
+    @JsonProperty("request") @ExcludeMissing fun _request(): JsonField<Request> = request
 
     /**
      * The HTTP status code of the forwarded request’s response, exactly received from the
      * underlying integration’s API. This value will be returned as an integer.
      */
-    @JsonProperty("statusCode") @ExcludeMissing fun _statusCode() = statusCode
+    @JsonProperty("statusCode") @ExcludeMissing fun _statusCode(): JsonField<Long> = statusCode
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -97,10 +97,10 @@ private constructor(
 
     class Builder {
 
-        private var data: JsonField<String> = JsonMissing.of()
-        private var headers: JsonValue = JsonMissing.of()
-        private var request: JsonField<Request> = JsonMissing.of()
-        private var statusCode: JsonField<Long> = JsonMissing.of()
+        private var data: JsonField<String>? = null
+        private var headers: JsonValue? = null
+        private var request: JsonField<Request>? = null
+        private var statusCode: JsonField<Long>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -119,7 +119,14 @@ private constructor(
          * received from the underlying integration’s API. This field may be null in the case where
          * the upstream system’s response is empty.
          */
-        fun data(data: String) = data(JsonField.of(data))
+        fun data(data: String?) = data(JsonField.ofNullable(data))
+
+        /**
+         * A string representation of the HTTP response body of the forwarded request’s response
+         * received from the underlying integration’s API. This field may be null in the case where
+         * the upstream system’s response is empty.
+         */
+        fun data(data: Optional<String>) = data(data.orElse(null))
 
         /**
          * A string representation of the HTTP response body of the forwarded request’s response
@@ -179,10 +186,10 @@ private constructor(
 
         fun build(): RequestForwardingForwardResponse =
             RequestForwardingForwardResponse(
-                data,
-                headers,
-                request,
-                statusCode,
+                checkNotNull(data) { "`data` is required but was not set" },
+                checkNotNull(headers) { "`headers` is required but was not set" },
+                checkNotNull(request) { "`request` is required but was not set" },
+                checkNotNull(statusCode) { "`statusCode` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }
@@ -217,10 +224,22 @@ private constructor(
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
         /**
+         * The specified HTTP headers that were included in the forwarded request. If no headers
+         * were specified, this will be returned as `null`.
+         */
+        @JsonProperty("headers") @ExcludeMissing fun _headers(): JsonValue = headers
+
+        /**
          * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
          * , `POST` , `PUT` , `DELETE` , and `PATCH`.
          */
         fun method(): String = method.getRequired("method")
+
+        /**
+         * The query parameters that were included in the forwarded request. If no query parameters
+         * were specified, this will be returned as `null`.
+         */
+        @JsonProperty("params") @ExcludeMissing fun _params(): JsonValue = params
 
         /** The URL route path that was specified for the forwarded request. */
         fun route(): String = route.getRequired("route")
@@ -230,28 +249,16 @@ private constructor(
          * the original request, this value will be returned as null ; otherwise, this value will
          * always be returned as a string.
          */
-        @JsonProperty("data") @ExcludeMissing fun _data() = data
-
-        /**
-         * The specified HTTP headers that were included in the forwarded request. If no headers
-         * were specified, this will be returned as `null`.
-         */
-        @JsonProperty("headers") @ExcludeMissing fun _headers() = headers
+        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
         /**
          * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
          * , `POST` , `PUT` , `DELETE` , and `PATCH`.
          */
-        @JsonProperty("method") @ExcludeMissing fun _method() = method
-
-        /**
-         * The query parameters that were included in the forwarded request. If no query parameters
-         * were specified, this will be returned as `null`.
-         */
-        @JsonProperty("params") @ExcludeMissing fun _params() = params
+        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<String> = method
 
         /** The URL route path that was specified for the forwarded request. */
-        @JsonProperty("route") @ExcludeMissing fun _route() = route
+        @JsonProperty("route") @ExcludeMissing fun _route(): JsonField<String> = route
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -277,11 +284,11 @@ private constructor(
 
         class Builder {
 
-            private var data: JsonField<String> = JsonMissing.of()
-            private var headers: JsonValue = JsonMissing.of()
-            private var method: JsonField<String> = JsonMissing.of()
-            private var params: JsonValue = JsonMissing.of()
-            private var route: JsonField<String> = JsonMissing.of()
+            private var data: JsonField<String>? = null
+            private var headers: JsonValue? = null
+            private var method: JsonField<String>? = null
+            private var params: JsonValue? = null
+            private var route: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -299,7 +306,14 @@ private constructor(
              * in the original request, this value will be returned as null ; otherwise, this value
              * will always be returned as a string.
              */
-            fun data(data: String) = data(JsonField.of(data))
+            fun data(data: String?) = data(JsonField.ofNullable(data))
+
+            /**
+             * The body that was specified for the forwarded request. If a value was not specified
+             * in the original request, this value will be returned as null ; otherwise, this value
+             * will always be returned as a string.
+             */
+            fun data(data: Optional<String>) = data(data.orElse(null))
 
             /**
              * The body that was specified for the forwarded request. If a value was not specified
@@ -359,11 +373,11 @@ private constructor(
 
             fun build(): Request =
                 Request(
-                    data,
-                    headers,
-                    method,
-                    params,
-                    route,
+                    checkNotNull(data) { "`data` is required but was not set" },
+                    checkNotNull(headers) { "`headers` is required but was not set" },
+                    checkNotNull(method) { "`method` is required but was not set" },
+                    checkNotNull(params) { "`params` is required but was not set" },
+                    checkNotNull(route) { "`route` is required but was not set" },
                     additionalProperties.toImmutable(),
                 )
         }

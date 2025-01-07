@@ -34,10 +34,10 @@ private constructor(
     fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
     /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
-    @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
     /** Contribution type. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -74,13 +74,23 @@ private constructor(
         }
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
-        fun amount(amount: Long) = amount(JsonField.of(amount))
+        fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
+
+        /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
+        fun amount(amount: Long) = amount(amount as Long?)
+
+        /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         /** Contribution type. */
-        fun type(type: Type) = type(JsonField.of(type))
+        fun type(type: Type?) = type(JsonField.ofNullable(type))
+
+        /** Contribution type. */
+        fun type(type: Optional<Type>) = type(type.orElse(null))
 
         /** Contribution type. */
         fun type(type: JsonField<Type>) = apply { this.type = type }

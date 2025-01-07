@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -28,11 +30,15 @@ constructor(
 
     fun requests(): Optional<List<Request>> = body.requests()
 
+    fun _options(): JsonField<Options> = body._options()
+
+    fun _requests(): JsonField<List<Request>> = body._requests()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): HrisIndividualRetrieveManyBody = body
 
@@ -44,20 +50,40 @@ constructor(
     class HrisIndividualRetrieveManyBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("options") private val options: Options?,
-        @JsonProperty("requests") private val requests: List<Request>?,
+        @JsonProperty("options")
+        @ExcludeMissing
+        private val options: JsonField<Options> = JsonMissing.of(),
+        @JsonProperty("requests")
+        @ExcludeMissing
+        private val requests: JsonField<List<Request>> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("options") fun options(): Optional<Options> = Optional.ofNullable(options)
+        fun options(): Optional<Options> = Optional.ofNullable(options.getNullable("options"))
+
+        fun requests(): Optional<List<Request>> =
+            Optional.ofNullable(requests.getNullable("requests"))
+
+        @JsonProperty("options") @ExcludeMissing fun _options(): JsonField<Options> = options
 
         @JsonProperty("requests")
-        fun requests(): Optional<List<Request>> = Optional.ofNullable(requests)
+        @ExcludeMissing
+        fun _requests(): JsonField<List<Request>> = requests
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): HrisIndividualRetrieveManyBody = apply {
+            if (!validated) {
+                options().map { it.validate() }
+                requests().map { it.forEach { it.validate() } }
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -68,31 +94,42 @@ constructor(
 
         class Builder {
 
-            private var options: Options? = null
-            private var requests: MutableList<Request>? = null
+            private var options: JsonField<Options> = JsonMissing.of()
+            private var requests: JsonField<MutableList<Request>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(hrisIndividualRetrieveManyBody: HrisIndividualRetrieveManyBody) =
                 apply {
                     options = hrisIndividualRetrieveManyBody.options
-                    requests = hrisIndividualRetrieveManyBody.requests?.toMutableList()
+                    requests = hrisIndividualRetrieveManyBody.requests.map { it.toMutableList() }
                     additionalProperties =
                         hrisIndividualRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
-            fun options(options: Options?) = apply { this.options = options }
+            fun options(options: Options?) = options(JsonField.ofNullable(options))
 
             fun options(options: Optional<Options>) = options(options.orElse(null))
 
-            fun requests(requests: List<Request>?) = apply {
-                this.requests = requests?.toMutableList()
+            fun options(options: JsonField<Options>) = apply { this.options = options }
+
+            fun requests(requests: List<Request>) = requests(JsonField.of(requests))
+
+            fun requests(requests: JsonField<List<Request>>) = apply {
+                this.requests = requests.map { it.toMutableList() }
             }
 
-            fun requests(requests: Optional<List<Request>>) = requests(requests.orElse(null))
-
             fun addRequest(request: Request) = apply {
-                requests = (requests ?: mutableListOf()).apply { add(request) }
+                requests =
+                    (requests ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(request)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -117,7 +154,7 @@ constructor(
             fun build(): HrisIndividualRetrieveManyBody =
                 HrisIndividualRetrieveManyBody(
                     options,
-                    requests?.toImmutable(),
+                    (requests ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -168,11 +205,32 @@ constructor(
 
         fun options(options: Optional<Options>) = options(options.orElse(null))
 
-        fun requests(requests: List<Request>?) = apply { body.requests(requests) }
+        fun options(options: JsonField<Options>) = apply { body.options(options) }
 
-        fun requests(requests: Optional<List<Request>>) = requests(requests.orElse(null))
+        fun requests(requests: List<Request>) = apply { body.requests(requests) }
+
+        fun requests(requests: JsonField<List<Request>>) = apply { body.requests(requests) }
 
         fun addRequest(request: Request) = apply { body.addRequest(request) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -272,25 +330,6 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
-
         fun build(): HrisIndividualRetrieveManyParams =
             HrisIndividualRetrieveManyParams(
                 body.build(),
@@ -303,17 +342,29 @@ constructor(
     class Options
     @JsonCreator
     private constructor(
-        @JsonProperty("include") private val include: List<String>?,
+        @JsonProperty("include")
+        @ExcludeMissing
+        private val include: JsonField<List<String>> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("include")
-        fun include(): Optional<List<String>> = Optional.ofNullable(include)
+        fun include(): Optional<List<String>> = Optional.ofNullable(include.getNullable("include"))
+
+        @JsonProperty("include") @ExcludeMissing fun _include(): JsonField<List<String>> = include
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Options = apply {
+            if (!validated) {
+                include()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -324,21 +375,32 @@ constructor(
 
         class Builder {
 
-            private var include: MutableList<String>? = null
+            private var include: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(options: Options) = apply {
-                include = options.include?.toMutableList()
+                include = options.include.map { it.toMutableList() }
                 additionalProperties = options.additionalProperties.toMutableMap()
             }
 
-            fun include(include: List<String>?) = apply { this.include = include?.toMutableList() }
+            fun include(include: List<String>) = include(JsonField.of(include))
 
-            fun include(include: Optional<List<String>>) = include(include.orElse(null))
+            fun include(include: JsonField<List<String>>) = apply {
+                this.include = include.map { it.toMutableList() }
+            }
 
             fun addInclude(include: String) = apply {
-                this.include = (this.include ?: mutableListOf()).apply { add(include) }
+                this.include =
+                    (this.include ?: JsonField.of(mutableListOf())).apply {
+                        asKnown()
+                            .orElseThrow {
+                                IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                )
+                            }
+                            .add(include)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -361,7 +423,10 @@ constructor(
             }
 
             fun build(): Options =
-                Options(include?.toImmutable(), additionalProperties.toImmutable())
+                Options(
+                    (include ?: JsonMissing.of()).map { it.toImmutable() },
+                    additionalProperties.toImmutable()
+                )
         }
 
         override fun equals(other: Any?): Boolean {
@@ -386,17 +451,32 @@ constructor(
     class Request
     @JsonCreator
     private constructor(
-        @JsonProperty("individual_id") private val individualId: String?,
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        private val individualId: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        fun individualId(): Optional<String> =
+            Optional.ofNullable(individualId.getNullable("individual_id"))
+
         @JsonProperty("individual_id")
-        fun individualId(): Optional<String> = Optional.ofNullable(individualId)
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Request = apply {
+            if (!validated) {
+                individualId()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -407,7 +487,7 @@ constructor(
 
         class Builder {
 
-            private var individualId: String? = null
+            private var individualId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -416,10 +496,11 @@ constructor(
                 additionalProperties = request.additionalProperties.toMutableMap()
             }
 
-            fun individualId(individualId: String?) = apply { this.individualId = individualId }
+            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-            fun individualId(individualId: Optional<String>) =
-                individualId(individualId.orElse(null))
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

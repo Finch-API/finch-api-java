@@ -36,11 +36,11 @@ private constructor(
 
     fun paymentId(): Optional<String> = Optional.ofNullable(paymentId.getNullable("payment_id"))
 
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<PayStatementResponseBody> = body
 
-    @JsonProperty("code") @ExcludeMissing fun _code() = code
+    @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
-    @JsonProperty("payment_id") @ExcludeMissing fun _paymentId() = paymentId
+    @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
 
     @JsonAnyGetter
     @ExcludeMissing

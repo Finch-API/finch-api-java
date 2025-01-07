@@ -29,7 +29,7 @@ private constructor(
     fun status(): String = status.getRequired("status")
 
     /** If the request is successful, Finch will return “success” (HTTP 200 status). */
-    @JsonProperty("status") @ExcludeMissing fun _status() = status
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<String> = status
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -53,7 +53,7 @@ private constructor(
 
     class Builder {
 
-        private var status: JsonField<String> = JsonMissing.of()
+        private var status: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -88,7 +88,10 @@ private constructor(
         }
 
         fun build(): DisconnectResponse =
-            DisconnectResponse(status, additionalProperties.toImmutable())
+            DisconnectResponse(
+                checkNotNull(status) { "`status` is required but was not set" },
+                additionalProperties.toImmutable()
+            )
     }
 
     override fun equals(other: Any?): Boolean {
