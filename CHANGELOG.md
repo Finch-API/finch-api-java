@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.1 (2025-01-07)
+
+Full Changelog: [v3.1.0...v3.1.1](https://github.com/Finch-API/finch-api-java/compare/v3.1.0...v3.1.1)
+
+### Documentation
+
+* add params class javadocs ([#384](https://github.com/Finch-API/finch-api-java/issues/384)) ([cb2cc7f](https://github.com/Finch-API/finch-api-java/commit/cb2cc7f1773146e00552de74b50e7327b3b14266))
+
 ## 3.1.0 (2025-01-07)
 
 Full Changelog: [v3.0.0...v3.1.0](https://github.com/Finch-API/finch-api-java/compare/v3.0.0...v3.1.0)
