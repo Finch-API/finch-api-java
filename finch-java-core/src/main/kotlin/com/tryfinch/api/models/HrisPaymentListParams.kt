@@ -8,6 +8,7 @@ import com.tryfinch.api.core.http.QueryParams
 import java.time.LocalDate
 import java.util.Objects
 
+/** Read payroll and contractor related payments by the company. */
 class HrisPaymentListParams
 constructor(
     private val endDate: LocalDate,

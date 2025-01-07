@@ -8,6 +8,7 @@ import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
 
+/** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsParams
 constructor(
     private val benefitId: String,

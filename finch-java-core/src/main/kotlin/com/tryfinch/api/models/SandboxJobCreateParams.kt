@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
+/** Enqueue a new sandbox job */
 class SandboxJobCreateParams
 constructor(
     private val body: SandboxJobCreateBody,

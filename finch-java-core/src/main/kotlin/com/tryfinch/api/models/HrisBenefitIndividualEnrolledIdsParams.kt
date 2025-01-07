@@ -7,6 +7,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/** Lists individuals currently enrolled in a given deduction. */
 class HrisBenefitIndividualEnrolledIdsParams
 constructor(
     private val benefitId: String,

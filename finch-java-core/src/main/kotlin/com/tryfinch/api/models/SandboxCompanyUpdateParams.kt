@@ -19,6 +19,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
+/** Update a sandbox company's data */
 class SandboxCompanyUpdateParams
 constructor(
     private val body: SandboxCompanyUpdateBody,

@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Exchange the authorization code for an access token */
 class AccessTokenCreateParams
 constructor(
     private val body: AccessTokenCreateBody,

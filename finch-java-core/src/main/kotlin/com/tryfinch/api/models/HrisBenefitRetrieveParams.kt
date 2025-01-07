@@ -7,6 +7,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/** Lists deductions and contributions information for a given item */
 class HrisBenefitRetrieveParams
 constructor(
     private val benefitId: String,

@@ -16,6 +16,10 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/**
+ * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
+ * view available types for each provider.
+ */
 class HrisBenefitCreateParams
 constructor(
     private val body: HrisBenefitCreateBody,
