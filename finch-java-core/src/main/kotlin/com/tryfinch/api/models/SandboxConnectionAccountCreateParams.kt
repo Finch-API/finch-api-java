@@ -19,6 +19,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
+/** Create a new account for an existing connection (company/provider pair) */
 class SandboxConnectionAccountCreateParams
 constructor(
     private val body: SandboxConnectionAccountCreateBody,

@@ -9,6 +9,7 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Read company pay groups and frequencies */
 class PayrollPayGroupListParams
 constructor(
     private val individualId: String?,

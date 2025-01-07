@@ -7,6 +7,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/** Get configurations for sandbox jobs */
 class SandboxJobConfigurationRetrieveParams
 constructor(
     private val additionalHeaders: Headers,

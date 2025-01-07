@@ -7,6 +7,10 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/**
+ * **Beta:** This endpoint is in beta and may change. Retrieve details of a specific document by its
+ * ID.
+ */
 class HrisDocumentRetreiveParams
 constructor(
     private val documentId: String,

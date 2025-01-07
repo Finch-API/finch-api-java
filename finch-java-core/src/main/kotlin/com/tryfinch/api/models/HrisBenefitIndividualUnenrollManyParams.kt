@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyParams
 constructor(
     private val benefitId: String,

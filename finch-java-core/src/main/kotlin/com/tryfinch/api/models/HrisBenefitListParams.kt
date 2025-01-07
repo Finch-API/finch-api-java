@@ -7,6 +7,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/** List all company-wide deductions and contributions. */
 class HrisBenefitListParams
 constructor(
     private val additionalHeaders: Headers,
