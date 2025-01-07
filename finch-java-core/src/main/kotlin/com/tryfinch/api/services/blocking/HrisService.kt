@@ -5,6 +5,7 @@ package com.tryfinch.api.services.blocking
 import com.tryfinch.api.services.blocking.hris.BenefitService
 import com.tryfinch.api.services.blocking.hris.CompanyService
 import com.tryfinch.api.services.blocking.hris.DirectoryService
+import com.tryfinch.api.services.blocking.hris.DocumentService
 import com.tryfinch.api.services.blocking.hris.EmploymentService
 import com.tryfinch.api.services.blocking.hris.IndividualService
 import com.tryfinch.api.services.blocking.hris.PayStatementService
@@ -23,6 +24,8 @@ interface HrisService {
     fun payments(): PaymentService
 
     fun payStatements(): PayStatementService
+
+    fun documents(): DocumentService
 
     fun benefits(): BenefitService
 }

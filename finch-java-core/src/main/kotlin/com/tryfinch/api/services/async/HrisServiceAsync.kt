@@ -5,6 +5,7 @@ package com.tryfinch.api.services.async
 import com.tryfinch.api.services.async.hris.BenefitServiceAsync
 import com.tryfinch.api.services.async.hris.CompanyServiceAsync
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
+import com.tryfinch.api.services.async.hris.DocumentServiceAsync
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
 import com.tryfinch.api.services.async.hris.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsync
@@ -23,6 +24,8 @@ interface HrisServiceAsync {
     fun payments(): PaymentServiceAsync
 
     fun payStatements(): PayStatementServiceAsync
+
+    fun documents(): DocumentServiceAsync
 
     fun benefits(): BenefitServiceAsync
 }
