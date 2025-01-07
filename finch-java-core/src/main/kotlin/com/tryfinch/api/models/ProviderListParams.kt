@@ -7,6 +7,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/** Return details on all available payroll and HR systems. */
 class ProviderListParams
 constructor(
     private val additionalHeaders: Headers,

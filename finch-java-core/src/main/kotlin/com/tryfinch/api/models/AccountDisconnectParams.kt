@@ -10,6 +10,7 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Disconnect one or more `access_token`s from your application. */
 class AccountDisconnectParams
 constructor(
     private val additionalHeaders: Headers,

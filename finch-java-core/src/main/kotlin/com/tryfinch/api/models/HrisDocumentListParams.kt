@@ -13,6 +13,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
+/** **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents. */
 class HrisDocumentListParams
 constructor(
     private val individualIds: List<String>?,

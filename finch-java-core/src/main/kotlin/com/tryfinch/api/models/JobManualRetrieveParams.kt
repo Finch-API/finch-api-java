@@ -7,6 +7,10 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/**
+ * Get a manual job by `job_id`. Manual jobs are completed by a human and include Assisted Benefits
+ * jobs.
+ */
 class JobManualRetrieveParams
 constructor(
     private val jobId: String,
