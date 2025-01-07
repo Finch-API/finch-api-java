@@ -45,18 +45,20 @@ private constructor(
     fun remainingRefreshes(): Long = remainingRefreshes.getRequired("remaining_refreshes")
 
     /** The number of allowed refreshes per hour (per hour, fixed window) */
-    @JsonProperty("allowed_refreshes") @ExcludeMissing fun _allowedRefreshes() = allowedRefreshes
+    @JsonProperty("allowed_refreshes")
+    @ExcludeMissing
+    fun _allowedRefreshes(): JsonField<Long> = allowedRefreshes
 
     /** The id of the job that has been created. */
-    @JsonProperty("job_id") @ExcludeMissing fun _jobId() = jobId
+    @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
     /** The url that can be used to retrieve the job status */
-    @JsonProperty("job_url") @ExcludeMissing fun _jobUrl() = jobUrl
+    @JsonProperty("job_url") @ExcludeMissing fun _jobUrl(): JsonField<String> = jobUrl
 
     /** The number of remaining refreshes available (per hour, fixed window) */
     @JsonProperty("remaining_refreshes")
     @ExcludeMissing
-    fun _remainingRefreshes() = remainingRefreshes
+    fun _remainingRefreshes(): JsonField<Long> = remainingRefreshes
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -83,10 +85,10 @@ private constructor(
 
     class Builder {
 
-        private var allowedRefreshes: JsonField<Long> = JsonMissing.of()
-        private var jobId: JsonField<String> = JsonMissing.of()
-        private var jobUrl: JsonField<String> = JsonMissing.of()
-        private var remainingRefreshes: JsonField<Long> = JsonMissing.of()
+        private var allowedRefreshes: JsonField<Long>? = null
+        private var jobId: JsonField<String>? = null
+        private var jobUrl: JsonField<String>? = null
+        private var remainingRefreshes: JsonField<Long>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -149,10 +151,12 @@ private constructor(
 
         fun build(): AutomatedCreateResponse =
             AutomatedCreateResponse(
-                allowedRefreshes,
-                jobId,
-                jobUrl,
-                remainingRefreshes,
+                checkNotNull(allowedRefreshes) { "`allowedRefreshes` is required but was not set" },
+                checkNotNull(jobId) { "`jobId` is required but was not set" },
+                checkNotNull(jobUrl) { "`jobUrl` is required but was not set" },
+                checkNotNull(remainingRefreshes) {
+                    "`remainingRefreshes` is required but was not set"
+                },
                 additionalProperties.toImmutable(),
             )
     }

@@ -60,26 +60,26 @@ private constructor(
     fun state(): Optional<String> = Optional.ofNullable(state.getNullable("state"))
 
     /** City, district, suburb, town, or village. */
-    @JsonProperty("city") @ExcludeMissing fun _city() = city
+    @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<String> = city
 
     /** The 2-letter ISO 3166 country code. */
-    @JsonProperty("country") @ExcludeMissing fun _country() = country
+    @JsonProperty("country") @ExcludeMissing fun _country(): JsonField<String> = country
 
     /** Street address or PO box. */
-    @JsonProperty("line1") @ExcludeMissing fun _line1() = line1
+    @JsonProperty("line1") @ExcludeMissing fun _line1(): JsonField<String> = line1
 
     /** Apartment, suite, unit, or building. */
-    @JsonProperty("line2") @ExcludeMissing fun _line2() = line2
+    @JsonProperty("line2") @ExcludeMissing fun _line2(): JsonField<String> = line2
 
-    @JsonProperty("name") @ExcludeMissing fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /** The postal code or zip code. */
-    @JsonProperty("postal_code") @ExcludeMissing fun _postalCode() = postalCode
+    @JsonProperty("postal_code") @ExcludeMissing fun _postalCode(): JsonField<String> = postalCode
 
-    @JsonProperty("source_id") @ExcludeMissing fun _sourceId() = sourceId
+    @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
 
     /** The state code. */
-    @JsonProperty("state") @ExcludeMissing fun _state() = state
+    @JsonProperty("state") @ExcludeMissing fun _state(): JsonField<String> = state
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -134,45 +134,67 @@ private constructor(
         }
 
         /** City, district, suburb, town, or village. */
-        fun city(city: String) = city(JsonField.of(city))
+        fun city(city: String?) = city(JsonField.ofNullable(city))
+
+        /** City, district, suburb, town, or village. */
+        fun city(city: Optional<String>) = city(city.orElse(null))
 
         /** City, district, suburb, town, or village. */
         fun city(city: JsonField<String>) = apply { this.city = city }
 
         /** The 2-letter ISO 3166 country code. */
-        fun country(country: String) = country(JsonField.of(country))
+        fun country(country: String?) = country(JsonField.ofNullable(country))
+
+        /** The 2-letter ISO 3166 country code. */
+        fun country(country: Optional<String>) = country(country.orElse(null))
 
         /** The 2-letter ISO 3166 country code. */
         fun country(country: JsonField<String>) = apply { this.country = country }
 
         /** Street address or PO box. */
-        fun line1(line1: String) = line1(JsonField.of(line1))
+        fun line1(line1: String?) = line1(JsonField.ofNullable(line1))
+
+        /** Street address or PO box. */
+        fun line1(line1: Optional<String>) = line1(line1.orElse(null))
 
         /** Street address or PO box. */
         fun line1(line1: JsonField<String>) = apply { this.line1 = line1 }
 
         /** Apartment, suite, unit, or building. */
-        fun line2(line2: String) = line2(JsonField.of(line2))
+        fun line2(line2: String?) = line2(JsonField.ofNullable(line2))
+
+        /** Apartment, suite, unit, or building. */
+        fun line2(line2: Optional<String>) = line2(line2.orElse(null))
 
         /** Apartment, suite, unit, or building. */
         fun line2(line2: JsonField<String>) = apply { this.line2 = line2 }
 
-        fun name(name: String) = name(JsonField.of(name))
+        fun name(name: String?) = name(JsonField.ofNullable(name))
+
+        fun name(name: Optional<String>) = name(name.orElse(null))
 
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** The postal code or zip code. */
-        fun postalCode(postalCode: String) = postalCode(JsonField.of(postalCode))
+        fun postalCode(postalCode: String?) = postalCode(JsonField.ofNullable(postalCode))
+
+        /** The postal code or zip code. */
+        fun postalCode(postalCode: Optional<String>) = postalCode(postalCode.orElse(null))
 
         /** The postal code or zip code. */
         fun postalCode(postalCode: JsonField<String>) = apply { this.postalCode = postalCode }
 
-        fun sourceId(sourceId: String) = sourceId(JsonField.of(sourceId))
+        fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
+
+        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.orElse(null))
 
         fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
         /** The state code. */
-        fun state(state: String) = state(JsonField.of(state))
+        fun state(state: String?) = state(JsonField.ofNullable(state))
+
+        /** The state code. */
+        fun state(state: Optional<String>) = state(state.orElse(null))
 
         /** The state code. */
         fun state(state: JsonField<String>) = apply { this.state = state }

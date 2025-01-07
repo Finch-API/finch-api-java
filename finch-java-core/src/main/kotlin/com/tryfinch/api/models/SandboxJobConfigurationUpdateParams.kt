@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -30,11 +31,15 @@ constructor(
 
     fun type(): Type = body.type()
 
+    fun _completionStatus(): JsonField<CompletionStatus> = body._completionStatus()
+
+    fun _type(): JsonField<Type> = body._type()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): SandboxJobConfigurationUpdateBody = body
 
@@ -46,20 +51,37 @@ constructor(
     class SandboxJobConfigurationUpdateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("completion_status") private val completionStatus: CompletionStatus,
-        @JsonProperty("type") private val type: Type,
+        @JsonProperty("completion_status")
+        @ExcludeMissing
+        private val completionStatus: JsonField<CompletionStatus> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("completion_status")
-        fun completionStatus(): CompletionStatus = completionStatus
+        fun completionStatus(): CompletionStatus = completionStatus.getRequired("completion_status")
 
-        @JsonProperty("type") fun type(): Type = type
+        fun type(): Type = type.getRequired("type")
+
+        @JsonProperty("completion_status")
+        @ExcludeMissing
+        fun _completionStatus(): JsonField<CompletionStatus> = completionStatus
+
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): SandboxJobConfigurationUpdateBody = apply {
+            if (!validated) {
+                completionStatus()
+                type()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -70,8 +92,8 @@ constructor(
 
         class Builder {
 
-            private var completionStatus: CompletionStatus? = null
-            private var type: Type? = null
+            private var completionStatus: JsonField<CompletionStatus>? = null
+            private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -84,11 +106,16 @@ constructor(
                     sandboxJobConfigurationUpdateBody.additionalProperties.toMutableMap()
             }
 
-            fun completionStatus(completionStatus: CompletionStatus) = apply {
+            fun completionStatus(completionStatus: CompletionStatus) =
+                completionStatus(JsonField.of(completionStatus))
+
+            fun completionStatus(completionStatus: JsonField<CompletionStatus>) = apply {
                 this.completionStatus = completionStatus
             }
 
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = type(JsonField.of(type))
+
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -166,7 +193,32 @@ constructor(
             body.completionStatus(completionStatus)
         }
 
+        fun completionStatus(completionStatus: JsonField<CompletionStatus>) = apply {
+            body.completionStatus(completionStatus)
+        }
+
         fun type(type: Type) = apply { body.type(type) }
+
+        fun type(type: JsonField<Type>) = apply { body.type(type) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -264,25 +316,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxJobConfigurationUpdateParams =

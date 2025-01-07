@@ -65,25 +65,27 @@ private constructor(
     fun middleName(): Optional<String> = Optional.ofNullable(middleName.getNullable("middle_name"))
 
     /** A stable Finch id (UUID v4) for an individual in the company. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** The department object. */
-    @JsonProperty("department") @ExcludeMissing fun _department() = department
+    @JsonProperty("department")
+    @ExcludeMissing
+    fun _department(): JsonField<Department> = department
 
     /** The legal first name of the individual. */
-    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+    @JsonProperty("first_name") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
 
     /** `true` if the individual is an active employee or contractor at the company. */
-    @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
+    @JsonProperty("is_active") @ExcludeMissing fun _isActive(): JsonField<Boolean> = isActive
 
     /** The legal last name of the individual. */
-    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+    @JsonProperty("last_name") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
 
     /** The manager object. */
-    @JsonProperty("manager") @ExcludeMissing fun _manager() = manager
+    @JsonProperty("manager") @ExcludeMissing fun _manager(): JsonField<Manager> = manager
 
     /** The legal middle name of the individual. */
-    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+    @JsonProperty("middle_name") @ExcludeMissing fun _middleName(): JsonField<String> = middleName
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -141,37 +143,59 @@ private constructor(
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The department object. */
-        fun department(department: Department) = department(JsonField.of(department))
+        fun department(department: Department?) = department(JsonField.ofNullable(department))
+
+        /** The department object. */
+        fun department(department: Optional<Department>) = department(department.orElse(null))
 
         /** The department object. */
         fun department(department: JsonField<Department>) = apply { this.department = department }
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: String) = firstName(JsonField.of(firstName))
+        fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
+
+        /** The legal first name of the individual. */
+        fun firstName(firstName: Optional<String>) = firstName(firstName.orElse(null))
 
         /** The legal first name of the individual. */
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
         /** `true` if the individual is an active employee or contractor at the company. */
-        fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
+        fun isActive(isActive: Boolean?) = isActive(JsonField.ofNullable(isActive))
+
+        /** `true` if the individual is an active employee or contractor at the company. */
+        fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
+
+        /** `true` if the individual is an active employee or contractor at the company. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun isActive(isActive: Optional<Boolean>) = isActive(isActive.orElse(null) as Boolean?)
 
         /** `true` if the individual is an active employee or contractor at the company. */
         fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: String) = lastName(JsonField.of(lastName))
+        fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
+
+        /** The legal last name of the individual. */
+        fun lastName(lastName: Optional<String>) = lastName(lastName.orElse(null))
 
         /** The legal last name of the individual. */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
         /** The manager object. */
-        fun manager(manager: Manager) = manager(JsonField.of(manager))
+        fun manager(manager: Manager?) = manager(JsonField.ofNullable(manager))
+
+        /** The manager object. */
+        fun manager(manager: Optional<Manager>) = manager(manager.orElse(null))
 
         /** The manager object. */
         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = middleName(JsonField.of(middleName))
+        fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
+
+        /** The legal middle name of the individual. */
+        fun middleName(middleName: Optional<String>) = middleName(middleName.orElse(null))
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
@@ -224,7 +248,7 @@ private constructor(
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /** The name of the department. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -258,7 +282,10 @@ private constructor(
             }
 
             /** The name of the department. */
-            fun name(name: String) = name(JsonField.of(name))
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /** The name of the department. */
+            fun name(name: Optional<String>) = name(name.orElse(null))
 
             /** The name of the department. */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -317,7 +344,7 @@ private constructor(
         fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
-        @JsonProperty("id") @ExcludeMissing fun _id() = id
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
         @JsonAnyGetter
         @ExcludeMissing

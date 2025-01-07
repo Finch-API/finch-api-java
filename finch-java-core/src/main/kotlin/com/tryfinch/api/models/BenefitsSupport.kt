@@ -99,29 +99,53 @@ private constructor(
     fun simpleIra(): Optional<BenefitFeaturesAndOperations> =
         Optional.ofNullable(simpleIra.getNullable("simple_ira"))
 
-    @JsonProperty("commuter") @ExcludeMissing fun _commuter() = commuter
+    @JsonProperty("commuter")
+    @ExcludeMissing
+    fun _commuter(): JsonField<BenefitFeaturesAndOperations> = commuter
 
-    @JsonProperty("custom_post_tax") @ExcludeMissing fun _customPostTax() = customPostTax
+    @JsonProperty("custom_post_tax")
+    @ExcludeMissing
+    fun _customPostTax(): JsonField<BenefitFeaturesAndOperations> = customPostTax
 
-    @JsonProperty("custom_pre_tax") @ExcludeMissing fun _customPreTax() = customPreTax
+    @JsonProperty("custom_pre_tax")
+    @ExcludeMissing
+    fun _customPreTax(): JsonField<BenefitFeaturesAndOperations> = customPreTax
 
-    @JsonProperty("fsa_dependent_care") @ExcludeMissing fun _fsaDependentCare() = fsaDependentCare
+    @JsonProperty("fsa_dependent_care")
+    @ExcludeMissing
+    fun _fsaDependentCare(): JsonField<BenefitFeaturesAndOperations> = fsaDependentCare
 
-    @JsonProperty("fsa_medical") @ExcludeMissing fun _fsaMedical() = fsaMedical
+    @JsonProperty("fsa_medical")
+    @ExcludeMissing
+    fun _fsaMedical(): JsonField<BenefitFeaturesAndOperations> = fsaMedical
 
-    @JsonProperty("hsa_post") @ExcludeMissing fun _hsaPost() = hsaPost
+    @JsonProperty("hsa_post")
+    @ExcludeMissing
+    fun _hsaPost(): JsonField<BenefitFeaturesAndOperations> = hsaPost
 
-    @JsonProperty("hsa_pre") @ExcludeMissing fun _hsaPre() = hsaPre
+    @JsonProperty("hsa_pre")
+    @ExcludeMissing
+    fun _hsaPre(): JsonField<BenefitFeaturesAndOperations> = hsaPre
 
-    @JsonProperty("s125_dental") @ExcludeMissing fun _s125Dental() = s125Dental
+    @JsonProperty("s125_dental")
+    @ExcludeMissing
+    fun _s125Dental(): JsonField<BenefitFeaturesAndOperations> = s125Dental
 
-    @JsonProperty("s125_medical") @ExcludeMissing fun _s125Medical() = s125Medical
+    @JsonProperty("s125_medical")
+    @ExcludeMissing
+    fun _s125Medical(): JsonField<BenefitFeaturesAndOperations> = s125Medical
 
-    @JsonProperty("s125_vision") @ExcludeMissing fun _s125Vision() = s125Vision
+    @JsonProperty("s125_vision")
+    @ExcludeMissing
+    fun _s125Vision(): JsonField<BenefitFeaturesAndOperations> = s125Vision
 
-    @JsonProperty("simple") @ExcludeMissing fun _simple() = simple
+    @JsonProperty("simple")
+    @ExcludeMissing
+    fun _simple(): JsonField<BenefitFeaturesAndOperations> = simple
 
-    @JsonProperty("simple_ira") @ExcludeMissing fun _simpleIra() = simpleIra
+    @JsonProperty("simple_ira")
+    @ExcludeMissing
+    fun _simpleIra(): JsonField<BenefitFeaturesAndOperations> = simpleIra
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -187,76 +211,111 @@ private constructor(
             additionalProperties = benefitsSupport.additionalProperties.toMutableMap()
         }
 
-        fun commuter(commuter: BenefitFeaturesAndOperations) = commuter(JsonField.of(commuter))
+        fun commuter(commuter: BenefitFeaturesAndOperations?) =
+            commuter(JsonField.ofNullable(commuter))
+
+        fun commuter(commuter: Optional<BenefitFeaturesAndOperations>) =
+            commuter(commuter.orElse(null))
 
         fun commuter(commuter: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.commuter = commuter
         }
 
-        fun customPostTax(customPostTax: BenefitFeaturesAndOperations) =
-            customPostTax(JsonField.of(customPostTax))
+        fun customPostTax(customPostTax: BenefitFeaturesAndOperations?) =
+            customPostTax(JsonField.ofNullable(customPostTax))
+
+        fun customPostTax(customPostTax: Optional<BenefitFeaturesAndOperations>) =
+            customPostTax(customPostTax.orElse(null))
 
         fun customPostTax(customPostTax: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.customPostTax = customPostTax
         }
 
-        fun customPreTax(customPreTax: BenefitFeaturesAndOperations) =
-            customPreTax(JsonField.of(customPreTax))
+        fun customPreTax(customPreTax: BenefitFeaturesAndOperations?) =
+            customPreTax(JsonField.ofNullable(customPreTax))
+
+        fun customPreTax(customPreTax: Optional<BenefitFeaturesAndOperations>) =
+            customPreTax(customPreTax.orElse(null))
 
         fun customPreTax(customPreTax: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.customPreTax = customPreTax
         }
 
-        fun fsaDependentCare(fsaDependentCare: BenefitFeaturesAndOperations) =
-            fsaDependentCare(JsonField.of(fsaDependentCare))
+        fun fsaDependentCare(fsaDependentCare: BenefitFeaturesAndOperations?) =
+            fsaDependentCare(JsonField.ofNullable(fsaDependentCare))
+
+        fun fsaDependentCare(fsaDependentCare: Optional<BenefitFeaturesAndOperations>) =
+            fsaDependentCare(fsaDependentCare.orElse(null))
 
         fun fsaDependentCare(fsaDependentCare: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.fsaDependentCare = fsaDependentCare
         }
 
-        fun fsaMedical(fsaMedical: BenefitFeaturesAndOperations) =
-            fsaMedical(JsonField.of(fsaMedical))
+        fun fsaMedical(fsaMedical: BenefitFeaturesAndOperations?) =
+            fsaMedical(JsonField.ofNullable(fsaMedical))
+
+        fun fsaMedical(fsaMedical: Optional<BenefitFeaturesAndOperations>) =
+            fsaMedical(fsaMedical.orElse(null))
 
         fun fsaMedical(fsaMedical: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.fsaMedical = fsaMedical
         }
 
-        fun hsaPost(hsaPost: BenefitFeaturesAndOperations) = hsaPost(JsonField.of(hsaPost))
+        fun hsaPost(hsaPost: BenefitFeaturesAndOperations?) = hsaPost(JsonField.ofNullable(hsaPost))
+
+        fun hsaPost(hsaPost: Optional<BenefitFeaturesAndOperations>) = hsaPost(hsaPost.orElse(null))
 
         fun hsaPost(hsaPost: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.hsaPost = hsaPost
         }
 
-        fun hsaPre(hsaPre: BenefitFeaturesAndOperations) = hsaPre(JsonField.of(hsaPre))
+        fun hsaPre(hsaPre: BenefitFeaturesAndOperations?) = hsaPre(JsonField.ofNullable(hsaPre))
+
+        fun hsaPre(hsaPre: Optional<BenefitFeaturesAndOperations>) = hsaPre(hsaPre.orElse(null))
 
         fun hsaPre(hsaPre: JsonField<BenefitFeaturesAndOperations>) = apply { this.hsaPre = hsaPre }
 
-        fun s125Dental(s125Dental: BenefitFeaturesAndOperations) =
-            s125Dental(JsonField.of(s125Dental))
+        fun s125Dental(s125Dental: BenefitFeaturesAndOperations?) =
+            s125Dental(JsonField.ofNullable(s125Dental))
+
+        fun s125Dental(s125Dental: Optional<BenefitFeaturesAndOperations>) =
+            s125Dental(s125Dental.orElse(null))
 
         fun s125Dental(s125Dental: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Dental = s125Dental
         }
 
-        fun s125Medical(s125Medical: BenefitFeaturesAndOperations) =
-            s125Medical(JsonField.of(s125Medical))
+        fun s125Medical(s125Medical: BenefitFeaturesAndOperations?) =
+            s125Medical(JsonField.ofNullable(s125Medical))
+
+        fun s125Medical(s125Medical: Optional<BenefitFeaturesAndOperations>) =
+            s125Medical(s125Medical.orElse(null))
 
         fun s125Medical(s125Medical: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Medical = s125Medical
         }
 
-        fun s125Vision(s125Vision: BenefitFeaturesAndOperations) =
-            s125Vision(JsonField.of(s125Vision))
+        fun s125Vision(s125Vision: BenefitFeaturesAndOperations?) =
+            s125Vision(JsonField.ofNullable(s125Vision))
+
+        fun s125Vision(s125Vision: Optional<BenefitFeaturesAndOperations>) =
+            s125Vision(s125Vision.orElse(null))
 
         fun s125Vision(s125Vision: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Vision = s125Vision
         }
 
-        fun simple(simple: BenefitFeaturesAndOperations) = simple(JsonField.of(simple))
+        fun simple(simple: BenefitFeaturesAndOperations?) = simple(JsonField.ofNullable(simple))
+
+        fun simple(simple: Optional<BenefitFeaturesAndOperations>) = simple(simple.orElse(null))
 
         fun simple(simple: JsonField<BenefitFeaturesAndOperations>) = apply { this.simple = simple }
 
-        fun simpleIra(simpleIra: BenefitFeaturesAndOperations) = simpleIra(JsonField.of(simpleIra))
+        fun simpleIra(simpleIra: BenefitFeaturesAndOperations?) =
+            simpleIra(JsonField.ofNullable(simpleIra))
+
+        fun simpleIra(simpleIra: Optional<BenefitFeaturesAndOperations>) =
+            simpleIra(simpleIra.orElse(null))
 
         fun simpleIra(simpleIra: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.simpleIra = simpleIra

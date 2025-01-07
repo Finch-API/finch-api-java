@@ -35,10 +35,10 @@ private constructor(
     fun paymentId(): String = paymentId.getRequired("payment_id")
 
     /** The date of the payment. */
-    @JsonProperty("pay_date") @ExcludeMissing fun _payDate() = payDate
+    @JsonProperty("pay_date") @ExcludeMissing fun _payDate(): JsonField<String> = payDate
 
     /** The ID of the payment. */
-    @JsonProperty("payment_id") @ExcludeMissing fun _paymentId() = paymentId
+    @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -63,8 +63,8 @@ private constructor(
 
     class Builder {
 
-        private var payDate: JsonField<String> = JsonMissing.of()
-        private var paymentId: JsonField<String> = JsonMissing.of()
+        private var payDate: JsonField<String>? = null
+        private var paymentId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -107,8 +107,8 @@ private constructor(
 
         fun build(): PaymentCreateResponse =
             PaymentCreateResponse(
-                payDate,
-                paymentId,
+                checkNotNull(payDate) { "`payDate` is required but was not set" },
+                checkNotNull(paymentId) { "`paymentId` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }

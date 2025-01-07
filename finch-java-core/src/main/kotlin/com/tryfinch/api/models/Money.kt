@@ -33,9 +33,9 @@ private constructor(
     fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
     /** Amount for money object (in cents) */
-    @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
-    @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+    @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -72,7 +72,14 @@ private constructor(
         }
 
         /** Amount for money object (in cents) */
-        fun amount(amount: Long) = amount(JsonField.of(amount))
+        fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
+
+        /** Amount for money object (in cents) */
+        fun amount(amount: Long) = amount(amount as Long?)
+
+        /** Amount for money object (in cents) */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
 
         /** Amount for money object (in cents) */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }

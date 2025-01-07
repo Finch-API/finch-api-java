@@ -62,20 +62,22 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /** Unique Finch ID of the connection associated with the webhook event. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    fun _connectionId(): JsonField<String> = connectionId
 
-    @JsonProperty("data") @ExcludeMissing fun _data() = data
+    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
-    @JsonProperty("event_type") @ExcludeMissing fun _eventType() = eventType
+    @JsonProperty("event_type") @ExcludeMissing fun _eventType(): JsonField<EventType> = eventType
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -110,8 +112,8 @@ private constructor(
 
     class Builder {
 
-        private var accountId: JsonField<String> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
+        private var accountId: JsonField<String>? = null
+        private var companyId: JsonField<String>? = null
         private var connectionId: JsonField<String> = JsonMissing.of()
         private var data: JsonField<Data> = JsonMissing.of()
         private var eventType: JsonField<EventType> = JsonMissing.of()
@@ -188,8 +190,8 @@ private constructor(
 
         fun build(): JobCompletionEvent =
             JobCompletionEvent(
-                accountId,
-                companyId,
+                checkNotNull(accountId) { "`accountId` is required but was not set" },
+                checkNotNull(companyId) { "`companyId` is required but was not set" },
                 connectionId,
                 data,
                 eventType,
@@ -218,10 +220,10 @@ private constructor(
         fun jobUrl(): String = jobUrl.getRequired("job_url")
 
         /** The id of the job which has completed. */
-        @JsonProperty("job_id") @ExcludeMissing fun _jobId() = jobId
+        @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
         /** The url to query the result of the job. */
-        @JsonProperty("job_url") @ExcludeMissing fun _jobUrl() = jobUrl
+        @JsonProperty("job_url") @ExcludeMissing fun _jobUrl(): JsonField<String> = jobUrl
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -246,8 +248,8 @@ private constructor(
 
         class Builder {
 
-            private var jobId: JsonField<String> = JsonMissing.of()
-            private var jobUrl: JsonField<String> = JsonMissing.of()
+            private var jobId: JsonField<String>? = null
+            private var jobUrl: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -290,8 +292,8 @@ private constructor(
 
             fun build(): Data =
                 Data(
-                    jobId,
-                    jobUrl,
+                    checkNotNull(jobId) { "`jobId` is required but was not set" },
+                    checkNotNull(jobUrl) { "`jobUrl` is required but was not set" },
                     additionalProperties.toImmutable(),
                 )
         }

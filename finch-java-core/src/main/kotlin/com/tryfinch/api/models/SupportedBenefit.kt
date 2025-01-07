@@ -85,26 +85,32 @@ private constructor(
     fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
 
     /** Whether the provider supports an annual maximum for this benefit. */
-    @JsonProperty("annual_maximum") @ExcludeMissing fun _annualMaximum() = annualMaximum
+    @JsonProperty("annual_maximum")
+    @ExcludeMissing
+    fun _annualMaximum(): JsonField<Boolean> = annualMaximum
 
     /**
      * Whether the provider supports catch up for this benefit. This field will only be true for
      * retirement benefits.
      */
-    @JsonProperty("catch_up") @ExcludeMissing fun _catchUp() = catchUp
+    @JsonProperty("catch_up") @ExcludeMissing fun _catchUp(): JsonField<Boolean> = catchUp
 
     /** Supported contribution types. An empty array indicates contributions are not supported. */
     @JsonProperty("company_contribution")
     @ExcludeMissing
-    fun _companyContribution() = companyContribution
+    fun _companyContribution(): JsonField<List<CompanyContribution?>> = companyContribution
 
-    @JsonProperty("description") @ExcludeMissing fun _description() = description
+    @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
 
     /** Supported deduction types. An empty array indicates deductions are not supported. */
-    @JsonProperty("employee_deduction") @ExcludeMissing fun _employeeDeduction() = employeeDeduction
+    @JsonProperty("employee_deduction")
+    @ExcludeMissing
+    fun _employeeDeduction(): JsonField<List<EmployeeDeduction?>> = employeeDeduction
 
     /** The list of frequencies supported by the provider for this benefit */
-    @JsonProperty("frequencies") @ExcludeMissing fun _frequencies() = frequencies
+    @JsonProperty("frequencies")
+    @ExcludeMissing
+    fun _frequencies(): JsonField<List<BenefitFrequency?>> = frequencies
 
     /**
      * Whether the provider supports HSA contribution limits. Empty if this feature is not supported
@@ -112,10 +118,10 @@ private constructor(
      */
     @JsonProperty("hsa_contribution_limit")
     @ExcludeMissing
-    fun _hsaContributionLimit() = hsaContributionLimit
+    fun _hsaContributionLimit(): JsonField<List<HsaContributionLimit?>> = hsaContributionLimit
 
     /** Type of benefit. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -148,11 +154,11 @@ private constructor(
 
         private var annualMaximum: JsonField<Boolean> = JsonMissing.of()
         private var catchUp: JsonField<Boolean> = JsonMissing.of()
-        private var companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of()
+        private var companyContribution: JsonField<MutableList<CompanyContribution?>>? = null
         private var description: JsonField<String> = JsonMissing.of()
-        private var employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of()
-        private var frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of()
-        private var hsaContributionLimit: JsonField<List<HsaContributionLimit?>> = JsonMissing.of()
+        private var employeeDeduction: JsonField<MutableList<EmployeeDeduction?>>? = null
+        private var frequencies: JsonField<MutableList<BenefitFrequency?>>? = null
+        private var hsaContributionLimit: JsonField<MutableList<HsaContributionLimit?>>? = null
         private var type: JsonField<BenefitType> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -160,17 +166,26 @@ private constructor(
         internal fun from(supportedBenefit: SupportedBenefit) = apply {
             annualMaximum = supportedBenefit.annualMaximum
             catchUp = supportedBenefit.catchUp
-            companyContribution = supportedBenefit.companyContribution
+            companyContribution = supportedBenefit.companyContribution.map { it.toMutableList() }
             description = supportedBenefit.description
-            employeeDeduction = supportedBenefit.employeeDeduction
-            frequencies = supportedBenefit.frequencies
-            hsaContributionLimit = supportedBenefit.hsaContributionLimit
+            employeeDeduction = supportedBenefit.employeeDeduction.map { it.toMutableList() }
+            frequencies = supportedBenefit.frequencies.map { it.toMutableList() }
+            hsaContributionLimit = supportedBenefit.hsaContributionLimit.map { it.toMutableList() }
             type = supportedBenefit.type
             additionalProperties = supportedBenefit.additionalProperties.toMutableMap()
         }
 
         /** Whether the provider supports an annual maximum for this benefit. */
-        fun annualMaximum(annualMaximum: Boolean) = annualMaximum(JsonField.of(annualMaximum))
+        fun annualMaximum(annualMaximum: Boolean?) =
+            annualMaximum(JsonField.ofNullable(annualMaximum))
+
+        /** Whether the provider supports an annual maximum for this benefit. */
+        fun annualMaximum(annualMaximum: Boolean) = annualMaximum(annualMaximum as Boolean?)
+
+        /** Whether the provider supports an annual maximum for this benefit. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun annualMaximum(annualMaximum: Optional<Boolean>) =
+            annualMaximum(annualMaximum.orElse(null) as Boolean?)
 
         /** Whether the provider supports an annual maximum for this benefit. */
         fun annualMaximum(annualMaximum: JsonField<Boolean>) = apply {
@@ -181,7 +196,20 @@ private constructor(
          * Whether the provider supports catch up for this benefit. This field will only be true for
          * retirement benefits.
          */
-        fun catchUp(catchUp: Boolean) = catchUp(JsonField.of(catchUp))
+        fun catchUp(catchUp: Boolean?) = catchUp(JsonField.ofNullable(catchUp))
+
+        /**
+         * Whether the provider supports catch up for this benefit. This field will only be true for
+         * retirement benefits.
+         */
+        fun catchUp(catchUp: Boolean) = catchUp(catchUp as Boolean?)
+
+        /**
+         * Whether the provider supports catch up for this benefit. This field will only be true for
+         * retirement benefits.
+         */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.orElse(null) as Boolean?)
 
         /**
          * Whether the provider supports catch up for this benefit. This field will only be true for
@@ -192,28 +220,70 @@ private constructor(
         /**
          * Supported contribution types. An empty array indicates contributions are not supported.
          */
-        fun companyContribution(companyContribution: List<CompanyContribution?>) =
-            companyContribution(JsonField.of(companyContribution))
+        fun companyContribution(companyContribution: List<CompanyContribution?>?) =
+            companyContribution(JsonField.ofNullable(companyContribution))
+
+        /**
+         * Supported contribution types. An empty array indicates contributions are not supported.
+         */
+        fun companyContribution(companyContribution: Optional<List<CompanyContribution?>>) =
+            companyContribution(companyContribution.orElse(null))
 
         /**
          * Supported contribution types. An empty array indicates contributions are not supported.
          */
         fun companyContribution(companyContribution: JsonField<List<CompanyContribution?>>) =
             apply {
-                this.companyContribution = companyContribution
+                this.companyContribution = companyContribution.map { it.toMutableList() }
             }
 
-        fun description(description: String) = description(JsonField.of(description))
+        /**
+         * Supported contribution types. An empty array indicates contributions are not supported.
+         */
+        fun addCompanyContribution(companyContribution: CompanyContribution) = apply {
+            this.companyContribution =
+                (this.companyContribution ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(companyContribution)
+                }
+        }
+
+        fun description(description: String?) = description(JsonField.ofNullable(description))
+
+        fun description(description: Optional<String>) = description(description.orElse(null))
 
         fun description(description: JsonField<String>) = apply { this.description = description }
 
         /** Supported deduction types. An empty array indicates deductions are not supported. */
-        fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>) =
-            employeeDeduction(JsonField.of(employeeDeduction))
+        fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>?) =
+            employeeDeduction(JsonField.ofNullable(employeeDeduction))
+
+        /** Supported deduction types. An empty array indicates deductions are not supported. */
+        fun employeeDeduction(employeeDeduction: Optional<List<EmployeeDeduction?>>) =
+            employeeDeduction(employeeDeduction.orElse(null))
 
         /** Supported deduction types. An empty array indicates deductions are not supported. */
         fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction?>>) = apply {
-            this.employeeDeduction = employeeDeduction
+            this.employeeDeduction = employeeDeduction.map { it.toMutableList() }
+        }
+
+        /** Supported deduction types. An empty array indicates deductions are not supported. */
+        fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
+            this.employeeDeduction =
+                (this.employeeDeduction ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(employeeDeduction)
+                }
         }
 
         /** The list of frequencies supported by the provider for this benefit */
@@ -222,15 +292,36 @@ private constructor(
 
         /** The list of frequencies supported by the provider for this benefit */
         fun frequencies(frequencies: JsonField<List<BenefitFrequency?>>) = apply {
-            this.frequencies = frequencies
+            this.frequencies = frequencies.map { it.toMutableList() }
+        }
+
+        /** The list of frequencies supported by the provider for this benefit */
+        fun addFrequency(frequency: BenefitFrequency) = apply {
+            frequencies =
+                (frequencies ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(frequency)
+                }
         }
 
         /**
          * Whether the provider supports HSA contribution limits. Empty if this feature is not
          * supported for the benefit. This array only has values for HSA benefits.
          */
-        fun hsaContributionLimit(hsaContributionLimit: List<HsaContributionLimit?>) =
-            hsaContributionLimit(JsonField.of(hsaContributionLimit))
+        fun hsaContributionLimit(hsaContributionLimit: List<HsaContributionLimit?>?) =
+            hsaContributionLimit(JsonField.ofNullable(hsaContributionLimit))
+
+        /**
+         * Whether the provider supports HSA contribution limits. Empty if this feature is not
+         * supported for the benefit. This array only has values for HSA benefits.
+         */
+        fun hsaContributionLimit(hsaContributionLimit: Optional<List<HsaContributionLimit?>>) =
+            hsaContributionLimit(hsaContributionLimit.orElse(null))
 
         /**
          * Whether the provider supports HSA contribution limits. Empty if this feature is not
@@ -238,11 +329,31 @@ private constructor(
          */
         fun hsaContributionLimit(hsaContributionLimit: JsonField<List<HsaContributionLimit?>>) =
             apply {
-                this.hsaContributionLimit = hsaContributionLimit
+                this.hsaContributionLimit = hsaContributionLimit.map { it.toMutableList() }
             }
 
+        /**
+         * Whether the provider supports HSA contribution limits. Empty if this feature is not
+         * supported for the benefit. This array only has values for HSA benefits.
+         */
+        fun addHsaContributionLimit(hsaContributionLimit: HsaContributionLimit) = apply {
+            this.hsaContributionLimit =
+                (this.hsaContributionLimit ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(hsaContributionLimit)
+                }
+        }
+
         /** Type of benefit. */
-        fun type(type: BenefitType) = type(JsonField.of(type))
+        fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
+
+        /** Type of benefit. */
+        fun type(type: Optional<BenefitType>) = type(type.orElse(null))
 
         /** Type of benefit. */
         fun type(type: JsonField<BenefitType>) = apply { this.type = type }
@@ -270,11 +381,11 @@ private constructor(
             SupportedBenefit(
                 annualMaximum,
                 catchUp,
-                companyContribution.map { it.toImmutable() },
+                (companyContribution ?: JsonMissing.of()).map { it.toImmutable() },
                 description,
-                employeeDeduction.map { it.toImmutable() },
-                frequencies.map { it.toImmutable() },
-                hsaContributionLimit.map { it.toImmutable() },
+                (employeeDeduction ?: JsonMissing.of()).map { it.toImmutable() },
+                (frequencies ?: JsonMissing.of()).map { it.toImmutable() },
+                (hsaContributionLimit ?: JsonMissing.of()).map { it.toImmutable() },
                 type,
                 additionalProperties.toImmutable(),
             )

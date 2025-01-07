@@ -88,7 +88,7 @@ private constructor(
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
      *   client and not to Finch
      */
-    @JsonProperty("create") @ExcludeMissing fun _create() = create
+    @JsonProperty("create") @ExcludeMissing fun _create(): JsonField<OperationSupport> = create
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -99,7 +99,7 @@ private constructor(
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
      *   client and not to Finch
      */
-    @JsonProperty("delete") @ExcludeMissing fun _delete() = delete
+    @JsonProperty("delete") @ExcludeMissing fun _delete(): JsonField<OperationSupport> = delete
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -110,7 +110,7 @@ private constructor(
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
      *   client and not to Finch
      */
-    @JsonProperty("read") @ExcludeMissing fun _read() = read
+    @JsonProperty("read") @ExcludeMissing fun _read(): JsonField<OperationSupport> = read
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -121,7 +121,7 @@ private constructor(
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
      *   client and not to Finch
      */
-    @JsonProperty("update") @ExcludeMissing fun _update() = update
+    @JsonProperty("update") @ExcludeMissing fun _update(): JsonField<OperationSupport> = update
 
     @JsonAnyGetter
     @ExcludeMissing
