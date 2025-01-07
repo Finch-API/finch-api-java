@@ -79,33 +79,41 @@ private constructor(
     fun type(): Type = type.getRequired("type")
 
     /** The datetime the job completed. */
-    @JsonProperty("completed_at") @ExcludeMissing fun _completedAt() = completedAt
+    @JsonProperty("completed_at")
+    @ExcludeMissing
+    fun _completedAt(): JsonField<OffsetDateTime> = completedAt
 
     /**
      * The datetime when the job was created. for scheduled jobs, this will be the initial
      * connection time. For ad-hoc jobs, this will be the time the creation request was received.
      */
-    @JsonProperty("created_at") @ExcludeMissing fun _createdAt() = createdAt
+    @JsonProperty("created_at")
+    @ExcludeMissing
+    fun _createdAt(): JsonField<OffsetDateTime> = createdAt
 
     /** The id of the job that has been created. */
-    @JsonProperty("job_id") @ExcludeMissing fun _jobId() = jobId
+    @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
     /** The url that can be used to retrieve the job status */
-    @JsonProperty("job_url") @ExcludeMissing fun _jobUrl() = jobUrl
+    @JsonProperty("job_url") @ExcludeMissing fun _jobUrl(): JsonField<String> = jobUrl
 
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
      * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
      */
-    @JsonProperty("scheduled_at") @ExcludeMissing fun _scheduledAt() = scheduledAt
+    @JsonProperty("scheduled_at")
+    @ExcludeMissing
+    fun _scheduledAt(): JsonField<OffsetDateTime> = scheduledAt
 
     /** The datetime a job entered into the job queue. */
-    @JsonProperty("started_at") @ExcludeMissing fun _startedAt() = startedAt
+    @JsonProperty("started_at")
+    @ExcludeMissing
+    fun _startedAt(): JsonField<OffsetDateTime> = startedAt
 
-    @JsonProperty("status") @ExcludeMissing fun _status() = status
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     /** Only `data_sync_all` currently supported */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -136,14 +144,14 @@ private constructor(
 
     class Builder {
 
-        private var completedAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var createdAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var jobId: JsonField<String> = JsonMissing.of()
-        private var jobUrl: JsonField<String> = JsonMissing.of()
-        private var scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var startedAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var status: JsonField<Status> = JsonMissing.of()
-        private var type: JsonField<Type> = JsonMissing.of()
+        private var completedAt: JsonField<OffsetDateTime>? = null
+        private var createdAt: JsonField<OffsetDateTime>? = null
+        private var jobId: JsonField<String>? = null
+        private var jobUrl: JsonField<String>? = null
+        private var scheduledAt: JsonField<OffsetDateTime>? = null
+        private var startedAt: JsonField<OffsetDateTime>? = null
+        private var status: JsonField<Status>? = null
+        private var type: JsonField<Type>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -160,7 +168,12 @@ private constructor(
         }
 
         /** The datetime the job completed. */
-        fun completedAt(completedAt: OffsetDateTime) = completedAt(JsonField.of(completedAt))
+        fun completedAt(completedAt: OffsetDateTime?) =
+            completedAt(JsonField.ofNullable(completedAt))
+
+        /** The datetime the job completed. */
+        fun completedAt(completedAt: Optional<OffsetDateTime>) =
+            completedAt(completedAt.orElse(null))
 
         /** The datetime the job completed. */
         fun completedAt(completedAt: JsonField<OffsetDateTime>) = apply {
@@ -198,7 +211,16 @@ private constructor(
          * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
          * be null.
          */
-        fun scheduledAt(scheduledAt: OffsetDateTime) = scheduledAt(JsonField.of(scheduledAt))
+        fun scheduledAt(scheduledAt: OffsetDateTime?) =
+            scheduledAt(JsonField.ofNullable(scheduledAt))
+
+        /**
+         * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
+         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
+         * be null.
+         */
+        fun scheduledAt(scheduledAt: Optional<OffsetDateTime>) =
+            scheduledAt(scheduledAt.orElse(null))
 
         /**
          * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
@@ -210,7 +232,10 @@ private constructor(
         }
 
         /** The datetime a job entered into the job queue. */
-        fun startedAt(startedAt: OffsetDateTime) = startedAt(JsonField.of(startedAt))
+        fun startedAt(startedAt: OffsetDateTime?) = startedAt(JsonField.ofNullable(startedAt))
+
+        /** The datetime a job entered into the job queue. */
+        fun startedAt(startedAt: Optional<OffsetDateTime>) = startedAt(startedAt.orElse(null))
 
         /** The datetime a job entered into the job queue. */
         fun startedAt(startedAt: JsonField<OffsetDateTime>) = apply { this.startedAt = startedAt }
@@ -246,14 +271,14 @@ private constructor(
 
         fun build(): AutomatedAsyncJob =
             AutomatedAsyncJob(
-                completedAt,
-                createdAt,
-                jobId,
-                jobUrl,
-                scheduledAt,
-                startedAt,
-                status,
-                type,
+                checkNotNull(completedAt) { "`completedAt` is required but was not set" },
+                checkNotNull(createdAt) { "`createdAt` is required but was not set" },
+                checkNotNull(jobId) { "`jobId` is required but was not set" },
+                checkNotNull(jobUrl) { "`jobUrl` is required but was not set" },
+                checkNotNull(scheduledAt) { "`scheduledAt` is required but was not set" },
+                checkNotNull(startedAt) { "`startedAt` is required but was not set" },
+                checkNotNull(status) { "`status` is required but was not set" },
+                checkNotNull(type) { "`type` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }

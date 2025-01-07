@@ -18,6 +18,7 @@ import com.tryfinch.api.core.BaseSerializer
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.getOrThrow
@@ -321,17 +322,29 @@ constructor(
     class DataSyncAll
     @JsonCreator
     private constructor(
-        @JsonProperty("type") private val type: Type,
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of job to start. */
-        @JsonProperty("type") fun type(): Type = type
+        fun type(): Type = type.getRequired("type")
+
+        /** The type of job to start. */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): DataSyncAll = apply {
+            if (!validated) {
+                type()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -342,7 +355,7 @@ constructor(
 
         class Builder {
 
-            private var type: Type? = null
+            private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -352,7 +365,10 @@ constructor(
             }
 
             /** The type of job to start. */
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = type(JsonField.of(type))
+
+            /** The type of job to start. */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -453,21 +469,41 @@ constructor(
     class W4FormEmployeeSync
     @JsonCreator
     private constructor(
-        @JsonProperty("individual_id") private val individualId: String,
-        @JsonProperty("type") private val type: Type,
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        private val individualId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The unique ID of the individual for W-4 data sync. */
-        @JsonProperty("individual_id") fun individualId(): String = individualId
+        fun individualId(): String = individualId.getRequired("individual_id")
 
         /** The type of job to start. */
-        @JsonProperty("type") fun type(): Type = type
+        fun type(): Type = type.getRequired("type")
+
+        /** The unique ID of the individual for W-4 data sync. */
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
+
+        /** The type of job to start. */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): W4FormEmployeeSync = apply {
+            if (!validated) {
+                individualId()
+                type()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -478,8 +514,8 @@ constructor(
 
         class Builder {
 
-            private var individualId: String? = null
-            private var type: Type? = null
+            private var individualId: JsonField<String>? = null
+            private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -490,10 +526,18 @@ constructor(
             }
 
             /** The unique ID of the individual for W-4 data sync. */
-            fun individualId(individualId: String) = apply { this.individualId = individualId }
+            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+
+            /** The unique ID of the individual for W-4 data sync. */
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
 
             /** The type of job to start. */
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = type(JsonField.of(type))
+
+            /** The type of job to start. */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

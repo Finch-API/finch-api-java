@@ -37,11 +37,13 @@ private constructor(
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
 
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<Individual> = body
 
-    @JsonProperty("code") @ExcludeMissing fun _code() = code
+    @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
-    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    fun _individualId(): JsonField<String> = individualId
 
     @JsonAnyGetter
     @ExcludeMissing

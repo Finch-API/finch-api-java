@@ -62,20 +62,22 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /** Unique Finch ID of the connection associated with the webhook event. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    fun _connectionId(): JsonField<String> = connectionId
 
-    @JsonProperty("data") @ExcludeMissing fun _data() = data
+    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
-    @JsonProperty("event_type") @ExcludeMissing fun _eventType() = eventType
+    @JsonProperty("event_type") @ExcludeMissing fun _eventType(): JsonField<EventType> = eventType
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -110,8 +112,8 @@ private constructor(
 
     class Builder {
 
-        private var accountId: JsonField<String> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
+        private var accountId: JsonField<String>? = null
+        private var companyId: JsonField<String>? = null
         private var connectionId: JsonField<String> = JsonMissing.of()
         private var data: JsonField<Data> = JsonMissing.of()
         private var eventType: JsonField<EventType> = JsonMissing.of()
@@ -188,8 +190,8 @@ private constructor(
 
         fun build(): AccountUpdateEvent =
             AccountUpdateEvent(
-                accountId,
-                companyId,
+                checkNotNull(accountId) { "`accountId` is required but was not set" },
+                checkNotNull(companyId) { "`companyId` is required but was not set" },
                 connectionId,
                 data,
                 eventType,
@@ -218,9 +220,11 @@ private constructor(
 
         @JsonProperty("authentication_method")
         @ExcludeMissing
-        fun _authenticationMethod() = authenticationMethod
+        fun _authenticationMethod(): JsonField<AuthenticationMethod> = authenticationMethod
 
-        @JsonProperty("status") @ExcludeMissing fun _status() = status
+        @JsonProperty("status")
+        @ExcludeMissing
+        fun _status(): JsonField<ConnectionStatusType> = status
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -245,8 +249,8 @@ private constructor(
 
         class Builder {
 
-            private var authenticationMethod: JsonField<AuthenticationMethod> = JsonMissing.of()
-            private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
+            private var authenticationMethod: JsonField<AuthenticationMethod>? = null
+            private var status: JsonField<ConnectionStatusType>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -289,8 +293,10 @@ private constructor(
 
             fun build(): Data =
                 Data(
-                    authenticationMethod,
-                    status,
+                    checkNotNull(authenticationMethod) {
+                        "`authenticationMethod` is required but was not set"
+                    },
+                    checkNotNull(status) { "`status` is required but was not set" },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -332,15 +338,15 @@ private constructor(
              */
             @JsonProperty("benefits_support")
             @ExcludeMissing
-            fun _benefitsSupport() = benefitsSupport
+            fun _benefitsSupport(): JsonField<BenefitsSupport> = benefitsSupport
 
             /** The supported data fields returned by our HR and payroll endpoints */
             @JsonProperty("supported_fields")
             @ExcludeMissing
-            fun _supportedFields() = supportedFields
+            fun _supportedFields(): JsonField<SupportedFields> = supportedFields
 
             /** The type of authentication method. */
-            @JsonProperty("type") @ExcludeMissing fun _type() = type
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -383,8 +389,15 @@ private constructor(
                  * Each benefit type and their supported features. If the benefit type is not
                  * supported, the property will be null
                  */
-                fun benefitsSupport(benefitsSupport: BenefitsSupport) =
-                    benefitsSupport(JsonField.of(benefitsSupport))
+                fun benefitsSupport(benefitsSupport: BenefitsSupport?) =
+                    benefitsSupport(JsonField.ofNullable(benefitsSupport))
+
+                /**
+                 * Each benefit type and their supported features. If the benefit type is not
+                 * supported, the property will be null
+                 */
+                fun benefitsSupport(benefitsSupport: Optional<BenefitsSupport>) =
+                    benefitsSupport(benefitsSupport.orElse(null))
 
                 /**
                  * Each benefit type and their supported features. If the benefit type is not
@@ -395,8 +408,12 @@ private constructor(
                 }
 
                 /** The supported data fields returned by our HR and payroll endpoints */
-                fun supportedFields(supportedFields: SupportedFields) =
-                    supportedFields(JsonField.of(supportedFields))
+                fun supportedFields(supportedFields: SupportedFields?) =
+                    supportedFields(JsonField.ofNullable(supportedFields))
+
+                /** The supported data fields returned by our HR and payroll endpoints */
+                fun supportedFields(supportedFields: Optional<SupportedFields>) =
+                    supportedFields(supportedFields.orElse(null))
 
                 /** The supported data fields returned by our HR and payroll endpoints */
                 fun supportedFields(supportedFields: JsonField<SupportedFields>) = apply {
@@ -491,19 +508,33 @@ private constructor(
                 fun payment(): Optional<SupportedPaymentFields> =
                     Optional.ofNullable(payment.getNullable("payment"))
 
-                @JsonProperty("company") @ExcludeMissing fun _company() = company
+                @JsonProperty("company")
+                @ExcludeMissing
+                fun _company(): JsonField<SupportedCompanyFields> = company
 
-                @JsonProperty("directory") @ExcludeMissing fun _directory() = directory
+                @JsonProperty("directory")
+                @ExcludeMissing
+                fun _directory(): JsonField<SupportedDirectoryFields> = directory
 
-                @JsonProperty("employment") @ExcludeMissing fun _employment() = employment
+                @JsonProperty("employment")
+                @ExcludeMissing
+                fun _employment(): JsonField<SupportedEmploymentFields> = employment
 
-                @JsonProperty("individual") @ExcludeMissing fun _individual() = individual
+                @JsonProperty("individual")
+                @ExcludeMissing
+                fun _individual(): JsonField<SupportedIndividualFields> = individual
 
-                @JsonProperty("pay_group") @ExcludeMissing fun _payGroup() = payGroup
+                @JsonProperty("pay_group")
+                @ExcludeMissing
+                fun _payGroup(): JsonField<SupportedPayGroupFields> = payGroup
 
-                @JsonProperty("pay_statement") @ExcludeMissing fun _payStatement() = payStatement
+                @JsonProperty("pay_statement")
+                @ExcludeMissing
+                fun _payStatement(): JsonField<SupportedPayStatementFields> = payStatement
 
-                @JsonProperty("payment") @ExcludeMissing fun _payment() = payment
+                @JsonProperty("payment")
+                @ExcludeMissing
+                fun _payment(): JsonField<SupportedPaymentFields> = payment
 
                 @JsonAnyGetter
                 @ExcludeMissing
@@ -697,27 +728,37 @@ private constructor(
                     fun primaryPhoneNumber(): Optional<Boolean> =
                         Optional.ofNullable(primaryPhoneNumber.getNullable("primary_phone_number"))
 
-                    @JsonProperty("id") @ExcludeMissing fun _id() = id
+                    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
-                    @JsonProperty("accounts") @ExcludeMissing fun _accounts() = accounts
+                    @JsonProperty("accounts")
+                    @ExcludeMissing
+                    fun _accounts(): JsonField<Accounts> = accounts
 
-                    @JsonProperty("departments") @ExcludeMissing fun _departments() = departments
+                    @JsonProperty("departments")
+                    @ExcludeMissing
+                    fun _departments(): JsonField<Departments> = departments
 
-                    @JsonProperty("ein") @ExcludeMissing fun _ein() = ein
+                    @JsonProperty("ein") @ExcludeMissing fun _ein(): JsonField<Boolean> = ein
 
-                    @JsonProperty("entity") @ExcludeMissing fun _entity() = entity
+                    @JsonProperty("entity")
+                    @ExcludeMissing
+                    fun _entity(): JsonField<Entity> = entity
 
-                    @JsonProperty("legal_name") @ExcludeMissing fun _legalName() = legalName
+                    @JsonProperty("legal_name")
+                    @ExcludeMissing
+                    fun _legalName(): JsonField<Boolean> = legalName
 
-                    @JsonProperty("locations") @ExcludeMissing fun _locations() = locations
+                    @JsonProperty("locations")
+                    @ExcludeMissing
+                    fun _locations(): JsonField<Locations> = locations
 
                     @JsonProperty("primary_email")
                     @ExcludeMissing
-                    fun _primaryEmail() = primaryEmail
+                    fun _primaryEmail(): JsonField<Boolean> = primaryEmail
 
                     @JsonProperty("primary_phone_number")
                     @ExcludeMissing
-                    fun _primaryPhoneNumber() = primaryPhoneNumber
+                    fun _primaryPhoneNumber(): JsonField<Boolean> = primaryPhoneNumber
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -905,23 +946,23 @@ private constructor(
 
                         @JsonProperty("account_name")
                         @ExcludeMissing
-                        fun _accountName() = accountName
+                        fun _accountName(): JsonField<Boolean> = accountName
 
                         @JsonProperty("account_number")
                         @ExcludeMissing
-                        fun _accountNumber() = accountNumber
+                        fun _accountNumber(): JsonField<Boolean> = accountNumber
 
                         @JsonProperty("account_type")
                         @ExcludeMissing
-                        fun _accountType() = accountType
+                        fun _accountType(): JsonField<Boolean> = accountType
 
                         @JsonProperty("institution_name")
                         @ExcludeMissing
-                        fun _institutionName() = institutionName
+                        fun _institutionName(): JsonField<Boolean> = institutionName
 
                         @JsonProperty("routing_number")
                         @ExcludeMissing
-                        fun _routingNumber() = routingNumber
+                        fun _routingNumber(): JsonField<Boolean> = routingNumber
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -1074,9 +1115,11 @@ private constructor(
                         fun parent(): Optional<Parent> =
                             Optional.ofNullable(parent.getNullable("parent"))
 
-                        @JsonProperty("name") @ExcludeMissing fun _name() = name
+                        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<Boolean> = name
 
-                        @JsonProperty("parent") @ExcludeMissing fun _parent() = parent
+                        @JsonProperty("parent")
+                        @ExcludeMissing
+                        fun _parent(): JsonField<Parent> = parent
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -1167,7 +1210,9 @@ private constructor(
                             fun name(): Optional<Boolean> =
                                 Optional.ofNullable(name.getNullable("name"))
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            fun _name(): JsonField<Boolean> = name
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -1291,9 +1336,11 @@ private constructor(
                         fun type(): Optional<Boolean> =
                             Optional.ofNullable(type.getNullable("type"))
 
-                        @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+                        @JsonProperty("subtype")
+                        @ExcludeMissing
+                        fun _subtype(): JsonField<Boolean> = subtype
 
-                        @JsonProperty("type") @ExcludeMissing fun _type() = type
+                        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -1433,17 +1480,27 @@ private constructor(
                         fun state(): Optional<Boolean> =
                             Optional.ofNullable(state.getNullable("state"))
 
-                        @JsonProperty("city") @ExcludeMissing fun _city() = city
+                        @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<Boolean> = city
 
-                        @JsonProperty("country") @ExcludeMissing fun _country() = country
+                        @JsonProperty("country")
+                        @ExcludeMissing
+                        fun _country(): JsonField<Boolean> = country
 
-                        @JsonProperty("line1") @ExcludeMissing fun _line1() = line1
+                        @JsonProperty("line1")
+                        @ExcludeMissing
+                        fun _line1(): JsonField<Boolean> = line1
 
-                        @JsonProperty("line2") @ExcludeMissing fun _line2() = line2
+                        @JsonProperty("line2")
+                        @ExcludeMissing
+                        fun _line2(): JsonField<Boolean> = line2
 
-                        @JsonProperty("postal_code") @ExcludeMissing fun _postalCode() = postalCode
+                        @JsonProperty("postal_code")
+                        @ExcludeMissing
+                        fun _postalCode(): JsonField<Boolean> = postalCode
 
-                        @JsonProperty("state") @ExcludeMissing fun _state() = state
+                        @JsonProperty("state")
+                        @ExcludeMissing
+                        fun _state(): JsonField<Boolean> = state
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -1611,9 +1668,13 @@ private constructor(
                     fun paging(): Optional<Paging> =
                         Optional.ofNullable(paging.getNullable("paging"))
 
-                    @JsonProperty("individuals") @ExcludeMissing fun _individuals() = individuals
+                    @JsonProperty("individuals")
+                    @ExcludeMissing
+                    fun _individuals(): JsonField<Individuals> = individuals
 
-                    @JsonProperty("paging") @ExcludeMissing fun _paging() = paging
+                    @JsonProperty("paging")
+                    @ExcludeMissing
+                    fun _paging(): JsonField<Paging> = paging
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -1743,19 +1804,31 @@ private constructor(
                         fun middleName(): Optional<Boolean> =
                             Optional.ofNullable(middleName.getNullable("middle_name"))
 
-                        @JsonProperty("id") @ExcludeMissing fun _id() = id
+                        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
-                        @JsonProperty("department") @ExcludeMissing fun _department() = department
+                        @JsonProperty("department")
+                        @ExcludeMissing
+                        fun _department(): JsonField<Boolean> = department
 
-                        @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+                        @JsonProperty("first_name")
+                        @ExcludeMissing
+                        fun _firstName(): JsonField<Boolean> = firstName
 
-                        @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
+                        @JsonProperty("is_active")
+                        @ExcludeMissing
+                        fun _isActive(): JsonField<Boolean> = isActive
 
-                        @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+                        @JsonProperty("last_name")
+                        @ExcludeMissing
+                        fun _lastName(): JsonField<Boolean> = lastName
 
-                        @JsonProperty("manager") @ExcludeMissing fun _manager() = manager
+                        @JsonProperty("manager")
+                        @ExcludeMissing
+                        fun _manager(): JsonField<Manager> = manager
 
-                        @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+                        @JsonProperty("middle_name")
+                        @ExcludeMissing
+                        fun _middleName(): JsonField<Boolean> = middleName
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -1899,7 +1972,7 @@ private constructor(
 
                             fun id(): Optional<Boolean> = Optional.ofNullable(id.getNullable("id"))
 
-                            @JsonProperty("id") @ExcludeMissing fun _id() = id
+                            @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -2023,9 +2096,13 @@ private constructor(
                         fun offset(): Optional<Boolean> =
                             Optional.ofNullable(offset.getNullable("offset"))
 
-                        @JsonProperty("count") @ExcludeMissing fun _count() = count
+                        @JsonProperty("count")
+                        @ExcludeMissing
+                        fun _count(): JsonField<Boolean> = count
 
-                        @JsonProperty("offset") @ExcludeMissing fun _offset() = offset
+                        @JsonProperty("offset")
+                        @ExcludeMissing
+                        fun _offset(): JsonField<Boolean> = offset
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -2244,45 +2321,69 @@ private constructor(
 
                     fun title(): Optional<Boolean> = Optional.ofNullable(title.getNullable("title"))
 
-                    @JsonProperty("id") @ExcludeMissing fun _id() = id
+                    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
-                    @JsonProperty("class_code") @ExcludeMissing fun _classCode() = classCode
+                    @JsonProperty("class_code")
+                    @ExcludeMissing
+                    fun _classCode(): JsonField<Boolean> = classCode
 
                     @JsonProperty("custom_fields")
                     @ExcludeMissing
-                    fun _customFields() = customFields
+                    fun _customFields(): JsonField<Boolean> = customFields
 
-                    @JsonProperty("department") @ExcludeMissing fun _department() = department
+                    @JsonProperty("department")
+                    @ExcludeMissing
+                    fun _department(): JsonField<Department> = department
 
-                    @JsonProperty("employment") @ExcludeMissing fun _employment() = employment
+                    @JsonProperty("employment")
+                    @ExcludeMissing
+                    fun _employment(): JsonField<Employment> = employment
 
                     @JsonProperty("employment_status")
                     @ExcludeMissing
-                    fun _employmentStatus() = employmentStatus
+                    fun _employmentStatus(): JsonField<Boolean> = employmentStatus
 
-                    @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
+                    @JsonProperty("end_date")
+                    @ExcludeMissing
+                    fun _endDate(): JsonField<Boolean> = endDate
 
-                    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+                    @JsonProperty("first_name")
+                    @ExcludeMissing
+                    fun _firstName(): JsonField<Boolean> = firstName
 
-                    @JsonProperty("income") @ExcludeMissing fun _income() = income
+                    @JsonProperty("income")
+                    @ExcludeMissing
+                    fun _income(): JsonField<Income> = income
 
                     @JsonProperty("income_history")
                     @ExcludeMissing
-                    fun _incomeHistory() = incomeHistory
+                    fun _incomeHistory(): JsonField<Boolean> = incomeHistory
 
-                    @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
+                    @JsonProperty("is_active")
+                    @ExcludeMissing
+                    fun _isActive(): JsonField<Boolean> = isActive
 
-                    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+                    @JsonProperty("last_name")
+                    @ExcludeMissing
+                    fun _lastName(): JsonField<Boolean> = lastName
 
-                    @JsonProperty("location") @ExcludeMissing fun _location() = location
+                    @JsonProperty("location")
+                    @ExcludeMissing
+                    fun _location(): JsonField<Location> = location
 
-                    @JsonProperty("manager") @ExcludeMissing fun _manager() = manager
+                    @JsonProperty("manager")
+                    @ExcludeMissing
+                    fun _manager(): JsonField<Manager> = manager
 
-                    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+                    @JsonProperty("middle_name")
+                    @ExcludeMissing
+                    fun _middleName(): JsonField<Boolean> = middleName
 
-                    @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
+                    @JsonProperty("start_date")
+                    @ExcludeMissing
+                    fun _startDate(): JsonField<Boolean> = startDate
 
-                    @JsonProperty("title") @ExcludeMissing fun _title() = title
+                    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<Boolean> = title
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -2523,7 +2624,7 @@ private constructor(
                         fun name(): Optional<Boolean> =
                             Optional.ofNullable(name.getNullable("name"))
 
-                        @JsonProperty("name") @ExcludeMissing fun _name() = name
+                        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<Boolean> = name
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -2627,9 +2728,11 @@ private constructor(
                         fun type(): Optional<Boolean> =
                             Optional.ofNullable(type.getNullable("type"))
 
-                        @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+                        @JsonProperty("subtype")
+                        @ExcludeMissing
+                        fun _subtype(): JsonField<Boolean> = subtype
 
-                        @JsonProperty("type") @ExcludeMissing fun _type() = type
+                        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -2752,11 +2855,15 @@ private constructor(
                         fun unit(): Optional<Boolean> =
                             Optional.ofNullable(unit.getNullable("unit"))
 
-                        @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+                        @JsonProperty("amount")
+                        @ExcludeMissing
+                        fun _amount(): JsonField<Boolean> = amount
 
-                        @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+                        @JsonProperty("currency")
+                        @ExcludeMissing
+                        fun _currency(): JsonField<Boolean> = currency
 
-                        @JsonProperty("unit") @ExcludeMissing fun _unit() = unit
+                        @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Boolean> = unit
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -2904,17 +3011,27 @@ private constructor(
                         fun state(): Optional<Boolean> =
                             Optional.ofNullable(state.getNullable("state"))
 
-                        @JsonProperty("city") @ExcludeMissing fun _city() = city
+                        @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<Boolean> = city
 
-                        @JsonProperty("country") @ExcludeMissing fun _country() = country
+                        @JsonProperty("country")
+                        @ExcludeMissing
+                        fun _country(): JsonField<Boolean> = country
 
-                        @JsonProperty("line1") @ExcludeMissing fun _line1() = line1
+                        @JsonProperty("line1")
+                        @ExcludeMissing
+                        fun _line1(): JsonField<Boolean> = line1
 
-                        @JsonProperty("line2") @ExcludeMissing fun _line2() = line2
+                        @JsonProperty("line2")
+                        @ExcludeMissing
+                        fun _line2(): JsonField<Boolean> = line2
 
-                        @JsonProperty("postal_code") @ExcludeMissing fun _postalCode() = postalCode
+                        @JsonProperty("postal_code")
+                        @ExcludeMissing
+                        fun _postalCode(): JsonField<Boolean> = postalCode
 
-                        @JsonProperty("state") @ExcludeMissing fun _state() = state
+                        @JsonProperty("state")
+                        @ExcludeMissing
+                        fun _state(): JsonField<Boolean> = state
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -3058,7 +3175,7 @@ private constructor(
 
                         fun id(): Optional<Boolean> = Optional.ofNullable(id.getNullable("id"))
 
-                        @JsonProperty("id") @ExcludeMissing fun _id() = id
+                        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -3240,37 +3357,51 @@ private constructor(
 
                     fun ssn(): Optional<Boolean> = Optional.ofNullable(ssn.getNullable("ssn"))
 
-                    @JsonProperty("id") @ExcludeMissing fun _id() = id
+                    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
-                    @JsonProperty("dob") @ExcludeMissing fun _dob() = dob
+                    @JsonProperty("dob") @ExcludeMissing fun _dob(): JsonField<Boolean> = dob
 
-                    @JsonProperty("emails") @ExcludeMissing fun _emails() = emails
+                    @JsonProperty("emails")
+                    @ExcludeMissing
+                    fun _emails(): JsonField<Emails> = emails
 
                     @JsonProperty("encrypted_ssn")
                     @ExcludeMissing
-                    fun _encryptedSsn() = encryptedSsn
+                    fun _encryptedSsn(): JsonField<Boolean> = encryptedSsn
 
-                    @JsonProperty("ethnicity") @ExcludeMissing fun _ethnicity() = ethnicity
+                    @JsonProperty("ethnicity")
+                    @ExcludeMissing
+                    fun _ethnicity(): JsonField<Boolean> = ethnicity
 
-                    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+                    @JsonProperty("first_name")
+                    @ExcludeMissing
+                    fun _firstName(): JsonField<Boolean> = firstName
 
-                    @JsonProperty("gender") @ExcludeMissing fun _gender() = gender
+                    @JsonProperty("gender")
+                    @ExcludeMissing
+                    fun _gender(): JsonField<Boolean> = gender
 
-                    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+                    @JsonProperty("last_name")
+                    @ExcludeMissing
+                    fun _lastName(): JsonField<Boolean> = lastName
 
-                    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+                    @JsonProperty("middle_name")
+                    @ExcludeMissing
+                    fun _middleName(): JsonField<Boolean> = middleName
 
                     @JsonProperty("phone_numbers")
                     @ExcludeMissing
-                    fun _phoneNumbers() = phoneNumbers
+                    fun _phoneNumbers(): JsonField<PhoneNumbers> = phoneNumbers
 
                     @JsonProperty("preferred_name")
                     @ExcludeMissing
-                    fun _preferredName() = preferredName
+                    fun _preferredName(): JsonField<Boolean> = preferredName
 
-                    @JsonProperty("residence") @ExcludeMissing fun _residence() = residence
+                    @JsonProperty("residence")
+                    @ExcludeMissing
+                    fun _residence(): JsonField<Residence> = residence
 
-                    @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
+                    @JsonProperty("ssn") @ExcludeMissing fun _ssn(): JsonField<Boolean> = ssn
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -3475,9 +3606,9 @@ private constructor(
                         fun type(): Optional<Boolean> =
                             Optional.ofNullable(type.getNullable("type"))
 
-                        @JsonProperty("data") @ExcludeMissing fun _data() = data
+                        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Boolean> = data
 
-                        @JsonProperty("type") @ExcludeMissing fun _type() = type
+                        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -3591,9 +3722,9 @@ private constructor(
                         fun type(): Optional<Boolean> =
                             Optional.ofNullable(type.getNullable("type"))
 
-                        @JsonProperty("data") @ExcludeMissing fun _data() = data
+                        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Boolean> = data
 
-                        @JsonProperty("type") @ExcludeMissing fun _type() = type
+                        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -3732,17 +3863,27 @@ private constructor(
                         fun state(): Optional<Boolean> =
                             Optional.ofNullable(state.getNullable("state"))
 
-                        @JsonProperty("city") @ExcludeMissing fun _city() = city
+                        @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<Boolean> = city
 
-                        @JsonProperty("country") @ExcludeMissing fun _country() = country
+                        @JsonProperty("country")
+                        @ExcludeMissing
+                        fun _country(): JsonField<Boolean> = country
 
-                        @JsonProperty("line1") @ExcludeMissing fun _line1() = line1
+                        @JsonProperty("line1")
+                        @ExcludeMissing
+                        fun _line1(): JsonField<Boolean> = line1
 
-                        @JsonProperty("line2") @ExcludeMissing fun _line2() = line2
+                        @JsonProperty("line2")
+                        @ExcludeMissing
+                        fun _line2(): JsonField<Boolean> = line2
 
-                        @JsonProperty("postal_code") @ExcludeMissing fun _postalCode() = postalCode
+                        @JsonProperty("postal_code")
+                        @ExcludeMissing
+                        fun _postalCode(): JsonField<Boolean> = postalCode
 
-                        @JsonProperty("state") @ExcludeMissing fun _state() = state
+                        @JsonProperty("state")
+                        @ExcludeMissing
+                        fun _state(): JsonField<Boolean> = state
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -3920,17 +4061,17 @@ private constructor(
                     fun payFrequencies(): Optional<Boolean> =
                         Optional.ofNullable(payFrequencies.getNullable("pay_frequencies"))
 
-                    @JsonProperty("id") @ExcludeMissing fun _id() = id
+                    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
                     @JsonProperty("individual_ids")
                     @ExcludeMissing
-                    fun _individualIds() = individualIds
+                    fun _individualIds(): JsonField<Boolean> = individualIds
 
-                    @JsonProperty("name") @ExcludeMissing fun _name() = name
+                    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<Boolean> = name
 
                     @JsonProperty("pay_frequencies")
                     @ExcludeMissing
-                    fun _payFrequencies() = payFrequencies
+                    fun _payFrequencies(): JsonField<Boolean> = payFrequencies
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -4067,11 +4208,13 @@ private constructor(
                     fun payStatements(): Optional<PayStatements> =
                         Optional.ofNullable(payStatements.getNullable("pay_statements"))
 
-                    @JsonProperty("paging") @ExcludeMissing fun _paging() = paging
+                    @JsonProperty("paging")
+                    @ExcludeMissing
+                    fun _paging(): JsonField<Paging> = paging
 
                     @JsonProperty("pay_statements")
                     @ExcludeMissing
-                    fun _payStatements() = payStatements
+                    fun _payStatements(): JsonField<PayStatements> = payStatements
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -4171,9 +4314,13 @@ private constructor(
 
                         fun offset(): Boolean = offset.getRequired("offset")
 
-                        @JsonProperty("count") @ExcludeMissing fun _count() = count
+                        @JsonProperty("count")
+                        @ExcludeMissing
+                        fun _count(): JsonField<Boolean> = count
 
-                        @JsonProperty("offset") @ExcludeMissing fun _offset() = offset
+                        @JsonProperty("offset")
+                        @ExcludeMissing
+                        fun _offset(): JsonField<Boolean> = offset
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -4198,8 +4345,8 @@ private constructor(
 
                         class Builder {
 
-                            private var count: JsonField<Boolean> = JsonMissing.of()
-                            private var offset: JsonField<Boolean> = JsonMissing.of()
+                            private var count: JsonField<Boolean>? = null
+                            private var offset: JsonField<Boolean>? = null
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
@@ -4242,8 +4389,8 @@ private constructor(
 
                             fun build(): Paging =
                                 Paging(
-                                    count,
-                                    offset,
+                                    checkNotNull(count) { "`count` is required but was not set" },
+                                    checkNotNull(offset) { "`offset` is required but was not set" },
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -4341,33 +4488,45 @@ private constructor(
                         fun type(): Optional<Boolean> =
                             Optional.ofNullable(type.getNullable("type"))
 
-                        @JsonProperty("earnings") @ExcludeMissing fun _earnings() = earnings
+                        @JsonProperty("earnings")
+                        @ExcludeMissing
+                        fun _earnings(): JsonField<Earnings> = earnings
 
                         @JsonProperty("employee_deductions")
                         @ExcludeMissing
-                        fun _employeeDeductions() = employeeDeductions
+                        fun _employeeDeductions(): JsonField<EmployeeDeductions> =
+                            employeeDeductions
 
                         @JsonProperty("employer_contributions")
                         @ExcludeMissing
-                        fun _employerContributions() = employerContributions
+                        fun _employerContributions(): JsonField<EmployerContributions> =
+                            employerContributions
 
-                        @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
+                        @JsonProperty("gross_pay")
+                        @ExcludeMissing
+                        fun _grossPay(): JsonField<Boolean> = grossPay
 
                         @JsonProperty("individual_id")
                         @ExcludeMissing
-                        fun _individualId() = individualId
+                        fun _individualId(): JsonField<Boolean> = individualId
 
-                        @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
+                        @JsonProperty("net_pay")
+                        @ExcludeMissing
+                        fun _netPay(): JsonField<Boolean> = netPay
 
                         @JsonProperty("payment_method")
                         @ExcludeMissing
-                        fun _paymentMethod() = paymentMethod
+                        fun _paymentMethod(): JsonField<Boolean> = paymentMethod
 
-                        @JsonProperty("taxes") @ExcludeMissing fun _taxes() = taxes
+                        @JsonProperty("taxes")
+                        @ExcludeMissing
+                        fun _taxes(): JsonField<Taxes> = taxes
 
-                        @JsonProperty("total_hours") @ExcludeMissing fun _totalHours() = totalHours
+                        @JsonProperty("total_hours")
+                        @ExcludeMissing
+                        fun _totalHours(): JsonField<Boolean> = totalHours
 
-                        @JsonProperty("type") @ExcludeMissing fun _type() = type
+                        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -4562,13 +4721,21 @@ private constructor(
                             fun type(): Optional<Boolean> =
                                 Optional.ofNullable(type.getNullable("type"))
 
-                            @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+                            @JsonProperty("amount")
+                            @ExcludeMissing
+                            fun _amount(): JsonField<Boolean> = amount
 
-                            @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+                            @JsonProperty("currency")
+                            @ExcludeMissing
+                            fun _currency(): JsonField<Boolean> = currency
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            fun _name(): JsonField<Boolean> = name
 
-                            @JsonProperty("type") @ExcludeMissing fun _type() = type
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            fun _type(): JsonField<Boolean> = type
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -4723,15 +4890,25 @@ private constructor(
                             fun type(): Optional<Boolean> =
                                 Optional.ofNullable(type.getNullable("type"))
 
-                            @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+                            @JsonProperty("amount")
+                            @ExcludeMissing
+                            fun _amount(): JsonField<Boolean> = amount
 
-                            @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+                            @JsonProperty("currency")
+                            @ExcludeMissing
+                            fun _currency(): JsonField<Boolean> = currency
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            fun _name(): JsonField<Boolean> = name
 
-                            @JsonProperty("pre_tax") @ExcludeMissing fun _preTax() = preTax
+                            @JsonProperty("pre_tax")
+                            @ExcludeMissing
+                            fun _preTax(): JsonField<Boolean> = preTax
 
-                            @JsonProperty("type") @ExcludeMissing fun _type() = type
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            fun _type(): JsonField<Boolean> = type
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -4884,11 +5061,17 @@ private constructor(
                             fun name(): Optional<Boolean> =
                                 Optional.ofNullable(name.getNullable("name"))
 
-                            @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+                            @JsonProperty("amount")
+                            @ExcludeMissing
+                            fun _amount(): JsonField<Boolean> = amount
 
-                            @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+                            @JsonProperty("currency")
+                            @ExcludeMissing
+                            fun _currency(): JsonField<Boolean> = currency
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            fun _name(): JsonField<Boolean> = name
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -5037,15 +5220,25 @@ private constructor(
                             fun type(): Optional<Boolean> =
                                 Optional.ofNullable(type.getNullable("type"))
 
-                            @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+                            @JsonProperty("amount")
+                            @ExcludeMissing
+                            fun _amount(): JsonField<Boolean> = amount
 
-                            @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+                            @JsonProperty("currency")
+                            @ExcludeMissing
+                            fun _currency(): JsonField<Boolean> = currency
 
-                            @JsonProperty("employer") @ExcludeMissing fun _employer() = employer
+                            @JsonProperty("employer")
+                            @ExcludeMissing
+                            fun _employer(): JsonField<Boolean> = employer
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            fun _name(): JsonField<Boolean> = name
 
-                            @JsonProperty("type") @ExcludeMissing fun _type() = type
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            fun _type(): JsonField<Boolean> = type
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -5285,39 +5478,51 @@ private constructor(
                     fun payPeriod(): Optional<PayPeriod> =
                         Optional.ofNullable(payPeriod.getNullable("pay_period"))
 
-                    @JsonProperty("id") @ExcludeMissing fun _id() = id
+                    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
                     @JsonProperty("company_debit")
                     @ExcludeMissing
-                    fun _companyDebit() = companyDebit
+                    fun _companyDebit(): JsonField<Boolean> = companyDebit
 
-                    @JsonProperty("debit_date") @ExcludeMissing fun _debitDate() = debitDate
+                    @JsonProperty("debit_date")
+                    @ExcludeMissing
+                    fun _debitDate(): JsonField<Boolean> = debitDate
 
                     @JsonProperty("employee_taxes")
                     @ExcludeMissing
-                    fun _employeeTaxes() = employeeTaxes
+                    fun _employeeTaxes(): JsonField<Boolean> = employeeTaxes
 
                     @JsonProperty("employer_taxes")
                     @ExcludeMissing
-                    fun _employerTaxes() = employerTaxes
+                    fun _employerTaxes(): JsonField<Boolean> = employerTaxes
 
-                    @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
+                    @JsonProperty("gross_pay")
+                    @ExcludeMissing
+                    fun _grossPay(): JsonField<Boolean> = grossPay
 
                     @JsonProperty("individual_ids")
                     @ExcludeMissing
-                    fun _individualIds() = individualIds
+                    fun _individualIds(): JsonField<Boolean> = individualIds
 
-                    @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
+                    @JsonProperty("net_pay")
+                    @ExcludeMissing
+                    fun _netPay(): JsonField<Boolean> = netPay
 
-                    @JsonProperty("pay_date") @ExcludeMissing fun _payDate() = payDate
+                    @JsonProperty("pay_date")
+                    @ExcludeMissing
+                    fun _payDate(): JsonField<Boolean> = payDate
 
                     @JsonProperty("pay_frequencies")
                     @ExcludeMissing
-                    fun _payFrequencies() = payFrequencies
+                    fun _payFrequencies(): JsonField<Boolean> = payFrequencies
 
-                    @JsonProperty("pay_group_ids") @ExcludeMissing fun _payGroupIds() = payGroupIds
+                    @JsonProperty("pay_group_ids")
+                    @ExcludeMissing
+                    fun _payGroupIds(): JsonField<Boolean> = payGroupIds
 
-                    @JsonProperty("pay_period") @ExcludeMissing fun _payPeriod() = payPeriod
+                    @JsonProperty("pay_period")
+                    @ExcludeMissing
+                    fun _payPeriod(): JsonField<PayPeriod> = payPeriod
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -5518,9 +5723,13 @@ private constructor(
                         fun startDate(): Optional<Boolean> =
                             Optional.ofNullable(startDate.getNullable("start_date"))
 
-                        @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
+                        @JsonProperty("end_date")
+                        @ExcludeMissing
+                        fun _endDate(): JsonField<Boolean> = endDate
 
-                        @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
+                        @JsonProperty("start_date")
+                        @ExcludeMissing
+                        fun _startDate(): JsonField<Boolean> = startDate
 
                         @JsonAnyGetter
                         @ExcludeMissing

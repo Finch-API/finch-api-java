@@ -13,6 +13,7 @@ class RequestForwardingForwardParamsTest {
         RequestForwardingForwardParams.builder()
             .method("POST")
             .route("/people/search")
+            .data(null)
             .headers(JsonValue.from(mapOf("content-type" to "application/json")))
             .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
             .build()
@@ -24,6 +25,7 @@ class RequestForwardingForwardParamsTest {
             RequestForwardingForwardParams.builder()
                 .method("POST")
                 .route("/people/search")
+                .data(null)
                 .headers(JsonValue.from(mapOf("content-type" to "application/json")))
                 .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
                 .build()
@@ -31,10 +33,11 @@ class RequestForwardingForwardParamsTest {
         assertThat(body).isNotNull
         assertThat(body.method()).isEqualTo("POST")
         assertThat(body.route()).isEqualTo("/people/search")
-        assertThat(body.headers())
-            .contains(JsonValue.from(mapOf("content-type" to "application/json")))
-        assertThat(body.params())
-            .contains(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+        assertThat(body.data()).isEmpty
+        assertThat(body._headers())
+            .isEqualTo(JsonValue.from(mapOf("content-type" to "application/json")))
+        assertThat(body._params())
+            .isEqualTo(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
     }
 
     @Test

@@ -44,15 +44,19 @@ private constructor(
     fun payFrequencies(): List<PayFrequency> = payFrequencies.getRequired("pay_frequencies")
 
     /** Finch id (uuidv4) for the pay group */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    @JsonProperty("individual_ids") @ExcludeMissing fun _individualIds() = individualIds
+    @JsonProperty("individual_ids")
+    @ExcludeMissing
+    fun _individualIds(): JsonField<List<String>> = individualIds
 
     /** Name of the pay group */
-    @JsonProperty("name") @ExcludeMissing fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /** List of pay frequencies associated with this pay group */
-    @JsonProperty("pay_frequencies") @ExcludeMissing fun _payFrequencies() = payFrequencies
+    @JsonProperty("pay_frequencies")
+    @ExcludeMissing
+    fun _payFrequencies(): JsonField<List<PayFrequency>> = payFrequencies
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -79,18 +83,18 @@ private constructor(
 
     class Builder {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var individualIds: JsonField<List<String>> = JsonMissing.of()
-        private var name: JsonField<String> = JsonMissing.of()
-        private var payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var individualIds: JsonField<MutableList<String>>? = null
+        private var name: JsonField<String>? = null
+        private var payFrequencies: JsonField<MutableList<PayFrequency>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(payGroupRetrieveResponse: PayGroupRetrieveResponse) = apply {
             id = payGroupRetrieveResponse.id
-            individualIds = payGroupRetrieveResponse.individualIds
+            individualIds = payGroupRetrieveResponse.individualIds.map { it.toMutableList() }
             name = payGroupRetrieveResponse.name
-            payFrequencies = payGroupRetrieveResponse.payFrequencies
+            payFrequencies = payGroupRetrieveResponse.payFrequencies.map { it.toMutableList() }
             additionalProperties = payGroupRetrieveResponse.additionalProperties.toMutableMap()
         }
 
@@ -103,7 +107,20 @@ private constructor(
         fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
 
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
-            this.individualIds = individualIds
+            this.individualIds = individualIds.map { it.toMutableList() }
+        }
+
+        fun addIndividualId(individualId: String) = apply {
+            individualIds =
+                (individualIds ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(individualId)
+                }
         }
 
         /** Name of the pay group */
@@ -118,7 +135,21 @@ private constructor(
 
         /** List of pay frequencies associated with this pay group */
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
-            this.payFrequencies = payFrequencies
+            this.payFrequencies = payFrequencies.map { it.toMutableList() }
+        }
+
+        /** List of pay frequencies associated with this pay group */
+        fun addPayFrequency(payFrequency: PayFrequency) = apply {
+            payFrequencies =
+                (payFrequencies ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(payFrequency)
+                }
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -142,10 +173,12 @@ private constructor(
 
         fun build(): PayGroupRetrieveResponse =
             PayGroupRetrieveResponse(
-                id,
-                individualIds.map { it.toImmutable() },
-                name,
-                payFrequencies.map { it.toImmutable() },
+                checkNotNull(id) { "`id` is required but was not set" },
+                checkNotNull(individualIds) { "`individualIds` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(name) { "`name` is required but was not set" },
+                checkNotNull(payFrequencies) { "`payFrequencies` is required but was not set" }
+                    .map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }

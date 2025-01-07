@@ -52,16 +52,18 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /** Unique Finch ID of the connection associated with the webhook event. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    fun _connectionId(): JsonField<String> = connectionId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -87,8 +89,8 @@ private constructor(
 
     class Builder {
 
-        private var accountId: JsonField<String> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
+        private var accountId: JsonField<String>? = null
+        private var companyId: JsonField<String>? = null
         private var connectionId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -153,8 +155,8 @@ private constructor(
 
         fun build(): BaseWebhookEvent =
             BaseWebhookEvent(
-                accountId,
-                companyId,
+                checkNotNull(accountId) { "`accountId` is required but was not set" },
+                checkNotNull(companyId) { "`companyId` is required but was not set" },
                 connectionId,
                 additionalProperties.toImmutable(),
             )

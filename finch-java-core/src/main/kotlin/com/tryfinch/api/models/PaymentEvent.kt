@@ -64,20 +64,22 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /** Unique Finch ID of the connection associated with the webhook event. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    fun _connectionId(): JsonField<String> = connectionId
 
-    @JsonProperty("data") @ExcludeMissing fun _data() = data
+    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<PaymentIdentifiers> = data
 
-    @JsonProperty("event_type") @ExcludeMissing fun _eventType() = eventType
+    @JsonProperty("event_type") @ExcludeMissing fun _eventType(): JsonField<EventType> = eventType
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -112,8 +114,8 @@ private constructor(
 
     class Builder {
 
-        private var accountId: JsonField<String> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
+        private var accountId: JsonField<String>? = null
+        private var companyId: JsonField<String>? = null
         private var connectionId: JsonField<String> = JsonMissing.of()
         private var data: JsonField<PaymentIdentifiers> = JsonMissing.of()
         private var eventType: JsonField<EventType> = JsonMissing.of()
@@ -190,8 +192,8 @@ private constructor(
 
         fun build(): PaymentEvent =
             PaymentEvent(
-                accountId,
-                companyId,
+                checkNotNull(accountId) { "`accountId` is required but was not set" },
+                checkNotNull(companyId) { "`companyId` is required but was not set" },
                 connectionId,
                 data,
                 eventType,
@@ -220,10 +222,10 @@ private constructor(
         fun paymentId(): String = paymentId.getRequired("payment_id")
 
         /** The date of the payment. */
-        @JsonProperty("pay_date") @ExcludeMissing fun _payDate() = payDate
+        @JsonProperty("pay_date") @ExcludeMissing fun _payDate(): JsonField<String> = payDate
 
         /** The ID of the payment. */
-        @JsonProperty("payment_id") @ExcludeMissing fun _paymentId() = paymentId
+        @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -248,8 +250,8 @@ private constructor(
 
         class Builder {
 
-            private var payDate: JsonField<String> = JsonMissing.of()
-            private var paymentId: JsonField<String> = JsonMissing.of()
+            private var payDate: JsonField<String>? = null
+            private var paymentId: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -292,8 +294,8 @@ private constructor(
 
             fun build(): PaymentIdentifiers =
                 PaymentIdentifiers(
-                    payDate,
-                    paymentId,
+                    checkNotNull(payDate) { "`payDate` is required but was not set" },
+                    checkNotNull(paymentId) { "`paymentId` is required but was not set" },
                     additionalProperties.toImmutable(),
                 )
         }
