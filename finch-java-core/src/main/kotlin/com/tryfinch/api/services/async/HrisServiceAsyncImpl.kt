@@ -9,6 +9,8 @@ import com.tryfinch.api.services.async.hris.CompanyServiceAsync
 import com.tryfinch.api.services.async.hris.CompanyServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsyncImpl
+import com.tryfinch.api.services.async.hris.DocumentServiceAsync
+import com.tryfinch.api.services.async.hris.DocumentServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.IndividualServiceAsync
@@ -43,6 +45,8 @@ constructor(
         PayStatementServiceAsyncImpl(clientOptions)
     }
 
+    private val documents: DocumentServiceAsync by lazy { DocumentServiceAsyncImpl(clientOptions) }
+
     private val benefits: BenefitServiceAsync by lazy { BenefitServiceAsyncImpl(clientOptions) }
 
     override fun company(): CompanyServiceAsync = company
@@ -56,6 +60,8 @@ constructor(
     override fun payments(): PaymentServiceAsync = payments
 
     override fun payStatements(): PayStatementServiceAsync = payStatements
+
+    override fun documents(): DocumentServiceAsync = documents
 
     override fun benefits(): BenefitServiceAsync = benefits
 }
