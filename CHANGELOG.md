@@ -1,5 +1,33 @@
 # Changelog
 
+## 3.2.0 (2025-01-08)
+
+Full Changelog: [v3.1.1...v3.2.0](https://github.com/Finch-API/finch-api-java/compare/v3.1.1...v3.2.0)
+
+### Features
+
+* **client:** add various convenience setters to models ([#387](https://github.com/Finch-API/finch-api-java/issues/387)) ([051f37d](https://github.com/Finch-API/finch-api-java/commit/051f37d5ce901f5a05797d50dad3fc177a893012))
+* **client:** allow setting arbitrary JSON for top-level body params ([051f37d](https://github.com/Finch-API/finch-api-java/commit/051f37d5ce901f5a05797d50dad3fc177a893012))
+* **client:** expose getters for `JsonField` of body params ([051f37d](https://github.com/Finch-API/finch-api-java/commit/051f37d5ce901f5a05797d50dad3fc177a893012))
+
+
+### Bug Fixes
+
+* **client:** consistently throw on omitting required fields ([051f37d](https://github.com/Finch-API/finch-api-java/commit/051f37d5ce901f5a05797d50dad3fc177a893012))
+* **client:** convert `JsonField` containing list type to mutable in builder ([051f37d](https://github.com/Finch-API/finch-api-java/commit/051f37d5ce901f5a05797d50dad3fc177a893012))
+
+
+### Chores
+
+* **internal:** codegen related update ([#389](https://github.com/Finch-API/finch-api-java/issues/389)) ([75e1dfd](https://github.com/Finch-API/finch-api-java/commit/75e1dfd7cb81654e68221e8426d8d4d27ce8b6e6))
+
+
+### Styles
+
+* **internal:** explicitly add some method return types ([051f37d](https://github.com/Finch-API/finch-api-java/commit/051f37d5ce901f5a05797d50dad3fc177a893012))
+* **internal:** move headers and query params setters below others ([051f37d](https://github.com/Finch-API/finch-api-java/commit/051f37d5ce901f5a05797d50dad3fc177a893012))
+* **internal:** simplify existing convenience setters on params ([051f37d](https://github.com/Finch-API/finch-api-java/commit/051f37d5ce901f5a05797d50dad3fc177a893012))
+
 ## 3.1.1 (2025-01-07)
 
 Full Changelog: [v3.1.0...v3.1.1](https://github.com/Finch-API/finch-api-java/compare/v3.1.0...v3.1.1)
