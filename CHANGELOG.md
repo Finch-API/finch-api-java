@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.3.0 (2025-01-09)
+
+Full Changelog: [v3.2.0...v3.3.0](https://github.com/Finch-API/finch-api-java/compare/v3.2.0...v3.3.0)
+
+### Features
+
+* **api:** api update ([#391](https://github.com/Finch-API/finch-api-java/issues/391)) ([30f0271](https://github.com/Finch-API/finch-api-java/commit/30f027146276a8a894bacc9867fbf0afe0006a34))
+
 ## 3.2.0 (2025-01-08)
 
 Full Changelog: [v3.1.1...v3.2.0](https://github.com/Finch-API/finch-api-java/compare/v3.1.1...v3.2.0)
