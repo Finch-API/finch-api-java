@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -541,28 +542,24 @@ private constructor(
 
         fun build(): Introspection =
             Introspection(
-                checkNotNull(accountId) { "`accountId` is required but was not set" },
-                checkNotNull(authenticationMethods) {
-                        "`authenticationMethods` is required but was not set"
-                    }
-                    .map { it.toImmutable() },
-                checkNotNull(clientId) { "`clientId` is required but was not set" },
-                checkNotNull(clientType) { "`clientType` is required but was not set" },
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
-                checkNotNull(connectionId) { "`connectionId` is required but was not set" },
-                checkNotNull(connectionStatus) { "`connectionStatus` is required but was not set" },
-                checkNotNull(connectionType) { "`connectionType` is required but was not set" },
-                checkNotNull(customerEmail) { "`customerEmail` is required but was not set" },
-                checkNotNull(customerId) { "`customerId` is required but was not set" },
-                checkNotNull(customerName) { "`customerName` is required but was not set" },
-                checkNotNull(manual) { "`manual` is required but was not set" },
-                checkNotNull(payrollProviderId) {
-                    "`payrollProviderId` is required but was not set"
+                checkRequired("accountId", accountId),
+                checkRequired("authenticationMethods", authenticationMethods).map {
+                    it.toImmutable()
                 },
-                checkNotNull(products) { "`products` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(providerId) { "`providerId` is required but was not set" },
-                checkNotNull(username) { "`username` is required but was not set" },
+                checkRequired("clientId", clientId),
+                checkRequired("clientType", clientType),
+                checkRequired("companyId", companyId),
+                checkRequired("connectionId", connectionId),
+                checkRequired("connectionStatus", connectionStatus),
+                checkRequired("connectionType", connectionType),
+                checkRequired("customerEmail", customerEmail),
+                checkRequired("customerId", customerId),
+                checkRequired("customerName", customerName),
+                checkRequired("manual", manual),
+                checkRequired("payrollProviderId", payrollProviderId),
+                checkRequired("products", products).map { it.toImmutable() },
+                checkRequired("providerId", providerId),
+                checkRequired("username", username),
                 additionalProperties.toImmutable(),
             )
     }

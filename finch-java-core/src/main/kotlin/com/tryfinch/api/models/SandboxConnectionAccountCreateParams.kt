@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -234,8 +235,8 @@ constructor(
 
             fun build(): SandboxConnectionAccountCreateBody =
                 SandboxConnectionAccountCreateBody(
-                    checkNotNull(companyId) { "`companyId` is required but was not set" },
-                    checkNotNull(providerId) { "`providerId` is required but was not set" },
+                    checkRequired("companyId", companyId),
+                    checkRequired("providerId", providerId),
                     authenticationType,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),

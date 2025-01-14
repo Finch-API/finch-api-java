@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
@@ -155,7 +156,7 @@ constructor(
 
         fun build(): JobAutomatedRetrieveParams =
             JobAutomatedRetrieveParams(
-                checkNotNull(jobId) { "`jobId` is required but was not set" },
+                checkRequired("jobId", jobId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

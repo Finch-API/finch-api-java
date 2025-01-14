@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -175,12 +176,10 @@ private constructor(
 
         fun build(): PayGroupRetrieveResponse =
             PayGroupRetrieveResponse(
-                checkNotNull(id) { "`id` is required but was not set" },
-                checkNotNull(individualIds) { "`individualIds` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(name) { "`name` is required but was not set" },
-                checkNotNull(payFrequencies) { "`payFrequencies` is required but was not set" }
-                    .map { it.toImmutable() },
+                checkRequired("id", id),
+                checkRequired("individualIds", individualIds).map { it.toImmutable() },
+                checkRequired("name", name),
+                checkRequired("payFrequencies", payFrequencies).map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }
