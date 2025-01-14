@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -118,9 +119,8 @@ private constructor(
 
         fun build(): DocumentListResponse =
             DocumentListResponse(
-                checkNotNull(documents) { "`documents` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(paging) { "`paging` is required but was not set" },
+                checkRequired("documents", documents).map { it.toImmutable() },
+                checkRequired("paging", paging),
                 additionalProperties.toImmutable(),
             )
     }

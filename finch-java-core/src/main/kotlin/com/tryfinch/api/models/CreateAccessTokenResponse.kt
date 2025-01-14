@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -327,15 +328,14 @@ private constructor(
 
         fun build(): CreateAccessTokenResponse =
             CreateAccessTokenResponse(
-                checkNotNull(accessToken) { "`accessToken` is required but was not set" },
-                checkNotNull(accountId) { "`accountId` is required but was not set" },
-                checkNotNull(clientType) { "`clientType` is required but was not set" },
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
-                checkNotNull(connectionId) { "`connectionId` is required but was not set" },
-                checkNotNull(connectionType) { "`connectionType` is required but was not set" },
-                checkNotNull(products) { "`products` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(providerId) { "`providerId` is required but was not set" },
+                checkRequired("accessToken", accessToken),
+                checkRequired("accountId", accountId),
+                checkRequired("clientType", clientType),
+                checkRequired("companyId", companyId),
+                checkRequired("connectionId", connectionId),
+                checkRequired("connectionType", connectionType),
+                checkRequired("products", products).map { it.toImmutable() },
+                checkRequired("providerId", providerId),
                 customerId,
                 tokenType,
                 additionalProperties.toImmutable(),

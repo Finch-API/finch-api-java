@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -320,20 +321,15 @@ private constructor(
 
         fun build(): Company =
             Company(
-                checkNotNull(id) { "`id` is required but was not set" },
-                checkNotNull(accounts) { "`accounts` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(departments) { "`departments` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(ein) { "`ein` is required but was not set" },
-                checkNotNull(entity) { "`entity` is required but was not set" },
-                checkNotNull(legalName) { "`legalName` is required but was not set" },
-                checkNotNull(locations) { "`locations` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(primaryEmail) { "`primaryEmail` is required but was not set" },
-                checkNotNull(primaryPhoneNumber) {
-                    "`primaryPhoneNumber` is required but was not set"
-                },
+                checkRequired("id", id),
+                checkRequired("accounts", accounts).map { it.toImmutable() },
+                checkRequired("departments", departments).map { it.toImmutable() },
+                checkRequired("ein", ein),
+                checkRequired("entity", entity),
+                checkRequired("legalName", legalName),
+                checkRequired("locations", locations).map { it.toImmutable() },
+                checkRequired("primaryEmail", primaryEmail),
+                checkRequired("primaryPhoneNumber", primaryPhoneNumber),
                 additionalProperties.toImmutable(),
             )
     }
