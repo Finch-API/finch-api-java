@@ -21,6 +21,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -392,10 +393,7 @@ constructor(
             }
 
             fun build(): DataSyncAll =
-                DataSyncAll(
-                    checkNotNull(type) { "`type` is required but was not set" },
-                    additionalProperties.toImmutable()
-                )
+                DataSyncAll(checkRequired("type", type), additionalProperties.toImmutable())
         }
 
         class Type
@@ -564,8 +562,8 @@ constructor(
 
             fun build(): W4FormEmployeeSync =
                 W4FormEmployeeSync(
-                    checkNotNull(individualId) { "`individualId` is required but was not set" },
-                    checkNotNull(type) { "`type` is required but was not set" },
+                    checkRequired("individualId", individualId),
+                    checkRequired("type", type),
                     additionalProperties.toImmutable(),
                 )
         }

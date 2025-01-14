@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -145,8 +146,7 @@ constructor(
 
             fun build(): HrisPayStatementRetrieveManyBody =
                 HrisPayStatementRetrieveManyBody(
-                    checkNotNull(requests) { "`requests` is required but was not set" }
-                        .map { it.toImmutable() },
+                    checkRequired("requests", requests).map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -440,7 +440,7 @@ constructor(
 
             fun build(): Request =
                 Request(
-                    checkNotNull(paymentId) { "`paymentId` is required but was not set" },
+                    checkRequired("paymentId", paymentId),
                     limit,
                     offset,
                     additionalProperties.toImmutable(),

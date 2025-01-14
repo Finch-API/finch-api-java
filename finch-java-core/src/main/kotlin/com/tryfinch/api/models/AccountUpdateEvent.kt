@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -192,8 +193,8 @@ private constructor(
 
         fun build(): AccountUpdateEvent =
             AccountUpdateEvent(
-                checkNotNull(accountId) { "`accountId` is required but was not set" },
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
+                checkRequired("accountId", accountId),
+                checkRequired("companyId", companyId),
                 connectionId,
                 data,
                 eventType,
@@ -297,10 +298,8 @@ private constructor(
 
             fun build(): Data =
                 Data(
-                    checkNotNull(authenticationMethod) {
-                        "`authenticationMethod` is required but was not set"
-                    },
-                    checkNotNull(status) { "`status` is required but was not set" },
+                    checkRequired("authenticationMethod", authenticationMethod),
+                    checkRequired("status", status),
                     additionalProperties.toImmutable(),
                 )
         }
@@ -4443,8 +4442,8 @@ private constructor(
 
                             fun build(): Paging =
                                 Paging(
-                                    checkNotNull(count) { "`count` is required but was not set" },
-                                    checkNotNull(offset) { "`offset` is required but was not set" },
+                                    checkRequired("count", count),
+                                    checkRequired("offset", offset),
                                     additionalProperties.toImmutable(),
                                 )
                         }

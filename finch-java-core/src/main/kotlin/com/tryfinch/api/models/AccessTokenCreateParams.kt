@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -179,7 +180,7 @@ constructor(
 
             fun build(): AccessTokenCreateBody =
                 AccessTokenCreateBody(
-                    checkNotNull(code) { "`code` is required but was not set" },
+                    checkRequired("code", code),
                     clientId,
                     clientSecret,
                     redirectUri,

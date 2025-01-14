@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -139,10 +140,9 @@ private constructor(
 
         fun build(): ManualAsyncJob =
             ManualAsyncJob(
-                checkNotNull(body) { "`body` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(jobId) { "`jobId` is required but was not set" },
-                checkNotNull(status) { "`status` is required but was not set" },
+                checkRequired("body", body).map { it.toImmutable() },
+                checkRequired("jobId", jobId),
+                checkRequired("status", status),
                 additionalProperties.toImmutable(),
             )
     }
