@@ -127,13 +127,15 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): SandboxConnectionAccountCreateBody = apply {
-            if (!validated) {
-                companyId()
-                providerId()
-                authenticationType()
-                products()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            companyId()
+            providerId()
+            authenticationType()
+            products()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

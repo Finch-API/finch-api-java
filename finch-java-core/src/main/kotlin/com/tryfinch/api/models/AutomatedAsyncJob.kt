@@ -122,17 +122,19 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): AutomatedAsyncJob = apply {
-        if (!validated) {
-            completedAt()
-            createdAt()
-            jobId()
-            jobUrl()
-            scheduledAt()
-            startedAt()
-            status()
-            type()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        completedAt()
+        createdAt()
+        jobId()
+        jobUrl()
+        scheduledAt()
+        startedAt()
+        status()
+        type()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

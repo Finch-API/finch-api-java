@@ -67,13 +67,15 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): AutomatedCreateResponse = apply {
-        if (!validated) {
-            allowedRefreshes()
-            jobId()
-            jobUrl()
-            remainingRefreshes()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        allowedRefreshes()
+        jobId()
+        jobUrl()
+        remainingRefreshes()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

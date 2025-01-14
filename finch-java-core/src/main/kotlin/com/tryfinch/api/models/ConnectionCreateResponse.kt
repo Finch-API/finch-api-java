@@ -103,17 +103,19 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): ConnectionCreateResponse = apply {
-        if (!validated) {
-            accessToken()
-            accountId()
-            authenticationType()
-            companyId()
-            connectionId()
-            products()
-            providerId()
-            tokenType()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accessToken()
+        accountId()
+        authenticationType()
+        companyId()
+        connectionId()
+        products()
+        providerId()
+        tokenType()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

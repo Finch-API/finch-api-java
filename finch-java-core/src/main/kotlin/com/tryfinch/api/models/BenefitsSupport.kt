@@ -154,21 +154,23 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): BenefitsSupport = apply {
-        if (!validated) {
-            commuter().map { it.validate() }
-            customPostTax().map { it.validate() }
-            customPreTax().map { it.validate() }
-            fsaDependentCare().map { it.validate() }
-            fsaMedical().map { it.validate() }
-            hsaPost().map { it.validate() }
-            hsaPre().map { it.validate() }
-            s125Dental().map { it.validate() }
-            s125Medical().map { it.validate() }
-            s125Vision().map { it.validate() }
-            simple().map { it.validate() }
-            simpleIra().map { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        commuter().ifPresent { it.validate() }
+        customPostTax().ifPresent { it.validate() }
+        customPreTax().ifPresent { it.validate() }
+        fsaDependentCare().ifPresent { it.validate() }
+        fsaMedical().ifPresent { it.validate() }
+        hsaPost().ifPresent { it.validate() }
+        hsaPre().ifPresent { it.validate() }
+        s125Dental().ifPresent { it.validate() }
+        s125Medical().ifPresent { it.validate() }
+        s125Vision().ifPresent { it.validate() }
+        simple().ifPresent { it.validate() }
+        simpleIra().ifPresent { it.validate() }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

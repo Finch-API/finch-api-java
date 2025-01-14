@@ -45,11 +45,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): DocumentListResponse = apply {
-        if (!validated) {
-            documents().forEach { it.validate() }
-            paging().validate()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        documents().forEach { it.validate() }
+        paging().validate()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

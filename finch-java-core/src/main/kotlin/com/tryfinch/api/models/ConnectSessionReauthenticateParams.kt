@@ -130,13 +130,15 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): ConnectSessionReauthenticateBody = apply {
-            if (!validated) {
-                connectionId()
-                minutesToExpire()
-                products()
-                redirectUri()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            connectionId()
+            minutesToExpire()
+            products()
+            redirectUri()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

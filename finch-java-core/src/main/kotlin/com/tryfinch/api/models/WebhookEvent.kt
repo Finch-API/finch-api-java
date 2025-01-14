@@ -32,8 +32,6 @@ private constructor(
     private val _json: JsonValue? = null,
 ) {
 
-    private var validated: Boolean = false
-
     fun accountUpdateEvent(): Optional<AccountUpdateEvent> = Optional.ofNullable(accountUpdateEvent)
 
     fun jobCompletionEvent(): Optional<JobCompletionEvent> = Optional.ofNullable(jobCompletionEvent)
@@ -100,22 +98,49 @@ private constructor(
         }
     }
 
+    private var validated: Boolean = false
+
     fun validate(): WebhookEvent = apply {
-        if (!validated) {
-            if (
-                accountUpdateEvent == null &&
-                    jobCompletionEvent == null &&
-                    companyEvent == null &&
-                    directoryEvent == null &&
-                    employmentEvent == null &&
-                    individualEvent == null &&
-                    paymentEvent == null &&
-                    payStatementEvent == null
-            ) {
-                throw FinchInvalidDataException("Unknown WebhookEvent: $_json")
-            }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accept(
+            object : Visitor<Unit> {
+                override fun visitAccountUpdateEvent(accountUpdateEvent: AccountUpdateEvent) {
+                    accountUpdateEvent.validate()
+                }
+
+                override fun visitJobCompletionEvent(jobCompletionEvent: JobCompletionEvent) {
+                    jobCompletionEvent.validate()
+                }
+
+                override fun visitCompanyEvent(companyEvent: CompanyEvent) {
+                    companyEvent.validate()
+                }
+
+                override fun visitDirectoryEvent(directoryEvent: DirectoryEvent) {
+                    directoryEvent.validate()
+                }
+
+                override fun visitEmploymentEvent(employmentEvent: EmploymentEvent) {
+                    employmentEvent.validate()
+                }
+
+                override fun visitIndividualEvent(individualEvent: IndividualEvent) {
+                    individualEvent.validate()
+                }
+
+                override fun visitPaymentEvent(paymentEvent: PaymentEvent) {
+                    paymentEvent.validate()
+                }
+
+                override fun visitPayStatementEvent(payStatementEvent: PayStatementEvent) {
+                    payStatementEvent.validate()
+                }
+            }
+        )
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {
@@ -203,30 +228,38 @@ private constructor(
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
 
-            tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
-                return WebhookEvent(accountUpdateEvent = it, _json = json)
-            }
-            tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>())?.let {
-                return WebhookEvent(jobCompletionEvent = it, _json = json)
-            }
-            tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
-                return WebhookEvent(companyEvent = it, _json = json)
-            }
-            tryDeserialize(node, jacksonTypeRef<DirectoryEvent>())?.let {
-                return WebhookEvent(directoryEvent = it, _json = json)
-            }
-            tryDeserialize(node, jacksonTypeRef<EmploymentEvent>())?.let {
-                return WebhookEvent(employmentEvent = it, _json = json)
-            }
-            tryDeserialize(node, jacksonTypeRef<IndividualEvent>())?.let {
-                return WebhookEvent(individualEvent = it, _json = json)
-            }
-            tryDeserialize(node, jacksonTypeRef<PaymentEvent>())?.let {
-                return WebhookEvent(paymentEvent = it, _json = json)
-            }
-            tryDeserialize(node, jacksonTypeRef<PayStatementEvent>())?.let {
-                return WebhookEvent(payStatementEvent = it, _json = json)
-            }
+            tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>()) { it.validate() }
+                ?.let {
+                    return WebhookEvent(accountUpdateEvent = it, _json = json)
+                }
+            tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>()) { it.validate() }
+                ?.let {
+                    return WebhookEvent(jobCompletionEvent = it, _json = json)
+                }
+            tryDeserialize(node, jacksonTypeRef<CompanyEvent>()) { it.validate() }
+                ?.let {
+                    return WebhookEvent(companyEvent = it, _json = json)
+                }
+            tryDeserialize(node, jacksonTypeRef<DirectoryEvent>()) { it.validate() }
+                ?.let {
+                    return WebhookEvent(directoryEvent = it, _json = json)
+                }
+            tryDeserialize(node, jacksonTypeRef<EmploymentEvent>()) { it.validate() }
+                ?.let {
+                    return WebhookEvent(employmentEvent = it, _json = json)
+                }
+            tryDeserialize(node, jacksonTypeRef<IndividualEvent>()) { it.validate() }
+                ?.let {
+                    return WebhookEvent(individualEvent = it, _json = json)
+                }
+            tryDeserialize(node, jacksonTypeRef<PaymentEvent>()) { it.validate() }
+                ?.let {
+                    return WebhookEvent(paymentEvent = it, _json = json)
+                }
+            tryDeserialize(node, jacksonTypeRef<PayStatementEvent>()) { it.validate() }
+                ?.let {
+                    return WebhookEvent(payStatementEvent = it, _json = json)
+                }
 
             return WebhookEvent(_json = json)
         }

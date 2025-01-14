@@ -81,10 +81,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): HrisBenefitIndividualUnenrollManyBody = apply {
-            if (!validated) {
-                individualIds()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            individualIds()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

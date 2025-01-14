@@ -239,25 +239,27 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): Introspection = apply {
-        if (!validated) {
-            accountId()
-            authenticationMethods().forEach { it.validate() }
-            clientId()
-            clientType()
-            companyId()
-            connectionId()
-            connectionStatus().validate()
-            connectionType()
-            customerEmail()
-            customerId()
-            customerName()
-            manual()
-            payrollProviderId()
-            products()
-            providerId()
-            username()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accountId()
+        authenticationMethods().forEach { it.validate() }
+        clientId()
+        clientType()
+        companyId()
+        connectionId()
+        connectionStatus().validate()
+        connectionType()
+        customerEmail()
+        customerId()
+        customerName()
+        manual()
+        payrollProviderId()
+        products()
+        providerId()
+        username()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -609,12 +611,14 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): AuthenticationMethod = apply {
-            if (!validated) {
-                connectionStatus().map { it.validate() }
-                products()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            connectionStatus().ifPresent { it.validate() }
+            products()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -734,11 +738,13 @@ private constructor(
             private var validated: Boolean = false
 
             fun validate(): ConnectionStatus = apply {
-                if (!validated) {
-                    message()
-                    status()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                message()
+                status()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1005,11 +1011,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): ConnectionStatus = apply {
-            if (!validated) {
-                message()
-                status()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            message()
+            status()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

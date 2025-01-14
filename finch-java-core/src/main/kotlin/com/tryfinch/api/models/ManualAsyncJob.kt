@@ -53,12 +53,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): ManualAsyncJob = apply {
-        if (!validated) {
-            body()
-            jobId()
-            status()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        body()
+        jobId()
+        status()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

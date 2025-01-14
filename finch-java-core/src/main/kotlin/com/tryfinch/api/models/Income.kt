@@ -78,13 +78,15 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): Income = apply {
-        if (!validated) {
-            amount()
-            currency()
-            effectiveDate()
-            unit()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        amount()
+        currency()
+        effectiveDate()
+        unit()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

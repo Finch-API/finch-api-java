@@ -31,13 +31,12 @@ private constructor(
     private val _json: JsonValue? = null,
 ) {
 
-    private var validated: Boolean = false
-
     /**
      * A 2020 version of the W-4 tax form containing information on an individual's filing status,
      * dependents, and withholding details.
      */
     fun w42020(): Optional<W42020> = Optional.ofNullable(w42020)
+
     /**
      * A 2005 version of the W-4 tax form containing information on an individual's filing status,
      * dependents, and withholding details.
@@ -53,6 +52,7 @@ private constructor(
      * dependents, and withholding details.
      */
     fun asW42020(): W42020 = w42020.getOrThrow("w42020")
+
     /**
      * A 2005 version of the W-4 tax form containing information on an individual's filing status,
      * dependents, and withholding details.
@@ -69,15 +69,25 @@ private constructor(
         }
     }
 
+    private var validated: Boolean = false
+
     fun validate(): DocumentRetreiveResponse = apply {
-        if (!validated) {
-            if (w42020 == null && w42005 == null) {
-                throw FinchInvalidDataException("Unknown DocumentRetreiveResponse: $_json")
-            }
-            w42020?.validate()
-            w42005?.validate()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accept(
+            object : Visitor<Unit> {
+                override fun visitW42020(w42020: W42020) {
+                    w42020.validate()
+                }
+
+                override fun visitW42005(w42005: W42005) {
+                    w42005.validate()
+                }
+            }
+        )
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {
