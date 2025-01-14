@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -1062,7 +1063,7 @@ constructor(
 
         fun build(): SandboxEmploymentUpdateParams =
             SandboxEmploymentUpdateParams(
-                checkNotNull(individualId) { "`individualId` is required but was not set" },
+                checkRequired("individualId", individualId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
