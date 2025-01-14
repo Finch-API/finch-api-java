@@ -57,12 +57,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): W42005 = apply {
-        if (!validated) {
-            data().map { it.validate() }
-            type()
-            year()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        data().ifPresent { it.validate() }
+        type()
+        year()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -216,14 +218,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Data = apply {
-            if (!validated) {
-                additionalWithholding()
-                exemption()
-                filingStatus()
-                individualId()
-                totalNumberOfAllowances()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            additionalWithholding()
+            exemption()
+            filingStatus()
+            individualId()
+            totalNumberOfAllowances()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

@@ -80,12 +80,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): RequestForwardingForwardResponse = apply {
-        if (!validated) {
-            data()
-            request().validate()
-            statusCode()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        data()
+        request().validate()
+        statusCode()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -267,12 +269,14 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Request = apply {
-            if (!validated) {
-                data()
-                method()
-                route()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data()
+            method()
+            route()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

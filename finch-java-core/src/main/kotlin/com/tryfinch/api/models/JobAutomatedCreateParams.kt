@@ -340,10 +340,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): DataSyncAll = apply {
-            if (!validated) {
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -498,11 +500,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): W4FormEmployeeSync = apply {
-            if (!validated) {
-                individualId()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            individualId()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

@@ -44,11 +44,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): Paging = apply {
-        if (!validated) {
-            count()
-            offset()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        count()
+        offset()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

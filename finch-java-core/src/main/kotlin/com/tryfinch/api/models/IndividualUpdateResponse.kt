@@ -160,22 +160,24 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): IndividualUpdateResponse = apply {
-        if (!validated) {
-            id()
-            dob()
-            emails().map { it.forEach { it.validate() } }
-            encryptedSsn()
-            ethnicity()
-            firstName()
-            gender()
-            lastName()
-            middleName()
-            phoneNumbers().map { it.forEach { it?.validate() } }
-            preferredName()
-            residence().map { it.validate() }
-            ssn()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        dob()
+        emails().ifPresent { it.forEach { it.validate() } }
+        encryptedSsn()
+        ethnicity()
+        firstName()
+        gender()
+        lastName()
+        middleName()
+        phoneNumbers().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        preferredName()
+        residence().ifPresent { it.validate() }
+        ssn()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -449,11 +451,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Email = apply {
-            if (!validated) {
-                data()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -778,11 +782,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): PhoneNumber = apply {
-            if (!validated) {
-                data()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

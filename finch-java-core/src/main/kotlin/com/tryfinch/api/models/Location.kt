@@ -88,17 +88,19 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): Location = apply {
-        if (!validated) {
-            city()
-            country()
-            line1()
-            line2()
-            name()
-            postalCode()
-            sourceId()
-            state()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        city()
+        country()
+        line1()
+        line2()
+        name()
+        postalCode()
+        sourceId()
+        state()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

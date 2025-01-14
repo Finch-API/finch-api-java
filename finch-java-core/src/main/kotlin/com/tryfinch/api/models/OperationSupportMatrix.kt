@@ -130,13 +130,15 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): OperationSupportMatrix = apply {
-        if (!validated) {
-            create()
-            delete()
-            read()
-            update()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        create()
+        delete()
+        read()
+        update()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

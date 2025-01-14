@@ -46,11 +46,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): BenefitContribution = apply {
-        if (!validated) {
-            amount()
-            type()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        amount()
+        type()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

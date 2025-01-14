@@ -238,29 +238,31 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): EmploymentData = apply {
-        if (!validated) {
-            id()
-            classCode()
-            customFields().map { it.forEach { it.validate() } }
-            department().map { it.validate() }
-            employment().map { it.validate() }
-            employmentStatus()
-            endDate()
-            firstName()
-            income().map { it.validate() }
-            incomeHistory().map { it.forEach { it?.validate() } }
-            isActive()
-            lastName()
-            latestRehireDate()
-            location().map { it.validate() }
-            manager().map { it.validate() }
-            middleName()
-            sourceId()
-            startDate()
-            title()
-            workId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        classCode()
+        customFields().ifPresent { it.forEach { it.validate() } }
+        department().ifPresent { it.validate() }
+        employment().ifPresent { it.validate() }
+        employmentStatus()
+        endDate()
+        firstName()
+        income().ifPresent { it.validate() }
+        incomeHistory().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        isActive()
+        lastName()
+        latestRehireDate()
+        location().ifPresent { it.validate() }
+        manager().ifPresent { it.validate() }
+        middleName()
+        sourceId()
+        startDate()
+        title()
+        workId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -635,10 +637,12 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): CustomField = apply {
-            if (!validated) {
-                name()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            name()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -737,10 +741,12 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Department = apply {
-            if (!validated) {
-                name()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            name()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -848,11 +854,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Employment = apply {
-            if (!validated) {
-                subtype()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            subtype()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -1195,10 +1203,12 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Manager = apply {
-            if (!validated) {
-                id()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            id()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

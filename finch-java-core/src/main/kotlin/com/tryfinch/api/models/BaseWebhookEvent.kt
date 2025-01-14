@@ -72,12 +72,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): BaseWebhookEvent = apply {
-        if (!validated) {
-            accountId()
-            companyId()
-            connectionId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accountId()
+        companyId()
+        connectionId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
