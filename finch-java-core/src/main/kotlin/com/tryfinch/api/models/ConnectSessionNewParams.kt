@@ -180,18 +180,20 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): ConnectSessionNewBody = apply {
-            if (!validated) {
-                customerId()
-                customerName()
-                products()
-                customerEmail()
-                integration().map { it.validate() }
-                manual()
-                minutesToExpire()
-                redirectUri()
-                sandbox()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            customerId()
+            customerName()
+            products()
+            customerEmail()
+            integration().ifPresent { it.validate() }
+            manual()
+            minutesToExpire()
+            redirectUri()
+            sandbox()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -734,11 +736,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Integration = apply {
-            if (!validated) {
-                authMethod()
-                provider()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            authMethod()
+            provider()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

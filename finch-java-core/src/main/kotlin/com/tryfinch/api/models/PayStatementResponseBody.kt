@@ -49,11 +49,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): PayStatementResponseBody = apply {
-        if (!validated) {
-            paging().map { it.validate() }
-            payStatements().map { it.forEach { it.validate() } }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        paging().ifPresent { it.validate() }
+        payStatements().ifPresent { it.forEach { it.validate() } }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

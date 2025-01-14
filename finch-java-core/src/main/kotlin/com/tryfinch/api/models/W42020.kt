@@ -57,12 +57,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): W42020 = apply {
-        if (!validated) {
-            data().map { it.validate() }
-            type()
-            year()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        data().ifPresent { it.validate() }
+        type()
+        year()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -259,17 +261,19 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Data = apply {
-            if (!validated) {
-                amountForOtherDependents()
-                amountForQualifyingChildrenUnder17()
-                deductions()
-                extraWithholding()
-                filingStatus()
-                individualId()
-                otherIncome()
-                totalClaimDependentAndOtherCredits()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            amountForOtherDependents()
+            amountForQualifyingChildrenUnder17()
+            deductions()
+            extraWithholding()
+            filingStatus()
+            individualId()
+            otherIncome()
+            totalClaimDependentAndOtherCredits()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

@@ -126,19 +126,21 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): PayStatement = apply {
-        if (!validated) {
-            earnings().map { it.forEach { it?.validate() } }
-            employeeDeductions().map { it.forEach { it?.validate() } }
-            employerContributions().map { it.forEach { it?.validate() } }
-            grossPay().map { it.validate() }
-            individualId()
-            netPay().map { it.validate() }
-            paymentMethod()
-            taxes().map { it.forEach { it?.validate() } }
-            totalHours()
-            type()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        earnings().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        employeeDeductions().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        employerContributions().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        grossPay().ifPresent { it.validate() }
+        individualId()
+        netPay().ifPresent { it.validate() }
+        paymentMethod()
+        taxes().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        totalHours()
+        type()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -433,14 +435,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Earning = apply {
-            if (!validated) {
-                amount()
-                currency()
-                hours()
-                name()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            amount()
+            currency()
+            hours()
+            name()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -765,14 +769,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): EmployeeDeduction = apply {
-            if (!validated) {
-                amount()
-                currency()
-                name()
-                preTax()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            amount()
+            currency()
+            name()
+            preTax()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -953,13 +959,15 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): EmployerContribution = apply {
-            if (!validated) {
-                amount()
-                currency()
-                name()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            amount()
+            currency()
+            name()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -1188,14 +1196,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Tax = apply {
-            if (!validated) {
-                amount()
-                currency()
-                employer()
-                name()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            amount()
+            currency()
+            employer()
+            name()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

@@ -88,15 +88,17 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): AccountUpdateResponse = apply {
-        if (!validated) {
-            accountId()
-            authenticationType()
-            companyId()
-            products()
-            providerId()
-            connectionId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accountId()
+        authenticationType()
+        companyId()
+        products()
+        providerId()
+        connectionId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

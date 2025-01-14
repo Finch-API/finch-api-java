@@ -70,10 +70,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): SandboxConnectionAccountUpdateBody = apply {
-            if (!validated) {
-                connectionStatus()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            connectionStatus()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

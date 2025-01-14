@@ -45,11 +45,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): IndividualEnrolledIdsResponse = apply {
-        if (!validated) {
-            benefitId()
-            individualIds()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        benefitId()
+        individualIds()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

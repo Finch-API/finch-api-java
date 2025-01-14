@@ -47,11 +47,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): SessionNewResponse = apply {
-        if (!validated) {
-            connectUrl()
-            sessionId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        connectUrl()
+        sessionId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
