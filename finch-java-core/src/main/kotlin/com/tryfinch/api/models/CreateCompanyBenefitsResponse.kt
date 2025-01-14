@@ -36,10 +36,12 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): CreateCompanyBenefitsResponse = apply {
-        if (!validated) {
-            benefitId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        benefitId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

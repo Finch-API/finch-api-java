@@ -103,13 +103,15 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): AccessTokenCreateBody = apply {
-            if (!validated) {
-                code()
-                clientId()
-                clientSecret()
-                redirectUri()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            code()
+            clientId()
+            clientSecret()
+            redirectUri()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

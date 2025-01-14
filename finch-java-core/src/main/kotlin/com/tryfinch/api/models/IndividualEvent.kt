@@ -93,14 +93,16 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): IndividualEvent = apply {
-        if (!validated) {
-            accountId()
-            companyId()
-            connectionId()
-            data().map { it.validate() }
-            eventType()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accountId()
+        companyId()
+        connectionId()
+        data().ifPresent { it.validate() }
+        eventType()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -226,10 +228,12 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Data = apply {
-            if (!validated) {
-                individualId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            individualId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

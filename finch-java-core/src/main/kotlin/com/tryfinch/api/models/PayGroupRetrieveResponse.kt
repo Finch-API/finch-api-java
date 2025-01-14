@@ -65,13 +65,15 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): PayGroupRetrieveResponse = apply {
-        if (!validated) {
-            id()
-            individualIds()
-            name()
-            payFrequencies()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        individualIds()
+        name()
+        payFrequencies()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

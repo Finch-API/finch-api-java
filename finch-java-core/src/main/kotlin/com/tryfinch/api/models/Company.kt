@@ -119,18 +119,20 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): Company = apply {
-        if (!validated) {
-            id()
-            accounts().map { it.forEach { it.validate() } }
-            departments().map { it.forEach { it?.validate() } }
-            ein()
-            entity().map { it.validate() }
-            legalName()
-            locations().map { it.forEach { it?.validate() } }
-            primaryEmail()
-            primaryPhoneNumber()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        accounts().ifPresent { it.forEach { it.validate() } }
+        departments().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        ein()
+        entity().ifPresent { it.validate() }
+        legalName()
+        locations().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        primaryEmail()
+        primaryPhoneNumber()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -415,14 +417,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Account = apply {
-            if (!validated) {
-                accountName()
-                accountNumber()
-                accountType()
-                institutionName()
-                routingNumber()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            accountName()
+            accountNumber()
+            accountType()
+            institutionName()
+            routingNumber()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -661,11 +665,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Department = apply {
-            if (!validated) {
-                name()
-                parent().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            name()
+            parent().ifPresent { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -758,10 +764,12 @@ private constructor(
             private var validated: Boolean = false
 
             fun validate(): Parent = apply {
-                if (!validated) {
-                    name()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                name()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -884,11 +892,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Entity = apply {
-            if (!validated) {
-                subtype()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            subtype()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

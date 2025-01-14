@@ -93,14 +93,16 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): JobCompletionEvent = apply {
-        if (!validated) {
-            accountId()
-            companyId()
-            connectionId()
-            data().map { it.validate() }
-            eventType()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accountId()
+        companyId()
+        connectionId()
+        data().ifPresent { it.validate() }
+        eventType()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -232,11 +234,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Data = apply {
-            if (!validated) {
-                jobId()
-                jobUrl()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            jobId()
+            jobUrl()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

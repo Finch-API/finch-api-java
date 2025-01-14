@@ -52,12 +52,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): IndividualBenefit = apply {
-        if (!validated) {
-            body().map { it.validate() }
-            code()
-            individualId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        body().ifPresent { it.validate() }
+        code()
+        individualId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -198,14 +200,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Body = apply {
-            if (!validated) {
-                annualMaximum()
-                catchUp()
-                companyContribution().map { it.validate() }
-                employeeDeduction().map { it.validate() }
-                hsaContributionLimit()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            annualMaximum()
+            catchUp()
+            companyContribution().ifPresent { it.validate() }
+            employeeDeduction().ifPresent { it.validate() }
+            hsaContributionLimit()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

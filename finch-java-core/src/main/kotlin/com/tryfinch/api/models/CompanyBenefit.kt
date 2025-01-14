@@ -64,13 +64,15 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): CompanyBenefit = apply {
-        if (!validated) {
-            benefitId()
-            description()
-            frequency()
-            type()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        benefitId()
+        description()
+        frequency()
+        type()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

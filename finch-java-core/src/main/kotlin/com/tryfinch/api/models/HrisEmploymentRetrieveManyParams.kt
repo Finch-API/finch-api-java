@@ -70,10 +70,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): HrisEmploymentRetrieveManyBody = apply {
-            if (!validated) {
-                requests().forEach { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            requests().forEach { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -355,10 +357,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Request = apply {
-            if (!validated) {
-                individualId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            individualId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

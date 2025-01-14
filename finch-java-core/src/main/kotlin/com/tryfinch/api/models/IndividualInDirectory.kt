@@ -94,16 +94,18 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): IndividualInDirectory = apply {
-        if (!validated) {
-            id()
-            department().map { it.validate() }
-            firstName()
-            isActive()
-            lastName()
-            manager().map { it.validate() }
-            middleName()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        department().ifPresent { it.validate() }
+        firstName()
+        isActive()
+        lastName()
+        manager().ifPresent { it.validate() }
+        middleName()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -257,10 +259,12 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Department = apply {
-            if (!validated) {
-                name()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            name()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -353,10 +357,12 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Manager = apply {
-            if (!validated) {
-                id()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            id()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

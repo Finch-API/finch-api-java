@@ -67,10 +67,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): SandboxJobCreateBody = apply {
-            if (!validated) {
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
