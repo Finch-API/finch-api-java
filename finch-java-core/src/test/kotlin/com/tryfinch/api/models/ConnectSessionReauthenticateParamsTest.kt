@@ -12,7 +12,7 @@ class ConnectSessionReauthenticateParamsTest {
         ConnectSessionReauthenticateParams.builder()
             .connectionId("connection_id")
             .minutesToExpire(0L)
-            .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+            .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
             .redirectUri("https://example.com")
             .build()
     }
@@ -23,7 +23,7 @@ class ConnectSessionReauthenticateParamsTest {
             ConnectSessionReauthenticateParams.builder()
                 .connectionId("connection_id")
                 .minutesToExpire(0L)
-                .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+                .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
                 .redirectUri("https://example.com")
                 .build()
         val body = params.getBody()

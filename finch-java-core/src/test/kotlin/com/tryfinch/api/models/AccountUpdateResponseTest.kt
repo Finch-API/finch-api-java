@@ -14,7 +14,7 @@ class AccountUpdateResponseTest {
                 .accountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .authenticationType(AccountUpdateResponse.AuthenticationType.CREDENTIAL)
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .products(listOf("string"))
+                .addProduct("string")
                 .providerId("provider_id")
                 .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()

@@ -12,19 +12,17 @@ class IntrospectionTest {
         val introspection =
             Introspection.builder()
                 .accountId("account_id")
-                .authenticationMethods(
-                    listOf(
-                        Introspection.AuthenticationMethod.builder()
-                            .connectionStatus(
-                                Introspection.AuthenticationMethod.ConnectionStatus.builder()
-                                    .message("message")
-                                    .status(ConnectionStatusType.PENDING)
-                                    .build()
-                            )
-                            .products(listOf("string"))
-                            .type(Introspection.AuthenticationMethod.Type.ASSISTED)
-                            .build()
-                    )
+                .addAuthenticationMethod(
+                    Introspection.AuthenticationMethod.builder()
+                        .connectionStatus(
+                            Introspection.AuthenticationMethod.ConnectionStatus.builder()
+                                .message("message")
+                                .status(ConnectionStatusType.PENDING)
+                                .build()
+                        )
+                        .addProduct("string")
+                        .type(Introspection.AuthenticationMethod.Type.ASSISTED)
+                        .build()
                 )
                 .clientId("client_id")
                 .clientType(Introspection.ClientType.PRODUCTION)
@@ -42,7 +40,7 @@ class IntrospectionTest {
                 .customerName("customer_name")
                 .manual(true)
                 .payrollProviderId("payroll_provider_id")
-                .products(listOf("string"))
+                .addProduct("string")
                 .providerId("provider_id")
                 .username("username")
                 .build()
@@ -57,7 +55,7 @@ class IntrospectionTest {
                             .status(ConnectionStatusType.PENDING)
                             .build()
                     )
-                    .products(listOf("string"))
+                    .addProduct("string")
                     .type(Introspection.AuthenticationMethod.Type.ASSISTED)
                     .build()
             )

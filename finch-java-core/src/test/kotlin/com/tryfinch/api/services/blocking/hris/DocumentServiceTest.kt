@@ -23,10 +23,10 @@ class DocumentServiceTest {
         val documentListResponse =
             documentService.list(
                 HrisDocumentListParams.builder()
-                    .individualIds(listOf("string"))
+                    .addIndividualId("string")
                     .limit(0L)
                     .offset(0L)
-                    .types(listOf(HrisDocumentListParams.Type.W4_2020))
+                    .addType(HrisDocumentListParams.Type.W4_2020)
                     .build()
             )
         println(documentListResponse)

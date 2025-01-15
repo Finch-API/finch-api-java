@@ -10,14 +10,12 @@ class HrisPayStatementRetrieveManyParamsTest {
     @Test
     fun createHrisPayStatementRetrieveManyParams() {
         HrisPayStatementRetrieveManyParams.builder()
-            .requests(
-                listOf(
-                    HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("string")
-                        .limit(50L)
-                        .offset(0L)
-                        .build()
-                )
+            .addRequest(
+                HrisPayStatementRetrieveManyParams.Request.builder()
+                    .paymentId("string")
+                    .limit(50L)
+                    .offset(0L)
+                    .build()
             )
             .build()
     }
@@ -26,14 +24,12 @@ class HrisPayStatementRetrieveManyParamsTest {
     fun getBody() {
         val params =
             HrisPayStatementRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("string")
-                            .limit(50L)
-                            .offset(0L)
-                            .build()
-                    )
+                .addRequest(
+                    HrisPayStatementRetrieveManyParams.Request.builder()
+                        .paymentId("string")
+                        .limit(50L)
+                        .offset(0L)
+                        .build()
                 )
                 .build()
         val body = params.getBody()
@@ -54,12 +50,8 @@ class HrisPayStatementRetrieveManyParamsTest {
     fun getBodyWithoutOptionalFields() {
         val params =
             HrisPayStatementRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("string")
-                            .build()
-                    )
+                .addRequest(
+                    HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
                 )
                 .build()
         val body = params.getBody()

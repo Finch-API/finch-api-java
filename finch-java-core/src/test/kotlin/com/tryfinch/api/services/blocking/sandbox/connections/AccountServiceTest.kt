@@ -29,7 +29,7 @@ class AccountServiceTest {
                     .authenticationType(
                         SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL
                     )
-                    .products(listOf("string"))
+                    .addProduct("string")
                     .build()
             )
         println(accountCreateResponse)

@@ -11,16 +11,14 @@ class DocumentListResponseTest {
     fun createDocumentListResponse() {
         val documentListResponse =
             DocumentListResponse.builder()
-                .documents(
-                    listOf(
-                        DocumentResponse.builder()
-                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .individualId("individual_id")
-                            .type(DocumentResponse.Type.W4_2020)
-                            .url("https://example.com")
-                            .year(0.0)
-                            .build()
-                    )
+                .addDocument(
+                    DocumentResponse.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .individualId("individual_id")
+                        .type(DocumentResponse.Type.W4_2020)
+                        .url("https://example.com")
+                        .year(0.0)
+                        .build()
                 )
                 .paging(Paging.builder().count(0L).offset(0L).build())
                 .build()
