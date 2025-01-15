@@ -22,12 +22,10 @@ class EmploymentServiceTest {
         val getEmploymentResponse =
             employmentService.retrieveMany(
                 HrisEmploymentRetrieveManyParams.builder()
-                    .requests(
-                        listOf(
-                            HrisEmploymentRetrieveManyParams.Request.builder()
-                                .individualId("individual_id")
-                                .build()
-                        )
+                    .addRequest(
+                        HrisEmploymentRetrieveManyParams.Request.builder()
+                            .individualId("individual_id")
+                            .build()
                     )
                     .build()
             )

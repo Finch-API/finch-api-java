@@ -13,13 +13,8 @@ class IndividualTest {
             Individual.builder()
                 .id("id")
                 .dob("dob")
-                .emails(
-                    listOf(
-                        Individual.Email.builder()
-                            .data("data")
-                            .type(Individual.Email.Type.WORK)
-                            .build()
-                    )
+                .addEmail(
+                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
                 )
                 .encryptedSsn("encrypted_ssn")
                 .ethnicity(Individual.Ethnicity.ASIAN)
@@ -27,13 +22,11 @@ class IndividualTest {
                 .gender(Individual.Gender.FEMALE)
                 .lastName("last_name")
                 .middleName("middle_name")
-                .phoneNumbers(
-                    listOf(
-                        Individual.PhoneNumber.builder()
-                            .data("data")
-                            .type(Individual.PhoneNumber.Type.WORK)
-                            .build()
-                    )
+                .addPhoneNumber(
+                    Individual.PhoneNumber.builder()
+                        .data("data")
+                        .type(Individual.PhoneNumber.Type.WORK)
+                        .build()
                 )
                 .preferredName("preferred_name")
                 .residence(

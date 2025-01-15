@@ -12,7 +12,7 @@ class IndividualEnrolledIdsResponseTest {
         val individualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse.builder()
                 .benefitId("benefit_id")
-                .individualIds(listOf("string"))
+                .addIndividualId("string")
                 .build()
         assertThat(individualEnrolledIdsResponse).isNotNull
         assertThat(individualEnrolledIdsResponse.benefitId()).isEqualTo("benefit_id")

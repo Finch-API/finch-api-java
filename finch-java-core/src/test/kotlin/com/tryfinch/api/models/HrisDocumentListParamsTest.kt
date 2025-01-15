@@ -11,10 +11,10 @@ class HrisDocumentListParamsTest {
     @Test
     fun createHrisDocumentListParams() {
         HrisDocumentListParams.builder()
-            .individualIds(listOf("string"))
+            .addIndividualId("string")
             .limit(0L)
             .offset(0L)
-            .types(listOf(HrisDocumentListParams.Type.W4_2020))
+            .addType(HrisDocumentListParams.Type.W4_2020)
             .build()
     }
 
@@ -22,10 +22,10 @@ class HrisDocumentListParamsTest {
     fun getQueryParams() {
         val params =
             HrisDocumentListParams.builder()
-                .individualIds(listOf("string"))
+                .addIndividualId("string")
                 .limit(0L)
                 .offset(0L)
-                .types(listOf(HrisDocumentListParams.Type.W4_2020))
+                .addType(HrisDocumentListParams.Type.W4_2020)
                 .build()
         val expected = QueryParams.builder()
         expected.put("individual_ids[]", "string")

@@ -13,7 +13,7 @@ class SandboxConnectionAccountCreateParamsTest {
             .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .providerId("provider_id")
             .authenticationType(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
-            .products(listOf("string"))
+            .addProduct("string")
             .build()
     }
 
@@ -26,7 +26,7 @@ class SandboxConnectionAccountCreateParamsTest {
                 .authenticationType(
                     SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL
                 )
-                .products(listOf("string"))
+                .addProduct("string")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull

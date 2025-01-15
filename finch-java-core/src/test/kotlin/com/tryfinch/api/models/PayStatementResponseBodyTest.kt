@@ -12,70 +12,9 @@ class PayStatementResponseBodyTest {
         val payStatementResponseBody =
             PayStatementResponseBody.builder()
                 .paging(Paging.builder().count(0L).offset(0L).build())
-                .payStatements(
-                    listOf(
-                        PayStatement.builder()
-                            .earnings(
-                                listOf(
-                                    PayStatement.Earning.builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .hours(0.0)
-                                        .name("name")
-                                        .type(PayStatement.Earning.Type.SALARY)
-                                        .build()
-                                )
-                            )
-                            .employeeDeductions(
-                                listOf(
-                                    PayStatement.EmployeeDeduction.builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .name("name")
-                                        .preTax(true)
-                                        .type(BenefitType._401K)
-                                        .build()
-                                )
-                            )
-                            .employerContributions(
-                                listOf(
-                                    PayStatement.EmployerContribution.builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .name("name")
-                                        .type(BenefitType._401K)
-                                        .build()
-                                )
-                            )
-                            .grossPay(Money.builder().amount(0L).currency("currency").build())
-                            .individualId("individual_id")
-                            .netPay(Money.builder().amount(0L).currency("currency").build())
-                            .paymentMethod(PayStatement.PaymentMethod.CHECK)
-                            .taxes(
-                                listOf(
-                                    PayStatement.Tax.builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .employer(true)
-                                        .name("name")
-                                        .type(PayStatement.Tax.Type.STATE)
-                                        .build()
-                                )
-                            )
-                            .totalHours(0.0)
-                            .type(PayStatement.Type.REGULAR_PAYROLL)
-                            .build()
-                    )
-                )
-                .build()
-        assertThat(payStatementResponseBody).isNotNull
-        assertThat(payStatementResponseBody.paging())
-            .contains(Paging.builder().count(0L).offset(0L).build())
-        assertThat(payStatementResponseBody.payStatements().get())
-            .containsExactly(
-                PayStatement.builder()
-                    .earnings(
-                        listOf(
+                .addPayStatement(
+                    PayStatement.builder()
+                        .addEarning(
                             PayStatement.Earning.builder()
                                 .amount(0L)
                                 .currency("currency")
@@ -84,9 +23,7 @@ class PayStatementResponseBodyTest {
                                 .type(PayStatement.Earning.Type.SALARY)
                                 .build()
                         )
-                    )
-                    .employeeDeductions(
-                        listOf(
+                        .addEmployeeDeduction(
                             PayStatement.EmployeeDeduction.builder()
                                 .amount(0L)
                                 .currency("currency")
@@ -95,9 +32,7 @@ class PayStatementResponseBodyTest {
                                 .type(BenefitType._401K)
                                 .build()
                         )
-                    )
-                    .employerContributions(
-                        listOf(
+                        .addEmployerContribution(
                             PayStatement.EmployerContribution.builder()
                                 .amount(0L)
                                 .currency("currency")
@@ -105,13 +40,11 @@ class PayStatementResponseBodyTest {
                                 .type(BenefitType._401K)
                                 .build()
                         )
-                    )
-                    .grossPay(Money.builder().amount(0L).currency("currency").build())
-                    .individualId("individual_id")
-                    .netPay(Money.builder().amount(0L).currency("currency").build())
-                    .paymentMethod(PayStatement.PaymentMethod.CHECK)
-                    .taxes(
-                        listOf(
+                        .grossPay(Money.builder().amount(0L).currency("currency").build())
+                        .individualId("individual_id")
+                        .netPay(Money.builder().amount(0L).currency("currency").build())
+                        .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                        .addTax(
                             PayStatement.Tax.builder()
                                 .amount(0L)
                                 .currency("currency")
@@ -120,6 +53,55 @@ class PayStatementResponseBodyTest {
                                 .type(PayStatement.Tax.Type.STATE)
                                 .build()
                         )
+                        .totalHours(0.0)
+                        .type(PayStatement.Type.REGULAR_PAYROLL)
+                        .build()
+                )
+                .build()
+        assertThat(payStatementResponseBody).isNotNull
+        assertThat(payStatementResponseBody.paging())
+            .contains(Paging.builder().count(0L).offset(0L).build())
+        assertThat(payStatementResponseBody.payStatements().get())
+            .containsExactly(
+                PayStatement.builder()
+                    .addEarning(
+                        PayStatement.Earning.builder()
+                            .amount(0L)
+                            .currency("currency")
+                            .hours(0.0)
+                            .name("name")
+                            .type(PayStatement.Earning.Type.SALARY)
+                            .build()
+                    )
+                    .addEmployeeDeduction(
+                        PayStatement.EmployeeDeduction.builder()
+                            .amount(0L)
+                            .currency("currency")
+                            .name("name")
+                            .preTax(true)
+                            .type(BenefitType._401K)
+                            .build()
+                    )
+                    .addEmployerContribution(
+                        PayStatement.EmployerContribution.builder()
+                            .amount(0L)
+                            .currency("currency")
+                            .name("name")
+                            .type(BenefitType._401K)
+                            .build()
+                    )
+                    .grossPay(Money.builder().amount(0L).currency("currency").build())
+                    .individualId("individual_id")
+                    .netPay(Money.builder().amount(0L).currency("currency").build())
+                    .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                    .addTax(
+                        PayStatement.Tax.builder()
+                            .amount(0L)
+                            .currency("currency")
+                            .employer(true)
+                            .name("name")
+                            .type(PayStatement.Tax.Type.STATE)
+                            .build()
                     )
                     .totalHours(0.0)
                     .type(PayStatement.Type.REGULAR_PAYROLL)
