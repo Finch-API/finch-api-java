@@ -12,9 +12,9 @@ class PayGroupRetrieveResponseTest {
         val payGroupRetrieveResponse =
             PayGroupRetrieveResponse.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .individualIds(listOf("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"))
+                .addIndividualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .name("name")
-                .payFrequencies(listOf(PayGroupRetrieveResponse.PayFrequency.ANNUALLY))
+                .addPayFrequency(PayGroupRetrieveResponse.PayFrequency.ANNUALLY)
                 .build()
         assertThat(payGroupRetrieveResponse).isNotNull
         assertThat(payGroupRetrieveResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

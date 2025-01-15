@@ -22,12 +22,10 @@ class PayStatementServiceTest {
         val getPayStatementsResponse =
             payStatementService.retrieveMany(
                 HrisPayStatementRetrieveManyParams.builder()
-                    .requests(
-                        listOf(
-                            HrisPayStatementRetrieveManyParams.Request.builder()
-                                .paymentId("string")
-                                .build()
-                        )
+                    .addRequest(
+                        HrisPayStatementRetrieveManyParams.Request.builder()
+                            .paymentId("string")
+                            .build()
                     )
                     .build()
             )

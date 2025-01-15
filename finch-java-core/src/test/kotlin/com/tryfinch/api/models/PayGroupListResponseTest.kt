@@ -13,7 +13,7 @@ class PayGroupListResponseTest {
             PayGroupListResponse.builder()
                 .id("id")
                 .name("name")
-                .payFrequencies(listOf(PayGroupListResponse.PayFrequency.ANNUALLY))
+                .addPayFrequency(PayGroupListResponse.PayFrequency.ANNUALLY)
                 .build()
         assertThat(payGroupListResponse).isNotNull
         assertThat(payGroupListResponse.id()).contains("id")

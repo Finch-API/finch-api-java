@@ -13,13 +13,11 @@ class IndividualUpdateResponseTest {
             IndividualUpdateResponse.builder()
                 .id("id")
                 .dob("dob")
-                .emails(
-                    listOf(
-                        IndividualUpdateResponse.Email.builder()
-                            .data("data")
-                            .type(IndividualUpdateResponse.Email.Type.WORK)
-                            .build()
-                    )
+                .addEmail(
+                    IndividualUpdateResponse.Email.builder()
+                        .data("data")
+                        .type(IndividualUpdateResponse.Email.Type.WORK)
+                        .build()
                 )
                 .encryptedSsn("encrypted_ssn")
                 .ethnicity(IndividualUpdateResponse.Ethnicity.ASIAN)
@@ -27,13 +25,11 @@ class IndividualUpdateResponseTest {
                 .gender(IndividualUpdateResponse.Gender.FEMALE)
                 .lastName("last_name")
                 .middleName("middle_name")
-                .phoneNumbers(
-                    listOf(
-                        IndividualUpdateResponse.PhoneNumber.builder()
-                            .data("data")
-                            .type(IndividualUpdateResponse.PhoneNumber.Type.WORK)
-                            .build()
-                    )
+                .addPhoneNumber(
+                    IndividualUpdateResponse.PhoneNumber.builder()
+                        .data("data")
+                        .type(IndividualUpdateResponse.PhoneNumber.Type.WORK)
+                        .build()
                 )
                 .preferredName("preferred_name")
                 .residence(

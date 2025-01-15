@@ -27,13 +27,11 @@ class EmploymentServiceTest {
                 SandboxEmploymentUpdateParams.builder()
                     .individualId("individual_id")
                     .classCode("class_code")
-                    .customFields(
-                        listOf(
-                            SandboxEmploymentUpdateParams.CustomField.builder()
-                                .name("name")
-                                .value(JsonValue.from(mapOf<String, Any>()))
-                                .build()
-                        )
+                    .addCustomField(
+                        SandboxEmploymentUpdateParams.CustomField.builder()
+                            .name("name")
+                            .value(JsonValue.from(mapOf<String, Any>()))
+                            .build()
                     )
                     .department(
                         SandboxEmploymentUpdateParams.Department.builder().name("name").build()
@@ -55,15 +53,13 @@ class EmploymentServiceTest {
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
-                    .incomeHistory(
-                        listOf(
-                            Income.builder()
-                                .amount(0L)
-                                .currency("currency")
-                                .effectiveDate("effective_date")
-                                .unit(Income.Unit.YEARLY)
-                                .build()
-                        )
+                    .addIncomeHistory(
+                        Income.builder()
+                            .amount(0L)
+                            .currency("currency")
+                            .effectiveDate("effective_date")
+                            .unit(Income.Unit.YEARLY)
+                            .build()
                     )
                     .isActive(true)
                     .lastName("last_name")
