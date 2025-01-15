@@ -11,7 +11,7 @@ class HrisBenefitIndividualUnenrollManyParamsTest {
     fun createHrisBenefitIndividualUnenrollManyParams() {
         HrisBenefitIndividualUnenrollManyParams.builder()
             .benefitId("benefit_id")
-            .individualIds(listOf("string"))
+            .addIndividualId("string")
             .build()
     }
 
@@ -20,7 +20,7 @@ class HrisBenefitIndividualUnenrollManyParamsTest {
         val params =
             HrisBenefitIndividualUnenrollManyParams.builder()
                 .benefitId("benefit_id")
-                .individualIds(listOf("string"))
+                .addIndividualId("string")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull

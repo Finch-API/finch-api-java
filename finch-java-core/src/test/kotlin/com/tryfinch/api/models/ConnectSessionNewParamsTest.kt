@@ -12,7 +12,7 @@ class ConnectSessionNewParamsTest {
         ConnectSessionNewParams.builder()
             .customerId("x")
             .customerName("x")
-            .products(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+            .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
             .customerEmail("dev@stainlessapi.com")
             .integration(
                 ConnectSessionNewParams.Integration.builder()
@@ -33,7 +33,7 @@ class ConnectSessionNewParamsTest {
             ConnectSessionNewParams.builder()
                 .customerId("x")
                 .customerName("x")
-                .products(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+                .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
                 .customerEmail("dev@stainlessapi.com")
                 .integration(
                     ConnectSessionNewParams.Integration.builder()
@@ -72,7 +72,7 @@ class ConnectSessionNewParamsTest {
             ConnectSessionNewParams.builder()
                 .customerId("x")
                 .customerName("x")
-                .products(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+                .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
