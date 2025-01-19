@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Read company pay groups and frequencies */
 class PayrollPayGroupListPageAsync
 private constructor(
     private val payGroupsService: PayGroupServiceAsync,

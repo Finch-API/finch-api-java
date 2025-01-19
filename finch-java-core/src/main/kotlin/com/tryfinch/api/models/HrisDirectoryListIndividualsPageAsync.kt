@@ -20,6 +20,8 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Read company directory and organization structure */
+@Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPageAsync
 private constructor(
     private val directoryService: DirectoryServiceAsync,
@@ -64,7 +66,6 @@ private constructor(
     }
 
     fun getNextPage(): CompletableFuture<Optional<HrisDirectoryListIndividualsPageAsync>> {
-        @Suppress("DEPRECATION")
         return getNextPageParams()
             .map { directoryService.listIndividuals(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }

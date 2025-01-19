@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyPage
 private constructor(
     private val individualsService: IndividualService,

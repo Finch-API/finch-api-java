@@ -891,6 +891,10 @@ private constructor(
                 )
         }
 
+        /**
+         * The secondary employment type of the individual. Options: `full_time`, `part_time`,
+         * `intern`, `temp`, `seasonal` and `individual_contractor`.
+         */
         class Subtype
         @JsonCreator
         private constructor(
@@ -972,6 +976,7 @@ private constructor(
             override fun toString() = value.toString()
         }
 
+        /** The main employment type of the individual. */
         class Type
         @JsonCreator
         private constructor(
@@ -1047,6 +1052,7 @@ private constructor(
             "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
+    /** The detailed employment status of the individual. */
     class EmploymentStatus
     @JsonCreator
     private constructor(

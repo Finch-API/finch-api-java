@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Get deductions metadata */
 class HrisBenefitListSupportedBenefitsPageAsync
 private constructor(
     private val benefitsService: BenefitServiceAsync,

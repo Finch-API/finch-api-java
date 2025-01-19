@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Read company pay groups and frequencies */
 class PayrollPayGroupListPage
 private constructor(
     private val payGroupsService: PayGroupService,

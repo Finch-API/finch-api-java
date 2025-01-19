@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 private constructor(
     private val individualsService: IndividualServiceAsync,

@@ -209,6 +209,7 @@ private constructor(
             )
     }
 
+    /** The type of document. */
     class Type
     @JsonCreator
     private constructor(

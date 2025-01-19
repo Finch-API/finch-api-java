@@ -45,13 +45,13 @@ private constructor(
 ) {
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     fun authenticationType(): AuthenticationType =
         authenticationType.getRequired("authentication_type")
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     fun products(): List<String> = products.getRequired("products")
 
@@ -63,14 +63,20 @@ private constructor(
         Optional.ofNullable(connectionId.getNullable("connection_id"))
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     @JsonProperty("authentication_type")
     @ExcludeMissing
     fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     @JsonProperty("products") @ExcludeMissing fun _products(): JsonField<List<String>> = products
 
@@ -131,9 +137,11 @@ private constructor(
         }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun authenticationType(authenticationType: AuthenticationType) =
@@ -144,9 +152,11 @@ private constructor(
         }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         fun products(products: List<String>) = products(JsonField.of(products))
