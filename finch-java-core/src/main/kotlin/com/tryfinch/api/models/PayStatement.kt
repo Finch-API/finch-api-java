@@ -568,6 +568,7 @@ private constructor(
                 )
         }
 
+        /** The type of earning. */
         class Type
         @JsonCreator
         private constructor(
@@ -1081,6 +1082,7 @@ private constructor(
             "EmployerContribution{amount=$amount, currency=$currency, name=$name, type=$type, additionalProperties=$additionalProperties}"
     }
 
+    /** The payment method. */
     class PaymentMethod
     @JsonCreator
     private constructor(
@@ -1317,6 +1319,7 @@ private constructor(
                 )
         }
 
+        /** The type of taxes. */
         class Type
         @JsonCreator
         private constructor(
@@ -1404,6 +1407,7 @@ private constructor(
             "Tax{amount=$amount, currency=$currency, employer=$employer, name=$name, type=$type, additionalProperties=$additionalProperties}"
     }
 
+    /** The type of the payment associated with the pay statement. */
     class Type
     @JsonCreator
     private constructor(

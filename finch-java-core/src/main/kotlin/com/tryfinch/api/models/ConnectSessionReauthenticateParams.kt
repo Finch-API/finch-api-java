@@ -494,6 +494,7 @@ constructor(
             )
     }
 
+    /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts
     @JsonCreator
     private constructor(

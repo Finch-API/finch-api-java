@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Return details on all available payroll and HR systems. */
 class ProviderListPageAsync
 private constructor(
     private val providersService: ProviderServiceAsync,

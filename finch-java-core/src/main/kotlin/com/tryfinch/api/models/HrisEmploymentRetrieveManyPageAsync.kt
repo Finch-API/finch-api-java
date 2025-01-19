@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Read individual employment and income data */
 class HrisEmploymentRetrieveManyPageAsync
 private constructor(
     private val employmentsService: EmploymentServiceAsync,

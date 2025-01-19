@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Read payroll and contractor related payments by the company. */
 class HrisPaymentListPage
 private constructor(
     private val paymentsService: PaymentService,

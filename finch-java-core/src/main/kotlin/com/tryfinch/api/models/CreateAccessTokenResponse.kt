@@ -60,13 +60,13 @@ private constructor(
     fun accessToken(): String = accessToken.getRequired("access_token")
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     /** The type of application associated with a token. */
     fun clientType(): ClientType = clientType.getRequired("client_type")
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID. */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     /** The Finch UUID of the connection associated with the `access_token`. */
     fun connectionId(): String = connectionId.getRequired("connection_id")
@@ -99,7 +99,10 @@ private constructor(
     fun _accessToken(): JsonField<String> = accessToken
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     /** The type of application associated with a token. */
     @JsonProperty("client_type")
@@ -107,7 +110,10 @@ private constructor(
     fun _clientType(): JsonField<ClientType> = clientType
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID. */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     /** The Finch UUID of the connection associated with the `access_token`. */
     @JsonProperty("connection_id")
@@ -207,11 +213,13 @@ private constructor(
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /** The type of application associated with a token. */
@@ -223,11 +231,13 @@ private constructor(
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** The Finch UUID of the connection associated with the `access_token`. */
@@ -342,6 +352,7 @@ private constructor(
             )
     }
 
+    /** The type of application associated with a token. */
     class ClientType
     @JsonCreator
     private constructor(
@@ -405,6 +416,11 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /**
+     * The type of the connection associated with the token.
+     * - `provider` - connection to an external provider
+     * - `finch` - finch-generated data.
+     */
     class ConnectionType
     @JsonCreator
     private constructor(

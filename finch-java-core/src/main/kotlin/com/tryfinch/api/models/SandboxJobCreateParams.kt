@@ -296,6 +296,7 @@ constructor(
             )
     }
 
+    /** The type of job to start. Currently the only supported type is `data_sync_all` */
     class Type
     @JsonCreator
     private constructor(

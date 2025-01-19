@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** List all company-wide deductions and contributions. */
 class HrisBenefitListPage
 private constructor(
     private val benefitsService: BenefitService,

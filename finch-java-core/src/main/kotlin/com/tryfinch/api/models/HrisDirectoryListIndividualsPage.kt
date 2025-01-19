@@ -19,6 +19,8 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Read company directory and organization structure */
+@Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPage
 private constructor(
     private val directoryService: DirectoryService,
@@ -63,7 +65,6 @@ private constructor(
     }
 
     fun getNextPage(): Optional<HrisDirectoryListIndividualsPage> {
-        @Suppress("DEPRECATION")
         return getNextPageParams().map { directoryService.listIndividuals(it) }
     }
 
