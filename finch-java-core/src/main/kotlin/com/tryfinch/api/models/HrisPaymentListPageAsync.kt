@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Read payroll and contractor related payments by the company. */
 class HrisPaymentListPageAsync
 private constructor(
     private val paymentsService: PaymentServiceAsync,

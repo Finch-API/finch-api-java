@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Read company directory and organization structure */
 class HrisDirectoryListPage
 private constructor(
     private val directoryService: DirectoryService,

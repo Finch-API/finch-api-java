@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Read company directory and organization structure */
 class HrisDirectoryListPageAsync
 private constructor(
     private val directoryService: DirectoryServiceAsync,

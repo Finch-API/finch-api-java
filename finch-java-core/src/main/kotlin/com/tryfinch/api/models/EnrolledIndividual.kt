@@ -277,6 +277,7 @@ private constructor(
             "Body{finchCode=$finchCode, message=$message, name=$name, additionalProperties=$additionalProperties}"
     }
 
+    /** HTTP status code. Either 201 or 200 */
     class Code
     @JsonCreator
     private constructor(

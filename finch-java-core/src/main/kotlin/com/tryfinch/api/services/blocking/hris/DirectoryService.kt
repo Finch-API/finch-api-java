@@ -20,8 +20,8 @@ interface DirectoryService {
     ): HrisDirectoryListPage
 
     /** Read company directory and organization structure */
-    @JvmOverloads
     @Deprecated("use `list` instead")
+    @JvmOverloads
     fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
         requestOptions: RequestOptions = RequestOptions.none()

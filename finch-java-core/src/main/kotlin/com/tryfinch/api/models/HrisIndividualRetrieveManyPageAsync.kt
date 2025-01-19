@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyPageAsync
 private constructor(
     private val individualsService: IndividualServiceAsync,

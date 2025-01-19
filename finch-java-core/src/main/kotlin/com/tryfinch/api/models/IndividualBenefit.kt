@@ -344,6 +344,7 @@ private constructor(
                 )
         }
 
+        /** Type for HSA contribution limit if the benefit is a HSA. */
         class HsaContributionLimit
         @JsonCreator
         private constructor(

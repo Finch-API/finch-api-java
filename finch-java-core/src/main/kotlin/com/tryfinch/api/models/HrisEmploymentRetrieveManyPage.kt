@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Read individual employment and income data */
 class HrisEmploymentRetrieveManyPage
 private constructor(
     private val employmentsService: EmploymentService,

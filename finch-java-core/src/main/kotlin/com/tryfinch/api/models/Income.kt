@@ -195,6 +195,10 @@ private constructor(
             )
     }
 
+    /**
+     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     */
     class Unit
     @JsonCreator
     private constructor(
