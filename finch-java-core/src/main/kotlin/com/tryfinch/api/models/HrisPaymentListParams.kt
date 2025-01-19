@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.time.LocalDate
@@ -167,8 +168,8 @@ constructor(
 
         fun build(): HrisPaymentListParams =
             HrisPaymentListParams(
-                checkNotNull(endDate) { "`endDate` is required but was not set" },
-                checkNotNull(startDate) { "`startDate` is required but was not set" },
+                checkRequired("endDate", endDate),
+                checkRequired("startDate", startDate),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

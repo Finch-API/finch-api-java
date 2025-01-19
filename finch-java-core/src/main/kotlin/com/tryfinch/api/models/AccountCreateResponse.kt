@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -48,13 +49,13 @@ private constructor(
     fun accessToken(): String = accessToken.getRequired("access_token")
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     fun authenticationType(): AuthenticationType =
         authenticationType.getRequired("authentication_type")
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     /** The ID of the new connection */
     fun connectionId(): String = connectionId.getRequired("connection_id")
@@ -69,14 +70,20 @@ private constructor(
     fun _accessToken(): JsonField<String> = accessToken
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     @JsonProperty("authentication_type")
     @ExcludeMissing
     fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     /** The ID of the new connection */
     @JsonProperty("connection_id")
@@ -95,16 +102,18 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): AccountCreateResponse = apply {
-        if (!validated) {
-            accessToken()
-            accountId()
-            authenticationType()
-            companyId()
-            connectionId()
-            products()
-            providerId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accessToken()
+        accountId()
+        authenticationType()
+        companyId()
+        connectionId()
+        products()
+        providerId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -142,9 +151,11 @@ private constructor(
         fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun authenticationType(authenticationType: AuthenticationType) =
@@ -155,9 +166,11 @@ private constructor(
         }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** The ID of the new connection */
@@ -214,16 +227,13 @@ private constructor(
 
         fun build(): AccountCreateResponse =
             AccountCreateResponse(
-                checkNotNull(accessToken) { "`accessToken` is required but was not set" },
-                checkNotNull(accountId) { "`accountId` is required but was not set" },
-                checkNotNull(authenticationType) {
-                    "`authenticationType` is required but was not set"
-                },
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
-                checkNotNull(connectionId) { "`connectionId` is required but was not set" },
-                checkNotNull(products) { "`products` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(providerId) { "`providerId` is required but was not set" },
+                checkRequired("accessToken", accessToken),
+                checkRequired("accountId", accountId),
+                checkRequired("authenticationType", authenticationType),
+                checkRequired("companyId", companyId),
+                checkRequired("connectionId", connectionId),
+                checkRequired("products", products).map { it.toImmutable() },
+                checkRequired("providerId", providerId),
                 additionalProperties.toImmutable(),
             )
     }

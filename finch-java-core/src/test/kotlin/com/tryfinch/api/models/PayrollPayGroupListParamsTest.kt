@@ -12,7 +12,7 @@ class PayrollPayGroupListParamsTest {
     fun createPayrollPayGroupListParams() {
         PayrollPayGroupListParams.builder()
             .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .payFrequencies(listOf("string"))
+            .addPayFrequency("string")
             .build()
     }
 
@@ -21,7 +21,7 @@ class PayrollPayGroupListParamsTest {
         val params =
             PayrollPayGroupListParams.builder()
                 .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .payFrequencies(listOf("string"))
+                .addPayFrequency("string")
                 .build()
         val expected = QueryParams.builder()
         expected.put("individual_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

@@ -21,6 +21,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -340,10 +341,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): DataSyncAll = apply {
-            if (!validated) {
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -390,12 +393,10 @@ constructor(
             }
 
             fun build(): DataSyncAll =
-                DataSyncAll(
-                    checkNotNull(type) { "`type` is required but was not set" },
-                    additionalProperties.toImmutable()
-                )
+                DataSyncAll(checkRequired("type", type), additionalProperties.toImmutable())
         }
 
+        /** The type of job to start. */
         class Type
         @JsonCreator
         private constructor(
@@ -498,11 +499,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): W4FormEmployeeSync = apply {
-            if (!validated) {
-                individualId()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            individualId()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -560,12 +563,13 @@ constructor(
 
             fun build(): W4FormEmployeeSync =
                 W4FormEmployeeSync(
-                    checkNotNull(individualId) { "`individualId` is required but was not set" },
-                    checkNotNull(type) { "`type` is required but was not set" },
+                    checkRequired("individualId", individualId),
+                    checkRequired("type", type),
                     additionalProperties.toImmutable(),
                 )
         }
 
+        /** The type of job to start. */
         class Type
         @JsonCreator
         private constructor(

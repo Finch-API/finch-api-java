@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Read individual employment and income data */
 class HrisEmploymentRetrieveManyPage
 private constructor(
     private val employmentsService: EmploymentService,
@@ -82,8 +83,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
-
         fun responses(): List<EmploymentDataResponse> =
             responses.getNullable("responses") ?: listOf()
 
@@ -95,11 +94,15 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                responses().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            responses().map { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

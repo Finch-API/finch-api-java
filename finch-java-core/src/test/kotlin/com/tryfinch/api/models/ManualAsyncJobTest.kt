@@ -12,7 +12,7 @@ class ManualAsyncJobTest {
     fun createManualAsyncJob() {
         val manualAsyncJob =
             ManualAsyncJob.builder()
-                .body(listOf(JsonValue.from(mapOf<String, Any>())))
+                .addBody(JsonValue.from(mapOf<String, Any>()))
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .status(ManualAsyncJob.Status.PENDING)
                 .build()

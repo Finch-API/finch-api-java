@@ -7,6 +7,7 @@ import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.errors.FinchInvalidDataException
 
+/** Type of benefit. */
 class BenefitType
 @JsonCreator
 private constructor(

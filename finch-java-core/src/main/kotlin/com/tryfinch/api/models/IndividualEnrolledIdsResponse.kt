@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -45,11 +46,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): IndividualEnrolledIdsResponse = apply {
-        if (!validated) {
-            benefitId()
-            individualIds()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        benefitId()
+        individualIds()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -116,9 +119,8 @@ private constructor(
 
         fun build(): IndividualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse(
-                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
-                checkNotNull(individualIds) { "`individualIds` is required but was not set" }
-                    .map { it.toImmutable() },
+                checkRequired("benefitId", benefitId),
+                checkRequired("individualIds", individualIds).map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }

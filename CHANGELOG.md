@@ -1,5 +1,27 @@
 # Changelog
 
+## 3.3.1 (2025-01-19)
+
+Full Changelog: [v3.3.0...v3.3.1](https://github.com/Finch-API/finch-api-java/compare/v3.3.0...v3.3.1)
+
+### Chores
+
+* **internal:** add and tweak check functions ([#401](https://github.com/Finch-API/finch-api-java/issues/401)) ([a08f4ba](https://github.com/Finch-API/finch-api-java/commit/a08f4ba13b492b408550783c8306668039963250))
+* **internal:** codegen related update ([#394](https://github.com/Finch-API/finch-api-java/issues/394)) ([94b4589](https://github.com/Finch-API/finch-api-java/commit/94b45894c92283b2f24a8c0c9938dc456203e7e9))
+* **internal:** extract a `checkRequired` function ([#400](https://github.com/Finch-API/finch-api-java/issues/400)) ([f0fec86](https://github.com/Finch-API/finch-api-java/commit/f0fec86853463134ddda5385e801c568de18487c))
+* **internal:** fix up root `build.gradle.kts` formatting ([#396](https://github.com/Finch-API/finch-api-java/issues/396)) ([595151c](https://github.com/Finch-API/finch-api-java/commit/595151c73573c47ce6d789431c35f3ad1665eac6))
+* **internal:** remove unused Gradle imports ([#397](https://github.com/Finch-API/finch-api-java/issues/397)) ([c5f656d](https://github.com/Finch-API/finch-api-java/commit/c5f656d35f9642c946d18330bec0a453b522f234))
+* **internal:** remove unused or unnecessary Gradle imports ([#398](https://github.com/Finch-API/finch-api-java/issues/398)) ([5d706bc](https://github.com/Finch-API/finch-api-java/commit/5d706bc05046466b2b7a3ee43ec85c21943cb731))
+* **internal:** tweak client options nullability handling ([a08f4ba](https://github.com/Finch-API/finch-api-java/commit/a08f4ba13b492b408550783c8306668039963250))
+* **internal:** update some gradle formatting ([#399](https://github.com/Finch-API/finch-api-java/issues/399)) ([623b174](https://github.com/Finch-API/finch-api-java/commit/623b1747a63e47b165e18cf5428faa9c9baa8d98))
+* **internal:** upgrade kotlin compiler and gradle ([#403](https://github.com/Finch-API/finch-api-java/issues/403)) ([0d0766b](https://github.com/Finch-API/finch-api-java/commit/0d0766b6c48e7efd60dbb7f3e2306771d307526c))
+* simplify examples involving lists ([#402](https://github.com/Finch-API/finch-api-java/issues/402)) ([4520086](https://github.com/Finch-API/finch-api-java/commit/4520086fb9d7c43ffec2386fa585e3a56107f7ec))
+
+
+### Documentation
+
+* add more documentation ([#404](https://github.com/Finch-API/finch-api-java/issues/404)) ([1cef90d](https://github.com/Finch-API/finch-api-java/commit/1cef90d50b2920f67b9455c0b1a1cdad5d86a0d0))
+
 ## 3.3.0 (2025-01-09)
 
 Full Changelog: [v3.2.0...v3.3.0](https://github.com/Finch-API/finch-api-java/compare/v3.2.0...v3.3.0)

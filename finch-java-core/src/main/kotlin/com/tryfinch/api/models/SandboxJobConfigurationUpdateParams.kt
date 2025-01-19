@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -76,11 +77,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): SandboxJobConfigurationUpdateBody = apply {
-            if (!validated) {
-                completionStatus()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            completionStatus()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -138,10 +141,8 @@ constructor(
 
             fun build(): SandboxJobConfigurationUpdateBody =
                 SandboxJobConfigurationUpdateBody(
-                    checkNotNull(completionStatus) {
-                        "`completionStatus` is required but was not set"
-                    },
-                    checkNotNull(type) { "`type` is required but was not set" },
+                    checkRequired("completionStatus", completionStatus),
+                    checkRequired("type", type),
                     additionalProperties.toImmutable(),
                 )
         }

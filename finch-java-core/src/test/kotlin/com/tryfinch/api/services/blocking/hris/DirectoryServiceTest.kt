@@ -33,7 +33,6 @@ class DirectoryServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val directoryService = client.hris().directory()
-        @Suppress("DEPRECATION")
         val getDirectoryResponse =
             directoryService.listIndividuals(HrisDirectoryListIndividualsParams.builder().build())
         println(getDirectoryResponse)

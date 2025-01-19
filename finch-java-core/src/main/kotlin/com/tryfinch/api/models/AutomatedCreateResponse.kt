@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -67,13 +68,15 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): AutomatedCreateResponse = apply {
-        if (!validated) {
-            allowedRefreshes()
-            jobId()
-            jobUrl()
-            remainingRefreshes()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        allowedRefreshes()
+        jobId()
+        jobUrl()
+        remainingRefreshes()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -151,12 +154,10 @@ private constructor(
 
         fun build(): AutomatedCreateResponse =
             AutomatedCreateResponse(
-                checkNotNull(allowedRefreshes) { "`allowedRefreshes` is required but was not set" },
-                checkNotNull(jobId) { "`jobId` is required but was not set" },
-                checkNotNull(jobUrl) { "`jobUrl` is required but was not set" },
-                checkNotNull(remainingRefreshes) {
-                    "`remainingRefreshes` is required but was not set"
-                },
+                checkRequired("allowedRefreshes", allowedRefreshes),
+                checkRequired("jobId", jobId),
+                checkRequired("jobUrl", jobUrl),
+                checkRequired("remainingRefreshes", remainingRefreshes),
                 additionalProperties.toImmutable(),
             )
     }

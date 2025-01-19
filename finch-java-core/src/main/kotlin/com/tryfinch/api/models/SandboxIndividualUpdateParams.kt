@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -273,21 +274,23 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): SandboxIndividualUpdateBody = apply {
-            if (!validated) {
-                dob()
-                emails().map { it.forEach { it.validate() } }
-                encryptedSsn()
-                ethnicity()
-                firstName()
-                gender()
-                lastName()
-                middleName()
-                phoneNumbers().map { it.forEach { it?.validate() } }
-                preferredName()
-                residence().map { it.validate() }
-                ssn()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            dob()
+            emails().ifPresent { it.forEach { it.validate() } }
+            encryptedSsn()
+            ethnicity()
+            firstName()
+            gender()
+            lastName()
+            middleName()
+            phoneNumbers().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+            preferredName()
+            residence().ifPresent { it.validate() }
+            ssn()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -825,7 +828,7 @@ constructor(
 
         fun build(): SandboxIndividualUpdateParams =
             SandboxIndividualUpdateParams(
-                checkNotNull(individualId) { "`individualId` is required but was not set" },
+                checkRequired("individualId", individualId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -859,11 +862,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Email = apply {
-            if (!validated) {
-                data()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -998,6 +1003,7 @@ constructor(
             "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
     }
 
+    /** The EEOC-defined ethnicity of the individual. */
     class Ethnicity
     @JsonCreator
     private constructor(
@@ -1092,6 +1098,7 @@ constructor(
         override fun toString() = value.toString()
     }
 
+    /** The gender of the individual. */
     class Gender
     @JsonCreator
     private constructor(
@@ -1188,11 +1195,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): PhoneNumber = apply {
-            if (!validated) {
-                data()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

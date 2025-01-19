@@ -20,6 +20,11 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/**
+ * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are sorted in
+ * descending order by submission time. For scheduled jobs such as data syncs, only the next
+ * scheduled job is shown.
+ */
 class JobAutomatedListPageAsync
 private constructor(
     private val automatedService: AutomatedServiceAsync,
@@ -97,8 +102,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
-
         fun data(): List<AutomatedAsyncJob> = data.getNullable("data") ?: listOf()
 
         fun paging(): Paging = paging.getRequired("paging")
@@ -113,12 +116,16 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                data().map { it.validate() }
-                paging().validate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data().map { it.validate() }
+            paging().validate()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

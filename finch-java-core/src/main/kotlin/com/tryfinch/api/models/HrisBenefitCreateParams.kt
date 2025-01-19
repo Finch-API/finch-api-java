@@ -115,12 +115,14 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): HrisBenefitCreateBody = apply {
-            if (!validated) {
-                description()
-                frequency()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            description()
+            frequency()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

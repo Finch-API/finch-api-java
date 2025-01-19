@@ -78,13 +78,15 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): Income = apply {
-        if (!validated) {
-            amount()
-            currency()
-            effectiveDate()
-            unit()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        amount()
+        currency()
+        effectiveDate()
+        unit()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -193,6 +195,10 @@ private constructor(
             )
     }
 
+    /**
+     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     */
     class Unit
     @JsonCreator
     private constructor(

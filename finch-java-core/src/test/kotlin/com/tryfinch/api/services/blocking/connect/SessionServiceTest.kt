@@ -25,7 +25,7 @@ class SessionServiceTest {
                 ConnectSessionNewParams.builder()
                     .customerId("x")
                     .customerName("x")
-                    .products(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+                    .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
                     .customerEmail("dev@stainlessapi.com")
                     .integration(
                         ConnectSessionNewParams.Integration.builder()
@@ -56,7 +56,7 @@ class SessionServiceTest {
                 ConnectSessionReauthenticateParams.builder()
                     .connectionId("connection_id")
                     .minutesToExpire(0L)
-                    .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+                    .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
                     .redirectUri("https://example.com")
                     .build()
             )

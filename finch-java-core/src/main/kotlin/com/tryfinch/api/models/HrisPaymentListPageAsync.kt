@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Read payroll and contractor related payments by the company. */
 class HrisPaymentListPageAsync
 private constructor(
     private val paymentsService: PaymentServiceAsync,
@@ -84,8 +85,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
-
         fun items(): List<Payment> = items.getNullable("items") ?: listOf()
 
         @JsonProperty("items")
@@ -95,11 +94,15 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                items().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            items().map { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

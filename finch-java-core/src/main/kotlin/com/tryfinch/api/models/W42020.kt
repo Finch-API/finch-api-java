@@ -57,12 +57,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): W42020 = apply {
-        if (!validated) {
-            data().map { it.validate() }
-            type()
-            year()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        data().ifPresent { it.validate() }
+        type()
+        year()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -259,17 +261,19 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Data = apply {
-            if (!validated) {
-                amountForOtherDependents()
-                amountForQualifyingChildrenUnder17()
-                deductions()
-                extraWithholding()
-                filingStatus()
-                individualId()
-                otherIncome()
-                totalClaimDependentAndOtherCredits()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            amountForOtherDependents()
+            amountForQualifyingChildrenUnder17()
+            deductions()
+            extraWithholding()
+            filingStatus()
+            individualId()
+            otherIncome()
+            totalClaimDependentAndOtherCredits()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -474,6 +478,7 @@ private constructor(
                 )
         }
 
+        /** The individual's filing status for tax purposes. */
         class FilingStatus
         @JsonCreator
         private constructor(
@@ -560,6 +565,7 @@ private constructor(
             "Data{amountForOtherDependents=$amountForOtherDependents, amountForQualifyingChildrenUnder17=$amountForQualifyingChildrenUnder17, deductions=$deductions, extraWithholding=$extraWithholding, filingStatus=$filingStatus, individualId=$individualId, otherIncome=$otherIncome, totalClaimDependentAndOtherCredits=$totalClaimDependentAndOtherCredits, additionalProperties=$additionalProperties}"
     }
 
+    /** Specifies the form type, indicating that this document is a 2020 W4 form. */
     class Type
     @JsonCreator
     private constructor(

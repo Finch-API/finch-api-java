@@ -17,7 +17,7 @@ class CreateAccessTokenResponseTest {
                 .companyId("company_id")
                 .connectionId("connection_id")
                 .connectionType(CreateAccessTokenResponse.ConnectionType.PROVIDER)
-                .products(listOf("string"))
+                .addProduct("string")
                 .providerId("provider_id")
                 .customerId("customer_id")
                 .tokenType("token_type")

@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -44,13 +45,13 @@ private constructor(
 ) {
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     fun authenticationType(): AuthenticationType =
         authenticationType.getRequired("authentication_type")
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     fun products(): List<String> = products.getRequired("products")
 
@@ -62,14 +63,20 @@ private constructor(
         Optional.ofNullable(connectionId.getNullable("connection_id"))
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     @JsonProperty("authentication_type")
     @ExcludeMissing
     fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
 
     /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     @JsonProperty("products") @ExcludeMissing fun _products(): JsonField<List<String>> = products
 
@@ -88,15 +95,17 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): AccountUpdateResponse = apply {
-        if (!validated) {
-            accountId()
-            authenticationType()
-            companyId()
-            products()
-            providerId()
-            connectionId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accountId()
+        authenticationType()
+        companyId()
+        products()
+        providerId()
+        connectionId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -128,9 +137,11 @@ private constructor(
         }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun authenticationType(authenticationType: AuthenticationType) =
@@ -141,9 +152,11 @@ private constructor(
         }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         fun products(products: List<String>) = products(JsonField.of(products))
@@ -200,14 +213,11 @@ private constructor(
 
         fun build(): AccountUpdateResponse =
             AccountUpdateResponse(
-                checkNotNull(accountId) { "`accountId` is required but was not set" },
-                checkNotNull(authenticationType) {
-                    "`authenticationType` is required but was not set"
-                },
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
-                checkNotNull(products) { "`products` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(providerId) { "`providerId` is required but was not set" },
+                checkRequired("accountId", accountId),
+                checkRequired("authenticationType", authenticationType),
+                checkRequired("companyId", companyId),
+                checkRequired("products", products).map { it.toImmutable() },
+                checkRequired("providerId", providerId),
                 connectionId,
                 additionalProperties.toImmutable(),
             )

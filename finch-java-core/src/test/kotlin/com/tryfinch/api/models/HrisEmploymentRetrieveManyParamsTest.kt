@@ -10,12 +10,10 @@ class HrisEmploymentRetrieveManyParamsTest {
     @Test
     fun createHrisEmploymentRetrieveManyParams() {
         HrisEmploymentRetrieveManyParams.builder()
-            .requests(
-                listOf(
-                    HrisEmploymentRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+            .addRequest(
+                HrisEmploymentRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
             .build()
     }
@@ -24,12 +22,10 @@ class HrisEmploymentRetrieveManyParamsTest {
     fun getBody() {
         val params =
             HrisEmploymentRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisEmploymentRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
+                .addRequest(
+                    HrisEmploymentRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
                 )
                 .build()
         val body = params.getBody()
@@ -48,12 +44,10 @@ class HrisEmploymentRetrieveManyParamsTest {
     fun getBodyWithoutOptionalFields() {
         val params =
             HrisEmploymentRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisEmploymentRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
+                .addRequest(
+                    HrisEmploymentRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
                 )
                 .build()
         val body = params.getBody()

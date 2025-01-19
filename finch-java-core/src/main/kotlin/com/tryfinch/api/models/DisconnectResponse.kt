@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -38,10 +39,12 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): DisconnectResponse = apply {
-        if (!validated) {
-            status()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        status()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -88,10 +91,7 @@ private constructor(
         }
 
         fun build(): DisconnectResponse =
-            DisconnectResponse(
-                checkNotNull(status) { "`status` is required but was not set" },
-                additionalProperties.toImmutable()
-            )
+            DisconnectResponse(checkRequired("status", status), additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

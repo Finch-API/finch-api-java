@@ -20,6 +20,11 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/**
+ * Read detailed pay statements for each individual.
+ *
+ * Deduction and contribution types are supported by the payroll systems that supports Benefits.
+ */
 class HrisPayStatementRetrieveManyPageAsync
 private constructor(
     private val payStatementsService: PayStatementServiceAsync,
@@ -85,8 +90,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
-
         fun responses(): List<PayStatementResponse> = responses.getNullable("responses") ?: listOf()
 
         @JsonProperty("responses")
@@ -97,11 +100,15 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                responses().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            responses().map { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

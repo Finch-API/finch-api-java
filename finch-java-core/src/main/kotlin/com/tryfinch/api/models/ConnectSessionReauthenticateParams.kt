@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -130,13 +131,15 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): ConnectSessionReauthenticateBody = apply {
-            if (!validated) {
-                connectionId()
-                minutesToExpire()
-                products()
-                redirectUri()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            connectionId()
+            minutesToExpire()
+            products()
+            redirectUri()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -261,7 +264,7 @@ constructor(
 
             fun build(): ConnectSessionReauthenticateBody =
                 ConnectSessionReauthenticateBody(
-                    checkNotNull(connectionId) { "`connectionId` is required but was not set" },
+                    checkRequired("connectionId", connectionId),
                     minutesToExpire,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
                     redirectUri,
@@ -491,6 +494,7 @@ constructor(
             )
     }
 
+    /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts
     @JsonCreator
     private constructor(

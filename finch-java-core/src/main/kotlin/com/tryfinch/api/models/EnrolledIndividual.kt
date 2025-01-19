@@ -54,12 +54,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): EnrolledIndividual = apply {
-        if (!validated) {
-            body().map { it.validate() }
-            code()
-            individualId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        body().ifPresent { it.validate() }
+        code()
+        individualId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -170,12 +172,14 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Body = apply {
-            if (!validated) {
-                finchCode()
-                message()
-                name()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            finchCode()
+            message()
+            name()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -273,6 +277,7 @@ private constructor(
             "Body{finchCode=$finchCode, message=$message, name=$name, additionalProperties=$additionalProperties}"
     }
 
+    /** HTTP status code. Either 201 or 200 */
     class Code
     @JsonCreator
     private constructor(

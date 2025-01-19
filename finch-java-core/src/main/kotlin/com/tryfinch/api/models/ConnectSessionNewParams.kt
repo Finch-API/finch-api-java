@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -180,18 +181,20 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): ConnectSessionNewBody = apply {
-            if (!validated) {
-                customerId()
-                customerName()
-                products()
-                customerEmail()
-                integration().map { it.validate() }
-                manual()
-                minutesToExpire()
-                redirectUri()
-                sandbox()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            customerId()
+            customerName()
+            products()
+            customerEmail()
+            integration().ifPresent { it.validate() }
+            manual()
+            minutesToExpire()
+            redirectUri()
+            sandbox()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -351,10 +354,9 @@ constructor(
 
             fun build(): ConnectSessionNewBody =
                 ConnectSessionNewBody(
-                    checkNotNull(customerId) { "`customerId` is required but was not set" },
-                    checkNotNull(customerName) { "`customerName` is required but was not set" },
-                    checkNotNull(products) { "`products` is required but was not set" }
-                        .map { it.toImmutable() },
+                    checkRequired("customerId", customerId),
+                    checkRequired("customerName", customerName),
+                    checkRequired("products", products).map { it.toImmutable() },
                     customerEmail,
                     integration,
                     manual,
@@ -609,6 +611,7 @@ constructor(
             )
     }
 
+    /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts
     @JsonCreator
     private constructor(
@@ -734,11 +737,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Integration = apply {
-            if (!validated) {
-                authMethod()
-                provider()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            authMethod()
+            provider()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

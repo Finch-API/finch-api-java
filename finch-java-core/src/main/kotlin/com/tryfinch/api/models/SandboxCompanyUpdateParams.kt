@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -184,17 +185,19 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): SandboxCompanyUpdateBody = apply {
-            if (!validated) {
-                accounts().map { it.forEach { it.validate() } }
-                departments().map { it.forEach { it?.validate() } }
-                ein()
-                entity().map { it.validate() }
-                legalName()
-                locations().map { it.forEach { it?.validate() } }
-                primaryEmail()
-                primaryPhoneNumber()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            accounts().ifPresent { it.forEach { it.validate() } }
+            departments().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+            ein()
+            entity().ifPresent { it.validate() }
+            legalName()
+            locations().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+            primaryEmail()
+            primaryPhoneNumber()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -376,19 +379,14 @@ constructor(
 
             fun build(): SandboxCompanyUpdateBody =
                 SandboxCompanyUpdateBody(
-                    checkNotNull(accounts) { "`accounts` is required but was not set" }
-                        .map { it.toImmutable() },
-                    checkNotNull(departments) { "`departments` is required but was not set" }
-                        .map { it.toImmutable() },
-                    checkNotNull(ein) { "`ein` is required but was not set" },
-                    checkNotNull(entity) { "`entity` is required but was not set" },
-                    checkNotNull(legalName) { "`legalName` is required but was not set" },
-                    checkNotNull(locations) { "`locations` is required but was not set" }
-                        .map { it.toImmutable() },
-                    checkNotNull(primaryEmail) { "`primaryEmail` is required but was not set" },
-                    checkNotNull(primaryPhoneNumber) {
-                        "`primaryPhoneNumber` is required but was not set"
-                    },
+                    checkRequired("accounts", accounts).map { it.toImmutable() },
+                    checkRequired("departments", departments).map { it.toImmutable() },
+                    checkRequired("ein", ein),
+                    checkRequired("entity", entity),
+                    checkRequired("legalName", legalName),
+                    checkRequired("locations", locations).map { it.toImmutable() },
+                    checkRequired("primaryEmail", primaryEmail),
+                    checkRequired("primaryPhoneNumber", primaryPhoneNumber),
                     additionalProperties.toImmutable(),
                 )
         }
@@ -723,14 +721,16 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Account = apply {
-            if (!validated) {
-                accountName()
-                accountNumber()
-                accountType()
-                institutionName()
-                routingNumber()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            accountName()
+            accountNumber()
+            accountType()
+            institutionName()
+            routingNumber()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -861,6 +861,7 @@ constructor(
                 )
         }
 
+        /** The type of bank account. */
         class AccountType
         @JsonCreator
         private constructor(
@@ -969,11 +970,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Department = apply {
-            if (!validated) {
-                name()
-                parent().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            name()
+            parent().ifPresent { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -1066,10 +1069,12 @@ constructor(
             private var validated: Boolean = false
 
             fun validate(): Parent = apply {
-                if (!validated) {
-                    name()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                name()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1192,11 +1197,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Entity = apply {
-            if (!validated) {
-                subtype()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            subtype()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -1264,6 +1271,7 @@ constructor(
                 )
         }
 
+        /** The tax payer subtype of the company. */
         class Subtype
         @JsonCreator
         private constructor(
@@ -1327,6 +1335,7 @@ constructor(
             override fun toString() = value.toString()
         }
 
+        /** The tax payer type of the company. */
         class Type
         @JsonCreator
         private constructor(

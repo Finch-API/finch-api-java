@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -80,12 +81,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): RequestForwardingForwardResponse = apply {
-        if (!validated) {
-            data()
-            request().validate()
-            statusCode()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        data()
+        request().validate()
+        statusCode()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -186,10 +189,10 @@ private constructor(
 
         fun build(): RequestForwardingForwardResponse =
             RequestForwardingForwardResponse(
-                checkNotNull(data) { "`data` is required but was not set" },
-                checkNotNull(headers) { "`headers` is required but was not set" },
-                checkNotNull(request) { "`request` is required but was not set" },
-                checkNotNull(statusCode) { "`statusCode` is required but was not set" },
+                checkRequired("data", data),
+                checkRequired("headers", headers),
+                checkRequired("request", request),
+                checkRequired("statusCode", statusCode),
                 additionalProperties.toImmutable(),
             )
     }
@@ -267,12 +270,14 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Request = apply {
-            if (!validated) {
-                data()
-                method()
-                route()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data()
+            method()
+            route()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -373,11 +378,11 @@ private constructor(
 
             fun build(): Request =
                 Request(
-                    checkNotNull(data) { "`data` is required but was not set" },
-                    checkNotNull(headers) { "`headers` is required but was not set" },
-                    checkNotNull(method) { "`method` is required but was not set" },
-                    checkNotNull(params) { "`params` is required but was not set" },
-                    checkNotNull(route) { "`route` is required but was not set" },
+                    checkRequired("data", data),
+                    checkRequired("headers", headers),
+                    checkRequired("method", method),
+                    checkRequired("params", params),
+                    checkRequired("route", route),
                     additionalProperties.toImmutable(),
                 )
         }

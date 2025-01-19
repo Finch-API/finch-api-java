@@ -11,14 +11,12 @@ class HrisIndividualRetrieveManyParamsTest {
     fun createHrisIndividualRetrieveManyParams() {
         HrisIndividualRetrieveManyParams.builder()
             .options(
-                HrisIndividualRetrieveManyParams.Options.builder().include(listOf("string")).build()
+                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
-            .requests(
-                listOf(
-                    HrisIndividualRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+            .addRequest(
+                HrisIndividualRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
             .build()
     }
@@ -28,23 +26,19 @@ class HrisIndividualRetrieveManyParamsTest {
         val params =
             HrisIndividualRetrieveManyParams.builder()
                 .options(
-                    HrisIndividualRetrieveManyParams.Options.builder()
-                        .include(listOf("string"))
-                        .build()
+                    HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
                 )
-                .requests(
-                    listOf(
-                        HrisIndividualRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
+                .addRequest(
+                    HrisIndividualRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
                 )
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
         assertThat(body.options())
             .contains(
-                HrisIndividualRetrieveManyParams.Options.builder().include(listOf("string")).build()
+                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
         assertThat(body.requests())
             .contains(

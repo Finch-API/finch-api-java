@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -70,10 +71,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): HrisEmploymentRetrieveManyBody = apply {
-            if (!validated) {
-                requests().forEach { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            requests().forEach { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -139,8 +142,7 @@ constructor(
 
             fun build(): HrisEmploymentRetrieveManyBody =
                 HrisEmploymentRetrieveManyBody(
-                    checkNotNull(requests) { "`requests` is required but was not set" }
-                        .map { it.toImmutable() },
+                    checkRequired("requests", requests).map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -355,10 +357,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Request = apply {
-            if (!validated) {
-                individualId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            individualId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -416,7 +420,7 @@ constructor(
 
             fun build(): Request =
                 Request(
-                    checkNotNull(individualId) { "`individualId` is required but was not set" },
+                    checkRequired("individualId", individualId),
                     additionalProperties.toImmutable()
                 )
         }

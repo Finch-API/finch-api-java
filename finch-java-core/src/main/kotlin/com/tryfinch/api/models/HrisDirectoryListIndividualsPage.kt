@@ -19,6 +19,8 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Read company directory and organization structure */
+@Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPage
 private constructor(
     private val directoryService: DirectoryService,
@@ -63,7 +65,6 @@ private constructor(
     }
 
     fun getNextPage(): Optional<HrisDirectoryListIndividualsPage> {
-        @Suppress("DEPRECATION")
         return getNextPageParams().map { directoryService.listIndividuals(it) }
     }
 
@@ -95,8 +96,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
-
         fun individuals(): List<IndividualInDirectory> =
             individuals.getNullable("individuals") ?: listOf()
 
@@ -113,12 +112,16 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                individuals().map { it.validate() }
-                paging().validate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            individuals().map { it.validate() }
+            paging().validate()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -122,17 +123,19 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): AutomatedAsyncJob = apply {
-        if (!validated) {
-            completedAt()
-            createdAt()
-            jobId()
-            jobUrl()
-            scheduledAt()
-            startedAt()
-            status()
-            type()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        completedAt()
+        createdAt()
+        jobId()
+        jobUrl()
+        scheduledAt()
+        startedAt()
+        status()
+        type()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -271,14 +274,14 @@ private constructor(
 
         fun build(): AutomatedAsyncJob =
             AutomatedAsyncJob(
-                checkNotNull(completedAt) { "`completedAt` is required but was not set" },
-                checkNotNull(createdAt) { "`createdAt` is required but was not set" },
-                checkNotNull(jobId) { "`jobId` is required but was not set" },
-                checkNotNull(jobUrl) { "`jobUrl` is required but was not set" },
-                checkNotNull(scheduledAt) { "`scheduledAt` is required but was not set" },
-                checkNotNull(startedAt) { "`startedAt` is required but was not set" },
-                checkNotNull(status) { "`status` is required but was not set" },
-                checkNotNull(type) { "`type` is required but was not set" },
+                checkRequired("completedAt", completedAt),
+                checkRequired("createdAt", createdAt),
+                checkRequired("jobId", jobId),
+                checkRequired("jobUrl", jobUrl),
+                checkRequired("scheduledAt", scheduledAt),
+                checkRequired("startedAt", startedAt),
+                checkRequired("status", status),
+                checkRequired("type", type),
                 additionalProperties.toImmutable(),
             )
     }
@@ -364,6 +367,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /** Only `data_sync_all` currently supported */
     class Type
     @JsonCreator
     private constructor(

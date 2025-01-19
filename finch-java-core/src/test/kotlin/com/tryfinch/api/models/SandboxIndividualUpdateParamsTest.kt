@@ -12,13 +12,11 @@ class SandboxIndividualUpdateParamsTest {
         SandboxIndividualUpdateParams.builder()
             .individualId("individual_id")
             .dob("12/20/1989")
-            .emails(
-                listOf(
-                    SandboxIndividualUpdateParams.Email.builder()
-                        .data("data")
-                        .type(SandboxIndividualUpdateParams.Email.Type.WORK)
-                        .build()
-                )
+            .addEmail(
+                SandboxIndividualUpdateParams.Email.builder()
+                    .data("data")
+                    .type(SandboxIndividualUpdateParams.Email.Type.WORK)
+                    .build()
             )
             .encryptedSsn("encrypted_ssn")
             .ethnicity(SandboxIndividualUpdateParams.Ethnicity.ASIAN)
@@ -26,13 +24,11 @@ class SandboxIndividualUpdateParamsTest {
             .gender(SandboxIndividualUpdateParams.Gender.FEMALE)
             .lastName("last_name")
             .middleName("middle_name")
-            .phoneNumbers(
-                listOf(
-                    SandboxIndividualUpdateParams.PhoneNumber.builder()
-                        .data("data")
-                        .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
-                        .build()
-                )
+            .addPhoneNumber(
+                SandboxIndividualUpdateParams.PhoneNumber.builder()
+                    .data("data")
+                    .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
+                    .build()
             )
             .preferredName("preferred_name")
             .residence(
@@ -57,13 +53,11 @@ class SandboxIndividualUpdateParamsTest {
             SandboxIndividualUpdateParams.builder()
                 .individualId("individual_id")
                 .dob("12/20/1989")
-                .emails(
-                    listOf(
-                        SandboxIndividualUpdateParams.Email.builder()
-                            .data("data")
-                            .type(SandboxIndividualUpdateParams.Email.Type.WORK)
-                            .build()
-                    )
+                .addEmail(
+                    SandboxIndividualUpdateParams.Email.builder()
+                        .data("data")
+                        .type(SandboxIndividualUpdateParams.Email.Type.WORK)
+                        .build()
                 )
                 .encryptedSsn("encrypted_ssn")
                 .ethnicity(SandboxIndividualUpdateParams.Ethnicity.ASIAN)
@@ -71,13 +65,11 @@ class SandboxIndividualUpdateParamsTest {
                 .gender(SandboxIndividualUpdateParams.Gender.FEMALE)
                 .lastName("last_name")
                 .middleName("middle_name")
-                .phoneNumbers(
-                    listOf(
-                        SandboxIndividualUpdateParams.PhoneNumber.builder()
-                            .data("data")
-                            .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
-                            .build()
-                    )
+                .addPhoneNumber(
+                    SandboxIndividualUpdateParams.PhoneNumber.builder()
+                        .data("data")
+                        .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
+                        .build()
                 )
                 .preferredName("preferred_name")
                 .residence(

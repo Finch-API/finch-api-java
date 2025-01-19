@@ -16,7 +16,7 @@ class AccountCreateResponseTest {
                 .authenticationType(AccountCreateResponse.AuthenticationType.CREDENTIAL)
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .products(listOf("string"))
+                .addProduct("string")
                 .providerId("provider_id")
                 .build()
         assertThat(accountCreateResponse).isNotNull

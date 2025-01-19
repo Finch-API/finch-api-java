@@ -130,17 +130,19 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): SupportedBenefit = apply {
-        if (!validated) {
-            annualMaximum()
-            catchUp()
-            companyContribution()
-            description()
-            employeeDeduction()
-            frequencies()
-            hsaContributionLimit()
-            type()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        annualMaximum()
+        catchUp()
+        companyContribution()
+        description()
+        employeeDeduction()
+        frequencies()
+        hsaContributionLimit()
+        type()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

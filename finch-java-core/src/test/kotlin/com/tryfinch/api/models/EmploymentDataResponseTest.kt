@@ -16,13 +16,11 @@ class EmploymentDataResponseTest {
                     EmploymentData.builder()
                         .id("id")
                         .classCode("class_code")
-                        .customFields(
-                            listOf(
-                                EmploymentData.CustomField.builder()
-                                    .name("name")
-                                    .value(JsonValue.from(mapOf<String, Any>()))
-                                    .build()
-                            )
+                        .addCustomField(
+                            EmploymentData.CustomField.builder()
+                                .name("name")
+                                .value(JsonValue.from(mapOf<String, Any>()))
+                                .build()
                         )
                         .department(EmploymentData.Department.builder().name("name").build())
                         .employment(
@@ -42,15 +40,13 @@ class EmploymentDataResponseTest {
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
-                        .incomeHistory(
-                            listOf(
-                                Income.builder()
-                                    .amount(0L)
-                                    .currency("currency")
-                                    .effectiveDate("effective_date")
-                                    .unit(Income.Unit.YEARLY)
-                                    .build()
-                            )
+                        .addIncomeHistory(
+                            Income.builder()
+                                .amount(0L)
+                                .currency("currency")
+                                .effectiveDate("effective_date")
+                                .unit(Income.Unit.YEARLY)
+                                .build()
                         )
                         .isActive(true)
                         .lastName("last_name")
@@ -84,13 +80,11 @@ class EmploymentDataResponseTest {
                 EmploymentData.builder()
                     .id("id")
                     .classCode("class_code")
-                    .customFields(
-                        listOf(
-                            EmploymentData.CustomField.builder()
-                                .name("name")
-                                .value(JsonValue.from(mapOf<String, Any>()))
-                                .build()
-                        )
+                    .addCustomField(
+                        EmploymentData.CustomField.builder()
+                            .name("name")
+                            .value(JsonValue.from(mapOf<String, Any>()))
+                            .build()
                     )
                     .department(EmploymentData.Department.builder().name("name").build())
                     .employment(
@@ -110,15 +104,13 @@ class EmploymentDataResponseTest {
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
-                    .incomeHistory(
-                        listOf(
-                            Income.builder()
-                                .amount(0L)
-                                .currency("currency")
-                                .effectiveDate("effective_date")
-                                .unit(Income.Unit.YEARLY)
-                                .build()
-                        )
+                    .addIncomeHistory(
+                        Income.builder()
+                            .amount(0L)
+                            .currency("currency")
+                            .effectiveDate("effective_date")
+                            .unit(Income.Unit.YEARLY)
+                            .build()
                     )
                     .isActive(true)
                     .lastName("last_name")

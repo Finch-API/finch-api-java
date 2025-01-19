@@ -19,6 +19,11 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/**
+ * Read detailed pay statements for each individual.
+ *
+ * Deduction and contribution types are supported by the payroll systems that supports Benefits.
+ */
 class HrisPayStatementRetrieveManyPage
 private constructor(
     private val payStatementsService: PayStatementService,
@@ -82,8 +87,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
-
         fun responses(): List<PayStatementResponse> = responses.getNullable("responses") ?: listOf()
 
         @JsonProperty("responses")
@@ -94,11 +97,15 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                responses().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            responses().map { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

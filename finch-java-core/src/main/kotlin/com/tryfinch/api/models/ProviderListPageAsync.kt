@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Return details on all available payroll and HR systems. */
 class ProviderListPageAsync
 private constructor(
     private val providersService: ProviderServiceAsync,
@@ -84,8 +85,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
-
         fun items(): List<Provider> = items.getNullable("items") ?: listOf()
 
         @JsonProperty("items")
@@ -95,11 +94,15 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                items().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            items().map { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

@@ -52,12 +52,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): EmploymentDataResponse = apply {
-        if (!validated) {
-            body().map { it.validate() }
-            code()
-            individualId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        body().ifPresent { it.validate() }
+        code()
+        individualId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

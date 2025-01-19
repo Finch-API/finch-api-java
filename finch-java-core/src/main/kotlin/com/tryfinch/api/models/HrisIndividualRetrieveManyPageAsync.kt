@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyPageAsync
 private constructor(
     private val individualsService: IndividualServiceAsync,
@@ -85,8 +86,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        private var validated: Boolean = false
-
         fun responses(): List<IndividualResponse> = responses.getNullable("responses") ?: listOf()
 
         @JsonProperty("responses")
@@ -97,11 +96,15 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Response = apply {
-            if (!validated) {
-                responses().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            responses().map { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

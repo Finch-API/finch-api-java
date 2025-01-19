@@ -142,21 +142,23 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): Payment = apply {
-        if (!validated) {
-            id()
-            companyDebit().map { it.validate() }
-            debitDate()
-            employeeTaxes().map { it.validate() }
-            employerTaxes().map { it.validate() }
-            grossPay().map { it.validate() }
-            individualIds()
-            netPay().map { it.validate() }
-            payDate()
-            payFrequencies()
-            payGroupIds()
-            payPeriod().map { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        companyDebit().ifPresent { it.validate() }
+        debitDate()
+        employeeTaxes().ifPresent { it.validate() }
+        employerTaxes().ifPresent { it.validate() }
+        grossPay().ifPresent { it.validate() }
+        individualIds()
+        netPay().ifPresent { it.validate() }
+        payDate()
+        payFrequencies()
+        payGroupIds()
+        payPeriod().ifPresent { it.validate() }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -511,11 +513,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): PayPeriod = apply {
-            if (!validated) {
-                endDate()
-                startDate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            endDate()
+            startDate()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

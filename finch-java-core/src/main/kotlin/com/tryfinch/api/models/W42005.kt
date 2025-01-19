@@ -57,12 +57,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): W42005 = apply {
-        if (!validated) {
-            data().map { it.validate() }
-            type()
-            year()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        data().ifPresent { it.validate() }
+        type()
+        year()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -216,14 +218,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Data = apply {
-            if (!validated) {
-                additionalWithholding()
-                exemption()
-                filingStatus()
-                individualId()
-                totalNumberOfAllowances()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            additionalWithholding()
+            exemption()
+            filingStatus()
+            individualId()
+            totalNumberOfAllowances()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -340,6 +344,7 @@ private constructor(
                 )
         }
 
+        /** Indicates exemption status from federal tax withholding. */
         class Exemption
         @JsonCreator
         private constructor(
@@ -397,6 +402,7 @@ private constructor(
             override fun toString() = value.toString()
         }
 
+        /** The individual's filing status for tax purposes. */
         class FilingStatus
         @JsonCreator
         private constructor(
@@ -482,6 +488,7 @@ private constructor(
             "Data{additionalWithholding=$additionalWithholding, exemption=$exemption, filingStatus=$filingStatus, individualId=$individualId, totalNumberOfAllowances=$totalNumberOfAllowances, additionalProperties=$additionalProperties}"
     }
 
+    /** Specifies the form type, indicating that this document is a 2005 W4 form. */
     class Type
     @JsonCreator
     private constructor(

@@ -84,14 +84,16 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): DocumentResponse = apply {
-        if (!validated) {
-            id()
-            individualId()
-            type()
-            url()
-            year()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        individualId()
+        type()
+        url()
+        year()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -207,6 +209,7 @@ private constructor(
             )
     }
 
+    /** The type of document. */
     class Type
     @JsonCreator
     private constructor(

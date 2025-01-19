@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -47,11 +48,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): PaymentCreateResponse = apply {
-        if (!validated) {
-            payDate()
-            paymentId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        payDate()
+        paymentId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -107,8 +110,8 @@ private constructor(
 
         fun build(): PaymentCreateResponse =
             PaymentCreateResponse(
-                checkNotNull(payDate) { "`payDate` is required but was not set" },
-                checkNotNull(paymentId) { "`paymentId` is required but was not set" },
+                checkRequired("payDate", payDate),
+                checkRequired("paymentId", paymentId),
                 additionalProperties.toImmutable(),
             )
     }
