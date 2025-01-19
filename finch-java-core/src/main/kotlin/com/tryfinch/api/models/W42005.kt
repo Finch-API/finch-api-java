@@ -344,6 +344,7 @@ private constructor(
                 )
         }
 
+        /** Indicates exemption status from federal tax withholding. */
         class Exemption
         @JsonCreator
         private constructor(
@@ -401,6 +402,7 @@ private constructor(
             override fun toString() = value.toString()
         }
 
+        /** The individual's filing status for tax purposes. */
         class FilingStatus
         @JsonCreator
         private constructor(
@@ -486,6 +488,7 @@ private constructor(
             "Data{additionalWithholding=$additionalWithholding, exemption=$exemption, filingStatus=$filingStatus, individualId=$individualId, totalNumberOfAllowances=$totalNumberOfAllowances, additionalProperties=$additionalProperties}"
     }
 
+    /** Specifies the form type, indicating that this document is a 2005 W4 form. */
     class Type
     @JsonCreator
     private constructor(

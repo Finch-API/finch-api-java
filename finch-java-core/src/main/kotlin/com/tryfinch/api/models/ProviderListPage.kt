@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Return details on all available payroll and HR systems. */
 class ProviderListPage
 private constructor(
     private val providersService: ProviderService,

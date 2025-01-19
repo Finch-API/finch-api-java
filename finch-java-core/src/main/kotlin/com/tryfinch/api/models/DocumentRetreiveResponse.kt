@@ -125,8 +125,16 @@ private constructor(
 
     interface Visitor<out T> {
 
+        /**
+         * A 2020 version of the W-4 tax form containing information on an individual's filing
+         * status, dependents, and withholding details.
+         */
         fun visitW42020(w42020: W42020): T
 
+        /**
+         * A 2005 version of the W-4 tax form containing information on an individual's filing
+         * status, dependents, and withholding details.
+         */
         fun visitW42005(w42005: W42005): T
 
         fun unknown(json: JsonValue?): T {

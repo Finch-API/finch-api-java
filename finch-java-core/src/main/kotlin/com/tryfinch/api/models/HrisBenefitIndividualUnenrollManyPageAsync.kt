@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyPageAsync
 private constructor(
     private val individualsService: IndividualServiceAsync,

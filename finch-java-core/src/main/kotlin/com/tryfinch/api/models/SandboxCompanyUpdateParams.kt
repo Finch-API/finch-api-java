@@ -861,6 +861,7 @@ constructor(
                 )
         }
 
+        /** The type of bank account. */
         class AccountType
         @JsonCreator
         private constructor(
@@ -1270,6 +1271,7 @@ constructor(
                 )
         }
 
+        /** The tax payer subtype of the company. */
         class Subtype
         @JsonCreator
         private constructor(
@@ -1333,6 +1335,7 @@ constructor(
             override fun toString() = value.toString()
         }
 
+        /** The tax payer type of the company. */
         class Type
         @JsonCreator
         private constructor(

@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/** List all company-wide deductions and contributions. */
 class HrisBenefitListPageAsync
 private constructor(
     private val benefitsService: BenefitServiceAsync,

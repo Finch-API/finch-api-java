@@ -19,6 +19,7 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/** Get deductions metadata */
 class HrisBenefitListSupportedBenefitsPage
 private constructor(
     private val benefitsService: BenefitService,

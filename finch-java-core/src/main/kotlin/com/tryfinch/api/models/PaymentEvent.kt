@@ -45,13 +45,13 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): Optional<String> =
@@ -65,13 +65,19 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     @JsonProperty("connection_id")
@@ -138,24 +144,28 @@ private constructor(
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /**
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** Unique Finch ID of the connection associated with the webhook event. */

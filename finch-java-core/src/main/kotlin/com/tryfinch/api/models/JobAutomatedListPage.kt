@@ -19,6 +19,11 @@ import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+/**
+ * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are sorted in
+ * descending order by submission time. For scheduled jobs such as data syncs, only the next
+ * scheduled job is shown.
+ */
 class JobAutomatedListPage
 private constructor(
     private val automatedService: AutomatedService,

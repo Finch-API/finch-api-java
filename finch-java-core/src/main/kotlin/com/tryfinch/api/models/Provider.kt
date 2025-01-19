@@ -5761,6 +5761,7 @@ private constructor(
                 "SupportedFields{company=$company, directory=$directory, employment=$employment, individual=$individual, payGroup=$payGroup, payStatement=$payStatement, payment=$payment, additionalProperties=$additionalProperties}"
         }
 
+        /** The type of authentication method. */
         class Type
         @JsonCreator
         private constructor(

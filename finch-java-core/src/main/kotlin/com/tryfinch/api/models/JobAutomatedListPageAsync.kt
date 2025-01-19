@@ -20,6 +20,11 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
+/**
+ * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are sorted in
+ * descending order by submission time. For scheduled jobs such as data syncs, only the next
+ * scheduled job is shown.
+ */
 class JobAutomatedListPageAsync
 private constructor(
     private val automatedService: AutomatedServiceAsync,
