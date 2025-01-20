@@ -21,7 +21,7 @@ import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import java.util.concurrent.CompletableFuture
 
 class AutomatedServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : AutomatedServiceAsync {
 

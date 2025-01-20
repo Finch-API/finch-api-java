@@ -17,7 +17,7 @@ import com.tryfinch.api.models.Payment
 import java.util.concurrent.CompletableFuture
 
 class PaymentServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PaymentServiceAsync {
 

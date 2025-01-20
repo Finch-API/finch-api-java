@@ -16,7 +16,7 @@ import com.tryfinch.api.models.HrisPaymentListParams
 import com.tryfinch.api.models.Payment
 
 class PaymentServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PaymentService {
 

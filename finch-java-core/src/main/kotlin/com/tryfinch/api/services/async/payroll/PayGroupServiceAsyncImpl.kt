@@ -19,7 +19,7 @@ import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import java.util.concurrent.CompletableFuture
 
 class PayGroupServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PayGroupServiceAsync {
 

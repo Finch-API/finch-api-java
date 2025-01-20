@@ -18,7 +18,7 @@ import com.tryfinch.api.models.HrisDirectoryListParams
 import java.util.concurrent.CompletableFuture
 
 class DirectoryServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : DirectoryServiceAsync {
 

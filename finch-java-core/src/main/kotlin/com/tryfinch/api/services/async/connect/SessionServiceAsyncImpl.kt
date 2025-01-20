@@ -19,7 +19,7 @@ import com.tryfinch.api.models.SessionReauthenticateResponse
 import java.util.concurrent.CompletableFuture
 
 class SessionServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : SessionServiceAsync {
 

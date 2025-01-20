@@ -19,7 +19,7 @@ import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsyncIm
 import java.util.concurrent.CompletableFuture
 
 class ConnectionServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ConnectionServiceAsync {
 

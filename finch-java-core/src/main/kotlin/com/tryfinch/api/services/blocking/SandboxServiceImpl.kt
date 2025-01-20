@@ -19,7 +19,7 @@ import com.tryfinch.api.services.blocking.sandbox.PaymentService
 import com.tryfinch.api.services.blocking.sandbox.PaymentServiceImpl
 
 class SandboxServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : SandboxService {
 

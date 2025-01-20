@@ -19,7 +19,7 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 class WebhookServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : WebhookService {
 

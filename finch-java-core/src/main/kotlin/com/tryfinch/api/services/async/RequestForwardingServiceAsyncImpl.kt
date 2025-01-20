@@ -17,7 +17,7 @@ import com.tryfinch.api.models.RequestForwardingForwardResponse
 import java.util.concurrent.CompletableFuture
 
 class RequestForwardingServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : RequestForwardingServiceAsync {
 

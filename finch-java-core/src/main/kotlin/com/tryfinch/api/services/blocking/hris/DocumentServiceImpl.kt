@@ -17,7 +17,7 @@ import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
 
 class DocumentServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : DocumentService {
 

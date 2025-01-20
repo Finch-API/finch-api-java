@@ -15,7 +15,7 @@ import com.tryfinch.api.models.JobManualRetrieveParams
 import com.tryfinch.api.models.ManualAsyncJob
 
 class ManualServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ManualService {
 

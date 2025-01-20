@@ -7,7 +7,7 @@ import com.tryfinch.api.services.blocking.connect.SessionService
 import com.tryfinch.api.services.blocking.connect.SessionServiceImpl
 
 class ConnectServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ConnectService {
 

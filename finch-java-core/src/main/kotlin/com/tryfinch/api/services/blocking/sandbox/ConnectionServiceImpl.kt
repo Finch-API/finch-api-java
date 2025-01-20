@@ -18,7 +18,7 @@ import com.tryfinch.api.services.blocking.sandbox.connections.AccountService
 import com.tryfinch.api.services.blocking.sandbox.connections.AccountServiceImpl
 
 class ConnectionServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ConnectionService {
 

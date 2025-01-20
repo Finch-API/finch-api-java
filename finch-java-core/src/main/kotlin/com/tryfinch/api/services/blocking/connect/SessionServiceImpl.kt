@@ -18,7 +18,7 @@ import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 
 class SessionServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : SessionService {
 

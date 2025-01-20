@@ -27,7 +27,7 @@ import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualServiceImpl
 
 class BenefitServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : BenefitService {
 

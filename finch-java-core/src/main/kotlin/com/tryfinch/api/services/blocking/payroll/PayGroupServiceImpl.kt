@@ -18,7 +18,7 @@ import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 
 class PayGroupServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PayGroupService {
 

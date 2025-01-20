@@ -17,7 +17,7 @@ import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
 class EmploymentServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : EmploymentServiceAsync {
 
