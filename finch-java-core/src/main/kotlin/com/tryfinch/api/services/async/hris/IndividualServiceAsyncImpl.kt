@@ -17,7 +17,7 @@ import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
 class IndividualServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : IndividualServiceAsync {
 

@@ -9,7 +9,7 @@ import com.tryfinch.api.services.blocking.jobs.ManualService
 import com.tryfinch.api.services.blocking.jobs.ManualServiceImpl
 
 class JobServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : JobService {
 

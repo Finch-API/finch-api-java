@@ -19,7 +19,7 @@ import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
 import java.util.concurrent.CompletableFuture
 
 class AccountServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : AccountServiceAsync {
 

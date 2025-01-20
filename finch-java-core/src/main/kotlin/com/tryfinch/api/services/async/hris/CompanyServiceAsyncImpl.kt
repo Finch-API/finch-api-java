@@ -16,7 +16,7 @@ import com.tryfinch.api.models.HrisCompanyRetrieveParams
 import java.util.concurrent.CompletableFuture
 
 class CompanyServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : CompanyServiceAsync {
 

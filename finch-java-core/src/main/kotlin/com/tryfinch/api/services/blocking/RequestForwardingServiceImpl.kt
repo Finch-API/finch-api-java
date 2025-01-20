@@ -16,7 +16,7 @@ import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
 
 class RequestForwardingServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : RequestForwardingService {
 

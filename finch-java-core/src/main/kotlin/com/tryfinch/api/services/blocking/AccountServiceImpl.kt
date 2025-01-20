@@ -18,7 +18,7 @@ import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 
 class AccountServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : AccountService {
 

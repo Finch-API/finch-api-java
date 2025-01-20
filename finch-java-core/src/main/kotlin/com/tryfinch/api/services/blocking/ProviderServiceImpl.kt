@@ -16,7 +16,7 @@ import com.tryfinch.api.models.ProviderListPage
 import com.tryfinch.api.models.ProviderListParams
 
 class ProviderServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ProviderService {
 

@@ -28,7 +28,7 @@ import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
 class BenefitServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : BenefitServiceAsync {
 

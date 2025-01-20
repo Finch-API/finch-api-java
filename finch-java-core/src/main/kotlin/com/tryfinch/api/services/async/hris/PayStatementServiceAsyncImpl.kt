@@ -17,7 +17,7 @@ import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
 class PayStatementServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PayStatementServiceAsync {
 

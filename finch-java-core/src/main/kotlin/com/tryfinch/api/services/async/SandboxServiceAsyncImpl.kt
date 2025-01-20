@@ -19,7 +19,7 @@ import com.tryfinch.api.services.async.sandbox.PaymentServiceAsync
 import com.tryfinch.api.services.async.sandbox.PaymentServiceAsyncImpl
 
 class SandboxServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : SandboxServiceAsync {
 

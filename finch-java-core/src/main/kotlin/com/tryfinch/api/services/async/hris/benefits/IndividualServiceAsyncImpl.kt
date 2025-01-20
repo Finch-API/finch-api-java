@@ -23,7 +23,7 @@ import com.tryfinch.api.models.UnenrolledIndividual
 import java.util.concurrent.CompletableFuture
 
 class IndividualServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : IndividualServiceAsync {
 

@@ -7,7 +7,7 @@ import com.tryfinch.api.services.async.connect.SessionServiceAsync
 import com.tryfinch.api.services.async.connect.SessionServiceAsyncImpl
 
 class ConnectServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ConnectServiceAsync {
 
