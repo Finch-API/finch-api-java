@@ -16,7 +16,7 @@ import com.tryfinch.api.models.CompanyUpdateResponse
 import com.tryfinch.api.models.SandboxCompanyUpdateParams
 
 class CompanyServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : CompanyService {
 

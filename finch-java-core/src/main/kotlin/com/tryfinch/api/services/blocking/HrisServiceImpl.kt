@@ -21,7 +21,7 @@ import com.tryfinch.api.services.blocking.hris.PaymentService
 import com.tryfinch.api.services.blocking.hris.PaymentServiceImpl
 
 class HrisServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : HrisService {
 

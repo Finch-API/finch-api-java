@@ -16,7 +16,7 @@ import com.tryfinch.api.models.ManualAsyncJob
 import java.util.concurrent.CompletableFuture
 
 class ManualServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ManualServiceAsync {
 

@@ -16,7 +16,7 @@ import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
 
 class AccessTokenServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : AccessTokenService {
 

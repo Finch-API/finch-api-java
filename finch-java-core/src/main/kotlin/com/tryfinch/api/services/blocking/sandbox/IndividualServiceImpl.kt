@@ -16,7 +16,7 @@ import com.tryfinch.api.models.IndividualUpdateResponse
 import com.tryfinch.api.models.SandboxIndividualUpdateParams
 
 class IndividualServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : IndividualService {
 

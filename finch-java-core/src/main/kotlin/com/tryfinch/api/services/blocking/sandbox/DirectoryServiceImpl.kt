@@ -16,7 +16,7 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 
 class DirectoryServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : DirectoryService {
 

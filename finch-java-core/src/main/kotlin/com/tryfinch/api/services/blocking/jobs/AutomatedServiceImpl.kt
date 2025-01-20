@@ -20,7 +20,7 @@ import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 
 class AutomatedServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : AutomatedService {
 

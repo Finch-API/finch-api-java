@@ -7,7 +7,7 @@ import com.tryfinch.api.services.blocking.payroll.PayGroupService
 import com.tryfinch.api.services.blocking.payroll.PayGroupServiceImpl
 
 class PayrollServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PayrollService {
 

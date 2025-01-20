@@ -17,7 +17,7 @@ import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 
 class DirectoryServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : DirectoryService {
 

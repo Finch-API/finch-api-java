@@ -17,7 +17,7 @@ import com.tryfinch.api.models.SandboxCompanyUpdateParams
 import java.util.concurrent.CompletableFuture
 
 class CompanyServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : CompanyServiceAsync {
 

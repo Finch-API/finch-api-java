@@ -22,7 +22,7 @@ import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividual
 
 class IndividualServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : IndividualService {
 

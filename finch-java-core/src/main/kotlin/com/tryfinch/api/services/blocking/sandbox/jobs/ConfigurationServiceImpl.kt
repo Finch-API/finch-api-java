@@ -17,7 +17,7 @@ import com.tryfinch.api.models.SandboxJobConfigurationRetrieveParams
 import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 
 class ConfigurationServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ConfigurationService {
 
