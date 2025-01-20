@@ -9,7 +9,7 @@ import com.tryfinch.api.services.async.jobs.ManualServiceAsync
 import com.tryfinch.api.services.async.jobs.ManualServiceAsyncImpl
 
 class JobServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : JobServiceAsync {
 

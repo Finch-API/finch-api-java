@@ -17,7 +17,7 @@ import com.tryfinch.api.models.ProviderListParams
 import java.util.concurrent.CompletableFuture
 
 class ProviderServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ProviderServiceAsync {
 

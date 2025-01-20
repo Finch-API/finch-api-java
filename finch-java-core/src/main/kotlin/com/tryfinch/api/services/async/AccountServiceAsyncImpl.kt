@@ -19,7 +19,7 @@ import com.tryfinch.api.models.Introspection
 import java.util.concurrent.CompletableFuture
 
 class AccountServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : AccountServiceAsync {
 

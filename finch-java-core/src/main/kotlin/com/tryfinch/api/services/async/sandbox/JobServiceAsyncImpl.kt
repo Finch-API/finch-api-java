@@ -19,7 +19,7 @@ import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsyncImp
 import java.util.concurrent.CompletableFuture
 
 class JobServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : JobServiceAsync {
 

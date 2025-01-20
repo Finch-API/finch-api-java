@@ -18,7 +18,7 @@ import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 import java.util.concurrent.CompletableFuture
 
 class ConfigurationServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ConfigurationServiceAsync {
 

@@ -16,7 +16,7 @@ import com.tryfinch.api.models.EmploymentUpdateResponse
 import com.tryfinch.api.models.SandboxEmploymentUpdateParams
 
 class EmploymentServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : EmploymentService {
 

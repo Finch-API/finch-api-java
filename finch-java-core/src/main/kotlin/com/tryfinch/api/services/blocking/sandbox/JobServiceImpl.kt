@@ -18,7 +18,7 @@ import com.tryfinch.api.services.blocking.sandbox.jobs.ConfigurationService
 import com.tryfinch.api.services.blocking.sandbox.jobs.ConfigurationServiceImpl
 
 class JobServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : JobService {
 

@@ -21,7 +21,7 @@ import com.tryfinch.api.services.async.hris.PaymentServiceAsync
 import com.tryfinch.api.services.async.hris.PaymentServiceAsyncImpl
 
 class HrisServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : HrisServiceAsync {
 

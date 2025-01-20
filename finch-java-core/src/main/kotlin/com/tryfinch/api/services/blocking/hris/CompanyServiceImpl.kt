@@ -15,7 +15,7 @@ import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
 
 class CompanyServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : CompanyService {
 

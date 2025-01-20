@@ -5,6 +5,6 @@ package com.tryfinch.api.services.blocking
 import com.tryfinch.api.core.ClientOptions
 
 class WebhookServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : WebhookService

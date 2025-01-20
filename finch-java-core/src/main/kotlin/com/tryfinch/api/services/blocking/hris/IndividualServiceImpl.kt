@@ -16,7 +16,7 @@ import com.tryfinch.api.models.HrisIndividualRetrieveManyPage
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 
 class IndividualServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : IndividualService {
 

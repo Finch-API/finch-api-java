@@ -17,7 +17,7 @@ import com.tryfinch.api.models.CreateAccessTokenResponse
 import java.util.concurrent.CompletableFuture
 
 class AccessTokenServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : AccessTokenServiceAsync {
 
