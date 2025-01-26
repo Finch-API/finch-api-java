@@ -98,4 +98,6 @@ constructor(
     override fun payroll(): PayrollServiceAsync = payroll
 
     override fun connect(): ConnectServiceAsync = connect
+
+    override fun close() = clientOptions.httpClient.close()
 }
