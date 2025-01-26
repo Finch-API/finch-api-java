@@ -20,7 +20,7 @@ import java.util.Objects
 
 /** Read individual employment and income data */
 class HrisEmploymentRetrieveManyParams
-constructor(
+private constructor(
     private val body: HrisEmploymentRetrieveManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -86,7 +86,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var requests: JsonField<MutableList<Request>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -173,7 +173,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: HrisEmploymentRetrieveManyBody.Builder =
             HrisEmploymentRetrieveManyBody.builder()
@@ -372,7 +372,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var individualId: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()

@@ -215,7 +215,7 @@ private constructor(
         }
     }
 
-    class Deserializer : BaseDeserializer<WebhookEvent>(WebhookEvent::class) {
+    internal class Deserializer : BaseDeserializer<WebhookEvent>(WebhookEvent::class) {
 
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
@@ -257,7 +257,7 @@ private constructor(
         }
     }
 
-    class Serializer : BaseSerializer<WebhookEvent>(WebhookEvent::class) {
+    internal class Serializer : BaseSerializer<WebhookEvent>(WebhookEvent::class) {
 
         override fun serialize(
             value: WebhookEvent,

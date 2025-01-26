@@ -22,7 +22,7 @@ import java.util.Optional
 
 /** Add a new sandbox payment */
 class SandboxPaymentCreateParams
-constructor(
+private constructor(
     private val body: SandboxPaymentCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -112,7 +112,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var endDate: JsonField<String> = JsonMissing.of()
             private var payStatements: JsonField<MutableList<PayStatement>>? = null
@@ -209,7 +209,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: SandboxPaymentCreateBody.Builder = SandboxPaymentCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -507,7 +507,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var earnings: JsonField<MutableList<Earning?>>? = null
             private var employeeDeductions: JsonField<MutableList<EmployeeDeduction?>>? = null
@@ -817,7 +817,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
                 private var currency: JsonField<String> = JsonMissing.of()
@@ -1155,7 +1155,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
                 private var currency: JsonField<String> = JsonMissing.of()
@@ -1347,7 +1347,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
                 private var currency: JsonField<String> = JsonMissing.of()
@@ -1592,7 +1592,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
                 private var currency: JsonField<String> = JsonMissing.of()

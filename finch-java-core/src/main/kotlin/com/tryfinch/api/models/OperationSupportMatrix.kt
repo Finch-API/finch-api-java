@@ -148,7 +148,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var create: JsonField<OperationSupport> = JsonMissing.of()
         private var delete: JsonField<OperationSupport> = JsonMissing.of()

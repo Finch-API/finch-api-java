@@ -25,8 +25,7 @@ import com.tryfinch.api.services.blocking.SandboxServiceImpl
 import com.tryfinch.api.services.blocking.WebhookService
 import com.tryfinch.api.services.blocking.WebhookServiceImpl
 
-class FinchClientImpl
-constructor(
+class FinchClientImpl(
     private val clientOptions: ClientOptions,
 ) : FinchClient {
 

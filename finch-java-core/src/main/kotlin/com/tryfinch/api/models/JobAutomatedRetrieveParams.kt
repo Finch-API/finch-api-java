@@ -10,7 +10,7 @@ import java.util.Objects
 
 /** Get an automated job by `job_id`. */
 class JobAutomatedRetrieveParams
-constructor(
+private constructor(
     private val jobId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -41,7 +41,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var jobId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()

@@ -74,7 +74,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var data: JsonField<Data> = JsonMissing.of()
         private var type: JsonField<Type> = JsonMissing.of()
@@ -283,7 +283,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var amountForOtherDependents: JsonField<Long> = JsonMissing.of()
             private var amountForQualifyingChildrenUnder17: JsonField<Long> = JsonMissing.of()

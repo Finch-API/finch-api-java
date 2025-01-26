@@ -25,8 +25,7 @@ import com.tryfinch.api.services.async.SandboxServiceAsyncImpl
 import com.tryfinch.api.services.async.WebhookServiceAsync
 import com.tryfinch.api.services.async.WebhookServiceAsyncImpl
 
-class FinchClientAsyncImpl
-constructor(
+class FinchClientAsyncImpl(
     private val clientOptions: ClientOptions,
 ) : FinchClientAsync {
 
