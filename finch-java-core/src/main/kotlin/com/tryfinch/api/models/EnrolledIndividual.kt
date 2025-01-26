@@ -71,7 +71,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: JsonField<Body> = JsonMissing.of()
         private var code: JsonField<Code> = JsonMissing.of()
@@ -189,7 +189,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var finchCode: JsonField<String> = JsonMissing.of()
             private var message: JsonField<String> = JsonMissing.of()

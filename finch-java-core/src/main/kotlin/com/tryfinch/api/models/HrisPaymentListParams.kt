@@ -11,7 +11,7 @@ import java.util.Objects
 
 /** Read payroll and contractor related payments by the company. */
 class HrisPaymentListParams
-constructor(
+private constructor(
     private val endDate: LocalDate,
     private val startDate: LocalDate,
     private val additionalHeaders: Headers,
@@ -47,7 +47,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var endDate: LocalDate? = null
         private var startDate: LocalDate? = null

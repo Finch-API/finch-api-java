@@ -65,7 +65,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var paging: JsonField<Paging> = JsonMissing.of()
         private var payStatements: JsonField<MutableList<PayStatement>>? = null

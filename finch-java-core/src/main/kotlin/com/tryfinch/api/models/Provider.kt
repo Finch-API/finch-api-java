@@ -159,7 +159,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var id: JsonField<String> = JsonMissing.of()
         private var authenticationMethods: JsonField<MutableList<AuthenticationMethod>>? = null
@@ -396,7 +396,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var benefitsSupport: JsonField<BenefitsSupport> = JsonMissing.of()
             private var supportedFields: JsonField<SupportedFields> = JsonMissing.of()
@@ -587,7 +587,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var company: JsonField<SupportedCompanyFields> = JsonMissing.of()
                 private var directory: JsonField<SupportedDirectoryFields> = JsonMissing.of()
@@ -810,7 +810,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var id: JsonField<Boolean> = JsonMissing.of()
                     private var accounts: JsonField<Accounts> = JsonMissing.of()
@@ -1008,7 +1008,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var accountName: JsonField<Boolean> = JsonMissing.of()
                         private var accountNumber: JsonField<Boolean> = JsonMissing.of()
@@ -1162,7 +1162,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var name: JsonField<Boolean> = JsonMissing.of()
                         private var parent: JsonField<Parent> = JsonMissing.of()
@@ -1253,7 +1253,7 @@ private constructor(
                             @JvmStatic fun builder() = Builder()
                         }
 
-                        class Builder {
+                        class Builder internal constructor() {
 
                             private var name: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
@@ -1378,7 +1378,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var subtype: JsonField<Boolean> = JsonMissing.of()
                         private var type: JsonField<Boolean> = JsonMissing.of()
@@ -1531,7 +1531,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var city: JsonField<Boolean> = JsonMissing.of()
                         private var country: JsonField<Boolean> = JsonMissing.of()
@@ -1697,7 +1697,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var individuals: JsonField<Individuals> = JsonMissing.of()
                     private var paging: JsonField<Paging> = JsonMissing.of()
@@ -1855,7 +1855,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
                         private var department: JsonField<Boolean> = JsonMissing.of()
@@ -1990,7 +1990,7 @@ private constructor(
                             @JvmStatic fun builder() = Builder()
                         }
 
-                        class Builder {
+                        class Builder internal constructor() {
 
                             private var id: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
@@ -2115,7 +2115,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var count: JsonField<Boolean> = JsonMissing.of()
                         private var offset: JsonField<Boolean> = JsonMissing.of()
@@ -2410,7 +2410,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var id: JsonField<Boolean> = JsonMissing.of()
                     private var classCode: JsonField<Boolean> = JsonMissing.of()
@@ -2626,7 +2626,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var name: JsonField<Boolean> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
@@ -2734,7 +2734,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var subtype: JsonField<Boolean> = JsonMissing.of()
                         private var type: JsonField<Boolean> = JsonMissing.of()
@@ -2863,7 +2863,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var amount: JsonField<Boolean> = JsonMissing.of()
                         private var currency: JsonField<Boolean> = JsonMissing.of()
@@ -3025,7 +3025,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var city: JsonField<Boolean> = JsonMissing.of()
                         private var country: JsonField<Boolean> = JsonMissing.of()
@@ -3162,7 +3162,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
@@ -3396,7 +3396,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var id: JsonField<Boolean> = JsonMissing.of()
                     private var dob: JsonField<Boolean> = JsonMissing.of()
@@ -3588,7 +3588,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var data: JsonField<Boolean> = JsonMissing.of()
                         private var type: JsonField<Boolean> = JsonMissing.of()
@@ -3703,7 +3703,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var data: JsonField<Boolean> = JsonMissing.of()
                         private var type: JsonField<Boolean> = JsonMissing.of()
@@ -3856,7 +3856,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var city: JsonField<Boolean> = JsonMissing.of()
                         private var country: JsonField<Boolean> = JsonMissing.of()
@@ -4041,7 +4041,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var id: JsonField<Boolean> = JsonMissing.of()
                     private var individualIds: JsonField<Boolean> = JsonMissing.of()
@@ -4179,7 +4179,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var paging: JsonField<Paging> = JsonMissing.of()
                     private var payStatements: JsonField<PayStatements> = JsonMissing.of()
@@ -4282,7 +4282,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var count: JsonField<Boolean>? = null
                         private var offset: JsonField<Boolean>? = null
@@ -4490,7 +4490,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var earnings: JsonField<Earnings> = JsonMissing.of()
                         private var employeeDeductions: JsonField<EmployeeDeductions> =
@@ -4689,7 +4689,7 @@ private constructor(
                             @JvmStatic fun builder() = Builder()
                         }
 
-                        class Builder {
+                        class Builder internal constructor() {
 
                             private var amount: JsonField<Boolean> = JsonMissing.of()
                             private var currency: JsonField<Boolean> = JsonMissing.of()
@@ -4856,7 +4856,7 @@ private constructor(
                             @JvmStatic fun builder() = Builder()
                         }
 
-                        class Builder {
+                        class Builder internal constructor() {
 
                             private var amount: JsonField<Boolean> = JsonMissing.of()
                             private var currency: JsonField<Boolean> = JsonMissing.of()
@@ -5011,7 +5011,7 @@ private constructor(
                             @JvmStatic fun builder() = Builder()
                         }
 
-                        class Builder {
+                        class Builder internal constructor() {
 
                             private var amount: JsonField<Boolean> = JsonMissing.of()
                             private var currency: JsonField<Boolean> = JsonMissing.of()
@@ -5173,7 +5173,7 @@ private constructor(
                             @JvmStatic fun builder() = Builder()
                         }
 
-                        class Builder {
+                        class Builder internal constructor() {
 
                             private var amount: JsonField<Boolean> = JsonMissing.of()
                             private var currency: JsonField<Boolean> = JsonMissing.of()
@@ -5459,7 +5459,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var id: JsonField<Boolean> = JsonMissing.of()
                     private var companyDebit: JsonField<Boolean> = JsonMissing.of()
@@ -5653,7 +5653,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    class Builder {
+                    class Builder internal constructor() {
 
                         private var endDate: JsonField<Boolean> = JsonMissing.of()
                         private var startDate: JsonField<Boolean> = JsonMissing.of()

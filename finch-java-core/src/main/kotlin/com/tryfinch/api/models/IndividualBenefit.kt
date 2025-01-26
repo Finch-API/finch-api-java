@@ -69,7 +69,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: JsonField<Body> = JsonMissing.of()
         private var code: JsonField<Long> = JsonMissing.of()
@@ -219,7 +219,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var annualMaximum: JsonField<Long> = JsonMissing.of()
             private var catchUp: JsonField<Boolean> = JsonMissing.of()

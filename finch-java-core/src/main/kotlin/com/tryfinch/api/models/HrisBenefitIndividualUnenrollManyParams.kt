@@ -21,7 +21,7 @@ import java.util.Optional
 
 /** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyParams
-constructor(
+private constructor(
     private val benefitId: String,
     private val body: HrisBenefitIndividualUnenrollManyBody,
     private val additionalHeaders: Headers,
@@ -97,7 +97,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var individualIds: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -187,7 +187,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var benefitId: String? = null
         private var body: HrisBenefitIndividualUnenrollManyBody.Builder =

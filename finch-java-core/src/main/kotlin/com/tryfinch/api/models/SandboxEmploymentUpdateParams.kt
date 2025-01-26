@@ -23,7 +23,7 @@ import java.util.Optional
 
 /** Update sandbox employment */
 class SandboxEmploymentUpdateParams
-constructor(
+private constructor(
     private val individualId: String,
     private val body: SandboxEmploymentUpdateBody,
     private val additionalHeaders: Headers,
@@ -401,7 +401,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var classCode: JsonField<String> = JsonMissing.of()
             private var customFields: JsonField<MutableList<CustomField>>? = null
@@ -732,7 +732,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var individualId: String? = null
         private var body: SandboxEmploymentUpdateBody.Builder =
@@ -1110,7 +1110,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var value: JsonValue = JsonMissing.of()
@@ -1216,7 +1216,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -1330,7 +1330,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var subtype: JsonField<Subtype> = JsonMissing.of()
             private var type: JsonField<Type> = JsonMissing.of()
@@ -1684,7 +1684,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var id: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()

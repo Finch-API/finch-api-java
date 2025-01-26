@@ -25,7 +25,7 @@ import java.util.Optional
  * pull data models directly against an integration’s API.
  */
 class RequestForwardingForwardParams
-constructor(
+private constructor(
     private val body: RequestForwardingForwardBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -185,7 +185,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var method: JsonField<String>? = null
             private var route: JsonField<String>? = null
@@ -318,7 +318,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: RequestForwardingForwardBody.Builder =
             RequestForwardingForwardBody.builder()

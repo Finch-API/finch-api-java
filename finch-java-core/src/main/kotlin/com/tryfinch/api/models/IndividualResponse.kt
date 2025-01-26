@@ -69,7 +69,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: JsonField<Individual> = JsonMissing.of()
         private var code: JsonField<Long> = JsonMissing.of()

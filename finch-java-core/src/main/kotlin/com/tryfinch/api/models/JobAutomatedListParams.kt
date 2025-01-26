@@ -14,7 +14,7 @@ import java.util.Optional
  * scheduled job is shown.
  */
 class JobAutomatedListParams
-constructor(
+private constructor(
     private val limit: Long?,
     private val offset: Long?,
     private val additionalHeaders: Headers,
@@ -50,7 +50,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var limit: Long? = null
         private var offset: Long? = null

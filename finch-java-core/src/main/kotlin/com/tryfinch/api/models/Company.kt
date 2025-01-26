@@ -143,7 +143,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
         private var accounts: JsonField<MutableList<Account>>? = null
@@ -432,7 +432,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var accountName: JsonField<String> = JsonMissing.of()
             private var accountNumber: JsonField<String> = JsonMissing.of()
@@ -678,7 +678,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var parent: JsonField<Parent> = JsonMissing.of()
@@ -776,7 +776,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var name: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -905,7 +905,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var subtype: JsonField<Subtype> = JsonMissing.of()
             private var type: JsonField<Type> = JsonMissing.of()

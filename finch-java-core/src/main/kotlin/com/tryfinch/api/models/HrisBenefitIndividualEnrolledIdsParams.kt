@@ -10,7 +10,7 @@ import java.util.Objects
 
 /** Lists individuals currently enrolled in a given deduction. */
 class HrisBenefitIndividualEnrolledIdsParams
-constructor(
+private constructor(
     private val benefitId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -41,7 +41,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var benefitId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
