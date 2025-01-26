@@ -68,7 +68,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var supportedFeatures: JsonField<BenefitFeature> = JsonMissing.of()
         private var supportedOperations: JsonField<SupportPerBenefitType> = JsonMissing.of()
@@ -253,7 +253,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var annualMaximum: JsonField<Boolean> = JsonMissing.of()
             private var catchUp: JsonField<Boolean> = JsonMissing.of()

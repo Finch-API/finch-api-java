@@ -38,8 +38,7 @@ import com.tryfinch.api.services.async.WebhookServiceAsyncImpl
 import java.net.URLEncoder
 import java.util.concurrent.CompletableFuture
 
-class FinchClientAsyncImpl
-constructor(
+class FinchClientAsyncImpl(
     private val clientOptions: ClientOptions,
 ) : FinchClientAsync {
 

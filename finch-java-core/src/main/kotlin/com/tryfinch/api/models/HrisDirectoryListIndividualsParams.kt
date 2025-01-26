@@ -11,7 +11,7 @@ import java.util.Optional
 /** Read company directory and organization structure */
 @Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsParams
-constructor(
+private constructor(
     private val limit: Long?,
     private val offset: Long?,
     private val additionalHeaders: Headers,
@@ -47,7 +47,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var limit: Long? = null
         private var offset: Long? = null

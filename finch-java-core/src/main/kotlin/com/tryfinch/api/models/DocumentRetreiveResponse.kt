@@ -142,7 +142,7 @@ private constructor(
         }
     }
 
-    class Deserializer :
+    internal class Deserializer :
         BaseDeserializer<DocumentRetreiveResponse>(DocumentRetreiveResponse::class) {
 
         override fun ObjectCodec.deserialize(node: JsonNode): DocumentRetreiveResponse {
@@ -168,7 +168,8 @@ private constructor(
         }
     }
 
-    class Serializer : BaseSerializer<DocumentRetreiveResponse>(DocumentRetreiveResponse::class) {
+    internal class Serializer :
+        BaseSerializer<DocumentRetreiveResponse>(DocumentRetreiveResponse::class) {
 
         override fun serialize(
             value: DocumentRetreiveResponse,

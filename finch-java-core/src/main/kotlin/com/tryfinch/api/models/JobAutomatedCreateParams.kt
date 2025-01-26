@@ -48,7 +48,7 @@ import kotlin.jvm.optionals.getOrNull
  * endpoint, please contact your Finch account manager.
  */
 class JobAutomatedCreateParams
-constructor(
+private constructor(
     private val body: JobAutomatedCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -142,7 +142,7 @@ constructor(
             }
         }
 
-        class Deserializer :
+        internal class Deserializer :
             BaseDeserializer<JobAutomatedCreateBody>(JobAutomatedCreateBody::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): JobAutomatedCreateBody {
@@ -166,7 +166,8 @@ constructor(
             }
         }
 
-        class Serializer : BaseSerializer<JobAutomatedCreateBody>(JobAutomatedCreateBody::class) {
+        internal class Serializer :
+            BaseSerializer<JobAutomatedCreateBody>(JobAutomatedCreateBody::class) {
 
             override fun serialize(
                 value: JobAutomatedCreateBody,
@@ -192,7 +193,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: JobAutomatedCreateBody? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -356,7 +357,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -515,7 +516,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var individualId: JsonField<String>? = null
             private var type: JsonField<Type>? = null

@@ -23,7 +23,7 @@ import java.util.Optional
 
 /** Create a new connection (new company/provider pair) with a new account */
 class SandboxConnectionCreateParams
-constructor(
+private constructor(
     private val body: SandboxConnectionCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -153,7 +153,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var providerId: JsonField<String>? = null
             private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
@@ -274,7 +274,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: SandboxConnectionCreateBody.Builder =
             SandboxConnectionCreateBody.builder()

@@ -23,7 +23,7 @@ import java.util.Optional
  * responds.
  */
 class SandboxConnectionAccountUpdateParams
-constructor(
+private constructor(
     private val body: SandboxConnectionAccountUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -85,7 +85,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var connectionStatus: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -158,7 +158,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: SandboxConnectionAccountUpdateBody.Builder =
             SandboxConnectionAccountUpdateBody.builder()

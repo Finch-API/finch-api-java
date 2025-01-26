@@ -11,7 +11,7 @@ import java.util.Optional
 
 /** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsParams
-constructor(
+private constructor(
     private val benefitId: String,
     private val individualIds: String?,
     private val additionalHeaders: Headers,
@@ -55,7 +55,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var benefitId: String? = null
         private var individualIds: String? = null

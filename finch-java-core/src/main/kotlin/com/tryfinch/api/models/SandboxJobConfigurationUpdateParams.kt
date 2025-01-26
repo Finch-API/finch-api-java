@@ -22,7 +22,7 @@ import java.util.Objects
 
 /** Update configurations for sandbox jobs */
 class SandboxJobConfigurationUpdateParams
-constructor(
+private constructor(
     private val body: SandboxJobConfigurationUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -93,7 +93,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var completionStatus: JsonField<CompletionStatus>? = null
             private var type: JsonField<Type>? = null
@@ -173,7 +173,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: SandboxJobConfigurationUpdateBody.Builder =
             SandboxJobConfigurationUpdateBody.builder()

@@ -62,7 +62,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var benefitId: JsonField<String>? = null
         private var individualIds: JsonField<MutableList<String>>? = null

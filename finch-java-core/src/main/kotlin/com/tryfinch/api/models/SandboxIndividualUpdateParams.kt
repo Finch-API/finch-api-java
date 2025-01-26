@@ -23,7 +23,7 @@ import java.util.Optional
 
 /** Update sandbox individual */
 class SandboxIndividualUpdateParams
-constructor(
+private constructor(
     private val individualId: String,
     private val body: SandboxIndividualUpdateBody,
     private val additionalHeaders: Headers,
@@ -300,7 +300,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var dob: JsonField<String> = JsonMissing.of()
             private var emails: JsonField<MutableList<Email>>? = null
@@ -557,7 +557,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var individualId: String? = null
         private var body: SandboxIndividualUpdateBody.Builder =
@@ -878,7 +878,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var data: JsonField<String> = JsonMissing.of()
             private var type: JsonField<Type> = JsonMissing.of()
@@ -1211,7 +1211,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var data: JsonField<String> = JsonMissing.of()
             private var type: JsonField<Type> = JsonMissing.of()

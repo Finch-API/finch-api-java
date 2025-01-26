@@ -23,7 +23,7 @@ import java.util.Optional
 
 /** Create a new Connect session for reauthenticating an existing connection */
 class ConnectSessionReauthenticateParams
-constructor(
+private constructor(
     private val body: ConnectSessionReauthenticateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -149,7 +149,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var connectionId: JsonField<String>? = null
             private var minutesToExpire: JsonField<Long> = JsonMissing.of()
@@ -298,7 +298,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: ConnectSessionReauthenticateBody.Builder =
             ConnectSessionReauthenticateBody.builder()

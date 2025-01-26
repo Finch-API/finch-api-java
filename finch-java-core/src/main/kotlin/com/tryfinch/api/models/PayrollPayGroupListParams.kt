@@ -11,7 +11,7 @@ import java.util.Optional
 
 /** Read company pay groups and frequencies */
 class PayrollPayGroupListParams
-constructor(
+private constructor(
     private val individualId: String?,
     private val payFrequencies: List<String>?,
     private val additionalHeaders: Headers,
@@ -45,7 +45,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var individualId: String? = null
         private var payFrequencies: MutableList<String>? = null
