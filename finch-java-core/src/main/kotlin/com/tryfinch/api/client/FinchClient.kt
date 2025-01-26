@@ -29,6 +29,12 @@ import com.tryfinch.api.services.blocking.WebhookService
  */
 interface FinchClient {
 
+    /**
+     * Returns a version of this client that uses asynchronous execution.
+     *
+     * The returned client shares its resources, like its connection pool and thread pools, with
+     * this client.
+     */
     fun async(): FinchClientAsync
 
     fun accessTokens(): AccessTokenService
