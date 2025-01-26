@@ -37,8 +37,7 @@ import com.tryfinch.api.services.blocking.WebhookService
 import com.tryfinch.api.services.blocking.WebhookServiceImpl
 import java.net.URLEncoder
 
-class FinchClientImpl
-constructor(
+class FinchClientImpl(
     private val clientOptions: ClientOptions,
 ) : FinchClient {
 

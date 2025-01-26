@@ -23,7 +23,7 @@ import java.util.Optional
  * view available types for each provider.
  */
 class HrisBenefitCreateParams
-constructor(
+private constructor(
     private val body: HrisBenefitCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -132,7 +132,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var description: JsonField<String> = JsonMissing.of()
             private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
@@ -234,7 +234,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: HrisBenefitCreateBody.Builder = HrisBenefitCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()

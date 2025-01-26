@@ -150,7 +150,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var earnings: JsonField<MutableList<Earning?>>? = null
         private var employeeDeductions: JsonField<MutableList<EmployeeDeduction?>>? = null
@@ -454,7 +454,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var amount: JsonField<Long> = JsonMissing.of()
             private var currency: JsonField<String> = JsonMissing.of()
@@ -789,7 +789,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var amount: JsonField<Long> = JsonMissing.of()
             private var currency: JsonField<String> = JsonMissing.of()
@@ -978,7 +978,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var amount: JsonField<Long> = JsonMissing.of()
             private var currency: JsonField<String> = JsonMissing.of()
@@ -1217,7 +1217,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var amount: JsonField<Long> = JsonMissing.of()
             private var currency: JsonField<String> = JsonMissing.of()

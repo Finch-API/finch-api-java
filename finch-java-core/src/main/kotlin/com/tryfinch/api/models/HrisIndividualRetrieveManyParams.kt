@@ -20,7 +20,7 @@ import java.util.Optional
 
 /** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyParams
-constructor(
+private constructor(
     private val body: HrisIndividualRetrieveManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -94,7 +94,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var options: JsonField<Options> = JsonMissing.of()
             private var requests: JsonField<MutableList<Request>>? = null
@@ -187,7 +187,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: HrisIndividualRetrieveManyBody.Builder =
             HrisIndividualRetrieveManyBody.builder()
@@ -377,7 +377,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var include: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -491,7 +491,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var individualId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()

@@ -15,7 +15,7 @@ import java.util.Optional
 
 /** **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents. */
 class HrisDocumentListParams
-constructor(
+private constructor(
     private val individualIds: List<String>?,
     private val limit: Long?,
     private val offset: Long?,
@@ -64,7 +64,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var individualIds: MutableList<String>? = null
         private var limit: Long? = null

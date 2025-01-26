@@ -23,7 +23,7 @@ import java.util.Optional
 
 /** Create a new connect session for an employer */
 class ConnectSessionNewParams
-constructor(
+private constructor(
     private val body: ConnectSessionNewBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -204,7 +204,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var customerId: JsonField<String>? = null
             private var customerName: JsonField<String>? = null
@@ -393,7 +393,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: ConnectSessionNewBody.Builder = ConnectSessionNewBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -753,7 +753,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
             private var provider: JsonField<String> = JsonMissing.of()

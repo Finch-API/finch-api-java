@@ -13,7 +13,7 @@ import java.util.Objects
  * jobs.
  */
 class JobManualRetrieveParams
-constructor(
+private constructor(
     private val jobId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -44,7 +44,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var jobId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()

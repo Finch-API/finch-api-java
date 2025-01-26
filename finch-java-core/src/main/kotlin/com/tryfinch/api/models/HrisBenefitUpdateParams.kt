@@ -21,7 +21,7 @@ import java.util.Optional
 
 /** Updates an existing company-wide deduction or contribution */
 class HrisBenefitUpdateParams
-constructor(
+private constructor(
     private val benefitId: String,
     private val body: HrisBenefitUpdateBody,
     private val additionalHeaders: Headers,
@@ -97,7 +97,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var description: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -165,7 +165,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var benefitId: String? = null
         private var body: HrisBenefitUpdateBody.Builder = HrisBenefitUpdateBody.builder()

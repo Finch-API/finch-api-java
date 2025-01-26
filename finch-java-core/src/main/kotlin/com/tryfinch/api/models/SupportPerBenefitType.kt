@@ -66,7 +66,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var companyBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of()
         private var individualBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of()

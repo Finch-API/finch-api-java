@@ -168,7 +168,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var id: JsonField<String> = JsonMissing.of()
         private var companyDebit: JsonField<Money> = JsonMissing.of()
@@ -529,7 +529,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var endDate: JsonField<String> = JsonMissing.of()
             private var startDate: JsonField<String> = JsonMissing.of()

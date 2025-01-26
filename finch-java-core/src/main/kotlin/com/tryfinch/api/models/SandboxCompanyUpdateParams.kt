@@ -23,7 +23,7 @@ import java.util.Optional
 
 /** Update a sandbox company's data */
 class SandboxCompanyUpdateParams
-constructor(
+private constructor(
     private val body: SandboxCompanyUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -207,7 +207,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var accounts: JsonField<MutableList<Account>>? = null
             private var departments: JsonField<MutableList<Department?>>? = null
@@ -417,7 +417,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: SandboxCompanyUpdateBody.Builder = SandboxCompanyUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -740,7 +740,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var accountName: JsonField<String> = JsonMissing.of()
             private var accountNumber: JsonField<String> = JsonMissing.of()
@@ -986,7 +986,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var parent: JsonField<Parent> = JsonMissing.of()
@@ -1084,7 +1084,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var name: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -1213,7 +1213,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var subtype: JsonField<Subtype> = JsonMissing.of()
             private var type: JsonField<Type> = JsonMissing.of()
