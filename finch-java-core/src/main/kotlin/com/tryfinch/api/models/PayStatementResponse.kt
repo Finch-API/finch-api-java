@@ -66,6 +66,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [PayStatementResponse]. */
     class Builder internal constructor() {
 
         private var body: JsonField<PayStatementResponseBody> = JsonMissing.of()

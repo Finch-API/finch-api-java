@@ -39,6 +39,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [AccountDisconnectParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

@@ -110,6 +110,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [Location]. */
     class Builder internal constructor() {
 
         private var city: JsonField<String> = JsonMissing.of()

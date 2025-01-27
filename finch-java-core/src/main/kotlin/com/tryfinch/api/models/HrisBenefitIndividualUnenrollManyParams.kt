@@ -97,6 +97,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [HrisBenefitIndividualUnenrollManyBody]. */
         class Builder internal constructor() {
 
             private var individualIds: JsonField<MutableList<String>>? = null
@@ -186,6 +187,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [HrisBenefitIndividualUnenrollManyParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

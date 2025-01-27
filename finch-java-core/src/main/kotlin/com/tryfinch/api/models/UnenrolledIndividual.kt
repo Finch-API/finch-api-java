@@ -69,6 +69,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [UnenrolledIndividual]. */
     class Builder internal constructor() {
 
         private var body: JsonField<Body> = JsonMissing.of()
@@ -187,6 +188,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var finchCode: JsonField<String> = JsonMissing.of()
