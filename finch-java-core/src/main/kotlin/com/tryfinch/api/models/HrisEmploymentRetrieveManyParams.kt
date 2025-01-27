@@ -86,6 +86,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [HrisEmploymentRetrieveManyBody]. */
         class Builder internal constructor() {
 
             private var requests: JsonField<MutableList<Request>>? = null
@@ -172,6 +173,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [HrisEmploymentRetrieveManyParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
@@ -372,6 +374,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Request]. */
         class Builder internal constructor() {
 
             private var individualId: JsonField<String>? = null

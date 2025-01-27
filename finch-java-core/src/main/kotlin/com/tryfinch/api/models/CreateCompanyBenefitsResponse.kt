@@ -52,6 +52,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [CreateCompanyBenefitsResponse]. */
     class Builder internal constructor() {
 
         private var benefitId: JsonField<String>? = null

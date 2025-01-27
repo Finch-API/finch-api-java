@@ -60,6 +60,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [Money]. */
     class Builder internal constructor() {
 
         private var amount: JsonField<Long> = JsonMissing.of()

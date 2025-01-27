@@ -45,6 +45,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [HrisDirectoryListParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

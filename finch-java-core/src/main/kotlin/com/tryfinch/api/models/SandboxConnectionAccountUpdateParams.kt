@@ -85,6 +85,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [SandboxConnectionAccountUpdateBody]. */
         class Builder internal constructor() {
 
             private var connectionStatus: JsonField<ConnectionStatusType> = JsonMissing.of()
@@ -157,6 +158,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [SandboxConnectionAccountUpdateParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
