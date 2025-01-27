@@ -29,6 +29,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [HrisBenefitListSupportedBenefitsParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

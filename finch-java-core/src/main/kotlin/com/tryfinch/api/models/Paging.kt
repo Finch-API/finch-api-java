@@ -60,6 +60,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [Paging]. */
     class Builder internal constructor() {
 
         private var count: JsonField<Long> = JsonMissing.of()

@@ -180,6 +180,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [BenefitsSupport]. */
     class Builder internal constructor() {
 
         private var commuter: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of()
