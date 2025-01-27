@@ -86,6 +86,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [JobCreateResponse]. */
     class Builder internal constructor() {
 
         private var allowedRefreshes: JsonField<Long>? = null

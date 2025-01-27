@@ -90,6 +90,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [HrisPayStatementRetrieveManyBody]. */
         class Builder internal constructor() {
 
             private var requests: JsonField<MutableList<Request>>? = null
@@ -176,6 +177,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [HrisPayStatementRetrieveManyParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
@@ -386,6 +388,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Request]. */
         class Builder internal constructor() {
 
             private var paymentId: JsonField<String>? = null

@@ -29,6 +29,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [HrisCompanyRetrieveParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

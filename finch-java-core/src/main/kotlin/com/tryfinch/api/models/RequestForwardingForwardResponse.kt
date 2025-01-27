@@ -98,6 +98,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [RequestForwardingForwardResponse]. */
     class Builder internal constructor() {
 
         private var data: JsonField<String>? = null
@@ -287,6 +288,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Request]. */
         class Builder internal constructor() {
 
             private var data: JsonField<String>? = null

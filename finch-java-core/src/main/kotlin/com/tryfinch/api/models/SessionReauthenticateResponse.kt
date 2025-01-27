@@ -64,6 +64,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [SessionReauthenticateResponse]. */
     class Builder internal constructor() {
 
         private var connectUrl: JsonField<String>? = null
