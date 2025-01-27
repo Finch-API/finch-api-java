@@ -195,4 +195,6 @@ constructor(
         @JsonProperty("products") val products: List<String>,
         @JsonProperty("provider_id") val providerId: String,
     )
+
+    override fun close() = clientOptions.httpClient.close()
 }
