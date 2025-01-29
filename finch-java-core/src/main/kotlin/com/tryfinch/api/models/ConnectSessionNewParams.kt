@@ -41,7 +41,7 @@ private constructor(
 
     fun manual(): Optional<Boolean> = body.manual()
 
-    /** The number of minutes until the session expires (defaults to 20,160, which is 14 days) */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun minutesToExpire(): Optional<Double> = body.minutesToExpire()
 
     fun redirectUri(): Optional<String> = body.redirectUri()
@@ -60,7 +60,7 @@ private constructor(
 
     fun _manual(): JsonField<Boolean> = body._manual()
 
-    /** The number of minutes until the session expires (defaults to 20,160, which is 14 days) */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun _minutesToExpire(): JsonField<Double> = body._minutesToExpire()
 
     fun _redirectUri(): JsonField<String> = body._redirectUri()
@@ -129,7 +129,7 @@ private constructor(
         fun manual(): Optional<Boolean> = Optional.ofNullable(manual.getNullable("manual"))
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(): Optional<Double> =
             Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
@@ -162,7 +162,7 @@ private constructor(
         @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         @JsonProperty("minutes_to_expire")
         @ExcludeMissing
@@ -291,21 +291,21 @@ private constructor(
             fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: Double?) =
                 minutesToExpire(JsonField.ofNullable(minutesToExpire))
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: Double) =
                 minutesToExpire(minutesToExpire as Double?)
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
@@ -313,7 +313,7 @@ private constructor(
                 minutesToExpire(minutesToExpire.orElse(null) as Double?)
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
@@ -451,26 +451,26 @@ private constructor(
         fun manual(manual: JsonField<Boolean>) = apply { body.manual(manual) }
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: Double?) = apply {
             body.minutesToExpire(minutesToExpire)
         }
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: Double) = minutesToExpire(minutesToExpire as Double?)
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun minutesToExpire(minutesToExpire: Optional<Double>) =
             minutesToExpire(minutesToExpire.orElse(null) as Double?)
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
             body.minutesToExpire(minutesToExpire)
