@@ -507,14 +507,14 @@ private constructor(
             firstName()
             gender()
             income().ifPresent { it.validate() }
-            incomeHistory().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+            incomeHistory().ifPresent { it.forEach { it?.validate() } }
             isActive()
             lastName()
             latestRehireDate()
             location().ifPresent { it.validate() }
             manager().ifPresent { it.validate() }
             middleName()
-            phoneNumbers().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+            phoneNumbers().ifPresent { it.forEach { it?.validate() } }
             preferredName()
             residence().ifPresent { it.validate() }
             sourceId()

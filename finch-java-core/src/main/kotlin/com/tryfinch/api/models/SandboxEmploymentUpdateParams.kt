@@ -382,7 +382,7 @@ private constructor(
             endDate()
             firstName()
             income().ifPresent { it.validate() }
-            incomeHistory().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+            incomeHistory().ifPresent { it.forEach { it?.validate() } }
             isActive()
             lastName()
             latestRehireDate()

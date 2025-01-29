@@ -490,14 +490,14 @@ private constructor(
                 return@apply
             }
 
-            earnings().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
-            employeeDeductions().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
-            employerContributions().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+            earnings().ifPresent { it.forEach { it?.validate() } }
+            employeeDeductions().ifPresent { it.forEach { it?.validate() } }
+            employerContributions().ifPresent { it.forEach { it?.validate() } }
             grossPay().ifPresent { it.validate() }
             individualId()
             netPay().ifPresent { it.validate() }
             paymentMethod()
-            taxes().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+            taxes().ifPresent { it.forEach { it?.validate() } }
             totalHours()
             type()
             validated = true
