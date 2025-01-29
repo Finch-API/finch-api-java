@@ -61,16 +61,20 @@ class ServiceParamsTest {
 
         val apiResponse =
             HrisDirectoryListPage.Response.builder()
-                .addIndividual(
-                    IndividualInDirectory.builder()
-                        .id("id")
-                        .department(IndividualInDirectory.Department.builder().name("name").build())
-                        .firstName("first_name")
-                        .isActive(true)
-                        .lastName("last_name")
-                        .manager(IndividualInDirectory.Manager.builder().id("id").build())
-                        .middleName("middle_name")
-                        .build()
+                .individuals(
+                    listOf(
+                        IndividualInDirectory.builder()
+                            .id("id")
+                            .department(
+                                IndividualInDirectory.Department.builder().name("name").build()
+                            )
+                            .firstName("first_name")
+                            .isActive(true)
+                            .lastName("last_name")
+                            .manager(IndividualInDirectory.Manager.builder().id("id").build())
+                            .middleName("middle_name")
+                            .build()
+                    )
                 )
                 .paging(Paging.builder().count(0L).offset(0L).build())
                 .build()

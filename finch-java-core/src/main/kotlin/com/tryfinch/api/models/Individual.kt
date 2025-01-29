@@ -173,7 +173,7 @@ private constructor(
         gender()
         lastName()
         middleName()
-        phoneNumbers().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        phoneNumbers().ifPresent { it.forEach { it?.validate() } }
         preferredName()
         residence().ifPresent { it.validate() }
         ssn()
