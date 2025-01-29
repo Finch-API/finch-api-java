@@ -69,7 +69,7 @@ class SandboxEmploymentUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxEmploymentUpdateParams.builder()
                 .individualId("individual_id")
@@ -127,7 +127,7 @@ class SandboxEmploymentUpdateParamsTest {
                 .startDate("3/4/2020")
                 .title("title")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.classCode()).contains("class_code")
         assertThat(body.customFields())
@@ -197,9 +197,9 @@ class SandboxEmploymentUpdateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

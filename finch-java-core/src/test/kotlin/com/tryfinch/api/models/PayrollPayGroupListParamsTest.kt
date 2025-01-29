@@ -17,7 +17,7 @@ class PayrollPayGroupListParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             PayrollPayGroupListParams.builder()
                 .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -26,13 +26,13 @@ class PayrollPayGroupListParamsTest {
         val expected = QueryParams.builder()
         expected.put("individual_id", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         expected.put("pay_frequencies[]", "string")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params = PayrollPayGroupListParams.builder().build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }
