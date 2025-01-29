@@ -118,11 +118,11 @@ private constructor(
         }
 
         accounts().ifPresent { it.forEach { it.validate() } }
-        departments().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        departments().ifPresent { it.forEach { it?.validate() } }
         ein()
         entity().ifPresent { it.validate() }
         legalName()
-        locations().ifPresent { it.forEach { it.ifPresent { it.validate() } } }
+        locations().ifPresent { it.forEach { it?.validate() } }
         primaryEmail()
         primaryPhoneNumber()
         validated = true
