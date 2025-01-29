@@ -28,7 +28,7 @@ class ConnectSessionNewParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ConnectSessionNewParams.builder()
                 .customerId("x")
@@ -46,7 +46,7 @@ class ConnectSessionNewParamsTest {
                 .redirectUri("redirect_uri")
                 .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
@@ -67,14 +67,14 @@ class ConnectSessionNewParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ConnectSessionNewParams.builder()
                 .customerId("x")
                 .customerName("x")
                 .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")

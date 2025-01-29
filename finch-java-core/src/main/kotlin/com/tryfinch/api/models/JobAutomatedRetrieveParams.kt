@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -14,7 +15,7 @@ private constructor(
     private val jobId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun jobId(): String = jobId
 
@@ -22,9 +23,9 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {

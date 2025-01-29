@@ -61,7 +61,7 @@ class SandboxPaymentCreateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxPaymentCreateParams.builder()
                 .endDate("end_date")
@@ -112,7 +112,7 @@ class SandboxPaymentCreateParamsTest {
                 )
                 .startDate("start_date")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.endDate()).contains("end_date")
         assertThat(body.payStatements())
@@ -167,9 +167,9 @@ class SandboxPaymentCreateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxPaymentCreateParams.builder().build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 }

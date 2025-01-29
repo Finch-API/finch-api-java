@@ -19,7 +19,7 @@ class HrisEmploymentRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisEmploymentRetrieveManyParams.builder()
                 .addRequest(
@@ -28,7 +28,7 @@ class HrisEmploymentRetrieveManyParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(
@@ -41,7 +41,7 @@ class HrisEmploymentRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             HrisEmploymentRetrieveManyParams.builder()
                 .addRequest(
@@ -50,7 +50,7 @@ class HrisEmploymentRetrieveManyParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(

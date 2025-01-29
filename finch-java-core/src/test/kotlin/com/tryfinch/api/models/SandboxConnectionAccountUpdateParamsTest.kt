@@ -15,20 +15,20 @@ class SandboxConnectionAccountUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxConnectionAccountUpdateParams.builder()
                 .connectionStatus(ConnectionStatusType.PENDING)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.connectionStatus()).contains(ConnectionStatusType.PENDING)
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxConnectionAccountUpdateParams.builder().build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 }

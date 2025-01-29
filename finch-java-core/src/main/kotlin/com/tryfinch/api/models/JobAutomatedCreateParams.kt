@@ -21,6 +21,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.core.http.Headers
@@ -52,7 +53,7 @@ private constructor(
     private val body: JobAutomatedCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun dataSyncAll(): Optional<DataSyncAll> = body.dataSyncAll()
 
@@ -62,11 +63,11 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): JobAutomatedCreateBody = body
+    @JvmSynthetic internal fun _body(): JobAutomatedCreateBody = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @JsonDeserialize(using = JobAutomatedCreateBody.Deserializer::class)
     @JsonSerialize(using = JobAutomatedCreateBody.Serializer::class)

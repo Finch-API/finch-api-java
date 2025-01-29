@@ -18,7 +18,7 @@ class SandboxConnectionCreateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxConnectionCreateParams.builder()
                 .providerId("provider_id")
@@ -26,7 +26,7 @@ class SandboxConnectionCreateParamsTest {
                 .employeeSize(0L)
                 .addProduct("string")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
@@ -36,9 +36,9 @@ class SandboxConnectionCreateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxConnectionCreateParams.builder().providerId("provider_id").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.providerId()).isEqualTo("provider_id")
     }

@@ -16,22 +16,22 @@ class HrisBenefitIndividualUnenrollManyParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisBenefitIndividualUnenrollManyParams.builder()
                 .benefitId("benefit_id")
                 .addIndividualId("string")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.individualIds()).contains(listOf("string"))
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

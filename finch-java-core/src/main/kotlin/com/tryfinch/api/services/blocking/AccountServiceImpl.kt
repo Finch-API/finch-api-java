@@ -11,6 +11,7 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.json
+import com.tryfinch.api.core.prepare
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.AccountDisconnectParams
 import com.tryfinch.api.models.AccountIntrospectParams
@@ -36,12 +37,9 @@ internal constructor(
             HttpRequest.builder()
                 .method(HttpMethod.POST)
                 .addPathSegments("disconnect")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .apply { params.getBody().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
+                .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                 .build()
+                .prepare(clientOptions, params)
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response
                 .use { disconnectHandler.handle(it) }
@@ -65,11 +63,8 @@ internal constructor(
             HttpRequest.builder()
                 .method(HttpMethod.GET)
                 .addPathSegments("introspect")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
                 .build()
+                .prepare(clientOptions, params)
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response
                 .use { introspectHandler.handle(it) }

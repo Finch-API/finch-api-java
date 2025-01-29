@@ -53,7 +53,7 @@ class SandboxCompanyUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxCompanyUpdateParams.builder()
                 .addAccount(
@@ -98,7 +98,7 @@ class SandboxCompanyUpdateParamsTest {
                 .primaryEmail("primary_email")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.accounts())
             .contains(
@@ -154,7 +154,7 @@ class SandboxCompanyUpdateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             SandboxCompanyUpdateParams.builder()
                 .addAccount(SandboxCompanyUpdateParams.Account.builder().build())
@@ -166,7 +166,7 @@ class SandboxCompanyUpdateParamsTest {
                 .primaryEmail("primary_email")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.accounts())
             .contains(listOf(SandboxCompanyUpdateParams.Account.builder().build()))
