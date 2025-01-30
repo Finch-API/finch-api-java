@@ -124,7 +124,7 @@ class SandboxDirectoryCreateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxDirectoryCreateParams.builder()
                 .addBody(
@@ -245,7 +245,7 @@ class SandboxDirectoryCreateParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body)
             .isEqualTo(
@@ -370,12 +370,12 @@ class SandboxDirectoryCreateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             SandboxDirectoryCreateParams.builder()
                 .addBody(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body)
             .isEqualTo(

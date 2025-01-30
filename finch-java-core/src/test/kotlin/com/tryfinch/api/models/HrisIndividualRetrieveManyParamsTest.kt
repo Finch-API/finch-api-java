@@ -22,7 +22,7 @@ class HrisIndividualRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisIndividualRetrieveManyParams.builder()
                 .options(
@@ -34,7 +34,7 @@ class HrisIndividualRetrieveManyParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.options())
             .contains(
@@ -51,9 +51,9 @@ class HrisIndividualRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = HrisIndividualRetrieveManyParams.builder().build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 }

@@ -16,13 +16,13 @@ class SandboxJobConfigurationUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxJobConfigurationUpdateParams.builder()
                 .completionStatus(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
                 .type(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.completionStatus())
             .isEqualTo(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
@@ -30,13 +30,13 @@ class SandboxJobConfigurationUpdateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             SandboxJobConfigurationUpdateParams.builder()
                 .completionStatus(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
                 .type(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.completionStatus())
             .isEqualTo(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)

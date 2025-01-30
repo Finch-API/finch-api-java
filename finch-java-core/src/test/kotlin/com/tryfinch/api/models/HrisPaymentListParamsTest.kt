@@ -18,7 +18,7 @@ class HrisPaymentListParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             HrisPaymentListParams.builder()
                 .endDate(LocalDate.parse("2021-01-01"))
@@ -27,11 +27,11 @@ class HrisPaymentListParamsTest {
         val expected = QueryParams.builder()
         expected.put("end_date", "2021-01-01")
         expected.put("start_date", "2021-01-01")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             HrisPaymentListParams.builder()
                 .endDate(LocalDate.parse("2021-01-01"))
@@ -40,6 +40,6 @@ class HrisPaymentListParamsTest {
         val expected = QueryParams.builder()
         expected.put("end_date", "2021-01-01")
         expected.put("start_date", "2021-01-01")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }
