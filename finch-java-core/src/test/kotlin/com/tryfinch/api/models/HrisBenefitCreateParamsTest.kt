@@ -17,14 +17,14 @@ class HrisBenefitCreateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisBenefitCreateParams.builder()
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
                 .type(BenefitType._401K)
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.description()).contains("description")
         assertThat(body.frequency()).contains(BenefitFrequency.ONE_TIME)
@@ -32,9 +32,9 @@ class HrisBenefitCreateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = HrisBenefitCreateParams.builder().build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 }

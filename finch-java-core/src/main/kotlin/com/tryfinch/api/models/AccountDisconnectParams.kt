@@ -4,6 +4,7 @@ package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -16,7 +17,7 @@ private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -25,12 +26,12 @@ private constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     @JvmSynthetic
-    internal fun getBody(): Optional<Map<String, JsonValue>> =
+    internal fun _body(): Optional<Map<String, JsonValue>> =
         Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
 

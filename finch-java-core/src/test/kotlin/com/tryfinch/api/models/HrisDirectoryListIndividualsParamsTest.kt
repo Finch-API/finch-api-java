@@ -14,18 +14,18 @@ class HrisDirectoryListIndividualsParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params = HrisDirectoryListIndividualsParams.builder().limit(0L).offset(0L).build()
         val expected = QueryParams.builder()
         expected.put("limit", "0")
         expected.put("offset", "0")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params = HrisDirectoryListIndividualsParams.builder().build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }

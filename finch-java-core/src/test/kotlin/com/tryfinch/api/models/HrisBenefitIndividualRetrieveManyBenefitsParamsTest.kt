@@ -19,7 +19,7 @@ class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
                 .benefitId("benefit_id")
@@ -32,17 +32,17 @@ class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
             "individual_ids",
             "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
         )
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
                 .benefitId("benefit_id")
                 .build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test

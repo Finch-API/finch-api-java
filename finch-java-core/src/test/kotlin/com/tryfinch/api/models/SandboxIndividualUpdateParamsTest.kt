@@ -48,7 +48,7 @@ class SandboxIndividualUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxIndividualUpdateParams.builder()
                 .individualId("individual_id")
@@ -86,7 +86,7 @@ class SandboxIndividualUpdateParamsTest {
                 )
                 .ssn("ssn")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.dob()).contains("12/20/1989")
         assertThat(body.emails())
@@ -131,9 +131,9 @@ class SandboxIndividualUpdateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxIndividualUpdateParams.builder().individualId("individual_id").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 

@@ -21,7 +21,7 @@ class HrisPayStatementRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisPayStatementRetrieveManyParams.builder()
                 .addRequest(
@@ -32,7 +32,7 @@ class HrisPayStatementRetrieveManyParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(
@@ -47,14 +47,14 @@ class HrisPayStatementRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             HrisPayStatementRetrieveManyParams.builder()
                 .addRequest(
                     HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(

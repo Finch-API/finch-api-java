@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -22,7 +23,7 @@ private constructor(
     private val types: List<Type>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /**
      * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
@@ -43,10 +44,9 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.individualIds?.let { queryParams.put("individual_ids[]", it.map(Any::toString)) }
         this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
