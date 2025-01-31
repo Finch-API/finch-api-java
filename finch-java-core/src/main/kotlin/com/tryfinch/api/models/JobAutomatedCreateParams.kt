@@ -523,24 +523,20 @@ private constructor(
     class W4FormEmployeeSync
     @JsonCreator
     private constructor(
-        @JsonProperty("individual_id")
+        @JsonProperty("params")
         @ExcludeMissing
-        private val individualId: JsonField<String> = JsonMissing.of(),
+        private val params: JsonField<Params> = JsonMissing.of(),
         @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The unique ID of the individual for W-4 data sync. */
-        fun individualId(): String = individualId.getRequired("individual_id")
+        fun params(): Params = params.getRequired("params")
 
         /** The type of job to start. */
         fun type(): Type = type.getRequired("type")
 
-        /** The unique ID of the individual for W-4 data sync. */
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        fun _individualId(): JsonField<String> = individualId
+        @JsonProperty("params") @ExcludeMissing fun _params(): JsonField<Params> = params
 
         /** The type of job to start. */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
@@ -556,7 +552,7 @@ private constructor(
                 return@apply
             }
 
-            individualId()
+            params().validate()
             type()
             validated = true
         }
@@ -571,24 +567,20 @@ private constructor(
         /** A builder for [W4FormEmployeeSync]. */
         class Builder internal constructor() {
 
-            private var individualId: JsonField<String>? = null
+            private var params: JsonField<Params>? = null
             private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(w4FormEmployeeSync: W4FormEmployeeSync) = apply {
-                individualId = w4FormEmployeeSync.individualId
+                params = w4FormEmployeeSync.params
                 type = w4FormEmployeeSync.type
                 additionalProperties = w4FormEmployeeSync.additionalProperties.toMutableMap()
             }
 
-            /** The unique ID of the individual for W-4 data sync. */
-            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+            fun params(params: Params) = params(JsonField.of(params))
 
-            /** The unique ID of the individual for W-4 data sync. */
-            fun individualId(individualId: JsonField<String>) = apply {
-                this.individualId = individualId
-            }
+            fun params(params: JsonField<Params>) = apply { this.params = params }
 
             /** The type of job to start. */
             fun type(type: Type) = type(JsonField.of(type))
@@ -617,10 +609,118 @@ private constructor(
 
             fun build(): W4FormEmployeeSync =
                 W4FormEmployeeSync(
-                    checkRequired("individualId", individualId),
+                    checkRequired("params", params),
                     checkRequired("type", type),
                     additionalProperties.toImmutable(),
                 )
+        }
+
+        @NoAutoDetect
+        class Params
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            private val individualId: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        ) {
+
+            /** The unique ID of the individual for W-4 data sync. */
+            fun individualId(): String = individualId.getRequired("individual_id")
+
+            /** The unique ID of the individual for W-4 data sync. */
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            fun _individualId(): JsonField<String> = individualId
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): Params = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                individualId()
+                validated = true
+            }
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [Params]. */
+            class Builder internal constructor() {
+
+                private var individualId: JsonField<String>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(params: Params) = apply {
+                    individualId = params.individualId
+                    additionalProperties = params.additionalProperties.toMutableMap()
+                }
+
+                /** The unique ID of the individual for W-4 data sync. */
+                fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+
+                /** The unique ID of the individual for W-4 data sync. */
+                fun individualId(individualId: JsonField<String>) = apply {
+                    this.individualId = individualId
+                }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                fun build(): Params =
+                    Params(
+                        checkRequired("individualId", individualId),
+                        additionalProperties.toImmutable()
+                    )
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Params && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
+            /* spotless:on */
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "Params{individualId=$individualId, additionalProperties=$additionalProperties}"
         }
 
         /** The type of job to start. */
@@ -715,17 +815,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is W4FormEmployeeSync && individualId == other.individualId && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is W4FormEmployeeSync && params == other.params && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(individualId, type, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(params, type, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "W4FormEmployeeSync{individualId=$individualId, type=$type, additionalProperties=$additionalProperties}"
+            "W4FormEmployeeSync{params=$params, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
