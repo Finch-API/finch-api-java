@@ -34,6 +34,9 @@ private constructor(
     @JsonProperty("job_url")
     @ExcludeMissing
     private val jobUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("params")
+    @ExcludeMissing
+    private val params: JsonField<Params> = JsonMissing.of(),
     @JsonProperty("scheduled_at")
     @ExcludeMissing
     private val scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of(),
@@ -63,6 +66,9 @@ private constructor(
     /** The url that can be used to retrieve the job status */
     fun jobUrl(): String = jobUrl.getRequired("job_url")
 
+    /** The input parameters for the job. */
+    fun params(): Optional<Params> = Optional.ofNullable(params.getNullable("params"))
+
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
      * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
@@ -76,7 +82,7 @@ private constructor(
 
     fun status(): Status = status.getRequired("status")
 
-    /** Only `data_sync_all` currently supported */
+    /** The type of automated job */
     fun type(): Type = type.getRequired("type")
 
     /** The datetime the job completed. */
@@ -98,6 +104,9 @@ private constructor(
     /** The url that can be used to retrieve the job status */
     @JsonProperty("job_url") @ExcludeMissing fun _jobUrl(): JsonField<String> = jobUrl
 
+    /** The input parameters for the job. */
+    @JsonProperty("params") @ExcludeMissing fun _params(): JsonField<Params> = params
+
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
      * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
@@ -113,7 +122,7 @@ private constructor(
 
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
-    /** Only `data_sync_all` currently supported */
+    /** The type of automated job */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
@@ -131,6 +140,7 @@ private constructor(
         createdAt()
         jobId()
         jobUrl()
+        params().ifPresent { it.validate() }
         scheduledAt()
         startedAt()
         status()
@@ -152,6 +162,7 @@ private constructor(
         private var createdAt: JsonField<OffsetDateTime>? = null
         private var jobId: JsonField<String>? = null
         private var jobUrl: JsonField<String>? = null
+        private var params: JsonField<Params>? = null
         private var scheduledAt: JsonField<OffsetDateTime>? = null
         private var startedAt: JsonField<OffsetDateTime>? = null
         private var status: JsonField<Status>? = null
@@ -164,6 +175,7 @@ private constructor(
             createdAt = automatedAsyncJob.createdAt
             jobId = automatedAsyncJob.jobId
             jobUrl = automatedAsyncJob.jobUrl
+            params = automatedAsyncJob.params
             scheduledAt = automatedAsyncJob.scheduledAt
             startedAt = automatedAsyncJob.startedAt
             status = automatedAsyncJob.status
@@ -210,6 +222,15 @@ private constructor(
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
 
+        /** The input parameters for the job. */
+        fun params(params: Params?) = params(JsonField.ofNullable(params))
+
+        /** The input parameters for the job. */
+        fun params(params: Optional<Params>) = params(params.orElse(null))
+
+        /** The input parameters for the job. */
+        fun params(params: JsonField<Params>) = apply { this.params = params }
+
         /**
          * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
          * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
@@ -248,10 +269,10 @@ private constructor(
 
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
-        /** Only `data_sync_all` currently supported */
+        /** The type of automated job */
         fun type(type: Type) = type(JsonField.of(type))
 
-        /** Only `data_sync_all` currently supported */
+        /** The type of automated job */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -279,12 +300,116 @@ private constructor(
                 checkRequired("createdAt", createdAt),
                 checkRequired("jobId", jobId),
                 checkRequired("jobUrl", jobUrl),
+                checkRequired("params", params),
                 checkRequired("scheduledAt", scheduledAt),
                 checkRequired("startedAt", startedAt),
                 checkRequired("status", status),
                 checkRequired("type", type),
                 additionalProperties.toImmutable(),
             )
+    }
+
+    /** The input parameters for the job. */
+    @NoAutoDetect
+    class Params
+    @JsonCreator
+    private constructor(
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        private val individualId: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    ) {
+
+        /** The ID of the individual that the job was completed for. */
+        fun individualId(): Optional<String> =
+            Optional.ofNullable(individualId.getNullable("individual_id"))
+
+        /** The ID of the individual that the job was completed for. */
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Params = apply {
+            if (validated) {
+                return@apply
+            }
+
+            individualId()
+            validated = true
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Params]. */
+        class Builder internal constructor() {
+
+            private var individualId: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(params: Params) = apply {
+                individualId = params.individualId
+                additionalProperties = params.additionalProperties.toMutableMap()
+            }
+
+            /** The ID of the individual that the job was completed for. */
+            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+
+            /** The ID of the individual that the job was completed for. */
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            fun build(): Params = Params(individualId, additionalProperties.toImmutable())
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Params && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Params{individualId=$individualId, additionalProperties=$additionalProperties}"
     }
 
     class Status
@@ -402,7 +527,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** Only `data_sync_all` currently supported */
+    /** The type of automated job */
     class Type
     @JsonCreator
     private constructor(
@@ -423,12 +548,15 @@ private constructor(
 
             @JvmField val DATA_SYNC_ALL = of("data_sync_all")
 
+            @JvmField val W4_FORM_EMPLOYEE_SYNC = of("w4_form_employee_sync")
+
             @JvmStatic fun of(value: String) = Type(JsonField.of(value))
         }
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
             DATA_SYNC_ALL,
+            W4_FORM_EMPLOYEE_SYNC,
         }
 
         /**
@@ -442,6 +570,7 @@ private constructor(
          */
         enum class Value {
             DATA_SYNC_ALL,
+            W4_FORM_EMPLOYEE_SYNC,
             /** An enum member indicating that [Type] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -456,6 +585,7 @@ private constructor(
         fun value(): Value =
             when (this) {
                 DATA_SYNC_ALL -> Value.DATA_SYNC_ALL
+                W4_FORM_EMPLOYEE_SYNC -> Value.W4_FORM_EMPLOYEE_SYNC
                 else -> Value._UNKNOWN
             }
 
@@ -470,6 +600,7 @@ private constructor(
         fun known(): Known =
             when (this) {
                 DATA_SYNC_ALL -> Known.DATA_SYNC_ALL
+                W4_FORM_EMPLOYEE_SYNC -> Known.W4_FORM_EMPLOYEE_SYNC
                 else -> throw FinchInvalidDataException("Unknown Type: $value")
             }
 
@@ -493,15 +624,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AutomatedAsyncJob && completedAt == other.completedAt && createdAt == other.createdAt && jobId == other.jobId && jobUrl == other.jobUrl && scheduledAt == other.scheduledAt && startedAt == other.startedAt && status == other.status && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AutomatedAsyncJob && completedAt == other.completedAt && createdAt == other.createdAt && jobId == other.jobId && jobUrl == other.jobUrl && params == other.params && scheduledAt == other.scheduledAt && startedAt == other.startedAt && status == other.status && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(completedAt, createdAt, jobId, jobUrl, scheduledAt, startedAt, status, type, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(completedAt, createdAt, jobId, jobUrl, params, scheduledAt, startedAt, status, type, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "AutomatedAsyncJob{completedAt=$completedAt, createdAt=$createdAt, jobId=$jobId, jobUrl=$jobUrl, scheduledAt=$scheduledAt, startedAt=$startedAt, status=$status, type=$type, additionalProperties=$additionalProperties}"
+        "AutomatedAsyncJob{completedAt=$completedAt, createdAt=$createdAt, jobId=$jobId, jobUrl=$jobUrl, params=$params, scheduledAt=$scheduledAt, startedAt=$startedAt, status=$status, type=$type, additionalProperties=$additionalProperties}"
 }
