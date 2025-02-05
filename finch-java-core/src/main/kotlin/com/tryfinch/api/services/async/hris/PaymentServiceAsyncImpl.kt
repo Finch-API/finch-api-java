@@ -43,13 +43,18 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { listHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            forEach { it.validate() }
+                            it.forEach { it.validate() }
                         }
                     }
-                    .let { HrisPaymentListPageAsync.Response.Builder().items(it).build() }
-                    .let { HrisPaymentListPageAsync.of(this, params, it) }
+                    .let {
+                        HrisPaymentListPageAsync.of(
+                            this,
+                            params,
+                            HrisPaymentListPageAsync.Response.builder().items(it).build()
+                        )
+                    }
             }
     }
 }

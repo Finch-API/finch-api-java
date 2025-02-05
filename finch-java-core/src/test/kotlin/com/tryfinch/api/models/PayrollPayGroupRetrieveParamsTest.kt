@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class PayrollPayGroupRetrieveParamsTest {
 
     @Test
-    fun createPayrollPayGroupRetrieveParams() {
+    fun create() {
         PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
     }
 

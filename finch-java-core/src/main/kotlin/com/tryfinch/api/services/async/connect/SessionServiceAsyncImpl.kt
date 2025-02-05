@@ -46,9 +46,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { newHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
             }
@@ -75,9 +75,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { reauthenticateHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
             }

@@ -44,15 +44,14 @@ internal constructor(
                 .addPathSegments("employer", "benefits", params.getPathParam(0), "enrolled")
                 .build()
                 .prepare(clientOptions, params)
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { enrolledIdsHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { enrolledIdsHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-        }
+            }
     }
 
     private val retrieveManyBenefitsHandler: Handler<List<IndividualBenefit>> =
@@ -70,21 +69,23 @@ internal constructor(
                 .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
                 .build()
                 .prepare(clientOptions, params)
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { retrieveManyBenefitsHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        forEach { it.validate() }
-                    }
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { retrieveManyBenefitsHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.forEach { it.validate() }
                 }
-                .let {
-                    HrisBenefitIndividualRetrieveManyBenefitsPage.Response.Builder()
+            }
+            .let {
+                HrisBenefitIndividualRetrieveManyBenefitsPage.of(
+                    this,
+                    params,
+                    HrisBenefitIndividualRetrieveManyBenefitsPage.Response.builder()
                         .items(it)
                         .build()
-                }
-                .let { HrisBenefitIndividualRetrieveManyBenefitsPage.of(this, params, it) }
-        }
+                )
+            }
     }
 
     private val unenrollManyHandler: Handler<List<UnenrolledIndividual>> =
@@ -103,16 +104,20 @@ internal constructor(
                 .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
                 .prepare(clientOptions, params)
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { unenrollManyHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        forEach { it.validate() }
-                    }
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { unenrollManyHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.forEach { it.validate() }
                 }
-                .let { HrisBenefitIndividualUnenrollManyPage.Response.Builder().items(it).build() }
-                .let { HrisBenefitIndividualUnenrollManyPage.of(this, params, it) }
-        }
+            }
+            .let {
+                HrisBenefitIndividualUnenrollManyPage.of(
+                    this,
+                    params,
+                    HrisBenefitIndividualUnenrollManyPage.Response.builder().items(it).build()
+                )
+            }
     }
 }

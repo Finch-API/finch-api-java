@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class HrisBenefitRetrieveParamsTest {
 
     @Test
-    fun createHrisBenefitRetrieveParams() {
+    fun create() {
         HrisBenefitRetrieveParams.builder().benefitId("benefit_id").build()
     }
 

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class HrisBenefitListSupportedBenefitsParamsTest {
 
     @Test
-    fun createHrisBenefitListSupportedBenefitsParams() {
+    fun create() {
         HrisBenefitListSupportedBenefitsParams.builder().build()
     }
 }

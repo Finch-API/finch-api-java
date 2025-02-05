@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class JobAutomatedRetrieveParamsTest {
 
     @Test
-    fun createJobAutomatedRetrieveParams() {
+    fun create() {
         JobAutomatedRetrieveParams.builder().jobId("job_id").build()
     }
 

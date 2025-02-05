@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class ProviderListParamsTest {
 
     @Test
-    fun createProviderListParams() {
+    fun create() {
         ProviderListParams.builder().build()
     }
 }

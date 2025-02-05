@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class AccountDisconnectParamsTest {
 
     @Test
-    fun createAccountDisconnectParams() {
+    fun create() {
         AccountDisconnectParams.builder().build()
     }
 }

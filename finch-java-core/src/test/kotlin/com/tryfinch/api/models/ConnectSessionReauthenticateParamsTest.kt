@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class ConnectSessionReauthenticateParamsTest {
 
     @Test
-    fun createConnectSessionReauthenticateParams() {
+    fun create() {
         ConnectSessionReauthenticateParams.builder()
             .connectionId("connection_id")
             .minutesToExpire(0L)

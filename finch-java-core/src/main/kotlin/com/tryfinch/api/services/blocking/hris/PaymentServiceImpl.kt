@@ -37,16 +37,20 @@ internal constructor(
                 .addPathSegments("employer", "payment")
                 .build()
                 .prepare(clientOptions, params)
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        forEach { it.validate() }
-                    }
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { listHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.forEach { it.validate() }
                 }
-                .let { HrisPaymentListPage.Response.Builder().items(it).build() }
-                .let { HrisPaymentListPage.of(this, params, it) }
-        }
+            }
+            .let {
+                HrisPaymentListPage.of(
+                    this,
+                    params,
+                    HrisPaymentListPage.Response.builder().items(it).build()
+                )
+            }
     }
 }
