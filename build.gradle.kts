@@ -1,4 +1,4 @@
 allprojects {
     group = "com.tryfinch.api"
-    version = "3.3.0" // x-release-please-version
+    version = "4.0.0" // x-release-please-version
 }
