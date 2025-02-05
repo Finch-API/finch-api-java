@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class HrisDocumentRetreiveParamsTest {
 
     @Test
-    fun createHrisDocumentRetreiveParams() {
+    fun create() {
         HrisDocumentRetreiveParams.builder().documentId("document_id").build()
     }
 

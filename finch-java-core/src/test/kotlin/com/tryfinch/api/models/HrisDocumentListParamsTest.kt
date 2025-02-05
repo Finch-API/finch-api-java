@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class HrisDocumentListParamsTest {
 
     @Test
-    fun createHrisDocumentListParams() {
+    fun create() {
         HrisDocumentListParams.builder()
             .addIndividualId("string")
             .limit(0L)

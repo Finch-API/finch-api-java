@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class SandboxConnectionAccountCreateParamsTest {
 
     @Test
-    fun createSandboxConnectionAccountCreateParams() {
+    fun create() {
         SandboxConnectionAccountCreateParams.builder()
             .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .providerId("provider_id")

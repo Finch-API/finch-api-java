@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class HrisEmploymentRetrieveManyParamsTest {
 
     @Test
-    fun createHrisEmploymentRetrieveManyParams() {
+    fun create() {
         HrisEmploymentRetrieveManyParams.builder()
             .addRequest(
                 HrisEmploymentRetrieveManyParams.Request.builder()

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class SandboxConnectionCreateParamsTest {
 
     @Test
-    fun createSandboxConnectionCreateParams() {
+    fun create() {
         SandboxConnectionCreateParams.builder()
             .providerId("provider_id")
             .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)

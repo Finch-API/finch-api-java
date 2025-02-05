@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class SandboxJobConfigurationRetrieveParamsTest {
 
     @Test
-    fun createSandboxJobConfigurationRetrieveParams() {
+    fun create() {
         SandboxJobConfigurationRetrieveParams.builder().build()
     }
 }

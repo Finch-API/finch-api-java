@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class SandboxPaymentCreateParamsTest {
 
     @Test
-    fun createSandboxPaymentCreateParams() {
+    fun create() {
         SandboxPaymentCreateParams.builder()
             .endDate("end_date")
             .addPayStatement(

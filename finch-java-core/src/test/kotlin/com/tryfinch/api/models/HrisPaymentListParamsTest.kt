@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 class HrisPaymentListParamsTest {
 
     @Test
-    fun createHrisPaymentListParams() {
+    fun create() {
         HrisPaymentListParams.builder()
             .endDate(LocalDate.parse("2021-01-01"))
             .startDate(LocalDate.parse("2021-01-01"))

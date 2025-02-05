@@ -46,9 +46,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { disconnectHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
             }
@@ -73,9 +73,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { introspectHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
             }
