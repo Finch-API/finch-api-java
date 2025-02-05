@@ -1,5 +1,72 @@
 # Changelog
 
+## 4.0.0 (2025-02-05)
+
+Full Changelog: [v3.3.0...v4.0.0](https://github.com/Finch-API/finch-api-java/compare/v3.3.0...v4.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** better union variant method and variable names ([#410](https://github.com/Finch-API/finch-api-java/issues/410))
+
+### Features
+
+* **api:** api update ([#418](https://github.com/Finch-API/finch-api-java/issues/418)) ([1e88c1b](https://github.com/Finch-API/finch-api-java/commit/1e88c1b166a5a153372ee6bc5a6e1693822cc9fa))
+* **api:** api update ([#426](https://github.com/Finch-API/finch-api-java/issues/426)) ([77e6a73](https://github.com/Finch-API/finch-api-java/commit/77e6a7383806b0615a3bca5e25094b54cf427420))
+* **api:** api update ([#427](https://github.com/Finch-API/finch-api-java/issues/427)) ([daf9de7](https://github.com/Finch-API/finch-api-java/commit/daf9de711530f47caf431d316f682c82139cd26a))
+* **client:** add `_queryParams` and `_headers` methods ([#419](https://github.com/Finch-API/finch-api-java/issues/419)) ([2a3c658](https://github.com/Finch-API/finch-api-java/commit/2a3c6582c5179b922d9729535c47e9383efcb620))
+* **client:** add `close` method ([#412](https://github.com/Finch-API/finch-api-java/issues/412)) ([d9b722b](https://github.com/Finch-API/finch-api-java/commit/d9b722b1d27703dd7bb5a26b962ab7df102a030b))
+* **client:** better union variant method and variable names ([#410](https://github.com/Finch-API/finch-api-java/issues/410)) ([d0db606](https://github.com/Finch-API/finch-api-java/commit/d0db606cfd7914c13915861498bd32340ff9f9f3))
+* **client:** send client-side timeout headers ([#428](https://github.com/Finch-API/finch-api-java/issues/428)) ([d17227d](https://github.com/Finch-API/finch-api-java/commit/d17227dcce3a87afae057009635f749908e6397f))
+
+
+### Bug Fixes
+
+* **api:** add missing `@MustBeClosed` annotations ([#429](https://github.com/Finch-API/finch-api-java/issues/429)) ([abe41ab](https://github.com/Finch-API/finch-api-java/commit/abe41abe42c306d6c19df15151dcea02908a4e98))
+* **api:** switch `CompletableFuture&lt;Void&gt;` to `CompletableFuture<Void?>` ([abe41ab](https://github.com/Finch-API/finch-api-java/commit/abe41abe42c306d6c19df15151dcea02908a4e98))
+* **client:** add missing validation calls on response ([abe41ab](https://github.com/Finch-API/finch-api-java/commit/abe41abe42c306d6c19df15151dcea02908a4e98))
+* **client:** always provide a body for `PATCH` methods ([abe41ab](https://github.com/Finch-API/finch-api-java/commit/abe41abe42c306d6c19df15151dcea02908a4e98))
+* **client:** compiler errors ([#422](https://github.com/Finch-API/finch-api-java/issues/422)) ([2694656](https://github.com/Finch-API/finch-api-java/commit/2694656b93676e6758c71fc55beccf74fe495e00))
+* **client:** don't leak responses when retrying ([#423](https://github.com/Finch-API/finch-api-java/issues/423)) ([1c877e6](https://github.com/Finch-API/finch-api-java/commit/1c877e649c7907d3140dbd1e5d437b45db01672f))
+* **client:** make service impl constructors internal ([#405](https://github.com/Finch-API/finch-api-java/issues/405)) ([38d434d](https://github.com/Finch-API/finch-api-java/commit/38d434d35ed917af6b4e699db6a7928e15f898a3))
+* **client:** make some classes and constructors non-public ([#416](https://github.com/Finch-API/finch-api-java/issues/416)) ([0a1b627](https://github.com/Finch-API/finch-api-java/commit/0a1b627cb52cf11b76f497ad379e98e30e1a9559))
+
+
+### Chores
+
+* add max retries to test ([#411](https://github.com/Finch-API/finch-api-java/issues/411)) ([e3831a7](https://github.com/Finch-API/finch-api-java/commit/e3831a7eec0fda1e05cc29ce5fbd77a23b05f308))
+* **internal:** add and tweak check functions ([#401](https://github.com/Finch-API/finch-api-java/issues/401)) ([a08f4ba](https://github.com/Finch-API/finch-api-java/commit/a08f4ba13b492b408550783c8306668039963250))
+* **internal:** codegen related update ([#394](https://github.com/Finch-API/finch-api-java/issues/394)) ([94b4589](https://github.com/Finch-API/finch-api-java/commit/94b45894c92283b2f24a8c0c9938dc456203e7e9))
+* **internal:** codegen related update ([#425](https://github.com/Finch-API/finch-api-java/issues/425)) ([84cd37e](https://github.com/Finch-API/finch-api-java/commit/84cd37eb0660362f57d92404e4ca17ad4c8340fa))
+* **internal:** extract a `checkRequired` function ([#400](https://github.com/Finch-API/finch-api-java/issues/400)) ([f0fec86](https://github.com/Finch-API/finch-api-java/commit/f0fec86853463134ddda5385e801c568de18487c))
+* **internal:** fix up root `build.gradle.kts` formatting ([#396](https://github.com/Finch-API/finch-api-java/issues/396)) ([595151c](https://github.com/Finch-API/finch-api-java/commit/595151c73573c47ce6d789431c35f3ad1665eac6))
+* **internal:** improve `RetryingHttpClientTest` ([#421](https://github.com/Finch-API/finch-api-java/issues/421)) ([6f997fe](https://github.com/Finch-API/finch-api-java/commit/6f997fed271b1d2ffab8c54c365d32993ea4b0b1))
+* **internal:** minor formatting/style changes ([abe41ab](https://github.com/Finch-API/finch-api-java/commit/abe41abe42c306d6c19df15151dcea02908a4e98))
+* **internal:** remove some unnecessary `constructor` keywords ([0a1b627](https://github.com/Finch-API/finch-api-java/commit/0a1b627cb52cf11b76f497ad379e98e30e1a9559))
+* **internal:** remove unused Gradle imports ([#397](https://github.com/Finch-API/finch-api-java/issues/397)) ([c5f656d](https://github.com/Finch-API/finch-api-java/commit/c5f656d35f9642c946d18330bec0a453b522f234))
+* **internal:** remove unused or unnecessary Gradle imports ([#398](https://github.com/Finch-API/finch-api-java/issues/398)) ([5d706bc](https://github.com/Finch-API/finch-api-java/commit/5d706bc05046466b2b7a3ee43ec85c21943cb731))
+* **internal:** rename some tests ([abe41ab](https://github.com/Finch-API/finch-api-java/commit/abe41abe42c306d6c19df15151dcea02908a4e98))
+* **internal:** swap `checkNotNull` to `checkRequired` ([#409](https://github.com/Finch-API/finch-api-java/issues/409)) ([4018e4c](https://github.com/Finch-API/finch-api-java/commit/4018e4c4154bba72bb09a8421c1c75128da64c9c))
+* **internal:** tweak client options nullability handling ([a08f4ba](https://github.com/Finch-API/finch-api-java/commit/a08f4ba13b492b408550783c8306668039963250))
+* **internal:** update some gradle formatting ([#399](https://github.com/Finch-API/finch-api-java/issues/399)) ([623b174](https://github.com/Finch-API/finch-api-java/commit/623b1747a63e47b165e18cf5428faa9c9baa8d98))
+* **internal:** upgrade kotlin compiler and gradle ([#403](https://github.com/Finch-API/finch-api-java/issues/403)) ([0d0766b](https://github.com/Finch-API/finch-api-java/commit/0d0766b6c48e7efd60dbb7f3e2306771d307526c))
+* simplify examples involving lists ([#402](https://github.com/Finch-API/finch-api-java/issues/402)) ([4520086](https://github.com/Finch-API/finch-api-java/commit/4520086fb9d7c43ffec2386fa585e3a56107f7ec))
+
+
+### Documentation
+
+* `async` and `sync` method comments ([#415](https://github.com/Finch-API/finch-api-java/issues/415)) ([ab65f2f](https://github.com/Finch-API/finch-api-java/commit/ab65f2fe56ddd3199441d48921ef60f94eda85bb))
+* add client documentation ([#414](https://github.com/Finch-API/finch-api-java/issues/414)) ([d4b8051](https://github.com/Finch-API/finch-api-java/commit/d4b805129069eaa3d584abc78274f8b017dce885))
+* add more documentation ([#404](https://github.com/Finch-API/finch-api-java/issues/404)) ([1cef90d](https://github.com/Finch-API/finch-api-java/commit/1cef90d50b2920f67b9455c0b1a1cdad5d86a0d0))
+* builder, enum, and union comments ([#417](https://github.com/Finch-API/finch-api-java/issues/417)) ([1e1e28e](https://github.com/Finch-API/finch-api-java/commit/1e1e28e262030d8a05af6a9c3736f91650bede4f))
+* fix incorrect additional properties info ([#424](https://github.com/Finch-API/finch-api-java/issues/424)) ([856e1c9](https://github.com/Finch-API/finch-api-java/commit/856e1c9f646fb80df8f6751634d6f39ccdf633b7))
+* move up requirements section ([#408](https://github.com/Finch-API/finch-api-java/issues/408)) ([a595f32](https://github.com/Finch-API/finch-api-java/commit/a595f323b1bc0d26ef4ffda2b16f747c7d062660))
+* update readme ([#406](https://github.com/Finch-API/finch-api-java/issues/406)) ([31e854c](https://github.com/Finch-API/finch-api-java/commit/31e854c04ea5f0e9271d40b96e3fb313155de390))
+
+
+### Refactors
+
+* **internal:** extract request preparation logic ([2a3c658](https://github.com/Finch-API/finch-api-java/commit/2a3c6582c5179b922d9729535c47e9383efcb620))
+
 ## 3.3.0 (2025-01-09)
 
 Full Changelog: [v3.2.0...v3.3.0](https://github.com/Finch-API/finch-api-java/compare/v3.2.0...v3.3.0)
