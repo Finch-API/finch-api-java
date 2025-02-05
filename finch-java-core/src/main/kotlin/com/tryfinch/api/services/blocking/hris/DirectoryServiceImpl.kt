@@ -39,16 +39,15 @@ internal constructor(
                 .addPathSegments("employer", "directory")
                 .build()
                 .prepare(clientOptions, params)
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { listHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-                .let { HrisDirectoryListPage.of(this, params, it) }
-        }
+            }
+            .let { HrisDirectoryListPage.of(this, params, it) }
     }
 
     private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPage.Response> =
@@ -67,15 +66,14 @@ internal constructor(
                 .addPathSegments("employer", "directory")
                 .build()
                 .prepare(clientOptions, params)
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { listIndividualsHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { listIndividualsHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-                .let { HrisDirectoryListIndividualsPage.of(this, params, it) }
-        }
+            }
+            .let { HrisDirectoryListIndividualsPage.of(this, params, it) }
     }
 }

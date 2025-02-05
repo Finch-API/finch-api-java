@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class SandboxJobCreateParamsTest {
 
     @Test
-    fun createSandboxJobCreateParams() {
+    fun create() {
         SandboxJobCreateParams.builder().type(SandboxJobCreateParams.Type.DATA_SYNC_ALL).build()
     }
 

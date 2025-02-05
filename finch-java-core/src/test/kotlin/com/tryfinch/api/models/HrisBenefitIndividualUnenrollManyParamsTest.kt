@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class HrisBenefitIndividualUnenrollManyParamsTest {
 
     @Test
-    fun createHrisBenefitIndividualUnenrollManyParams() {
+    fun create() {
         HrisBenefitIndividualUnenrollManyParams.builder()
             .benefitId("benefit_id")
             .addIndividualId("string")

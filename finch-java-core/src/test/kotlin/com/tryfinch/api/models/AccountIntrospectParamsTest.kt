@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class AccountIntrospectParamsTest {
 
     @Test
-    fun createAccountIntrospectParams() {
+    fun create() {
         AccountIntrospectParams.builder().build()
     }
 }

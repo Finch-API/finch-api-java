@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class SandboxConnectionAccountUpdateParamsTest {
 
     @Test
-    fun createSandboxConnectionAccountUpdateParams() {
+    fun create() {
         SandboxConnectionAccountUpdateParams.builder()
             .connectionStatus(ConnectionStatusType.PENDING)
             .build()

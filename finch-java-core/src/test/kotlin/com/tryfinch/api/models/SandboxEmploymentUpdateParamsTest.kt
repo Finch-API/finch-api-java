@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class SandboxEmploymentUpdateParamsTest {
 
     @Test
-    fun createSandboxEmploymentUpdateParams() {
+    fun create() {
         SandboxEmploymentUpdateParams.builder()
             .individualId("individual_id")
             .classCode("class_code")

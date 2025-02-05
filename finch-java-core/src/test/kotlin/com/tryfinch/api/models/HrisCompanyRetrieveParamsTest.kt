@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class HrisCompanyRetrieveParamsTest {
 
     @Test
-    fun createHrisCompanyRetrieveParams() {
+    fun create() {
         HrisCompanyRetrieveParams.builder().build()
     }
 }

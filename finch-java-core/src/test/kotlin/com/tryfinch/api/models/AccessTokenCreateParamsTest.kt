@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class AccessTokenCreateParamsTest {
 
     @Test
-    fun createAccessTokenCreateParams() {
+    fun create() {
         AccessTokenCreateParams.builder()
             .code("<your_authorization_code>")
             .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
