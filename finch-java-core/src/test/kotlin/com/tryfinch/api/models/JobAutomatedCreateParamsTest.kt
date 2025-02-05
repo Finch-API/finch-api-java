@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class JobAutomatedCreateParamsTest {
 
     @Test
-    fun createJobAutomatedCreateParams() {
+    fun create() {
         JobAutomatedCreateParams.builder()
             .forDataSyncAll(
                 JobAutomatedCreateParams.DataSyncAll.builder()

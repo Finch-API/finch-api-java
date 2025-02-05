@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class JobAutomatedListParamsTest {
 
     @Test
-    fun createJobAutomatedListParams() {
+    fun create() {
         JobAutomatedListParams.builder().limit(0L).offset(0L).build()
     }
 

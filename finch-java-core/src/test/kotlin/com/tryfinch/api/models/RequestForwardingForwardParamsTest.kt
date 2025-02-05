@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class RequestForwardingForwardParamsTest {
 
     @Test
-    fun createRequestForwardingForwardParams() {
+    fun create() {
         RequestForwardingForwardParams.builder()
             .method("POST")
             .route("/people/search")

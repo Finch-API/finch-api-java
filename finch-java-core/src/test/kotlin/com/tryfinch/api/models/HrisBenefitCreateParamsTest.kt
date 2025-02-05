@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class HrisBenefitCreateParamsTest {
 
     @Test
-    fun createHrisBenefitCreateParams() {
+    fun create() {
         HrisBenefitCreateParams.builder()
             .description("description")
             .frequency(BenefitFrequency.ONE_TIME)

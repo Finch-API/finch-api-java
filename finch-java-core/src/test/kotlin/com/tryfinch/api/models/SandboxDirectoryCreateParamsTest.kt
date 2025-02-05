@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class SandboxDirectoryCreateParamsTest {
 
     @Test
-    fun createSandboxDirectoryCreateParams() {
+    fun create() {
         SandboxDirectoryCreateParams.builder()
             .addBody(
                 SandboxDirectoryCreateParams.IndividualOrEmployment.builder()

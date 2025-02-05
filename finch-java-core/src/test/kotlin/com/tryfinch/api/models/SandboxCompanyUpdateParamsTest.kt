@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class SandboxCompanyUpdateParamsTest {
 
     @Test
-    fun createSandboxCompanyUpdateParams() {
+    fun create() {
         SandboxCompanyUpdateParams.builder()
             .addAccount(
                 SandboxCompanyUpdateParams.Account.builder()

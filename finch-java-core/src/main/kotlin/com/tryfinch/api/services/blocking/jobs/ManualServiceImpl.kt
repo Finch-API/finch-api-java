@@ -39,14 +39,13 @@ internal constructor(
                 .addPathSegments("jobs", "manual", params.getPathParam(0))
                 .build()
                 .prepare(clientOptions, params)
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { retrieveHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { retrieveHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-        }
+            }
     }
 }

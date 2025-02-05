@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class ConnectSessionNewParamsTest {
 
     @Test
-    fun createConnectSessionNewParams() {
+    fun create() {
         ConnectSessionNewParams.builder()
             .customerId("x")
             .customerName("x")

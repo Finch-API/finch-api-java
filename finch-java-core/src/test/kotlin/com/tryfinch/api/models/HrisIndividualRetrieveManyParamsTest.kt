@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class HrisIndividualRetrieveManyParamsTest {
 
     @Test
-    fun createHrisIndividualRetrieveManyParams() {
+    fun create() {
         HrisIndividualRetrieveManyParams.builder()
             .options(
                 HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()

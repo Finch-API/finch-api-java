@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
 
     @Test
-    fun createHrisBenefitIndividualRetrieveManyBenefitsParams() {
+    fun create() {
         HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
             .benefitId("benefit_id")
             .individualIds(

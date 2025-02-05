@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class HrisDirectoryListIndividualsParamsTest {
 
     @Test
-    fun createHrisDirectoryListIndividualsParams() {
+    fun create() {
         HrisDirectoryListIndividualsParams.builder().limit(0L).offset(0L).build()
     }
 

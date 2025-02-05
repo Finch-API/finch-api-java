@@ -65,9 +65,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { createHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
             }
@@ -92,9 +92,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { retrieveHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
             }
@@ -121,9 +121,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { updateHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
             }
@@ -148,13 +148,18 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { listHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            forEach { it.validate() }
+                            it.forEach { it.validate() }
                         }
                     }
-                    .let { HrisBenefitListPageAsync.Response.Builder().items(it).build() }
-                    .let { HrisBenefitListPageAsync.of(this, params, it) }
+                    .let {
+                        HrisBenefitListPageAsync.of(
+                            this,
+                            params,
+                            HrisBenefitListPageAsync.Response.builder().items(it).build()
+                        )
+                    }
             }
     }
 
@@ -177,17 +182,20 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { listSupportedBenefitsHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            forEach { it.validate() }
+                            it.forEach { it.validate() }
                         }
                     }
                     .let {
-                        HrisBenefitListSupportedBenefitsPageAsync.Response.Builder()
-                            .items(it)
-                            .build()
+                        HrisBenefitListSupportedBenefitsPageAsync.of(
+                            this,
+                            params,
+                            HrisBenefitListSupportedBenefitsPageAsync.Response.builder()
+                                .items(it)
+                                .build()
+                        )
                     }
-                    .let { HrisBenefitListSupportedBenefitsPageAsync.of(this, params, it) }
             }
     }
 }

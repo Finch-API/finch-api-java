@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class SandboxIndividualUpdateParamsTest {
 
     @Test
-    fun createSandboxIndividualUpdateParams() {
+    fun create() {
         SandboxIndividualUpdateParams.builder()
             .individualId("individual_id")
             .dob("12/20/1989")

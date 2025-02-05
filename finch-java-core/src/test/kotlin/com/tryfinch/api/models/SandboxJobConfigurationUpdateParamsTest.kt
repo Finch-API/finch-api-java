@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class SandboxJobConfigurationUpdateParamsTest {
 
     @Test
-    fun createSandboxJobConfigurationUpdateParams() {
+    fun create() {
         SandboxJobConfigurationUpdateParams.builder()
             .completionStatus(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
             .type(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)

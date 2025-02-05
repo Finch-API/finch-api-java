@@ -50,9 +50,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { enrolledIdsHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
             }
@@ -78,17 +78,20 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { retrieveManyBenefitsHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            forEach { it.validate() }
+                            it.forEach { it.validate() }
                         }
                     }
                     .let {
-                        HrisBenefitIndividualRetrieveManyBenefitsPageAsync.Response.Builder()
-                            .items(it)
-                            .build()
+                        HrisBenefitIndividualRetrieveManyBenefitsPageAsync.of(
+                            this,
+                            params,
+                            HrisBenefitIndividualRetrieveManyBenefitsPageAsync.Response.builder()
+                                .items(it)
+                                .build()
+                        )
                     }
-                    .let { HrisBenefitIndividualRetrieveManyBenefitsPageAsync.of(this, params, it) }
             }
     }
 
@@ -113,17 +116,20 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { unenrollManyHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            forEach { it.validate() }
+                            it.forEach { it.validate() }
                         }
                     }
                     .let {
-                        HrisBenefitIndividualUnenrollManyPageAsync.Response.Builder()
-                            .items(it)
-                            .build()
+                        HrisBenefitIndividualUnenrollManyPageAsync.of(
+                            this,
+                            params,
+                            HrisBenefitIndividualUnenrollManyPageAsync.Response.builder()
+                                .items(it)
+                                .build()
+                        )
                     }
-                    .let { HrisBenefitIndividualUnenrollManyPageAsync.of(this, params, it) }
             }
     }
 }

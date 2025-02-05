@@ -45,9 +45,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { listHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
                     .let { HrisDirectoryListPageAsync.of(this, params, it) }
@@ -75,9 +75,9 @@ internal constructor(
             .thenApply { response ->
                 response
                     .use { listIndividualsHandler.handle(it) }
-                    .apply {
+                    .also {
                         if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            validate()
+                            it.validate()
                         }
                     }
                     .let { HrisDirectoryListIndividualsPageAsync.of(this, params, it) }
