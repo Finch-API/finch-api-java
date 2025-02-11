@@ -35,7 +35,7 @@ private constructor(
 
     fun data(): List<AutomatedAsyncJob> = response().data()
 
-    fun paging(): Paging = response().paging()
+    fun paging(): Optional<Paging> = response().paging()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -55,8 +55,8 @@ private constructor(
             return false
         }
 
-        return paging().offset().orElse(0) + data().count() <
-            paging().count().orElse(Long.MAX_VALUE)
+        return paging().flatMap { it.offset() }.orElse(0) + data().count() <
+            paging().flatMap { it.count() }.orElse(Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): Optional<JobAutomatedListParams> {
@@ -67,7 +67,7 @@ private constructor(
         return Optional.of(
             JobAutomatedListParams.builder()
                 .from(params)
-                .offset(paging().offset().orElse(0) + data().count())
+                .offset(paging().flatMap { it.offset() }.orElse(0) + data().count())
                 .build()
         )
     }
@@ -106,7 +106,7 @@ private constructor(
 
         fun data(): List<AutomatedAsyncJob> = data.getNullable("data") ?: listOf()
 
-        fun paging(): Paging = paging.getRequired("paging")
+        fun paging(): Optional<Paging> = Optional.ofNullable(paging.getNullable("paging"))
 
         @JsonProperty("data")
         fun _data(): Optional<JsonField<List<AutomatedAsyncJob>>> = Optional.ofNullable(data)
@@ -126,7 +126,7 @@ private constructor(
             }
 
             data().map { it.validate() }
-            paging().validate()
+            paging().ifPresent { it.validate() }
             validated = true
         }
 
