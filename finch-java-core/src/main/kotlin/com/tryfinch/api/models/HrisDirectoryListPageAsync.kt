@@ -32,7 +32,7 @@ private constructor(
 
     fun individuals(): List<IndividualInDirectory> = response().individuals()
 
-    fun paging(): Paging = response().paging()
+    fun paging(): Optional<Paging> = response().paging()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -52,8 +52,8 @@ private constructor(
             return false
         }
 
-        return paging().offset().orElse(0) + individuals().count() <
-            paging().count().orElse(Long.MAX_VALUE)
+        return paging().flatMap { it.offset() }.orElse(0) + individuals().count() <
+            paging().flatMap { it.count() }.orElse(Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): Optional<HrisDirectoryListParams> {
@@ -64,7 +64,7 @@ private constructor(
         return Optional.of(
             HrisDirectoryListParams.builder()
                 .from(params)
-                .offset(paging().offset().orElse(0) + individuals().count())
+                .offset(paging().flatMap { it.offset() }.orElse(0) + individuals().count())
                 .build()
         )
     }
@@ -106,7 +106,7 @@ private constructor(
         fun individuals(): List<IndividualInDirectory> =
             individuals.getNullable("individuals") ?: listOf()
 
-        fun paging(): Paging = paging.getRequired("paging")
+        fun paging(): Optional<Paging> = Optional.ofNullable(paging.getNullable("paging"))
 
         @JsonProperty("individuals")
         fun _individuals(): Optional<JsonField<List<IndividualInDirectory>>> =
@@ -127,7 +127,7 @@ private constructor(
             }
 
             individuals().map { it.validate() }
-            paging().validate()
+            paging().ifPresent { it.validate() }
             validated = true
         }
 
