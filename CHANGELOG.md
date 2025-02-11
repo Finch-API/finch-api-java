@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.1 (2025-02-11)
+
+Full Changelog: [v4.0.0...v4.0.1](https://github.com/Finch-API/finch-api-java/compare/v4.0.0...v4.0.1)
+
+### Chores
+
+* **internal:** codegen related update ([#431](https://github.com/Finch-API/finch-api-java/issues/431)) ([8636c1c](https://github.com/Finch-API/finch-api-java/commit/8636c1c3dfc3e454e0d314283ffd060eb9f1a621))
+
 ## 4.0.0 (2025-02-05)
 
 Full Changelog: [v3.3.0...v4.0.0](https://github.com/Finch-API/finch-api-java/compare/v3.3.0...v4.0.0)
