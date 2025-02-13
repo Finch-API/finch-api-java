@@ -24,7 +24,7 @@ class IndividualServiceTest {
             individualService.update(
                 SandboxIndividualUpdateParams.builder()
                     .individualId("individual_id")
-                    .dob("12/20/1989")
+                    .dob("dob")
                     .addEmail(
                         SandboxIndividualUpdateParams.Email.builder()
                             .data("data")
