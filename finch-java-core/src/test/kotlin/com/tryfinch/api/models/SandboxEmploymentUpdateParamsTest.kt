@@ -63,7 +63,7 @@ class SandboxEmploymentUpdateParamsTest {
             .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
             .middleName("middle_name")
             .sourceId("source_id")
-            .startDate("3/4/2020")
+            .startDate("start_date")
             .title("title")
             .build()
     }
@@ -124,7 +124,7 @@ class SandboxEmploymentUpdateParamsTest {
                 .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
                 .middleName("middle_name")
                 .sourceId("source_id")
-                .startDate("3/4/2020")
+                .startDate("start_date")
                 .title("title")
                 .build()
         val body = params._body()
@@ -192,7 +192,7 @@ class SandboxEmploymentUpdateParamsTest {
             .contains(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
         assertThat(body.middleName()).contains("middle_name")
         assertThat(body.sourceId()).contains("source_id")
-        assertThat(body.startDate()).contains("3/4/2020")
+        assertThat(body.startDate()).contains("start_date")
         assertThat(body.title()).contains("title")
     }
 
