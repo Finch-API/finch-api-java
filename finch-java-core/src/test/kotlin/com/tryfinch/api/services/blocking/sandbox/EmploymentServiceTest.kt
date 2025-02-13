@@ -79,7 +79,7 @@ class EmploymentServiceTest {
                     .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
                     .middleName("middle_name")
                     .sourceId("source_id")
-                    .startDate("3/4/2020")
+                    .startDate("start_date")
                     .title("title")
                     .build()
             )
