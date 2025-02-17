@@ -353,7 +353,16 @@ private constructor(
                 else -> throw FinchInvalidDataException("Unknown Code: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asLong(): Long =
+            _value().asNumber().orElse(null)?.let {
+                if (it.toDouble() % 1 == 0.0) it.toLong() else null
+            } ?: throw FinchInvalidDataException("Value is not a Long")
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
