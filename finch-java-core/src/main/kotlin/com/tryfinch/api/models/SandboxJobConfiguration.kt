@@ -114,11 +114,8 @@ private constructor(
             )
     }
 
-    class CompletionStatus
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class CompletionStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -220,11 +217,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -245,7 +238,7 @@ private constructor(
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
-            DATA_SYNC_ALL,
+            DATA_SYNC_ALL
         }
 
         /**

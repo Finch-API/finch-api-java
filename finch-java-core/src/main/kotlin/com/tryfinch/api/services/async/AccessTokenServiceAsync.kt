@@ -15,6 +15,6 @@ interface AccessTokenServiceAsync {
     @JvmOverloads
     fun create(
         params: AccessTokenCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CreateAccessTokenResponse>
 }

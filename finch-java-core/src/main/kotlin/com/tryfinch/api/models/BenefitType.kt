@@ -8,11 +8,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.errors.FinchInvalidDataException
 
 /** Type of benefit. */
-class BenefitType
-@JsonCreator
-private constructor(
-    private val value: JsonField<String>,
-) : Enum {
+class BenefitType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
     /**
      * Returns this class instance's raw value.

@@ -16,10 +16,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPage
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 
-class EmploymentServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : EmploymentService {
+class EmploymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    EmploymentService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -30,7 +28,7 @@ internal constructor(
     /** Read individual employment and income data */
     override fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisEmploymentRetrieveManyPage {
         val request =
             HttpRequest.builder()

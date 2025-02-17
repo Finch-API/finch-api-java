@@ -16,10 +16,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
 
-class AccessTokenServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AccessTokenService {
+class AccessTokenServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    AccessTokenService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -30,7 +28,7 @@ internal constructor(
     /** Exchange the authorization code for an access token */
     override fun create(
         params: AccessTokenCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CreateAccessTokenResponse {
         val request =
             HttpRequest.builder()

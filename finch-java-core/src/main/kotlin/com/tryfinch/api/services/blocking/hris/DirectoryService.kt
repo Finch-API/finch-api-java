@@ -16,7 +16,7 @@ interface DirectoryService {
     @JvmOverloads
     fun list(
         params: HrisDirectoryListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListPage
 
     /** Read company directory and organization structure */
@@ -24,6 +24,6 @@ interface DirectoryService {
     @JvmOverloads
     fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListIndividualsPage
 }

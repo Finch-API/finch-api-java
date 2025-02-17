@@ -17,10 +17,8 @@ import com.tryfinch.api.models.IndividualUpdateResponse
 import com.tryfinch.api.models.SandboxIndividualUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class IndividualServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : IndividualServiceAsync {
+class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Update sandbox individual */
     override fun update(
         params: SandboxIndividualUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<IndividualUpdateResponse> {
         val request =
             HttpRequest.builder()

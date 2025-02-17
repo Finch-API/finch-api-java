@@ -15,6 +15,6 @@ interface IndividualServiceAsync {
     @JvmOverloads
     fun update(
         params: SandboxIndividualUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<IndividualUpdateResponse>
 }

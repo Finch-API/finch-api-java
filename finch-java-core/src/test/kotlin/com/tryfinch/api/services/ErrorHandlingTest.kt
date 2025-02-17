@@ -181,7 +181,7 @@ class ErrorHandlingTest {
                 assertUnprocessableEntity(
                     e,
                     Headers.builder().put("Foo", "Bar").build(),
-                    FINCH_ERROR
+                    FINCH_ERROR,
                 )
             })
     }
@@ -231,7 +231,7 @@ class ErrorHandlingTest {
                     e,
                     999,
                     Headers.builder().put("Foo", "Bar").build(),
-                    toJson(FINCH_ERROR)
+                    toJson(FINCH_ERROR),
                 )
             })
     }
@@ -270,7 +270,7 @@ class ErrorHandlingTest {
         throwable: Throwable,
         statusCode: Int,
         headers: Headers,
-        responseBody: ByteArray
+        responseBody: ByteArray,
     ) {
         assertThat(throwable)
             .asInstanceOf(
@@ -328,7 +328,7 @@ class ErrorHandlingTest {
     private fun assertUnprocessableEntity(
         throwable: Throwable,
         headers: Headers,
-        error: FinchError
+        error: FinchError,
     ) {
         assertThat(throwable)
             .asInstanceOf(

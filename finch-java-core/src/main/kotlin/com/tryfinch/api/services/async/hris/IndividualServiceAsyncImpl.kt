@@ -17,10 +17,8 @@ import com.tryfinch.api.models.HrisIndividualRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
-class IndividualServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : IndividualServiceAsync {
+class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Read individual data, excluding income and employment data */
     override fun retrieveMany(
         params: HrisIndividualRetrieveManyParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> {
         val request =
             HttpRequest.builder()

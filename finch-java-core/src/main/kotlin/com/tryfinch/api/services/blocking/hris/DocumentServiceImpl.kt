@@ -17,10 +17,8 @@ import com.tryfinch.api.models.DocumentRetreiveResponse
 import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
 
-class DocumentServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : DocumentService {
+class DocumentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    DocumentService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -32,7 +30,7 @@ internal constructor(
      */
     override fun list(
         params: HrisDocumentListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): DocumentListResponse {
         val request =
             HttpRequest.builder()
@@ -60,7 +58,7 @@ internal constructor(
      */
     override fun retreive(
         params: HrisDocumentRetreiveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): DocumentRetreiveResponse {
         val request =
             HttpRequest.builder()
