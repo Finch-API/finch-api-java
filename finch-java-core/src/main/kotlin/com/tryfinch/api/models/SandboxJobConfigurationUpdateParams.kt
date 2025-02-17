@@ -2,170 +2,36 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.Enum
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
-import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 /** Update configurations for sandbox jobs */
 class SandboxJobConfigurationUpdateParams
 private constructor(
-    private val body: SandboxJobConfigurationUpdateBody,
+    private val sandboxJobConfiguration: SandboxJobConfiguration,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun completionStatus(): CompletionStatus = body.completionStatus()
+    fun sandboxJobConfiguration(): SandboxJobConfiguration = sandboxJobConfiguration
 
-    fun type(): Type = body.type()
-
-    fun _completionStatus(): JsonField<CompletionStatus> = body._completionStatus()
-
-    fun _type(): JsonField<Type> = body._type()
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+    fun _additionalBodyProperties(): Map<String, JsonValue> =
+        sandboxJobConfiguration._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): SandboxJobConfigurationUpdateBody = body
+    @JvmSynthetic internal fun _body(): SandboxJobConfiguration = sandboxJobConfiguration
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class SandboxJobConfigurationUpdateBody
-    @JsonCreator
-    internal constructor(
-        @JsonProperty("completion_status")
-        @ExcludeMissing
-        private val completionStatus: JsonField<CompletionStatus> = JsonMissing.of(),
-        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        fun completionStatus(): CompletionStatus = completionStatus.getRequired("completion_status")
-
-        fun type(): Type = type.getRequired("type")
-
-        @JsonProperty("completion_status")
-        @ExcludeMissing
-        fun _completionStatus(): JsonField<CompletionStatus> = completionStatus
-
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): SandboxJobConfigurationUpdateBody = apply {
-            if (validated) {
-                return@apply
-            }
-
-            completionStatus()
-            type()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [SandboxJobConfigurationUpdateBody]. */
-        class Builder internal constructor() {
-
-            private var completionStatus: JsonField<CompletionStatus>? = null
-            private var type: JsonField<Type>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(
-                sandboxJobConfigurationUpdateBody: SandboxJobConfigurationUpdateBody
-            ) = apply {
-                completionStatus = sandboxJobConfigurationUpdateBody.completionStatus
-                type = sandboxJobConfigurationUpdateBody.type
-                additionalProperties =
-                    sandboxJobConfigurationUpdateBody.additionalProperties.toMutableMap()
-            }
-
-            fun completionStatus(completionStatus: CompletionStatus) =
-                completionStatus(JsonField.of(completionStatus))
-
-            fun completionStatus(completionStatus: JsonField<CompletionStatus>) = apply {
-                this.completionStatus = completionStatus
-            }
-
-            fun type(type: Type) = type(JsonField.of(type))
-
-            fun type(type: JsonField<Type>) = apply { this.type = type }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            fun build(): SandboxJobConfigurationUpdateBody =
-                SandboxJobConfigurationUpdateBody(
-                    checkRequired("completionStatus", completionStatus),
-                    checkRequired("type", type),
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is SandboxJobConfigurationUpdateBody && completionStatus == other.completionStatus && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(completionStatus, type, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "SandboxJobConfigurationUpdateBody{completionStatus=$completionStatus, type=$type, additionalProperties=$additionalProperties}"
-    }
 
     fun toBuilder() = Builder().from(this)
 
@@ -178,8 +44,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SandboxJobConfigurationUpdateBody.Builder =
-            SandboxJobConfigurationUpdateBody.builder()
+        private var sandboxJobConfiguration: SandboxJobConfiguration? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -187,41 +52,14 @@ private constructor(
         internal fun from(
             sandboxJobConfigurationUpdateParams: SandboxJobConfigurationUpdateParams
         ) = apply {
-            body = sandboxJobConfigurationUpdateParams.body.toBuilder()
+            sandboxJobConfiguration = sandboxJobConfigurationUpdateParams.sandboxJobConfiguration
             additionalHeaders = sandboxJobConfigurationUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams =
                 sandboxJobConfigurationUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun completionStatus(completionStatus: CompletionStatus) = apply {
-            body.completionStatus(completionStatus)
-        }
-
-        fun completionStatus(completionStatus: JsonField<CompletionStatus>) = apply {
-            body.completionStatus(completionStatus)
-        }
-
-        fun type(type: Type) = apply { body.type(type) }
-
-        fun type(type: JsonField<Type>) = apply { body.type(type) }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
+        fun sandboxJobConfiguration(sandboxJobConfiguration: SandboxJobConfiguration) = apply {
+            this.sandboxJobConfiguration = sandboxJobConfiguration
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -324,194 +162,10 @@ private constructor(
 
         fun build(): SandboxJobConfigurationUpdateParams =
             SandboxJobConfigurationUpdateParams(
-                body.build(),
+                checkRequired("sandboxJobConfiguration", sandboxJobConfiguration),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
-    }
-
-    class CompletionStatus @JsonCreator private constructor(private val value: JsonField<String>) :
-        Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val COMPLETE = of("complete")
-
-            @JvmField val REAUTH_ERROR = of("reauth_error")
-
-            @JvmField val PERMISSIONS_ERROR = of("permissions_error")
-
-            @JvmField val ERROR = of("error")
-
-            @JvmStatic fun of(value: String) = CompletionStatus(JsonField.of(value))
-        }
-
-        /** An enum containing [CompletionStatus]'s known values. */
-        enum class Known {
-            COMPLETE,
-            REAUTH_ERROR,
-            PERMISSIONS_ERROR,
-            ERROR,
-        }
-
-        /**
-         * An enum containing [CompletionStatus]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [CompletionStatus] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            COMPLETE,
-            REAUTH_ERROR,
-            PERMISSIONS_ERROR,
-            ERROR,
-            /**
-             * An enum member indicating that [CompletionStatus] was instantiated with an unknown
-             * value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                COMPLETE -> Value.COMPLETE
-                REAUTH_ERROR -> Value.REAUTH_ERROR
-                PERMISSIONS_ERROR -> Value.PERMISSIONS_ERROR
-                ERROR -> Value.ERROR
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
-         */
-        fun known(): Known =
-            when (this) {
-                COMPLETE -> Known.COMPLETE
-                REAUTH_ERROR -> Known.REAUTH_ERROR
-                PERMISSIONS_ERROR -> Known.PERMISSIONS_ERROR
-                ERROR -> Known.ERROR
-                else -> throw FinchInvalidDataException("Unknown CompletionStatus: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is CompletionStatus && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-    }
-
-    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val DATA_SYNC_ALL = of("data_sync_all")
-
-            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-        }
-
-        /** An enum containing [Type]'s known values. */
-        enum class Known {
-            DATA_SYNC_ALL
-        }
-
-        /**
-         * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [Type] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            DATA_SYNC_ALL,
-            /** An enum member indicating that [Type] was instantiated with an unknown value. */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                DATA_SYNC_ALL -> Value.DATA_SYNC_ALL
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
-         */
-        fun known(): Known =
-            when (this) {
-                DATA_SYNC_ALL -> Known.DATA_SYNC_ALL
-                else -> throw FinchInvalidDataException("Unknown Type: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -519,11 +173,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxJobConfigurationUpdateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is SandboxJobConfigurationUpdateParams && sandboxJobConfiguration == other.sandboxJobConfiguration && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sandboxJobConfiguration, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxJobConfigurationUpdateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "SandboxJobConfigurationUpdateParams{sandboxJobConfiguration=$sandboxJobConfiguration, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

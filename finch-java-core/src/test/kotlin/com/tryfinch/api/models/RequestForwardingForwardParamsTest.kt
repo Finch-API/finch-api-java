@@ -29,7 +29,9 @@ class RequestForwardingForwardParamsTest {
                 .headers(JsonValue.from(mapOf("content-type" to "application/json")))
                 .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.method()).isEqualTo("POST")
         assertThat(body.route()).isEqualTo("/people/search")
@@ -44,7 +46,9 @@ class RequestForwardingForwardParamsTest {
     fun bodyWithoutOptionalFields() {
         val params =
             RequestForwardingForwardParams.builder().method("POST").route("/people/search").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.method()).isEqualTo("POST")
         assertThat(body.route()).isEqualTo("/people/search")

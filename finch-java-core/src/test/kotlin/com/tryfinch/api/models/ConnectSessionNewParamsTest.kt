@@ -46,7 +46,9 @@ class ConnectSessionNewParamsTest {
                 .redirectUri("redirect_uri")
                 .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
@@ -74,7 +76,9 @@ class ConnectSessionNewParamsTest {
                 .customerName("x")
                 .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")

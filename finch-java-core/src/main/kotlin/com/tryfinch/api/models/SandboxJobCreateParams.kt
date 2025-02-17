@@ -24,7 +24,7 @@ import java.util.Objects
 /** Enqueue a new sandbox job */
 class SandboxJobCreateParams
 private constructor(
-    private val body: SandboxJobCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -41,16 +41,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): SandboxJobCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class SandboxJobCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
@@ -68,7 +68,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxJobCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -84,16 +84,16 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [SandboxJobCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(sandboxJobCreateBody: SandboxJobCreateBody) = apply {
-                type = sandboxJobCreateBody.type
-                additionalProperties = sandboxJobCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                type = body.type
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The type of job to start. Currently the only supported type is `data_sync_all` */
@@ -121,11 +121,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxJobCreateBody =
-                SandboxJobCreateBody(
-                    checkRequired("type", type),
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Body =
+                Body(checkRequired("type", type), additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -133,7 +130,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxJobCreateBody && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -142,8 +139,7 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "SandboxJobCreateBody{type=$type, additionalProperties=$additionalProperties}"
+        override fun toString() = "Body{type=$type, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -157,7 +153,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SandboxJobCreateBody.Builder = SandboxJobCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
