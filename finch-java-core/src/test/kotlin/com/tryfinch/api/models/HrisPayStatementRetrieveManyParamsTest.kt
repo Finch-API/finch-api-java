@@ -32,7 +32,9 @@ class HrisPayStatementRetrieveManyParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(
@@ -54,7 +56,9 @@ class HrisPayStatementRetrieveManyParamsTest {
                     HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(

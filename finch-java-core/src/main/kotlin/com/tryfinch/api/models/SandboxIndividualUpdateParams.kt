@@ -26,7 +26,7 @@ import java.util.Optional
 class SandboxIndividualUpdateParams
 private constructor(
     private val individualId: String,
-    private val body: SandboxIndividualUpdateBody,
+    private val body: IndividualWithoutId,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -119,7 +119,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): SandboxIndividualUpdateBody = body
+    @JvmSynthetic internal fun _body(): IndividualWithoutId = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -133,9 +133,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class SandboxIndividualUpdateBody
+    class IndividualWithoutId
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("dob") @ExcludeMissing private val dob: JsonField<String> = JsonMissing.of(),
         @JsonProperty("emails")
         @ExcludeMissing
@@ -274,7 +274,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxIndividualUpdateBody = apply {
+        fun validate(): IndividualWithoutId = apply {
             if (validated) {
                 return@apply
             }
@@ -301,7 +301,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [SandboxIndividualUpdateBody]. */
+        /** A builder for [IndividualWithoutId]. */
         class Builder internal constructor() {
 
             private var dob: JsonField<String> = JsonMissing.of()
@@ -319,21 +319,20 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(sandboxIndividualUpdateBody: SandboxIndividualUpdateBody) = apply {
-                dob = sandboxIndividualUpdateBody.dob
-                emails = sandboxIndividualUpdateBody.emails.map { it.toMutableList() }
-                encryptedSsn = sandboxIndividualUpdateBody.encryptedSsn
-                ethnicity = sandboxIndividualUpdateBody.ethnicity
-                firstName = sandboxIndividualUpdateBody.firstName
-                gender = sandboxIndividualUpdateBody.gender
-                lastName = sandboxIndividualUpdateBody.lastName
-                middleName = sandboxIndividualUpdateBody.middleName
-                phoneNumbers = sandboxIndividualUpdateBody.phoneNumbers.map { it.toMutableList() }
-                preferredName = sandboxIndividualUpdateBody.preferredName
-                residence = sandboxIndividualUpdateBody.residence
-                ssn = sandboxIndividualUpdateBody.ssn
-                additionalProperties =
-                    sandboxIndividualUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(individualWithoutId: IndividualWithoutId) = apply {
+                dob = individualWithoutId.dob
+                emails = individualWithoutId.emails.map { it.toMutableList() }
+                encryptedSsn = individualWithoutId.encryptedSsn
+                ethnicity = individualWithoutId.ethnicity
+                firstName = individualWithoutId.firstName
+                gender = individualWithoutId.gender
+                lastName = individualWithoutId.lastName
+                middleName = individualWithoutId.middleName
+                phoneNumbers = individualWithoutId.phoneNumbers.map { it.toMutableList() }
+                preferredName = individualWithoutId.preferredName
+                residence = individualWithoutId.residence
+                ssn = individualWithoutId.ssn
+                additionalProperties = individualWithoutId.additionalProperties.toMutableMap()
             }
 
             fun dob(dob: String?) = dob(JsonField.ofNullable(dob))
@@ -515,8 +514,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxIndividualUpdateBody =
-                SandboxIndividualUpdateBody(
+            fun build(): IndividualWithoutId =
+                IndividualWithoutId(
                     dob,
                     (emails ?: JsonMissing.of()).map { it.toImmutable() },
                     encryptedSsn,
@@ -538,7 +537,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxIndividualUpdateBody && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is IndividualWithoutId && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -548,7 +547,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxIndividualUpdateBody{dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
+            "IndividualWithoutId{dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -563,8 +562,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var individualId: String? = null
-        private var body: SandboxIndividualUpdateBody.Builder =
-            SandboxIndividualUpdateBody.builder()
+        private var body: IndividualWithoutId.Builder = IndividualWithoutId.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

@@ -19,7 +19,9 @@ class HrisBenefitUpdateParamsTest {
                 .benefitId("benefit_id")
                 .description("description")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.description()).contains("description")
     }
@@ -27,7 +29,9 @@ class HrisBenefitUpdateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 

@@ -16,7 +16,9 @@ class SandboxJobCreateParamsTest {
     fun body() {
         val params =
             SandboxJobCreateParams.builder().type(SandboxJobCreateParams.Type.DATA_SYNC_ALL).build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.type()).isEqualTo(SandboxJobCreateParams.Type.DATA_SYNC_ALL)
     }
@@ -25,7 +27,9 @@ class SandboxJobCreateParamsTest {
     fun bodyWithoutOptionalFields() {
         val params =
             SandboxJobCreateParams.builder().type(SandboxJobCreateParams.Type.DATA_SYNC_ALL).build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.type()).isEqualTo(SandboxJobCreateParams.Type.DATA_SYNC_ALL)
     }
