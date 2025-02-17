@@ -4,7 +4,5 @@ package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
 
-class WebhookServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : WebhookServiceAsync
+class WebhookServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    WebhookServiceAsync

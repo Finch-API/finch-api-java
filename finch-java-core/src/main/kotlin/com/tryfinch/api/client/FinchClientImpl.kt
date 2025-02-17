@@ -25,9 +25,7 @@ import com.tryfinch.api.services.blocking.SandboxServiceImpl
 import com.tryfinch.api.services.blocking.WebhookService
 import com.tryfinch.api.services.blocking.WebhookServiceImpl
 
-class FinchClientImpl(
-    private val clientOptions: ClientOptions,
-) : FinchClient {
+class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions

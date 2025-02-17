@@ -124,7 +124,7 @@ private constructor(
             fun build(): SandboxJobCreateBody =
                 SandboxJobCreateBody(
                     checkRequired("type", type),
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -300,11 +300,7 @@ private constructor(
     }
 
     /** The type of job to start. Currently the only supported type is `data_sync_all` */
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -325,7 +321,7 @@ private constructor(
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
-            DATA_SYNC_ALL,
+            DATA_SYNC_ALL
         }
 
         /**

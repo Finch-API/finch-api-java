@@ -114,12 +114,7 @@ private constructor(
         }
 
         fun build(): PayStatementResponse =
-            PayStatementResponse(
-                body,
-                code,
-                paymentId,
-                additionalProperties.toImmutable(),
-            )
+            PayStatementResponse(body, code, paymentId, additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

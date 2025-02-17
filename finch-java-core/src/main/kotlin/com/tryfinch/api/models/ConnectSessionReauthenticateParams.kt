@@ -498,11 +498,8 @@ private constructor(
     }
 
     /** The Finch products that can be requested during the Connect flow. */
-    class ConnectProducts
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.

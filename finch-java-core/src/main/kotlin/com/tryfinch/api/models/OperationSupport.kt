@@ -16,11 +16,8 @@ import com.tryfinch.api.errors.FinchInvalidDataException
  * - `client_access_only`: This behavior is supported by the provider, but only available to the
  *   client and not to Finch
  */
-class OperationSupport
-@JsonCreator
-private constructor(
-    private val value: JsonField<String>,
-) : Enum {
+class OperationSupport @JsonCreator private constructor(private val value: JsonField<String>) :
+    Enum {
 
     /**
      * Returns this class instance's raw value.

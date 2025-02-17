@@ -8,10 +8,7 @@ import com.tryfinch.api.services.blocking.jobs.AutomatedServiceImpl
 import com.tryfinch.api.services.blocking.jobs.ManualService
 import com.tryfinch.api.services.blocking.jobs.ManualServiceImpl
 
-class JobServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : JobService {
+class JobServiceImpl internal constructor(private val clientOptions: ClientOptions) : JobService {
 
     private val automated: AutomatedService by lazy { AutomatedServiceImpl(clientOptions) }
 

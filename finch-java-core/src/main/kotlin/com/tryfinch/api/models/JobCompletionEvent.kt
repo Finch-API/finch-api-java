@@ -333,11 +333,7 @@ private constructor(
             "Data{jobId=$jobId, jobUrl=$jobUrl, additionalProperties=$additionalProperties}"
     }
 
-    class EventType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class EventType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.

@@ -187,24 +187,14 @@ private constructor(
         }
 
         fun build(): Income =
-            Income(
-                amount,
-                currency,
-                effectiveDate,
-                unit,
-                additionalProperties.toImmutable(),
-            )
+            Income(amount, currency, effectiveDate, unit, additionalProperties.toImmutable())
     }
 
     /**
      * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
      * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
      */
-    class Unit
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Unit @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.

@@ -312,12 +312,7 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Data =
-                Data(
-                    individualId,
-                    paymentId,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Data = Data(individualId, paymentId, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -338,11 +333,7 @@ private constructor(
             "Data{individualId=$individualId, paymentId=$paymentId, additionalProperties=$additionalProperties}"
     }
 
-    class EventType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class EventType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.

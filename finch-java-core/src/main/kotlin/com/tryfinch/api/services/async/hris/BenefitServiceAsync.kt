@@ -29,34 +29,34 @@ interface BenefitServiceAsync {
     @JvmOverloads
     fun create(
         params: HrisBenefitCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CreateCompanyBenefitsResponse>
 
     /** Lists deductions and contributions information for a given item */
     @JvmOverloads
     fun retrieve(
         params: HrisBenefitRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CompanyBenefit>
 
     /** Updates an existing company-wide deduction or contribution */
     @JvmOverloads
     fun update(
         params: HrisBenefitUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<UpdateCompanyBenefitResponse>
 
     /** List all company-wide deductions and contributions. */
     @JvmOverloads
     fun list(
         params: HrisBenefitListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitListPageAsync>
 
     /** Get deductions metadata */
     @JvmOverloads
     fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync>
 }

@@ -121,12 +121,7 @@ private constructor(
         }
 
         fun build(): UnenrolledIndividual =
-            UnenrolledIndividual(
-                body,
-                code,
-                individualId,
-                additionalProperties.toImmutable(),
-            )
+            UnenrolledIndividual(body, code, individualId, additionalProperties.toImmutable())
     }
 
     @NoAutoDetect
@@ -250,13 +245,7 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Body =
-                Body(
-                    finchCode,
-                    message,
-                    name,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Body = Body(finchCode, message, name, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

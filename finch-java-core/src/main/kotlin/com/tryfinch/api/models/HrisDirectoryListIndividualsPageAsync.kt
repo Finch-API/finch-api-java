@@ -84,13 +84,8 @@ private constructor(
         fun of(
             directoryService: DirectoryServiceAsync,
             params: HrisDirectoryListIndividualsParams,
-            response: Response
-        ) =
-            HrisDirectoryListIndividualsPageAsync(
-                directoryService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisDirectoryListIndividualsPageAsync(directoryService, params, response)
     }
 
     @NoAutoDetect
@@ -180,26 +175,19 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() =
-                Response(
-                    individuals,
-                    paging,
-                    additionalProperties.toImmutable(),
-                )
+            fun build() = Response(individuals, paging, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisDirectoryListIndividualsPageAsync,
-    ) {
+    class AutoPager(private val firstPage: HrisDirectoryListIndividualsPageAsync) {
 
         fun forEach(
             action: Predicate<IndividualInDirectory>,
-            executor: Executor
+            executor: Executor,
         ): CompletableFuture<Void> {
             fun CompletableFuture<Optional<HrisDirectoryListIndividualsPageAsync>>.forEach(
                 action: (IndividualInDirectory) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -208,7 +196,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

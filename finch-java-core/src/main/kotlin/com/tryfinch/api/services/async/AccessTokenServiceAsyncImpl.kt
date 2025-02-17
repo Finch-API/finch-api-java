@@ -17,10 +17,8 @@ import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
 import java.util.concurrent.CompletableFuture
 
-class AccessTokenServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AccessTokenServiceAsync {
+class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    AccessTokenServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Exchange the authorization code for an access token */
     override fun create(
         params: AccessTokenCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<CreateAccessTokenResponse> {
         val request =
             HttpRequest.builder()

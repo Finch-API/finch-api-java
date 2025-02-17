@@ -18,10 +18,7 @@ import com.tryfinch.api.models.SandboxJobCreateParams
 import com.tryfinch.api.services.blocking.sandbox.jobs.ConfigurationService
 import com.tryfinch.api.services.blocking.sandbox.jobs.ConfigurationServiceImpl
 
-class JobServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : JobService {
+class JobServiceImpl internal constructor(private val clientOptions: ClientOptions) : JobService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -37,7 +34,7 @@ internal constructor(
     /** Enqueue a new sandbox job */
     override fun create(
         params: SandboxJobCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): JobCreateResponse {
         val request =
             HttpRequest.builder()
