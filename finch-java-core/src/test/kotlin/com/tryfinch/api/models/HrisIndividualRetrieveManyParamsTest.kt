@@ -34,7 +34,9 @@ class HrisIndividualRetrieveManyParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.options())
             .contains(
@@ -53,7 +55,9 @@ class HrisIndividualRetrieveManyParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = HrisIndividualRetrieveManyParams.builder().build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 }

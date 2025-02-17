@@ -98,7 +98,9 @@ class SandboxCompanyUpdateParamsTest {
                 .primaryEmail("primary_email")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.accounts())
             .contains(
@@ -166,7 +168,9 @@ class SandboxCompanyUpdateParamsTest {
                 .primaryEmail("primary_email")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.accounts())
             .contains(listOf(SandboxCompanyUpdateParams.Account.builder().build()))

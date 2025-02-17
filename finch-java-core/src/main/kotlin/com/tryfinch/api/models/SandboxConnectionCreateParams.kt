@@ -25,7 +25,7 @@ import java.util.Optional
 /** Create a new connection (new company/provider pair) with a new account */
 class SandboxConnectionCreateParams
 private constructor(
-    private val body: SandboxConnectionCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -64,16 +64,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): SandboxConnectionCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class SandboxConnectionCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("provider_id")
         @ExcludeMissing
         private val providerId: JsonField<String> = JsonMissing.of(),
@@ -135,7 +135,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxConnectionCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -154,7 +154,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [SandboxConnectionCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var providerId: JsonField<String>? = null
@@ -164,13 +164,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(sandboxConnectionCreateBody: SandboxConnectionCreateBody) = apply {
-                providerId = sandboxConnectionCreateBody.providerId
-                authenticationType = sandboxConnectionCreateBody.authenticationType
-                employeeSize = sandboxConnectionCreateBody.employeeSize
-                products = sandboxConnectionCreateBody.products.map { it.toMutableList() }
-                additionalProperties =
-                    sandboxConnectionCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                providerId = body.providerId
+                authenticationType = body.authenticationType
+                employeeSize = body.employeeSize
+                products = body.products.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The provider associated with the connection */
@@ -240,8 +239,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxConnectionCreateBody =
-                SandboxConnectionCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("providerId", providerId),
                     authenticationType,
                     employeeSize,
@@ -255,7 +254,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxConnectionCreateBody && providerId == other.providerId && authenticationType == other.authenticationType && employeeSize == other.employeeSize && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && providerId == other.providerId && authenticationType == other.authenticationType && employeeSize == other.employeeSize && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -265,7 +264,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxConnectionCreateBody{providerId=$providerId, authenticationType=$authenticationType, employeeSize=$employeeSize, products=$products, additionalProperties=$additionalProperties}"
+            "Body{providerId=$providerId, authenticationType=$authenticationType, employeeSize=$employeeSize, products=$products, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -279,8 +278,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SandboxConnectionCreateBody.Builder =
-            SandboxConnectionCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

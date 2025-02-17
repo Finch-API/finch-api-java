@@ -24,7 +24,7 @@ import java.util.Optional
 class HrisBenefitIndividualUnenrollManyParams
 private constructor(
     private val benefitId: String,
-    private val body: HrisBenefitIndividualUnenrollManyBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -43,7 +43,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): HrisBenefitIndividualUnenrollManyBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -57,9 +57,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class HrisBenefitIndividualUnenrollManyBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("individual_ids")
         @ExcludeMissing
         private val individualIds: JsonField<List<String>> = JsonMissing.of(),
@@ -82,7 +82,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): HrisBenefitIndividualUnenrollManyBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -98,20 +98,16 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [HrisBenefitIndividualUnenrollManyBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var individualIds: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(
-                hrisBenefitIndividualUnenrollManyBody: HrisBenefitIndividualUnenrollManyBody
-            ) = apply {
-                individualIds =
-                    hrisBenefitIndividualUnenrollManyBody.individualIds.map { it.toMutableList() }
-                additionalProperties =
-                    hrisBenefitIndividualUnenrollManyBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                individualIds = body.individualIds.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Array of individual_ids to unenroll. */
@@ -156,8 +152,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): HrisBenefitIndividualUnenrollManyBody =
-                HrisBenefitIndividualUnenrollManyBody(
+            fun build(): Body =
+                Body(
                     (individualIds ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
@@ -168,7 +164,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is HrisBenefitIndividualUnenrollManyBody && individualIds == other.individualIds && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && individualIds == other.individualIds && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -178,7 +174,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "HrisBenefitIndividualUnenrollManyBody{individualIds=$individualIds, additionalProperties=$additionalProperties}"
+            "Body{individualIds=$individualIds, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -193,8 +189,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var benefitId: String? = null
-        private var body: HrisBenefitIndividualUnenrollManyBody.Builder =
-            HrisBenefitIndividualUnenrollManyBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

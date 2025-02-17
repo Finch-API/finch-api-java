@@ -25,7 +25,7 @@ import java.util.Optional
 /** Create a new Connect session for reauthenticating an existing connection */
 class ConnectSessionReauthenticateParams
 private constructor(
-    private val body: ConnectSessionReauthenticateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -60,16 +60,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): ConnectSessionReauthenticateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class ConnectSessionReauthenticateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("connection_id")
         @ExcludeMissing
         private val connectionId: JsonField<String> = JsonMissing.of(),
@@ -131,7 +131,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): ConnectSessionReauthenticateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -150,7 +150,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [ConnectSessionReauthenticateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var connectionId: JsonField<String>? = null
@@ -160,15 +160,13 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(connectSessionReauthenticateBody: ConnectSessionReauthenticateBody) =
-                apply {
-                    connectionId = connectSessionReauthenticateBody.connectionId
-                    minutesToExpire = connectSessionReauthenticateBody.minutesToExpire
-                    products = connectSessionReauthenticateBody.products.map { it.toMutableList() }
-                    redirectUri = connectSessionReauthenticateBody.redirectUri
-                    additionalProperties =
-                        connectSessionReauthenticateBody.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                connectionId = body.connectionId
+                minutesToExpire = body.minutesToExpire
+                products = body.products.map { it.toMutableList() }
+                redirectUri = body.redirectUri
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             /** The ID of the existing connection to reauthenticate */
             fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
@@ -264,8 +262,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): ConnectSessionReauthenticateBody =
-                ConnectSessionReauthenticateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("connectionId", connectionId),
                     minutesToExpire,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
@@ -279,7 +277,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectSessionReauthenticateBody && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -289,7 +287,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ConnectSessionReauthenticateBody{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
+            "Body{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -303,8 +301,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: ConnectSessionReauthenticateBody.Builder =
-            ConnectSessionReauthenticateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
