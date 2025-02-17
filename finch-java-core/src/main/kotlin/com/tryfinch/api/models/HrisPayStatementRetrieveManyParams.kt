@@ -27,7 +27,7 @@ import java.util.Optional
  */
 class HrisPayStatementRetrieveManyParams
 private constructor(
-    private val body: HrisPayStatementRetrieveManyBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -44,16 +44,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): HrisPayStatementRetrieveManyBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class HrisPayStatementRetrieveManyBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("requests")
         @ExcludeMissing
         private val requests: JsonField<List<Request>> = JsonMissing.of(),
@@ -75,7 +75,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): HrisPayStatementRetrieveManyBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -91,19 +91,17 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [HrisPayStatementRetrieveManyBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var requests: JsonField<MutableList<Request>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(hrisPayStatementRetrieveManyBody: HrisPayStatementRetrieveManyBody) =
-                apply {
-                    requests = hrisPayStatementRetrieveManyBody.requests.map { it.toMutableList() }
-                    additionalProperties =
-                        hrisPayStatementRetrieveManyBody.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                requests = body.requests.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             /** The array of batch requests. */
             fun requests(requests: List<Request>) = requests(JsonField.of(requests))
@@ -146,8 +144,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): HrisPayStatementRetrieveManyBody =
-                HrisPayStatementRetrieveManyBody(
+            fun build(): Body =
+                Body(
                     checkRequired("requests", requests).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
                 )
@@ -158,7 +156,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is HrisPayStatementRetrieveManyBody && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -168,7 +166,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "HrisPayStatementRetrieveManyBody{requests=$requests, additionalProperties=$additionalProperties}"
+            "Body{requests=$requests, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -182,8 +180,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: HrisPayStatementRetrieveManyBody.Builder =
-            HrisPayStatementRetrieveManyBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

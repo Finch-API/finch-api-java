@@ -245,7 +245,9 @@ class SandboxDirectoryCreateParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body)
             .isEqualTo(
@@ -375,7 +377,9 @@ class SandboxDirectoryCreateParamsTest {
             SandboxDirectoryCreateParams.builder()
                 .addBody(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body)
             .isEqualTo(

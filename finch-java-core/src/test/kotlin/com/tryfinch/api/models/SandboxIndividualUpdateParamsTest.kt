@@ -86,7 +86,9 @@ class SandboxIndividualUpdateParamsTest {
                 )
                 .ssn("ssn")
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.dob()).contains("dob")
         assertThat(body.emails())
@@ -133,7 +135,9 @@ class SandboxIndividualUpdateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = SandboxIndividualUpdateParams.builder().individualId("individual_id").build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
     }
 

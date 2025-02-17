@@ -22,7 +22,7 @@ import java.util.Optional
 /** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyParams
 private constructor(
-    private val body: HrisIndividualRetrieveManyBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -41,16 +41,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): HrisIndividualRetrieveManyBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class HrisIndividualRetrieveManyBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("options")
         @ExcludeMissing
         private val options: JsonField<Options> = JsonMissing.of(),
@@ -78,7 +78,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): HrisIndividualRetrieveManyBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -95,7 +95,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [HrisIndividualRetrieveManyBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var options: JsonField<Options> = JsonMissing.of()
@@ -103,13 +103,11 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(hrisIndividualRetrieveManyBody: HrisIndividualRetrieveManyBody) =
-                apply {
-                    options = hrisIndividualRetrieveManyBody.options
-                    requests = hrisIndividualRetrieveManyBody.requests.map { it.toMutableList() }
-                    additionalProperties =
-                        hrisIndividualRetrieveManyBody.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                options = body.options
+                requests = body.requests.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             fun options(options: Options?) = options(JsonField.ofNullable(options))
 
@@ -155,8 +153,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): HrisIndividualRetrieveManyBody =
-                HrisIndividualRetrieveManyBody(
+            fun build(): Body =
+                Body(
                     options,
                     (requests ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
@@ -168,7 +166,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is HrisIndividualRetrieveManyBody && options == other.options && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && options == other.options && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -178,7 +176,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "HrisIndividualRetrieveManyBody{options=$options, requests=$requests, additionalProperties=$additionalProperties}"
+            "Body{options=$options, requests=$requests, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -192,8 +190,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: HrisIndividualRetrieveManyBody.Builder =
-            HrisIndividualRetrieveManyBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
