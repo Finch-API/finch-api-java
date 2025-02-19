@@ -149,7 +149,7 @@ private constructor(
             fun build(): HrisPayStatementRetrieveManyBody =
                 HrisPayStatementRetrieveManyBody(
                     checkRequired("requests", requests).map { it.toImmutable() },
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 

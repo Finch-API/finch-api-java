@@ -18,10 +18,8 @@ import com.tryfinch.api.models.AccountIntrospectParams
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 
-class AccountServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AccountService {
+class AccountServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    AccountService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Disconnect one or more `access_token`s from your application. */
     override fun disconnect(
         params: AccountDisconnectParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): DisconnectResponse {
         val request =
             HttpRequest.builder()
@@ -56,7 +54,7 @@ internal constructor(
     /** Read account information associated with an `access_token` */
     override fun introspect(
         params: AccountIntrospectParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): Introspection {
         val request =
             HttpRequest.builder()

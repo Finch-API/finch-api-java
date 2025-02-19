@@ -274,13 +274,7 @@ private constructor(
         }
 
         fun build(): OperationSupportMatrix =
-            OperationSupportMatrix(
-                create,
-                delete,
-                read,
-                update,
-                additionalProperties.toImmutable(),
-            )
+            OperationSupportMatrix(create, delete, read, update, additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

@@ -20,10 +20,7 @@ import com.tryfinch.api.services.blocking.hris.PayStatementServiceImpl
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import com.tryfinch.api.services.blocking.hris.PaymentServiceImpl
 
-class HrisServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : HrisService {
+class HrisServiceImpl internal constructor(private val clientOptions: ClientOptions) : HrisService {
 
     private val company: CompanyService by lazy { CompanyServiceImpl(clientOptions) }
 

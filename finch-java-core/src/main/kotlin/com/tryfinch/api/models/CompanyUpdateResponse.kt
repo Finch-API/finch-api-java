@@ -539,11 +539,8 @@ private constructor(
         }
 
         /** The type of bank account. */
-        class AccountType
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class AccountType @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -752,12 +749,7 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Department =
-                Department(
-                    name,
-                    parent,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Department = Department(name, parent, additionalProperties.toImmutable())
         }
 
         /** The parent department, if present. */
@@ -981,20 +973,12 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Entity =
-                Entity(
-                    subtype,
-                    type,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Entity = Entity(subtype, type, additionalProperties.toImmutable())
         }
 
         /** The tax payer subtype of the company. */
-        class Subtype
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Subtype @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1091,11 +1075,7 @@ private constructor(
         }
 
         /** The tax payer type of the company. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.

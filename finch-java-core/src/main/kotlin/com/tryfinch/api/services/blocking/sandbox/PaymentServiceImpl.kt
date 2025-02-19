@@ -16,10 +16,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.PaymentCreateResponse
 import com.tryfinch.api.models.SandboxPaymentCreateParams
 
-class PaymentServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : PaymentService {
+class PaymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    PaymentService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -29,7 +27,7 @@ internal constructor(
     /** Add a new sandbox payment */
     override fun create(
         params: SandboxPaymentCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): PaymentCreateResponse {
         val request =
             HttpRequest.builder()

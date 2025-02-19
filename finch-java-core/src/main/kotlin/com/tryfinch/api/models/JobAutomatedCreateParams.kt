@@ -187,7 +187,7 @@ private constructor(
             override fun serialize(
                 value: JobAutomatedCreateBody,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.dataSyncAll != null -> generator.writeObject(value.dataSyncAll)
@@ -415,11 +415,7 @@ private constructor(
         }
 
         /** The type of job to start. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -440,7 +436,7 @@ private constructor(
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                DATA_SYNC_ALL,
+                DATA_SYNC_ALL
             }
 
             /**
@@ -701,7 +697,7 @@ private constructor(
                 fun build(): Params =
                     Params(
                         checkRequired("individualId", individualId),
-                        additionalProperties.toImmutable()
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -724,11 +720,7 @@ private constructor(
         }
 
         /** The type of job to start. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -749,7 +741,7 @@ private constructor(
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                W4_FORM_EMPLOYEE_SYNC,
+                W4_FORM_EMPLOYEE_SYNC
             }
 
             /**

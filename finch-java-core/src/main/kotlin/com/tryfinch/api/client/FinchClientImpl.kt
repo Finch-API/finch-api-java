@@ -37,9 +37,7 @@ import com.tryfinch.api.services.blocking.WebhookService
 import com.tryfinch.api.services.blocking.WebhookServiceImpl
 import java.net.URLEncoder
 
-class FinchClientImpl(
-    private val clientOptions: ClientOptions,
-) : FinchClient {
+class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 

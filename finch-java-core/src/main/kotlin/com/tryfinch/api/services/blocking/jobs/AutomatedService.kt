@@ -32,14 +32,14 @@ interface AutomatedService {
     @JvmOverloads
     fun create(
         params: JobAutomatedCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedCreateResponse
 
     /** Get an automated job by `job_id`. */
     @JvmOverloads
     fun retrieve(
         params: JobAutomatedRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedAsyncJob
 
     /**
@@ -50,6 +50,6 @@ interface AutomatedService {
     @JvmOverloads
     fun list(
         params: JobAutomatedListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): JobAutomatedListPage
 }

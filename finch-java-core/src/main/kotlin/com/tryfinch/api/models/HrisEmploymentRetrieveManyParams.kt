@@ -145,7 +145,7 @@ private constructor(
             fun build(): HrisEmploymentRetrieveManyBody =
                 HrisEmploymentRetrieveManyBody(
                     checkRequired("requests", requests).map { it.toImmutable() },
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -425,7 +425,7 @@ private constructor(
             fun build(): Request =
                 Request(
                     checkRequired("individualId", individualId),
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 

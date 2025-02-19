@@ -19,10 +19,8 @@ import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 import java.util.concurrent.CompletableFuture
 
-class AccountServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AccountServiceAsync {
+class AccountServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    AccountServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -32,7 +30,7 @@ internal constructor(
     /** Disconnect one or more `access_token`s from your application. */
     override fun disconnect(
         params: AccountDisconnectParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<DisconnectResponse> {
         val request =
             HttpRequest.builder()
@@ -60,7 +58,7 @@ internal constructor(
     /** Read account information associated with an `access_token` */
     override fun introspect(
         params: AccountIntrospectParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Introspection> {
         val request =
             HttpRequest.builder()

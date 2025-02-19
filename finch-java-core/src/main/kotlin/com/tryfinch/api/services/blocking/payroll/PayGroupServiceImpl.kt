@@ -18,10 +18,8 @@ import com.tryfinch.api.models.PayrollPayGroupListPage
 import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 
-class PayGroupServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : PayGroupService {
+class PayGroupServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    PayGroupService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -32,7 +30,7 @@ internal constructor(
     /** Read information from a single pay group */
     override fun retrieve(
         params: PayrollPayGroupRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): PayGroupRetrieveResponse {
         val request =
             HttpRequest.builder()
@@ -57,7 +55,7 @@ internal constructor(
     /** Read company pay groups and frequencies */
     override fun list(
         params: PayrollPayGroupListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): PayrollPayGroupListPage {
         val request =
             HttpRequest.builder()
@@ -77,7 +75,7 @@ internal constructor(
                 PayrollPayGroupListPage.of(
                     this,
                     params,
-                    PayrollPayGroupListPage.Response.builder().items(it).build()
+                    PayrollPayGroupListPage.Response.builder().items(it).build(),
                 )
             }
     }

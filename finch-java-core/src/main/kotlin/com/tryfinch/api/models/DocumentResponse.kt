@@ -200,22 +200,11 @@ private constructor(
         }
 
         fun build(): DocumentResponse =
-            DocumentResponse(
-                id,
-                individualId,
-                type,
-                url,
-                year,
-                additionalProperties.toImmutable(),
-            )
+            DocumentResponse(id, individualId, type, url, year, additionalProperties.toImmutable())
     }
 
     /** The type of document. */
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.

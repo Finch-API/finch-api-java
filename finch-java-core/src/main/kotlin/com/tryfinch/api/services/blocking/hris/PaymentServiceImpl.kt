@@ -16,10 +16,8 @@ import com.tryfinch.api.models.HrisPaymentListPage
 import com.tryfinch.api.models.HrisPaymentListParams
 import com.tryfinch.api.models.Payment
 
-class PaymentServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : PaymentService {
+class PaymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    PaymentService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -29,7 +27,7 @@ internal constructor(
     /** Read payroll and contractor related payments by the company. */
     override fun list(
         params: HrisPaymentListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisPaymentListPage {
         val request =
             HttpRequest.builder()
@@ -49,7 +47,7 @@ internal constructor(
                 HrisPaymentListPage.of(
                     this,
                     params,
-                    HrisPaymentListPage.Response.builder().items(it).build()
+                    HrisPaymentListPage.Response.builder().items(it).build(),
                 )
             }
     }

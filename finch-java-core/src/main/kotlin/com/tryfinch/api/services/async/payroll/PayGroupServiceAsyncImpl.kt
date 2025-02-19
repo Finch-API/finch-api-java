@@ -19,10 +19,8 @@ import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import java.util.concurrent.CompletableFuture
 
-class PayGroupServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : PayGroupServiceAsync {
+class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    PayGroupServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -33,7 +31,7 @@ internal constructor(
     /** Read information from a single pay group */
     override fun retrieve(
         params: PayrollPayGroupRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<PayGroupRetrieveResponse> {
         val request =
             HttpRequest.builder()
@@ -61,7 +59,7 @@ internal constructor(
     /** Read company pay groups and frequencies */
     override fun list(
         params: PayrollPayGroupListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<PayrollPayGroupListPageAsync> {
         val request =
             HttpRequest.builder()
@@ -83,7 +81,7 @@ internal constructor(
                         PayrollPayGroupListPageAsync.of(
                             this,
                             params,
-                            PayrollPayGroupListPageAsync.Response.builder().items(it).build()
+                            PayrollPayGroupListPageAsync.Response.builder().items(it).build(),
                         )
                     }
             }

@@ -220,7 +220,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
     ) {
 
         @JsonAnyGetter
@@ -293,11 +293,7 @@ private constructor(
         override fun toString() = "Data{additionalProperties=$additionalProperties}"
     }
 
-    class EventType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class EventType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -318,7 +314,7 @@ private constructor(
 
         /** An enum containing [EventType]'s known values. */
         enum class Known {
-            COMPANY_UPDATED,
+            COMPANY_UPDATED
         }
 
         /**

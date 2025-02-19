@@ -7,11 +7,8 @@ import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.errors.FinchInvalidDataException
 
-class ConnectionStatusType
-@JsonCreator
-private constructor(
-    private val value: JsonField<String>,
-) : Enum {
+class ConnectionStatusType @JsonCreator private constructor(private val value: JsonField<String>) :
+    Enum {
 
     /**
      * Returns this class instance's raw value.

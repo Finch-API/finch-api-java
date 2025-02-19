@@ -18,10 +18,8 @@ import com.tryfinch.api.models.SandboxJobConfigurationRetrieveParams
 import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class ConfigurationServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ConfigurationServiceAsync {
+class ConfigurationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ConfigurationServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -32,7 +30,7 @@ internal constructor(
     /** Get configurations for sandbox jobs */
     override fun retrieve(
         params: SandboxJobConfigurationRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<List<SandboxJobConfiguration>> {
         val request =
             HttpRequest.builder()
@@ -60,7 +58,7 @@ internal constructor(
     /** Update configurations for sandbox jobs */
     override fun update(
         params: SandboxJobConfigurationUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<SandboxJobConfiguration> {
         val request =
             HttpRequest.builder()

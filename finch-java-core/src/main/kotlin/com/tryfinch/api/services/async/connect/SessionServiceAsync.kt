@@ -17,13 +17,13 @@ interface SessionServiceAsync {
     @JvmOverloads
     fun new_(
         params: ConnectSessionNewParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SessionNewResponse>
 
     /** Create a new Connect session for reauthenticating an existing connection */
     @JvmOverloads
     fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SessionReauthenticateResponse>
 }

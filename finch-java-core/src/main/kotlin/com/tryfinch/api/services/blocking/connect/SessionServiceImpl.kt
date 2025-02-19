@@ -18,10 +18,8 @@ import com.tryfinch.api.models.ConnectSessionReauthenticateParams
 import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 
-class SessionServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : SessionService {
+class SessionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    SessionService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Create a new connect session for an employer */
     override fun new_(
         params: ConnectSessionNewParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SessionNewResponse {
         val request =
             HttpRequest.builder()
@@ -57,7 +55,7 @@ internal constructor(
     /** Create a new Connect session for reauthenticating an existing connection */
     override fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SessionReauthenticateResponse {
         val request =
             HttpRequest.builder()

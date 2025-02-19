@@ -21,10 +21,8 @@ import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import java.util.concurrent.CompletableFuture
 
-class AutomatedServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AutomatedServiceAsync {
+class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    AutomatedServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -49,7 +47,7 @@ internal constructor(
      */
     override fun create(
         params: JobAutomatedCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AutomatedCreateResponse> {
         val request =
             HttpRequest.builder()
@@ -77,7 +75,7 @@ internal constructor(
     /** Get an automated job by `job_id`. */
     override fun retrieve(
         params: JobAutomatedRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<AutomatedAsyncJob> {
         val request =
             HttpRequest.builder()
@@ -109,7 +107,7 @@ internal constructor(
      */
     override fun list(
         params: JobAutomatedListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<JobAutomatedListPageAsync> {
         val request =
             HttpRequest.builder()
