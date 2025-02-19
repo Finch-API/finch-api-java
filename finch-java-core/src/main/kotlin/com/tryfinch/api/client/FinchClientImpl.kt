@@ -108,7 +108,7 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
         clientId: String,
         clientSecret: String,
         code: String,
-        redirectUri: String?
+        redirectUri: String?,
     ): String {
         if (clientOptions.clientId == null) {
             throw FinchException("clientId must be set in order to call getAccessToken")
@@ -123,12 +123,7 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
                 .body(
                     json(
                         clientOptions.jsonMapper,
-                        GetAccessTokenParams(
-                            clientId,
-                            clientSecret,
-                            code,
-                            redirectUri,
-                        )
+                        GetAccessTokenParams(clientId, clientSecret, code, redirectUri),
                     )
                 )
                 .build()
