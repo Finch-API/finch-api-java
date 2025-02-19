@@ -42,141 +42,144 @@ This library requires Java 8 or later.
 
 ## Usage
 
-### Configure the client
-
-Use `FinchOkHttpClient.builder()` to configure the client.
-
-Alternately, set the environment with `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` or `FINCH_WEBHOOK_SECRET`, and use `FinchOkHttpClient.fromEnv()` to read from the environment.
-
 ```java
 import com.tryfinch.api.client.FinchClient;
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
-
-FinchClient client = FinchOkHttpClient.fromEnv();
-
-// Note: you can also call fromEnv() from the client builder, for example if you need to set additional properties
-FinchClient client = FinchOkHttpClient.builder()
-    .fromEnv()
-    // ... set properties on the builder
-    .build();
-```
-
-| Property      | Environment variable   | Required | Default value |
-| ------------- | ---------------------- | -------- | ------------- |
-| clientId      | `FINCH_CLIENT_ID`      | false    | —             |
-| clientSecret  | `FINCH_CLIENT_SECRET`  | false    | —             |
-| webhookSecret | `FINCH_WEBHOOK_SECRET` | false    | —             |
-
-Read the documentation for more configuration options.
-
----
-
-### Example: creating a resource
-
-To create a new hris directory, first use the `HrisDirectoryListParams` builder to specify attributes, then pass that to the `list` method of the `directory` service.
-
-```java
 import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.HrisDirectoryListParams;
+
+FinchClient client = FinchOkHttpClient.builder()
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    .fromEnv()
+    .accessToken("My Access Token")
+    .build();
 
 HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
 HrisDirectoryListPage page = client.hris().directory().list(params);
 ```
 
-### Example: listing resources
+## Client configuration
 
-The Finch API provides a `list` method to get a paginated list of directory. You can retrieve the first page by:
-
-```java
-import com.tryfinch.api.models.HrisDirectoryListPage;
-import com.tryfinch.api.models.IndividualInDirectory;
-
-HrisDirectoryListPage page = client.hris().directory().list();
-for (IndividualInDirectory directory : page.individuals()) {
-    System.out.println(directory);
-}
-```
-
-Use the `HrisDirectoryListParams` builder to set parameters:
+Configure the client using environment variables:
 
 ```java
-import com.tryfinch.api.models.HrisDirectoryListPage;
-import com.tryfinch.api.models.HrisDirectoryListParams;
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .limit(0L)
-    .offset(0L)
+FinchClient client = FinchOkHttpClient.builder()
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    .fromEnv()
+    .accessToken("My Access Token")
     .build();
-HrisDirectoryListPage page1 = client.hris().directory().list(params);
-
-// Using the `from` method of the builder you can reuse previous params values:
-HrisDirectoryListPage page2 = client.hris().directory().list(HrisDirectoryListParams.builder()
-    .from(params)
-    .build());
-
-// Or easily get params for the next page by using the helper `getNextPageParams`:
-HrisDirectoryListPage page3 = client.hris().directory().list(params.getNextPageParams(page2));
 ```
 
-See [Pagination](#pagination) below for more information on transparently working with lists of objects without worrying about fetching each page.
-
----
-
-## Requests
-
-### Parameters and bodies
-
-To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
-
-See [Undocumented request params](#undocumented-request-params) for how to send arbitrary parameters.
-
-## Responses
-
-### Response validation
-
-When receiving a response, the Finch Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
+Or manually:
 
 ```java
-import com.tryfinch.api.models.HrisDirectoryListPage;
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
-HrisDirectoryListPage page = client.hris().directory().list().validate();
+FinchClient client = FinchOkHttpClient.builder()
+    .accessToken("My Access Token")
+    .build();
 ```
 
-### Response properties as JSON
-
-In rare cases, you may want to access the underlying JSON value for a response property rather than using the typed version provided by this SDK. Each model property has a corresponding JSON version, with an underscore before the method name, which returns a `JsonField` value.
+Or using a combination of the two approaches:
 
 ```java
-import com.tryfinch.api.core.JsonField;
-import java.util.Optional;
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
-JsonField field = responseObj._field();
-
-if (field.isMissing()) {
-  // Value was not specified in the JSON response
-} else if (field.isNull()) {
-  // Value was provided as a literal null
-} else {
-  // See if value was provided as a string
-  Optional<String> jsonString = field.asString();
-
-  // If the value given by the API did not match the shape that the SDK expects
-  // you can deserialise into a custom type
-  MyClass myObj = responseObj._field().asUnknown().orElseThrow().convert(MyClass.class);
-}
+FinchClient client = FinchOkHttpClient.builder()
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    .fromEnv()
+    .accessToken("My Access Token")
+    .accessToken("My Access Token")
+    .build();
 ```
 
-### Additional model properties
+See this table for the available options:
 
-Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
+| Setter          | Environment variable   | Required | Default value |
+| --------------- | ---------------------- | -------- | ------------- |
+| `clientId`      | `FINCH_CLIENT_ID`      | false    | -             |
+| `clientSecret`  | `FINCH_CLIENT_SECRET`  | false    | -             |
+| `webhookSecret` | `FINCH_WEBHOOK_SECRET` | false    | -             |
+
+> [!TIP]
+> Don't create more than one client in the same application. Each client has a connection pool and
+> thread pools, which are more efficient to share between requests.
+
+## Requests and responses
+
+To send a request to the Finch API, build an instance of some `Params` class and pass it to the corresponding client method. When the response is received, it will be deserialized into an instance of a Java class.
+
+For example, `client.hris().directory().list(...)` should be called with an instance of `HrisDirectoryListParams`, and it will return an instance of `HrisDirectoryListPage`.
+
+## Asynchronous execution
+
+The default client is synchronous. To switch to asynchronous execution, call the `async()` method:
 
 ```java
-import com.tryfinch.api.core.JsonValue;
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
+import com.tryfinch.api.models.HrisDirectoryListPageAsync;
+import com.tryfinch.api.models.HrisDirectoryListParams;
+import java.util.concurrent.CompletableFuture;
 
-JsonValue secret = operationSupportMatrix._additionalProperties().get("secret_field");
+FinchClient client = FinchOkHttpClient.builder()
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    .fromEnv()
+    .accessToken("My Access Token")
+    .build();
+
+HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
+CompletableFuture<HrisDirectoryListPageAsync> page = client.async().hris().directory().list(params);
 ```
 
----
+Or create an asynchronous client from the beginning:
+
+```java
+import com.tryfinch.api.client.FinchClientAsync;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync;
+import com.tryfinch.api.models.HrisDirectoryListPageAsync;
+import com.tryfinch.api.models.HrisDirectoryListParams;
+import java.util.concurrent.CompletableFuture;
+
+FinchClientAsync client = FinchOkHttpClientAsync.builder()
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    .fromEnv()
+    .accessToken("My Access Token")
+    .build();
+
+HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
+CompletableFuture<HrisDirectoryListPageAsync> page = client.hris().directory().list(params);
+```
+
+The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
+
+## Error handling
+
+The SDK throws custom unchecked exception types:
+
+- `FinchServiceException`: Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
+
+  | Status | Exception                       |
+  | ------ | ------------------------------- |
+  | 400    | `BadRequestException`           |
+  | 401    | `AuthenticationException`       |
+  | 403    | `PermissionDeniedException`     |
+  | 404    | `NotFoundException`             |
+  | 422    | `UnprocessableEntityException`  |
+  | 429    | `RateLimitException`            |
+  | 5xx    | `InternalServerException`       |
+  | others | `UnexpectedStatusCodeException` |
+
+- `FinchIoException`: I/O networking errors.
+
+- `FinchInvalidDataException`: Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
+
+- `FinchException`: Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
 
 ## Pagination
 
@@ -230,36 +233,39 @@ while (page != null) {
 }
 ```
 
----
+## Logging
 
-## Error handling
+The SDK uses the standard [OkHttp logging interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).
 
-This library throws exceptions in a single hierarchy for easy handling:
+Enable logging by setting the `FINCH_LOG` environment variable to `info`:
 
-- **`FinchException`** - Base exception for all exceptions
+```sh
+$ export FINCH_LOG=info
+```
 
-- **`FinchServiceException`** - HTTP errors with a well-formed response body we were able to parse. The exception message and the `.debuggingRequestId()` will be set by the server.
+Or to `debug` for more verbose logging:
 
-  | 400    | BadRequestException           |
-  | ------ | ----------------------------- |
-  | 401    | AuthenticationException       |
-  | 403    | PermissionDeniedException     |
-  | 404    | NotFoundException             |
-  | 422    | UnprocessableEntityException  |
-  | 429    | RateLimitException            |
-  | 5xx    | InternalServerException       |
-  | others | UnexpectedStatusCodeException |
-
-- **`FinchIoException`** - I/O networking errors
-- **`FinchInvalidDataException`** - any other exceptions on the client side, e.g.:
-  - We failed to serialize the request body
-  - We failed to parse the response body (has access to response code and body)
+```sh
+$ export FINCH_LOG=debug
+```
 
 ## Network options
 
 ### Retries
 
-Requests that experience certain errors are automatically retried 2 times by default, with a short exponential backoff. Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, and >=500 Internal errors will all be retried by default. You can provide a `maxRetries` on the client builder to configure this:
+The SDK automatically retries 2 times by default, with a short exponential backoff.
+
+Only the following error types are retried:
+
+- Connection errors (for example, due to a network connectivity problem)
+- 408 Request Timeout
+- 409 Conflict
+- 429 Rate Limit
+- 5xx Internal
+
+The API may also explicitly instruct the SDK to retry or not retry a response.
+
+To set a custom number of retries, configure the client using the `maxRetries` method:
 
 ```java
 import com.tryfinch.api.client.FinchClient;
@@ -267,13 +273,27 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
+    .accessToken("My Access Token")
     .maxRetries(4)
     .build();
 ```
 
 ### Timeouts
 
-Requests time out after 1 minute by default. You can configure this on the client builder:
+Requests time out after 1 minute by default.
+
+To set a custom timeout, configure the method call using the `timeout` method:
+
+```java
+import com.tryfinch.api.models.HrisDirectoryListPage;
+import com.tryfinch.api.models.HrisDirectoryListParams;
+
+HrisDirectoryListPage page = client.hris().directory().list(
+  params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
+);
+```
+
+Or configure the default for all method calls at the client level:
 
 ```java
 import com.tryfinch.api.client.FinchClient;
@@ -282,13 +302,14 @@ import java.time.Duration;
 
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
+    .accessToken("My Access Token")
     .timeout(Duration.ofSeconds(30))
     .build();
 ```
 
 ### Proxies
 
-Requests can be routed through a proxy. You can configure this on the client builder:
+To route requests through a proxy, configure the client using the `proxy` method:
 
 ```java
 import com.tryfinch.api.client.FinchClient;
@@ -298,51 +319,135 @@ import java.net.Proxy;
 
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
-    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("example.com", 8080)))
+    .accessToken("My Access Token")
+    .proxy(new Proxy(
+      Proxy.Type.HTTP, new InetSocketAddress(
+        "https://example.com", 8080
+      )
+    ))
     .build();
 ```
 
-## Making custom/undocumented requests
+## Undocumented API functionality
 
-This library is typed for convenient access to the documented API. If you need to access undocumented params or response properties, the library can still be used.
+The SDK is typed for convenient usage of the documented API. However, it also supports working with undocumented or not yet supported parts of the API.
 
-### Undocumented request params
+### Parameters
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListParams.builder()` to pass to the `list` method of the `directory` service.
-
-Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case, you can attach them using raw setters:
+To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQueryParam`, or `putAdditionalBodyProperty` methods on any `Params` class:
 
 ```java
 import com.tryfinch.api.core.JsonValue;
-import com.tryfinch.api.models.HrisDirectoryListParams;
+import com.tryfinch.api.models.AccessTokenCreateParams;
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
+AccessTokenCreateParams params = AccessTokenCreateParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
     .putAdditionalQueryParam("secret_query_param", "42")
     .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
     .build();
 ```
 
-You can also use the `putAdditionalProperty` method on nested headers, query params, or body objects.
+These can be accessed on the built object later using the `_additionalHeaders()`, `_additionalQueryParams()`, and `_additionalBodyProperties()` methods. You can also set undocumented parameters on nested headers, query params, or body classes using the `putAdditionalProperty` method. These properties can be accessed on the built object later using the `_additionalProperties()` method.
 
-### Undocumented response properties
+To set a documented parameter or property to an undocumented or not yet supported _value_, pass a `JsonValue` object to its setter:
 
-To access undocumented response properties, you can use `res._additionalProperties()` on a response object to get a map of untyped fields of type `Map<String, JsonValue>`. You can then access fields like `res._additionalProperties().get("secret_prop").asString()` or use other helpers defined on the `JsonValue` class to extract it to a desired type.
+```java
+import com.tryfinch.api.models.AccessTokenCreateParams;
+import com.tryfinch.api.models.HrisDirectoryListParams;
 
-## Logging
-
-We use the standard [OkHttp logging interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).
-
-You can enable logging by setting the environment variable `FINCH_LOG` to `info`.
-
-```sh
-$ export FINCH_LOG=info
+AccessTokenCreateParams params = HrisDirectoryListParams.builder().build();
 ```
 
-Or to `debug` for more verbose logging.
+### Response properties
 
-```sh
-$ export FINCH_LOG=debug
+To access undocumented response properties, call the `_additionalProperties()` method:
+
+```java
+import com.tryfinch.api.core.JsonValue;
+import java.util.Map;
+
+Map<String, JsonValue> additionalProperties = client.accessTokens().create(params)._additionalProperties();
+JsonValue secretPropertyValue = additionalProperties.get("secretProperty");
+
+String result = secretPropertyValue.accept(new JsonValue.Visitor<>() {
+    @Override
+    public String visitNull() {
+        return "It's null!";
+    }
+
+    @Override
+    public String visitBoolean(boolean value) {
+        return "It's a boolean!";
+    }
+
+    @Override
+    public String visitNumber(Number value) {
+        return "It's a number!";
+    }
+
+    // Other methods include `visitMissing`, `visitString`, `visitArray`, and `visitObject`
+    // The default implementation of each unimplemented method delegates to `visitDefault`, which throws by default, but can also be overridden
+});
+```
+
+To access a property's raw JSON value, which may be undocumented, call its `_` prefixed method:
+
+```java
+import com.tryfinch.api.core.JsonField;
+import java.util.Optional;
+
+JsonField<String> code = client.accessTokens().create(params)._code();
+
+if (code.isMissing()) {
+  // The property is absent from the JSON response
+} else if (code.isNull()) {
+  // The property was set to literal null
+} else {
+  // Check if value was provided as a string
+  // Other methods include `asNumber()`, `asBoolean()`, etc.
+  Optional<String> jsonString = code.asString();
+
+  // Try to deserialize into a custom type
+  MyClass myObject = code.asUnknown().orElseThrow().convert(MyClass.class);
+}
+```
+
+### Response validation
+
+In rare cases, the API may return a response that doesn't match the expected type. For example, the SDK may expect a property to contain a `String`, but the API could return something else.
+
+By default, the SDK will not throw an exception in this case. It will throw `FinchInvalidDataException` only if you directly access the property.
+
+If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
+
+```java
+import com.tryfinch.api.models.CreateAccessTokenResponse;
+
+CreateAccessTokenResponse createAccessTokenResponse = client.accessTokens().create(params).validate();
+```
+
+Or configure the method call to validate the response using the `responseValidation` method:
+
+```java
+import com.tryfinch.api.models.HrisDirectoryListPage;
+import com.tryfinch.api.models.HrisDirectoryListParams;
+
+HrisDirectoryListPage page = client.hris().directory().list(
+  params, RequestOptions.builder().responseValidation(true).build()
+);
+```
+
+Or configure the default for all method calls at the client level:
+
+```java
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
+
+FinchClient client = FinchOkHttpClient.builder()
+    .fromEnv()
+    .accessToken("My Access Token")
+    .responseValidation(true)
+    .build();
 ```
 
 ## Semantic versioning
