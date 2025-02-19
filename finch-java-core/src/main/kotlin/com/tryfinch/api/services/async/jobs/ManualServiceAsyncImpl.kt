@@ -16,10 +16,8 @@ import com.tryfinch.api.models.JobManualRetrieveParams
 import com.tryfinch.api.models.ManualAsyncJob
 import java.util.concurrent.CompletableFuture
 
-class ManualServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ManualServiceAsync {
+class ManualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ManualServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -32,7 +30,7 @@ internal constructor(
      */
     override fun retrieve(
         params: JobManualRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ManualAsyncJob> {
         val request =
             HttpRequest.builder()

@@ -15,6 +15,6 @@ interface IndividualServiceAsync {
     @JvmOverloads
     fun retrieveMany(
         params: HrisIndividualRetrieveManyParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisIndividualRetrieveManyPageAsync>
 }

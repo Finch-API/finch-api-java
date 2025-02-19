@@ -123,12 +123,7 @@ private constructor(
         }
 
         fun build(): EnrolledIndividual =
-            EnrolledIndividual(
-                body,
-                code,
-                individualId,
-                additionalProperties.toImmutable(),
-            )
+            EnrolledIndividual(body, code, individualId, additionalProperties.toImmutable())
     }
 
     @NoAutoDetect
@@ -252,13 +247,7 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Body =
-                Body(
-                    finchCode,
-                    message,
-                    name,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Body = Body(finchCode, message, name, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -280,11 +269,7 @@ private constructor(
     }
 
     /** HTTP status code. Either 201 or 200 */
-    class Code
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<Long>,
-    ) : Enum {
+    class Code @JsonCreator private constructor(private val value: JsonField<Long>) : Enum {
 
         /**
          * Returns this class instance's raw value.

@@ -19,10 +19,8 @@ import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsync
 import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
-class ConnectionServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ConnectionServiceAsync {
+class ConnectionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ConnectionServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -37,7 +35,7 @@ internal constructor(
     /** Create a new connection (new company/provider pair) with a new account */
     override fun create(
         params: SandboxConnectionCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ConnectionCreateResponse> {
         val request =
             HttpRequest.builder()

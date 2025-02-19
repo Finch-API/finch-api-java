@@ -385,11 +385,8 @@ private constructor(
             )
     }
 
-    class PayFrequency
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class PayFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -612,11 +609,7 @@ private constructor(
             }
 
             fun build(): PayPeriod =
-                PayPeriod(
-                    endDate,
-                    startDate,
-                    additionalProperties.toImmutable(),
-                )
+                PayPeriod(endDate, startDate, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

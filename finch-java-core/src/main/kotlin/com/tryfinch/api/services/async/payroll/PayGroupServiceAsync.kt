@@ -17,13 +17,13 @@ interface PayGroupServiceAsync {
     @JvmOverloads
     fun retrieve(
         params: PayrollPayGroupRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PayGroupRetrieveResponse>
 
     /** Read company pay groups and frequencies */
     @JvmOverloads
     fun list(
         params: PayrollPayGroupListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PayrollPayGroupListPageAsync>
 }

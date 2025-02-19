@@ -71,13 +71,8 @@ private constructor(
         fun of(
             payStatementsService: PayStatementServiceAsync,
             params: HrisPayStatementRetrieveManyParams,
-            response: Response
-        ) =
-            HrisPayStatementRetrieveManyPageAsync(
-                payStatementsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisPayStatementRetrieveManyPageAsync(payStatementsService, params, response)
     }
 
     @NoAutoDetect
@@ -157,17 +152,15 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisPayStatementRetrieveManyPageAsync,
-    ) {
+    class AutoPager(private val firstPage: HrisPayStatementRetrieveManyPageAsync) {
 
         fun forEach(
             action: Predicate<PayStatementResponse>,
-            executor: Executor
+            executor: Executor,
         ): CompletableFuture<Void> {
             fun CompletableFuture<Optional<HrisPayStatementRetrieveManyPageAsync>>.forEach(
                 action: (PayStatementResponse) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -176,7 +169,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

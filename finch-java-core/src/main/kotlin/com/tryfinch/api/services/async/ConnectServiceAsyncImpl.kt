@@ -6,10 +6,8 @@ import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.async.connect.SessionServiceAsync
 import com.tryfinch.api.services.async.connect.SessionServiceAsyncImpl
 
-class ConnectServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ConnectServiceAsync {
+class ConnectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ConnectServiceAsync {
 
     private val sessions: SessionServiceAsync by lazy { SessionServiceAsyncImpl(clientOptions) }
 

@@ -27,10 +27,8 @@ import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualServiceImpl
 
-class BenefitServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : BenefitService {
+class BenefitServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    BenefitService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -48,7 +46,7 @@ internal constructor(
      */
     override fun create(
         params: HrisBenefitCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CreateCompanyBenefitsResponse {
         val request =
             HttpRequest.builder()
@@ -73,7 +71,7 @@ internal constructor(
     /** Lists deductions and contributions information for a given item */
     override fun retrieve(
         params: HrisBenefitRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompanyBenefit {
         val request =
             HttpRequest.builder()
@@ -98,7 +96,7 @@ internal constructor(
     /** Updates an existing company-wide deduction or contribution */
     override fun update(
         params: HrisBenefitUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): UpdateCompanyBenefitResponse {
         val request =
             HttpRequest.builder()
@@ -123,7 +121,7 @@ internal constructor(
     /** List all company-wide deductions and contributions. */
     override fun list(
         params: HrisBenefitListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisBenefitListPage {
         val request =
             HttpRequest.builder()
@@ -143,7 +141,7 @@ internal constructor(
                 HrisBenefitListPage.of(
                     this,
                     params,
-                    HrisBenefitListPage.Response.builder().items(it).build()
+                    HrisBenefitListPage.Response.builder().items(it).build(),
                 )
             }
     }
@@ -154,7 +152,7 @@ internal constructor(
     /** Get deductions metadata */
     override fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisBenefitListSupportedBenefitsPage {
         val request =
             HttpRequest.builder()
@@ -174,7 +172,7 @@ internal constructor(
                 HrisBenefitListSupportedBenefitsPage.of(
                     this,
                     params,
-                    HrisBenefitListSupportedBenefitsPage.Response.builder().items(it).build()
+                    HrisBenefitListSupportedBenefitsPage.Response.builder().items(it).build(),
                 )
             }
     }

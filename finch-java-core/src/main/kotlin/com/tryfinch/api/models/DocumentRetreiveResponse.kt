@@ -188,7 +188,7 @@ private constructor(
         override fun serialize(
             value: DocumentRetreiveResponse,
             generator: JsonGenerator,
-            provider: SerializerProvider
+            provider: SerializerProvider,
         ) {
             when {
                 value.w42020 != null -> generator.writeObject(value.w42020)
