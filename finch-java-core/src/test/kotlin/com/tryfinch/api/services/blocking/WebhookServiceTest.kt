@@ -70,7 +70,7 @@ class WebhookServiceTest {
                             .put("finch-timestamp", "1676312022")
                             .put("finch-signature", "v1,$webhookSignature")
                             .build(),
-                        null
+                        null,
                     )
             }
             .isInstanceOf(FinchException::class.java)
@@ -86,7 +86,7 @@ class WebhookServiceTest {
                             .put("finch-timestamp", "1676312742")
                             .put("finch-signature", "v1,$webhookSignature")
                             .build(),
-                        null
+                        null,
                     )
             }
             .isInstanceOf(FinchException::class.java)
@@ -110,7 +110,7 @@ class WebhookServiceTest {
                             .put("finch-timestamp", webhookTimestamp)
                             .put("finch-signature", "v1,$webhookSignature v1,Zm9v")
                             .build(),
-                        null
+                        null,
                     )
             }
             .doesNotThrowAnyException()
@@ -125,7 +125,7 @@ class WebhookServiceTest {
                             .put("finch-timestamp", webhookTimestamp)
                             .put("finch-signature", "v2,$webhookSignature")
                             .build(),
-                        null
+                        null,
                     )
             }
             .isInstanceOf(FinchException::class.java)
@@ -141,7 +141,7 @@ class WebhookServiceTest {
                             .put("finch-timestamp", webhookTimestamp)
                             .put("finch-signature", "v1,$webhookSignature v2,$webhookSignature")
                             .build(),
-                        null
+                        null,
                     )
             }
             .doesNotThrowAnyException()
@@ -156,7 +156,7 @@ class WebhookServiceTest {
                             .put("finch-timestamp", webhookTimestamp)
                             .put("finch-signature", webhookSignature)
                             .build(),
-                        null
+                        null,
                     )
             }
             .isInstanceOf(FinchException::class.java)

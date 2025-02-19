@@ -119,7 +119,7 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
         clientId: String,
         clientSecret: String,
         code: String,
-        redirectUri: String?
+        redirectUri: String?,
     ): CompletableFuture<String> {
         if (clientOptions.clientId == null) {
             throw FinchException("clientId must be set in order to call getAccessToken")
@@ -134,12 +134,7 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
                 .body(
                     json(
                         clientOptions.jsonMapper,
-                        GetAccessTokenParams(
-                            clientId,
-                            clientSecret,
-                            code,
-                            redirectUri,
-                        )
+                        GetAccessTokenParams(clientId, clientSecret, code, redirectUri),
                     )
                 )
                 .build()

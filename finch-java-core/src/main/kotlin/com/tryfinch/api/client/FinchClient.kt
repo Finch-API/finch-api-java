@@ -64,7 +64,7 @@ interface FinchClient {
         clientId: String,
         clientSecret: String,
         code: String,
-        redirectUri: String?
+        redirectUri: String?,
     ): String
 
     fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String

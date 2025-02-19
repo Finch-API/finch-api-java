@@ -65,7 +65,7 @@ interface FinchClientAsync {
         clientId: String,
         clientSecret: String,
         code: String,
-        redirectUri: String?
+        redirectUri: String?,
     ): CompletableFuture<String>
 
     fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String

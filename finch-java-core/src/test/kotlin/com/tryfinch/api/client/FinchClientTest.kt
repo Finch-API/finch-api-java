@@ -47,7 +47,7 @@ class FinchClientTest {
                     "our-client-id",
                     "our-client-secret",
                     "finch-auth-code",
-                    "our-redirect-uri"
+                    "our-redirect-uri",
                 )
             )
             .isEqualTo(expectedToken)
