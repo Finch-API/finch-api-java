@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -115,7 +116,7 @@ class SandboxPaymentCreateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.endDate()).contains("end_date")
         assertThat(body.payStatements())
             .contains(
@@ -174,6 +175,6 @@ class SandboxPaymentCreateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
     }
 }

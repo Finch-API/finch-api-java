@@ -17,6 +17,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class EnrolledIndividual
@@ -360,7 +361,7 @@ private constructor(
          *   expected primitive type.
          */
         fun asLong(): Long =
-            _value().asNumber().orElse(null)?.let {
+            _value().asNumber().getOrNull()?.let {
                 if (it.toDouble() % 1 == 0.0) it.toLong() else null
             } ?: throw FinchInvalidDataException("Value is not a Long")
 
