@@ -352,9 +352,9 @@ To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQu
 
 ```java
 import com.tryfinch.api.core.JsonValue;
-import com.tryfinch.api.models.AccessTokenCreateParams;
+import com.tryfinch.api.models.HrisDirectoryListParams;
 
-AccessTokenCreateParams params = AccessTokenCreateParams.builder()
+HrisDirectoryListParams params = HrisDirectoryListParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
     .putAdditionalQueryParam("secret_query_param", "42")
     .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
@@ -366,10 +366,9 @@ These can be accessed on the built object later using the `_additionalHeaders()`
 To set a documented parameter or property to an undocumented or not yet supported _value_, pass a `JsonValue` object to its setter:
 
 ```java
-import com.tryfinch.api.models.AccessTokenCreateParams;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
-AccessTokenCreateParams params = HrisDirectoryListParams.builder().build();
+HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
 ```
 
 ### Response properties
