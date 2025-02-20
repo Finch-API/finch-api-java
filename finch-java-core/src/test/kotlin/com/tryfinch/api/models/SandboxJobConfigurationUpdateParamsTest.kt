@@ -33,7 +33,6 @@ class SandboxJobConfigurationUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
         assertThat(body)
             .isEqualTo(
                 SandboxJobConfiguration.builder()
@@ -57,7 +56,6 @@ class SandboxJobConfigurationUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
         assertThat(body)
             .isEqualTo(
                 SandboxJobConfiguration.builder()
