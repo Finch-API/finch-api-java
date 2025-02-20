@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -246,9 +247,8 @@ class SandboxDirectoryCreateParamsTest {
                 )
                 .build()
 
-        val body = params._body()
+        val body = params._body().getOrNull()
 
-        assertThat(body).isNotNull
         assertThat(body)
             .isEqualTo(
                 listOf(
@@ -373,17 +373,8 @@ class SandboxDirectoryCreateParamsTest {
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            SandboxDirectoryCreateParams.builder()
-                .addBody(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
-                .build()
+        val params = SandboxDirectoryCreateParams.builder().build()
 
-        val body = params._body()
-
-        assertThat(body).isNotNull
-        assertThat(body)
-            .isEqualTo(
-                listOf(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
-            )
+        val body = params._body().getOrNull()
     }
 }

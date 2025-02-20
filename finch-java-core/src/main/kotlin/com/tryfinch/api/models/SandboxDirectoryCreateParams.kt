@@ -13,7 +13,6 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -25,7 +24,7 @@ import java.util.Optional
 /** Add new individuals to a sandbox company */
 class SandboxDirectoryCreateParams
 private constructor(
-    private val body: List<IndividualOrEmployment>,
+    private val body: List<IndividualOrEmployment>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -34,13 +33,14 @@ private constructor(
      * Array of individuals to create. Takes all combined fields from `/individual` and
      * `/employment` endpoints. All fields are optional.
      */
-    fun body(): List<IndividualOrEmployment> = body
+    fun body(): Optional<List<IndividualOrEmployment>> = Optional.ofNullable(body)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): List<IndividualOrEmployment> = body
+    @JvmSynthetic
+    internal fun _body(): Optional<List<IndividualOrEmployment>> = Optional.ofNullable(body)
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -2374,7 +2374,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(sandboxDirectoryCreateParams: SandboxDirectoryCreateParams) = apply {
-            body = sandboxDirectoryCreateParams.body.toMutableList()
+            body = sandboxDirectoryCreateParams.body?.toMutableList()
             additionalHeaders = sandboxDirectoryCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxDirectoryCreateParams.additionalQueryParams.toBuilder()
         }
@@ -2383,7 +2383,13 @@ private constructor(
          * Array of individuals to create. Takes all combined fields from `/individual` and
          * `/employment` endpoints. All fields are optional.
          */
-        fun body(body: List<IndividualOrEmployment>) = apply { this.body = body.toMutableList() }
+        fun body(body: List<IndividualOrEmployment>?) = apply { this.body = body?.toMutableList() }
+
+        /**
+         * Array of individuals to create. Takes all combined fields from `/individual` and
+         * `/employment` endpoints. All fields are optional.
+         */
+        fun body(body: Optional<List<IndividualOrEmployment>>) = body(body.orElse(null))
 
         /**
          * Array of individuals to create. Takes all combined fields from `/individual` and
@@ -2493,7 +2499,7 @@ private constructor(
 
         fun build(): SandboxDirectoryCreateParams =
             SandboxDirectoryCreateParams(
-                checkRequired("body", body).toImmutable(),
+                body?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

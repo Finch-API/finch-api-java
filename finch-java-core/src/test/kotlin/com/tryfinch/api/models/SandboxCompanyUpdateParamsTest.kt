@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -101,7 +102,7 @@ class SandboxCompanyUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.accounts())
             .contains(
                 listOf(
@@ -171,7 +172,7 @@ class SandboxCompanyUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.accounts())
             .contains(listOf(SandboxCompanyUpdateParams.Account.builder().build()))
         assertThat(body.departments())
