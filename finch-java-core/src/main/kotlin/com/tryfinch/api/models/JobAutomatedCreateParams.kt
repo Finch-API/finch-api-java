@@ -50,18 +50,18 @@ import kotlin.jvm.optionals.getOrNull
  */
 class JobAutomatedCreateParams
 private constructor(
-    private val body: Body,
+    private val body: Body?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun body(): Body = body
+    fun body(): Optional<Body> = Optional.ofNullable(body)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
+    @JvmSynthetic internal fun _body(): Optional<Body> = Optional.ofNullable(body)
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -759,7 +759,9 @@ private constructor(
             additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun body(body: Body) = apply { this.body = body }
+        fun body(body: Body?) = apply { this.body = body }
+
+        fun body(body: Optional<Body>) = body(body.orElse(null))
 
         fun body(dataSyncAll: Body.DataSyncAll) = body(Body.ofDataSyncAll(dataSyncAll))
 
@@ -875,11 +877,7 @@ private constructor(
         }
 
         fun build(): JobAutomatedCreateParams =
-            JobAutomatedCreateParams(
-                checkRequired("body", body),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            JobAutomatedCreateParams(body, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     override fun equals(other: Any?): Boolean {

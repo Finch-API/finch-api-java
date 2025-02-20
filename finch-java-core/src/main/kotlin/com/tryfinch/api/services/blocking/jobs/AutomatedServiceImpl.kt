@@ -52,7 +52,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
             HttpRequest.builder()
                 .method(HttpMethod.POST)
                 .addPathSegments("jobs", "automated")
-                .body(json(clientOptions.jsonMapper, params._body()))
+                .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                 .build()
                 .prepare(clientOptions, params)
         val response = clientOptions.httpClient.execute(request, requestOptions)
