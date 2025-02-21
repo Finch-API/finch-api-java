@@ -62,11 +62,7 @@ private constructor(
 
         @JvmStatic
         fun of(benefitsService: BenefitService, params: HrisBenefitListParams, response: Response) =
-            HrisBenefitListPage(
-                benefitsService,
-                params,
-                response,
-            )
+            HrisBenefitListPage(benefitsService, params, response)
     }
 
     @NoAutoDetect
@@ -142,9 +138,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisBenefitListPage,
-    ) : Iterable<CompanyBenefit> {
+    class AutoPager(private val firstPage: HrisBenefitListPage) : Iterable<CompanyBenefit> {
 
         override fun iterator(): Iterator<CompanyBenefit> = iterator {
             var page = firstPage

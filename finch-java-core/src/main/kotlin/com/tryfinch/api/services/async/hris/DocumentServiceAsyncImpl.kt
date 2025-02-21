@@ -18,10 +18,8 @@ import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
 import java.util.concurrent.CompletableFuture
 
-class DocumentServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : DocumentServiceAsync {
+class DocumentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    DocumentServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -33,7 +31,7 @@ internal constructor(
      */
     override fun list(
         params: HrisDocumentListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<DocumentListResponse> {
         val request =
             HttpRequest.builder()
@@ -64,7 +62,7 @@ internal constructor(
      */
     override fun retreive(
         params: HrisDocumentRetreiveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<DocumentRetreiveResponse> {
         val request =
             HttpRequest.builder()

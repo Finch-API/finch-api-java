@@ -14,6 +14,6 @@ interface EmploymentService {
     @JvmOverloads
     fun update(
         params: SandboxEmploymentUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EmploymentUpdateResponse
 }

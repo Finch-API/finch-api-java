@@ -90,7 +90,7 @@ private constructor(
         fun build(): CreateCompanyBenefitsResponse =
             CreateCompanyBenefitsResponse(
                 checkRequired("benefitId", benefitId),
-                additionalProperties.toImmutable()
+                additionalProperties.toImmutable(),
             )
     }
 

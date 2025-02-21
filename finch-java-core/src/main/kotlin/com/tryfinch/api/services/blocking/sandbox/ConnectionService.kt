@@ -17,6 +17,6 @@ interface ConnectionService {
     @JvmOverloads
     fun create(
         params: SandboxConnectionCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ConnectionCreateResponse
 }

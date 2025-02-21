@@ -17,7 +17,7 @@ interface AccountServiceAsync {
     @JvmOverloads
     fun create(
         params: SandboxConnectionAccountCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AccountCreateResponse>
 
     /**
@@ -27,6 +27,6 @@ interface AccountServiceAsync {
     @JvmOverloads
     fun update(
         params: SandboxConnectionAccountUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AccountUpdateResponse>
 }

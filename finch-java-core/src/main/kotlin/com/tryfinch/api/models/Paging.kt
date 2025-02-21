@@ -105,12 +105,7 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
-        fun build(): Paging =
-            Paging(
-                count,
-                offset,
-                additionalProperties.toImmutable(),
-            )
+        fun build(): Paging = Paging(count, offset, additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

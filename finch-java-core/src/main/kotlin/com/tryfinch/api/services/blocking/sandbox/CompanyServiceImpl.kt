@@ -16,10 +16,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.CompanyUpdateResponse
 import com.tryfinch.api.models.SandboxCompanyUpdateParams
 
-class CompanyServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : CompanyService {
+class CompanyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    CompanyService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -29,7 +27,7 @@ internal constructor(
     /** Update a sandbox company's data */
     override fun update(
         params: SandboxCompanyUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompanyUpdateResponse {
         val request =
             HttpRequest.builder()

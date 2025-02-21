@@ -67,13 +67,8 @@ private constructor(
         fun of(
             payGroupsService: PayGroupServiceAsync,
             params: PayrollPayGroupListParams,
-            response: Response
-        ) =
-            PayrollPayGroupListPageAsync(
-                payGroupsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = PayrollPayGroupListPageAsync(payGroupsService, params, response)
     }
 
     @NoAutoDetect
@@ -149,17 +144,15 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: PayrollPayGroupListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: PayrollPayGroupListPageAsync) {
 
         fun forEach(
             action: Predicate<PayGroupListResponse>,
-            executor: Executor
+            executor: Executor,
         ): CompletableFuture<Void> {
             fun CompletableFuture<Optional<PayrollPayGroupListPageAsync>>.forEach(
                 action: (PayGroupListResponse) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -168,7 +161,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

@@ -18,10 +18,8 @@ import com.tryfinch.api.models.AccountUpdateResponse
 import com.tryfinch.api.models.SandboxConnectionAccountCreateParams
 import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
 
-class AccountServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AccountService {
+class AccountServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    AccountService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Create a new account for an existing connection (company/provider pair) */
     override fun create(
         params: SandboxConnectionAccountCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): AccountCreateResponse {
         val request =
             HttpRequest.builder()
@@ -59,7 +57,7 @@ internal constructor(
      */
     override fun update(
         params: SandboxConnectionAccountUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): AccountUpdateResponse {
         val request =
             HttpRequest.builder()

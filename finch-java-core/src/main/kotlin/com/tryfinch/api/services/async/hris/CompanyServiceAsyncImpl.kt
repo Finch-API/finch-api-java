@@ -16,10 +16,8 @@ import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
 import java.util.concurrent.CompletableFuture
 
-class CompanyServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : CompanyServiceAsync {
+class CompanyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    CompanyServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -29,7 +27,7 @@ internal constructor(
     /** Read basic company data */
     override fun retrieve(
         params: HrisCompanyRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<Company> {
         val request =
             HttpRequest.builder()

@@ -68,13 +68,8 @@ private constructor(
         fun of(
             payStatementsService: PayStatementService,
             params: HrisPayStatementRetrieveManyParams,
-            response: Response
-        ) =
-            HrisPayStatementRetrieveManyPage(
-                payStatementsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisPayStatementRetrieveManyPage(payStatementsService, params, response)
     }
 
     @NoAutoDetect
@@ -154,9 +149,8 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisPayStatementRetrieveManyPage,
-    ) : Iterable<PayStatementResponse> {
+    class AutoPager(private val firstPage: HrisPayStatementRetrieveManyPage) :
+        Iterable<PayStatementResponse> {
 
         override fun iterator(): Iterator<PayStatementResponse> = iterator {
             var page = firstPage

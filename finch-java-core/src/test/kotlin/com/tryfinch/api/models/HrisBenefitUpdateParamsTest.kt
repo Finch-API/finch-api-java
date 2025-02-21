@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -19,16 +20,20 @@ class HrisBenefitUpdateParamsTest {
                 .benefitId("benefit_id")
                 .description("description")
                 .build()
+
         val body = params._body()
-        assertThat(body).isNotNull
+
+        assertNotNull(body)
         assertThat(body.description()).contains("description")
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
         val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
+
         val body = params._body()
-        assertThat(body).isNotNull
+
+        assertNotNull(body)
     }
 
     @Test

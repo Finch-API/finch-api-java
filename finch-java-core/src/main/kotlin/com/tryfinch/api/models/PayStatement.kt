@@ -560,22 +560,11 @@ private constructor(
             }
 
             fun build(): Earning =
-                Earning(
-                    amount,
-                    currency,
-                    hours,
-                    name,
-                    type,
-                    additionalProperties.toImmutable(),
-                )
+                Earning(amount, currency, hours, name, type, additionalProperties.toImmutable())
         }
 
         /** The type of earning. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -714,7 +703,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown Type: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1122,11 +1123,8 @@ private constructor(
     }
 
     /** The payment method. */
-    class PaymentMethod
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class PaymentMethod @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -1201,7 +1199,17 @@ private constructor(
                 else -> throw FinchInvalidDataException("Unknown PaymentMethod: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1386,22 +1394,11 @@ private constructor(
             }
 
             fun build(): Tax =
-                Tax(
-                    amount,
-                    currency,
-                    employer,
-                    name,
-                    type,
-                    additionalProperties.toImmutable(),
-                )
+                Tax(amount, currency, employer, name, type, additionalProperties.toImmutable())
         }
 
         /** The type of taxes. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1486,7 +1483,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown Type: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1520,11 +1529,7 @@ private constructor(
     }
 
     /** The type of the payment associated with the pay statement. */
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -1602,7 +1607,17 @@ private constructor(
                 else -> throw FinchInvalidDataException("Unknown Type: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

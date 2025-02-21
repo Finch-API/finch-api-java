@@ -15,6 +15,6 @@ interface CompanyServiceAsync {
     @JvmOverloads
     fun retrieve(
         params: HrisCompanyRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Company>
 }

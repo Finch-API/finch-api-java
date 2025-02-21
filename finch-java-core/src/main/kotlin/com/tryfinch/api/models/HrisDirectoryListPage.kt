@@ -80,13 +80,8 @@ private constructor(
         fun of(
             directoryService: DirectoryService,
             params: HrisDirectoryListParams,
-            response: Response
-        ) =
-            HrisDirectoryListPage(
-                directoryService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisDirectoryListPage(directoryService, params, response)
     }
 
     @NoAutoDetect
@@ -176,18 +171,12 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() =
-                Response(
-                    individuals,
-                    paging,
-                    additionalProperties.toImmutable(),
-                )
+            fun build() = Response(individuals, paging, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisDirectoryListPage,
-    ) : Iterable<IndividualInDirectory> {
+    class AutoPager(private val firstPage: HrisDirectoryListPage) :
+        Iterable<IndividualInDirectory> {
 
         override fun iterator(): Iterator<IndividualInDirectory> = iterator {
             var page = firstPage

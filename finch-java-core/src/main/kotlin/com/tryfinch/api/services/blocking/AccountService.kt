@@ -16,13 +16,13 @@ interface AccountService {
     @JvmOverloads
     fun disconnect(
         params: AccountDisconnectParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): DisconnectResponse
 
     /** Read account information associated with an `access_token` */
     @JvmOverloads
     fun introspect(
         params: AccountIntrospectParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Introspection
 }

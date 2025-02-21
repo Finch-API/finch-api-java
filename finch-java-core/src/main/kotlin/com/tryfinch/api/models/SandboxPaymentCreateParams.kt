@@ -24,7 +24,7 @@ import java.util.Optional
 /** Add a new sandbox payment */
 class SandboxPaymentCreateParams
 private constructor(
-    private val body: SandboxPaymentCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -47,7 +47,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): SandboxPaymentCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -58,9 +58,9 @@ private constructor(
      * are optional.
      */
     @NoAutoDetect
-    class SandboxPaymentCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("end_date")
         @ExcludeMissing
         private val endDate: JsonField<String> = JsonMissing.of(),
@@ -95,7 +95,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxPaymentCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -113,7 +113,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [SandboxPaymentCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var endDate: JsonField<String> = JsonMissing.of()
@@ -122,11 +122,11 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(sandboxPaymentCreateBody: SandboxPaymentCreateBody) = apply {
-                endDate = sandboxPaymentCreateBody.endDate
-                payStatements = sandboxPaymentCreateBody.payStatements.map { it.toMutableList() }
-                startDate = sandboxPaymentCreateBody.startDate
-                additionalProperties = sandboxPaymentCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                endDate = body.endDate
+                payStatements = body.payStatements.map { it.toMutableList() }
+                startDate = body.startDate
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             fun endDate(endDate: String) = endDate(JsonField.of(endDate))
@@ -176,8 +176,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxPaymentCreateBody =
-                SandboxPaymentCreateBody(
+            fun build(): Body =
+                Body(
                     endDate,
                     (payStatements ?: JsonMissing.of()).map { it.toImmutable() },
                     startDate,
@@ -190,7 +190,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxPaymentCreateBody && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -200,7 +200,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxPaymentCreateBody{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalProperties=$additionalProperties}"
+            "Body{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -214,7 +214,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SandboxPaymentCreateBody.Builder = SandboxPaymentCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -929,22 +929,12 @@ private constructor(
                 }
 
                 fun build(): Earning =
-                    Earning(
-                        amount,
-                        currency,
-                        hours,
-                        name,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                    Earning(amount, currency, hours, name, type, additionalProperties.toImmutable())
             }
 
             /** The type of earning. */
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1085,7 +1075,19 @@ private constructor(
                         else -> throw FinchInvalidDataException("Unknown Type: $value")
                     }
 
-                fun asString(): String = _value().asStringOrThrow()
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        FinchInvalidDataException("Value is not a String")
+                    }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -1499,11 +1501,8 @@ private constructor(
         }
 
         /** The payment method. */
-        class PaymentMethod
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class PaymentMethod @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1579,7 +1578,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown PaymentMethod: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1771,22 +1782,12 @@ private constructor(
                 }
 
                 fun build(): Tax =
-                    Tax(
-                        amount,
-                        currency,
-                        employer,
-                        name,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                    Tax(amount, currency, employer, name, type, additionalProperties.toImmutable())
             }
 
             /** The type of taxes. */
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1873,7 +1874,19 @@ private constructor(
                         else -> throw FinchInvalidDataException("Unknown Type: $value")
                     }
 
-                fun asString(): String = _value().asStringOrThrow()
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        FinchInvalidDataException("Value is not a String")
+                    }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -1907,11 +1920,7 @@ private constructor(
         }
 
         /** The type of the payment associated with the pay statement. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1990,7 +1999,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown Type: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

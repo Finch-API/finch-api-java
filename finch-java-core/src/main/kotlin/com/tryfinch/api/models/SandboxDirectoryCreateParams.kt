@@ -13,7 +13,6 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -25,7 +24,7 @@ import java.util.Optional
 /** Add new individuals to a sandbox company */
 class SandboxDirectoryCreateParams
 private constructor(
-    private val body: List<IndividualOrEmployment>,
+    private val body: List<IndividualOrEmployment>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -34,159 +33,18 @@ private constructor(
      * Array of individuals to create. Takes all combined fields from `/individual` and
      * `/employment` endpoints. All fields are optional.
      */
-    fun body(): List<IndividualOrEmployment> = body
+    fun body(): Optional<List<IndividualOrEmployment>> = Optional.ofNullable(body)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): List<IndividualOrEmployment> = body
+    @JvmSynthetic
+    internal fun _body(): Optional<List<IndividualOrEmployment>> = Optional.ofNullable(body)
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
-
-    fun toBuilder() = Builder().from(this)
-
-    companion object {
-
-        @JvmStatic fun builder() = Builder()
-    }
-
-    /** A builder for [SandboxDirectoryCreateParams]. */
-    @NoAutoDetect
-    class Builder internal constructor() {
-
-        private var body: MutableList<IndividualOrEmployment>? = null
-        private var additionalHeaders: Headers.Builder = Headers.builder()
-        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-
-        @JvmSynthetic
-        internal fun from(sandboxDirectoryCreateParams: SandboxDirectoryCreateParams) = apply {
-            body = sandboxDirectoryCreateParams.body.toMutableList()
-            additionalHeaders = sandboxDirectoryCreateParams.additionalHeaders.toBuilder()
-            additionalQueryParams = sandboxDirectoryCreateParams.additionalQueryParams.toBuilder()
-        }
-
-        /**
-         * Array of individuals to create. Takes all combined fields from `/individual` and
-         * `/employment` endpoints. All fields are optional.
-         */
-        fun body(body: List<IndividualOrEmployment>) = apply { this.body = body.toMutableList() }
-
-        /**
-         * Array of individuals to create. Takes all combined fields from `/individual` and
-         * `/employment` endpoints. All fields are optional.
-         */
-        fun addBody(body: IndividualOrEmployment) = apply {
-            this.body = (this.body ?: mutableListOf()).apply { add(body) }
-        }
-
-        fun additionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
-
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
-
-        fun putAdditionalHeader(name: String, value: String) = apply {
-            additionalHeaders.put(name, value)
-        }
-
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.put(name, values)
-        }
-
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
-
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
-
-        fun replaceAdditionalHeaders(name: String, value: String) = apply {
-            additionalHeaders.replace(name, value)
-        }
-
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.replace(name, values)
-        }
-
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
-
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
-
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
-
-        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
-            additionalHeaders.removeAll(names)
-        }
-
-        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
-
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
-
-        fun putAdditionalQueryParam(key: String, value: String) = apply {
-            additionalQueryParams.put(key, value)
-        }
-
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.put(key, values)
-        }
-
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.putAll(additionalQueryParams)
-        }
-
-        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.putAll(additionalQueryParams)
-            }
-
-        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
-            additionalQueryParams.replace(key, value)
-        }
-
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.replace(key, values)
-        }
-
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.replaceAll(additionalQueryParams)
-        }
-
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.replaceAll(additionalQueryParams)
-            }
-
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
-
-        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
-            additionalQueryParams.removeAll(keys)
-        }
-
-        fun build(): SandboxDirectoryCreateParams =
-            SandboxDirectoryCreateParams(
-                checkRequired("body", body).toImmutable(),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
-    }
 
     @NoAutoDetect
     class IndividualOrEmployment
@@ -269,8 +127,6 @@ private constructor(
         @JsonProperty("title")
         @ExcludeMissing
         private val title: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Worker's compensation classification code for this employee */
@@ -483,10 +339,6 @@ private constructor(
         /** The current title of the individual. */
         @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
         private var validated: Boolean = false
 
         fun validate(): IndividualOrEmployment = apply {
@@ -561,7 +413,6 @@ private constructor(
             private var ssn: JsonField<String> = JsonMissing.of()
             private var startDate: JsonField<String> = JsonMissing.of()
             private var title: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(individualOrEmployment: IndividualOrEmployment) = apply {
@@ -592,7 +443,6 @@ private constructor(
                 ssn = individualOrEmployment.ssn
                 startDate = individualOrEmployment.startDate
                 title = individualOrEmployment.title
-                additionalProperties = individualOrEmployment.additionalProperties.toMutableMap()
             }
 
             /** Worker's compensation classification code for this employee */
@@ -944,25 +794,6 @@ private constructor(
             /** The current title of the individual. */
             fun title(title: JsonField<String>) = apply { this.title = title }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
             fun build(): IndividualOrEmployment =
                 IndividualOrEmployment(
                     classCode,
@@ -992,7 +823,6 @@ private constructor(
                     ssn,
                     startDate,
                     title,
-                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -1081,11 +911,7 @@ private constructor(
                 }
 
                 fun build(): CustomField =
-                    CustomField(
-                        name,
-                        value,
-                        additionalProperties.toImmutable(),
-                    )
+                    CustomField(name, value, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1301,19 +1127,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
-                fun build(): Email =
-                    Email(
-                        data,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                fun build(): Email = Email(data, type, additionalProperties.toImmutable())
             }
 
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1388,7 +1206,19 @@ private constructor(
                         else -> throw FinchInvalidDataException("Unknown Type: $value")
                     }
 
-                fun asString(): String = _value().asStringOrThrow()
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        FinchInvalidDataException("Value is not a String")
+                    }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -1541,22 +1371,15 @@ private constructor(
                 }
 
                 fun build(): Employment =
-                    Employment(
-                        subtype,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                    Employment(subtype, type, additionalProperties.toImmutable())
             }
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            class Subtype
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Subtype @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1656,7 +1479,19 @@ private constructor(
                         else -> throw FinchInvalidDataException("Unknown Subtype: $value")
                     }
 
-                fun asString(): String = _value().asStringOrThrow()
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        FinchInvalidDataException("Value is not a String")
+                    }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -1672,11 +1507,8 @@ private constructor(
             }
 
             /** The main employment type of the individual. */
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1751,7 +1583,19 @@ private constructor(
                         else -> throw FinchInvalidDataException("Unknown Type: $value")
                     }
 
-                fun asString(): String = _value().asStringOrThrow()
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        FinchInvalidDataException("Value is not a String")
+                    }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -1787,9 +1631,7 @@ private constructor(
         /** The detailed employment status of the individual. */
         class EmploymentStatus
         @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1896,7 +1738,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown EmploymentStatus: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1912,11 +1766,8 @@ private constructor(
         }
 
         /** The EEOC-defined ethnicity of the individual. */
-        class Ethnicity
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Ethnicity @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -2030,7 +1881,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown Ethnicity: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -2046,11 +1909,7 @@ private constructor(
         }
 
         /** The gender of the individual. */
-        class Gender
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Gender @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -2137,7 +1996,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown Gender: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -2344,18 +2215,11 @@ private constructor(
                 }
 
                 fun build(): PhoneNumber =
-                    PhoneNumber(
-                        data,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                    PhoneNumber(data, type, additionalProperties.toImmutable())
             }
 
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -2430,7 +2294,19 @@ private constructor(
                         else -> throw FinchInvalidDataException("Unknown Type: $value")
                     }
 
-                fun asString(): String = _value().asStringOrThrow()
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        FinchInvalidDataException("Value is not a String")
+                    }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -2468,17 +2344,165 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is IndividualOrEmployment && classCode == other.classCode && customFields == other.customFields && department == other.department && dob == other.dob && emails == other.emails && employment == other.employment && employmentStatus == other.employmentStatus && encryptedSsn == other.encryptedSsn && endDate == other.endDate && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && sourceId == other.sourceId && ssn == other.ssn && startDate == other.startDate && title == other.title && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is IndividualOrEmployment && classCode == other.classCode && customFields == other.customFields && department == other.department && dob == other.dob && emails == other.emails && employment == other.employment && employmentStatus == other.employmentStatus && encryptedSsn == other.encryptedSsn && endDate == other.endDate && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && sourceId == other.sourceId && ssn == other.ssn && startDate == other.startDate && title == other.title /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(classCode, customFields, department, dob, emails, employment, employmentStatus, encryptedSsn, endDate, ethnicity, firstName, gender, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, phoneNumbers, preferredName, residence, sourceId, ssn, startDate, title, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(classCode, customFields, department, dob, emails, employment, employmentStatus, encryptedSsn, endDate, ethnicity, firstName, gender, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, phoneNumbers, preferredName, residence, sourceId, ssn, startDate, title) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title}"
+    }
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [SandboxDirectoryCreateParams]. */
+    @NoAutoDetect
+    class Builder internal constructor() {
+
+        private var body: MutableList<IndividualOrEmployment>? = null
+        private var additionalHeaders: Headers.Builder = Headers.builder()
+        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
+
+        @JvmSynthetic
+        internal fun from(sandboxDirectoryCreateParams: SandboxDirectoryCreateParams) = apply {
+            body = sandboxDirectoryCreateParams.body?.toMutableList()
+            additionalHeaders = sandboxDirectoryCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxDirectoryCreateParams.additionalQueryParams.toBuilder()
+        }
+
+        /**
+         * Array of individuals to create. Takes all combined fields from `/individual` and
+         * `/employment` endpoints. All fields are optional.
+         */
+        fun body(body: List<IndividualOrEmployment>?) = apply { this.body = body?.toMutableList() }
+
+        /**
+         * Array of individuals to create. Takes all combined fields from `/individual` and
+         * `/employment` endpoints. All fields are optional.
+         */
+        fun body(body: Optional<List<IndividualOrEmployment>>) = body(body.orElse(null))
+
+        /**
+         * Array of individuals to create. Takes all combined fields from `/individual` and
+         * `/employment` endpoints. All fields are optional.
+         */
+        fun addBody(body: IndividualOrEmployment) = apply {
+            this.body = (this.body ?: mutableListOf()).apply { add(body) }
+        }
+
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
+
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
+
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
+
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
+
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
+
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
+
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
+
+        fun build(): SandboxDirectoryCreateParams =
+            SandboxDirectoryCreateParams(
+                body?.toImmutable(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
     }
 
     override fun equals(other: Any?): Boolean {

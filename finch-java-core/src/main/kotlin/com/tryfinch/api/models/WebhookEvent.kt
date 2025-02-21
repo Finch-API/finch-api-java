@@ -274,7 +274,7 @@ private constructor(
         override fun serialize(
             value: WebhookEvent,
             generator: JsonGenerator,
-            provider: SerializerProvider
+            provider: SerializerProvider,
         ) {
             when {
                 value.accountUpdate != null -> generator.writeObject(value.accountUpdate)

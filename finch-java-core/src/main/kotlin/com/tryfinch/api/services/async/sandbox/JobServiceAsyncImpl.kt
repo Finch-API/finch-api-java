@@ -19,10 +19,8 @@ import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsync
 import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
-class JobServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : JobServiceAsync {
+class JobServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    JobServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -38,7 +36,7 @@ internal constructor(
     /** Enqueue a new sandbox job */
     override fun create(
         params: SandboxJobCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<JobCreateResponse> {
         val request =
             HttpRequest.builder()

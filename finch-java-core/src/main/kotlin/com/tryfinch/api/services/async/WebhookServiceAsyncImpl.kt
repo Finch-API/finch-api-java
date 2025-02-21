@@ -18,10 +18,8 @@ import java.util.Base64
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-class WebhookServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : WebhookServiceAsync {
+class WebhookServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    WebhookServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 

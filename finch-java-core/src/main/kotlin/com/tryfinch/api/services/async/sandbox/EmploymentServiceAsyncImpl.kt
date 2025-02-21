@@ -17,10 +17,8 @@ import com.tryfinch.api.models.EmploymentUpdateResponse
 import com.tryfinch.api.models.SandboxEmploymentUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class EmploymentServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : EmploymentServiceAsync {
+class EmploymentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    EmploymentServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Update sandbox employment */
     override fun update(
         params: SandboxEmploymentUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<EmploymentUpdateResponse> {
         val request =
             HttpRequest.builder()

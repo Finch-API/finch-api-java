@@ -15,6 +15,6 @@ interface PaymentServiceAsync {
     @JvmOverloads
     fun list(
         params: HrisPaymentListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisPaymentListPageAsync>
 }

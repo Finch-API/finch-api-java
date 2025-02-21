@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -25,7 +26,7 @@ class SandboxDirectoryCreateParamsTest {
                             .name("name")
                             .build()
                     )
-                    .dob("01/01/2000")
+                    .dob("dob")
                     .addEmail(
                         SandboxDirectoryCreateParams.IndividualOrEmployment.Email.builder()
                             .data("data")
@@ -53,7 +54,7 @@ class SandboxDirectoryCreateParamsTest {
                     .encryptedSsn("encrypted_ssn")
                     .endDate("end_date")
                     .ethnicity(SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN)
-                    .firstName("John")
+                    .firstName("first_name")
                     .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                     .income(
                         Income.builder()
@@ -72,7 +73,7 @@ class SandboxDirectoryCreateParamsTest {
                             .build()
                     )
                     .isActive(true)
-                    .lastName("Smith")
+                    .lastName("last_name")
                     .latestRehireDate("latest_rehire_date")
                     .location(
                         Location.builder()
@@ -142,7 +143,7 @@ class SandboxDirectoryCreateParamsTest {
                                 .name("name")
                                 .build()
                         )
-                        .dob("01/01/2000")
+                        .dob("dob")
                         .addEmail(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Email.builder()
                                 .data("data")
@@ -175,7 +176,7 @@ class SandboxDirectoryCreateParamsTest {
                         .ethnicity(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                         )
-                        .firstName("John")
+                        .firstName("first_name")
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
@@ -194,7 +195,7 @@ class SandboxDirectoryCreateParamsTest {
                                 .build()
                         )
                         .isActive(true)
-                        .lastName("Smith")
+                        .lastName("last_name")
                         .latestRehireDate("latest_rehire_date")
                         .location(
                             Location.builder()
@@ -245,8 +246,9 @@ class SandboxDirectoryCreateParamsTest {
                         .build()
                 )
                 .build()
-        val body = params._body()
-        assertThat(body).isNotNull
+
+        val body = params._body().getOrNull()
+
         assertThat(body)
             .isEqualTo(
                 listOf(
@@ -264,7 +266,7 @@ class SandboxDirectoryCreateParamsTest {
                                 .name("name")
                                 .build()
                         )
-                        .dob("01/01/2000")
+                        .dob("dob")
                         .addEmail(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Email.builder()
                                 .data("data")
@@ -297,7 +299,7 @@ class SandboxDirectoryCreateParamsTest {
                         .ethnicity(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                         )
-                        .firstName("John")
+                        .firstName("first_name")
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
@@ -316,7 +318,7 @@ class SandboxDirectoryCreateParamsTest {
                                 .build()
                         )
                         .isActive(true)
-                        .lastName("Smith")
+                        .lastName("last_name")
                         .latestRehireDate("latest_rehire_date")
                         .location(
                             Location.builder()
@@ -371,15 +373,8 @@ class SandboxDirectoryCreateParamsTest {
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            SandboxDirectoryCreateParams.builder()
-                .addBody(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
-                .build()
-        val body = params._body()
-        assertThat(body).isNotNull
-        assertThat(body)
-            .isEqualTo(
-                listOf(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
-            )
+        val params = SandboxDirectoryCreateParams.builder().build()
+
+        val body = params._body().getOrNull()
     }
 }

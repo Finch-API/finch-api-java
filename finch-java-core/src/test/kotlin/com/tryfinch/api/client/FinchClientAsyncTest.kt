@@ -48,7 +48,7 @@ class FinchClientAsyncTest {
                         "our-client-id",
                         "our-client-secret",
                         "finch-auth-code",
-                        "our-redirect-uri"
+                        "our-redirect-uri",
                     )
                     .get()
             )

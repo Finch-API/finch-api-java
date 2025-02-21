@@ -17,10 +17,8 @@ import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
-class PayStatementServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : PayStatementServiceAsync {
+class PayStatementServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    PayStatementServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -35,7 +33,7 @@ internal constructor(
      */
     override fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<HrisPayStatementRetrieveManyPageAsync> {
         val request =
             HttpRequest.builder()

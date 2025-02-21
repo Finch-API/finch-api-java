@@ -15,10 +15,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
 
-class CompanyServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : CompanyService {
+class CompanyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    CompanyService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -28,7 +26,7 @@ internal constructor(
     /** Read basic company data */
     override fun retrieve(
         params: HrisCompanyRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): Company {
         val request =
             HttpRequest.builder()

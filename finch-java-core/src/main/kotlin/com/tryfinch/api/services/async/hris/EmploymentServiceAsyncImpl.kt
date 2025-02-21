@@ -17,10 +17,8 @@ import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
-class EmploymentServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : EmploymentServiceAsync {
+class EmploymentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    EmploymentServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Read individual employment and income data */
     override fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<HrisEmploymentRetrieveManyPageAsync> {
         val request =
             HttpRequest.builder()

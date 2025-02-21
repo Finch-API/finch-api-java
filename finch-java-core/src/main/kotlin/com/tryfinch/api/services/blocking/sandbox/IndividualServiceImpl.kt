@@ -16,10 +16,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.IndividualUpdateResponse
 import com.tryfinch.api.models.SandboxIndividualUpdateParams
 
-class IndividualServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : IndividualService {
+class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -30,7 +28,7 @@ internal constructor(
     /** Update sandbox individual */
     override fun update(
         params: SandboxIndividualUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): IndividualUpdateResponse {
         val request =
             HttpRequest.builder()

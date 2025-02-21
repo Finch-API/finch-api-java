@@ -15,10 +15,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.JobManualRetrieveParams
 import com.tryfinch.api.models.ManualAsyncJob
 
-class ManualServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ManualService {
+class ManualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    ManualService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
      */
     override fun retrieve(
         params: JobManualRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ManualAsyncJob {
         val request =
             HttpRequest.builder()

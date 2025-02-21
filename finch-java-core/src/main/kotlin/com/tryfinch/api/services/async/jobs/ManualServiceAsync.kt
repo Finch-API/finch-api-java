@@ -18,6 +18,6 @@ interface ManualServiceAsync {
     @JvmOverloads
     fun retrieve(
         params: JobManualRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ManualAsyncJob>
 }

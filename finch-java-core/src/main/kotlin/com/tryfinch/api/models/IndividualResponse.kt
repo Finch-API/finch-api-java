@@ -119,12 +119,7 @@ private constructor(
         }
 
         fun build(): IndividualResponse =
-            IndividualResponse(
-                body,
-                code,
-                individualId,
-                additionalProperties.toImmutable(),
-            )
+            IndividualResponse(body, code, individualId, additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

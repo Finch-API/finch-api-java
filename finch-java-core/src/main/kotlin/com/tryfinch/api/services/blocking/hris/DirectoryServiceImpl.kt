@@ -17,10 +17,8 @@ import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-class DirectoryServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : DirectoryService {
+class DirectoryServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    DirectoryService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Read company directory and organization structure */
     override fun list(
         params: HrisDirectoryListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisDirectoryListPage {
         val request =
             HttpRequest.builder()
@@ -58,7 +56,7 @@ internal constructor(
     @Deprecated("use `list` instead")
     override fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisDirectoryListIndividualsPage {
         val request =
             HttpRequest.builder()

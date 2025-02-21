@@ -87,13 +87,8 @@ private constructor(
         fun of(
             automatedService: AutomatedServiceAsync,
             params: JobAutomatedListParams,
-            response: Response
-        ) =
-            JobAutomatedListPageAsync(
-                automatedService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = JobAutomatedListPageAsync(automatedService, params, response)
     }
 
     @NoAutoDetect
@@ -178,26 +173,19 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() =
-                Response(
-                    data,
-                    paging,
-                    additionalProperties.toImmutable(),
-                )
+            fun build() = Response(data, paging, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: JobAutomatedListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: JobAutomatedListPageAsync) {
 
         fun forEach(
             action: Predicate<AutomatedAsyncJob>,
-            executor: Executor
+            executor: Executor,
         ): CompletableFuture<Void> {
             fun CompletableFuture<Optional<JobAutomatedListPageAsync>>.forEach(
                 action: (AutomatedAsyncJob) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -206,7 +194,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

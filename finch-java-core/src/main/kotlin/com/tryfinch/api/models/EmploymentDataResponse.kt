@@ -119,12 +119,7 @@ private constructor(
         }
 
         fun build(): EmploymentDataResponse =
-            EmploymentDataResponse(
-                body,
-                code,
-                individualId,
-                additionalProperties.toImmutable(),
-            )
+            EmploymentDataResponse(body, code, individualId, additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

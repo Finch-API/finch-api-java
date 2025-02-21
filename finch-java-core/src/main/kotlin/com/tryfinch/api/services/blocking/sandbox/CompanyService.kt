@@ -14,6 +14,6 @@ interface CompanyService {
     @JvmOverloads
     fun update(
         params: SandboxCompanyUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyUpdateResponse
 }

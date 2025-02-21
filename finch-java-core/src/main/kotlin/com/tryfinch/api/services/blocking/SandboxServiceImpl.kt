@@ -18,10 +18,8 @@ import com.tryfinch.api.services.blocking.sandbox.JobServiceImpl
 import com.tryfinch.api.services.blocking.sandbox.PaymentService
 import com.tryfinch.api.services.blocking.sandbox.PaymentServiceImpl
 
-class SandboxServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : SandboxService {
+class SandboxServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    SandboxService {
 
     private val connections: ConnectionService by lazy { ConnectionServiceImpl(clientOptions) }
 

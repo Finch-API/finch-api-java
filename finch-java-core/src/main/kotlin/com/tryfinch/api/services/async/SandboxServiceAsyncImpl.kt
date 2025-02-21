@@ -18,10 +18,8 @@ import com.tryfinch.api.services.async.sandbox.JobServiceAsyncImpl
 import com.tryfinch.api.services.async.sandbox.PaymentServiceAsync
 import com.tryfinch.api.services.async.sandbox.PaymentServiceAsyncImpl
 
-class SandboxServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : SandboxServiceAsync {
+class SandboxServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    SandboxServiceAsync {
 
     private val connections: ConnectionServiceAsync by lazy {
         ConnectionServiceAsyncImpl(clientOptions)

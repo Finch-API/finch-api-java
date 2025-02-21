@@ -16,7 +16,7 @@ interface AccountService {
     @JvmOverloads
     fun create(
         params: SandboxConnectionAccountCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountCreateResponse
 
     /**
@@ -26,6 +26,6 @@ interface AccountService {
     @JvmOverloads
     fun update(
         params: SandboxConnectionAccountUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountUpdateResponse
 }

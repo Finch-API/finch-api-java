@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -46,8 +47,10 @@ class ConnectSessionNewParamsTest {
                 .redirectUri("redirect_uri")
                 .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                 .build()
+
         val body = params._body()
-        assertThat(body).isNotNull
+
+        assertNotNull(body)
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
         assertThat(body.products())
@@ -74,8 +77,10 @@ class ConnectSessionNewParamsTest {
                 .customerName("x")
                 .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
                 .build()
+
         val body = params._body()
-        assertThat(body).isNotNull
+
+        assertNotNull(body)
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
         assertThat(body.products())

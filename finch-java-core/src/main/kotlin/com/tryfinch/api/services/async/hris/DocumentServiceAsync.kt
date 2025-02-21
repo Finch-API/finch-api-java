@@ -19,7 +19,7 @@ interface DocumentServiceAsync {
     @JvmOverloads
     fun list(
         params: HrisDocumentListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DocumentListResponse>
 
     /**
@@ -29,6 +29,6 @@ interface DocumentServiceAsync {
     @JvmOverloads
     fun retreive(
         params: HrisDocumentRetreiveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DocumentRetreiveResponse>
 }

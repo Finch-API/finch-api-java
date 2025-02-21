@@ -67,13 +67,8 @@ private constructor(
         fun of(
             employmentsService: EmploymentServiceAsync,
             params: HrisEmploymentRetrieveManyParams,
-            response: Response
-        ) =
-            HrisEmploymentRetrieveManyPageAsync(
-                employmentsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisEmploymentRetrieveManyPageAsync(employmentsService, params, response)
     }
 
     @NoAutoDetect
@@ -154,17 +149,15 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisEmploymentRetrieveManyPageAsync,
-    ) {
+    class AutoPager(private val firstPage: HrisEmploymentRetrieveManyPageAsync) {
 
         fun forEach(
             action: Predicate<EmploymentDataResponse>,
-            executor: Executor
+            executor: Executor,
         ): CompletableFuture<Void> {
             fun CompletableFuture<Optional<HrisEmploymentRetrieveManyPageAsync>>.forEach(
                 action: (EmploymentDataResponse) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -173,7 +166,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

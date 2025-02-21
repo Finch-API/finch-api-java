@@ -25,7 +25,7 @@ import java.util.Optional
 /** Update a sandbox company's data */
 class SandboxCompanyUpdateParams
 private constructor(
-    private val body: SandboxCompanyUpdateBody,
+    private val body: CompanyWithoutId,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -82,16 +82,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): SandboxCompanyUpdateBody = body
+    @JvmSynthetic internal fun _body(): CompanyWithoutId = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class SandboxCompanyUpdateBody
+    class CompanyWithoutId
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("accounts")
         @ExcludeMissing
         private val accounts: JsonField<List<Account>> = JsonMissing.of(),
@@ -185,7 +185,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxCompanyUpdateBody = apply {
+        fun validate(): CompanyWithoutId = apply {
             if (validated) {
                 return@apply
             }
@@ -208,7 +208,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [SandboxCompanyUpdateBody]. */
+        /** A builder for [CompanyWithoutId]. */
         class Builder internal constructor() {
 
             private var accounts: JsonField<MutableList<Account>>? = null
@@ -222,16 +222,16 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(sandboxCompanyUpdateBody: SandboxCompanyUpdateBody) = apply {
-                accounts = sandboxCompanyUpdateBody.accounts.map { it.toMutableList() }
-                departments = sandboxCompanyUpdateBody.departments.map { it.toMutableList() }
-                ein = sandboxCompanyUpdateBody.ein
-                entity = sandboxCompanyUpdateBody.entity
-                legalName = sandboxCompanyUpdateBody.legalName
-                locations = sandboxCompanyUpdateBody.locations.map { it.toMutableList() }
-                primaryEmail = sandboxCompanyUpdateBody.primaryEmail
-                primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
-                additionalProperties = sandboxCompanyUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(companyWithoutId: CompanyWithoutId) = apply {
+                accounts = companyWithoutId.accounts.map { it.toMutableList() }
+                departments = companyWithoutId.departments.map { it.toMutableList() }
+                ein = companyWithoutId.ein
+                entity = companyWithoutId.entity
+                legalName = companyWithoutId.legalName
+                locations = companyWithoutId.locations.map { it.toMutableList() }
+                primaryEmail = companyWithoutId.primaryEmail
+                primaryPhoneNumber = companyWithoutId.primaryPhoneNumber
+                additionalProperties = companyWithoutId.additionalProperties.toMutableMap()
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
@@ -379,8 +379,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxCompanyUpdateBody =
-                SandboxCompanyUpdateBody(
+            fun build(): CompanyWithoutId =
+                CompanyWithoutId(
                     checkRequired("accounts", accounts).map { it.toImmutable() },
                     checkRequired("departments", departments).map { it.toImmutable() },
                     checkRequired("ein", ein),
@@ -398,7 +398,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxCompanyUpdateBody && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is CompanyWithoutId && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -408,7 +408,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxCompanyUpdateBody{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalProperties=$additionalProperties}"
+            "CompanyWithoutId{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -422,7 +422,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SandboxCompanyUpdateBody.Builder = SandboxCompanyUpdateBody.builder()
+        private var body: CompanyWithoutId.Builder = CompanyWithoutId.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -866,11 +866,8 @@ private constructor(
         }
 
         /** The type of bank account. */
-        class AccountType
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class AccountType @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -946,7 +943,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown AccountType: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1079,12 +1088,7 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Department =
-                Department(
-                    name,
-                    parent,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Department = Department(name, parent, additionalProperties.toImmutable())
         }
 
         /** The parent department, if present. */
@@ -1308,20 +1312,12 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Entity =
-                Entity(
-                    subtype,
-                    type,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Entity = Entity(subtype, type, additionalProperties.toImmutable())
         }
 
         /** The tax payer subtype of the company. */
-        class Subtype
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Subtype @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1402,7 +1398,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown Subtype: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1418,11 +1426,7 @@ private constructor(
         }
 
         /** The tax payer type of the company. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1525,7 +1529,19 @@ private constructor(
                     else -> throw FinchInvalidDataException("Unknown Type: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

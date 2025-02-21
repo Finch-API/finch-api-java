@@ -83,13 +83,8 @@ private constructor(
         fun of(
             directoryService: DirectoryServiceAsync,
             params: HrisDirectoryListParams,
-            response: Response
-        ) =
-            HrisDirectoryListPageAsync(
-                directoryService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisDirectoryListPageAsync(directoryService, params, response)
     }
 
     @NoAutoDetect
@@ -179,26 +174,19 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() =
-                Response(
-                    individuals,
-                    paging,
-                    additionalProperties.toImmutable(),
-                )
+            fun build() = Response(individuals, paging, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisDirectoryListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: HrisDirectoryListPageAsync) {
 
         fun forEach(
             action: Predicate<IndividualInDirectory>,
-            executor: Executor
+            executor: Executor,
         ): CompletableFuture<Void> {
             fun CompletableFuture<Optional<HrisDirectoryListPageAsync>>.forEach(
                 action: (IndividualInDirectory) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -207,7 +195,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

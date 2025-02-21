@@ -8,11 +8,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.errors.FinchInvalidDataException
 
 /** Type of benefit. */
-class BenefitType
-@JsonCreator
-private constructor(
-    private val value: JsonField<String>,
-) : Enum {
+class BenefitType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
     /**
      * Returns this class instance's raw value.
@@ -185,7 +181,17 @@ private constructor(
             else -> throw FinchInvalidDataException("Unknown BenefitType: $value")
         }
 
-    fun asString(): String = _value().asStringOrThrow()
+    /**
+     * Returns this class instance's primitive wire representation.
+     *
+     * This differs from the [toString] method because that method is primarily for debugging and
+     * generally doesn't throw.
+     *
+     * @throws FinchInvalidDataException if this class instance's value does not have the expected
+     *   primitive type.
+     */
+    fun asString(): String =
+        _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

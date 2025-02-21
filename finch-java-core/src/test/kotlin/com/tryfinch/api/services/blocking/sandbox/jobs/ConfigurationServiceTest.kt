@@ -40,8 +40,12 @@ class ConfigurationServiceTest {
         val sandboxJobConfiguration =
             configurationService.update(
                 SandboxJobConfigurationUpdateParams.builder()
-                    .completionStatus(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
-                    .type(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
+                    .sandboxJobConfiguration(
+                        SandboxJobConfiguration.builder()
+                            .completionStatus(SandboxJobConfiguration.CompletionStatus.COMPLETE)
+                            .type(SandboxJobConfiguration.Type.DATA_SYNC_ALL)
+                            .build()
+                    )
                     .build()
             )
         println(sandboxJobConfiguration)

@@ -18,6 +18,6 @@ interface RequestForwardingService {
     @JvmOverloads
     fun forward(
         params: RequestForwardingForwardParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): RequestForwardingForwardResponse
 }

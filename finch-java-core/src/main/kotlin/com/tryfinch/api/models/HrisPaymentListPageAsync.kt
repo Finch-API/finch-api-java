@@ -67,13 +67,8 @@ private constructor(
         fun of(
             paymentsService: PaymentServiceAsync,
             params: HrisPaymentListParams,
-            response: Response
-        ) =
-            HrisPaymentListPageAsync(
-                paymentsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisPaymentListPageAsync(paymentsService, params, response)
     }
 
     @NoAutoDetect
@@ -148,14 +143,12 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisPaymentListPageAsync,
-    ) {
+    class AutoPager(private val firstPage: HrisPaymentListPageAsync) {
 
         fun forEach(action: Predicate<Payment>, executor: Executor): CompletableFuture<Void> {
             fun CompletableFuture<Optional<HrisPaymentListPageAsync>>.forEach(
                 action: (Payment) -> Boolean,
-                executor: Executor
+                executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
                     { page ->
@@ -164,7 +157,7 @@ private constructor(
                             .map { it.getNextPage().forEach(action, executor) }
                             .orElseGet { CompletableFuture.completedFuture(null) }
                     },
-                    executor
+                    executor,
                 )
             return CompletableFuture.completedFuture(Optional.of(firstPage))
                 .forEach(action::test, executor)

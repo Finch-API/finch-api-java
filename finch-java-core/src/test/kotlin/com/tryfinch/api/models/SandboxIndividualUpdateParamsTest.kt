@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,7 +12,7 @@ class SandboxIndividualUpdateParamsTest {
     fun create() {
         SandboxIndividualUpdateParams.builder()
             .individualId("individual_id")
-            .dob("12/20/1989")
+            .dob("dob")
             .addEmail(
                 SandboxIndividualUpdateParams.Email.builder()
                     .data("data")
@@ -52,7 +53,7 @@ class SandboxIndividualUpdateParamsTest {
         val params =
             SandboxIndividualUpdateParams.builder()
                 .individualId("individual_id")
-                .dob("12/20/1989")
+                .dob("dob")
                 .addEmail(
                     SandboxIndividualUpdateParams.Email.builder()
                         .data("data")
@@ -86,9 +87,11 @@ class SandboxIndividualUpdateParamsTest {
                 )
                 .ssn("ssn")
                 .build()
+
         val body = params._body()
-        assertThat(body).isNotNull
-        assertThat(body.dob()).contains("12/20/1989")
+
+        assertNotNull(body)
+        assertThat(body.dob()).contains("dob")
         assertThat(body.emails())
             .contains(
                 listOf(
@@ -133,8 +136,10 @@ class SandboxIndividualUpdateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params = SandboxIndividualUpdateParams.builder().individualId("individual_id").build()
+
         val body = params._body()
-        assertThat(body).isNotNull
+
+        assertNotNull(body)
     }
 
     @Test

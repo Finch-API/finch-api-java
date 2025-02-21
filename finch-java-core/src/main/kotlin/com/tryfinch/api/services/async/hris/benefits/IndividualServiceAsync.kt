@@ -19,20 +19,20 @@ interface IndividualServiceAsync {
     @JvmOverloads
     fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<IndividualEnrolledIdsResponse>
 
     /** Get enrollment information for the given individuals. */
     @JvmOverloads
     fun retrieveManyBenefits(
         params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>
 
     /** Unenroll individuals from a deduction or contribution */
     @JvmOverloads
     fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitIndividualUnenrollManyPageAsync>
 }

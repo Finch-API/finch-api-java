@@ -16,11 +16,8 @@ import com.tryfinch.api.errors.FinchInvalidDataException
  * - `client_access_only`: This behavior is supported by the provider, but only available to the
  *   client and not to Finch
  */
-class OperationSupport
-@JsonCreator
-private constructor(
-    private val value: JsonField<String>,
-) : Enum {
+class OperationSupport @JsonCreator private constructor(private val value: JsonField<String>) :
+    Enum {
 
     /**
      * Returns this class instance's raw value.
@@ -105,7 +102,17 @@ private constructor(
             else -> throw FinchInvalidDataException("Unknown OperationSupport: $value")
         }
 
-    fun asString(): String = _value().asStringOrThrow()
+    /**
+     * Returns this class instance's primitive wire representation.
+     *
+     * This differs from the [toString] method because that method is primarily for debugging and
+     * generally doesn't throw.
+     *
+     * @throws FinchInvalidDataException if this class instance's value does not have the expected
+     *   primitive type.
+     */
+    fun asString(): String =
+        _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

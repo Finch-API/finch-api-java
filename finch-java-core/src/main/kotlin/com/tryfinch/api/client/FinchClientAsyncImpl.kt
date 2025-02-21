@@ -38,9 +38,7 @@ import com.tryfinch.api.services.async.WebhookServiceAsyncImpl
 import java.net.URLEncoder
 import java.util.concurrent.CompletableFuture
 
-class FinchClientAsyncImpl(
-    private val clientOptions: ClientOptions,
-) : FinchClientAsync {
+class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClientAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -121,7 +119,7 @@ class FinchClientAsyncImpl(
         clientId: String,
         clientSecret: String,
         code: String,
-        redirectUri: String?
+        redirectUri: String?,
     ): CompletableFuture<String> {
         if (clientOptions.clientId == null) {
             throw FinchException("clientId must be set in order to call getAccessToken")
@@ -136,12 +134,7 @@ class FinchClientAsyncImpl(
                 .body(
                     json(
                         clientOptions.jsonMapper,
-                        GetAccessTokenParams(
-                            clientId,
-                            clientSecret,
-                            code,
-                            redirectUri,
-                        )
+                        GetAccessTokenParams(clientId, clientSecret, code, redirectUri),
                     )
                 )
                 .build()

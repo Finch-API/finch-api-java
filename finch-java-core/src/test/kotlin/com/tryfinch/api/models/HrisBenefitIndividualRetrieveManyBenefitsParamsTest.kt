@@ -30,7 +30,7 @@ class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
         val expected = QueryParams.builder()
         expected.put(
             "individual_ids",
-            "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
+            "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a",
         )
         assertThat(params._queryParams()).isEqualTo(expected.build())
     }

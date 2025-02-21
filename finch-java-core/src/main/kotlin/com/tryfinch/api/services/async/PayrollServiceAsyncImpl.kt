@@ -6,10 +6,8 @@ import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.async.payroll.PayGroupServiceAsync
 import com.tryfinch.api.services.async.payroll.PayGroupServiceAsyncImpl
 
-class PayrollServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : PayrollServiceAsync {
+class PayrollServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    PayrollServiceAsync {
 
     private val payGroups: PayGroupServiceAsync by lazy { PayGroupServiceAsyncImpl(clientOptions) }
 

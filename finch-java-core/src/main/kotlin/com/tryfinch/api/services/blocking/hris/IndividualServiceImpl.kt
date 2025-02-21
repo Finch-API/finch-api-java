@@ -16,10 +16,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisIndividualRetrieveManyPage
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 
-class IndividualServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : IndividualService {
+class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -30,7 +28,7 @@ internal constructor(
     /** Read individual data, excluding income and employment data */
     override fun retrieveMany(
         params: HrisIndividualRetrieveManyParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisIndividualRetrieveManyPage {
         val request =
             HttpRequest.builder()

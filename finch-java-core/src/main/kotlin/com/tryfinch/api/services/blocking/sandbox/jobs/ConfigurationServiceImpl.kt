@@ -17,10 +17,8 @@ import com.tryfinch.api.models.SandboxJobConfiguration
 import com.tryfinch.api.models.SandboxJobConfigurationRetrieveParams
 import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 
-class ConfigurationServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ConfigurationService {
+class ConfigurationServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    ConfigurationService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,7 +29,7 @@ internal constructor(
     /** Get configurations for sandbox jobs */
     override fun retrieve(
         params: SandboxJobConfigurationRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): List<SandboxJobConfiguration> {
         val request =
             HttpRequest.builder()
@@ -56,7 +54,7 @@ internal constructor(
     /** Update configurations for sandbox jobs */
     override fun update(
         params: SandboxJobConfigurationUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): SandboxJobConfiguration {
         val request =
             HttpRequest.builder()

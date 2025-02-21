@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -63,7 +64,7 @@ class SandboxEmploymentUpdateParamsTest {
             .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
             .middleName("middle_name")
             .sourceId("source_id")
-            .startDate("3/4/2020")
+            .startDate("start_date")
             .title("title")
             .build()
     }
@@ -124,11 +125,13 @@ class SandboxEmploymentUpdateParamsTest {
                 .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
                 .middleName("middle_name")
                 .sourceId("source_id")
-                .startDate("3/4/2020")
+                .startDate("start_date")
                 .title("title")
                 .build()
+
         val body = params._body()
-        assertThat(body).isNotNull
+
+        assertNotNull(body)
         assertThat(body.classCode()).contains("class_code")
         assertThat(body.customFields())
             .contains(
@@ -192,15 +195,17 @@ class SandboxEmploymentUpdateParamsTest {
             .contains(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
         assertThat(body.middleName()).contains("middle_name")
         assertThat(body.sourceId()).contains("source_id")
-        assertThat(body.startDate()).contains("3/4/2020")
+        assertThat(body.startDate()).contains("start_date")
         assertThat(body.title()).contains("title")
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
         val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
+
         val body = params._body()
-        assertThat(body).isNotNull
+
+        assertNotNull(body)
     }
 
     @Test
