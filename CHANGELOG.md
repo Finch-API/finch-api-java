@@ -1,5 +1,48 @@
 # Changelog
 
+## 4.1.0 (2025-02-25)
+
+Full Changelog: [v4.0.2...v4.1.0](https://github.com/Finch-API/finch-api-java/compare/v4.0.2...v4.1.0)
+
+### Features
+
+* **api:** api update ([#454](https://github.com/Finch-API/finch-api-java/issues/454)) ([6a36319](https://github.com/Finch-API/finch-api-java/commit/6a3631913bea77b83216b72d47bc96fc9381aaa7))
+* **client:** get rid of annoying checked exceptions ([#449](https://github.com/Finch-API/finch-api-java/issues/449)) ([e7312ce](https://github.com/Finch-API/finch-api-java/commit/e7312ce5f83cad66a8b1c71697dda825c595480b))
+* **client:** support `JsonField#asX()` for known values ([#443](https://github.com/Finch-API/finch-api-java/issues/443)) ([d2c8ddd](https://github.com/Finch-API/finch-api-java/commit/d2c8ddd34286909b0c77b36a931c7784c6031297))
+* **client:** update enum `asX` methods ([#442](https://github.com/Finch-API/finch-api-java/issues/442)) ([caffc54](https://github.com/Finch-API/finch-api-java/commit/caffc542b831856cac7e1be5079b03a112b203f7))
+
+
+### Bug Fixes
+
+* **client:** mark some request bodies as optional ([#451](https://github.com/Finch-API/finch-api-java/issues/451)) ([344ac4b](https://github.com/Finch-API/finch-api-java/commit/344ac4bd5a99c29f50c8bf62640e536251fc491d))
+* **internal:** format code ([a34264f](https://github.com/Finch-API/finch-api-java/commit/a34264f4f11d18a8322e289f6505cc119853fc68))
+
+
+### Chores
+
+* **ci:** update gradle actions to v4 ([#447](https://github.com/Finch-API/finch-api-java/issues/447)) ([97cc45e](https://github.com/Finch-API/finch-api-java/commit/97cc45e241bf75d7255ba8fc645975168a944b7d))
+* **docs:** add faq to readme ([#450](https://github.com/Finch-API/finch-api-java/issues/450)) ([fd63219](https://github.com/Finch-API/finch-api-java/commit/fd63219b1fe6bda4743f2150cfa1ee4290e271d9))
+* **docs:** reorganize readme ([#444](https://github.com/Finch-API/finch-api-java/issues/444)) ([164050e](https://github.com/Finch-API/finch-api-java/commit/164050e39888c30f3c6f38c8b94f31c356813db5))
+* **internal:** codegen related update ([#448](https://github.com/Finch-API/finch-api-java/issues/448)) ([6db2948](https://github.com/Finch-API/finch-api-java/commit/6db294858870c374b2cb30bf4fd02a52e66452b6))
+* **internal:** get rid of configuration cache ([#446](https://github.com/Finch-API/finch-api-java/issues/446)) ([35edbd8](https://github.com/Finch-API/finch-api-java/commit/35edbd85822b3a521077d9d1ac96d5e071d018a5))
+* **internal:** make body class constructors private ([545758d](https://github.com/Finch-API/finch-api-java/commit/545758da4865c820e81165c78cd9034aa75e0a9b))
+* **internal:** make body classes for multipart requests ([545758d](https://github.com/Finch-API/finch-api-java/commit/545758da4865c820e81165c78cd9034aa75e0a9b))
+* **internal:** misc formatting changes ([545758d](https://github.com/Finch-API/finch-api-java/commit/545758da4865c820e81165c78cd9034aa75e0a9b))
+* **internal:** optimize build and test perf ([54b58c8](https://github.com/Finch-API/finch-api-java/commit/54b58c894270795449f4a4ad42d0bc6ff0448658))
+* **internal:** remove unnecessary non-null asserts in tests ([344ac4b](https://github.com/Finch-API/finch-api-java/commit/344ac4bd5a99c29f50c8bf62640e536251fc491d))
+* **internal:** rename internal body classes ([545758d](https://github.com/Finch-API/finch-api-java/commit/545758da4865c820e81165c78cd9034aa75e0a9b))
+* **internal:** update formatter ([#439](https://github.com/Finch-API/finch-api-java/issues/439)) ([54b58c8](https://github.com/Finch-API/finch-api-java/commit/54b58c894270795449f4a4ad42d0bc6ff0448658))
+* **internal:** update some formatting in `Values.kt` ([d2c8ddd](https://github.com/Finch-API/finch-api-java/commit/d2c8ddd34286909b0c77b36a931c7784c6031297))
+* **internal:** use `assertNotNull` in tests for type narrowing ([344ac4b](https://github.com/Finch-API/finch-api-java/commit/344ac4bd5a99c29f50c8bf62640e536251fc491d))
+* **internal:** use better test example values ([#441](https://github.com/Finch-API/finch-api-java/issues/441)) ([545758d](https://github.com/Finch-API/finch-api-java/commit/545758da4865c820e81165c78cd9034aa75e0a9b))
+* **test:** update some test values ([#437](https://github.com/Finch-API/finch-api-java/issues/437)) ([602f2c0](https://github.com/Finch-API/finch-api-java/commit/602f2c0e0ae1d1351d141faf91e20a3c5e3164eb))
+
+
+### Documentation
+
+* add immutability explanation to readme ([#452](https://github.com/Finch-API/finch-api-java/issues/452)) ([8f256fb](https://github.com/Finch-API/finch-api-java/commit/8f256fbfc0f39a56d8f416b5ea03e42c3e422c60))
+* add source file links to readme ([#453](https://github.com/Finch-API/finch-api-java/issues/453)) ([becaa47](https://github.com/Finch-API/finch-api-java/commit/becaa47cb5fb7138518157dfa92410d268fa55fd))
+
 ## 4.0.2 (2025-02-12)
 
 Full Changelog: [v4.0.1...v4.0.2](https://github.com/Finch-API/finch-api-java/compare/v4.0.1...v4.0.2)
