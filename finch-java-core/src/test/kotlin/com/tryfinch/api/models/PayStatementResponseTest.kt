@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -19,6 +20,19 @@ class PayStatementResponseTest {
                                 .addEarning(
                                     PayStatement.Earning.builder()
                                         .amount(0L)
+                                        .attributes(
+                                            PayStatement.Earning.Metadata.builder()
+                                                .metadata(
+                                                    PayStatement.Earning.Metadata.InnerMetadata
+                                                        .builder()
+                                                        .putAdditionalProperty(
+                                                            "foo",
+                                                            JsonValue.from("bar"),
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .currency("currency")
                                         .hours(0.0)
                                         .name("name")
@@ -28,6 +42,20 @@ class PayStatementResponseTest {
                                 .addEmployeeDeduction(
                                     PayStatement.EmployeeDeduction.builder()
                                         .amount(0L)
+                                        .attributes(
+                                            PayStatement.EmployeeDeduction.Metadata.builder()
+                                                .metadata(
+                                                    PayStatement.EmployeeDeduction.Metadata
+                                                        .InnerMetadata
+                                                        .builder()
+                                                        .putAdditionalProperty(
+                                                            "foo",
+                                                            JsonValue.from("bar"),
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .currency("currency")
                                         .name("name")
                                         .preTax(true)
@@ -37,6 +65,20 @@ class PayStatementResponseTest {
                                 .addEmployerContribution(
                                     PayStatement.EmployerContribution.builder()
                                         .amount(0L)
+                                        .attributes(
+                                            PayStatement.EmployerContribution.Metadata.builder()
+                                                .metadata(
+                                                    PayStatement.EmployerContribution.Metadata
+                                                        .InnerMetadata
+                                                        .builder()
+                                                        .putAdditionalProperty(
+                                                            "foo",
+                                                            JsonValue.from("bar"),
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .currency("currency")
                                         .name("name")
                                         .type(BenefitType._401K)
@@ -49,6 +91,19 @@ class PayStatementResponseTest {
                                 .addTax(
                                     PayStatement.Tax.builder()
                                         .amount(0L)
+                                        .attributes(
+                                            PayStatement.Tax.Metadata.builder()
+                                                .metadata(
+                                                    PayStatement.Tax.Metadata.InnerMetadata
+                                                        .builder()
+                                                        .putAdditionalProperty(
+                                                            "foo",
+                                                            JsonValue.from("bar"),
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .currency("currency")
                                         .employer(true)
                                         .name("name")
@@ -74,6 +129,19 @@ class PayStatementResponseTest {
                             .addEarning(
                                 PayStatement.Earning.builder()
                                     .amount(0L)
+                                    .attributes(
+                                        PayStatement.Earning.Metadata.builder()
+                                            .metadata(
+                                                PayStatement.Earning.Metadata.InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
                                     .currency("currency")
                                     .hours(0.0)
                                     .name("name")
@@ -83,6 +151,20 @@ class PayStatementResponseTest {
                             .addEmployeeDeduction(
                                 PayStatement.EmployeeDeduction.builder()
                                     .amount(0L)
+                                    .attributes(
+                                        PayStatement.EmployeeDeduction.Metadata.builder()
+                                            .metadata(
+                                                PayStatement.EmployeeDeduction.Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
                                     .currency("currency")
                                     .name("name")
                                     .preTax(true)
@@ -92,6 +174,20 @@ class PayStatementResponseTest {
                             .addEmployerContribution(
                                 PayStatement.EmployerContribution.builder()
                                     .amount(0L)
+                                    .attributes(
+                                        PayStatement.EmployerContribution.Metadata.builder()
+                                            .metadata(
+                                                PayStatement.EmployerContribution.Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
                                     .currency("currency")
                                     .name("name")
                                     .type(BenefitType._401K)
@@ -104,6 +200,18 @@ class PayStatementResponseTest {
                             .addTax(
                                 PayStatement.Tax.builder()
                                     .amount(0L)
+                                    .attributes(
+                                        PayStatement.Tax.Metadata.builder()
+                                            .metadata(
+                                                PayStatement.Tax.Metadata.InnerMetadata.builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
                                     .currency("currency")
                                     .employer(true)
                                     .name("name")

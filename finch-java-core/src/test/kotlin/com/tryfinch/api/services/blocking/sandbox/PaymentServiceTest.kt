@@ -4,6 +4,7 @@ package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.BenefitType
 import com.tryfinch.api.models.Money
 import com.tryfinch.api.models.SandboxPaymentCreateParams
@@ -30,6 +31,22 @@ class PaymentServiceTest {
                             .addEarning(
                                 SandboxPaymentCreateParams.PayStatement.Earning.builder()
                                     .amount(0L)
+                                    .attributes(
+                                        SandboxPaymentCreateParams.PayStatement.Earning.Metadata
+                                            .builder()
+                                            .metadata(
+                                                SandboxPaymentCreateParams.PayStatement.Earning
+                                                    .Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
                                     .currency("currency")
                                     .hours(0.0)
                                     .name("name")
@@ -40,9 +57,27 @@ class PaymentServiceTest {
                             )
                             .addEmployeeDeduction(
                                 SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
-                                    .amount(2000L)
-                                    .currency("usd")
-                                    .name("401k test")
+                                    .amount(0L)
+                                    .attributes(
+                                        SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
+                                            .Metadata
+                                            .builder()
+                                            .metadata(
+                                                SandboxPaymentCreateParams.PayStatement
+                                                    .EmployeeDeduction
+                                                    .Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
+                                    .currency("currency")
+                                    .name("name")
                                     .preTax(true)
                                     .type(BenefitType._401K)
                                     .build()
@@ -51,13 +86,31 @@ class PaymentServiceTest {
                                 SandboxPaymentCreateParams.PayStatement.EmployerContribution
                                     .builder()
                                     .amount(0L)
+                                    .attributes(
+                                        SandboxPaymentCreateParams.PayStatement.EmployerContribution
+                                            .Metadata
+                                            .builder()
+                                            .metadata(
+                                                SandboxPaymentCreateParams.PayStatement
+                                                    .EmployerContribution
+                                                    .Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
                                     .currency("currency")
                                     .name("name")
                                     .type(BenefitType._401K)
                                     .build()
                             )
                             .grossPay(Money.builder().amount(0L).currency("currency").build())
-                            .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
+                            .individualId("individual_id")
                             .netPay(Money.builder().amount(0L).currency("currency").build())
                             .paymentMethod(
                                 SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
@@ -65,6 +118,21 @@ class PaymentServiceTest {
                             .addTax(
                                 SandboxPaymentCreateParams.PayStatement.Tax.builder()
                                     .amount(0L)
+                                    .attributes(
+                                        SandboxPaymentCreateParams.PayStatement.Tax.Metadata
+                                            .builder()
+                                            .metadata(
+                                                SandboxPaymentCreateParams.PayStatement.Tax.Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
                                     .currency("currency")
                                     .employer(true)
                                     .name("name")
