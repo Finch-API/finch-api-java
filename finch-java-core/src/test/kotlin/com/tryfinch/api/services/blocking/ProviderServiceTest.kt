@@ -4,7 +4,6 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.ProviderListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -19,7 +18,7 @@ class ProviderServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val providerService = client.providers()
-        val getProvidersResponse = providerService.list(ProviderListParams.builder().build())
+        val getProvidersResponse = providerService.list()
         println(getProvidersResponse)
         getProvidersResponse.items().forEach { it.validate() }
     }

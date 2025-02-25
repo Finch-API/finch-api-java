@@ -25,7 +25,14 @@ interface AccountService {
      */
     @JvmOverloads
     fun update(
-        params: SandboxConnectionAccountUpdateParams,
+        params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountUpdateResponse
+
+    /**
+     * Update an existing sandbox account. Change the connection status to understand how the Finch
+     * API responds.
+     */
+    fun update(requestOptions: RequestOptions): AccountUpdateResponse =
+        update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 }

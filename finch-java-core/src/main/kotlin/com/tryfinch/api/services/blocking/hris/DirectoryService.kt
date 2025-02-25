@@ -15,15 +15,24 @@ interface DirectoryService {
     /** Read company directory and organization structure */
     @JvmOverloads
     fun list(
-        params: HrisDirectoryListParams,
+        params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListPage
+
+    /** Read company directory and organization structure */
+    fun list(requestOptions: RequestOptions): HrisDirectoryListPage =
+        list(HrisDirectoryListParams.none(), requestOptions)
 
     /** Read company directory and organization structure */
     @Deprecated("use `list` instead")
     @JvmOverloads
     fun listIndividuals(
-        params: HrisDirectoryListIndividualsParams,
+        params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListIndividualsPage
+
+    /** Read company directory and organization structure */
+    @Deprecated("use `list` instead")
+    fun listIndividuals(requestOptions: RequestOptions): HrisDirectoryListIndividualsPage =
+        listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
 }

@@ -15,9 +15,14 @@ interface ConfigurationServiceAsync {
     /** Get configurations for sandbox jobs */
     @JvmOverloads
     fun retrieve(
-        params: SandboxJobConfigurationRetrieveParams,
+        params: SandboxJobConfigurationRetrieveParams =
+            SandboxJobConfigurationRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<SandboxJobConfiguration>>
+
+    /** Get configurations for sandbox jobs */
+    fun retrieve(requestOptions: RequestOptions): CompletableFuture<List<SandboxJobConfiguration>> =
+        retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
     /** Update configurations for sandbox jobs */
     @JvmOverloads

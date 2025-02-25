@@ -14,7 +14,11 @@ interface CompanyServiceAsync {
     /** Read basic company data */
     @JvmOverloads
     fun retrieve(
-        params: HrisCompanyRetrieveParams,
+        params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Company>
+
+    /** Read basic company data */
+    fun retrieve(requestOptions: RequestOptions): CompletableFuture<Company> =
+        retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 }

@@ -5,7 +5,6 @@ package com.tryfinch.api.services.blocking.sandbox.jobs
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.SandboxJobConfiguration
-import com.tryfinch.api.models.SandboxJobConfigurationRetrieveParams
 import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -21,8 +20,7 @@ class ConfigurationServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val configurationService = client.sandbox().jobs().configuration()
-        val configurationRetrieveResponse =
-            configurationService.retrieve(SandboxJobConfigurationRetrieveParams.builder().build())
+        val configurationRetrieveResponse = configurationService.retrieve()
         println(configurationRetrieveResponse)
         for (sandboxJobConfiguration: SandboxJobConfiguration in configurationRetrieveResponse) {
             sandboxJobConfiguration.validate()

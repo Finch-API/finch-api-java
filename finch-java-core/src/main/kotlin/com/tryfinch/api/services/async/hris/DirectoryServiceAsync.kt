@@ -16,15 +16,26 @@ interface DirectoryServiceAsync {
     /** Read company directory and organization structure */
     @JvmOverloads
     fun list(
-        params: HrisDirectoryListParams,
+        params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisDirectoryListPageAsync>
+
+    /** Read company directory and organization structure */
+    fun list(requestOptions: RequestOptions): CompletableFuture<HrisDirectoryListPageAsync> =
+        list(HrisDirectoryListParams.none(), requestOptions)
 
     /** Read company directory and organization structure */
     @Deprecated("use `list` instead")
     @JvmOverloads
     fun listIndividuals(
-        params: HrisDirectoryListIndividualsParams,
+        params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisDirectoryListIndividualsPageAsync>
+
+    /** Read company directory and organization structure */
+    @Deprecated("use `list` instead")
+    fun listIndividuals(
+        requestOptions: RequestOptions
+    ): CompletableFuture<HrisDirectoryListIndividualsPageAsync> =
+        listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
 }
