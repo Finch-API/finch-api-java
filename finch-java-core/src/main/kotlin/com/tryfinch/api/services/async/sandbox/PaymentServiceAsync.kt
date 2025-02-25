@@ -14,7 +14,11 @@ interface PaymentServiceAsync {
     /** Add a new sandbox payment */
     @JvmOverloads
     fun create(
-        params: SandboxPaymentCreateParams,
+        params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PaymentCreateResponse>
+
+    /** Add a new sandbox payment */
+    fun create(requestOptions: RequestOptions): CompletableFuture<PaymentCreateResponse> =
+        create(SandboxPaymentCreateParams.none(), requestOptions)
 }

@@ -37,6 +37,8 @@ private constructor(
 
     companion object {
 
+        fun none(): AccountDisconnectParams = builder().build()
+
         @JvmStatic fun builder() = Builder()
     }
 

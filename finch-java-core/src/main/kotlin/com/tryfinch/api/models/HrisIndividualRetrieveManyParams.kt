@@ -183,6 +183,8 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisIndividualRetrieveManyParams = builder().build()
+
         @JvmStatic fun builder() = Builder()
     }
 

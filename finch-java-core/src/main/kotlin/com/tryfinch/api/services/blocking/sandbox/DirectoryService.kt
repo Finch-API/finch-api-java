@@ -13,7 +13,11 @@ interface DirectoryService {
     /** Add new individuals to a sandbox company */
     @JvmOverloads
     fun create(
-        params: SandboxDirectoryCreateParams,
+        params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<JsonValue>
+
+    /** Add new individuals to a sandbox company */
+    fun create(requestOptions: RequestOptions): List<JsonValue> =
+        create(SandboxDirectoryCreateParams.none(), requestOptions)
 }

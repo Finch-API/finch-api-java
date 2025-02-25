@@ -207,6 +207,8 @@ private constructor(
 
     companion object {
 
+        fun none(): SandboxPaymentCreateParams = builder().build()
+
         @JvmStatic fun builder() = Builder()
     }
 

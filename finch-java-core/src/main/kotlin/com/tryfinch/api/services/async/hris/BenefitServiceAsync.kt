@@ -28,9 +28,16 @@ interface BenefitServiceAsync {
      */
     @JvmOverloads
     fun create(
-        params: HrisBenefitCreateParams,
+        params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CreateCompanyBenefitsResponse>
+
+    /**
+     * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
+     * view available types for each provider.
+     */
+    fun create(requestOptions: RequestOptions): CompletableFuture<CreateCompanyBenefitsResponse> =
+        create(HrisBenefitCreateParams.none(), requestOptions)
 
     /** Lists deductions and contributions information for a given item */
     @JvmOverloads
@@ -49,14 +56,25 @@ interface BenefitServiceAsync {
     /** List all company-wide deductions and contributions. */
     @JvmOverloads
     fun list(
-        params: HrisBenefitListParams,
+        params: HrisBenefitListParams = HrisBenefitListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitListPageAsync>
+
+    /** List all company-wide deductions and contributions. */
+    fun list(requestOptions: RequestOptions): CompletableFuture<HrisBenefitListPageAsync> =
+        list(HrisBenefitListParams.none(), requestOptions)
 
     /** Get deductions metadata */
     @JvmOverloads
     fun listSupportedBenefits(
-        params: HrisBenefitListSupportedBenefitsParams,
+        params: HrisBenefitListSupportedBenefitsParams =
+            HrisBenefitListSupportedBenefitsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync>
+
+    /** Get deductions metadata */
+    fun listSupportedBenefits(
+        requestOptions: RequestOptions
+    ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync> =
+        listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
 }
