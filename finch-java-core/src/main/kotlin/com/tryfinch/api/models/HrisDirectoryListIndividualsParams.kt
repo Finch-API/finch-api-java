@@ -43,7 +43,7 @@ private constructor(
 
     companion object {
 
-        fun none(): HrisDirectoryListIndividualsParams = builder().build()
+        @JvmStatic fun none(): HrisDirectoryListIndividualsParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }
