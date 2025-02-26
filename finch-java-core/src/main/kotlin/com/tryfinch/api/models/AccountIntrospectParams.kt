@@ -27,7 +27,7 @@ private constructor(
 
     companion object {
 
-        fun none(): AccountIntrospectParams = builder().build()
+        @JvmStatic fun none(): AccountIntrospectParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }

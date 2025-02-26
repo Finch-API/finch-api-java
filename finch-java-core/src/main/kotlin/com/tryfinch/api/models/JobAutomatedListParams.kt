@@ -46,7 +46,7 @@ private constructor(
 
     companion object {
 
-        fun none(): JobAutomatedListParams = builder().build()
+        @JvmStatic fun none(): JobAutomatedListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }

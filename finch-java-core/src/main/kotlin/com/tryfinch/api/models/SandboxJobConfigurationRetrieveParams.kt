@@ -27,7 +27,7 @@ private constructor(
 
     companion object {
 
-        fun none(): SandboxJobConfigurationRetrieveParams = builder().build()
+        @JvmStatic fun none(): SandboxJobConfigurationRetrieveParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }
