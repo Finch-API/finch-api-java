@@ -227,7 +227,7 @@ private constructor(
 
     companion object {
 
-        fun none(): HrisBenefitCreateParams = builder().build()
+        @JvmStatic fun none(): HrisBenefitCreateParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }
