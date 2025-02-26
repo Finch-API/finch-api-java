@@ -11,15 +11,16 @@ import org.junit.jupiter.api.extension.ExtendWith
 class IndividualServiceTest {
 
     @Test
-    fun callRetrieveMany() {
+    fun retrieveMany() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val individualService = client.hris().individuals()
-        val getIndividualsResponse = individualService.retrieveMany()
-        println(getIndividualsResponse)
-        getIndividualsResponse.responses().forEach { it.validate() }
+
+        val page = individualService.retrieveMany()
+
+        page.response().validate()
     }
 }
