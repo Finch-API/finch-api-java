@@ -11,15 +11,16 @@ import org.junit.jupiter.api.extension.ExtendWith
 class CompanyServiceTest {
 
     @Test
-    fun callRetrieve() {
+    fun retrieve() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val companyService = client.hris().company()
+
         val company = companyService.retrieve()
-        println(company)
+
         company.validate()
     }
 }

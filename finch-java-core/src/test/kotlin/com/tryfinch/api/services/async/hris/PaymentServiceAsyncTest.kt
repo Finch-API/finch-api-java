@@ -1,34 +1,35 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking.hris
+package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.HrisPaymentListParams
 import java.time.LocalDate
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class PaymentServiceTest {
+class PaymentServiceAsyncTest {
 
     @Test
     fun list() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val paymentService = client.hris().payments()
+        val paymentServiceAsync = client.hris().payments()
 
-        val page =
-            paymentService.list(
+        val pageFuture =
+            paymentServiceAsync.list(
                 HrisPaymentListParams.builder()
                     .endDate(LocalDate.parse("2021-01-01"))
                     .startDate(LocalDate.parse("2021-01-01"))
                     .build()
             )
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 }

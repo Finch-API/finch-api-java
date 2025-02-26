@@ -1,26 +1,27 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking
+package com.tryfinch.api.services.async
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class ProviderServiceTest {
+class ProviderServiceAsyncTest {
 
     @Test
     fun list() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val providerService = client.providers()
+        val providerServiceAsync = client.providers()
 
-        val page = providerService.list()
+        val pageFuture = providerServiceAsync.list()
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 }

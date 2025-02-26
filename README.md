@@ -95,7 +95,6 @@ FinchClient client = FinchOkHttpClient.builder()
     // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
     .fromEnv()
     .accessToken("My Access Token")
-    .accessToken("My Access Token")
     .build();
 ```
 
@@ -290,8 +289,8 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
-    .accessToken("My Access Token")
     .maxRetries(4)
+    .accessToken("My Access Token")
     .build();
 ```
 
@@ -317,8 +316,8 @@ import java.time.Duration;
 
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
-    .accessToken("My Access Token")
     .timeout(Duration.ofSeconds(30))
+    .accessToken("My Access Token")
     .build();
 ```
 
@@ -334,12 +333,12 @@ import java.net.Proxy;
 
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
-    .accessToken("My Access Token")
     .proxy(new Proxy(
       Proxy.Type.HTTP, new InetSocketAddress(
         "https://example.com", 8080
       )
     ))
+    .accessToken("My Access Token")
     .build();
 ```
 
@@ -457,8 +456,8 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
     .fromEnv()
-    .accessToken("My Access Token")
     .responseValidation(true)
+    .accessToken("My Access Token")
     .build();
 ```
 

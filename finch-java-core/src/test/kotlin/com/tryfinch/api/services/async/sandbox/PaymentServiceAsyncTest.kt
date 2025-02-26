@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking.sandbox
+package com.tryfinch.api.services.async.sandbox
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.BenefitType
 import com.tryfinch.api.models.Money
@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class PaymentServiceTest {
+class PaymentServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val paymentService = client.sandbox().payment()
+        val paymentServiceAsync = client.sandbox().payment()
 
-        val payment =
-            paymentService.create(
+        val paymentFuture =
+            paymentServiceAsync.create(
                 SandboxPaymentCreateParams.builder()
                     .endDate("end_date")
                     .addPayStatement(
@@ -148,6 +148,7 @@ class PaymentServiceTest {
                     .build()
             )
 
+        val payment = paymentFuture.get()
         payment.validate()
     }
 }
