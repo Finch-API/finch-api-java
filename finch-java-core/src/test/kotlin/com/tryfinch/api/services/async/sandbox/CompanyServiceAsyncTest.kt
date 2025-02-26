@@ -1,28 +1,28 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking.sandbox
+package com.tryfinch.api.services.async.sandbox
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.Location
 import com.tryfinch.api.models.SandboxCompanyUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class CompanyServiceTest {
+class CompanyServiceAsyncTest {
 
     @Test
     fun update() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val companyService = client.sandbox().company()
+        val companyServiceAsync = client.sandbox().company()
 
-        val company =
-            companyService.update(
+        val companyFuture =
+            companyServiceAsync.update(
                 SandboxCompanyUpdateParams.builder()
                     .addAccount(
                         SandboxCompanyUpdateParams.Account.builder()
@@ -68,6 +68,7 @@ class CompanyServiceTest {
                     .build()
             )
 
+        val company = companyFuture.get()
         company.validate()
     }
 }

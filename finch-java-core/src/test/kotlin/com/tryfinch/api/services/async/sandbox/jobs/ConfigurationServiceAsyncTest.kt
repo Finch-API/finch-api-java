@@ -1,42 +1,43 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking.sandbox.jobs
+package com.tryfinch.api.services.async.sandbox.jobs
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.SandboxJobConfiguration
 import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class ConfigurationServiceTest {
+class ConfigurationServiceAsyncTest {
 
     @Test
     fun retrieve() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val configurationService = client.sandbox().jobs().configuration()
+        val configurationServiceAsync = client.sandbox().jobs().configuration()
 
-        val sandboxJobConfigurations = configurationService.retrieve()
+        val sandboxJobConfigurationsFuture = configurationServiceAsync.retrieve()
 
+        val sandboxJobConfigurations = sandboxJobConfigurationsFuture.get()
         sandboxJobConfigurations.forEach { it.validate() }
     }
 
     @Test
     fun update() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val configurationService = client.sandbox().jobs().configuration()
+        val configurationServiceAsync = client.sandbox().jobs().configuration()
 
-        val sandboxJobConfiguration =
-            configurationService.update(
+        val sandboxJobConfigurationFuture =
+            configurationServiceAsync.update(
                 SandboxJobConfigurationUpdateParams.builder()
                     .sandboxJobConfiguration(
                         SandboxJobConfiguration.builder()
@@ -47,6 +48,7 @@ class ConfigurationServiceTest {
                     .build()
             )
 
+        val sandboxJobConfiguration = sandboxJobConfigurationFuture.get()
         sandboxJobConfiguration.validate()
     }
 }

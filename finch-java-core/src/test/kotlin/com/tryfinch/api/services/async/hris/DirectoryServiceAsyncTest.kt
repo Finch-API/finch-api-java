@@ -1,40 +1,42 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking.hris
+package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class DirectoryServiceTest {
+class DirectoryServiceAsyncTest {
 
     @Test
     fun list() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val directoryService = client.hris().directory()
+        val directoryServiceAsync = client.hris().directory()
 
-        val page = directoryService.list()
+        val pageFuture = directoryServiceAsync.list()
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 
     @Test
     fun listIndividuals() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val directoryService = client.hris().directory()
+        val directoryServiceAsync = client.hris().directory()
 
-        val page = directoryService.listIndividuals()
+        val pageFuture = directoryServiceAsync.listIndividuals()
 
+        val page = pageFuture.get()
         page.response().validate()
     }
 }
