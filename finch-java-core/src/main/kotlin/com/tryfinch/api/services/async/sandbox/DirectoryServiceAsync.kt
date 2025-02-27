@@ -14,7 +14,11 @@ interface DirectoryServiceAsync {
     /** Add new individuals to a sandbox company */
     @JvmOverloads
     fun create(
-        params: SandboxDirectoryCreateParams,
+        params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<JsonValue>>
+
+    /** Add new individuals to a sandbox company */
+    fun create(requestOptions: RequestOptions): CompletableFuture<List<JsonValue>> =
+        create(SandboxDirectoryCreateParams.none(), requestOptions)
 }

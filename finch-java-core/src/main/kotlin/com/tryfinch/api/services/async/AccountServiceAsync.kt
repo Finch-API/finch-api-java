@@ -16,14 +16,22 @@ interface AccountServiceAsync {
     /** Disconnect one or more `access_token`s from your application. */
     @JvmOverloads
     fun disconnect(
-        params: AccountDisconnectParams,
+        params: AccountDisconnectParams = AccountDisconnectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DisconnectResponse>
+
+    /** Disconnect one or more `access_token`s from your application. */
+    fun disconnect(requestOptions: RequestOptions): CompletableFuture<DisconnectResponse> =
+        disconnect(AccountDisconnectParams.none(), requestOptions)
 
     /** Read account information associated with an `access_token` */
     @JvmOverloads
     fun introspect(
-        params: AccountIntrospectParams,
+        params: AccountIntrospectParams = AccountIntrospectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Introspection>
+
+    /** Read account information associated with an `access_token` */
+    fun introspect(requestOptions: RequestOptions): CompletableFuture<Introspection> =
+        introspect(AccountIntrospectParams.none(), requestOptions)
 }

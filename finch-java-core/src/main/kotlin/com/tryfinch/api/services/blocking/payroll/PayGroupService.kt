@@ -22,7 +22,11 @@ interface PayGroupService {
     /** Read company pay groups and frequencies */
     @JvmOverloads
     fun list(
-        params: PayrollPayGroupListParams,
+        params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayrollPayGroupListPage
+
+    /** Read company pay groups and frequencies */
+    fun list(requestOptions: RequestOptions): PayrollPayGroupListPage =
+        list(PayrollPayGroupListParams.none(), requestOptions)
 }

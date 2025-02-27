@@ -26,7 +26,14 @@ interface AccountServiceAsync {
      */
     @JvmOverloads
     fun update(
-        params: SandboxConnectionAccountUpdateParams,
+        params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AccountUpdateResponse>
+
+    /**
+     * Update an existing sandbox account. Change the connection status to understand how the Finch
+     * API responds.
+     */
+    fun update(requestOptions: RequestOptions): CompletableFuture<AccountUpdateResponse> =
+        update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 }
