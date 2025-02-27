@@ -747,7 +747,7 @@ private constructor(
             private val amount: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("attributes")
             @ExcludeMissing
-            private val attributes: JsonField<Metadata> = JsonMissing.of(),
+            private val attributes: JsonField<Attributes> = JsonMissing.of(),
             @JsonProperty("currency")
             @ExcludeMissing
             private val currency: JsonField<String> = JsonMissing.of(),
@@ -767,7 +767,7 @@ private constructor(
             /** The earnings amount in cents. */
             fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-            fun attributes(): Optional<Metadata> =
+            fun attributes(): Optional<Attributes> =
                 Optional.ofNullable(attributes.getNullable("attributes"))
 
             /** The earnings currency code. */
@@ -790,7 +790,7 @@ private constructor(
 
             @JsonProperty("attributes")
             @ExcludeMissing
-            fun _attributes(): JsonField<Metadata> = attributes
+            fun _attributes(): JsonField<Attributes> = attributes
 
             /** The earnings currency code. */
             @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
@@ -838,7 +838,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
-                private var attributes: JsonField<Metadata> = JsonMissing.of()
+                private var attributes: JsonField<Attributes> = JsonMissing.of()
                 private var currency: JsonField<String> = JsonMissing.of()
                 private var hours: JsonField<Double> = JsonMissing.of()
                 private var name: JsonField<String> = JsonMissing.of()
@@ -869,11 +869,13 @@ private constructor(
                 /** The earnings amount in cents. */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                fun attributes(attributes: Metadata?) = attributes(JsonField.ofNullable(attributes))
+                fun attributes(attributes: Attributes?) =
+                    attributes(JsonField.ofNullable(attributes))
 
-                fun attributes(attributes: Optional<Metadata>) = attributes(attributes.orElse(null))
+                fun attributes(attributes: Optional<Attributes>) =
+                    attributes(attributes.orElse(null))
 
-                fun attributes(attributes: JsonField<Metadata>) = apply {
+                fun attributes(attributes: JsonField<Attributes>) = apply {
                     this.attributes = attributes
                 }
 
@@ -964,32 +966,22 @@ private constructor(
             }
 
             @NoAutoDetect
-            class Metadata
+            class Attributes
             @JsonCreator
             private constructor(
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
+                private val metadata: JsonField<Metadata> = JsonMissing.of(),
                 @JsonAnySetter
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
-                fun metadata(): Optional<InnerMetadata> =
+                fun metadata(): Optional<Metadata> =
                     Optional.ofNullable(metadata.getNullable("metadata"))
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                fun _metadata(): JsonField<InnerMetadata> = metadata
+                fun _metadata(): JsonField<Metadata> = metadata
 
                 @JsonAnyGetter
                 @ExcludeMissing
@@ -997,7 +989,7 @@ private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): Metadata = apply {
+                fun validate(): Attributes = apply {
                     if (validated) {
                         return@apply
                     }
@@ -1013,33 +1005,21 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                /** A builder for [Metadata]. */
+                /** A builder for [Attributes]. */
                 class Builder internal constructor() {
 
-                    private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
+                    private var metadata: JsonField<Metadata> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(metadata: Metadata) = apply {
-                        this.metadata = metadata.metadata
-                        additionalProperties = metadata.additionalProperties.toMutableMap()
+                    internal fun from(attributes: Attributes) = apply {
+                        metadata = attributes.metadata
+                        additionalProperties = attributes.additionalProperties.toMutableMap()
                     }
 
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
+                    fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: JsonField<InnerMetadata>) = apply {
-                        this.metadata = metadata
-                    }
+                    fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -1063,21 +1043,37 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
-                    fun build(): Metadata = Metadata(metadata, additionalProperties.toImmutable())
+                    fun build(): Attributes =
+                        Attributes(metadata, additionalProperties.toImmutable())
                 }
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
                 @NoAutoDetect
-                class InnerMetadata
+                class Metadata
                 @JsonCreator
                 private constructor(
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
                     @JsonAnySetter
-                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    fun metadata(): Optional<InnerMetadata> =
+                        Optional.ofNullable(metadata.getNullable("metadata"))
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    fun _metadata(): JsonField<InnerMetadata> = metadata
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -1085,11 +1081,12 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): InnerMetadata = apply {
+                    fun validate(): Metadata = apply {
                         if (validated) {
                             return@apply
                         }
 
+                        metadata().ifPresent { it.validate() }
                         validated = true
                     }
 
@@ -1100,15 +1097,33 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [InnerMetadata]. */
+                    /** A builder for [Metadata]. */
                     class Builder internal constructor() {
 
+                        private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(innerMetadata: InnerMetadata) = apply {
-                            additionalProperties = innerMetadata.additionalProperties.toMutableMap()
+                        internal fun from(metadata: Metadata) = apply {
+                            this.metadata = metadata.metadata
+                            additionalProperties = metadata.additionalProperties.toMutableMap()
+                        }
+
+                        /**
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
+                         */
+                        fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
+
+                        /**
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
+                         */
+                        fun metadata(metadata: JsonField<InnerMetadata>) = apply {
+                            this.metadata = metadata
                         }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1133,8 +1148,99 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
-                        fun build(): InnerMetadata =
-                            InnerMetadata(additionalProperties.toImmutable())
+                        fun build(): Metadata =
+                            Metadata(metadata, additionalProperties.toImmutable())
+                    }
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    @NoAutoDetect
+                    class InnerMetadata
+                    @JsonCreator
+                    private constructor(
+                        @JsonAnySetter
+                        private val additionalProperties: Map<String, JsonValue> =
+                            immutableEmptyMap()
+                    ) {
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                        private var validated: Boolean = false
+
+                        fun validate(): InnerMetadata = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            validated = true
+                        }
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [InnerMetadata]. */
+                        class Builder internal constructor() {
+
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(innerMetadata: InnerMetadata) = apply {
+                                additionalProperties =
+                                    innerMetadata.additionalProperties.toMutableMap()
+                            }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            fun build(): InnerMetadata =
+                                InnerMetadata(additionalProperties.toImmutable())
+                        }
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        }
+
+                        /* spotless:off */
+                        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                        /* spotless:on */
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "InnerMetadata{additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -1142,17 +1248,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "InnerMetadata{additionalProperties=$additionalProperties}"
+                        "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -1160,7 +1266,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
@@ -1170,7 +1276,7 @@ private constructor(
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                    "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
             }
 
             /** The type of earning. */
@@ -1370,7 +1476,7 @@ private constructor(
             private val amount: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("attributes")
             @ExcludeMissing
-            private val attributes: JsonField<Metadata> = JsonMissing.of(),
+            private val attributes: JsonField<Attributes> = JsonMissing.of(),
             @JsonProperty("currency")
             @ExcludeMissing
             private val currency: JsonField<String> = JsonMissing.of(),
@@ -1390,7 +1496,7 @@ private constructor(
             /** The deduction amount in cents. */
             fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-            fun attributes(): Optional<Metadata> =
+            fun attributes(): Optional<Attributes> =
                 Optional.ofNullable(attributes.getNullable("attributes"))
 
             /** The deduction currency. */
@@ -1410,7 +1516,7 @@ private constructor(
 
             @JsonProperty("attributes")
             @ExcludeMissing
-            fun _attributes(): JsonField<Metadata> = attributes
+            fun _attributes(): JsonField<Attributes> = attributes
 
             /** The deduction currency. */
             @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
@@ -1455,7 +1561,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
-                private var attributes: JsonField<Metadata> = JsonMissing.of()
+                private var attributes: JsonField<Attributes> = JsonMissing.of()
                 private var currency: JsonField<String> = JsonMissing.of()
                 private var name: JsonField<String> = JsonMissing.of()
                 private var preTax: JsonField<Boolean> = JsonMissing.of()
@@ -1486,11 +1592,13 @@ private constructor(
                 /** The deduction amount in cents. */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                fun attributes(attributes: Metadata?) = attributes(JsonField.ofNullable(attributes))
+                fun attributes(attributes: Attributes?) =
+                    attributes(JsonField.ofNullable(attributes))
 
-                fun attributes(attributes: Optional<Metadata>) = attributes(attributes.orElse(null))
+                fun attributes(attributes: Optional<Attributes>) =
+                    attributes(attributes.orElse(null))
 
-                fun attributes(attributes: JsonField<Metadata>) = apply {
+                fun attributes(attributes: JsonField<Attributes>) = apply {
                     this.attributes = attributes
                 }
 
@@ -1569,32 +1677,22 @@ private constructor(
             }
 
             @NoAutoDetect
-            class Metadata
+            class Attributes
             @JsonCreator
             private constructor(
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
+                private val metadata: JsonField<Metadata> = JsonMissing.of(),
                 @JsonAnySetter
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
-                fun metadata(): Optional<InnerMetadata> =
+                fun metadata(): Optional<Metadata> =
                     Optional.ofNullable(metadata.getNullable("metadata"))
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                fun _metadata(): JsonField<InnerMetadata> = metadata
+                fun _metadata(): JsonField<Metadata> = metadata
 
                 @JsonAnyGetter
                 @ExcludeMissing
@@ -1602,7 +1700,7 @@ private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): Metadata = apply {
+                fun validate(): Attributes = apply {
                     if (validated) {
                         return@apply
                     }
@@ -1618,33 +1716,21 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                /** A builder for [Metadata]. */
+                /** A builder for [Attributes]. */
                 class Builder internal constructor() {
 
-                    private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
+                    private var metadata: JsonField<Metadata> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(metadata: Metadata) = apply {
-                        this.metadata = metadata.metadata
-                        additionalProperties = metadata.additionalProperties.toMutableMap()
+                    internal fun from(attributes: Attributes) = apply {
+                        metadata = attributes.metadata
+                        additionalProperties = attributes.additionalProperties.toMutableMap()
                     }
 
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
+                    fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: JsonField<InnerMetadata>) = apply {
-                        this.metadata = metadata
-                    }
+                    fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -1668,21 +1754,37 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
-                    fun build(): Metadata = Metadata(metadata, additionalProperties.toImmutable())
+                    fun build(): Attributes =
+                        Attributes(metadata, additionalProperties.toImmutable())
                 }
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
                 @NoAutoDetect
-                class InnerMetadata
+                class Metadata
                 @JsonCreator
                 private constructor(
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
                     @JsonAnySetter
-                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    fun metadata(): Optional<InnerMetadata> =
+                        Optional.ofNullable(metadata.getNullable("metadata"))
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    fun _metadata(): JsonField<InnerMetadata> = metadata
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -1690,11 +1792,12 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): InnerMetadata = apply {
+                    fun validate(): Metadata = apply {
                         if (validated) {
                             return@apply
                         }
 
+                        metadata().ifPresent { it.validate() }
                         validated = true
                     }
 
@@ -1705,15 +1808,33 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [InnerMetadata]. */
+                    /** A builder for [Metadata]. */
                     class Builder internal constructor() {
 
+                        private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(innerMetadata: InnerMetadata) = apply {
-                            additionalProperties = innerMetadata.additionalProperties.toMutableMap()
+                        internal fun from(metadata: Metadata) = apply {
+                            this.metadata = metadata.metadata
+                            additionalProperties = metadata.additionalProperties.toMutableMap()
+                        }
+
+                        /**
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
+                         */
+                        fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
+
+                        /**
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
+                         */
+                        fun metadata(metadata: JsonField<InnerMetadata>) = apply {
+                            this.metadata = metadata
                         }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1738,8 +1859,99 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
-                        fun build(): InnerMetadata =
-                            InnerMetadata(additionalProperties.toImmutable())
+                        fun build(): Metadata =
+                            Metadata(metadata, additionalProperties.toImmutable())
+                    }
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    @NoAutoDetect
+                    class InnerMetadata
+                    @JsonCreator
+                    private constructor(
+                        @JsonAnySetter
+                        private val additionalProperties: Map<String, JsonValue> =
+                            immutableEmptyMap()
+                    ) {
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                        private var validated: Boolean = false
+
+                        fun validate(): InnerMetadata = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            validated = true
+                        }
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [InnerMetadata]. */
+                        class Builder internal constructor() {
+
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(innerMetadata: InnerMetadata) = apply {
+                                additionalProperties =
+                                    innerMetadata.additionalProperties.toMutableMap()
+                            }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            fun build(): InnerMetadata =
+                                InnerMetadata(additionalProperties.toImmutable())
+                        }
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        }
+
+                        /* spotless:off */
+                        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                        /* spotless:on */
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "InnerMetadata{additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -1747,17 +1959,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "InnerMetadata{additionalProperties=$additionalProperties}"
+                        "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -1765,7 +1977,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
@@ -1775,7 +1987,7 @@ private constructor(
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                    "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1805,7 +2017,7 @@ private constructor(
             private val amount: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("attributes")
             @ExcludeMissing
-            private val attributes: JsonField<Metadata> = JsonMissing.of(),
+            private val attributes: JsonField<Attributes> = JsonMissing.of(),
             @JsonProperty("currency")
             @ExcludeMissing
             private val currency: JsonField<String> = JsonMissing.of(),
@@ -1822,7 +2034,7 @@ private constructor(
             /** The contribution amount in cents. */
             fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-            fun attributes(): Optional<Metadata> =
+            fun attributes(): Optional<Attributes> =
                 Optional.ofNullable(attributes.getNullable("attributes"))
 
             /** The contribution currency. */
@@ -1839,7 +2051,7 @@ private constructor(
 
             @JsonProperty("attributes")
             @ExcludeMissing
-            fun _attributes(): JsonField<Metadata> = attributes
+            fun _attributes(): JsonField<Attributes> = attributes
 
             /** The contribution currency. */
             @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
@@ -1880,7 +2092,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
-                private var attributes: JsonField<Metadata> = JsonMissing.of()
+                private var attributes: JsonField<Attributes> = JsonMissing.of()
                 private var currency: JsonField<String> = JsonMissing.of()
                 private var name: JsonField<String> = JsonMissing.of()
                 private var type: JsonField<BenefitType> = JsonMissing.of()
@@ -1909,11 +2121,13 @@ private constructor(
                 /** The contribution amount in cents. */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                fun attributes(attributes: Metadata?) = attributes(JsonField.ofNullable(attributes))
+                fun attributes(attributes: Attributes?) =
+                    attributes(JsonField.ofNullable(attributes))
 
-                fun attributes(attributes: Optional<Metadata>) = attributes(attributes.orElse(null))
+                fun attributes(attributes: Optional<Attributes>) =
+                    attributes(attributes.orElse(null))
 
-                fun attributes(attributes: JsonField<Metadata>) = apply {
+                fun attributes(attributes: JsonField<Attributes>) = apply {
                     this.attributes = attributes
                 }
 
@@ -1978,32 +2192,22 @@ private constructor(
             }
 
             @NoAutoDetect
-            class Metadata
+            class Attributes
             @JsonCreator
             private constructor(
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
+                private val metadata: JsonField<Metadata> = JsonMissing.of(),
                 @JsonAnySetter
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
-                fun metadata(): Optional<InnerMetadata> =
+                fun metadata(): Optional<Metadata> =
                     Optional.ofNullable(metadata.getNullable("metadata"))
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                fun _metadata(): JsonField<InnerMetadata> = metadata
+                fun _metadata(): JsonField<Metadata> = metadata
 
                 @JsonAnyGetter
                 @ExcludeMissing
@@ -2011,7 +2215,7 @@ private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): Metadata = apply {
+                fun validate(): Attributes = apply {
                     if (validated) {
                         return@apply
                     }
@@ -2027,33 +2231,21 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                /** A builder for [Metadata]. */
+                /** A builder for [Attributes]. */
                 class Builder internal constructor() {
 
-                    private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
+                    private var metadata: JsonField<Metadata> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(metadata: Metadata) = apply {
-                        this.metadata = metadata.metadata
-                        additionalProperties = metadata.additionalProperties.toMutableMap()
+                    internal fun from(attributes: Attributes) = apply {
+                        metadata = attributes.metadata
+                        additionalProperties = attributes.additionalProperties.toMutableMap()
                     }
 
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
+                    fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: JsonField<InnerMetadata>) = apply {
-                        this.metadata = metadata
-                    }
+                    fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -2077,21 +2269,37 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
-                    fun build(): Metadata = Metadata(metadata, additionalProperties.toImmutable())
+                    fun build(): Attributes =
+                        Attributes(metadata, additionalProperties.toImmutable())
                 }
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
                 @NoAutoDetect
-                class InnerMetadata
+                class Metadata
                 @JsonCreator
                 private constructor(
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
                     @JsonAnySetter
-                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    fun metadata(): Optional<InnerMetadata> =
+                        Optional.ofNullable(metadata.getNullable("metadata"))
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    fun _metadata(): JsonField<InnerMetadata> = metadata
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -2099,11 +2307,12 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): InnerMetadata = apply {
+                    fun validate(): Metadata = apply {
                         if (validated) {
                             return@apply
                         }
 
+                        metadata().ifPresent { it.validate() }
                         validated = true
                     }
 
@@ -2114,15 +2323,33 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [InnerMetadata]. */
+                    /** A builder for [Metadata]. */
                     class Builder internal constructor() {
 
+                        private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(innerMetadata: InnerMetadata) = apply {
-                            additionalProperties = innerMetadata.additionalProperties.toMutableMap()
+                        internal fun from(metadata: Metadata) = apply {
+                            this.metadata = metadata.metadata
+                            additionalProperties = metadata.additionalProperties.toMutableMap()
+                        }
+
+                        /**
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
+                         */
+                        fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
+
+                        /**
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
+                         */
+                        fun metadata(metadata: JsonField<InnerMetadata>) = apply {
+                            this.metadata = metadata
                         }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2147,8 +2374,99 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
-                        fun build(): InnerMetadata =
-                            InnerMetadata(additionalProperties.toImmutable())
+                        fun build(): Metadata =
+                            Metadata(metadata, additionalProperties.toImmutable())
+                    }
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    @NoAutoDetect
+                    class InnerMetadata
+                    @JsonCreator
+                    private constructor(
+                        @JsonAnySetter
+                        private val additionalProperties: Map<String, JsonValue> =
+                            immutableEmptyMap()
+                    ) {
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                        private var validated: Boolean = false
+
+                        fun validate(): InnerMetadata = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            validated = true
+                        }
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [InnerMetadata]. */
+                        class Builder internal constructor() {
+
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(innerMetadata: InnerMetadata) = apply {
+                                additionalProperties =
+                                    innerMetadata.additionalProperties.toMutableMap()
+                            }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            fun build(): InnerMetadata =
+                                InnerMetadata(additionalProperties.toImmutable())
+                        }
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        }
+
+                        /* spotless:off */
+                        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                        /* spotless:on */
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "InnerMetadata{additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -2156,17 +2474,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "InnerMetadata{additionalProperties=$additionalProperties}"
+                        "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -2174,7 +2492,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
@@ -2184,7 +2502,7 @@ private constructor(
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                    "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2319,7 +2637,7 @@ private constructor(
             private val amount: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("attributes")
             @ExcludeMissing
-            private val attributes: JsonField<Metadata> = JsonMissing.of(),
+            private val attributes: JsonField<Attributes> = JsonMissing.of(),
             @JsonProperty("currency")
             @ExcludeMissing
             private val currency: JsonField<String> = JsonMissing.of(),
@@ -2339,7 +2657,7 @@ private constructor(
             /** The tax amount in cents. */
             fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-            fun attributes(): Optional<Metadata> =
+            fun attributes(): Optional<Attributes> =
                 Optional.ofNullable(attributes.getNullable("attributes"))
 
             /** The currency code. */
@@ -2360,7 +2678,7 @@ private constructor(
 
             @JsonProperty("attributes")
             @ExcludeMissing
-            fun _attributes(): JsonField<Metadata> = attributes
+            fun _attributes(): JsonField<Attributes> = attributes
 
             /** The currency code. */
             @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
@@ -2405,7 +2723,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
-                private var attributes: JsonField<Metadata> = JsonMissing.of()
+                private var attributes: JsonField<Attributes> = JsonMissing.of()
                 private var currency: JsonField<String> = JsonMissing.of()
                 private var employer: JsonField<Boolean> = JsonMissing.of()
                 private var name: JsonField<String> = JsonMissing.of()
@@ -2436,11 +2754,13 @@ private constructor(
                 /** The tax amount in cents. */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                fun attributes(attributes: Metadata?) = attributes(JsonField.ofNullable(attributes))
+                fun attributes(attributes: Attributes?) =
+                    attributes(JsonField.ofNullable(attributes))
 
-                fun attributes(attributes: Optional<Metadata>) = attributes(attributes.orElse(null))
+                fun attributes(attributes: Optional<Attributes>) =
+                    attributes(attributes.orElse(null))
 
-                fun attributes(attributes: JsonField<Metadata>) = apply {
+                fun attributes(attributes: JsonField<Attributes>) = apply {
                     this.attributes = attributes
                 }
 
@@ -2520,32 +2840,22 @@ private constructor(
             }
 
             @NoAutoDetect
-            class Metadata
+            class Attributes
             @JsonCreator
             private constructor(
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
+                private val metadata: JsonField<Metadata> = JsonMissing.of(),
                 @JsonAnySetter
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
-                fun metadata(): Optional<InnerMetadata> =
+                fun metadata(): Optional<Metadata> =
                     Optional.ofNullable(metadata.getNullable("metadata"))
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
                 @JsonProperty("metadata")
                 @ExcludeMissing
-                fun _metadata(): JsonField<InnerMetadata> = metadata
+                fun _metadata(): JsonField<Metadata> = metadata
 
                 @JsonAnyGetter
                 @ExcludeMissing
@@ -2553,7 +2863,7 @@ private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): Metadata = apply {
+                fun validate(): Attributes = apply {
                     if (validated) {
                         return@apply
                     }
@@ -2569,33 +2879,21 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                /** A builder for [Metadata]. */
+                /** A builder for [Attributes]. */
                 class Builder internal constructor() {
 
-                    private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
+                    private var metadata: JsonField<Metadata> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(metadata: Metadata) = apply {
-                        this.metadata = metadata.metadata
-                        additionalProperties = metadata.additionalProperties.toMutableMap()
+                    internal fun from(attributes: Attributes) = apply {
+                        metadata = attributes.metadata
+                        additionalProperties = attributes.additionalProperties.toMutableMap()
                     }
 
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
+                    fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: JsonField<InnerMetadata>) = apply {
-                        this.metadata = metadata
-                    }
+                    fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -2619,21 +2917,37 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
-                    fun build(): Metadata = Metadata(metadata, additionalProperties.toImmutable())
+                    fun build(): Attributes =
+                        Attributes(metadata, additionalProperties.toImmutable())
                 }
 
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
                 @NoAutoDetect
-                class InnerMetadata
+                class Metadata
                 @JsonCreator
                 private constructor(
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
                     @JsonAnySetter
-                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
+                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    fun metadata(): Optional<InnerMetadata> =
+                        Optional.ofNullable(metadata.getNullable("metadata"))
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    fun _metadata(): JsonField<InnerMetadata> = metadata
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -2641,11 +2955,12 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): InnerMetadata = apply {
+                    fun validate(): Metadata = apply {
                         if (validated) {
                             return@apply
                         }
 
+                        metadata().ifPresent { it.validate() }
                         validated = true
                     }
 
@@ -2656,15 +2971,33 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [InnerMetadata]. */
+                    /** A builder for [Metadata]. */
                     class Builder internal constructor() {
 
+                        private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(innerMetadata: InnerMetadata) = apply {
-                            additionalProperties = innerMetadata.additionalProperties.toMutableMap()
+                        internal fun from(metadata: Metadata) = apply {
+                            this.metadata = metadata.metadata
+                            additionalProperties = metadata.additionalProperties.toMutableMap()
+                        }
+
+                        /**
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
+                         */
+                        fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
+
+                        /**
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
+                         */
+                        fun metadata(metadata: JsonField<InnerMetadata>) = apply {
+                            this.metadata = metadata
                         }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2689,8 +3022,99 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
-                        fun build(): InnerMetadata =
-                            InnerMetadata(additionalProperties.toImmutable())
+                        fun build(): Metadata =
+                            Metadata(metadata, additionalProperties.toImmutable())
+                    }
+
+                    /**
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
+                     */
+                    @NoAutoDetect
+                    class InnerMetadata
+                    @JsonCreator
+                    private constructor(
+                        @JsonAnySetter
+                        private val additionalProperties: Map<String, JsonValue> =
+                            immutableEmptyMap()
+                    ) {
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                        private var validated: Boolean = false
+
+                        fun validate(): InnerMetadata = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            validated = true
+                        }
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [InnerMetadata]. */
+                        class Builder internal constructor() {
+
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(innerMetadata: InnerMetadata) = apply {
+                                additionalProperties =
+                                    innerMetadata.additionalProperties.toMutableMap()
+                            }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            fun build(): InnerMetadata =
+                                InnerMetadata(additionalProperties.toImmutable())
+                        }
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        }
+
+                        /* spotless:off */
+                        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                        /* spotless:on */
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "InnerMetadata{additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -2698,17 +3122,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "InnerMetadata{additionalProperties=$additionalProperties}"
+                        "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -2716,7 +3140,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
@@ -2726,7 +3150,7 @@ private constructor(
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                    "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
             }
 
             /** The type of taxes. */
