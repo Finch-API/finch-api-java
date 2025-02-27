@@ -27,7 +27,7 @@ class SessionServiceTest {
                     .customerId("x")
                     .customerName("x")
                     .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
-                    .customerEmail("dev@stainlessapi.com")
+                    .customerEmail("dev@stainless.com")
                     .integration(
                         ConnectSessionNewParams.Integration.builder()
                             .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
