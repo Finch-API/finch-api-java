@@ -149,6 +149,8 @@ private constructor(
 
     companion object {
 
+        fun none(): SandboxConnectionAccountUpdateParams = builder().build()
+
         @JvmStatic fun builder() = Builder()
     }
 

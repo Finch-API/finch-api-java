@@ -4,8 +4,6 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.AccountDisconnectParams
-import com.tryfinch.api.models.AccountIntrospectParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -20,8 +18,7 @@ class AccountServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val accountService = client.account()
-        val disconnectResponse =
-            accountService.disconnect(AccountDisconnectParams.builder().build())
+        val disconnectResponse = accountService.disconnect()
         println(disconnectResponse)
         disconnectResponse.validate()
     }
@@ -34,7 +31,7 @@ class AccountServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val accountService = client.account()
-        val introspection = accountService.introspect(AccountIntrospectParams.builder().build())
+        val introspection = accountService.introspect()
         println(introspection)
         introspection.validate()
     }

@@ -27,6 +27,8 @@ private constructor(
 
     companion object {
 
+        fun none(): ProviderListParams = builder().build()
+
         @JvmStatic fun builder() = Builder()
     }
 

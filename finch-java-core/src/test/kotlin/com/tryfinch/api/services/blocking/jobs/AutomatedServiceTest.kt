@@ -5,7 +5,6 @@ package com.tryfinch.api.services.blocking.jobs
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.JobAutomatedCreateParams
-import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -57,7 +56,7 @@ class AutomatedServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val automatedService = client.jobs().automated()
-        val response = automatedService.list(JobAutomatedListParams.builder().build())
+        val response = automatedService.list()
         println(response)
         response.data().forEach { it.validate() }
     }

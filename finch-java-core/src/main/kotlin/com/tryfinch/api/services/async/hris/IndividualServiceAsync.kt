@@ -14,7 +14,13 @@ interface IndividualServiceAsync {
     /** Read individual data, excluding income and employment data */
     @JvmOverloads
     fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams,
+        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisIndividualRetrieveManyPageAsync>
+
+    /** Read individual data, excluding income and employment data */
+    fun retrieveMany(
+        requestOptions: RequestOptions
+    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
+        retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 }

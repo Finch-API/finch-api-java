@@ -27,9 +27,16 @@ interface BenefitService {
      */
     @JvmOverloads
     fun create(
-        params: HrisBenefitCreateParams,
+        params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateCompanyBenefitsResponse
+
+    /**
+     * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
+     * view available types for each provider.
+     */
+    fun create(requestOptions: RequestOptions): CreateCompanyBenefitsResponse =
+        create(HrisBenefitCreateParams.none(), requestOptions)
 
     /** Lists deductions and contributions information for a given item */
     @JvmOverloads
@@ -48,14 +55,25 @@ interface BenefitService {
     /** List all company-wide deductions and contributions. */
     @JvmOverloads
     fun list(
-        params: HrisBenefitListParams,
+        params: HrisBenefitListParams = HrisBenefitListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListPage
+
+    /** List all company-wide deductions and contributions. */
+    fun list(requestOptions: RequestOptions): HrisBenefitListPage =
+        list(HrisBenefitListParams.none(), requestOptions)
 
     /** Get deductions metadata */
     @JvmOverloads
     fun listSupportedBenefits(
-        params: HrisBenefitListSupportedBenefitsParams,
+        params: HrisBenefitListSupportedBenefitsParams =
+            HrisBenefitListSupportedBenefitsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListSupportedBenefitsPage
+
+    /** Get deductions metadata */
+    fun listSupportedBenefits(
+        requestOptions: RequestOptions
+    ): HrisBenefitListSupportedBenefitsPage =
+        listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
 }

@@ -56,10 +56,7 @@ FinchClient client = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build();
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .candidateId("<candidate id>")
-    .build();
-HrisDirectoryListPage page = client.hris().directory().list(params);
+HrisDirectoryListPage page = client.hris().directory().list();
 ```
 
 ## Client configuration
@@ -145,8 +142,7 @@ FinchClient client = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build();
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
-CompletableFuture<HrisDirectoryListPageAsync> page = client.async().hris().directory().list(params);
+CompletableFuture<HrisDirectoryListPageAsync> page = client.async().hris().directory().list();
 ```
 
 Or create an asynchronous client from the beginning:
@@ -164,8 +160,7 @@ FinchClientAsync client = FinchOkHttpClientAsync.builder()
     .accessToken("My Access Token")
     .build();
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
-CompletableFuture<HrisDirectoryListPageAsync> page = client.hris().directory().list(params);
+CompletableFuture<HrisDirectoryListPageAsync> page = client.hris().directory().list();
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
@@ -310,9 +305,7 @@ To set a custom timeout, configure the method call using the `timeout` method:
 import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
-HrisDirectoryListPage page = client.hris().directory().list(
-  params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
-);
+HrisDirectoryListPage page = client.hris().directory().list(RequestOptions.builder().timeout(Duration.ofSeconds(30)).build());
 ```
 
 Or configure the default for all method calls at the client level:
@@ -453,9 +446,7 @@ Or configure the method call to validate the response using the `responseValidat
 import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
-HrisDirectoryListPage page = client.hris().directory().list(
-  params, RequestOptions.builder().responseValidation(true).build()
-);
+HrisDirectoryListPage page = client.hris().directory().list(RequestOptions.builder().responseValidation(true).build());
 ```
 
 Or configure the default for all method calls at the client level:

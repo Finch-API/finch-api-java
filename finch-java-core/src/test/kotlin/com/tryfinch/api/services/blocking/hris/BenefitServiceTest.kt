@@ -7,8 +7,6 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.BenefitFrequency
 import com.tryfinch.api.models.BenefitType
 import com.tryfinch.api.models.HrisBenefitCreateParams
-import com.tryfinch.api.models.HrisBenefitListParams
-import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
 import org.junit.jupiter.api.Test
@@ -80,8 +78,7 @@ class BenefitServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
-        val getCompanyBenefitsResponse =
-            benefitService.list(HrisBenefitListParams.builder().build())
+        val getCompanyBenefitsResponse = benefitService.list()
         println(getCompanyBenefitsResponse)
         getCompanyBenefitsResponse.items().forEach { it.validate() }
     }
@@ -94,10 +91,7 @@ class BenefitServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
-        val getCompanyBenefitsMetadataResponse =
-            benefitService.listSupportedBenefits(
-                HrisBenefitListSupportedBenefitsParams.builder().build()
-            )
+        val getCompanyBenefitsMetadataResponse = benefitService.listSupportedBenefits()
         println(getCompanyBenefitsMetadataResponse)
         getCompanyBenefitsMetadataResponse.items().forEach { it.validate() }
     }

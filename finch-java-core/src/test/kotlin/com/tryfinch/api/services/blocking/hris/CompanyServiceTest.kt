@@ -4,7 +4,6 @@ package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.HrisCompanyRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -19,7 +18,7 @@ class CompanyServiceTest {
                 .accessToken("My Access Token")
                 .build()
         val companyService = client.hris().company()
-        val company = companyService.retrieve(HrisCompanyRetrieveParams.builder().build())
+        val company = companyService.retrieve()
         println(company)
         company.validate()
     }
