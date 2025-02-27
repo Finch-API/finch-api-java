@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.1 (2025-02-27)
+
+Full Changelog: [v4.2.0...v4.2.1](https://github.com/Finch-API/finch-api-java/compare/v4.2.0...v4.2.1)
+
+### Documentation
+
+* update URLs from stainlessapi.com to stainless.com ([#467](https://github.com/Finch-API/finch-api-java/issues/467)) ([238b853](https://github.com/Finch-API/finch-api-java/commit/238b853b930f203759499a7d9540c35b586a3915))
+
 ## 4.2.0 (2025-02-27)
 
 Full Changelog: [v4.1.0...v4.2.0](https://github.com/Finch-API/finch-api-java/compare/v4.1.0...v4.2.0)
