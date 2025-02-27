@@ -1,5 +1,32 @@
 # Changelog
 
+## 4.2.0 (2025-02-27)
+
+Full Changelog: [v4.1.0...v4.2.0](https://github.com/Finch-API/finch-api-java/compare/v4.1.0...v4.2.0)
+
+### Features
+
+* **api:** api update ([#463](https://github.com/Finch-API/finch-api-java/issues/463)) ([2eb1796](https://github.com/Finch-API/finch-api-java/commit/2eb1796d9d21e25e60b5242041cc7ef9e7e1df0e))
+* **client:** allow omitting params object when none required ([#455](https://github.com/Finch-API/finch-api-java/issues/455)) ([cac8229](https://github.com/Finch-API/finch-api-java/commit/cac82298a09597acfa12046c8d6396aa08bb3807))
+
+
+### Bug Fixes
+
+* **client:** add missing `@JvmStatic` ([#457](https://github.com/Finch-API/finch-api-java/issues/457)) ([258a817](https://github.com/Finch-API/finch-api-java/commit/258a817f842e9344c107586f1ac7c879f6c1e3ae))
+
+
+### Chores
+
+* **client:** use deep identity methods for primitive array types ([#459](https://github.com/Finch-API/finch-api-java/issues/459)) ([4424710](https://github.com/Finch-API/finch-api-java/commit/4424710651151e1a0a075ee7a4c05ed96dc1ce64))
+* **internal:** add async service tests ([#458](https://github.com/Finch-API/finch-api-java/issues/458)) ([4698263](https://github.com/Finch-API/finch-api-java/commit/4698263f9490cc4df1b8412c084c1ade14c38b68))
+* **internal:** improve sync service tests ([4698263](https://github.com/Finch-API/finch-api-java/commit/4698263f9490cc4df1b8412c084c1ade14c38b68))
+* **internal:** refactor `ServiceParamsTest` ([#460](https://github.com/Finch-API/finch-api-java/issues/460)) ([c375fa6](https://github.com/Finch-API/finch-api-java/commit/c375fa659417a964964c150b7b0f8dc27ceab91f))
+
+
+### Documentation
+
+* readme parameter tweaks ([4698263](https://github.com/Finch-API/finch-api-java/commit/4698263f9490cc4df1b8412c084c1ade14c38b68))
+
 ## 4.1.0 (2025-02-25)
 
 Full Changelog: [v4.0.2...v4.1.0](https://github.com/Finch-API/finch-api-java/compare/v4.0.2...v4.1.0)
