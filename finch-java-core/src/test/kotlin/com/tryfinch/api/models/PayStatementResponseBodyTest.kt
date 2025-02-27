@@ -19,10 +19,19 @@ class PayStatementResponseBodyTest {
                             PayStatement.Earning.builder()
                                 .amount(0L)
                                 .attributes(
-                                    PayStatement.Earning.Metadata.builder()
+                                    PayStatement.Earning.Attributes.builder()
                                         .metadata(
-                                            PayStatement.Earning.Metadata.InnerMetadata.builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            PayStatement.Earning.Attributes.Metadata.builder()
+                                                .metadata(
+                                                    PayStatement.Earning.Attributes.Metadata
+                                                        .InnerMetadata
+                                                        .builder()
+                                                        .putAdditionalProperty(
+                                                            "foo",
+                                                            JsonValue.from("bar"),
+                                                        )
+                                                        .build()
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -37,11 +46,21 @@ class PayStatementResponseBodyTest {
                             PayStatement.EmployeeDeduction.builder()
                                 .amount(0L)
                                 .attributes(
-                                    PayStatement.EmployeeDeduction.Metadata.builder()
+                                    PayStatement.EmployeeDeduction.Attributes.builder()
                                         .metadata(
-                                            PayStatement.EmployeeDeduction.Metadata.InnerMetadata
+                                            PayStatement.EmployeeDeduction.Attributes.Metadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .metadata(
+                                                    PayStatement.EmployeeDeduction.Attributes
+                                                        .Metadata
+                                                        .InnerMetadata
+                                                        .builder()
+                                                        .putAdditionalProperty(
+                                                            "foo",
+                                                            JsonValue.from("bar"),
+                                                        )
+                                                        .build()
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -56,11 +75,21 @@ class PayStatementResponseBodyTest {
                             PayStatement.EmployerContribution.builder()
                                 .amount(0L)
                                 .attributes(
-                                    PayStatement.EmployerContribution.Metadata.builder()
+                                    PayStatement.EmployerContribution.Attributes.builder()
                                         .metadata(
-                                            PayStatement.EmployerContribution.Metadata.InnerMetadata
+                                            PayStatement.EmployerContribution.Attributes.Metadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .metadata(
+                                                    PayStatement.EmployerContribution.Attributes
+                                                        .Metadata
+                                                        .InnerMetadata
+                                                        .builder()
+                                                        .putAdditionalProperty(
+                                                            "foo",
+                                                            JsonValue.from("bar"),
+                                                        )
+                                                        .build()
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -78,10 +107,19 @@ class PayStatementResponseBodyTest {
                             PayStatement.Tax.builder()
                                 .amount(0L)
                                 .attributes(
-                                    PayStatement.Tax.Metadata.builder()
+                                    PayStatement.Tax.Attributes.builder()
                                         .metadata(
-                                            PayStatement.Tax.Metadata.InnerMetadata.builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            PayStatement.Tax.Attributes.Metadata.builder()
+                                                .metadata(
+                                                    PayStatement.Tax.Attributes.Metadata
+                                                        .InnerMetadata
+                                                        .builder()
+                                                        .putAdditionalProperty(
+                                                            "foo",
+                                                            JsonValue.from("bar"),
+                                                        )
+                                                        .build()
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -107,10 +145,19 @@ class PayStatementResponseBodyTest {
                         PayStatement.Earning.builder()
                             .amount(0L)
                             .attributes(
-                                PayStatement.Earning.Metadata.builder()
+                                PayStatement.Earning.Attributes.builder()
                                     .metadata(
-                                        PayStatement.Earning.Metadata.InnerMetadata.builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        PayStatement.Earning.Attributes.Metadata.builder()
+                                            .metadata(
+                                                PayStatement.Earning.Attributes.Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
                                             .build()
                                     )
                                     .build()
@@ -125,11 +172,19 @@ class PayStatementResponseBodyTest {
                         PayStatement.EmployeeDeduction.builder()
                             .amount(0L)
                             .attributes(
-                                PayStatement.EmployeeDeduction.Metadata.builder()
+                                PayStatement.EmployeeDeduction.Attributes.builder()
                                     .metadata(
-                                        PayStatement.EmployeeDeduction.Metadata.InnerMetadata
-                                            .builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        PayStatement.EmployeeDeduction.Attributes.Metadata.builder()
+                                            .metadata(
+                                                PayStatement.EmployeeDeduction.Attributes.Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
                                             .build()
                                     )
                                     .build()
@@ -144,11 +199,21 @@ class PayStatementResponseBodyTest {
                         PayStatement.EmployerContribution.builder()
                             .amount(0L)
                             .attributes(
-                                PayStatement.EmployerContribution.Metadata.builder()
+                                PayStatement.EmployerContribution.Attributes.builder()
                                     .metadata(
-                                        PayStatement.EmployerContribution.Metadata.InnerMetadata
+                                        PayStatement.EmployerContribution.Attributes.Metadata
                                             .builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            .metadata(
+                                                PayStatement.EmployerContribution.Attributes
+                                                    .Metadata
+                                                    .InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
                                             .build()
                                     )
                                     .build()
@@ -166,10 +231,18 @@ class PayStatementResponseBodyTest {
                         PayStatement.Tax.builder()
                             .amount(0L)
                             .attributes(
-                                PayStatement.Tax.Metadata.builder()
+                                PayStatement.Tax.Attributes.builder()
                                     .metadata(
-                                        PayStatement.Tax.Metadata.InnerMetadata.builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        PayStatement.Tax.Attributes.Metadata.builder()
+                                            .metadata(
+                                                PayStatement.Tax.Attributes.Metadata.InnerMetadata
+                                                    .builder()
+                                                    .putAdditionalProperty(
+                                                        "foo",
+                                                        JsonValue.from("bar"),
+                                                    )
+                                                    .build()
+                                            )
                                             .build()
                                     )
                                     .build()
