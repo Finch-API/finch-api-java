@@ -274,6 +274,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [EmploymentData]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -644,6 +645,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [CustomField]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -744,6 +746,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -859,6 +862,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Employment]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -1345,6 +1349,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Manager]. */
             @JvmStatic fun builder() = Builder()
         }
 

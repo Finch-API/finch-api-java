@@ -93,6 +93,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [BaseWebhookEvent].
+         *
+         * The following fields are required:
+         * ```java
+         * .accountId()
+         * .companyId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

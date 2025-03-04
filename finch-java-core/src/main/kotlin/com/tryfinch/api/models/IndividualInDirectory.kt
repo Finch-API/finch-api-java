@@ -112,6 +112,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [IndividualInDirectory]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -272,6 +273,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -371,6 +373,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Manager]. */
             @JvmStatic fun builder() = Builder()
         }
 

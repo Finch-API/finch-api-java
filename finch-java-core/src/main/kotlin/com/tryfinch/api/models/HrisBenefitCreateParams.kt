@@ -130,6 +130,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -229,6 +230,7 @@ private constructor(
 
         @JvmStatic fun none(): HrisBenefitCreateParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [HrisBenefitCreateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

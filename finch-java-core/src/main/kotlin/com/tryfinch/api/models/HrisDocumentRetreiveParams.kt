@@ -41,6 +41,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisDocumentRetreiveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .documentId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

@@ -93,6 +93,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -180,6 +181,10 @@ private constructor(
 
         @JvmStatic fun none(): HrisIndividualRetrieveManyParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisIndividualRetrieveManyParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -371,6 +376,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Options]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -480,6 +486,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Request]. */
             @JvmStatic fun builder() = Builder()
         }
 

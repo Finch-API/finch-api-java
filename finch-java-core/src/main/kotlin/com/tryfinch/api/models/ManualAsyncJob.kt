@@ -69,6 +69,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ManualAsyncJob].
+         *
+         * The following fields are required:
+         * ```java
+         * .body()
+         * .jobId()
+         * .status()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

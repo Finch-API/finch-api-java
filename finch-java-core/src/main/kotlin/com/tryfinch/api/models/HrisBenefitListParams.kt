@@ -29,6 +29,7 @@ private constructor(
 
         @JvmStatic fun none(): HrisBenefitListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [HrisBenefitListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

@@ -66,6 +66,9 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [BenefitFeaturesAndOperations].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -252,6 +255,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [BenefitFeature]. */
             @JvmStatic fun builder() = Builder()
         }
 

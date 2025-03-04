@@ -148,6 +148,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [PayStatement]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -438,6 +439,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Earning]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -604,6 +606,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Attributes]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -695,6 +698,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -782,6 +786,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerMetadata].
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -1148,6 +1156,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [EmployeeDeduction]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -1302,6 +1311,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Attributes]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1393,6 +1403,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -1480,6 +1491,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerMetadata].
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -1669,6 +1684,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [EmployerContribution]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -1807,6 +1823,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Attributes]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1898,6 +1915,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -1985,6 +2003,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerMetadata].
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 
@@ -2284,6 +2306,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Tax]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -2438,6 +2461,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Attributes]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2529,6 +2553,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -2616,6 +2641,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerMetadata].
+                         */
                         @JvmStatic fun builder() = Builder()
                     }
 

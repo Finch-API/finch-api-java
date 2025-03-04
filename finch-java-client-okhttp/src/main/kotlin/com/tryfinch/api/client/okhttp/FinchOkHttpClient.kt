@@ -18,6 +18,7 @@ class FinchOkHttpClient private constructor() {
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [FinchOkHttpClient]. */
         @JvmStatic fun builder() = Builder()
 
         @JvmStatic fun fromEnv(): FinchClient = builder().fromEnv().build()
