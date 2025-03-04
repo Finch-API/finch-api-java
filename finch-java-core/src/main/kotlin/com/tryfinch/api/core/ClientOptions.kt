@@ -24,11 +24,19 @@ private constructor(
     @get:JvmName("responseValidation") val responseValidation: Boolean,
     @get:JvmName("timeout") val timeout: Timeout,
     @get:JvmName("maxRetries") val maxRetries: Int,
-    @get:JvmName("accessToken") val accessToken: String?,
-    @get:JvmName("clientId") val clientId: String?,
-    @get:JvmName("clientSecret") val clientSecret: String?,
-    @get:JvmName("webhookSecret") val webhookSecret: String?,
+    private val accessToken: String?,
+    private val clientId: String?,
+    private val clientSecret: String?,
+    private val webhookSecret: String?,
 ) {
+
+    fun accessToken(): Optional<String> = Optional.ofNullable(accessToken)
+
+    fun clientId(): Optional<String> = Optional.ofNullable(clientId)
+
+    fun clientSecret(): Optional<String> = Optional.ofNullable(clientSecret)
+
+    fun webhookSecret(): Optional<String> = Optional.ofNullable(webhookSecret)
 
     fun toBuilder() = Builder().from(this)
 
