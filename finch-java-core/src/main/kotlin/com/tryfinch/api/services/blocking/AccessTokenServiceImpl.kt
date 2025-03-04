@@ -11,8 +11,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
-import com.tryfinch.api.core.json
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.AccessTokenCreateParams

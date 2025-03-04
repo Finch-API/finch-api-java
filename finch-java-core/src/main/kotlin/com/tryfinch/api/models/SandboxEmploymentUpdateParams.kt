@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -478,14 +479,8 @@ private constructor(
              */
             fun addCustomField(customField: CustomField) = apply {
                 customFields =
-                    (customFields ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(customField)
+                    (customFields ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("customFields", it).add(customField)
                     }
             }
 
@@ -576,14 +571,8 @@ private constructor(
             /** The array of income history. */
             fun addIncomeHistory(incomeHistory: Income) = apply {
                 this.incomeHistory =
-                    (this.incomeHistory ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(incomeHistory)
+                    (this.incomeHistory ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("incomeHistory", it).add(incomeHistory)
                     }
             }
 
