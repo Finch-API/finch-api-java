@@ -38,6 +38,10 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val sync: FinchClient by lazy { FinchClientImpl(clientOptions) }
 
+    private val withRawResponse: FinchClientAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
     private val accessTokens: AccessTokenServiceAsync by lazy {
         AccessTokenServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -76,6 +80,8 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
 
     override fun sync(): FinchClient = sync
 
+    override fun withRawResponse(): FinchClientAsync.WithRawResponse = withRawResponse
+
     override fun accessTokens(): AccessTokenServiceAsync = accessTokens
 
     override fun hris(): HrisServiceAsync = hris
@@ -97,4 +103,69 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
     override fun connect(): ConnectServiceAsync = connect
 
     override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        FinchClientAsync.WithRawResponse {
+
+        private val accessTokens: AccessTokenServiceAsync.WithRawResponse by lazy {
+            AccessTokenServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val hris: HrisServiceAsync.WithRawResponse by lazy {
+            HrisServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val providers: ProviderServiceAsync.WithRawResponse by lazy {
+            ProviderServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val account: AccountServiceAsync.WithRawResponse by lazy {
+            AccountServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val webhooks: WebhookServiceAsync.WithRawResponse by lazy {
+            WebhookServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val requestForwarding: RequestForwardingServiceAsync.WithRawResponse by lazy {
+            RequestForwardingServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val jobs: JobServiceAsync.WithRawResponse by lazy {
+            JobServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val sandbox: SandboxServiceAsync.WithRawResponse by lazy {
+            SandboxServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val payroll: PayrollServiceAsync.WithRawResponse by lazy {
+            PayrollServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val connect: ConnectServiceAsync.WithRawResponse by lazy {
+            ConnectServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun accessTokens(): AccessTokenServiceAsync.WithRawResponse = accessTokens
+
+        override fun hris(): HrisServiceAsync.WithRawResponse = hris
+
+        override fun providers(): ProviderServiceAsync.WithRawResponse = providers
+
+        override fun account(): AccountServiceAsync.WithRawResponse = account
+
+        override fun webhooks(): WebhookServiceAsync.WithRawResponse = webhooks
+
+        override fun requestForwarding(): RequestForwardingServiceAsync.WithRawResponse =
+            requestForwarding
+
+        override fun jobs(): JobServiceAsync.WithRawResponse = jobs
+
+        override fun sandbox(): SandboxServiceAsync.WithRawResponse = sandbox
+
+        override fun payroll(): PayrollServiceAsync.WithRawResponse = payroll
+
+        override fun connect(): ConnectServiceAsync.WithRawResponse = connect
+    }
 }

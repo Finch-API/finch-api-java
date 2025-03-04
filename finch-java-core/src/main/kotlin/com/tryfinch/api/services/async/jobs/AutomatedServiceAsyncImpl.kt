@@ -10,6 +10,8 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.json
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
@@ -24,111 +26,133 @@ import java.util.concurrent.CompletableFuture
 class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AutomatedServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: AutomatedServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val createHandler: Handler<AutomatedCreateResponse> =
-        jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): AutomatedServiceAsync.WithRawResponse = withRawResponse
 
-    /**
-     * Enqueue an automated job.
-     *
-     * `data_sync_all`: Enqueue a job to re-sync all data for a connection. `data_sync_all` has a
-     * concurrency limit of 1 job at a time per connection. This means that if this endpoint is
-     * called while a job is already in progress for this connection, Finch will return the `job_id`
-     * of the job that is currently in progress. Finch allows a fixed window rate limit of 1 forced
-     * refresh per hour per connection.
-     *
-     * `w4_form_employee_sync`: Enqueues a job for sync W-4 data for a particular individual,
-     * identified by `individual_id`. This feature is currently in beta.
-     *
-     * This endpoint is available for _Scale_ tier customers as an add-on. To request access to this
-     * endpoint, please contact your Finch account manager.
-     */
     override fun create(
         params: JobAutomatedCreateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<AutomatedCreateResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("jobs", "automated")
-                .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { createHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
-    }
+    ): CompletableFuture<AutomatedCreateResponse> =
+        // post /jobs/automated
+        withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
-    private val retrieveHandler: Handler<AutomatedAsyncJob> =
-        jsonHandler<AutomatedAsyncJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
-
-    /** Get an automated job by `job_id`. */
     override fun retrieve(
         params: JobAutomatedRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<AutomatedAsyncJob> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("jobs", "automated", params.getPathParam(0))
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { retrieveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
-    }
+    ): CompletableFuture<AutomatedAsyncJob> =
+        // get /jobs/automated/{job_id}
+        withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    private val listHandler: Handler<JobAutomatedListPageAsync.Response> =
-        jsonHandler<JobAutomatedListPageAsync.Response>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /**
-     * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are
-     * sorted in descending order by submission time. For scheduled jobs such as data syncs, only
-     * the next scheduled job is shown.
-     */
     override fun list(
         params: JobAutomatedListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<JobAutomatedListPageAsync> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("jobs", "automated")
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { listHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
+    ): CompletableFuture<JobAutomatedListPageAsync> =
+        // get /jobs/automated
+        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        AutomatedServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+
+        private val createHandler: Handler<AutomatedCreateResponse> =
+            jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun create(
+            params: JobAutomatedCreateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("jobs", "automated")
+                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
                     }
-                    .let { JobAutomatedListPageAsync.of(this, params, it) }
-            }
+                }
+        }
+
+        private val retrieveHandler: Handler<AutomatedAsyncJob> =
+            jsonHandler<AutomatedAsyncJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+        override fun retrieve(
+            params: JobAutomatedRetrieveParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("jobs", "automated", params.getPathParam(0))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { retrieveHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val listHandler: Handler<JobAutomatedListPageAsync.Response> =
+            jsonHandler<JobAutomatedListPageAsync.Response>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun list(
+            params: JobAutomatedListParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<JobAutomatedListPageAsync>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("jobs", "automated")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { listHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                            .let {
+                                JobAutomatedListPageAsync.of(
+                                    AutomatedServiceAsyncImpl(clientOptions),
+                                    params,
+                                    it,
+                                )
+                            }
+                    }
+                }
+        }
     }
 }

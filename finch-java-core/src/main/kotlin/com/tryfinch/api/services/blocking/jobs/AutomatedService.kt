@@ -4,7 +4,9 @@
 
 package com.tryfinch.api.services.blocking.jobs
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AutomatedAsyncJob
 import com.tryfinch.api.models.AutomatedCreateResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
@@ -13,6 +15,11 @@ import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 
 interface AutomatedService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Enqueue an automated job.
@@ -78,4 +85,57 @@ interface AutomatedService {
      */
     fun list(requestOptions: RequestOptions): JobAutomatedListPage =
         list(JobAutomatedListParams.none(), requestOptions)
+
+    /** A view of [AutomatedService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /jobs/automated`, but is otherwise the same as
+         * [AutomatedService.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<AutomatedCreateResponse>
+
+        /**
+         * Returns a raw HTTP response for `post /jobs/automated`, but is otherwise the same as
+         * [AutomatedService.create].
+         */
+        @MustBeClosed
+        fun create(requestOptions: RequestOptions): HttpResponseFor<AutomatedCreateResponse> =
+            create(JobAutomatedCreateParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated/{job_id}`, but is otherwise the same
+         * as [AutomatedService.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: JobAutomatedRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<AutomatedAsyncJob>
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as
+         * [AutomatedService.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: JobAutomatedListParams = JobAutomatedListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<JobAutomatedListPage>
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as
+         * [AutomatedService.list].
+         */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<JobAutomatedListPage> =
+            list(JobAutomatedListParams.none(), requestOptions)
+    }
 }

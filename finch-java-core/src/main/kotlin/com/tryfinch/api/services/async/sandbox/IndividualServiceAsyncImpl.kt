@@ -10,6 +10,8 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.json
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
@@ -20,35 +22,53 @@ import java.util.concurrent.CompletableFuture
 class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     IndividualServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: IndividualServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val updateHandler: Handler<IndividualUpdateResponse> =
-        jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): IndividualServiceAsync.WithRawResponse = withRawResponse
 
-    /** Update sandbox individual */
     override fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<IndividualUpdateResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.PUT)
-                .addPathSegments("sandbox", "individual", params.getPathParam(0))
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { updateHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
+    ): CompletableFuture<IndividualUpdateResponse> =
+        // put /sandbox/individual/{individual_id}
+        withRawResponse().update(params, requestOptions).thenApply { it.parse() }
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        IndividualServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+
+        private val updateHandler: Handler<IndividualUpdateResponse> =
+            jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun update(
+            params: SandboxIndividualUpdateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("sandbox", "individual", params.getPathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { updateHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
                     }
-            }
+                }
+        }
     }
 }
