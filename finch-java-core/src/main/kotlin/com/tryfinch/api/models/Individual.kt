@@ -185,6 +185,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [Individual]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -454,6 +455,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Email]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -908,6 +910,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [PhoneNumber]. */
             @JvmStatic fun builder() = Builder()
         }
 

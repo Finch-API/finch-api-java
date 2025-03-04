@@ -173,6 +173,21 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CreateAccessTokenResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .accessToken()
+         * .accountId()
+         * .clientType()
+         * .companyId()
+         * .connectionId()
+         * .connectionType()
+         * .products()
+         * .providerId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

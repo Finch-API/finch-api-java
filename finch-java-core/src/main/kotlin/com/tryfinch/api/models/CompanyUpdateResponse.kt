@@ -133,6 +133,21 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CompanyUpdateResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .accounts()
+         * .departments()
+         * .ein()
+         * .entity()
+         * .legalName()
+         * .locations()
+         * .primaryEmail()
+         * .primaryPhoneNumber()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -396,6 +411,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Account]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -690,6 +706,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -784,6 +801,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Parent]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -914,6 +932,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Entity]. */
             @JvmStatic fun builder() = Builder()
         }
 

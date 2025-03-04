@@ -44,6 +44,7 @@ private constructor(
 
         @JvmStatic fun none(): HrisDirectoryListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [HrisDirectoryListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

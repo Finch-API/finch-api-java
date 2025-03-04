@@ -381,6 +381,9 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [IndividualOrEmployment].
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -840,6 +843,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [CustomField]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -946,6 +950,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Department]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1055,6 +1060,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Email]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1281,6 +1287,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Employment]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2037,6 +2044,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Manager]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2142,6 +2150,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [PhoneNumber]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2340,6 +2349,9 @@ private constructor(
 
         @JvmStatic fun none(): SandboxDirectoryCreateParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SandboxDirectoryCreateParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 

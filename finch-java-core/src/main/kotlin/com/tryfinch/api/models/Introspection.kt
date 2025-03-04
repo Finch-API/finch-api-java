@@ -276,6 +276,29 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Introspection].
+         *
+         * The following fields are required:
+         * ```java
+         * .accountId()
+         * .authenticationMethods()
+         * .clientId()
+         * .clientType()
+         * .companyId()
+         * .connectionId()
+         * .connectionStatus()
+         * .connectionType()
+         * .customerEmail()
+         * .customerId()
+         * .customerName()
+         * .manual()
+         * .payrollProviderId()
+         * .products()
+         * .providerId()
+         * .username()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -626,6 +649,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [AuthenticationMethod]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -747,6 +771,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [ConnectionStatus]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1104,6 +1129,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [ConnectionStatus]. */
             @JvmStatic fun builder() = Builder()
         }
 

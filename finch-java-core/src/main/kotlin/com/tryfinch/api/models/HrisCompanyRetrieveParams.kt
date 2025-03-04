@@ -29,6 +29,9 @@ private constructor(
 
         @JvmStatic fun none(): HrisCompanyRetrieveParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisCompanyRetrieveParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 

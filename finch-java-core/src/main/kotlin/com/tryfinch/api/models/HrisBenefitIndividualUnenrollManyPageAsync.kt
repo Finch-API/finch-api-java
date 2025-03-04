@@ -118,6 +118,10 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of
+             * [HrisBenefitIndividualUnenrollManyPageAsync].
+             */
             @JvmStatic fun builder() = Builder()
         }
 

@@ -62,6 +62,7 @@ private constructor(
 
         @JvmStatic fun none(): HrisDocumentListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [HrisDocumentListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

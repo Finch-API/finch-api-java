@@ -82,6 +82,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [PayGroupRetrieveResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .individualIds()
+         * .name()
+         * .payFrequencies()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
