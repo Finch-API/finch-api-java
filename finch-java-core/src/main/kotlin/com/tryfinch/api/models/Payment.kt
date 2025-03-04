@@ -166,6 +166,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [Payment]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -553,6 +554,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [PayPeriod]. */
             @JvmStatic fun builder() = Builder()
         }
 

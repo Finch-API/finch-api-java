@@ -247,6 +247,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [DataSyncAll].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .type()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -454,6 +462,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [W4FormEmployeeSync].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .params()
+                 * .type()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -549,6 +566,14 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of [Params].
+                     *
+                     * The following fields are required:
+                     * ```java
+                     * .individualId()
+                     * ```
+                     */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -743,6 +768,7 @@ private constructor(
 
         @JvmStatic fun none(): JobAutomatedCreateParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [JobAutomatedCreateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

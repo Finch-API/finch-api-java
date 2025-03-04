@@ -48,6 +48,7 @@ private constructor(
 
         @JvmStatic fun none(): JobAutomatedListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [JobAutomatedListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

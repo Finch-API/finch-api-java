@@ -59,6 +59,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SandboxJobConfiguration].
+         *
+         * The following fields are required:
+         * ```java
+         * .completionStatus()
+         * .type()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

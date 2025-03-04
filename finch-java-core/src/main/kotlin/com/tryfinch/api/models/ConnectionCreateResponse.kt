@@ -130,6 +130,20 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ConnectionCreateResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .accessToken()
+         * .accountId()
+         * .authenticationType()
+         * .companyId()
+         * .connectionId()
+         * .products()
+         * .providerId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

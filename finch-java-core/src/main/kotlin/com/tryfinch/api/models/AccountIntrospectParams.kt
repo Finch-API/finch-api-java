@@ -29,6 +29,7 @@ private constructor(
 
         @JvmStatic fun none(): AccountIntrospectParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [AccountIntrospectParams]. */
         @JvmStatic fun builder() = Builder()
     }
 

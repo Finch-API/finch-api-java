@@ -61,6 +61,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SessionReauthenticateResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .connectUrl()
+         * .sessionId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
