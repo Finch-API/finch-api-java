@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -248,14 +249,8 @@ private constructor(
             /** An array of bank account objects associated with the payroll/HRIS system. */
             fun addAccount(account: Account) = apply {
                 accounts =
-                    (accounts ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(account)
+                    (accounts ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("accounts", it).add(account)
                     }
             }
 
@@ -275,14 +270,8 @@ private constructor(
             /** The array of company departments. */
             fun addDepartment(department: Department) = apply {
                 departments =
-                    (departments ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(department)
+                    (departments ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("departments", it).add(department)
                     }
             }
 
@@ -323,14 +312,8 @@ private constructor(
 
             fun addLocation(location: Location) = apply {
                 locations =
-                    (locations ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(location)
+                    (locations ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("locations", it).add(location)
                     }
             }
 
