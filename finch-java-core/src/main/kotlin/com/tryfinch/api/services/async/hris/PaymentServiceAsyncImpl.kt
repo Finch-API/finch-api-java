@@ -36,13 +36,14 @@ class PaymentServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 .addPathSegments("employer", "payment")
                 .build()
                 .prepareAsync(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         return request
             .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
             .thenApply { response ->
                 response
                     .use { listHandler.handle(it) }
                     .also {
-                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        if (requestOptions.responseValidation!!) {
                             it.forEach { it.validate() }
                         }
                     }

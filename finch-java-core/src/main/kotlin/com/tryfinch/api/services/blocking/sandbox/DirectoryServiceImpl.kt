@@ -36,6 +36,7 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
                 .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                 .build()
                 .prepare(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.execute(request, requestOptions)
         return response.use { createHandler.handle(it) }
     }

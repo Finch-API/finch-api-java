@@ -38,11 +38,12 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
                 .addPathSegments("employer", "documents")
                 .build()
                 .prepare(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.execute(request, requestOptions)
         return response
             .use { listHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.validate()
                 }
             }
@@ -66,11 +67,12 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
                 .addPathSegments("employer", "documents", params.getPathParam(0))
                 .build()
                 .prepare(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.execute(request, requestOptions)
         return response
             .use { retreiveHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.validate()
                 }
             }

@@ -42,11 +42,12 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                 .addPathSegments("employer", "benefits", params.getPathParam(0), "enrolled")
                 .build()
                 .prepare(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.execute(request, requestOptions)
         return response
             .use { enrolledIdsHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.validate()
                 }
             }
@@ -67,11 +68,12 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                 .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
                 .build()
                 .prepare(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.execute(request, requestOptions)
         return response
             .use { retrieveManyBenefitsHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.forEach { it.validate() }
                 }
             }
@@ -102,11 +104,12 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                 .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
                 .prepare(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.execute(request, requestOptions)
         return response
             .use { unenrollManyHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.forEach { it.validate() }
                 }
             }
