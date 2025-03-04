@@ -37,6 +37,11 @@ interface FinchClientAsync {
      */
     fun sync(): FinchClient
 
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
     fun accessTokens(): AccessTokenServiceAsync
 
     fun hris(): HrisServiceAsync
@@ -69,4 +74,28 @@ interface FinchClientAsync {
      * method.
      */
     fun close()
+
+    /** A view of [FinchClientAsync] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        fun accessTokens(): AccessTokenServiceAsync.WithRawResponse
+
+        fun hris(): HrisServiceAsync.WithRawResponse
+
+        fun providers(): ProviderServiceAsync.WithRawResponse
+
+        fun account(): AccountServiceAsync.WithRawResponse
+
+        fun webhooks(): WebhookServiceAsync.WithRawResponse
+
+        fun requestForwarding(): RequestForwardingServiceAsync.WithRawResponse
+
+        fun jobs(): JobServiceAsync.WithRawResponse
+
+        fun sandbox(): SandboxServiceAsync.WithRawResponse
+
+        fun payroll(): PayrollServiceAsync.WithRawResponse
+
+        fun connect(): ConnectServiceAsync.WithRawResponse
+    }
 }

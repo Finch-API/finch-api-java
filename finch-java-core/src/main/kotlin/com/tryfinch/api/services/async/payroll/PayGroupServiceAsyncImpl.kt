@@ -10,6 +10,8 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.PayGroupListResponse
@@ -22,70 +24,98 @@ import java.util.concurrent.CompletableFuture
 class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     PayGroupServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: PayGroupServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
-        jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): PayGroupServiceAsync.WithRawResponse = withRawResponse
 
-    /** Read information from a single pay group */
     override fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<PayGroupRetrieveResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "pay-groups", params.getPathParam(0))
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { retrieveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
-    }
+    ): CompletableFuture<PayGroupRetrieveResponse> =
+        // get /employer/pay-groups/{pay_group_id}
+        withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    private val listHandler: Handler<List<PayGroupListResponse>> =
-        jsonHandler<List<PayGroupListResponse>>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /** Read company pay groups and frequencies */
     override fun list(
         params: PayrollPayGroupListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<PayrollPayGroupListPageAsync> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "pay-groups")
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { listHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.forEach { it.validate() }
-                        }
+    ): CompletableFuture<PayrollPayGroupListPageAsync> =
+        // get /employer/pay-groups
+        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PayGroupServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+
+        private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
+            jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun retrieve(
+            params: PayrollPayGroupRetrieveParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<PayGroupRetrieveResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "pay-groups", params.getPathParam(0))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { retrieveHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
                     }
-                    .let {
-                        PayrollPayGroupListPageAsync.of(
-                            this,
-                            params,
-                            PayrollPayGroupListPageAsync.Response.builder().items(it).build(),
-                        )
+                }
+        }
+
+        private val listHandler: Handler<List<PayGroupListResponse>> =
+            jsonHandler<List<PayGroupListResponse>>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun list(
+            params: PayrollPayGroupListParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "pay-groups")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { listHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.forEach { it.validate() }
+                                }
+                            }
+                            .let {
+                                PayrollPayGroupListPageAsync.of(
+                                    PayGroupServiceAsyncImpl(clientOptions),
+                                    params,
+                                    PayrollPayGroupListPageAsync.Response.builder()
+                                        .items(it)
+                                        .build(),
+                                )
+                            }
                     }
-            }
+                }
+        }
     }
 }

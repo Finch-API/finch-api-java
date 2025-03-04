@@ -10,6 +10,8 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.json
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
@@ -20,34 +22,53 @@ import java.util.concurrent.CompletableFuture
 class PaymentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     PaymentServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: PaymentServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val createHandler: Handler<PaymentCreateResponse> =
-        jsonHandler<PaymentCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    override fun withRawResponse(): PaymentServiceAsync.WithRawResponse = withRawResponse
 
-    /** Add a new sandbox payment */
     override fun create(
         params: SandboxPaymentCreateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<PaymentCreateResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("sandbox", "payment")
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { createHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
+    ): CompletableFuture<PaymentCreateResponse> =
+        // post /sandbox/payment
+        withRawResponse().create(params, requestOptions).thenApply { it.parse() }
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PaymentServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+
+        private val createHandler: Handler<PaymentCreateResponse> =
+            jsonHandler<PaymentCreateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun create(
+            params: SandboxPaymentCreateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("sandbox", "payment")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
                     }
-            }
+                }
+        }
     }
 }
