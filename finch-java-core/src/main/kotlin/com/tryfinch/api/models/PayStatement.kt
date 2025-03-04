@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -194,14 +195,8 @@ private constructor(
         /** The array of earnings objects associated with this pay statement */
         fun addEarning(earning: Earning) = apply {
             earnings =
-                (earnings ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(earning)
+                (earnings ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("earnings", it).add(earning)
                 }
         }
 
@@ -221,14 +216,8 @@ private constructor(
         /** The array of deductions objects associated with this pay statement. */
         fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
             employeeDeductions =
-                (employeeDeductions ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(employeeDeduction)
+                (employeeDeductions ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("employeeDeductions", it).add(employeeDeduction)
                 }
         }
 
@@ -245,14 +234,8 @@ private constructor(
 
         fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
             employerContributions =
-                (employerContributions ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(employerContribution)
+                (employerContributions ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("employerContributions", it).add(employerContribution)
                 }
         }
 
@@ -303,15 +286,7 @@ private constructor(
         /** The array of taxes objects associated with this pay statement. */
         fun addTax(tax: Tax) = apply {
             taxes =
-                (taxes ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(tax)
-                }
+                (taxes ?: JsonField.of(mutableListOf())).also { checkKnown("taxes", it).add(tax) }
         }
 
         /** The number of hours worked for this pay period */

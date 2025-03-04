@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -95,14 +96,8 @@ private constructor(
         /** The array of pay statements for the current payment. */
         fun addPayStatement(payStatement: PayStatement) = apply {
             payStatements =
-                (payStatements ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(payStatement)
+                (payStatements ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("payStatements", it).add(payStatement)
                 }
         }
 

@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -264,14 +265,8 @@ private constructor(
         /** Array of every individual on this payment. */
         fun addIndividualId(individualId: String) = apply {
             individualIds =
-                (individualIds ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(individualId)
+                (individualIds ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("individualIds", it).add(individualId)
                 }
         }
 
@@ -303,14 +298,8 @@ private constructor(
         /** List of pay frequencies associated with this payment. */
         fun addPayFrequency(payFrequency: PayFrequency) = apply {
             payFrequencies =
-                (payFrequencies ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(payFrequency)
+                (payFrequencies ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("payFrequencies", it).add(payFrequency)
                 }
         }
 
@@ -328,14 +317,8 @@ private constructor(
         /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
         fun addPayGroupId(payGroupId: String) = apply {
             payGroupIds =
-                (payGroupIds ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(payGroupId)
+                (payGroupIds ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("payGroupIds", it).add(payGroupId)
                 }
         }
 
