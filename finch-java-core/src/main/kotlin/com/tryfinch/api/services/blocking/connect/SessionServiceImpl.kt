@@ -10,6 +10,8 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.json
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.errors.FinchError
@@ -21,58 +23,84 @@ import com.tryfinch.api.models.SessionReauthenticateResponse
 class SessionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     SessionService {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: SessionService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val newHandler: Handler<SessionNewResponse> =
-        jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    override fun withRawResponse(): SessionService.WithRawResponse = withRawResponse
 
-    /** Create a new connect session for an employer */
     override fun new_(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions,
-    ): SessionNewResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("connect", "sessions")
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepare(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.execute(request, requestOptions)
-        return response
-            .use { newHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
-            }
-    }
+    ): SessionNewResponse =
+        // post /connect/sessions
+        withRawResponse().new_(params, requestOptions).parse()
 
-    private val reauthenticateHandler: Handler<SessionReauthenticateResponse> =
-        jsonHandler<SessionReauthenticateResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /** Create a new Connect session for reauthenticating an existing connection */
     override fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
         requestOptions: RequestOptions,
-    ): SessionReauthenticateResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("connect", "sessions", "reauthenticate")
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepare(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.execute(request, requestOptions)
-        return response
-            .use { reauthenticateHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
+    ): SessionReauthenticateResponse =
+        // post /connect/sessions/reauthenticate
+        withRawResponse().reauthenticate(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        SessionService.WithRawResponse {
+
+        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+
+        private val newHandler: Handler<SessionNewResponse> =
+            jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+        override fun new_(
+            params: ConnectSessionNewParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SessionNewResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("connect", "sessions")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { newHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
             }
+        }
+
+        private val reauthenticateHandler: Handler<SessionReauthenticateResponse> =
+            jsonHandler<SessionReauthenticateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun reauthenticate(
+            params: ConnectSessionReauthenticateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SessionReauthenticateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("connect", "sessions", "reauthenticate")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { reauthenticateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
     }
 }

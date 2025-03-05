@@ -4,11 +4,18 @@
 
 package com.tryfinch.api.services.blocking
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
 
 interface RequestForwardingService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * The Forward API allows you to make direct requests to an employment system. If Finch’s
@@ -20,4 +27,22 @@ interface RequestForwardingService {
         params: RequestForwardingForwardParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RequestForwardingForwardResponse
+
+    /**
+     * A view of [RequestForwardingService] that provides access to raw HTTP responses for each
+     * method.
+     */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /forward`, but is otherwise the same as
+         * [RequestForwardingService.forward].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun forward(
+            params: RequestForwardingForwardParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RequestForwardingForwardResponse>
+    }
 }

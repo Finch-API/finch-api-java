@@ -10,6 +10,8 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Provider
@@ -19,37 +21,55 @@ import com.tryfinch.api.models.ProviderListParams
 class ProviderServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ProviderService {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: ProviderService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val listHandler: Handler<List<Provider>> =
-        jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    override fun withRawResponse(): ProviderService.WithRawResponse = withRawResponse
 
-    /** Return details on all available payroll and HR systems. */
     override fun list(
         params: ProviderListParams,
         requestOptions: RequestOptions,
-    ): ProviderListPage {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("providers")
-                .build()
-                .prepare(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.execute(request, requestOptions)
-        return response
-            .use { listHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.forEach { it.validate() }
-                }
+    ): ProviderListPage =
+        // get /providers
+        withRawResponse().list(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        ProviderService.WithRawResponse {
+
+        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+
+        private val listHandler: Handler<List<Provider>> =
+            jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+        override fun list(
+            params: ProviderListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ProviderListPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("providers")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
+                        }
+                    }
+                    .let {
+                        ProviderListPage.of(
+                            ProviderServiceImpl(clientOptions),
+                            params,
+                            ProviderListPage.Response.builder().items(it).build(),
+                        )
+                    }
             }
-            .let {
-                ProviderListPage.of(
-                    this,
-                    params,
-                    ProviderListPage.Response.builder().items(it).build(),
-                )
-            }
+        }
     }
 }
