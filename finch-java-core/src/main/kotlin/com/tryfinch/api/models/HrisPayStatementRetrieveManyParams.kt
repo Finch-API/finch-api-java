@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -88,6 +89,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .requests()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -114,14 +123,8 @@ private constructor(
             /** The array of batch requests. */
             fun addRequest(request: Request) = apply {
                 requests =
-                    (requests ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(request)
+                    (requests ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("requests", it).add(request)
                     }
             }
 
@@ -173,6 +176,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisPayStatementRetrieveManyParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .requests()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -383,6 +395,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Request].
+             *
+             * The following fields are required:
+             * ```java
+             * .paymentId()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 

@@ -95,6 +95,18 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [RequestForwardingForwardResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .data()
+         * .headers()
+         * .request()
+         * .statusCode()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -285,6 +297,18 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Request].
+             *
+             * The following fields are required:
+             * ```java
+             * .data()
+             * .headers()
+             * .method()
+             * .params()
+             * .route()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 

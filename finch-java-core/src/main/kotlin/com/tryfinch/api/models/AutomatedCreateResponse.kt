@@ -83,6 +83,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AutomatedCreateResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .allowedRefreshes()
+         * .jobId()
+         * .jobUrl()
+         * .remainingRefreshes()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

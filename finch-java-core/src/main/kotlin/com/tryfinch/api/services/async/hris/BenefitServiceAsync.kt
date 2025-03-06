@@ -4,7 +4,9 @@
 
 package com.tryfinch.api.services.async.hris
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
 import com.tryfinch.api.models.HrisBenefitCreateParams
@@ -19,6 +21,11 @@ import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import java.util.concurrent.CompletableFuture
 
 interface BenefitServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     fun individuals(): IndividualServiceAsync
 
@@ -77,4 +84,98 @@ interface BenefitServiceAsync {
         requestOptions: RequestOptions
     ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync> =
         listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
+
+    /**
+     * A view of [BenefitServiceAsync] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        fun individuals(): IndividualServiceAsync.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /employer/benefits`, but is otherwise the same as
+         * [BenefitServiceAsync.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>>
+
+        /**
+         * Returns a raw HTTP response for `post /employer/benefits`, but is otherwise the same as
+         * [BenefitServiceAsync.create].
+         */
+        @MustBeClosed
+        fun create(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>> =
+            create(HrisBenefitCreateParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}`, but is otherwise
+         * the same as [BenefitServiceAsync.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: HrisBenefitRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<CompanyBenefit>>
+
+        /**
+         * Returns a raw HTTP response for `post /employer/benefits/{benefit_id}`, but is otherwise
+         * the same as [BenefitServiceAsync.update].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: HrisBenefitUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>>
+
+        /**
+         * Returns a raw HTTP response for `get /employer/benefits`, but is otherwise the same as
+         * [BenefitServiceAsync.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: HrisBenefitListParams = HrisBenefitListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>>
+
+        /**
+         * Returns a raw HTTP response for `get /employer/benefits`, but is otherwise the same as
+         * [BenefitServiceAsync.list].
+         */
+        @MustBeClosed
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>> =
+            list(HrisBenefitListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /employer/benefits/meta`, but is otherwise the same
+         * as [BenefitServiceAsync.listSupportedBenefits].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun listSupportedBenefits(
+            params: HrisBenefitListSupportedBenefitsParams =
+                HrisBenefitListSupportedBenefitsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>>
+
+        /**
+         * Returns a raw HTTP response for `get /employer/benefits/meta`, but is otherwise the same
+         * as [BenefitServiceAsync.listSupportedBenefits].
+         */
+        @MustBeClosed
+        fun listSupportedBenefits(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>> =
+            listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
+    }
 }

@@ -116,6 +116,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [PayStatementEvent].
+         *
+         * The following fields are required:
+         * ```java
+         * .accountId()
+         * .companyId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -262,6 +271,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Data]. */
             @JvmStatic fun builder() = Builder()
         }
 

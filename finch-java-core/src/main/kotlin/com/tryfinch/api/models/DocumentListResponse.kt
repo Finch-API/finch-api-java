@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
@@ -59,6 +60,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [DocumentListResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .documents()
+         * .paging()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -84,14 +94,8 @@ private constructor(
 
         fun addDocument(document: DocumentResponse) = apply {
             documents =
-                (documents ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(document)
+                (documents ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("documents", it).add(document)
                 }
         }
 

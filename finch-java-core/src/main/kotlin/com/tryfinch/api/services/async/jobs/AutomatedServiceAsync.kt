@@ -4,7 +4,9 @@
 
 package com.tryfinch.api.services.async.jobs
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AutomatedAsyncJob
 import com.tryfinch.api.models.AutomatedCreateResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
@@ -14,6 +16,11 @@ import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import java.util.concurrent.CompletableFuture
 
 interface AutomatedServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Enqueue an automated job.
@@ -79,4 +86,63 @@ interface AutomatedServiceAsync {
      */
     fun list(requestOptions: RequestOptions): CompletableFuture<JobAutomatedListPageAsync> =
         list(JobAutomatedListParams.none(), requestOptions)
+
+    /**
+     * A view of [AutomatedServiceAsync] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.create].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>>
+
+        /**
+         * Returns a raw HTTP response for `post /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.create].
+         */
+        @MustBeClosed
+        fun create(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
+            create(JobAutomatedCreateParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated/{job_id}`, but is otherwise the same
+         * as [AutomatedServiceAsync.retrieve].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: JobAutomatedRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>>
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.list].
+         */
+        @JvmOverloads
+        @MustBeClosed
+        fun list(
+            params: JobAutomatedListParams = JobAutomatedListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<JobAutomatedListPageAsync>>
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.list].
+         */
+        @MustBeClosed
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<JobAutomatedListPageAsync>> =
+            list(JobAutomatedListParams.none(), requestOptions)
+    }
 }

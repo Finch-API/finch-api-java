@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -273,6 +274,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [EmploymentData]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -369,14 +371,8 @@ private constructor(
          */
         fun addCustomField(customField: CustomField) = apply {
             customFields =
-                (customFields ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(customField)
+                (customFields ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("customFields", it).add(customField)
                 }
         }
 
@@ -472,14 +468,8 @@ private constructor(
         /** The array of income history. */
         fun addIncomeHistory(incomeHistory: Income) = apply {
             this.incomeHistory =
-                (this.incomeHistory ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(incomeHistory)
+                (this.incomeHistory ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("incomeHistory", it).add(incomeHistory)
                 }
         }
 
@@ -655,6 +645,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [CustomField]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -755,6 +746,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -870,6 +862,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Employment]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -1356,6 +1349,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Manager]. */
             @JvmStatic fun builder() = Builder()
         }
 

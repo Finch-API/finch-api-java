@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/4.2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/5.0.0)
 
 <!-- x-release-please-end -->
 
@@ -10,7 +10,7 @@ The Finch Java SDK provides convenient access to the Finch REST API from applica
 
 The Finch Java SDK is similar to the Finch Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
 The REST API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
 
@@ -23,7 +23,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:4.2.0")
+implementation("com.tryfinch.api:finch-java:5.0.0")
 ```
 
 ### Maven
@@ -32,7 +32,7 @@ implementation("com.tryfinch.api:finch-java:4.2.0")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-java</artifactId>
-    <version>4.2.0</version>
+    <version>5.0.0</version>
 </dependency>
 ```
 
@@ -163,6 +163,32 @@ CompletableFuture<HrisDirectoryListPageAsync> page = client.hris().directory().l
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
+
+## Raw responses
+
+The SDK defines methods that deserialize responses into instances of Java classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
+
+To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
+
+```java
+import com.tryfinch.api.core.http.Headers;
+import com.tryfinch.api.core.http.HttpResponseFor;
+import com.tryfinch.api.models.HrisDirectoryListPage;
+import com.tryfinch.api.models.HrisDirectoryListParams;
+
+HttpResponseFor<HrisDirectoryListPage> page = client.hris().directory().withRawResponse().list();
+
+int statusCode = page.statusCode();
+Headers headers = page.headers();
+```
+
+You can still deserialize the response into an instance of a Java class if needed:
+
+```java
+import com.tryfinch.api.models.HrisDirectoryListPage;
+
+HrisDirectoryListPage parsedPage = page.parse();
+```
 
 ## Error handling
 

@@ -41,6 +41,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [JobManualRetrieveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .jobId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

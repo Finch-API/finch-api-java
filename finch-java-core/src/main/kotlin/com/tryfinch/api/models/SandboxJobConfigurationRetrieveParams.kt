@@ -29,6 +29,10 @@ private constructor(
 
         @JvmStatic fun none(): SandboxJobConfigurationRetrieveParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SandboxJobConfigurationRetrieveParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 

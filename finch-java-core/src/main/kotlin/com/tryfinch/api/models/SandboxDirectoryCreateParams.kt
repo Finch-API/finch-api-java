@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -380,6 +381,9 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [IndividualOrEmployment].
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -475,14 +479,8 @@ private constructor(
              */
             fun addCustomField(customField: CustomField) = apply {
                 customFields =
-                    (customFields ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(customField)
+                    (customFields ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("customFields", it).add(customField)
                     }
             }
 
@@ -513,14 +511,8 @@ private constructor(
 
             fun addEmail(email: Email) = apply {
                 emails =
-                    (emails ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(email)
+                    (emails ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("emails", it).add(email)
                     }
             }
 
@@ -643,14 +635,8 @@ private constructor(
             /** The array of income history. */
             fun addIncomeHistory(incomeHistory: Income) = apply {
                 this.incomeHistory =
-                    (this.incomeHistory ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(incomeHistory)
+                    (this.incomeHistory ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("incomeHistory", it).add(incomeHistory)
                     }
             }
 
@@ -722,14 +708,8 @@ private constructor(
 
             fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
                 phoneNumbers =
-                    (phoneNumbers ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(phoneNumber)
+                    (phoneNumbers ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("phoneNumbers", it).add(phoneNumber)
                     }
             }
 
@@ -863,6 +843,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [CustomField]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -969,6 +950,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Department]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1078,6 +1060,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Email]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1304,6 +1287,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Employment]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2060,6 +2044,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Manager]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2165,6 +2150,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [PhoneNumber]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2363,6 +2349,9 @@ private constructor(
 
         @JvmStatic fun none(): SandboxDirectoryCreateParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SandboxDirectoryCreateParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 

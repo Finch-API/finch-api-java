@@ -83,6 +83,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -151,6 +152,10 @@ private constructor(
 
         @JvmStatic fun none(): SandboxConnectionAccountUpdateParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SandboxConnectionAccountUpdateParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
