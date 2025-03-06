@@ -1,5 +1,33 @@
 # Changelog
 
+## 5.0.0 (2025-03-06)
+
+Full Changelog: [v4.2.0...v5.0.0](https://github.com/Finch-API/finch-api-java/compare/v4.2.0...v5.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** refactor multipart formdata impl ([#473](https://github.com/Finch-API/finch-api-java/issues/473))
+
+### Features
+
+* **api:** manual updates ([#477](https://github.com/Finch-API/finch-api-java/issues/477)) ([83f00bd](https://github.com/Finch-API/finch-api-java/commit/83f00bd2aadd9049da1d8365dfa9bdd03d52a159))
+* **client:** allow configuring timeouts granularly ([#470](https://github.com/Finch-API/finch-api-java/issues/470)) ([4d3b414](https://github.com/Finch-API/finch-api-java/commit/4d3b414c120045834dc829e12cbc185c88fe2764))
+* **client:** support raw response access ([#471](https://github.com/Finch-API/finch-api-java/issues/471)) ([481c99c](https://github.com/Finch-API/finch-api-java/commit/481c99cf2bc062b137c99a69bfce289c3e570a5a))
+
+
+### Chores
+
+* **client:** expose `Optional`, not nullable, from `ClientOptions` ([#476](https://github.com/Finch-API/finch-api-java/issues/476)) ([fc827bc](https://github.com/Finch-API/finch-api-java/commit/fc827bc6bd38e80bf7f09b241e559e46d7adcf2a))
+* **client:** refactor multipart formdata impl ([#473](https://github.com/Finch-API/finch-api-java/issues/473)) ([7cb2a7f](https://github.com/Finch-API/finch-api-java/commit/7cb2a7f642d7bcaf67deec5d5f355682fe9b8e3e))
+* **internal:** codegen related update ([#469](https://github.com/Finch-API/finch-api-java/issues/469)) ([a308954](https://github.com/Finch-API/finch-api-java/commit/a3089549cd0743446d2b906db5fcd830f579ddd8))
+
+
+### Documentation
+
+* add raw response readme documentation ([#474](https://github.com/Finch-API/finch-api-java/issues/474)) ([81a5824](https://github.com/Finch-API/finch-api-java/commit/81a5824dbff19ae8328a747aed49dc5ea1fbc2c8))
+* note required fields in `builder` javadoc ([#475](https://github.com/Finch-API/finch-api-java/issues/475)) ([2d0c4c8](https://github.com/Finch-API/finch-api-java/commit/2d0c4c8f7d3b629db18937db95415474b10f8bc9))
+* update URLs from stainlessapi.com to stainless.com ([#467](https://github.com/Finch-API/finch-api-java/issues/467)) ([238b853](https://github.com/Finch-API/finch-api-java/commit/238b853b930f203759499a7d9540c35b586a3915))
+
 ## 4.2.0 (2025-02-27)
 
 Full Changelog: [v4.1.0...v4.2.0](https://github.com/Finch-API/finch-api-java/compare/v4.1.0...v4.2.0)
