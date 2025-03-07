@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.hris
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -19,13 +17,20 @@ interface CompanyServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Read basic company data */
-    @JvmOverloads
+    fun retrieve(): CompletableFuture<Company> = retrieve(HrisCompanyRetrieveParams.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Company>
 
-    /** Read basic company data */
+    /** @see [retrieve] */
+    fun retrieve(
+        params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
+    ): CompletableFuture<Company> = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(requestOptions: RequestOptions): CompletableFuture<Company> =
         retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 
@@ -38,17 +43,24 @@ interface CompanyServiceAsync {
          * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
          * [CompanyServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(): CompletableFuture<HttpResponseFor<Company>> =
+            retrieve(HrisCompanyRetrieveParams.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Company>>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
-         * [CompanyServiceAsync.retrieve].
-         */
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
+        ): CompletableFuture<HttpResponseFor<Company>> = retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<Company>> =
             retrieve(HrisCompanyRetrieveParams.none(), requestOptions)

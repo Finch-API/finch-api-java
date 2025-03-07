@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -20,24 +18,38 @@ interface AccountService {
     fun withRawResponse(): WithRawResponse
 
     /** Disconnect one or more `access_token`s from your application. */
-    @JvmOverloads
+    fun disconnect(): DisconnectResponse = disconnect(AccountDisconnectParams.none())
+
+    /** @see [disconnect] */
     fun disconnect(
         params: AccountDisconnectParams = AccountDisconnectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DisconnectResponse
 
-    /** Disconnect one or more `access_token`s from your application. */
+    /** @see [disconnect] */
+    fun disconnect(
+        params: AccountDisconnectParams = AccountDisconnectParams.none()
+    ): DisconnectResponse = disconnect(params, RequestOptions.none())
+
+    /** @see [disconnect] */
     fun disconnect(requestOptions: RequestOptions): DisconnectResponse =
         disconnect(AccountDisconnectParams.none(), requestOptions)
 
     /** Read account information associated with an `access_token` */
-    @JvmOverloads
+    fun introspect(): Introspection = introspect(AccountIntrospectParams.none())
+
+    /** @see [introspect] */
     fun introspect(
         params: AccountIntrospectParams = AccountIntrospectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Introspection
 
-    /** Read account information associated with an `access_token` */
+    /** @see [introspect] */
+    fun introspect(
+        params: AccountIntrospectParams = AccountIntrospectParams.none()
+    ): Introspection = introspect(params, RequestOptions.none())
+
+    /** @see [introspect] */
     fun introspect(requestOptions: RequestOptions): Introspection =
         introspect(AccountIntrospectParams.none(), requestOptions)
 
@@ -48,17 +60,24 @@ interface AccountService {
          * Returns a raw HTTP response for `post /disconnect`, but is otherwise the same as
          * [AccountService.disconnect].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun disconnect(): HttpResponseFor<DisconnectResponse> =
+            disconnect(AccountDisconnectParams.none())
+
+        /** @see [disconnect] */
         @MustBeClosed
         fun disconnect(
             params: AccountDisconnectParams = AccountDisconnectParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DisconnectResponse>
 
-        /**
-         * Returns a raw HTTP response for `post /disconnect`, but is otherwise the same as
-         * [AccountService.disconnect].
-         */
+        /** @see [disconnect] */
+        @MustBeClosed
+        fun disconnect(
+            params: AccountDisconnectParams = AccountDisconnectParams.none()
+        ): HttpResponseFor<DisconnectResponse> = disconnect(params, RequestOptions.none())
+
+        /** @see [disconnect] */
         @MustBeClosed
         fun disconnect(requestOptions: RequestOptions): HttpResponseFor<DisconnectResponse> =
             disconnect(AccountDisconnectParams.none(), requestOptions)
@@ -67,17 +86,24 @@ interface AccountService {
          * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as
          * [AccountService.introspect].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun introspect(): HttpResponseFor<Introspection> =
+            introspect(AccountIntrospectParams.none())
+
+        /** @see [introspect] */
         @MustBeClosed
         fun introspect(
             params: AccountIntrospectParams = AccountIntrospectParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Introspection>
 
-        /**
-         * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as
-         * [AccountService.introspect].
-         */
+        /** @see [introspect] */
+        @MustBeClosed
+        fun introspect(
+            params: AccountIntrospectParams = AccountIntrospectParams.none()
+        ): HttpResponseFor<Introspection> = introspect(params, RequestOptions.none())
+
+        /** @see [introspect] */
         @MustBeClosed
         fun introspect(requestOptions: RequestOptions): HttpResponseFor<Introspection> =
             introspect(AccountIntrospectParams.none(), requestOptions)

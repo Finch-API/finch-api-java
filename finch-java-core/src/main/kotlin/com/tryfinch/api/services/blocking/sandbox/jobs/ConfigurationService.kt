@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.sandbox.jobs
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -19,19 +17,30 @@ interface ConfigurationService {
     fun withRawResponse(): WithRawResponse
 
     /** Get configurations for sandbox jobs */
-    @JvmOverloads
+    fun retrieve(): List<SandboxJobConfiguration> =
+        retrieve(SandboxJobConfigurationRetrieveParams.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: SandboxJobConfigurationRetrieveParams =
             SandboxJobConfigurationRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<SandboxJobConfiguration>
 
-    /** Get configurations for sandbox jobs */
+    /** @see [retrieve] */
+    fun retrieve(
+        params: SandboxJobConfigurationRetrieveParams = SandboxJobConfigurationRetrieveParams.none()
+    ): List<SandboxJobConfiguration> = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(requestOptions: RequestOptions): List<SandboxJobConfiguration> =
         retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
     /** Update configurations for sandbox jobs */
-    @JvmOverloads
+    fun update(params: SandboxJobConfigurationUpdateParams): SandboxJobConfiguration =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: SandboxJobConfigurationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,7 +55,11 @@ interface ConfigurationService {
          * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is otherwise the
          * same as [ConfigurationService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(): HttpResponseFor<List<SandboxJobConfiguration>> =
+            retrieve(SandboxJobConfigurationRetrieveParams.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: SandboxJobConfigurationRetrieveParams =
@@ -54,10 +67,14 @@ interface ConfigurationService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<SandboxJobConfiguration>>
 
-        /**
-         * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is otherwise the
-         * same as [ConfigurationService.retrieve].
-         */
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: SandboxJobConfigurationRetrieveParams =
+                SandboxJobConfigurationRetrieveParams.none()
+        ): HttpResponseFor<List<SandboxJobConfiguration>> = retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             requestOptions: RequestOptions
@@ -68,7 +85,12 @@ interface ConfigurationService {
          * Returns a raw HTTP response for `put /sandbox/jobs/configuration`, but is otherwise the
          * same as [ConfigurationService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: SandboxJobConfigurationUpdateParams
+        ): HttpResponseFor<SandboxJobConfiguration> = update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SandboxJobConfigurationUpdateParams,

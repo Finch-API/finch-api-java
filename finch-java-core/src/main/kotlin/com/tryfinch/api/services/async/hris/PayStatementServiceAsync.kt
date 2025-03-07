@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.hris
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -23,7 +21,12 @@ interface PayStatementServiceAsync {
      *
      * Deduction and contribution types are supported by the payroll systems that supports Benefits.
      */
-    @JvmOverloads
+    fun retrieveMany(
+        params: HrisPayStatementRetrieveManyParams
+    ): CompletableFuture<HrisPayStatementRetrieveManyPageAsync> =
+        retrieveMany(params, RequestOptions.none())
+
+    /** @see [retrieveMany] */
     fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -39,7 +42,13 @@ interface PayStatementServiceAsync {
          * Returns a raw HTTP response for `post /employer/pay-statement`, but is otherwise the same
          * as [PayStatementServiceAsync.retrieveMany].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieveMany(
+            params: HrisPayStatementRetrieveManyParams
+        ): CompletableFuture<HttpResponseFor<HrisPayStatementRetrieveManyPageAsync>> =
+            retrieveMany(params, RequestOptions.none())
+
+        /** @see [retrieveMany] */
         @MustBeClosed
         fun retrieveMany(
             params: HrisPayStatementRetrieveManyParams,

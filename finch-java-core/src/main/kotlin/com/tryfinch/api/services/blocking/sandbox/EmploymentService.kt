@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -18,7 +16,10 @@ interface EmploymentService {
     fun withRawResponse(): WithRawResponse
 
     /** Update sandbox employment */
-    @JvmOverloads
+    fun update(params: SandboxEmploymentUpdateParams): EmploymentUpdateResponse =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: SandboxEmploymentUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -31,7 +32,12 @@ interface EmploymentService {
          * Returns a raw HTTP response for `put /sandbox/employment/{individual_id}`, but is
          * otherwise the same as [EmploymentService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: SandboxEmploymentUpdateParams
+        ): HttpResponseFor<EmploymentUpdateResponse> = update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SandboxEmploymentUpdateParams,

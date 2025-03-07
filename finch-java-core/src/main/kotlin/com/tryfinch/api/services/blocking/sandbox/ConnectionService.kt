@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -21,7 +19,10 @@ interface ConnectionService {
     fun accounts(): AccountService
 
     /** Create a new connection (new company/provider pair) with a new account */
-    @JvmOverloads
+    fun create(params: SandboxConnectionCreateParams): ConnectionCreateResponse =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: SandboxConnectionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -36,7 +37,12 @@ interface ConnectionService {
          * Returns a raw HTTP response for `post /sandbox/connections`, but is otherwise the same as
          * [ConnectionService.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: SandboxConnectionCreateParams
+        ): HttpResponseFor<ConnectionCreateResponse> = create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxConnectionCreateParams,

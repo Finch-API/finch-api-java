@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.sandbox.jobs
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -20,19 +18,31 @@ interface ConfigurationServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Get configurations for sandbox jobs */
-    @JvmOverloads
+    fun retrieve(): CompletableFuture<List<SandboxJobConfiguration>> =
+        retrieve(SandboxJobConfigurationRetrieveParams.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: SandboxJobConfigurationRetrieveParams =
             SandboxJobConfigurationRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<SandboxJobConfiguration>>
 
-    /** Get configurations for sandbox jobs */
+    /** @see [retrieve] */
+    fun retrieve(
+        params: SandboxJobConfigurationRetrieveParams = SandboxJobConfigurationRetrieveParams.none()
+    ): CompletableFuture<List<SandboxJobConfiguration>> = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(requestOptions: RequestOptions): CompletableFuture<List<SandboxJobConfiguration>> =
         retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
     /** Update configurations for sandbox jobs */
-    @JvmOverloads
+    fun update(
+        params: SandboxJobConfigurationUpdateParams
+    ): CompletableFuture<SandboxJobConfiguration> = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: SandboxJobConfigurationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -48,7 +58,11 @@ interface ConfigurationServiceAsync {
          * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is otherwise the
          * same as [ConfigurationServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> =
+            retrieve(SandboxJobConfigurationRetrieveParams.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: SandboxJobConfigurationRetrieveParams =
@@ -56,10 +70,15 @@ interface ConfigurationServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>>
 
-        /**
-         * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is otherwise the
-         * same as [ConfigurationServiceAsync.retrieve].
-         */
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: SandboxJobConfigurationRetrieveParams =
+                SandboxJobConfigurationRetrieveParams.none()
+        ): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             requestOptions: RequestOptions
@@ -70,7 +89,13 @@ interface ConfigurationServiceAsync {
          * Returns a raw HTTP response for `put /sandbox/jobs/configuration`, but is otherwise the
          * same as [ConfigurationServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: SandboxJobConfigurationUpdateParams
+        ): CompletableFuture<HttpResponseFor<SandboxJobConfiguration>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SandboxJobConfigurationUpdateParams,

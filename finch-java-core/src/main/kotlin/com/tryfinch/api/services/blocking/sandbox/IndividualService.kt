@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -18,7 +16,10 @@ interface IndividualService {
     fun withRawResponse(): WithRawResponse
 
     /** Update sandbox individual */
-    @JvmOverloads
+    fun update(params: SandboxIndividualUpdateParams): IndividualUpdateResponse =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -31,7 +32,12 @@ interface IndividualService {
          * Returns a raw HTTP response for `put /sandbox/individual/{individual_id}`, but is
          * otherwise the same as [IndividualService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: SandboxIndividualUpdateParams
+        ): HttpResponseFor<IndividualUpdateResponse> = update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SandboxIndividualUpdateParams,

@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.sandbox.connections
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -21,7 +19,11 @@ interface AccountServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Create a new account for an existing connection (company/provider pair) */
-    @JvmOverloads
+    fun create(
+        params: SandboxConnectionAccountCreateParams
+    ): CompletableFuture<AccountCreateResponse> = create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: SandboxConnectionAccountCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -31,16 +33,21 @@ interface AccountServiceAsync {
      * Update an existing sandbox account. Change the connection status to understand how the Finch
      * API responds.
      */
-    @JvmOverloads
+    fun update(): CompletableFuture<AccountUpdateResponse> =
+        update(SandboxConnectionAccountUpdateParams.none())
+
+    /** @see [update] */
     fun update(
         params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AccountUpdateResponse>
 
-    /**
-     * Update an existing sandbox account. Change the connection status to understand how the Finch
-     * API responds.
-     */
+    /** @see [update] */
+    fun update(
+        params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none()
+    ): CompletableFuture<AccountUpdateResponse> = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(requestOptions: RequestOptions): CompletableFuture<AccountUpdateResponse> =
         update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
@@ -53,7 +60,13 @@ interface AccountServiceAsync {
          * Returns a raw HTTP response for `post /sandbox/connections/accounts`, but is otherwise
          * the same as [AccountServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: SandboxConnectionAccountCreateParams
+        ): CompletableFuture<HttpResponseFor<AccountCreateResponse>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxConnectionAccountCreateParams,
@@ -64,7 +77,11 @@ interface AccountServiceAsync {
          * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is otherwise the
          * same as [AccountServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =
+            update(SandboxConnectionAccountUpdateParams.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SandboxConnectionAccountUpdateParams =
@@ -72,10 +89,15 @@ interface AccountServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>>
 
-        /**
-         * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is otherwise the
-         * same as [AccountServiceAsync.update].
-         */
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: SandboxConnectionAccountUpdateParams =
+                SandboxConnectionAccountUpdateParams.none()
+        ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             requestOptions: RequestOptions

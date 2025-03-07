@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -18,13 +16,19 @@ interface ProviderService {
     fun withRawResponse(): WithRawResponse
 
     /** Return details on all available payroll and HR systems. */
-    @JvmOverloads
+    fun list(): ProviderListPage = list(ProviderListParams.none())
+
+    /** @see [list] */
     fun list(
         params: ProviderListParams = ProviderListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProviderListPage
 
-    /** Return details on all available payroll and HR systems. */
+    /** @see [list] */
+    fun list(params: ProviderListParams = ProviderListParams.none()): ProviderListPage =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): ProviderListPage =
         list(ProviderListParams.none(), requestOptions)
 
@@ -35,17 +39,23 @@ interface ProviderService {
          * Returns a raw HTTP response for `get /providers`, but is otherwise the same as
          * [ProviderService.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): HttpResponseFor<ProviderListPage> = list(ProviderListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: ProviderListParams = ProviderListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProviderListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /providers`, but is otherwise the same as
-         * [ProviderService.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ProviderListParams = ProviderListParams.none()
+        ): HttpResponseFor<ProviderListPage> = list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> =
             list(ProviderListParams.none(), requestOptions)

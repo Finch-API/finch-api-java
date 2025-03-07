@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.connect
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -21,14 +19,22 @@ interface SessionServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Create a new connect session for an employer */
-    @JvmOverloads
+    fun new_(params: ConnectSessionNewParams): CompletableFuture<SessionNewResponse> =
+        new_(params, RequestOptions.none())
+
+    /** @see [new_] */
     fun new_(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SessionNewResponse>
 
     /** Create a new Connect session for reauthenticating an existing connection */
-    @JvmOverloads
+    fun reauthenticate(
+        params: ConnectSessionReauthenticateParams
+    ): CompletableFuture<SessionReauthenticateResponse> =
+        reauthenticate(params, RequestOptions.none())
+
+    /** @see [reauthenticate] */
     fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -43,7 +49,13 @@ interface SessionServiceAsync {
          * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the same as
          * [SessionServiceAsync.new_].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun new_(
+            params: ConnectSessionNewParams
+        ): CompletableFuture<HttpResponseFor<SessionNewResponse>> =
+            new_(params, RequestOptions.none())
+
+        /** @see [new_] */
         @MustBeClosed
         fun new_(
             params: ConnectSessionNewParams,
@@ -54,7 +66,13 @@ interface SessionServiceAsync {
          * Returns a raw HTTP response for `post /connect/sessions/reauthenticate`, but is otherwise
          * the same as [SessionServiceAsync.reauthenticate].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun reauthenticate(
+            params: ConnectSessionReauthenticateParams
+        ): CompletableFuture<HttpResponseFor<SessionReauthenticateResponse>> =
+            reauthenticate(params, RequestOptions.none())
+
+        /** @see [reauthenticate] */
         @MustBeClosed
         fun reauthenticate(
             params: ConnectSessionReauthenticateParams,

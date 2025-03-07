@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -18,7 +16,10 @@ interface CompanyService {
     fun withRawResponse(): WithRawResponse
 
     /** Update a sandbox company's data */
-    @JvmOverloads
+    fun update(params: SandboxCompanyUpdateParams): CompanyUpdateResponse =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: SandboxCompanyUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -31,7 +32,11 @@ interface CompanyService {
          * Returns a raw HTTP response for `put /sandbox/company`, but is otherwise the same as
          * [CompanyService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(params: SandboxCompanyUpdateParams): HttpResponseFor<CompanyUpdateResponse> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SandboxCompanyUpdateParams,
