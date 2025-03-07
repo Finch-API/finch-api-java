@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class BenefitFeaturesAndOperations
@@ -292,9 +293,8 @@ private constructor(
             fun annualMaximum(annualMaximum: Boolean) = annualMaximum(annualMaximum as Boolean?)
 
             /** Whether the provider supports an annual maximum for this benefit. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun annualMaximum(annualMaximum: Optional<Boolean>) =
-                annualMaximum(annualMaximum.orElse(null) as Boolean?)
+                annualMaximum(annualMaximum.getOrNull())
 
             /** Whether the provider supports an annual maximum for this benefit. */
             fun annualMaximum(annualMaximum: JsonField<Boolean>) = apply {
@@ -317,8 +317,7 @@ private constructor(
              * Whether the provider supports catch up for this benefit. This field will only be true
              * for retirement benefits.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.orElse(null) as Boolean?)
+            fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.getOrNull())
 
             /**
              * Whether the provider supports catch up for this benefit. This field will only be true
@@ -338,7 +337,7 @@ private constructor(
              * supported.
              */
             fun companyContribution(companyContribution: Optional<List<CompanyContribution?>>) =
-                companyContribution(companyContribution.orElse(null))
+                companyContribution(companyContribution.getOrNull())
 
             /**
              * Supported contribution types. An empty array indicates contributions are not
@@ -362,7 +361,7 @@ private constructor(
 
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             fun description(description: JsonField<String>) = apply {
                 this.description = description
@@ -374,7 +373,7 @@ private constructor(
 
             /** Supported deduction types. An empty array indicates deductions are not supported. */
             fun employeeDeduction(employeeDeduction: Optional<List<EmployeeDeduction?>>) =
-                employeeDeduction(employeeDeduction.orElse(null))
+                employeeDeduction(employeeDeduction.getOrNull())
 
             /** Supported deduction types. An empty array indicates deductions are not supported. */
             fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction?>>) = apply {
@@ -418,7 +417,7 @@ private constructor(
              * supported for the benefit. This array only has values for HSA benefits.
              */
             fun hsaContributionLimit(hsaContributionLimit: Optional<List<HsaContributionLimit?>>) =
-                hsaContributionLimit(hsaContributionLimit.orElse(null))
+                hsaContributionLimit(hsaContributionLimit.getOrNull())
 
             /**
              * Whether the provider supports HSA contribution limits. Empty if this feature is not

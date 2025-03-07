@@ -22,6 +22,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Create a new connect session for an employer */
 class ConnectSessionNewParams
@@ -271,7 +272,7 @@ private constructor(
                 customerEmail(JsonField.ofNullable(customerEmail))
 
             fun customerEmail(customerEmail: Optional<String>) =
-                customerEmail(customerEmail.orElse(null))
+                customerEmail(customerEmail.getOrNull())
 
             fun customerEmail(customerEmail: JsonField<String>) = apply {
                 this.customerEmail = customerEmail
@@ -281,7 +282,7 @@ private constructor(
                 integration(JsonField.ofNullable(integration))
 
             fun integration(integration: Optional<Integration>) =
-                integration(integration.orElse(null))
+                integration(integration.getOrNull())
 
             fun integration(integration: JsonField<Integration>) = apply {
                 this.integration = integration
@@ -291,8 +292,7 @@ private constructor(
 
             fun manual(manual: Boolean) = manual(manual as Boolean?)
 
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun manual(manual: Optional<Boolean>) = manual(manual.orElse(null) as Boolean?)
+            fun manual(manual: Optional<Boolean>) = manual(manual.getOrNull())
 
             fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
@@ -314,9 +314,8 @@ private constructor(
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun minutesToExpire(minutesToExpire: Optional<Double>) =
-                minutesToExpire(minutesToExpire.orElse(null) as Double?)
+                minutesToExpire(minutesToExpire.getOrNull())
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
@@ -328,7 +327,7 @@ private constructor(
 
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
 
-            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
             fun redirectUri(redirectUri: JsonField<String>) = apply {
                 this.redirectUri = redirectUri
@@ -336,7 +335,7 @@ private constructor(
 
             fun sandbox(sandbox: Sandbox?) = sandbox(JsonField.ofNullable(sandbox))
 
-            fun sandbox(sandbox: Optional<Sandbox>) = sandbox(sandbox.orElse(null))
+            fun sandbox(sandbox: Optional<Sandbox>) = sandbox(sandbox.getOrNull())
 
             fun sandbox(sandbox: JsonField<Sandbox>) = apply { this.sandbox = sandbox }
 
@@ -443,7 +442,7 @@ private constructor(
         fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
 
         fun customerEmail(customerEmail: Optional<String>) =
-            customerEmail(customerEmail.orElse(null))
+            customerEmail(customerEmail.getOrNull())
 
         fun customerEmail(customerEmail: JsonField<String>) = apply {
             body.customerEmail(customerEmail)
@@ -451,7 +450,7 @@ private constructor(
 
         fun integration(integration: Integration?) = apply { body.integration(integration) }
 
-        fun integration(integration: Optional<Integration>) = integration(integration.orElse(null))
+        fun integration(integration: Optional<Integration>) = integration(integration.getOrNull())
 
         fun integration(integration: JsonField<Integration>) = apply {
             body.integration(integration)
@@ -461,8 +460,7 @@ private constructor(
 
         fun manual(manual: Boolean) = manual(manual as Boolean?)
 
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun manual(manual: Optional<Boolean>) = manual(manual.orElse(null) as Boolean?)
+        fun manual(manual: Optional<Boolean>) = manual(manual.getOrNull())
 
         fun manual(manual: JsonField<Boolean>) = apply { body.manual(manual) }
 
@@ -481,9 +479,8 @@ private constructor(
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun minutesToExpire(minutesToExpire: Optional<Double>) =
-            minutesToExpire(minutesToExpire.orElse(null) as Double?)
+            minutesToExpire(minutesToExpire.getOrNull())
 
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
@@ -494,13 +491,13 @@ private constructor(
 
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
-        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
         fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
         fun sandbox(sandbox: Sandbox?) = apply { body.sandbox(sandbox) }
 
-        fun sandbox(sandbox: Optional<Sandbox>) = sandbox(sandbox.orElse(null))
+        fun sandbox(sandbox: Optional<Sandbox>) = sandbox(sandbox.getOrNull())
 
         fun sandbox(sandbox: JsonField<Sandbox>) = apply { body.sandbox(sandbox) }
 
@@ -832,7 +829,7 @@ private constructor(
 
             fun authMethod(authMethod: AuthMethod?) = authMethod(JsonField.ofNullable(authMethod))
 
-            fun authMethod(authMethod: Optional<AuthMethod>) = authMethod(authMethod.orElse(null))
+            fun authMethod(authMethod: Optional<AuthMethod>) = authMethod(authMethod.getOrNull())
 
             fun authMethod(authMethod: JsonField<AuthMethod>) = apply {
                 this.authMethod = authMethod
@@ -840,7 +837,7 @@ private constructor(
 
             fun provider(provider: String?) = provider(JsonField.ofNullable(provider))
 
-            fun provider(provider: Optional<String>) = provider(provider.orElse(null))
+            fun provider(provider: Optional<String>) = provider(provider.getOrNull())
 
             fun provider(provider: JsonField<String>) = apply { this.provider = provider }
 

@@ -19,6 +19,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyParams
@@ -113,7 +114,7 @@ private constructor(
 
             fun options(options: Options?) = options(JsonField.ofNullable(options))
 
-            fun options(options: Optional<Options>) = options(options.orElse(null))
+            fun options(options: Optional<Options>) = options(options.getOrNull())
 
             fun options(options: JsonField<Options>) = apply { this.options = options }
 
@@ -207,7 +208,7 @@ private constructor(
 
         fun options(options: Options?) = apply { body.options(options) }
 
-        fun options(options: Optional<Options>) = options(options.orElse(null))
+        fun options(options: Optional<Options>) = options(options.getOrNull())
 
         fun options(options: JsonField<Options>) = apply { body.options(options) }
 

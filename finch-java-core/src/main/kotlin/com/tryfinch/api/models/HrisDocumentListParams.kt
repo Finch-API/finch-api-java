@@ -13,6 +13,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents. */
 class HrisDocumentListParams
@@ -100,7 +101,7 @@ private constructor(
          * individuals
          */
         fun individualIds(individualIds: Optional<List<String>>) =
-            individualIds(individualIds.orElse(null))
+            individualIds(individualIds.getOrNull())
 
         /**
          * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
@@ -117,8 +118,7 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Number of documents to return (defaults to all) */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** Index to start from (defaults to 0) */
         fun offset(offset: Long?) = apply { this.offset = offset }
@@ -127,14 +127,13 @@ private constructor(
         fun offset(offset: Long) = offset(offset as Long?)
 
         /** Index to start from (defaults to 0) */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun offset(offset: Optional<Long>) = offset(offset.orElse(null) as Long?)
+        fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
 
         /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
         fun types(types: List<Type>?) = apply { this.types = types?.toMutableList() }
 
         /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
-        fun types(types: Optional<List<Type>>) = types(types.orElse(null))
+        fun types(types: Optional<List<Type>>) = types(types.getOrNull())
 
         /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
         fun addType(type: Type) = apply { types = (types ?: mutableListOf()).apply { add(type) } }

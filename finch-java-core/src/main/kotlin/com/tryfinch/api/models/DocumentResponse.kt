@@ -17,6 +17,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class DocumentResponse
@@ -140,7 +141,7 @@ private constructor(
          * The ID of the individual associated with the document. This will be null for
          * employer-level documents.
          */
-        fun individualId(individualId: Optional<String>) = individualId(individualId.orElse(null))
+        fun individualId(individualId: Optional<String>) = individualId(individualId.getOrNull())
 
         /**
          * The ID of the individual associated with the document. This will be null for
@@ -175,8 +176,7 @@ private constructor(
         fun year(year: Double) = year(year as Double?)
 
         /** The year the document applies to, if available. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun year(year: Optional<Double>) = year(year.orElse(null) as Double?)
+        fun year(year: Optional<Double>) = year(year.getOrNull())
 
         /** The year the document applies to, if available. */
         fun year(year: JsonField<Double>) = apply { this.year = year }

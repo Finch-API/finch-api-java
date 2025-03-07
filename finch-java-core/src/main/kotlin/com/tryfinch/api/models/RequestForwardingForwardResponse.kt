@@ -16,6 +16,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class RequestForwardingForwardResponse
@@ -142,7 +143,7 @@ private constructor(
          * received from the underlying integration’s API. This field may be null in the case where
          * the upstream system’s response is empty.
          */
-        fun data(data: Optional<String>) = data(data.orElse(null))
+        fun data(data: Optional<String>) = data(data.getOrNull())
 
         /**
          * A string representation of the HTTP response body of the forwarded request’s response
@@ -344,7 +345,7 @@ private constructor(
              * in the original request, this value will be returned as null ; otherwise, this value
              * will always be returned as a string.
              */
-            fun data(data: Optional<String>) = data(data.orElse(null))
+            fun data(data: Optional<String>) = data(data.getOrNull())
 
             /**
              * The body that was specified for the forwarded request. If a value was not specified

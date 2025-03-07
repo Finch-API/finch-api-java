@@ -15,6 +15,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class IndividualInDirectory
@@ -150,7 +151,7 @@ private constructor(
         fun department(department: Department?) = department(JsonField.ofNullable(department))
 
         /** The department object. */
-        fun department(department: Optional<Department>) = department(department.orElse(null))
+        fun department(department: Optional<Department>) = department(department.getOrNull())
 
         /** The department object. */
         fun department(department: JsonField<Department>) = apply { this.department = department }
@@ -159,7 +160,7 @@ private constructor(
         fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: Optional<String>) = firstName(firstName.orElse(null))
+        fun firstName(firstName: Optional<String>) = firstName(firstName.getOrNull())
 
         /** The legal first name of the individual. */
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
@@ -171,8 +172,7 @@ private constructor(
         fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
 
         /** `true` if the individual is an active employee or contractor at the company. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun isActive(isActive: Optional<Boolean>) = isActive(isActive.orElse(null) as Boolean?)
+        fun isActive(isActive: Optional<Boolean>) = isActive(isActive.getOrNull())
 
         /** `true` if the individual is an active employee or contractor at the company. */
         fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
@@ -181,7 +181,7 @@ private constructor(
         fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: Optional<String>) = lastName(lastName.orElse(null))
+        fun lastName(lastName: Optional<String>) = lastName(lastName.getOrNull())
 
         /** The legal last name of the individual. */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
@@ -190,7 +190,7 @@ private constructor(
         fun manager(manager: Manager?) = manager(JsonField.ofNullable(manager))
 
         /** The manager object. */
-        fun manager(manager: Optional<Manager>) = manager(manager.orElse(null))
+        fun manager(manager: Optional<Manager>) = manager(manager.getOrNull())
 
         /** The manager object. */
         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
@@ -199,7 +199,7 @@ private constructor(
         fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: Optional<String>) = middleName(middleName.orElse(null))
+        fun middleName(middleName: Optional<String>) = middleName(middleName.getOrNull())
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
@@ -293,7 +293,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The name of the department. */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** The name of the department. */
             fun name(name: JsonField<String>) = apply { this.name = name }

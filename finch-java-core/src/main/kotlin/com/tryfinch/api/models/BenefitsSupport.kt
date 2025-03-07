@@ -15,6 +15,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Each benefit type and their supported features. If the benefit type is not supported, the
@@ -219,7 +220,7 @@ private constructor(
             commuter(JsonField.ofNullable(commuter))
 
         fun commuter(commuter: Optional<BenefitFeaturesAndOperations>) =
-            commuter(commuter.orElse(null))
+            commuter(commuter.getOrNull())
 
         fun commuter(commuter: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.commuter = commuter
@@ -229,7 +230,7 @@ private constructor(
             customPostTax(JsonField.ofNullable(customPostTax))
 
         fun customPostTax(customPostTax: Optional<BenefitFeaturesAndOperations>) =
-            customPostTax(customPostTax.orElse(null))
+            customPostTax(customPostTax.getOrNull())
 
         fun customPostTax(customPostTax: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.customPostTax = customPostTax
@@ -239,7 +240,7 @@ private constructor(
             customPreTax(JsonField.ofNullable(customPreTax))
 
         fun customPreTax(customPreTax: Optional<BenefitFeaturesAndOperations>) =
-            customPreTax(customPreTax.orElse(null))
+            customPreTax(customPreTax.getOrNull())
 
         fun customPreTax(customPreTax: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.customPreTax = customPreTax
@@ -249,7 +250,7 @@ private constructor(
             fsaDependentCare(JsonField.ofNullable(fsaDependentCare))
 
         fun fsaDependentCare(fsaDependentCare: Optional<BenefitFeaturesAndOperations>) =
-            fsaDependentCare(fsaDependentCare.orElse(null))
+            fsaDependentCare(fsaDependentCare.getOrNull())
 
         fun fsaDependentCare(fsaDependentCare: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.fsaDependentCare = fsaDependentCare
@@ -259,7 +260,7 @@ private constructor(
             fsaMedical(JsonField.ofNullable(fsaMedical))
 
         fun fsaMedical(fsaMedical: Optional<BenefitFeaturesAndOperations>) =
-            fsaMedical(fsaMedical.orElse(null))
+            fsaMedical(fsaMedical.getOrNull())
 
         fun fsaMedical(fsaMedical: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.fsaMedical = fsaMedical
@@ -267,7 +268,7 @@ private constructor(
 
         fun hsaPost(hsaPost: BenefitFeaturesAndOperations?) = hsaPost(JsonField.ofNullable(hsaPost))
 
-        fun hsaPost(hsaPost: Optional<BenefitFeaturesAndOperations>) = hsaPost(hsaPost.orElse(null))
+        fun hsaPost(hsaPost: Optional<BenefitFeaturesAndOperations>) = hsaPost(hsaPost.getOrNull())
 
         fun hsaPost(hsaPost: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.hsaPost = hsaPost
@@ -275,7 +276,7 @@ private constructor(
 
         fun hsaPre(hsaPre: BenefitFeaturesAndOperations?) = hsaPre(JsonField.ofNullable(hsaPre))
 
-        fun hsaPre(hsaPre: Optional<BenefitFeaturesAndOperations>) = hsaPre(hsaPre.orElse(null))
+        fun hsaPre(hsaPre: Optional<BenefitFeaturesAndOperations>) = hsaPre(hsaPre.getOrNull())
 
         fun hsaPre(hsaPre: JsonField<BenefitFeaturesAndOperations>) = apply { this.hsaPre = hsaPre }
 
@@ -283,7 +284,7 @@ private constructor(
             s125Dental(JsonField.ofNullable(s125Dental))
 
         fun s125Dental(s125Dental: Optional<BenefitFeaturesAndOperations>) =
-            s125Dental(s125Dental.orElse(null))
+            s125Dental(s125Dental.getOrNull())
 
         fun s125Dental(s125Dental: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Dental = s125Dental
@@ -293,7 +294,7 @@ private constructor(
             s125Medical(JsonField.ofNullable(s125Medical))
 
         fun s125Medical(s125Medical: Optional<BenefitFeaturesAndOperations>) =
-            s125Medical(s125Medical.orElse(null))
+            s125Medical(s125Medical.getOrNull())
 
         fun s125Medical(s125Medical: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Medical = s125Medical
@@ -303,7 +304,7 @@ private constructor(
             s125Vision(JsonField.ofNullable(s125Vision))
 
         fun s125Vision(s125Vision: Optional<BenefitFeaturesAndOperations>) =
-            s125Vision(s125Vision.orElse(null))
+            s125Vision(s125Vision.getOrNull())
 
         fun s125Vision(s125Vision: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.s125Vision = s125Vision
@@ -311,7 +312,7 @@ private constructor(
 
         fun simple(simple: BenefitFeaturesAndOperations?) = simple(JsonField.ofNullable(simple))
 
-        fun simple(simple: Optional<BenefitFeaturesAndOperations>) = simple(simple.orElse(null))
+        fun simple(simple: Optional<BenefitFeaturesAndOperations>) = simple(simple.getOrNull())
 
         fun simple(simple: JsonField<BenefitFeaturesAndOperations>) = apply { this.simple = simple }
 
@@ -319,7 +320,7 @@ private constructor(
             simpleIra(JsonField.ofNullable(simpleIra))
 
         fun simpleIra(simpleIra: Optional<BenefitFeaturesAndOperations>) =
-            simpleIra(simpleIra.orElse(null))
+            simpleIra(simpleIra.getOrNull())
 
         fun simpleIra(simpleIra: JsonField<BenefitFeaturesAndOperations>) = apply {
             this.simpleIra = simpleIra

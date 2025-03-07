@@ -17,6 +17,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * A 2020 version of the W-4 tax form containing information on an individual's filing status,
@@ -110,8 +111,7 @@ private constructor(
         fun year(year: Double) = year(year as Double?)
 
         /** The tax year this W4 document applies to. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun year(year: Optional<Double>) = year(year.orElse(null) as Double?)
+        fun year(year: Optional<Double>) = year(year.getOrNull())
 
         /** The tax year this W4 document applies to. */
         fun year(year: JsonField<Double>) = apply { this.year = year }
@@ -315,9 +315,8 @@ private constructor(
                 amountForOtherDependents(amountForOtherDependents as Long?)
 
             /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun amountForOtherDependents(amountForOtherDependents: Optional<Long>) =
-                amountForOtherDependents(amountForOtherDependents.orElse(null) as Long?)
+                amountForOtherDependents(amountForOtherDependents.getOrNull())
 
             /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
             fun amountForOtherDependents(amountForOtherDependents: JsonField<Long>) = apply {
@@ -335,13 +334,9 @@ private constructor(
                 amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17 as Long?)
 
             /** Amount claimed for dependents under 17 years old (in cents). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun amountForQualifyingChildrenUnder17(
                 amountForQualifyingChildrenUnder17: Optional<Long>
-            ) =
-                amountForQualifyingChildrenUnder17(
-                    amountForQualifyingChildrenUnder17.orElse(null) as Long?
-                )
+            ) = amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17.getOrNull())
 
             /** Amount claimed for dependents under 17 years old (in cents). */
             fun amountForQualifyingChildrenUnder17(
@@ -357,9 +352,7 @@ private constructor(
             fun deductions(deductions: Long) = deductions(deductions as Long?)
 
             /** Deductible expenses (in cents). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun deductions(deductions: Optional<Long>) =
-                deductions(deductions.orElse(null) as Long?)
+            fun deductions(deductions: Optional<Long>) = deductions(deductions.getOrNull())
 
             /** Deductible expenses (in cents). */
             fun deductions(deductions: JsonField<Long>) = apply { this.deductions = deductions }
@@ -373,9 +366,8 @@ private constructor(
                 extraWithholding(extraWithholding as Long?)
 
             /** Additional withholding amount (in cents). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun extraWithholding(extraWithholding: Optional<Long>) =
-                extraWithholding(extraWithholding.orElse(null) as Long?)
+                extraWithholding(extraWithholding.getOrNull())
 
             /** Additional withholding amount (in cents). */
             fun extraWithholding(extraWithholding: JsonField<Long>) = apply {
@@ -388,7 +380,7 @@ private constructor(
 
             /** The individual's filing status for tax purposes. */
             fun filingStatus(filingStatus: Optional<FilingStatus>) =
-                filingStatus(filingStatus.orElse(null))
+                filingStatus(filingStatus.getOrNull())
 
             /** The individual's filing status for tax purposes. */
             fun filingStatus(filingStatus: JsonField<FilingStatus>) = apply {
@@ -410,9 +402,7 @@ private constructor(
             fun otherIncome(otherIncome: Long) = otherIncome(otherIncome as Long?)
 
             /** Additional income from sources outside of primary employment (in cents). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun otherIncome(otherIncome: Optional<Long>) =
-                otherIncome(otherIncome.orElse(null) as Long?)
+            fun otherIncome(otherIncome: Optional<Long>) = otherIncome(otherIncome.getOrNull())
 
             /** Additional income from sources outside of primary employment (in cents). */
             fun otherIncome(otherIncome: JsonField<Long>) = apply { this.otherIncome = otherIncome }
@@ -428,13 +418,9 @@ private constructor(
                 totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits as Long?)
 
             /** Total amount claimed for dependents and other credits (in cents). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun totalClaimDependentAndOtherCredits(
                 totalClaimDependentAndOtherCredits: Optional<Long>
-            ) =
-                totalClaimDependentAndOtherCredits(
-                    totalClaimDependentAndOtherCredits.orElse(null) as Long?
-                )
+            ) = totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits.getOrNull())
 
             /** Total amount claimed for dependents and other credits (in cents). */
             fun totalClaimDependentAndOtherCredits(

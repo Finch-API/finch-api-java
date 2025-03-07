@@ -18,6 +18,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
@@ -168,7 +169,7 @@ private constructor(
 
             fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
 
-            fun frequency(frequency: Optional<BenefitFrequency>) = frequency(frequency.orElse(null))
+            fun frequency(frequency: Optional<BenefitFrequency>) = frequency(frequency.getOrNull())
 
             fun frequency(frequency: JsonField<BenefitFrequency>) = apply {
                 this.frequency = frequency
@@ -178,7 +179,7 @@ private constructor(
             fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
             /** Type of benefit. */
-            fun type(type: Optional<BenefitType>) = type(type.orElse(null))
+            fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
             /** Type of benefit. */
             fun type(type: JsonField<BenefitType>) = apply { this.type = type }
@@ -263,7 +264,7 @@ private constructor(
 
         fun frequency(frequency: BenefitFrequency?) = apply { body.frequency(frequency) }
 
-        fun frequency(frequency: Optional<BenefitFrequency>) = frequency(frequency.orElse(null))
+        fun frequency(frequency: Optional<BenefitFrequency>) = frequency(frequency.getOrNull())
 
         fun frequency(frequency: JsonField<BenefitFrequency>) = apply { body.frequency(frequency) }
 
@@ -271,7 +272,7 @@ private constructor(
         fun type(type: BenefitType?) = apply { body.type(type) }
 
         /** Type of benefit. */
-        fun type(type: Optional<BenefitType>) = type(type.orElse(null))
+        fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
         /** Type of benefit. */
         fun type(type: JsonField<BenefitType>) = apply { body.type(type) }

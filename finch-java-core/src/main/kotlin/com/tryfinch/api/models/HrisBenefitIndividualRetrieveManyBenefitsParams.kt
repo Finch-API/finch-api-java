@@ -9,6 +9,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsParams
@@ -98,7 +99,7 @@ private constructor(
          * individuals
          */
         fun individualIds(individualIds: Optional<String>) =
-            individualIds(individualIds.orElse(null))
+            individualIds(individualIds.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

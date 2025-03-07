@@ -19,6 +19,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Introspection
@@ -443,7 +444,7 @@ private constructor(
          * this connection.
          */
         fun customerEmail(customerEmail: Optional<String>) =
-            customerEmail(customerEmail.orElse(null))
+            customerEmail(customerEmail.getOrNull())
 
         /**
          * The email of your customer you provided to Finch when a connect session was created for
@@ -463,7 +464,7 @@ private constructor(
          * The ID of your customer you provided to Finch when a connect session was created for this
          * connection.
          */
-        fun customerId(customerId: Optional<String>) = customerId(customerId.orElse(null))
+        fun customerId(customerId: Optional<String>) = customerId(customerId.getOrNull())
 
         /**
          * The ID of your customer you provided to Finch when a connect session was created for this
@@ -481,7 +482,7 @@ private constructor(
          * The name of your customer you provided to Finch when a connect session was created for
          * this connection.
          */
-        fun customerName(customerName: Optional<String>) = customerName(customerName.orElse(null))
+        fun customerName(customerName: Optional<String>) = customerName(customerName.getOrNull())
 
         /**
          * The name of your customer you provided to Finch when a connect session was created for

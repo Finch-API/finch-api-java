@@ -11,6 +11,7 @@ import com.tryfinch.api.core.http.RetryingHttpClient
 import java.time.Clock
 import java.util.Base64
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class ClientOptions
 private constructor(
@@ -109,20 +110,20 @@ private constructor(
 
         fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
 
-        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.orElse(null))
+        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.getOrNull())
 
         fun clientId(clientId: String?) = apply { this.clientId = clientId }
 
-        fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
+        fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
 
         fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
 
-        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.orElse(null))
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
 
         fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
 
         fun webhookSecret(webhookSecret: Optional<String>) =
-            webhookSecret(webhookSecret.orElse(null))
+            webhookSecret(webhookSecret.getOrNull())
 
         fun headers(headers: Headers) = apply {
             this.headers.clear()

@@ -9,6 +9,7 @@ import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Read company pay groups and frequencies */
 class PayrollPayGroupListParams
@@ -68,14 +69,14 @@ private constructor(
 
         fun individualId(individualId: String?) = apply { this.individualId = individualId }
 
-        fun individualId(individualId: Optional<String>) = individualId(individualId.orElse(null))
+        fun individualId(individualId: Optional<String>) = individualId(individualId.getOrNull())
 
         fun payFrequencies(payFrequencies: List<String>?) = apply {
             this.payFrequencies = payFrequencies?.toMutableList()
         }
 
         fun payFrequencies(payFrequencies: Optional<List<String>>) =
-            payFrequencies(payFrequencies.orElse(null))
+            payFrequencies(payFrequencies.getOrNull())
 
         fun addPayFrequency(payFrequency: String) = apply {
             payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }

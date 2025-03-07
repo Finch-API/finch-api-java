@@ -17,6 +17,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * A 2005 version of the W-4 tax form containing information on an individual's filing status,
@@ -110,8 +111,7 @@ private constructor(
         fun year(year: Double) = year(year as Double?)
 
         /** The tax year this W4 document applies to. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun year(year: Optional<Double>) = year(year.orElse(null) as Double?)
+        fun year(year: Optional<Double>) = year(year.getOrNull())
 
         /** The tax year this W4 document applies to. */
         fun year(year: JsonField<Double>) = apply { this.year = year }
@@ -263,9 +263,8 @@ private constructor(
                 additionalWithholding(additionalWithholding as Long?)
 
             /** Additional withholding amount (in cents). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun additionalWithholding(additionalWithholding: Optional<Long>) =
-                additionalWithholding(additionalWithholding.orElse(null) as Long?)
+                additionalWithholding(additionalWithholding.getOrNull())
 
             /** Additional withholding amount (in cents). */
             fun additionalWithholding(additionalWithholding: JsonField<Long>) = apply {
@@ -303,9 +302,8 @@ private constructor(
                 totalNumberOfAllowances(totalNumberOfAllowances as Long?)
 
             /** Total number of allowances claimed (in cents). */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun totalNumberOfAllowances(totalNumberOfAllowances: Optional<Long>) =
-                totalNumberOfAllowances(totalNumberOfAllowances.orElse(null) as Long?)
+                totalNumberOfAllowances(totalNumberOfAllowances.getOrNull())
 
             /** Total number of allowances claimed (in cents). */
             fun totalNumberOfAllowances(totalNumberOfAllowances: JsonField<Long>) = apply {

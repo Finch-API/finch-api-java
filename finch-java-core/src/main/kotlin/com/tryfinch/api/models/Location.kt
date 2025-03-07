@@ -15,6 +15,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Location
@@ -141,7 +142,7 @@ private constructor(
         fun city(city: String?) = city(JsonField.ofNullable(city))
 
         /** City, district, suburb, town, or village. */
-        fun city(city: Optional<String>) = city(city.orElse(null))
+        fun city(city: Optional<String>) = city(city.getOrNull())
 
         /** City, district, suburb, town, or village. */
         fun city(city: JsonField<String>) = apply { this.city = city }
@@ -150,7 +151,7 @@ private constructor(
         fun country(country: String?) = country(JsonField.ofNullable(country))
 
         /** The 2-letter ISO 3166 country code. */
-        fun country(country: Optional<String>) = country(country.orElse(null))
+        fun country(country: Optional<String>) = country(country.getOrNull())
 
         /** The 2-letter ISO 3166 country code. */
         fun country(country: JsonField<String>) = apply { this.country = country }
@@ -159,7 +160,7 @@ private constructor(
         fun line1(line1: String?) = line1(JsonField.ofNullable(line1))
 
         /** Street address or PO box. */
-        fun line1(line1: Optional<String>) = line1(line1.orElse(null))
+        fun line1(line1: Optional<String>) = line1(line1.getOrNull())
 
         /** Street address or PO box. */
         fun line1(line1: JsonField<String>) = apply { this.line1 = line1 }
@@ -168,14 +169,14 @@ private constructor(
         fun line2(line2: String?) = line2(JsonField.ofNullable(line2))
 
         /** Apartment, suite, unit, or building. */
-        fun line2(line2: Optional<String>) = line2(line2.orElse(null))
+        fun line2(line2: Optional<String>) = line2(line2.getOrNull())
 
         /** Apartment, suite, unit, or building. */
         fun line2(line2: JsonField<String>) = apply { this.line2 = line2 }
 
         fun name(name: String?) = name(JsonField.ofNullable(name))
 
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         fun name(name: JsonField<String>) = apply { this.name = name }
 
@@ -183,14 +184,14 @@ private constructor(
         fun postalCode(postalCode: String?) = postalCode(JsonField.ofNullable(postalCode))
 
         /** The postal code or zip code. */
-        fun postalCode(postalCode: Optional<String>) = postalCode(postalCode.orElse(null))
+        fun postalCode(postalCode: Optional<String>) = postalCode(postalCode.getOrNull())
 
         /** The postal code or zip code. */
         fun postalCode(postalCode: JsonField<String>) = apply { this.postalCode = postalCode }
 
         fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
 
-        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.orElse(null))
+        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.getOrNull())
 
         fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
@@ -198,7 +199,7 @@ private constructor(
         fun state(state: String?) = state(JsonField.ofNullable(state))
 
         /** The state code. */
-        fun state(state: Optional<String>) = state(state.orElse(null))
+        fun state(state: Optional<String>) = state(state.getOrNull())
 
         /** The state code. */
         fun state(state: JsonField<String>) = apply { this.state = state }
