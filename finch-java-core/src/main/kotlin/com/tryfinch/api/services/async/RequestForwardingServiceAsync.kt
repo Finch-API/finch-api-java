@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -23,7 +21,11 @@ interface RequestForwardingServiceAsync {
      * unified API doesn’t have a data model that cleanly fits your needs, then Forward allows you
      * to push or pull data models directly against an integration’s API.
      */
-    @JvmOverloads
+    fun forward(
+        params: RequestForwardingForwardParams
+    ): CompletableFuture<RequestForwardingForwardResponse> = forward(params, RequestOptions.none())
+
+    /** @see [forward] */
     fun forward(
         params: RequestForwardingForwardParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -39,7 +41,13 @@ interface RequestForwardingServiceAsync {
          * Returns a raw HTTP response for `post /forward`, but is otherwise the same as
          * [RequestForwardingServiceAsync.forward].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun forward(
+            params: RequestForwardingForwardParams
+        ): CompletableFuture<HttpResponseFor<RequestForwardingForwardResponse>> =
+            forward(params, RequestOptions.none())
+
+        /** @see [forward] */
         @MustBeClosed
         fun forward(
             params: RequestForwardingForwardParams,

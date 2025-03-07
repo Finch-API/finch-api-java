@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.hris
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -18,13 +16,19 @@ interface CompanyService {
     fun withRawResponse(): WithRawResponse
 
     /** Read basic company data */
-    @JvmOverloads
+    fun retrieve(): Company = retrieve(HrisCompanyRetrieveParams.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Company
 
-    /** Read basic company data */
+    /** @see [retrieve] */
+    fun retrieve(params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()): Company =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(requestOptions: RequestOptions): Company =
         retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 
@@ -35,17 +39,23 @@ interface CompanyService {
          * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
          * [CompanyService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(): HttpResponseFor<Company> = retrieve(HrisCompanyRetrieveParams.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Company>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
-         * [CompanyService.retrieve].
-         */
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
+        ): HttpResponseFor<Company> = retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
             retrieve(HrisCompanyRetrieveParams.none(), requestOptions)

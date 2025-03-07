@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -19,13 +17,20 @@ interface ProviderServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Return details on all available payroll and HR systems. */
-    @JvmOverloads
+    fun list(): CompletableFuture<ProviderListPageAsync> = list(ProviderListParams.none())
+
+    /** @see [list] */
     fun list(
         params: ProviderListParams = ProviderListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProviderListPageAsync>
 
-    /** Return details on all available payroll and HR systems. */
+    /** @see [list] */
+    fun list(
+        params: ProviderListParams = ProviderListParams.none()
+    ): CompletableFuture<ProviderListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<ProviderListPageAsync> =
         list(ProviderListParams.none(), requestOptions)
 
@@ -38,17 +43,25 @@ interface ProviderServiceAsync {
          * Returns a raw HTTP response for `get /providers`, but is otherwise the same as
          * [ProviderServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
+            list(ProviderListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: ProviderListParams = ProviderListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /providers`, but is otherwise the same as
-         * [ProviderServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ProviderListParams = ProviderListParams.none()
+        ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions

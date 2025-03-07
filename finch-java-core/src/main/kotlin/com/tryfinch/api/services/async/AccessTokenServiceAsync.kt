@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -19,7 +17,10 @@ interface AccessTokenServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Exchange the authorization code for an access token */
-    @JvmOverloads
+    fun create(params: AccessTokenCreateParams): CompletableFuture<CreateAccessTokenResponse> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: AccessTokenCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -35,7 +36,13 @@ interface AccessTokenServiceAsync {
          * Returns a raw HTTP response for `post /auth/token`, but is otherwise the same as
          * [AccessTokenServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: AccessTokenCreateParams
+        ): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: AccessTokenCreateParams,

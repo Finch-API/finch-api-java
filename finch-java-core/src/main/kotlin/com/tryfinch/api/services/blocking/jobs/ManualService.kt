@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.jobs
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -21,7 +19,10 @@ interface ManualService {
      * Get a manual job by `job_id`. Manual jobs are completed by a human and include Assisted
      * Benefits jobs.
      */
-    @JvmOverloads
+    fun retrieve(params: JobManualRetrieveParams): ManualAsyncJob =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: JobManualRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -34,7 +35,11 @@ interface ManualService {
          * Returns a raw HTTP response for `get /jobs/manual/{job_id}`, but is otherwise the same as
          * [ManualService.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(params: JobManualRetrieveParams): HttpResponseFor<ManualAsyncJob> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: JobManualRetrieveParams,

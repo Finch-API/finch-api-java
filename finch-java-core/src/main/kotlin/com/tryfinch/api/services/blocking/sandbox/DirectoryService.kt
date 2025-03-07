@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -18,13 +16,20 @@ interface DirectoryService {
     fun withRawResponse(): WithRawResponse
 
     /** Add new individuals to a sandbox company */
-    @JvmOverloads
+    fun create(): List<JsonValue> = create(SandboxDirectoryCreateParams.none())
+
+    /** @see [create] */
     fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<JsonValue>
 
-    /** Add new individuals to a sandbox company */
+    /** @see [create] */
+    fun create(
+        params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
+    ): List<JsonValue> = create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(requestOptions: RequestOptions): List<JsonValue> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -35,17 +40,23 @@ interface DirectoryService {
          * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the same as
          * [DirectoryService.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(): HttpResponseFor<List<JsonValue>> = create(SandboxDirectoryCreateParams.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<JsonValue>>
 
-        /**
-         * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the same as
-         * [DirectoryService.create].
-         */
+        /** @see [create] */
+        @MustBeClosed
+        fun create(
+            params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
+        ): HttpResponseFor<List<JsonValue>> = create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<List<JsonValue>> =
             create(SandboxDirectoryCreateParams.none(), requestOptions)

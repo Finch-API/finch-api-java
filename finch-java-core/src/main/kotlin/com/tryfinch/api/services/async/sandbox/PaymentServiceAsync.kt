@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -19,13 +17,21 @@ interface PaymentServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Add a new sandbox payment */
-    @JvmOverloads
+    fun create(): CompletableFuture<PaymentCreateResponse> =
+        create(SandboxPaymentCreateParams.none())
+
+    /** @see [create] */
     fun create(
         params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PaymentCreateResponse>
 
-    /** Add a new sandbox payment */
+    /** @see [create] */
+    fun create(
+        params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
+    ): CompletableFuture<PaymentCreateResponse> = create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(requestOptions: RequestOptions): CompletableFuture<PaymentCreateResponse> =
         create(SandboxPaymentCreateParams.none(), requestOptions)
 
@@ -38,17 +44,25 @@ interface PaymentServiceAsync {
          * Returns a raw HTTP response for `post /sandbox/payment`, but is otherwise the same as
          * [PaymentServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> =
+            create(SandboxPaymentCreateParams.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>>
 
-        /**
-         * Returns a raw HTTP response for `post /sandbox/payment`, but is otherwise the same as
-         * [PaymentServiceAsync.create].
-         */
+        /** @see [create] */
+        @MustBeClosed
+        fun create(
+            params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
+        ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             requestOptions: RequestOptions

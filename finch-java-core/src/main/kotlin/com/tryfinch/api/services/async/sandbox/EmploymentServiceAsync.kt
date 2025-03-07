@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -19,7 +17,10 @@ interface EmploymentServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Update sandbox employment */
-    @JvmOverloads
+    fun update(params: SandboxEmploymentUpdateParams): CompletableFuture<EmploymentUpdateResponse> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(
         params: SandboxEmploymentUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -35,7 +36,13 @@ interface EmploymentServiceAsync {
          * Returns a raw HTTP response for `put /sandbox/employment/{individual_id}`, but is
          * otherwise the same as [EmploymentServiceAsync.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(
+            params: SandboxEmploymentUpdateParams
+        ): CompletableFuture<HttpResponseFor<EmploymentUpdateResponse>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SandboxEmploymentUpdateParams,

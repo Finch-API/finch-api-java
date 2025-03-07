@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.sandbox.connections
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -20,7 +18,10 @@ interface AccountService {
     fun withRawResponse(): WithRawResponse
 
     /** Create a new account for an existing connection (company/provider pair) */
-    @JvmOverloads
+    fun create(params: SandboxConnectionAccountCreateParams): AccountCreateResponse =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: SandboxConnectionAccountCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -30,16 +31,20 @@ interface AccountService {
      * Update an existing sandbox account. Change the connection status to understand how the Finch
      * API responds.
      */
-    @JvmOverloads
+    fun update(): AccountUpdateResponse = update(SandboxConnectionAccountUpdateParams.none())
+
+    /** @see [update] */
     fun update(
         params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountUpdateResponse
 
-    /**
-     * Update an existing sandbox account. Change the connection status to understand how the Finch
-     * API responds.
-     */
+    /** @see [update] */
+    fun update(
+        params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none()
+    ): AccountUpdateResponse = update(params, RequestOptions.none())
+
+    /** @see [update] */
     fun update(requestOptions: RequestOptions): AccountUpdateResponse =
         update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
@@ -50,7 +55,12 @@ interface AccountService {
          * Returns a raw HTTP response for `post /sandbox/connections/accounts`, but is otherwise
          * the same as [AccountService.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: SandboxConnectionAccountCreateParams
+        ): HttpResponseFor<AccountCreateResponse> = create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxConnectionAccountCreateParams,
@@ -61,7 +71,11 @@ interface AccountService {
          * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is otherwise the
          * same as [AccountService.update].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun update(): HttpResponseFor<AccountUpdateResponse> =
+            update(SandboxConnectionAccountUpdateParams.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: SandboxConnectionAccountUpdateParams =
@@ -69,10 +83,14 @@ interface AccountService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AccountUpdateResponse>
 
-        /**
-         * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is otherwise the
-         * same as [AccountService.update].
-         */
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: SandboxConnectionAccountUpdateParams =
+                SandboxConnectionAccountUpdateParams.none()
+        ): HttpResponseFor<AccountUpdateResponse> = update(params, RequestOptions.none())
+
+        /** @see [update] */
         @MustBeClosed
         fun update(requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> =
             update(SandboxConnectionAccountUpdateParams.none(), requestOptions)

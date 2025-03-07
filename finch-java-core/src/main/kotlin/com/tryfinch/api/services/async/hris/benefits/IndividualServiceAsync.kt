@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.hris.benefits
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -23,21 +21,35 @@ interface IndividualServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Lists individuals currently enrolled in a given deduction. */
-    @JvmOverloads
+    fun enrolledIds(
+        params: HrisBenefitIndividualEnrolledIdsParams
+    ): CompletableFuture<IndividualEnrolledIdsResponse> = enrolledIds(params, RequestOptions.none())
+
+    /** @see [enrolledIds] */
     fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<IndividualEnrolledIdsResponse>
 
     /** Get enrollment information for the given individuals. */
-    @JvmOverloads
+    fun retrieveManyBenefits(
+        params: HrisBenefitIndividualRetrieveManyBenefitsParams
+    ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
+        retrieveManyBenefits(params, RequestOptions.none())
+
+    /** @see [retrieveManyBenefits] */
     fun retrieveManyBenefits(
         params: HrisBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>
 
     /** Unenroll individuals from a deduction or contribution */
-    @JvmOverloads
+    fun unenrollMany(
+        params: HrisBenefitIndividualUnenrollManyParams
+    ): CompletableFuture<HrisBenefitIndividualUnenrollManyPageAsync> =
+        unenrollMany(params, RequestOptions.none())
+
+    /** @see [unenrollMany] */
     fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -53,7 +65,13 @@ interface IndividualServiceAsync {
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/enrolled`, but is
          * otherwise the same as [IndividualServiceAsync.enrolledIds].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun enrolledIds(
+            params: HrisBenefitIndividualEnrolledIdsParams
+        ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>> =
+            enrolledIds(params, RequestOptions.none())
+
+        /** @see [enrolledIds] */
         @MustBeClosed
         fun enrolledIds(
             params: HrisBenefitIndividualEnrolledIdsParams,
@@ -64,7 +82,13 @@ interface IndividualServiceAsync {
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/individuals`, but is
          * otherwise the same as [IndividualServiceAsync.retrieveManyBenefits].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieveManyBenefits(
+            params: HrisBenefitIndividualRetrieveManyBenefitsParams
+        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>> =
+            retrieveManyBenefits(params, RequestOptions.none())
+
+        /** @see [retrieveManyBenefits] */
         @MustBeClosed
         fun retrieveManyBenefits(
             params: HrisBenefitIndividualRetrieveManyBenefitsParams,
@@ -75,7 +99,13 @@ interface IndividualServiceAsync {
          * Returns a raw HTTP response for `delete /employer/benefits/{benefit_id}/individuals`, but
          * is otherwise the same as [IndividualServiceAsync.unenrollMany].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun unenrollMany(
+            params: HrisBenefitIndividualUnenrollManyParams
+        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualUnenrollManyPageAsync>> =
+            unenrollMany(params, RequestOptions.none())
+
+        /** @see [unenrollMany] */
         @MustBeClosed
         fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams,

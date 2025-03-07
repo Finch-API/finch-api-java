@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.connect
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -20,14 +18,20 @@ interface SessionService {
     fun withRawResponse(): WithRawResponse
 
     /** Create a new connect session for an employer */
-    @JvmOverloads
+    fun new_(params: ConnectSessionNewParams): SessionNewResponse =
+        new_(params, RequestOptions.none())
+
+    /** @see [new_] */
     fun new_(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SessionNewResponse
 
     /** Create a new Connect session for reauthenticating an existing connection */
-    @JvmOverloads
+    fun reauthenticate(params: ConnectSessionReauthenticateParams): SessionReauthenticateResponse =
+        reauthenticate(params, RequestOptions.none())
+
+    /** @see [reauthenticate] */
     fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -40,7 +44,11 @@ interface SessionService {
          * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the same as
          * [SessionService.new_].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun new_(params: ConnectSessionNewParams): HttpResponseFor<SessionNewResponse> =
+            new_(params, RequestOptions.none())
+
+        /** @see [new_] */
         @MustBeClosed
         fun new_(
             params: ConnectSessionNewParams,
@@ -51,7 +59,13 @@ interface SessionService {
          * Returns a raw HTTP response for `post /connect/sessions/reauthenticate`, but is otherwise
          * the same as [SessionService.reauthenticate].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun reauthenticate(
+            params: ConnectSessionReauthenticateParams
+        ): HttpResponseFor<SessionReauthenticateResponse> =
+            reauthenticate(params, RequestOptions.none())
+
+        /** @see [reauthenticate] */
         @MustBeClosed
         fun reauthenticate(
             params: ConnectSessionReauthenticateParams,
