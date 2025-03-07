@@ -17,6 +17,7 @@ import java.time.Instant
 import java.util.Base64
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
+import kotlin.jvm.optionals.getOrNull
 
 class WebhookServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     WebhookService {
@@ -35,7 +36,7 @@ class WebhookServiceImpl internal constructor(private val clientOptions: ClientO
     override fun verifySignature(payload: String, headers: Headers, secret: String?) {
         val webhookSecret =
             secret
-                ?: clientOptions.webhookSecret
+                ?: clientOptions.webhookSecret().getOrNull()
                 ?: throw FinchException(
                     "The webhook secret must either be set using the env var, FINCH_WEBHOOK_SECRET, on the client class, or passed to this method"
                 )

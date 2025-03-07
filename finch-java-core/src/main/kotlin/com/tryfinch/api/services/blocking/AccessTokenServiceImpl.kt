@@ -18,6 +18,7 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
+import kotlin.jvm.optionals.getOrNull
 
 class AccessTokenServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     AccessTokenService {
@@ -51,21 +52,23 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
             val builder = params.toBuilder()
 
             if (!params.clientSecret().isPresent) {
-                if (clientOptions.clientSecret == null || clientOptions.clientSecret.isEmpty()) {
+                val clientSecret = clientOptions.clientSecret().getOrNull()
+                if (clientSecret.isNullOrEmpty()) {
                     throw FinchException(
                         "client_secret must be provided as an argument or with the FINCH_CLIENT_SECRET environment variable"
                     )
                 }
-                builder.clientSecret(clientOptions.clientSecret)
+                builder.clientSecret(clientSecret)
             }
 
             if (!params.clientId().isPresent) {
-                if (clientOptions.clientId == null || clientOptions.clientId.isEmpty()) {
+                val clientId = clientOptions.clientId().getOrNull()
+                if (clientId.isNullOrEmpty()) {
                     throw FinchException(
                         "client_id must be provided as an argument or with the FINCH_CLIENT_ID environment variable"
                     )
                 }
-                builder.clientId(clientOptions.clientId)
+                builder.clientId(clientId)
             }
 
             val modifiedParams = builder.build()
@@ -75,12 +78,12 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
                     .method(HttpMethod.POST)
                     .addPathSegments("auth", "token")
                     .putAllQueryParams(clientOptions.queryParams)
-                    .replaceAllQueryParams(params._queryParams())
+                    .replaceAllQueryParams(modifiedParams._queryParams())
                     .putAllHeaders(clientOptions.headers)
-                    .putAllHeaders(params._headers())
-                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .putAllHeaders(modifiedParams._headers())
+                    .body(json(clientOptions.jsonMapper, modifiedParams._body()))
                     .build()
-                    .prepare(clientOptions, params)
+                    .prepare(clientOptions, modifiedParams)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return response.parseable {

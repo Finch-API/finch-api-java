@@ -11,7 +11,7 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.core.json
+import com.tryfinch.api.core.http.json
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.*
@@ -127,10 +127,10 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
         code: String,
         redirectUri: String?,
     ): CompletableFuture<String> {
-        if (clientOptions.clientId == null) {
+        if (!clientOptions.clientId().isPresent) {
             throw FinchException("clientId must be set in order to call getAccessToken")
         }
-        if (clientOptions.clientSecret == null) {
+        if (!clientOptions.clientSecret().isPresent) {
             throw FinchException("clientSecret must be set in order to call getAccessToken")
         }
         val request =
@@ -150,11 +150,11 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
     }
 
     override fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String {
-        if (clientOptions.clientId == null) {
+        if (!clientOptions.clientId().isPresent) {
             throw FinchException("Expected the clientId to be set in order to call getAuthUrl")
         }
         return "https://connect.tryfinch.com/authorize" +
-            "?client_id=${URLEncoder.encode(clientOptions.clientId, Charsets.UTF_8.name())}" +
+            "?client_id=${URLEncoder.encode(clientOptions.clientId().get(), Charsets.UTF_8.name())}" +
             "&products=${URLEncoder.encode(products, Charsets.UTF_8.name())}" +
             "&redirect_uri=${URLEncoder.encode(redirectUri, Charsets.UTF_8.name())}" +
             "&sandbox=${if (sandbox) "true" else "false"}"
@@ -168,9 +168,9 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
                 .clock(clientOptions.clock)
                 .baseUrl(clientOptions.baseUrl)
                 .accessToken(accessToken)
-                .apply { clientOptions.clientId?.let(::clientId) }
-                .apply { clientOptions.clientSecret?.let(::clientSecret) }
-                .apply { clientOptions.webhookSecret?.let(::webhookSecret) }
+                .clientId(clientOptions.clientId())
+                .clientSecret(clientOptions.clientSecret())
+                .webhookSecret(clientOptions.webhookSecret())
                 .headers(clientOptions.headers)
                 .responseValidation(clientOptions.responseValidation)
                 .build()
