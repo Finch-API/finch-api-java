@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -19,13 +17,20 @@ interface DirectoryServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Add new individuals to a sandbox company */
-    @JvmOverloads
+    fun create(): CompletableFuture<List<JsonValue>> = create(SandboxDirectoryCreateParams.none())
+
+    /** @see [create] */
     fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<JsonValue>>
 
-    /** Add new individuals to a sandbox company */
+    /** @see [create] */
+    fun create(
+        params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
+    ): CompletableFuture<List<JsonValue>> = create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(requestOptions: RequestOptions): CompletableFuture<List<JsonValue>> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -38,17 +43,25 @@ interface DirectoryServiceAsync {
          * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the same as
          * [DirectoryServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
+            create(SandboxDirectoryCreateParams.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<List<JsonValue>>>
 
-        /**
-         * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the same as
-         * [DirectoryServiceAsync.create].
-         */
+        /** @see [create] */
+        @MustBeClosed
+        fun create(
+            params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
+        ): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             requestOptions: RequestOptions

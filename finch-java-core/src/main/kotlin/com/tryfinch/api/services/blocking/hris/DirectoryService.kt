@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.hris
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -20,25 +18,42 @@ interface DirectoryService {
     fun withRawResponse(): WithRawResponse
 
     /** Read company directory and organization structure */
-    @JvmOverloads
+    fun list(): HrisDirectoryListPage = list(HrisDirectoryListParams.none())
+
+    /** @see [list] */
     fun list(
         params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListPage
 
-    /** Read company directory and organization structure */
+    /** @see [list] */
+    fun list(
+        params: HrisDirectoryListParams = HrisDirectoryListParams.none()
+    ): HrisDirectoryListPage = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): HrisDirectoryListPage =
         list(HrisDirectoryListParams.none(), requestOptions)
 
     /** Read company directory and organization structure */
     @Deprecated("use `list` instead")
-    @JvmOverloads
+    fun listIndividuals(): HrisDirectoryListIndividualsPage =
+        listIndividuals(HrisDirectoryListIndividualsParams.none())
+
+    /** @see [listIndividuals] */
+    @Deprecated("use `list` instead")
     fun listIndividuals(
         params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListIndividualsPage
 
-    /** Read company directory and organization structure */
+    /** @see [listIndividuals] */
+    @Deprecated("use `list` instead")
+    fun listIndividuals(
+        params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none()
+    ): HrisDirectoryListIndividualsPage = listIndividuals(params, RequestOptions.none())
+
+    /** @see [listIndividuals] */
     @Deprecated("use `list` instead")
     fun listIndividuals(requestOptions: RequestOptions): HrisDirectoryListIndividualsPage =
         listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
@@ -50,17 +65,23 @@ interface DirectoryService {
          * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
          * [DirectoryService.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): HttpResponseFor<HrisDirectoryListPage> = list(HrisDirectoryListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisDirectoryListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
-         * [DirectoryService.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: HrisDirectoryListParams = HrisDirectoryListParams.none()
+        ): HttpResponseFor<HrisDirectoryListPage> = list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<HrisDirectoryListPage> =
             list(HrisDirectoryListParams.none(), requestOptions)
@@ -70,17 +91,27 @@ interface DirectoryService {
          * [DirectoryService.listIndividuals].
          */
         @Deprecated("use `list` instead")
-        @JvmOverloads
+        @MustBeClosed
+        fun listIndividuals(): HttpResponseFor<HrisDirectoryListIndividualsPage> =
+            listIndividuals(HrisDirectoryListIndividualsParams.none())
+
+        /** @see [listIndividuals] */
+        @Deprecated("use `list` instead")
         @MustBeClosed
         fun listIndividuals(
             params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisDirectoryListIndividualsPage>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
-         * [DirectoryService.listIndividuals].
-         */
+        /** @see [listIndividuals] */
+        @Deprecated("use `list` instead")
+        @MustBeClosed
+        fun listIndividuals(
+            params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none()
+        ): HttpResponseFor<HrisDirectoryListIndividualsPage> =
+            listIndividuals(params, RequestOptions.none())
+
+        /** @see [listIndividuals] */
         @Deprecated("use `list` instead")
         @MustBeClosed
         fun listIndividuals(

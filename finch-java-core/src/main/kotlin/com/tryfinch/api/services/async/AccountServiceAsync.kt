@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -21,24 +19,39 @@ interface AccountServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Disconnect one or more `access_token`s from your application. */
-    @JvmOverloads
+    fun disconnect(): CompletableFuture<DisconnectResponse> =
+        disconnect(AccountDisconnectParams.none())
+
+    /** @see [disconnect] */
     fun disconnect(
         params: AccountDisconnectParams = AccountDisconnectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DisconnectResponse>
 
-    /** Disconnect one or more `access_token`s from your application. */
+    /** @see [disconnect] */
+    fun disconnect(
+        params: AccountDisconnectParams = AccountDisconnectParams.none()
+    ): CompletableFuture<DisconnectResponse> = disconnect(params, RequestOptions.none())
+
+    /** @see [disconnect] */
     fun disconnect(requestOptions: RequestOptions): CompletableFuture<DisconnectResponse> =
         disconnect(AccountDisconnectParams.none(), requestOptions)
 
     /** Read account information associated with an `access_token` */
-    @JvmOverloads
+    fun introspect(): CompletableFuture<Introspection> = introspect(AccountIntrospectParams.none())
+
+    /** @see [introspect] */
     fun introspect(
         params: AccountIntrospectParams = AccountIntrospectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Introspection>
 
-    /** Read account information associated with an `access_token` */
+    /** @see [introspect] */
+    fun introspect(
+        params: AccountIntrospectParams = AccountIntrospectParams.none()
+    ): CompletableFuture<Introspection> = introspect(params, RequestOptions.none())
+
+    /** @see [introspect] */
     fun introspect(requestOptions: RequestOptions): CompletableFuture<Introspection> =
         introspect(AccountIntrospectParams.none(), requestOptions)
 
@@ -51,17 +64,25 @@ interface AccountServiceAsync {
          * Returns a raw HTTP response for `post /disconnect`, but is otherwise the same as
          * [AccountServiceAsync.disconnect].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun disconnect(): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
+            disconnect(AccountDisconnectParams.none())
+
+        /** @see [disconnect] */
         @MustBeClosed
         fun disconnect(
             params: AccountDisconnectParams = AccountDisconnectParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<DisconnectResponse>>
 
-        /**
-         * Returns a raw HTTP response for `post /disconnect`, but is otherwise the same as
-         * [AccountServiceAsync.disconnect].
-         */
+        /** @see [disconnect] */
+        @MustBeClosed
+        fun disconnect(
+            params: AccountDisconnectParams = AccountDisconnectParams.none()
+        ): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
+            disconnect(params, RequestOptions.none())
+
+        /** @see [disconnect] */
         @MustBeClosed
         fun disconnect(
             requestOptions: RequestOptions
@@ -72,17 +93,25 @@ interface AccountServiceAsync {
          * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as
          * [AccountServiceAsync.introspect].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun introspect(): CompletableFuture<HttpResponseFor<Introspection>> =
+            introspect(AccountIntrospectParams.none())
+
+        /** @see [introspect] */
         @MustBeClosed
         fun introspect(
             params: AccountIntrospectParams = AccountIntrospectParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Introspection>>
 
-        /**
-         * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as
-         * [AccountServiceAsync.introspect].
-         */
+        /** @see [introspect] */
+        @MustBeClosed
+        fun introspect(
+            params: AccountIntrospectParams = AccountIntrospectParams.none()
+        ): CompletableFuture<HttpResponseFor<Introspection>> =
+            introspect(params, RequestOptions.none())
+
+        /** @see [introspect] */
         @MustBeClosed
         fun introspect(
             requestOptions: RequestOptions

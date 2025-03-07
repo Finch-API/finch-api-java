@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -22,7 +20,10 @@ interface JobServiceAsync {
     fun configuration(): ConfigurationServiceAsync
 
     /** Enqueue a new sandbox job */
-    @JvmOverloads
+    fun create(params: SandboxJobCreateParams): CompletableFuture<JobCreateResponse> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: SandboxJobCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -37,7 +38,13 @@ interface JobServiceAsync {
          * Returns a raw HTTP response for `post /sandbox/jobs`, but is otherwise the same as
          * [JobServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: SandboxJobCreateParams
+        ): CompletableFuture<HttpResponseFor<JobCreateResponse>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxJobCreateParams,

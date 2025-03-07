@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.blocking.hris
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -18,7 +16,10 @@ interface PaymentService {
     fun withRawResponse(): WithRawResponse
 
     /** Read payroll and contractor related payments by the company. */
-    @JvmOverloads
+    fun list(params: HrisPaymentListParams): HrisPaymentListPage =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(
         params: HrisPaymentListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -31,7 +32,11 @@ interface PaymentService {
          * Returns a raw HTTP response for `get /employer/payment`, but is otherwise the same as
          * [PaymentService.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(params: HrisPaymentListParams): HttpResponseFor<HrisPaymentListPage> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: HrisPaymentListParams,

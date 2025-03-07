@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.payroll
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -21,20 +19,32 @@ interface PayGroupServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Read information from a single pay group */
-    @JvmOverloads
+    fun retrieve(
+        params: PayrollPayGroupRetrieveParams
+    ): CompletableFuture<PayGroupRetrieveResponse> = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PayGroupRetrieveResponse>
 
     /** Read company pay groups and frequencies */
-    @JvmOverloads
+    fun list(): CompletableFuture<PayrollPayGroupListPageAsync> =
+        list(PayrollPayGroupListParams.none())
+
+    /** @see [list] */
     fun list(
         params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PayrollPayGroupListPageAsync>
 
-    /** Read company pay groups and frequencies */
+    /** @see [list] */
+    fun list(
+        params: PayrollPayGroupListParams = PayrollPayGroupListParams.none()
+    ): CompletableFuture<PayrollPayGroupListPageAsync> = list(params, RequestOptions.none())
+
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): CompletableFuture<PayrollPayGroupListPageAsync> =
         list(PayrollPayGroupListParams.none(), requestOptions)
 
@@ -47,7 +57,13 @@ interface PayGroupServiceAsync {
          * Returns a raw HTTP response for `get /employer/pay-groups/{pay_group_id}`, but is
          * otherwise the same as [PayGroupServiceAsync.retrieve].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun retrieve(
+            params: PayrollPayGroupRetrieveParams
+        ): CompletableFuture<HttpResponseFor<PayGroupRetrieveResponse>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
             params: PayrollPayGroupRetrieveParams,
@@ -58,17 +74,25 @@ interface PayGroupServiceAsync {
          * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the same as
          * [PayGroupServiceAsync.list].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun list(): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>> =
+            list(PayrollPayGroupListParams.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the same as
-         * [PayGroupServiceAsync.list].
-         */
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: PayrollPayGroupListParams = PayrollPayGroupListParams.none()
+        ): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
