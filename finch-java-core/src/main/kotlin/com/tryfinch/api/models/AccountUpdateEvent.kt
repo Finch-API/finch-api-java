@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class AccountUpdateEvent
@@ -436,7 +437,7 @@ private constructor(
                  * supported, the property will be null
                  */
                 fun benefitsSupport(benefitsSupport: Optional<BenefitsSupport>) =
-                    benefitsSupport(benefitsSupport.orElse(null))
+                    benefitsSupport(benefitsSupport.getOrNull())
 
                 /**
                  * Each benefit type and their supported features. If the benefit type is not
@@ -452,7 +453,7 @@ private constructor(
 
                 /** The supported data fields returned by our HR and payroll endpoints */
                 fun supportedFields(supportedFields: Optional<SupportedFields>) =
-                    supportedFields(supportedFields.orElse(null))
+                    supportedFields(supportedFields.getOrNull())
 
                 /** The supported data fields returned by our HR and payroll endpoints */
                 fun supportedFields(supportedFields: JsonField<SupportedFields>) = apply {

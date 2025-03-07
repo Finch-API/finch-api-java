@@ -19,6 +19,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class ManualAsyncJob
@@ -102,7 +103,7 @@ private constructor(
         fun body(body: List<JsonValue>?) = body(JsonField.ofNullable(body))
 
         /** Specific information about the job, such as individual statuses for batch jobs. */
-        fun body(body: Optional<List<JsonValue>>) = body(body.orElse(null))
+        fun body(body: Optional<List<JsonValue>>) = body(body.getOrNull())
 
         /** Specific information about the job, such as individual statuses for batch jobs. */
         fun body(body: JsonField<List<JsonValue>>) = apply {

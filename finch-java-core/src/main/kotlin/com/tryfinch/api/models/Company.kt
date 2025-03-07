@@ -19,6 +19,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Company
@@ -198,7 +199,7 @@ private constructor(
         fun accounts(accounts: List<Account>?) = accounts(JsonField.ofNullable(accounts))
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        fun accounts(accounts: Optional<List<Account>>) = accounts(accounts.orElse(null))
+        fun accounts(accounts: Optional<List<Account>>) = accounts(accounts.getOrNull())
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
         fun accounts(accounts: JsonField<List<Account>>) = apply {
@@ -219,7 +220,7 @@ private constructor(
 
         /** The array of company departments. */
         fun departments(departments: Optional<List<Department?>>) =
-            departments(departments.orElse(null))
+            departments(departments.getOrNull())
 
         /** The array of company departments. */
         fun departments(departments: JsonField<List<Department?>>) = apply {
@@ -238,7 +239,7 @@ private constructor(
         fun ein(ein: String?) = ein(JsonField.ofNullable(ein))
 
         /** The employer identification number. */
-        fun ein(ein: Optional<String>) = ein(ein.orElse(null))
+        fun ein(ein: Optional<String>) = ein(ein.getOrNull())
 
         /** The employer identification number. */
         fun ein(ein: JsonField<String>) = apply { this.ein = ein }
@@ -247,7 +248,7 @@ private constructor(
         fun entity(entity: Entity?) = entity(JsonField.ofNullable(entity))
 
         /** The entity type object. */
-        fun entity(entity: Optional<Entity>) = entity(entity.orElse(null))
+        fun entity(entity: Optional<Entity>) = entity(entity.getOrNull())
 
         /** The entity type object. */
         fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
@@ -256,14 +257,14 @@ private constructor(
         fun legalName(legalName: String?) = legalName(JsonField.ofNullable(legalName))
 
         /** The legal name of the company. */
-        fun legalName(legalName: Optional<String>) = legalName(legalName.orElse(null))
+        fun legalName(legalName: Optional<String>) = legalName(legalName.getOrNull())
 
         /** The legal name of the company. */
         fun legalName(legalName: JsonField<String>) = apply { this.legalName = legalName }
 
         fun locations(locations: List<Location?>?) = locations(JsonField.ofNullable(locations))
 
-        fun locations(locations: Optional<List<Location?>>) = locations(locations.orElse(null))
+        fun locations(locations: Optional<List<Location?>>) = locations(locations.getOrNull())
 
         fun locations(locations: JsonField<List<Location?>>) = apply {
             this.locations = locations.map { it.toMutableList() }
@@ -280,7 +281,7 @@ private constructor(
         fun primaryEmail(primaryEmail: String?) = primaryEmail(JsonField.ofNullable(primaryEmail))
 
         /** The email of the main administrator on the account. */
-        fun primaryEmail(primaryEmail: Optional<String>) = primaryEmail(primaryEmail.orElse(null))
+        fun primaryEmail(primaryEmail: Optional<String>) = primaryEmail(primaryEmail.getOrNull())
 
         /** The email of the main administrator on the account. */
         fun primaryEmail(primaryEmail: JsonField<String>) = apply {
@@ -293,7 +294,7 @@ private constructor(
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
         fun primaryPhoneNumber(primaryPhoneNumber: Optional<String>) =
-            primaryPhoneNumber(primaryPhoneNumber.orElse(null))
+            primaryPhoneNumber(primaryPhoneNumber.getOrNull())
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
         fun primaryPhoneNumber(primaryPhoneNumber: JsonField<String>) = apply {
@@ -457,7 +458,7 @@ private constructor(
             fun accountName(accountName: String?) = accountName(JsonField.ofNullable(accountName))
 
             /** The name of the bank associated in the payroll/HRIS system. */
-            fun accountName(accountName: Optional<String>) = accountName(accountName.orElse(null))
+            fun accountName(accountName: Optional<String>) = accountName(accountName.getOrNull())
 
             /** The name of the bank associated in the payroll/HRIS system. */
             fun accountName(accountName: JsonField<String>) = apply {
@@ -470,7 +471,7 @@ private constructor(
 
             /** 10-12 digit number to specify the bank account */
             fun accountNumber(accountNumber: Optional<String>) =
-                accountNumber(accountNumber.orElse(null))
+                accountNumber(accountNumber.getOrNull())
 
             /** 10-12 digit number to specify the bank account */
             fun accountNumber(accountNumber: JsonField<String>) = apply {
@@ -483,7 +484,7 @@ private constructor(
 
             /** The type of bank account. */
             fun accountType(accountType: Optional<AccountType>) =
-                accountType(accountType.orElse(null))
+                accountType(accountType.getOrNull())
 
             /** The type of bank account. */
             fun accountType(accountType: JsonField<AccountType>) = apply {
@@ -496,7 +497,7 @@ private constructor(
 
             /** Name of the banking institution. */
             fun institutionName(institutionName: Optional<String>) =
-                institutionName(institutionName.orElse(null))
+                institutionName(institutionName.getOrNull())
 
             /** Name of the banking institution. */
             fun institutionName(institutionName: JsonField<String>) = apply {
@@ -515,7 +516,7 @@ private constructor(
              * opened.
              */
             fun routingNumber(routingNumber: Optional<String>) =
-                routingNumber(routingNumber.orElse(null))
+                routingNumber(routingNumber.getOrNull())
 
             /**
              * A nine-digit code that's based on the U.S. Bank location where your account was
@@ -746,7 +747,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The department name. */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** The department name. */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -755,7 +756,7 @@ private constructor(
             fun parent(parent: Parent?) = parent(JsonField.ofNullable(parent))
 
             /** The parent department, if present. */
-            fun parent(parent: Optional<Parent>) = parent(parent.orElse(null))
+            fun parent(parent: Optional<Parent>) = parent(parent.getOrNull())
 
             /** The parent department, if present. */
             fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
@@ -839,7 +840,7 @@ private constructor(
                 fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The parent department's name. */
-                fun name(name: Optional<String>) = name(name.orElse(null))
+                fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The parent department's name. */
                 fun name(name: JsonField<String>) = apply { this.name = name }
@@ -972,7 +973,7 @@ private constructor(
             fun subtype(subtype: Subtype?) = subtype(JsonField.ofNullable(subtype))
 
             /** The tax payer subtype of the company. */
-            fun subtype(subtype: Optional<Subtype>) = subtype(subtype.orElse(null))
+            fun subtype(subtype: Optional<Subtype>) = subtype(subtype.getOrNull())
 
             /** The tax payer subtype of the company. */
             fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
@@ -981,7 +982,7 @@ private constructor(
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             /** The tax payer type of the company. */
-            fun type(type: Optional<Type>) = type(type.orElse(null))
+            fun type(type: Optional<Type>) = type(type.getOrNull())
 
             /** The tax payer type of the company. */
             fun type(type: JsonField<Type>) = apply { this.type = type }

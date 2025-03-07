@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class EmploymentData
@@ -338,7 +339,7 @@ private constructor(
         fun classCode(classCode: String?) = classCode(JsonField.ofNullable(classCode))
 
         /** Worker's compensation classification code for this employee */
-        fun classCode(classCode: Optional<String>) = classCode(classCode.orElse(null))
+        fun classCode(classCode: Optional<String>) = classCode(classCode.getOrNull())
 
         /** Worker's compensation classification code for this employee */
         fun classCode(classCode: JsonField<String>) = apply { this.classCode = classCode }
@@ -355,7 +356,7 @@ private constructor(
          * the system.
          */
         fun customFields(customFields: Optional<List<CustomField>>) =
-            customFields(customFields.orElse(null))
+            customFields(customFields.getOrNull())
 
         /**
          * Custom fields for the individual. These are fields which are defined by the employer in
@@ -380,7 +381,7 @@ private constructor(
         fun department(department: Department?) = department(JsonField.ofNullable(department))
 
         /** The department object. */
-        fun department(department: Optional<Department>) = department(department.orElse(null))
+        fun department(department: Optional<Department>) = department(department.getOrNull())
 
         /** The department object. */
         fun department(department: JsonField<Department>) = apply { this.department = department }
@@ -389,7 +390,7 @@ private constructor(
         fun employment(employment: Employment?) = employment(JsonField.ofNullable(employment))
 
         /** The employment object. */
-        fun employment(employment: Optional<Employment>) = employment(employment.orElse(null))
+        fun employment(employment: Optional<Employment>) = employment(employment.getOrNull())
 
         /** The employment object. */
         fun employment(employment: JsonField<Employment>) = apply { this.employment = employment }
@@ -406,7 +407,7 @@ private constructor(
          * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
          */
         fun employmentStatus(employmentStatus: Optional<EmploymentStatus>) =
-            employmentStatus(employmentStatus.orElse(null))
+            employmentStatus(employmentStatus.getOrNull())
 
         /**
          * The detailed employment status of the individual. Available options: `active`,
@@ -418,7 +419,7 @@ private constructor(
 
         fun endDate(endDate: String?) = endDate(JsonField.ofNullable(endDate))
 
-        fun endDate(endDate: Optional<String>) = endDate(endDate.orElse(null))
+        fun endDate(endDate: Optional<String>) = endDate(endDate.getOrNull())
 
         fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
 
@@ -426,7 +427,7 @@ private constructor(
         fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: Optional<String>) = firstName(firstName.orElse(null))
+        fun firstName(firstName: Optional<String>) = firstName(firstName.getOrNull())
 
         /** The legal first name of the individual. */
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
@@ -443,7 +444,7 @@ private constructor(
          * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
          * information the provider returns.
          */
-        fun income(income: Optional<Income>) = income(income.orElse(null))
+        fun income(income: Optional<Income>) = income(income.getOrNull())
 
         /**
          * The employee's income as reported by the provider. This may not always be annualized
@@ -458,7 +459,7 @@ private constructor(
 
         /** The array of income history. */
         fun incomeHistory(incomeHistory: Optional<List<Income?>>) =
-            incomeHistory(incomeHistory.orElse(null))
+            incomeHistory(incomeHistory.getOrNull())
 
         /** The array of income history. */
         fun incomeHistory(incomeHistory: JsonField<List<Income?>>) = apply {
@@ -480,8 +481,7 @@ private constructor(
         fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
 
         /** `true` if the individual an an active employee or contractor at the company. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun isActive(isActive: Optional<Boolean>) = isActive(isActive.orElse(null) as Boolean?)
+        fun isActive(isActive: Optional<Boolean>) = isActive(isActive.getOrNull())
 
         /** `true` if the individual an an active employee or contractor at the company. */
         fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
@@ -490,7 +490,7 @@ private constructor(
         fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: Optional<String>) = lastName(lastName.orElse(null))
+        fun lastName(lastName: Optional<String>) = lastName(lastName.getOrNull())
 
         /** The legal last name of the individual. */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
@@ -499,7 +499,7 @@ private constructor(
             latestRehireDate(JsonField.ofNullable(latestRehireDate))
 
         fun latestRehireDate(latestRehireDate: Optional<String>) =
-            latestRehireDate(latestRehireDate.orElse(null))
+            latestRehireDate(latestRehireDate.getOrNull())
 
         fun latestRehireDate(latestRehireDate: JsonField<String>) = apply {
             this.latestRehireDate = latestRehireDate
@@ -507,7 +507,7 @@ private constructor(
 
         fun location(location: Location?) = location(JsonField.ofNullable(location))
 
-        fun location(location: Optional<Location>) = location(location.orElse(null))
+        fun location(location: Optional<Location>) = location(location.getOrNull())
 
         fun location(location: JsonField<Location>) = apply { this.location = location }
 
@@ -515,7 +515,7 @@ private constructor(
         fun manager(manager: Manager?) = manager(JsonField.ofNullable(manager))
 
         /** The manager object representing the manager of the individual within the org. */
-        fun manager(manager: Optional<Manager>) = manager(manager.orElse(null))
+        fun manager(manager: Optional<Manager>) = manager(manager.getOrNull())
 
         /** The manager object representing the manager of the individual within the org. */
         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
@@ -524,7 +524,7 @@ private constructor(
         fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: Optional<String>) = middleName(middleName.orElse(null))
+        fun middleName(middleName: Optional<String>) = middleName(middleName.getOrNull())
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
@@ -533,14 +533,14 @@ private constructor(
         fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
 
         /** The source system's unique employment identifier for this individual */
-        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.orElse(null))
+        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.getOrNull())
 
         /** The source system's unique employment identifier for this individual */
         fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
         fun startDate(startDate: String?) = startDate(JsonField.ofNullable(startDate))
 
-        fun startDate(startDate: Optional<String>) = startDate(startDate.orElse(null))
+        fun startDate(startDate: Optional<String>) = startDate(startDate.getOrNull())
 
         fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
@@ -548,7 +548,7 @@ private constructor(
         fun title(title: String?) = title(JsonField.ofNullable(title))
 
         /** The current title of the individual. */
-        fun title(title: Optional<String>) = title(title.orElse(null))
+        fun title(title: Optional<String>) = title(title.getOrNull())
 
         /** The current title of the individual. */
         fun title(title: JsonField<String>) = apply { this.title = title }
@@ -557,7 +557,7 @@ private constructor(
         @Deprecated("deprecated") fun workId(workId: String?) = workId(JsonField.ofNullable(workId))
 
         /** This field is deprecated in favour of `source_id` */
-        @Deprecated("deprecated") fun workId(workId: Optional<String>) = workId(workId.orElse(null))
+        @Deprecated("deprecated") fun workId(workId: Optional<String>) = workId(workId.getOrNull())
 
         /** This field is deprecated in favour of `source_id` */
         @Deprecated("deprecated")
@@ -766,7 +766,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The name of the department associated with the individual. */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** The name of the department associated with the individual. */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -890,7 +890,7 @@ private constructor(
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            fun subtype(subtype: Optional<Subtype>) = subtype(subtype.orElse(null))
+            fun subtype(subtype: Optional<Subtype>) = subtype(subtype.getOrNull())
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
@@ -902,7 +902,7 @@ private constructor(
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             /** The main employment type of the individual. */
-            fun type(type: Optional<Type>) = type(type.orElse(null))
+            fun type(type: Optional<Type>) = type(type.getOrNull())
 
             /** The main employment type of the individual. */
             fun type(type: JsonField<Type>) = apply { this.type = type }

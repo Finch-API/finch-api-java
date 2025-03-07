@@ -17,6 +17,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * The employee's income as reported by the provider. This may not always be annualized income, but
@@ -122,8 +123,7 @@ private constructor(
         fun amount(amount: Long) = amount(amount as Long?)
 
         /** The income amount in cents. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
+        fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
         /** The income amount in cents. */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
@@ -132,7 +132,7 @@ private constructor(
         fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
         /** The currency code. */
-        fun currency(currency: Optional<String>) = currency(currency.orElse(null))
+        fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
         /** The currency code. */
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
@@ -143,7 +143,7 @@ private constructor(
 
         /** The date the income amount went into effect. */
         fun effectiveDate(effectiveDate: Optional<String>) =
-            effectiveDate(effectiveDate.orElse(null))
+            effectiveDate(effectiveDate.getOrNull())
 
         /** The date the income amount went into effect. */
         fun effectiveDate(effectiveDate: JsonField<String>) = apply {
@@ -160,7 +160,7 @@ private constructor(
          * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
          * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
          */
-        fun unit(unit: Optional<Unit>) = unit(unit.orElse(null))
+        fun unit(unit: Optional<Unit>) = unit(unit.getOrNull())
 
         /**
          * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,

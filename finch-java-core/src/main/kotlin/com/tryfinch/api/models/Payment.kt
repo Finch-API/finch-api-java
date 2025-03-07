@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Payment
@@ -212,7 +213,7 @@ private constructor(
 
         fun companyDebit(companyDebit: Money?) = companyDebit(JsonField.ofNullable(companyDebit))
 
-        fun companyDebit(companyDebit: Optional<Money>) = companyDebit(companyDebit.orElse(null))
+        fun companyDebit(companyDebit: Optional<Money>) = companyDebit(companyDebit.getOrNull())
 
         fun companyDebit(companyDebit: JsonField<Money>) = apply {
             this.companyDebit = companyDebit
@@ -220,15 +221,14 @@ private constructor(
 
         fun debitDate(debitDate: String?) = debitDate(JsonField.ofNullable(debitDate))
 
-        fun debitDate(debitDate: Optional<String>) = debitDate(debitDate.orElse(null))
+        fun debitDate(debitDate: Optional<String>) = debitDate(debitDate.getOrNull())
 
         fun debitDate(debitDate: JsonField<String>) = apply { this.debitDate = debitDate }
 
         fun employeeTaxes(employeeTaxes: Money?) =
             employeeTaxes(JsonField.ofNullable(employeeTaxes))
 
-        fun employeeTaxes(employeeTaxes: Optional<Money>) =
-            employeeTaxes(employeeTaxes.orElse(null))
+        fun employeeTaxes(employeeTaxes: Optional<Money>) = employeeTaxes(employeeTaxes.getOrNull())
 
         fun employeeTaxes(employeeTaxes: JsonField<Money>) = apply {
             this.employeeTaxes = employeeTaxes
@@ -237,8 +237,7 @@ private constructor(
         fun employerTaxes(employerTaxes: Money?) =
             employerTaxes(JsonField.ofNullable(employerTaxes))
 
-        fun employerTaxes(employerTaxes: Optional<Money>) =
-            employerTaxes(employerTaxes.orElse(null))
+        fun employerTaxes(employerTaxes: Optional<Money>) = employerTaxes(employerTaxes.getOrNull())
 
         fun employerTaxes(employerTaxes: JsonField<Money>) = apply {
             this.employerTaxes = employerTaxes
@@ -246,7 +245,7 @@ private constructor(
 
         fun grossPay(grossPay: Money?) = grossPay(JsonField.ofNullable(grossPay))
 
-        fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.orElse(null))
+        fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.getOrNull())
 
         fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
@@ -256,7 +255,7 @@ private constructor(
 
         /** Array of every individual on this payment. */
         fun individualIds(individualIds: Optional<List<String>>) =
-            individualIds(individualIds.orElse(null))
+            individualIds(individualIds.getOrNull())
 
         /** Array of every individual on this payment. */
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
@@ -273,13 +272,13 @@ private constructor(
 
         fun netPay(netPay: Money?) = netPay(JsonField.ofNullable(netPay))
 
-        fun netPay(netPay: Optional<Money>) = netPay(netPay.orElse(null))
+        fun netPay(netPay: Optional<Money>) = netPay(netPay.getOrNull())
 
         fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
         fun payDate(payDate: String?) = payDate(JsonField.ofNullable(payDate))
 
-        fun payDate(payDate: Optional<String>) = payDate(payDate.orElse(null))
+        fun payDate(payDate: Optional<String>) = payDate(payDate.getOrNull())
 
         fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
 
@@ -289,7 +288,7 @@ private constructor(
 
         /** List of pay frequencies associated with this payment. */
         fun payFrequencies(payFrequencies: Optional<List<PayFrequency>>) =
-            payFrequencies(payFrequencies.orElse(null))
+            payFrequencies(payFrequencies.getOrNull())
 
         /** List of pay frequencies associated with this payment. */
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
@@ -308,7 +307,7 @@ private constructor(
         fun payGroupIds(payGroupIds: List<String>?) = payGroupIds(JsonField.ofNullable(payGroupIds))
 
         /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
-        fun payGroupIds(payGroupIds: Optional<List<String>>) = payGroupIds(payGroupIds.orElse(null))
+        fun payGroupIds(payGroupIds: Optional<List<String>>) = payGroupIds(payGroupIds.getOrNull())
 
         /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
         fun payGroupIds(payGroupIds: JsonField<List<String>>) = apply {
@@ -327,7 +326,7 @@ private constructor(
         fun payPeriod(payPeriod: PayPeriod?) = payPeriod(JsonField.ofNullable(payPeriod))
 
         /** The pay period object. */
-        fun payPeriod(payPeriod: Optional<PayPeriod>) = payPeriod(payPeriod.orElse(null))
+        fun payPeriod(payPeriod: Optional<PayPeriod>) = payPeriod(payPeriod.getOrNull())
 
         /** The pay period object. */
         fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply { this.payPeriod = payPeriod }
@@ -574,13 +573,13 @@ private constructor(
 
             fun endDate(endDate: String?) = endDate(JsonField.ofNullable(endDate))
 
-            fun endDate(endDate: Optional<String>) = endDate(endDate.orElse(null))
+            fun endDate(endDate: Optional<String>) = endDate(endDate.getOrNull())
 
             fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
 
             fun startDate(startDate: String?) = startDate(JsonField.ofNullable(startDate))
 
-            fun startDate(startDate: Optional<String>) = startDate(startDate.orElse(null))
+            fun startDate(startDate: Optional<String>) = startDate(startDate.getOrNull())
 
             fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 

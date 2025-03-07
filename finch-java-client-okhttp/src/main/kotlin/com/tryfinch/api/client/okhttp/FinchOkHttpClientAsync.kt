@@ -13,6 +13,7 @@ import java.net.Proxy
 import java.time.Clock
 import java.time.Duration
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class FinchOkHttpClientAsync private constructor() {
 
@@ -145,22 +146,22 @@ class FinchOkHttpClientAsync private constructor() {
 
         fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
 
-        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.orElse(null))
+        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.getOrNull())
 
         fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
 
-        fun clientId(clientId: Optional<String>) = clientId(clientId.orElse(null))
+        fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
 
         fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
 
-        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.orElse(null))
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
 
         fun webhookSecret(webhookSecret: String?) = apply {
             clientOptions.webhookSecret(webhookSecret)
         }
 
         fun webhookSecret(webhookSecret: Optional<String>) =
-            webhookSecret(webhookSecret.orElse(null))
+            webhookSecret(webhookSecret.getOrNull())
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
