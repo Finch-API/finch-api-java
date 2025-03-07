@@ -19,6 +19,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * The Forward API allows you to make direct requests to an employment system. If Finch’s unified
@@ -251,7 +252,7 @@ private constructor(
              * The body for the forwarded request. This value must be specified as either a string
              * or a valid JSON object.
              */
-            fun data(data: Optional<String>) = data(data.orElse(null))
+            fun data(data: Optional<String>) = data(data.getOrNull())
 
             /**
              * The body for the forwarded request. This value must be specified as either a string
@@ -386,7 +387,7 @@ private constructor(
          * The body for the forwarded request. This value must be specified as either a string or a
          * valid JSON object.
          */
-        fun data(data: Optional<String>) = data(data.orElse(null))
+        fun data(data: Optional<String>) = data(data.getOrNull())
 
         /**
          * The body for the forwarded request. This value must be specified as either a string or a

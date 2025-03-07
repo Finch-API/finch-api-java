@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class PayStatement
@@ -186,7 +187,7 @@ private constructor(
         fun earnings(earnings: List<Earning?>?) = earnings(JsonField.ofNullable(earnings))
 
         /** The array of earnings objects associated with this pay statement */
-        fun earnings(earnings: Optional<List<Earning?>>) = earnings(earnings.orElse(null))
+        fun earnings(earnings: Optional<List<Earning?>>) = earnings(earnings.getOrNull())
 
         /** The array of earnings objects associated with this pay statement */
         fun earnings(earnings: JsonField<List<Earning?>>) = apply {
@@ -207,7 +208,7 @@ private constructor(
 
         /** The array of deductions objects associated with this pay statement. */
         fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction?>>) =
-            employeeDeductions(employeeDeductions.orElse(null))
+            employeeDeductions(employeeDeductions.getOrNull())
 
         /** The array of deductions objects associated with this pay statement. */
         fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) = apply {
@@ -226,7 +227,7 @@ private constructor(
             employerContributions(JsonField.ofNullable(employerContributions))
 
         fun employerContributions(employerContributions: Optional<List<EmployerContribution?>>) =
-            employerContributions(employerContributions.orElse(null))
+            employerContributions(employerContributions.getOrNull())
 
         fun employerContributions(employerContributions: JsonField<List<EmployerContribution?>>) =
             apply {
@@ -242,7 +243,7 @@ private constructor(
 
         fun grossPay(grossPay: Money?) = grossPay(JsonField.ofNullable(grossPay))
 
-        fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.orElse(null))
+        fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.getOrNull())
 
         fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
@@ -256,7 +257,7 @@ private constructor(
 
         fun netPay(netPay: Money?) = netPay(JsonField.ofNullable(netPay))
 
-        fun netPay(netPay: Optional<Money>) = netPay(netPay.orElse(null))
+        fun netPay(netPay: Optional<Money>) = netPay(netPay.getOrNull())
 
         fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
@@ -266,7 +267,7 @@ private constructor(
 
         /** The payment method. */
         fun paymentMethod(paymentMethod: Optional<PaymentMethod>) =
-            paymentMethod(paymentMethod.orElse(null))
+            paymentMethod(paymentMethod.getOrNull())
 
         /** The payment method. */
         fun paymentMethod(paymentMethod: JsonField<PaymentMethod>) = apply {
@@ -277,7 +278,7 @@ private constructor(
         fun taxes(taxes: List<Tax?>?) = taxes(JsonField.ofNullable(taxes))
 
         /** The array of taxes objects associated with this pay statement. */
-        fun taxes(taxes: Optional<List<Tax?>>) = taxes(taxes.orElse(null))
+        fun taxes(taxes: Optional<List<Tax?>>) = taxes(taxes.getOrNull())
 
         /** The array of taxes objects associated with this pay statement. */
         fun taxes(taxes: JsonField<List<Tax?>>) = apply {
@@ -297,9 +298,7 @@ private constructor(
         fun totalHours(totalHours: Double) = totalHours(totalHours as Double?)
 
         /** The number of hours worked for this pay period */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun totalHours(totalHours: Optional<Double>) =
-            totalHours(totalHours.orElse(null) as Double?)
+        fun totalHours(totalHours: Optional<Double>) = totalHours(totalHours.getOrNull())
 
         /** The number of hours worked for this pay period */
         fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
@@ -308,7 +307,7 @@ private constructor(
         fun type(type: Type?) = type(JsonField.ofNullable(type))
 
         /** The type of the payment associated with the pay statement. */
-        fun type(type: Optional<Type>) = type(type.orElse(null))
+        fun type(type: Optional<Type>) = type(type.getOrNull())
 
         /** The type of the payment associated with the pay statement. */
         fun type(type: JsonField<Type>) = apply { this.type = type }
@@ -472,15 +471,14 @@ private constructor(
             fun amount(amount: Long) = amount(amount as Long?)
 
             /** The earnings amount in cents. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
+            fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
             /** The earnings amount in cents. */
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
 
-            fun attributes(attributes: Optional<Attributes>) = attributes(attributes.orElse(null))
+            fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
 
             fun attributes(attributes: JsonField<Attributes>) = apply {
                 this.attributes = attributes
@@ -490,7 +488,7 @@ private constructor(
             fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
             /** The earnings currency code. */
-            fun currency(currency: Optional<String>) = currency(currency.orElse(null))
+            fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
             /** The earnings currency code. */
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
@@ -511,8 +509,7 @@ private constructor(
              * The number of hours associated with this earning. (For salaried employees, this could
              * be hours per pay period, `0` or `null`, depending on the provider).
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun hours(hours: Optional<Double>) = hours(hours.orElse(null) as Double?)
+            fun hours(hours: Optional<Double>) = hours(hours.getOrNull())
 
             /**
              * The number of hours associated with this earning. (For salaried employees, this could
@@ -524,7 +521,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The exact name of the deduction from the pay statement. */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** The exact name of the deduction from the pay statement. */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -533,7 +530,7 @@ private constructor(
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             /** The type of earning. */
-            fun type(type: Optional<Type>) = type(type.orElse(null))
+            fun type(type: Optional<Type>) = type(type.getOrNull())
 
             /** The type of earning. */
             fun type(type: JsonField<Type>) = apply { this.type = type }
@@ -1189,15 +1186,14 @@ private constructor(
             fun amount(amount: Long) = amount(amount as Long?)
 
             /** The deduction amount in cents. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
+            fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
             /** The deduction amount in cents. */
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
 
-            fun attributes(attributes: Optional<Attributes>) = attributes(attributes.orElse(null))
+            fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
 
             fun attributes(attributes: JsonField<Attributes>) = apply {
                 this.attributes = attributes
@@ -1207,7 +1203,7 @@ private constructor(
             fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
             /** The deduction currency. */
-            fun currency(currency: Optional<String>) = currency(currency.orElse(null))
+            fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
             /** The deduction currency. */
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
@@ -1216,7 +1212,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The deduction name from the pay statement. */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** The deduction name from the pay statement. */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -1228,8 +1224,7 @@ private constructor(
             fun preTax(preTax: Boolean) = preTax(preTax as Boolean?)
 
             /** Boolean indicating if the deduction is pre-tax. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun preTax(preTax: Optional<Boolean>) = preTax(preTax.orElse(null) as Boolean?)
+            fun preTax(preTax: Optional<Boolean>) = preTax(preTax.getOrNull())
 
             /** Boolean indicating if the deduction is pre-tax. */
             fun preTax(preTax: JsonField<Boolean>) = apply { this.preTax = preTax }
@@ -1238,7 +1233,7 @@ private constructor(
             fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
             /** Type of benefit. */
-            fun type(type: Optional<BenefitType>) = type(type.orElse(null))
+            fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
             /** Type of benefit. */
             fun type(type: JsonField<BenefitType>) = apply { this.type = type }
@@ -1715,15 +1710,14 @@ private constructor(
             fun amount(amount: Long) = amount(amount as Long?)
 
             /** The contribution amount in cents. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
+            fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
             /** The contribution amount in cents. */
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
 
-            fun attributes(attributes: Optional<Attributes>) = attributes(attributes.orElse(null))
+            fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
 
             fun attributes(attributes: JsonField<Attributes>) = apply {
                 this.attributes = attributes
@@ -1733,7 +1727,7 @@ private constructor(
             fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
             /** The contribution currency. */
-            fun currency(currency: Optional<String>) = currency(currency.orElse(null))
+            fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
             /** The contribution currency. */
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
@@ -1742,7 +1736,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The contribution name from the pay statement. */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** The contribution name from the pay statement. */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -1751,7 +1745,7 @@ private constructor(
             fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
             /** Type of benefit. */
-            fun type(type: Optional<BenefitType>) = type(type.orElse(null))
+            fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
             /** Type of benefit. */
             fun type(type: JsonField<BenefitType>) = apply { this.type = type }
@@ -2339,15 +2333,14 @@ private constructor(
             fun amount(amount: Long) = amount(amount as Long?)
 
             /** The tax amount in cents. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
+            fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
             /** The tax amount in cents. */
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
 
-            fun attributes(attributes: Optional<Attributes>) = attributes(attributes.orElse(null))
+            fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
 
             fun attributes(attributes: JsonField<Attributes>) = apply {
                 this.attributes = attributes
@@ -2357,7 +2350,7 @@ private constructor(
             fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
             /** The currency code. */
-            fun currency(currency: Optional<String>) = currency(currency.orElse(null))
+            fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
             /** The currency code. */
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
@@ -2369,8 +2362,7 @@ private constructor(
             fun employer(employer: Boolean) = employer(employer as Boolean?)
 
             /** `true` if the amount is paid by the employers. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun employer(employer: Optional<Boolean>) = employer(employer.orElse(null) as Boolean?)
+            fun employer(employer: Optional<Boolean>) = employer(employer.getOrNull())
 
             /** `true` if the amount is paid by the employers. */
             fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
@@ -2379,7 +2371,7 @@ private constructor(
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The exact name of tax from the pay statement. */
-            fun name(name: Optional<String>) = name(name.orElse(null))
+            fun name(name: Optional<String>) = name(name.getOrNull())
 
             /** The exact name of tax from the pay statement. */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -2388,7 +2380,7 @@ private constructor(
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             /** The type of taxes. */
-            fun type(type: Optional<Type>) = type(type.orElse(null))
+            fun type(type: Optional<Type>) = type(type.getOrNull())
 
             /** The type of taxes. */
             fun type(type: JsonField<Type>) = apply { this.type = type }

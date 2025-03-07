@@ -22,6 +22,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Update sandbox individual */
 class SandboxIndividualUpdateParams
@@ -339,13 +340,13 @@ private constructor(
 
             fun dob(dob: String?) = dob(JsonField.ofNullable(dob))
 
-            fun dob(dob: Optional<String>) = dob(dob.orElse(null))
+            fun dob(dob: Optional<String>) = dob(dob.getOrNull())
 
             fun dob(dob: JsonField<String>) = apply { this.dob = dob }
 
             fun emails(emails: List<Email>?) = emails(JsonField.ofNullable(emails))
 
-            fun emails(emails: Optional<List<Email>>) = emails(emails.orElse(null))
+            fun emails(emails: Optional<List<Email>>) = emails(emails.getOrNull())
 
             fun emails(emails: JsonField<List<Email>>) = apply {
                 this.emails = emails.map { it.toMutableList() }
@@ -372,7 +373,7 @@ private constructor(
              * set in the body.
              */
             fun encryptedSsn(encryptedSsn: Optional<String>) =
-                encryptedSsn(encryptedSsn.orElse(null))
+                encryptedSsn(encryptedSsn.getOrNull())
 
             /**
              * Social Security Number of the individual in **encrypted** format. This field is only
@@ -387,7 +388,7 @@ private constructor(
             fun ethnicity(ethnicity: Ethnicity?) = ethnicity(JsonField.ofNullable(ethnicity))
 
             /** The EEOC-defined ethnicity of the individual. */
-            fun ethnicity(ethnicity: Optional<Ethnicity>) = ethnicity(ethnicity.orElse(null))
+            fun ethnicity(ethnicity: Optional<Ethnicity>) = ethnicity(ethnicity.getOrNull())
 
             /** The EEOC-defined ethnicity of the individual. */
             fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { this.ethnicity = ethnicity }
@@ -396,7 +397,7 @@ private constructor(
             fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
 
             /** The legal first name of the individual. */
-            fun firstName(firstName: Optional<String>) = firstName(firstName.orElse(null))
+            fun firstName(firstName: Optional<String>) = firstName(firstName.getOrNull())
 
             /** The legal first name of the individual. */
             fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
@@ -405,7 +406,7 @@ private constructor(
             fun gender(gender: Gender?) = gender(JsonField.ofNullable(gender))
 
             /** The gender of the individual. */
-            fun gender(gender: Optional<Gender>) = gender(gender.orElse(null))
+            fun gender(gender: Optional<Gender>) = gender(gender.getOrNull())
 
             /** The gender of the individual. */
             fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
@@ -414,7 +415,7 @@ private constructor(
             fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
 
             /** The legal last name of the individual. */
-            fun lastName(lastName: Optional<String>) = lastName(lastName.orElse(null))
+            fun lastName(lastName: Optional<String>) = lastName(lastName.getOrNull())
 
             /** The legal last name of the individual. */
             fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
@@ -423,7 +424,7 @@ private constructor(
             fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
             /** The legal middle name of the individual. */
-            fun middleName(middleName: Optional<String>) = middleName(middleName.orElse(null))
+            fun middleName(middleName: Optional<String>) = middleName(middleName.getOrNull())
 
             /** The legal middle name of the individual. */
             fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
@@ -432,7 +433,7 @@ private constructor(
                 phoneNumbers(JsonField.ofNullable(phoneNumbers))
 
             fun phoneNumbers(phoneNumbers: Optional<List<PhoneNumber?>>) =
-                phoneNumbers(phoneNumbers.orElse(null))
+                phoneNumbers(phoneNumbers.getOrNull())
 
             fun phoneNumbers(phoneNumbers: JsonField<List<PhoneNumber?>>) = apply {
                 this.phoneNumbers = phoneNumbers.map { it.toMutableList() }
@@ -451,7 +452,7 @@ private constructor(
 
             /** The preferred name of the individual. */
             fun preferredName(preferredName: Optional<String>) =
-                preferredName(preferredName.orElse(null))
+                preferredName(preferredName.getOrNull())
 
             /** The preferred name of the individual. */
             fun preferredName(preferredName: JsonField<String>) = apply {
@@ -460,7 +461,7 @@ private constructor(
 
             fun residence(residence: Location?) = residence(JsonField.ofNullable(residence))
 
-            fun residence(residence: Optional<Location>) = residence(residence.orElse(null))
+            fun residence(residence: Optional<Location>) = residence(residence.getOrNull())
 
             fun residence(residence: JsonField<Location>) = apply { this.residence = residence }
 
@@ -476,7 +477,7 @@ private constructor(
              * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
              * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
              */
-            fun ssn(ssn: Optional<String>) = ssn(ssn.orElse(null))
+            fun ssn(ssn: Optional<String>) = ssn(ssn.getOrNull())
 
             /**
              * Social Security Number of the individual. This field is only available with the `ssn`
@@ -577,13 +578,13 @@ private constructor(
 
         fun dob(dob: String?) = apply { body.dob(dob) }
 
-        fun dob(dob: Optional<String>) = dob(dob.orElse(null))
+        fun dob(dob: Optional<String>) = dob(dob.getOrNull())
 
         fun dob(dob: JsonField<String>) = apply { body.dob(dob) }
 
         fun emails(emails: List<Email>?) = apply { body.emails(emails) }
 
-        fun emails(emails: Optional<List<Email>>) = emails(emails.orElse(null))
+        fun emails(emails: Optional<List<Email>>) = emails(emails.getOrNull())
 
         fun emails(emails: JsonField<List<Email>>) = apply { body.emails(emails) }
 
@@ -601,7 +602,7 @@ private constructor(
          * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
          * in the body.
          */
-        fun encryptedSsn(encryptedSsn: Optional<String>) = encryptedSsn(encryptedSsn.orElse(null))
+        fun encryptedSsn(encryptedSsn: Optional<String>) = encryptedSsn(encryptedSsn.getOrNull())
 
         /**
          * Social Security Number of the individual in **encrypted** format. This field is only
@@ -616,7 +617,7 @@ private constructor(
         fun ethnicity(ethnicity: Ethnicity?) = apply { body.ethnicity(ethnicity) }
 
         /** The EEOC-defined ethnicity of the individual. */
-        fun ethnicity(ethnicity: Optional<Ethnicity>) = ethnicity(ethnicity.orElse(null))
+        fun ethnicity(ethnicity: Optional<Ethnicity>) = ethnicity(ethnicity.getOrNull())
 
         /** The EEOC-defined ethnicity of the individual. */
         fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { body.ethnicity(ethnicity) }
@@ -625,7 +626,7 @@ private constructor(
         fun firstName(firstName: String?) = apply { body.firstName(firstName) }
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: Optional<String>) = firstName(firstName.orElse(null))
+        fun firstName(firstName: Optional<String>) = firstName(firstName.getOrNull())
 
         /** The legal first name of the individual. */
         fun firstName(firstName: JsonField<String>) = apply { body.firstName(firstName) }
@@ -634,7 +635,7 @@ private constructor(
         fun gender(gender: Gender?) = apply { body.gender(gender) }
 
         /** The gender of the individual. */
-        fun gender(gender: Optional<Gender>) = gender(gender.orElse(null))
+        fun gender(gender: Optional<Gender>) = gender(gender.getOrNull())
 
         /** The gender of the individual. */
         fun gender(gender: JsonField<Gender>) = apply { body.gender(gender) }
@@ -643,7 +644,7 @@ private constructor(
         fun lastName(lastName: String?) = apply { body.lastName(lastName) }
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: Optional<String>) = lastName(lastName.orElse(null))
+        fun lastName(lastName: Optional<String>) = lastName(lastName.getOrNull())
 
         /** The legal last name of the individual. */
         fun lastName(lastName: JsonField<String>) = apply { body.lastName(lastName) }
@@ -652,7 +653,7 @@ private constructor(
         fun middleName(middleName: String?) = apply { body.middleName(middleName) }
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: Optional<String>) = middleName(middleName.orElse(null))
+        fun middleName(middleName: Optional<String>) = middleName(middleName.getOrNull())
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: JsonField<String>) = apply { body.middleName(middleName) }
@@ -662,7 +663,7 @@ private constructor(
         }
 
         fun phoneNumbers(phoneNumbers: Optional<List<PhoneNumber?>>) =
-            phoneNumbers(phoneNumbers.orElse(null))
+            phoneNumbers(phoneNumbers.getOrNull())
 
         fun phoneNumbers(phoneNumbers: JsonField<List<PhoneNumber?>>) = apply {
             body.phoneNumbers(phoneNumbers)
@@ -675,7 +676,7 @@ private constructor(
 
         /** The preferred name of the individual. */
         fun preferredName(preferredName: Optional<String>) =
-            preferredName(preferredName.orElse(null))
+            preferredName(preferredName.getOrNull())
 
         /** The preferred name of the individual. */
         fun preferredName(preferredName: JsonField<String>) = apply {
@@ -684,7 +685,7 @@ private constructor(
 
         fun residence(residence: Location?) = apply { body.residence(residence) }
 
-        fun residence(residence: Optional<Location>) = residence(residence.orElse(null))
+        fun residence(residence: Optional<Location>) = residence(residence.getOrNull())
 
         fun residence(residence: JsonField<Location>) = apply { body.residence(residence) }
 
@@ -700,7 +701,7 @@ private constructor(
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
-        fun ssn(ssn: Optional<String>) = ssn(ssn.orElse(null))
+        fun ssn(ssn: Optional<String>) = ssn(ssn.getOrNull())
 
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
@@ -899,7 +900,7 @@ private constructor(
 
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
-            fun type(type: Optional<Type>) = type(type.orElse(null))
+            fun type(type: Optional<Type>) = type(type.getOrNull())
 
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
@@ -1354,7 +1355,7 @@ private constructor(
 
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
-            fun type(type: Optional<Type>) = type(type.orElse(null))
+            fun type(type: Optional<Type>) = type(type.getOrNull())
 
             fun type(type: JsonField<Type>) = apply { this.type = type }
 

@@ -19,6 +19,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class AutomatedAsyncJob
@@ -205,7 +206,7 @@ private constructor(
 
         /** The datetime the job completed. */
         fun completedAt(completedAt: Optional<OffsetDateTime>) =
-            completedAt(completedAt.orElse(null))
+            completedAt(completedAt.getOrNull())
 
         /** The datetime the job completed. */
         fun completedAt(completedAt: JsonField<OffsetDateTime>) = apply {
@@ -242,7 +243,7 @@ private constructor(
         fun params(params: Params?) = params(JsonField.ofNullable(params))
 
         /** The input parameters for the job. */
-        fun params(params: Optional<Params>) = params(params.orElse(null))
+        fun params(params: Optional<Params>) = params(params.getOrNull())
 
         /** The input parameters for the job. */
         fun params(params: JsonField<Params>) = apply { this.params = params }
@@ -261,7 +262,7 @@ private constructor(
          * be null.
          */
         fun scheduledAt(scheduledAt: Optional<OffsetDateTime>) =
-            scheduledAt(scheduledAt.orElse(null))
+            scheduledAt(scheduledAt.getOrNull())
 
         /**
          * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
@@ -276,7 +277,7 @@ private constructor(
         fun startedAt(startedAt: OffsetDateTime?) = startedAt(JsonField.ofNullable(startedAt))
 
         /** The datetime a job entered into the job queue. */
-        fun startedAt(startedAt: Optional<OffsetDateTime>) = startedAt(startedAt.orElse(null))
+        fun startedAt(startedAt: Optional<OffsetDateTime>) = startedAt(startedAt.getOrNull())
 
         /** The datetime a job entered into the job queue. */
         fun startedAt(startedAt: JsonField<OffsetDateTime>) = apply { this.startedAt = startedAt }

@@ -19,6 +19,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class CreateAccessTokenResponse
@@ -314,7 +315,7 @@ private constructor(
          * The ID of your customer you provided to Finch when a connect session was created for this
          * connection.
          */
-        fun customerId(customerId: Optional<String>) = customerId(customerId.orElse(null))
+        fun customerId(customerId: Optional<String>) = customerId(customerId.getOrNull())
 
         /**
          * The ID of your customer you provided to Finch when a connect session was created for this

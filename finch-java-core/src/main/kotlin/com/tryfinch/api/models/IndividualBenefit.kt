@@ -17,6 +17,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class IndividualBenefit
@@ -245,9 +246,8 @@ private constructor(
             fun annualMaximum(annualMaximum: Long) = annualMaximum(annualMaximum as Long?)
 
             /** If the benefit supports annual maximum, the amount in cents for this individual. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun annualMaximum(annualMaximum: Optional<Long>) =
-                annualMaximum(annualMaximum.orElse(null) as Long?)
+                annualMaximum(annualMaximum.getOrNull())
 
             /** If the benefit supports annual maximum, the amount in cents for this individual. */
             fun annualMaximum(annualMaximum: JsonField<Long>) = apply {
@@ -270,8 +270,7 @@ private constructor(
              * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
              * this individual.
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.orElse(null) as Boolean?)
+            fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.getOrNull())
 
             /**
              * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
@@ -283,7 +282,7 @@ private constructor(
                 companyContribution(JsonField.ofNullable(companyContribution))
 
             fun companyContribution(companyContribution: Optional<BenefitContribution>) =
-                companyContribution(companyContribution.orElse(null))
+                companyContribution(companyContribution.getOrNull())
 
             fun companyContribution(companyContribution: JsonField<BenefitContribution>) = apply {
                 this.companyContribution = companyContribution
@@ -293,7 +292,7 @@ private constructor(
                 employeeDeduction(JsonField.ofNullable(employeeDeduction))
 
             fun employeeDeduction(employeeDeduction: Optional<BenefitContribution>) =
-                employeeDeduction(employeeDeduction.orElse(null))
+                employeeDeduction(employeeDeduction.getOrNull())
 
             fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
                 this.employeeDeduction = employeeDeduction
@@ -305,7 +304,7 @@ private constructor(
 
             /** Type for HSA contribution limit if the benefit is a HSA. */
             fun hsaContributionLimit(hsaContributionLimit: Optional<HsaContributionLimit>) =
-                hsaContributionLimit(hsaContributionLimit.orElse(null))
+                hsaContributionLimit(hsaContributionLimit.getOrNull())
 
             /** Type for HSA contribution limit if the benefit is a HSA. */
             fun hsaContributionLimit(hsaContributionLimit: JsonField<HsaContributionLimit>) =

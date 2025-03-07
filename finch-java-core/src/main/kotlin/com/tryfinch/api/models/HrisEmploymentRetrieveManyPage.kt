@@ -18,6 +18,7 @@ import java.util.Objects
 import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
+import kotlin.jvm.optionals.getOrNull
 
 /** Read individual employment and income data */
 class HrisEmploymentRetrieveManyPage
@@ -160,7 +161,7 @@ private constructor(
                 while (index < page.responses().size) {
                     yield(page.responses()[index++])
                 }
-                page = page.getNextPage().orElse(null) ?: break
+                page = page.getNextPage().getOrNull() ?: break
                 index = 0
             }
         }

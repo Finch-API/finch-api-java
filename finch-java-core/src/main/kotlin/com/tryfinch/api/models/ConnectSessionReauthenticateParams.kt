@@ -22,6 +22,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Create a new Connect session for reauthenticating an existing connection */
 class ConnectSessionReauthenticateParams
@@ -202,9 +203,8 @@ private constructor(
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
             fun minutesToExpire(minutesToExpire: Optional<Long>) =
-                minutesToExpire(minutesToExpire.orElse(null) as Long?)
+                minutesToExpire(minutesToExpire.getOrNull())
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
@@ -219,8 +219,7 @@ private constructor(
                 products(JsonField.ofNullable(products))
 
             /** The products to request access to (optional for reauthentication) */
-            fun products(products: Optional<List<ConnectProducts>>) =
-                products(products.orElse(null))
+            fun products(products: Optional<List<ConnectProducts>>) = products(products.getOrNull())
 
             /** The products to request access to (optional for reauthentication) */
             fun products(products: JsonField<List<ConnectProducts>>) = apply {
@@ -239,7 +238,7 @@ private constructor(
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
 
             /** The URI to redirect to after the Connect flow is completed */
-            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
             /** The URI to redirect to after the Connect flow is completed */
             fun redirectUri(redirectUri: JsonField<String>) = apply {
@@ -349,9 +348,8 @@ private constructor(
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
         fun minutesToExpire(minutesToExpire: Optional<Long>) =
-            minutesToExpire(minutesToExpire.orElse(null) as Long?)
+            minutesToExpire(minutesToExpire.getOrNull())
 
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
@@ -364,7 +362,7 @@ private constructor(
         fun products(products: List<ConnectProducts>?) = apply { body.products(products) }
 
         /** The products to request access to (optional for reauthentication) */
-        fun products(products: Optional<List<ConnectProducts>>) = products(products.orElse(null))
+        fun products(products: Optional<List<ConnectProducts>>) = products(products.getOrNull())
 
         /** The products to request access to (optional for reauthentication) */
         fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
@@ -376,7 +374,7 @@ private constructor(
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
         /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
         /** The URI to redirect to after the Connect flow is completed */
         fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }

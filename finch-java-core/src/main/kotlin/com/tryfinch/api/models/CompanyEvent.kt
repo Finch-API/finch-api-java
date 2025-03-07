@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class CompanyEvent
@@ -186,7 +187,7 @@ private constructor(
 
         fun data(data: Data?) = data(JsonField.ofNullable(data))
 
-        fun data(data: Optional<Data>) = data(data.orElse(null))
+        fun data(data: Optional<Data>) = data(data.getOrNull())
 
         fun data(data: JsonField<Data>) = apply { this.data = data }
 

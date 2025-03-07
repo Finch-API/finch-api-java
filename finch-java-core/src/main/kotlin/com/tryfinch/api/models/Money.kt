@@ -15,6 +15,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class Money
@@ -82,8 +83,7 @@ private constructor(
         fun amount(amount: Long) = amount(amount as Long?)
 
         /** Amount for money object (in cents) */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
+        fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
         /** Amount for money object (in cents) */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }

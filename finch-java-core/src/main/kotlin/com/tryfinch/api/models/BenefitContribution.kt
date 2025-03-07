@@ -17,6 +17,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class BenefitContribution
@@ -84,8 +85,7 @@ private constructor(
         fun amount(amount: Long) = amount(amount as Long?)
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
+        fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
@@ -94,7 +94,7 @@ private constructor(
         fun type(type: Type?) = type(JsonField.ofNullable(type))
 
         /** Contribution type. */
-        fun type(type: Optional<Type>) = type(type.orElse(null))
+        fun type(type: Optional<Type>) = type(type.getOrNull())
 
         /** Contribution type. */
         fun type(type: JsonField<Type>) = apply { this.type = type }

@@ -16,6 +16,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class CompanyBenefit
@@ -118,13 +119,13 @@ private constructor(
 
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         fun description(description: JsonField<String>) = apply { this.description = description }
 
         fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
 
-        fun frequency(frequency: Optional<BenefitFrequency>) = frequency(frequency.orElse(null))
+        fun frequency(frequency: Optional<BenefitFrequency>) = frequency(frequency.getOrNull())
 
         fun frequency(frequency: JsonField<BenefitFrequency>) = apply { this.frequency = frequency }
 
@@ -132,7 +133,7 @@ private constructor(
         fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
         /** Type of benefit. */
-        fun type(type: Optional<BenefitType>) = type(type.orElse(null))
+        fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
         /** Type of benefit. */
         fun type(type: JsonField<BenefitType>) = apply { this.type = type }
