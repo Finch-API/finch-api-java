@@ -21,9 +21,9 @@ import java.util.Optional
 @JsonSerialize(using = WebhookEvent.Serializer::class)
 class WebhookEvent
 private constructor(
-    private val accountUpdate: AccountUpdateEvent? = null,
+    private val accountUpdated: AccountUpdateEvent? = null,
     private val jobCompletion: JobCompletionEvent? = null,
-    private val company: CompanyEvent? = null,
+    private val companyUpdated: CompanyEvent? = null,
     private val directory: DirectoryEvent? = null,
     private val employment: EmploymentEvent? = null,
     private val individual: IndividualEvent? = null,
@@ -32,11 +32,11 @@ private constructor(
     private val _json: JsonValue? = null,
 ) {
 
-    fun accountUpdate(): Optional<AccountUpdateEvent> = Optional.ofNullable(accountUpdate)
+    fun accountUpdated(): Optional<AccountUpdateEvent> = Optional.ofNullable(accountUpdated)
 
     fun jobCompletion(): Optional<JobCompletionEvent> = Optional.ofNullable(jobCompletion)
 
-    fun company(): Optional<CompanyEvent> = Optional.ofNullable(company)
+    fun companyUpdated(): Optional<CompanyEvent> = Optional.ofNullable(companyUpdated)
 
     fun directory(): Optional<DirectoryEvent> = Optional.ofNullable(directory)
 
@@ -48,11 +48,11 @@ private constructor(
 
     fun payStatement(): Optional<PayStatementEvent> = Optional.ofNullable(payStatement)
 
-    fun isAccountUpdate(): Boolean = accountUpdate != null
+    fun isAccountUpdated(): Boolean = accountUpdated != null
 
     fun isJobCompletion(): Boolean = jobCompletion != null
 
-    fun isCompany(): Boolean = company != null
+    fun isCompanyUpdated(): Boolean = companyUpdated != null
 
     fun isDirectory(): Boolean = directory != null
 
@@ -64,11 +64,11 @@ private constructor(
 
     fun isPayStatement(): Boolean = payStatement != null
 
-    fun asAccountUpdate(): AccountUpdateEvent = accountUpdate.getOrThrow("accountUpdate")
+    fun asAccountUpdated(): AccountUpdateEvent = accountUpdated.getOrThrow("accountUpdated")
 
     fun asJobCompletion(): JobCompletionEvent = jobCompletion.getOrThrow("jobCompletion")
 
-    fun asCompany(): CompanyEvent = company.getOrThrow("company")
+    fun asCompanyUpdated(): CompanyEvent = companyUpdated.getOrThrow("companyUpdated")
 
     fun asDirectory(): DirectoryEvent = directory.getOrThrow("directory")
 
@@ -84,9 +84,9 @@ private constructor(
 
     fun <T> accept(visitor: Visitor<T>): T {
         return when {
-            accountUpdate != null -> visitor.visitAccountUpdate(accountUpdate)
+            accountUpdated != null -> visitor.visitAccountUpdated(accountUpdated)
             jobCompletion != null -> visitor.visitJobCompletion(jobCompletion)
-            company != null -> visitor.visitCompany(company)
+            companyUpdated != null -> visitor.visitCompanyUpdated(companyUpdated)
             directory != null -> visitor.visitDirectory(directory)
             employment != null -> visitor.visitEmployment(employment)
             individual != null -> visitor.visitIndividual(individual)
@@ -105,16 +105,16 @@ private constructor(
 
         accept(
             object : Visitor<Unit> {
-                override fun visitAccountUpdate(accountUpdate: AccountUpdateEvent) {
-                    accountUpdate.validate()
+                override fun visitAccountUpdated(accountUpdated: AccountUpdateEvent) {
+                    accountUpdated.validate()
                 }
 
                 override fun visitJobCompletion(jobCompletion: JobCompletionEvent) {
                     jobCompletion.validate()
                 }
 
-                override fun visitCompany(company: CompanyEvent) {
-                    company.validate()
+                override fun visitCompanyUpdated(companyUpdated: CompanyEvent) {
+                    companyUpdated.validate()
                 }
 
                 override fun visitDirectory(directory: DirectoryEvent) {
@@ -146,16 +146,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is WebhookEvent && accountUpdate == other.accountUpdate && jobCompletion == other.jobCompletion && company == other.company && directory == other.directory && employment == other.employment && individual == other.individual && payment == other.payment && payStatement == other.payStatement /* spotless:on */
+        return /* spotless:off */ other is WebhookEvent && accountUpdated == other.accountUpdated && jobCompletion == other.jobCompletion && companyUpdated == other.companyUpdated && directory == other.directory && employment == other.employment && individual == other.individual && payment == other.payment && payStatement == other.payStatement /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accountUpdate, jobCompletion, company, directory, employment, individual, payment, payStatement) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accountUpdated, jobCompletion, companyUpdated, directory, employment, individual, payment, payStatement) /* spotless:on */
 
     override fun toString(): String =
         when {
-            accountUpdate != null -> "WebhookEvent{accountUpdate=$accountUpdate}"
+            accountUpdated != null -> "WebhookEvent{accountUpdated=$accountUpdated}"
             jobCompletion != null -> "WebhookEvent{jobCompletion=$jobCompletion}"
-            company != null -> "WebhookEvent{company=$company}"
+            companyUpdated != null -> "WebhookEvent{companyUpdated=$companyUpdated}"
             directory != null -> "WebhookEvent{directory=$directory}"
             employment != null -> "WebhookEvent{employment=$employment}"
             individual != null -> "WebhookEvent{individual=$individual}"
@@ -168,14 +168,16 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun ofAccountUpdate(accountUpdate: AccountUpdateEvent) =
-            WebhookEvent(accountUpdate = accountUpdate)
+        fun ofAccountUpdated(accountUpdated: AccountUpdateEvent) =
+            WebhookEvent(accountUpdated = accountUpdated)
 
         @JvmStatic
         fun ofJobCompletion(jobCompletion: JobCompletionEvent) =
             WebhookEvent(jobCompletion = jobCompletion)
 
-        @JvmStatic fun ofCompany(company: CompanyEvent) = WebhookEvent(company = company)
+        @JvmStatic
+        fun ofCompanyUpdated(companyUpdated: CompanyEvent) =
+            WebhookEvent(companyUpdated = companyUpdated)
 
         @JvmStatic fun ofDirectory(directory: DirectoryEvent) = WebhookEvent(directory = directory)
 
@@ -197,11 +199,11 @@ private constructor(
      */
     interface Visitor<out T> {
 
-        fun visitAccountUpdate(accountUpdate: AccountUpdateEvent): T
+        fun visitAccountUpdated(accountUpdated: AccountUpdateEvent): T
 
         fun visitJobCompletion(jobCompletion: JobCompletionEvent): T
 
-        fun visitCompany(company: CompanyEvent): T
+        fun visitCompanyUpdated(companyUpdated: CompanyEvent): T
 
         fun visitDirectory(directory: DirectoryEvent): T
 
@@ -234,7 +236,7 @@ private constructor(
 
             tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>()) { it.validate() }
                 ?.let {
-                    return WebhookEvent(accountUpdate = it, _json = json)
+                    return WebhookEvent(accountUpdated = it, _json = json)
                 }
             tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>()) { it.validate() }
                 ?.let {
@@ -242,7 +244,7 @@ private constructor(
                 }
             tryDeserialize(node, jacksonTypeRef<CompanyEvent>()) { it.validate() }
                 ?.let {
-                    return WebhookEvent(company = it, _json = json)
+                    return WebhookEvent(companyUpdated = it, _json = json)
                 }
             tryDeserialize(node, jacksonTypeRef<DirectoryEvent>()) { it.validate() }
                 ?.let {
@@ -277,9 +279,9 @@ private constructor(
             provider: SerializerProvider,
         ) {
             when {
-                value.accountUpdate != null -> generator.writeObject(value.accountUpdate)
+                value.accountUpdated != null -> generator.writeObject(value.accountUpdated)
                 value.jobCompletion != null -> generator.writeObject(value.jobCompletion)
-                value.company != null -> generator.writeObject(value.company)
+                value.companyUpdated != null -> generator.writeObject(value.companyUpdated)
                 value.directory != null -> generator.writeObject(value.directory)
                 value.employment != null -> generator.writeObject(value.employment)
                 value.individual != null -> generator.writeObject(value.individual)
