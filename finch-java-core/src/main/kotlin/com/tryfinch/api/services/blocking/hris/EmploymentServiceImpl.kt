@@ -18,53 +18,60 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPage
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 
-class EmploymentServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class EmploymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    EmploymentService {
 
-) : EmploymentService {
-
-    private val withRawResponse: EmploymentService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: EmploymentService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): EmploymentService.WithRawResponse = withRawResponse
 
-    override fun retrieveMany(params: HrisEmploymentRetrieveManyParams, requestOptions: RequestOptions): HrisEmploymentRetrieveManyPage =
+    override fun retrieveMany(
+        params: HrisEmploymentRetrieveManyParams,
+        requestOptions: RequestOptions,
+    ): HrisEmploymentRetrieveManyPage =
         // post /employer/employment
         withRawResponse().retrieveMany(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : EmploymentService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        EmploymentService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPage.Response> = jsonHandler<HrisEmploymentRetrieveManyPage.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPage.Response> =
+            jsonHandler<HrisEmploymentRetrieveManyPage.Response>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun retrieveMany(params: HrisEmploymentRetrieveManyParams, requestOptions: RequestOptions): HttpResponseFor<HrisEmploymentRetrieveManyPage> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("employer", "employment")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  retrieveManyHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-              .let {
-                  HrisEmploymentRetrieveManyPage.of(EmploymentServiceImpl(clientOptions), params, it)
-              }
-          }
+        override fun retrieveMany(
+            params: HrisEmploymentRetrieveManyParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<HrisEmploymentRetrieveManyPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("employer", "employment")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { retrieveManyHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+                    .let {
+                        HrisEmploymentRetrieveManyPage.of(
+                            EmploymentServiceImpl(clientOptions),
+                            params,
+                            it,
+                        )
+                    }
+            }
         }
     }
 }

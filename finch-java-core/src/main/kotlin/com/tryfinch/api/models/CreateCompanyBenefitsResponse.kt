@@ -17,17 +17,18 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 @NoAutoDetect
-class CreateCompanyBenefitsResponse @JsonCreator private constructor(
-    @JsonProperty("benefit_id") @ExcludeMissing private val benefitId: JsonField<String> = JsonMissing.of(),
+class CreateCompanyBenefitsResponse
+@JsonCreator
+private constructor(
+    @JsonProperty("benefit_id")
+    @ExcludeMissing
+    private val benefitId: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
-    @JsonProperty("benefit_id")
-    @ExcludeMissing
-    fun _benefitId(): JsonField<String> = benefitId
+    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -35,15 +36,14 @@ class CreateCompanyBenefitsResponse @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): CreateCompanyBenefitsResponse =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            benefitId()
-            validated = true
+    fun validate(): CreateCompanyBenefitsResponse = apply {
+        if (validated) {
+            return@apply
         }
+
+        benefitId()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
@@ -54,13 +54,11 @@ class CreateCompanyBenefitsResponse @JsonCreator private constructor(
          * [CreateCompanyBenefitsResponse].
          *
          * The following fields are required:
-         *
          * ```java
          * .benefitId()
          * ```
          */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [CreateCompanyBenefitsResponse]. */
@@ -70,59 +68,47 @@ class CreateCompanyBenefitsResponse @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(createCompanyBenefitsResponse: CreateCompanyBenefitsResponse) =
-            apply {
-                benefitId = createCompanyBenefitsResponse.benefitId
-                additionalProperties = createCompanyBenefitsResponse.additionalProperties.toMutableMap()
-            }
+        internal fun from(createCompanyBenefitsResponse: CreateCompanyBenefitsResponse) = apply {
+            benefitId = createCompanyBenefitsResponse.benefitId
+            additionalProperties = createCompanyBenefitsResponse.additionalProperties.toMutableMap()
+        }
 
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
-        fun benefitId(benefitId: JsonField<String>) =
-            apply {
-                this.benefitId = benefitId
-            }
+        fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
         fun build(): CreateCompanyBenefitsResponse =
             CreateCompanyBenefitsResponse(
-              checkRequired(
-                "benefitId", benefitId
-              ), additionalProperties.toImmutable()
+                checkRequired("benefitId", benefitId),
+                additionalProperties.toImmutable(),
             )
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is CreateCompanyBenefitsResponse && benefitId == other.benefitId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is CreateCompanyBenefitsResponse && benefitId == other.benefitId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -131,5 +117,6 @@ class CreateCompanyBenefitsResponse @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "CreateCompanyBenefitsResponse{benefitId=$benefitId, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "CreateCompanyBenefitsResponse{benefitId=$benefitId, additionalProperties=$additionalProperties}"
 }

@@ -8,14 +8,16 @@ import com.tryfinch.api.services.async.jobs.AutomatedServiceAsyncImpl
 import com.tryfinch.api.services.async.jobs.ManualServiceAsync
 import com.tryfinch.api.services.async.jobs.ManualServiceAsyncImpl
 
-class JobServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class JobServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    JobServiceAsync {
 
-) : JobServiceAsync {
+    private val withRawResponse: JobServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val withRawResponse: JobServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
-
-    private val automated: AutomatedServiceAsync by lazy { AutomatedServiceAsyncImpl(clientOptions) }
+    private val automated: AutomatedServiceAsync by lazy {
+        AutomatedServiceAsyncImpl(clientOptions)
+    }
 
     private val manual: ManualServiceAsync by lazy { ManualServiceAsyncImpl(clientOptions) }
 
@@ -25,14 +27,16 @@ class JobServiceAsyncImpl internal constructor(
 
     override fun manual(): ManualServiceAsync = manual
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        JobServiceAsync.WithRawResponse {
 
-    ) : JobServiceAsync.WithRawResponse {
+        private val automated: AutomatedServiceAsync.WithRawResponse by lazy {
+            AutomatedServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val automated: AutomatedServiceAsync.WithRawResponse by lazy { AutomatedServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
-
-        private val manual: ManualServiceAsync.WithRawResponse by lazy { ManualServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val manual: ManualServiceAsync.WithRawResponse by lazy {
+            ManualServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
         override fun automated(): AutomatedServiceAsync.WithRawResponse = automated
 

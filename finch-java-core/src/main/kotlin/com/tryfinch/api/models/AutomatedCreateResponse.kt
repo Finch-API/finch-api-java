@@ -17,13 +17,20 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 @NoAutoDetect
-class AutomatedCreateResponse @JsonCreator private constructor(
-    @JsonProperty("allowed_refreshes") @ExcludeMissing private val allowedRefreshes: JsonField<Long> = JsonMissing.of(),
+class AutomatedCreateResponse
+@JsonCreator
+private constructor(
+    @JsonProperty("allowed_refreshes")
+    @ExcludeMissing
+    private val allowedRefreshes: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("job_url") @ExcludeMissing private val jobUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("remaining_refreshes") @ExcludeMissing private val remainingRefreshes: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("job_url")
+    @ExcludeMissing
+    private val jobUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("remaining_refreshes")
+    @ExcludeMissing
+    private val remainingRefreshes: JsonField<Long> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     /** The number of allowed refreshes per hour (per hour, fixed window) */
@@ -44,14 +51,10 @@ class AutomatedCreateResponse @JsonCreator private constructor(
     fun _allowedRefreshes(): JsonField<Long> = allowedRefreshes
 
     /** The id of the job that has been created. */
-    @JsonProperty("job_id")
-    @ExcludeMissing
-    fun _jobId(): JsonField<String> = jobId
+    @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
     /** The url that can be used to retrieve the job status */
-    @JsonProperty("job_url")
-    @ExcludeMissing
-    fun _jobUrl(): JsonField<String> = jobUrl
+    @JsonProperty("job_url") @ExcludeMissing fun _jobUrl(): JsonField<String> = jobUrl
 
     /** The number of remaining refreshes available (per hour, fixed window) */
     @JsonProperty("remaining_refreshes")
@@ -64,29 +67,26 @@ class AutomatedCreateResponse @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): AutomatedCreateResponse =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            allowedRefreshes()
-            jobId()
-            jobUrl()
-            remainingRefreshes()
-            validated = true
+    fun validate(): AutomatedCreateResponse = apply {
+        if (validated) {
+            return@apply
         }
+
+        allowedRefreshes()
+        jobId()
+        jobUrl()
+        remainingRefreshes()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of
-         * [AutomatedCreateResponse].
+         * Returns a mutable builder for constructing an instance of [AutomatedCreateResponse].
          *
          * The following fields are required:
-         *
          * ```java
          * .allowedRefreshes()
          * .jobId()
@@ -94,8 +94,7 @@ class AutomatedCreateResponse @JsonCreator private constructor(
          * .remainingRefreshes()
          * ```
          */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [AutomatedCreateResponse]. */
@@ -108,101 +107,79 @@ class AutomatedCreateResponse @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(automatedCreateResponse: AutomatedCreateResponse) =
-            apply {
-                allowedRefreshes = automatedCreateResponse.allowedRefreshes
-                jobId = automatedCreateResponse.jobId
-                jobUrl = automatedCreateResponse.jobUrl
-                remainingRefreshes = automatedCreateResponse.remainingRefreshes
-                additionalProperties = automatedCreateResponse.additionalProperties.toMutableMap()
-            }
+        internal fun from(automatedCreateResponse: AutomatedCreateResponse) = apply {
+            allowedRefreshes = automatedCreateResponse.allowedRefreshes
+            jobId = automatedCreateResponse.jobId
+            jobUrl = automatedCreateResponse.jobUrl
+            remainingRefreshes = automatedCreateResponse.remainingRefreshes
+            additionalProperties = automatedCreateResponse.additionalProperties.toMutableMap()
+        }
 
         /** The number of allowed refreshes per hour (per hour, fixed window) */
-        fun allowedRefreshes(allowedRefreshes: Long) = allowedRefreshes(JsonField.of(allowedRefreshes))
+        fun allowedRefreshes(allowedRefreshes: Long) =
+            allowedRefreshes(JsonField.of(allowedRefreshes))
 
         /** The number of allowed refreshes per hour (per hour, fixed window) */
-        fun allowedRefreshes(allowedRefreshes: JsonField<Long>) =
-            apply {
-                this.allowedRefreshes = allowedRefreshes
-            }
+        fun allowedRefreshes(allowedRefreshes: JsonField<Long>) = apply {
+            this.allowedRefreshes = allowedRefreshes
+        }
 
         /** The id of the job that has been created. */
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
         /** The id of the job that has been created. */
-        fun jobId(jobId: JsonField<String>) =
-            apply {
-                this.jobId = jobId
-            }
+        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
 
         /** The url that can be used to retrieve the job status */
-        fun jobUrl(jobUrl: JsonField<String>) =
-            apply {
-                this.jobUrl = jobUrl
-            }
+        fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
 
         /** The number of remaining refreshes available (per hour, fixed window) */
-        fun remainingRefreshes(remainingRefreshes: Long) = remainingRefreshes(JsonField.of(remainingRefreshes))
+        fun remainingRefreshes(remainingRefreshes: Long) =
+            remainingRefreshes(JsonField.of(remainingRefreshes))
 
         /** The number of remaining refreshes available (per hour, fixed window) */
-        fun remainingRefreshes(remainingRefreshes: JsonField<Long>) =
-            apply {
-                this.remainingRefreshes = remainingRefreshes
-            }
+        fun remainingRefreshes(remainingRefreshes: JsonField<Long>) = apply {
+            this.remainingRefreshes = remainingRefreshes
+        }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
         fun build(): AutomatedCreateResponse =
             AutomatedCreateResponse(
-              checkRequired(
-                "allowedRefreshes", allowedRefreshes
-              ),
-              checkRequired(
-                "jobId", jobId
-              ),
-              checkRequired(
-                "jobUrl", jobUrl
-              ),
-              checkRequired(
-                "remainingRefreshes", remainingRefreshes
-              ),
-              additionalProperties.toImmutable(),
+                checkRequired("allowedRefreshes", allowedRefreshes),
+                checkRequired("jobId", jobId),
+                checkRequired("jobUrl", jobUrl),
+                checkRequired("remainingRefreshes", remainingRefreshes),
+                additionalProperties.toImmutable(),
             )
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is AutomatedCreateResponse && allowedRefreshes == other.allowedRefreshes && jobId == other.jobId && jobUrl == other.jobUrl && remainingRefreshes == other.remainingRefreshes && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AutomatedCreateResponse && allowedRefreshes == other.allowedRefreshes && jobId == other.jobId && jobUrl == other.jobUrl && remainingRefreshes == other.remainingRefreshes && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -211,5 +188,6 @@ class AutomatedCreateResponse @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "AutomatedCreateResponse{allowedRefreshes=$allowedRefreshes, jobId=$jobId, jobUrl=$jobUrl, remainingRefreshes=$remainingRefreshes, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "AutomatedCreateResponse{allowedRefreshes=$allowedRefreshes, jobId=$jobId, jobUrl=$jobUrl, remainingRefreshes=$remainingRefreshes, additionalProperties=$additionalProperties}"
 }

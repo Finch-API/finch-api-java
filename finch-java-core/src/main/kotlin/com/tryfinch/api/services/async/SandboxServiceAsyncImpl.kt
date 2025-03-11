@@ -18,22 +18,30 @@ import com.tryfinch.api.services.async.sandbox.JobServiceAsyncImpl
 import com.tryfinch.api.services.async.sandbox.PaymentServiceAsync
 import com.tryfinch.api.services.async.sandbox.PaymentServiceAsyncImpl
 
-class SandboxServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class SandboxServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    SandboxServiceAsync {
 
-) : SandboxServiceAsync {
+    private val withRawResponse: SandboxServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val withRawResponse: SandboxServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
-
-    private val connections: ConnectionServiceAsync by lazy { ConnectionServiceAsyncImpl(clientOptions) }
+    private val connections: ConnectionServiceAsync by lazy {
+        ConnectionServiceAsyncImpl(clientOptions)
+    }
 
     private val company: CompanyServiceAsync by lazy { CompanyServiceAsyncImpl(clientOptions) }
 
-    private val directory: DirectoryServiceAsync by lazy { DirectoryServiceAsyncImpl(clientOptions) }
+    private val directory: DirectoryServiceAsync by lazy {
+        DirectoryServiceAsyncImpl(clientOptions)
+    }
 
-    private val individual: IndividualServiceAsync by lazy { IndividualServiceAsyncImpl(clientOptions) }
+    private val individual: IndividualServiceAsync by lazy {
+        IndividualServiceAsyncImpl(clientOptions)
+    }
 
-    private val employment: EmploymentServiceAsync by lazy { EmploymentServiceAsyncImpl(clientOptions) }
+    private val employment: EmploymentServiceAsync by lazy {
+        EmploymentServiceAsyncImpl(clientOptions)
+    }
 
     private val payment: PaymentServiceAsync by lazy { PaymentServiceAsyncImpl(clientOptions) }
 
@@ -55,24 +63,36 @@ class SandboxServiceAsyncImpl internal constructor(
 
     override fun jobs(): JobServiceAsync = jobs
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        SandboxServiceAsync.WithRawResponse {
 
-    ) : SandboxServiceAsync.WithRawResponse {
+        private val connections: ConnectionServiceAsync.WithRawResponse by lazy {
+            ConnectionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val connections: ConnectionServiceAsync.WithRawResponse by lazy { ConnectionServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val company: CompanyServiceAsync.WithRawResponse by lazy {
+            CompanyServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val company: CompanyServiceAsync.WithRawResponse by lazy { CompanyServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val directory: DirectoryServiceAsync.WithRawResponse by lazy {
+            DirectoryServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val directory: DirectoryServiceAsync.WithRawResponse by lazy { DirectoryServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val individual: IndividualServiceAsync.WithRawResponse by lazy {
+            IndividualServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val individual: IndividualServiceAsync.WithRawResponse by lazy { IndividualServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val employment: EmploymentServiceAsync.WithRawResponse by lazy {
+            EmploymentServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val employment: EmploymentServiceAsync.WithRawResponse by lazy { EmploymentServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val payment: PaymentServiceAsync.WithRawResponse by lazy {
+            PaymentServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val payment: PaymentServiceAsync.WithRawResponse by lazy { PaymentServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
-
-        private val jobs: JobServiceAsync.WithRawResponse by lazy { JobServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val jobs: JobServiceAsync.WithRawResponse by lazy {
+            JobServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
         override fun connections(): ConnectionServiceAsync.WithRawResponse = connections
 

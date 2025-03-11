@@ -8,8 +8,7 @@ import com.tryfinch.api.services.blocking.jobs.ManualService
 interface JobService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -17,10 +16,7 @@ interface JobService {
 
     fun manual(): ManualService
 
-    /**
-     * A view of [JobService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [JobService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         fun automated(): AutomatedService.WithRawResponse

@@ -7,16 +7,14 @@ import com.tryfinch.api.services.async.connect.SessionServiceAsync
 interface ConnectServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     fun sessions(): SessionServiceAsync
 
     /**
-     * A view of [ConnectServiceAsync] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [ConnectServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 

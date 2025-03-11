@@ -20,83 +20,93 @@ import com.tryfinch.api.models.PayrollPayGroupListPage
 import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 
-class PayGroupServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class PayGroupServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    PayGroupService {
 
-) : PayGroupService {
-
-    private val withRawResponse: PayGroupService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: PayGroupService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): PayGroupService.WithRawResponse = withRawResponse
 
-    override fun retrieve(params: PayrollPayGroupRetrieveParams, requestOptions: RequestOptions): PayGroupRetrieveResponse =
+    override fun retrieve(
+        params: PayrollPayGroupRetrieveParams,
+        requestOptions: RequestOptions,
+    ): PayGroupRetrieveResponse =
         // get /employer/pay-groups/{pay_group_id}
         withRawResponse().retrieve(params, requestOptions).parse()
 
-    override fun list(params: PayrollPayGroupListParams, requestOptions: RequestOptions): PayrollPayGroupListPage =
+    override fun list(
+        params: PayrollPayGroupListParams,
+        requestOptions: RequestOptions,
+    ): PayrollPayGroupListPage =
         // get /employer/pay-groups
         withRawResponse().list(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : PayGroupService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PayGroupService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveHandler: Handler<PayGroupRetrieveResponse> = jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
+            jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun retrieve(params: PayrollPayGroupRetrieveParams, requestOptions: RequestOptions): HttpResponseFor<PayGroupRetrieveResponse> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.GET)
-            .addPathSegments("employer", "pay-groups", params.getPathParam(0))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  retrieveHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override fun retrieve(
+            params: PayrollPayGroupRetrieveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PayGroupRetrieveResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "pay-groups", params.getPathParam(0))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { retrieveHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
 
-        private val listHandler: Handler<List<PayGroupListResponse>> = jsonHandler<List<PayGroupListResponse>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<List<PayGroupListResponse>> =
+            jsonHandler<List<PayGroupListResponse>>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun list(params: PayrollPayGroupListParams, requestOptions: RequestOptions): HttpResponseFor<PayrollPayGroupListPage> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.GET)
-            .addPathSegments("employer", "pay-groups")
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  listHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.forEach { it.validate() }
-                  }
-              }
-              .let {
-                  PayrollPayGroupListPage.of(PayGroupServiceImpl(clientOptions), params, PayrollPayGroupListPage.Response.builder()
-                      .items(it)
-                      .build())
-              }
-          }
+        override fun list(
+            params: PayrollPayGroupListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PayrollPayGroupListPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "pay-groups")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
+                        }
+                    }
+                    .let {
+                        PayrollPayGroupListPage.of(
+                            PayGroupServiceImpl(clientOptions),
+                            params,
+                            PayrollPayGroupListPage.Response.builder().items(it).build(),
+                        )
+                    }
+            }
         }
     }
 }

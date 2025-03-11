@@ -18,12 +18,12 @@ import com.tryfinch.api.services.blocking.sandbox.JobServiceImpl
 import com.tryfinch.api.services.blocking.sandbox.PaymentService
 import com.tryfinch.api.services.blocking.sandbox.PaymentServiceImpl
 
-class SandboxServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class SandboxServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    SandboxService {
 
-) : SandboxService {
-
-    private val withRawResponse: SandboxService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: SandboxService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     private val connections: ConnectionService by lazy { ConnectionServiceImpl(clientOptions) }
 
@@ -55,24 +55,36 @@ class SandboxServiceImpl internal constructor(
 
     override fun jobs(): JobService = jobs
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        SandboxService.WithRawResponse {
 
-    ) : SandboxService.WithRawResponse {
+        private val connections: ConnectionService.WithRawResponse by lazy {
+            ConnectionServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val connections: ConnectionService.WithRawResponse by lazy { ConnectionServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val company: CompanyService.WithRawResponse by lazy {
+            CompanyServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val company: CompanyService.WithRawResponse by lazy { CompanyServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val directory: DirectoryService.WithRawResponse by lazy {
+            DirectoryServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val directory: DirectoryService.WithRawResponse by lazy { DirectoryServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val individual: IndividualService.WithRawResponse by lazy {
+            IndividualServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val individual: IndividualService.WithRawResponse by lazy { IndividualServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val employment: EmploymentService.WithRawResponse by lazy {
+            EmploymentServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val employment: EmploymentService.WithRawResponse by lazy { EmploymentServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val payment: PaymentService.WithRawResponse by lazy {
+            PaymentServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val payment: PaymentService.WithRawResponse by lazy { PaymentServiceImpl.WithRawResponseImpl(clientOptions) }
-
-        private val jobs: JobService.WithRawResponse by lazy { JobServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val jobs: JobService.WithRawResponse by lazy {
+            JobServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
         override fun connections(): ConnectionService.WithRawResponse = connections
 

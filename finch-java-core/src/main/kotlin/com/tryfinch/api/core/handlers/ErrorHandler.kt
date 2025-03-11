@@ -7,12 +7,11 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.BadRequestException
+import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.InternalServerException
 import com.tryfinch.api.errors.NotFoundException
 import com.tryfinch.api.errors.PermissionDeniedException
 import com.tryfinch.api.errors.RateLimitException
-import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.errors.UnauthorizedException
 import com.tryfinch.api.errors.UnexpectedStatusCodeException
 import com.tryfinch.api.errors.UnprocessableEntityException

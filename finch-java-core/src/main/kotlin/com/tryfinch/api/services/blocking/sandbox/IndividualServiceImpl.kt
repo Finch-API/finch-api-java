@@ -18,50 +18,53 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.IndividualUpdateResponse
 import com.tryfinch.api.models.SandboxIndividualUpdateParams
 
-class IndividualServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualService {
 
-) : IndividualService {
-
-    private val withRawResponse: IndividualService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: IndividualService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): IndividualService.WithRawResponse = withRawResponse
 
-    override fun update(params: SandboxIndividualUpdateParams, requestOptions: RequestOptions): IndividualUpdateResponse =
+    override fun update(
+        params: SandboxIndividualUpdateParams,
+        requestOptions: RequestOptions,
+    ): IndividualUpdateResponse =
         // put /sandbox/individual/{individual_id}
         withRawResponse().update(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : IndividualService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        IndividualService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val updateHandler: Handler<IndividualUpdateResponse> = jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<IndividualUpdateResponse> =
+            jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun update(params: SandboxIndividualUpdateParams, requestOptions: RequestOptions): HttpResponseFor<IndividualUpdateResponse> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.PUT)
-            .addPathSegments("sandbox", "individual", params.getPathParam(0))
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  updateHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override fun update(
+            params: SandboxIndividualUpdateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<IndividualUpdateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("sandbox", "individual", params.getPathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { updateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
     }
 }

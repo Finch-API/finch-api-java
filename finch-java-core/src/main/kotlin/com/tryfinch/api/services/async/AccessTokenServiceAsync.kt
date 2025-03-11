@@ -12,23 +12,23 @@ import java.util.concurrent.CompletableFuture
 interface AccessTokenServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Exchange the authorization code for an access token */
     fun create(params: AccessTokenCreateParams): CompletableFuture<CreateAccessTokenResponse> =
-        create(
-          params, RequestOptions.none()
-        )
+        create(params, RequestOptions.none())
 
     /** @see [create] */
-    fun create(params: AccessTokenCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<CreateAccessTokenResponse>
+    fun create(
+        params: AccessTokenCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<CreateAccessTokenResponse>
 
     /**
-     * A view of [AccessTokenServiceAsync] that provides access to raw HTTP responses
-     * for each method.
+     * A view of [AccessTokenServiceAsync] that provides access to raw HTTP responses for each
+     * method.
      */
     interface WithRawResponse {
 
@@ -37,13 +37,16 @@ interface AccessTokenServiceAsync {
          * [AccessTokenServiceAsync.create].
          */
         @MustBeClosed
-        fun create(params: AccessTokenCreateParams): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>> =
-            create(
-              params, RequestOptions.none()
-            )
+        fun create(
+            params: AccessTokenCreateParams
+        ): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>> =
+            create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(params: AccessTokenCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>>
+        fun create(
+            params: AccessTokenCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>>
     }
 }

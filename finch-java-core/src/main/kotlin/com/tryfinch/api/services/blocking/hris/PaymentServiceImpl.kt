@@ -18,54 +18,58 @@ import com.tryfinch.api.models.HrisPaymentListPage
 import com.tryfinch.api.models.HrisPaymentListParams
 import com.tryfinch.api.models.Payment
 
-class PaymentServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class PaymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    PaymentService {
 
-) : PaymentService {
-
-    private val withRawResponse: PaymentService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: PaymentService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): PaymentService.WithRawResponse = withRawResponse
 
-    override fun list(params: HrisPaymentListParams, requestOptions: RequestOptions): HrisPaymentListPage =
+    override fun list(
+        params: HrisPaymentListParams,
+        requestOptions: RequestOptions,
+    ): HrisPaymentListPage =
         // get /employer/payment
         withRawResponse().list(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : PaymentService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PaymentService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<List<Payment>> = jsonHandler<List<Payment>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<List<Payment>> =
+            jsonHandler<List<Payment>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun list(params: HrisPaymentListParams, requestOptions: RequestOptions): HttpResponseFor<HrisPaymentListPage> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.GET)
-            .addPathSegments("employer", "payment")
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  listHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.forEach { it.validate() }
-                  }
-              }
-              .let {
-                  HrisPaymentListPage.of(PaymentServiceImpl(clientOptions), params, HrisPaymentListPage.Response.builder()
-                      .items(it)
-                      .build())
-              }
-          }
+        override fun list(
+            params: HrisPaymentListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<HrisPaymentListPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "payment")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
+                        }
+                    }
+                    .let {
+                        HrisPaymentListPage.of(
+                            PaymentServiceImpl(clientOptions),
+                            params,
+                            HrisPaymentListPage.Response.builder().items(it).build(),
+                        )
+                    }
+            }
         }
     }
 }

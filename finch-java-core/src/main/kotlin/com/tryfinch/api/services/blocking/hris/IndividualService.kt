@@ -11,52 +11,59 @@ import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 interface IndividualService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Read individual data, excluding income and employment data */
-    fun retrieveMany(): HrisIndividualRetrieveManyPage = retrieveMany(HrisIndividualRetrieveManyParams.none())
+    fun retrieveMany(): HrisIndividualRetrieveManyPage =
+        retrieveMany(HrisIndividualRetrieveManyParams.none())
 
     /** @see [retrieveMany] */
-    fun retrieveMany(params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HrisIndividualRetrieveManyPage
+    fun retrieveMany(
+        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): HrisIndividualRetrieveManyPage
 
     /** @see [retrieveMany] */
-    fun retrieveMany(params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()): HrisIndividualRetrieveManyPage =
-        retrieveMany(
-          params, RequestOptions.none()
-        )
+    fun retrieveMany(
+        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
+    ): HrisIndividualRetrieveManyPage = retrieveMany(params, RequestOptions.none())
 
     /** @see [retrieveMany] */
-    fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPage = retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
+    fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPage =
+        retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
-    /**
-     * A view of [IndividualService] that provides access to raw HTTP responses for
-     * each method.
-     */
+    /** A view of [IndividualService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /employer/individual`, but is otherwise
-         * the same as [IndividualService.retrieveMany].
+         * Returns a raw HTTP response for `post /employer/individual`, but is otherwise the same as
+         * [IndividualService.retrieveMany].
          */
         @MustBeClosed
-        fun retrieveMany(): HttpResponseFor<HrisIndividualRetrieveManyPage> = retrieveMany(HrisIndividualRetrieveManyParams.none())
+        fun retrieveMany(): HttpResponseFor<HrisIndividualRetrieveManyPage> =
+            retrieveMany(HrisIndividualRetrieveManyParams.none())
 
         /** @see [retrieveMany] */
         @MustBeClosed
-        fun retrieveMany(params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<HrisIndividualRetrieveManyPage>
+        fun retrieveMany(
+            params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<HrisIndividualRetrieveManyPage>
 
         /** @see [retrieveMany] */
         @MustBeClosed
-        fun retrieveMany(params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()): HttpResponseFor<HrisIndividualRetrieveManyPage> =
-            retrieveMany(
-              params, RequestOptions.none()
-            )
+        fun retrieveMany(
+            params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
+        ): HttpResponseFor<HrisIndividualRetrieveManyPage> =
+            retrieveMany(params, RequestOptions.none())
 
         /** @see [retrieveMany] */
         @MustBeClosed
-        fun retrieveMany(requestOptions: RequestOptions): HttpResponseFor<HrisIndividualRetrieveManyPage> = retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
+        fun retrieveMany(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<HrisIndividualRetrieveManyPage> =
+            retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
     }
 }

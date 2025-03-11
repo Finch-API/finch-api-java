@@ -14,34 +14,40 @@ class DocumentServiceTest {
 
     @Test
     fun list() {
-      val client = FinchOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val documentService = client.hris().documents()
+        val client =
+            FinchOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val documentService = client.hris().documents()
 
-      val document = documentService.list(HrisDocumentListParams.builder()
-          .addIndividualId("string")
-          .limit(0L)
-          .offset(0L)
-          .addType(HrisDocumentListParams.Type.W4_2020)
-          .build())
+        val document =
+            documentService.list(
+                HrisDocumentListParams.builder()
+                    .addIndividualId("string")
+                    .limit(0L)
+                    .offset(0L)
+                    .addType(HrisDocumentListParams.Type.W4_2020)
+                    .build()
+            )
 
-      document.validate()
+        document.validate()
     }
 
     @Test
     fun retreive() {
-      val client = FinchOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val documentService = client.hris().documents()
+        val client =
+            FinchOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val documentService = client.hris().documents()
 
-      val response = documentService.retreive(HrisDocumentRetreiveParams.builder()
-          .documentId("document_id")
-          .build())
+        val response =
+            documentService.retreive(
+                HrisDocumentRetreiveParams.builder().documentId("document_id").build()
+            )
 
-      response.validate()
+        response.validate()
     }
 }

@@ -19,49 +19,56 @@ import com.tryfinch.api.models.IndividualUpdateResponse
 import com.tryfinch.api.models.SandboxIndividualUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class IndividualServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualServiceAsync {
 
-) : IndividualServiceAsync {
-
-    private val withRawResponse: IndividualServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: IndividualServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): IndividualServiceAsync.WithRawResponse = withRawResponse
 
-    override fun update(params: SandboxIndividualUpdateParams, requestOptions: RequestOptions): CompletableFuture<IndividualUpdateResponse> =
+    override fun update(
+        params: SandboxIndividualUpdateParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<IndividualUpdateResponse> =
         // put /sandbox/individual/{individual_id}
         withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : IndividualServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        IndividualServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val updateHandler: Handler<IndividualUpdateResponse> = jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<IndividualUpdateResponse> =
+            jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun update(params: SandboxIndividualUpdateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.PUT)
-            .addPathSegments("sandbox", "individual", params.getPathParam(0))
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  updateHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          } }
+        override fun update(
+            params: SandboxIndividualUpdateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("sandbox", "individual", params.getPathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { updateHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
         }
     }
 }

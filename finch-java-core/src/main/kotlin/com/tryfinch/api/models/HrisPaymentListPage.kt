@@ -21,11 +21,11 @@ import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /** Read payroll and contractor related payments by the company. */
-class HrisPaymentListPage private constructor(
+class HrisPaymentListPage
+private constructor(
     private val paymentsService: PaymentService,
     private val params: HrisPaymentListParams,
     private val response: Response,
-
 ) {
 
     fun response(): Response = response
@@ -33,27 +33,28 @@ class HrisPaymentListPage private constructor(
     fun items(): List<Payment> = response().items()
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is HrisPaymentListPage && paymentsService == other.paymentsService && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisPaymentListPage && paymentsService == other.paymentsService && params == other.params && response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(paymentsService, params, response) /* spotless:on */
 
-    override fun toString() = "HrisPaymentListPage{paymentsService=$paymentsService, params=$params, response=$response}"
+    override fun toString() =
+        "HrisPaymentListPage{paymentsService=$paymentsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-      return !items().isEmpty()
+        return !items().isEmpty()
     }
 
     fun getNextPageParams(): Optional<HrisPaymentListParams> {
-      return Optional.empty()
+        return Optional.empty()
     }
 
     fun getNextPage(): Optional<HrisPaymentListPage> {
-      return getNextPageParams().map { paymentsService.list(it) }
+        return getNextPageParams().map { paymentsService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -62,18 +63,16 @@ class HrisPaymentListPage private constructor(
 
         @JvmStatic
         fun of(paymentsService: PaymentService, params: HrisPaymentListParams, response: Response) =
-            HrisPaymentListPage(
-              paymentsService,
-              params,
-              response,
-            )
+            HrisPaymentListPage(paymentsService, params, response)
     }
 
     @NoAutoDetect
-    class Response @JsonCreator constructor(
+    class Response
+    @JsonCreator
+    constructor(
         @JsonProperty("items") private val items: JsonField<List<Payment>> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun items(): List<Payment> = items.getNullable("items") ?: listOf()
@@ -87,35 +86,34 @@ class HrisPaymentListPage private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Response =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                items().map { it.validate() }
-                validated = true
+        fun validate(): Response = apply {
+            if (validated) {
+                return@apply
             }
+
+            items().map { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
 
-        override fun toString() = "Response{items=$items, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Response{items=$items, additionalProperties=$additionalProperties}"
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [HrisPaymentListPage]. */
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -124,48 +122,39 @@ class HrisPaymentListPage private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(page: Response) =
-                apply {
-                    this.items = page.items
-                    this.additionalProperties.putAll(page.additionalProperties)
-                }
+            internal fun from(page: Response) = apply {
+                this.items = page.items
+                this.additionalProperties.putAll(page.additionalProperties)
+            }
 
             fun items(items: List<Payment>) = items(JsonField.of(items))
 
             fun items(items: JsonField<List<Payment>>) = apply { this.items = items }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    this.additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
 
-            fun build() =
-                Response(
-                  items, additionalProperties.toImmutable()
-                )
+            fun build() = Response(items, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisPaymentListPage,
+    class AutoPager(private val firstPage: HrisPaymentListPage) : Iterable<Payment> {
 
-    ) : Iterable<Payment> {
-
-        override fun iterator(): Iterator<Payment> =
-            iterator {
-                var page = firstPage
-                var index = 0
-                while (true) {
-                  while (index < page.items().size) {
+        override fun iterator(): Iterator<Payment> = iterator {
+            var page = firstPage
+            var index = 0
+            while (true) {
+                while (index < page.items().size) {
                     yield(page.items()[index++])
-                  }
-                  page = page.getNextPage().getOrNull() ?: break
-                  index = 0
                 }
+                page = page.getNextPage().getOrNull() ?: break
+                index = 0
             }
+        }
 
         fun stream(): Stream<Payment> {
-          return StreamSupport.stream(spliterator(), false)
+            return StreamSupport.stream(spliterator(), false)
         }
     }
 }

@@ -7,17 +7,13 @@ import com.tryfinch.api.services.blocking.connect.SessionService
 interface ConnectService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     fun sessions(): SessionService
 
-    /**
-     * A view of [ConnectService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [ConnectService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         fun sessions(): SessionService.WithRawResponse

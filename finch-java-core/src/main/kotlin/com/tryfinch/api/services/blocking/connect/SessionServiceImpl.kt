@@ -20,80 +20,87 @@ import com.tryfinch.api.models.ConnectSessionReauthenticateParams
 import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 
-class SessionServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class SessionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    SessionService {
 
-) : SessionService {
-
-    private val withRawResponse: SessionService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: SessionService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): SessionService.WithRawResponse = withRawResponse
 
-    override fun new_(params: ConnectSessionNewParams, requestOptions: RequestOptions): SessionNewResponse =
+    override fun new_(
+        params: ConnectSessionNewParams,
+        requestOptions: RequestOptions,
+    ): SessionNewResponse =
         // post /connect/sessions
         withRawResponse().new_(params, requestOptions).parse()
 
-    override fun reauthenticate(params: ConnectSessionReauthenticateParams, requestOptions: RequestOptions): SessionReauthenticateResponse =
+    override fun reauthenticate(
+        params: ConnectSessionReauthenticateParams,
+        requestOptions: RequestOptions,
+    ): SessionReauthenticateResponse =
         // post /connect/sessions/reauthenticate
         withRawResponse().reauthenticate(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : SessionService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        SessionService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val newHandler: Handler<SessionNewResponse> = jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val newHandler: Handler<SessionNewResponse> =
+            jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun new_(params: ConnectSessionNewParams, requestOptions: RequestOptions): HttpResponseFor<SessionNewResponse> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("connect", "sessions")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  newHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override fun new_(
+            params: ConnectSessionNewParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SessionNewResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("connect", "sessions")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { newHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
 
-        private val reauthenticateHandler: Handler<SessionReauthenticateResponse> = jsonHandler<SessionReauthenticateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val reauthenticateHandler: Handler<SessionReauthenticateResponse> =
+            jsonHandler<SessionReauthenticateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun reauthenticate(params: ConnectSessionReauthenticateParams, requestOptions: RequestOptions): HttpResponseFor<SessionReauthenticateResponse> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("connect", "sessions", "reauthenticate")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  reauthenticateHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override fun reauthenticate(
+            params: ConnectSessionReauthenticateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SessionReauthenticateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("connect", "sessions", "reauthenticate")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { reauthenticateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
     }
 }

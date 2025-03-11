@@ -13,16 +13,16 @@ class ManualServiceTest {
 
     @Test
     fun retrieve() {
-      val client = FinchOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val manualService = client.jobs().manual()
+        val client =
+            FinchOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val manualService = client.jobs().manual()
 
-      val manualAsyncJob = manualService.retrieve(JobManualRetrieveParams.builder()
-          .jobId("job_id")
-          .build())
+        val manualAsyncJob =
+            manualService.retrieve(JobManualRetrieveParams.builder().jobId("job_id").build())
 
-      manualAsyncJob.validate()
+        manualAsyncJob.validate()
     }
 }

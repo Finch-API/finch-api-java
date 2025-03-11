@@ -11,8 +11,7 @@ import com.tryfinch.api.models.SandboxPaymentCreateParams
 interface PaymentService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -20,43 +19,47 @@ interface PaymentService {
     fun create(): PaymentCreateResponse = create(SandboxPaymentCreateParams.none())
 
     /** @see [create] */
-    fun create(params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): PaymentCreateResponse
+    fun create(
+        params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PaymentCreateResponse
 
     /** @see [create] */
-    fun create(params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()): PaymentCreateResponse =
-        create(
-          params, RequestOptions.none()
-        )
+    fun create(
+        params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
+    ): PaymentCreateResponse = create(params, RequestOptions.none())
 
     /** @see [create] */
-    fun create(requestOptions: RequestOptions): PaymentCreateResponse = create(SandboxPaymentCreateParams.none(), requestOptions)
+    fun create(requestOptions: RequestOptions): PaymentCreateResponse =
+        create(SandboxPaymentCreateParams.none(), requestOptions)
 
-    /**
-     * A view of [PaymentService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [PaymentService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /sandbox/payment`, but is otherwise the
-         * same as [PaymentService.create].
+         * Returns a raw HTTP response for `post /sandbox/payment`, but is otherwise the same as
+         * [PaymentService.create].
          */
         @MustBeClosed
-        fun create(): HttpResponseFor<PaymentCreateResponse> = create(SandboxPaymentCreateParams.none())
+        fun create(): HttpResponseFor<PaymentCreateResponse> =
+            create(SandboxPaymentCreateParams.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<PaymentCreateResponse>
+        fun create(
+            params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PaymentCreateResponse>
 
         /** @see [create] */
         @MustBeClosed
-        fun create(params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()): HttpResponseFor<PaymentCreateResponse> =
-            create(
-              params, RequestOptions.none()
-            )
+        fun create(
+            params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
+        ): HttpResponseFor<PaymentCreateResponse> = create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(requestOptions: RequestOptions): HttpResponseFor<PaymentCreateResponse> = create(SandboxPaymentCreateParams.none(), requestOptions)
+        fun create(requestOptions: RequestOptions): HttpResponseFor<PaymentCreateResponse> =
+            create(SandboxPaymentCreateParams.none(), requestOptions)
     }
 }

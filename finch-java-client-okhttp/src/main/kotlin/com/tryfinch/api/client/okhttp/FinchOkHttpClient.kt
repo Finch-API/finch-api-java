@@ -20,11 +20,9 @@ class FinchOkHttpClient private constructor() {
     companion object {
 
         /** Returns a mutable builder for constructing an instance of [FinchOkHttpClient]. */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
 
-        @JvmStatic
-        fun fromEnv(): FinchClient = builder().fromEnv().build()
+        @JvmStatic fun fromEnv(): FinchClient = builder().fromEnv().build()
     }
 
     /** A builder for [FinchOkHttpClient]. */
@@ -35,163 +33,99 @@ class FinchOkHttpClient private constructor() {
         private var timeout: Timeout = Timeout.default()
         private var proxy: Proxy? = null
 
-        fun baseUrl(baseUrl: String) =
-            apply {
-                clientOptions.baseUrl(baseUrl)
-                this.baseUrl = baseUrl
-            }
+        fun baseUrl(baseUrl: String) = apply {
+            clientOptions.baseUrl(baseUrl)
+            this.baseUrl = baseUrl
+        }
 
-        fun jsonMapper(jsonMapper: JsonMapper) =
-            apply {
-                clientOptions.jsonMapper(jsonMapper)
-            }
+        fun jsonMapper(jsonMapper: JsonMapper) = apply { clientOptions.jsonMapper(jsonMapper) }
 
-        fun clock(clock: Clock) =
-            apply {
-                clientOptions.clock(clock)
-            }
+        fun clock(clock: Clock) = apply { clientOptions.clock(clock) }
 
-        fun headers(headers: Headers) =
-            apply {
-                clientOptions.headers(headers)
-            }
+        fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 
-        fun headers(headers: Map<String, Iterable<String>>) =
-            apply {
-                clientOptions.headers(headers)
-            }
+        fun headers(headers: Map<String, Iterable<String>>) = apply {
+            clientOptions.headers(headers)
+        }
 
-        fun putHeader(name: String, value: String) =
-            apply {
-                clientOptions.putHeader(
-                  name, value
-                )
-            }
+        fun putHeader(name: String, value: String) = apply { clientOptions.putHeader(name, value) }
 
-        fun putHeaders(name: String, values: Iterable<String>) =
-            apply {
-                clientOptions.putHeaders(
-                  name, values
-                )
-            }
+        fun putHeaders(name: String, values: Iterable<String>) = apply {
+            clientOptions.putHeaders(name, values)
+        }
 
-        fun putAllHeaders(headers: Headers) =
-            apply {
-                clientOptions.putAllHeaders(headers)
-            }
+        fun putAllHeaders(headers: Headers) = apply { clientOptions.putAllHeaders(headers) }
 
-        fun putAllHeaders(headers: Map<String, Iterable<String>>) =
-            apply {
-                clientOptions.putAllHeaders(headers)
-            }
+        fun putAllHeaders(headers: Map<String, Iterable<String>>) = apply {
+            clientOptions.putAllHeaders(headers)
+        }
 
-        fun replaceHeaders(name: String, value: String) =
-            apply {
-                clientOptions.replaceHeaders(
-                  name, value
-                )
-            }
+        fun replaceHeaders(name: String, value: String) = apply {
+            clientOptions.replaceHeaders(name, value)
+        }
 
-        fun replaceHeaders(name: String, values: Iterable<String>) =
-            apply {
-                clientOptions.replaceHeaders(
-                  name, values
-                )
-            }
+        fun replaceHeaders(name: String, values: Iterable<String>) = apply {
+            clientOptions.replaceHeaders(name, values)
+        }
 
-        fun replaceAllHeaders(headers: Headers) =
-            apply {
-                clientOptions.replaceAllHeaders(headers)
-            }
+        fun replaceAllHeaders(headers: Headers) = apply { clientOptions.replaceAllHeaders(headers) }
 
-        fun replaceAllHeaders(headers: Map<String, Iterable<String>>) =
-            apply {
-                clientOptions.replaceAllHeaders(headers)
-            }
+        fun replaceAllHeaders(headers: Map<String, Iterable<String>>) = apply {
+            clientOptions.replaceAllHeaders(headers)
+        }
 
-        fun removeHeaders(name: String) =
-            apply {
-                clientOptions.removeHeaders(name)
-            }
+        fun removeHeaders(name: String) = apply { clientOptions.removeHeaders(name) }
 
-        fun removeAllHeaders(names: Set<String>) =
-            apply {
-                clientOptions.removeAllHeaders(names)
-            }
+        fun removeAllHeaders(names: Set<String>) = apply { clientOptions.removeAllHeaders(names) }
 
-        fun queryParams(queryParams: QueryParams) =
-            apply {
-                clientOptions.queryParams(queryParams)
-            }
+        fun queryParams(queryParams: QueryParams) = apply { clientOptions.queryParams(queryParams) }
 
-        fun queryParams(queryParams: Map<String, Iterable<String>>) =
-            apply {
-                clientOptions.queryParams(queryParams)
-            }
+        fun queryParams(queryParams: Map<String, Iterable<String>>) = apply {
+            clientOptions.queryParams(queryParams)
+        }
 
-        fun putQueryParam(key: String, value: String) =
-            apply {
-                clientOptions.putQueryParam(
-                  key, value
-                )
-            }
+        fun putQueryParam(key: String, value: String) = apply {
+            clientOptions.putQueryParam(key, value)
+        }
 
-        fun putQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                clientOptions.putQueryParams(
-                  key, values
-                )
-            }
+        fun putQueryParams(key: String, values: Iterable<String>) = apply {
+            clientOptions.putQueryParams(key, values)
+        }
 
-        fun putAllQueryParams(queryParams: QueryParams) =
-            apply {
-                clientOptions.putAllQueryParams(queryParams)
-            }
+        fun putAllQueryParams(queryParams: QueryParams) = apply {
+            clientOptions.putAllQueryParams(queryParams)
+        }
 
-        fun putAllQueryParams(queryParams: Map<String, Iterable<String>>) =
-            apply {
-                clientOptions.putAllQueryParams(queryParams)
-            }
+        fun putAllQueryParams(queryParams: Map<String, Iterable<String>>) = apply {
+            clientOptions.putAllQueryParams(queryParams)
+        }
 
-        fun replaceQueryParams(key: String, value: String) =
-            apply {
-                clientOptions.replaceQueryParams(
-                  key, value
-                )
-            }
+        fun replaceQueryParams(key: String, value: String) = apply {
+            clientOptions.replaceQueryParams(key, value)
+        }
 
-        fun replaceQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                clientOptions.replaceQueryParams(
-                  key, values
-                )
-            }
+        fun replaceQueryParams(key: String, values: Iterable<String>) = apply {
+            clientOptions.replaceQueryParams(key, values)
+        }
 
-        fun replaceAllQueryParams(queryParams: QueryParams) =
-            apply {
-                clientOptions.replaceAllQueryParams(queryParams)
-            }
+        fun replaceAllQueryParams(queryParams: QueryParams) = apply {
+            clientOptions.replaceAllQueryParams(queryParams)
+        }
 
-        fun replaceAllQueryParams(queryParams: Map<String, Iterable<String>>) =
-            apply {
-                clientOptions.replaceAllQueryParams(queryParams)
-            }
+        fun replaceAllQueryParams(queryParams: Map<String, Iterable<String>>) = apply {
+            clientOptions.replaceAllQueryParams(queryParams)
+        }
 
-        fun removeQueryParams(key: String) =
-            apply {
-                clientOptions.removeQueryParams(key)
-            }
+        fun removeQueryParams(key: String) = apply { clientOptions.removeQueryParams(key) }
 
-        fun removeAllQueryParams(keys: Set<String>) =
-            apply {
-                clientOptions.removeAllQueryParams(keys)
-            }
+        fun removeAllQueryParams(keys: Set<String>) = apply {
+            clientOptions.removeAllQueryParams(keys)
+        }
 
-        fun timeout(timeout: Timeout) =
-            apply {
-                clientOptions.timeout(timeout)
-                this.timeout = timeout
-            }
+        fun timeout(timeout: Timeout) = apply {
+            clientOptions.timeout(timeout)
+            this.timeout = timeout
+        }
 
         /**
          * Sets the maximum time allowed for a complete HTTP call, not including retries.
@@ -202,61 +136,46 @@ class FinchOkHttpClient private constructor() {
          */
         fun timeout(timeout: Duration) = timeout(Timeout.builder().request(timeout).build())
 
-        fun maxRetries(maxRetries: Int) =
-            apply {
-                clientOptions.maxRetries(maxRetries)
-            }
+        fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
 
-        fun proxy(proxy: Proxy) =
-            apply {
-                this.proxy = proxy
-            }
+        fun proxy(proxy: Proxy) = apply { this.proxy = proxy }
 
-        fun responseValidation(responseValidation: Boolean) =
-            apply {
-                clientOptions.responseValidation(responseValidation)
-            }
+        fun responseValidation(responseValidation: Boolean) = apply {
+            clientOptions.responseValidation(responseValidation)
+        }
 
-        fun accessToken(accessToken: String?) =
-            apply {
-                clientOptions.accessToken(accessToken)
-            }
+        fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
 
         fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.getOrNull())
 
-        fun clientId(clientId: String?) =
-            apply {
-                clientOptions.clientId(clientId)
-            }
+        fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
 
         fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
 
-        fun clientSecret(clientSecret: String?) =
-            apply {
-                clientOptions.clientSecret(clientSecret)
-            }
+        fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
 
         fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
 
-        fun webhookSecret(webhookSecret: String?) =
-            apply {
-                clientOptions.webhookSecret(webhookSecret)
-            }
+        fun webhookSecret(webhookSecret: String?) = apply {
+            clientOptions.webhookSecret(webhookSecret)
+        }
 
-        fun webhookSecret(webhookSecret: Optional<String>) = webhookSecret(webhookSecret.getOrNull())
+        fun webhookSecret(webhookSecret: Optional<String>) =
+            webhookSecret(webhookSecret.getOrNull())
 
-        fun fromEnv() =
-            apply {
-                clientOptions.fromEnv()
-            }
+        fun fromEnv() = apply { clientOptions.fromEnv() }
 
         fun build(): FinchClient =
-            FinchClientImpl(clientOptions
-                .httpClient(OkHttpClient.builder()
-                    .baseUrl(baseUrl)
-                    .timeout(timeout)
-                    .proxy(proxy)
-                    .build())
-                .build())
+            FinchClientImpl(
+                clientOptions
+                    .httpClient(
+                        OkHttpClient.builder()
+                            .baseUrl(baseUrl)
+                            .timeout(timeout)
+                            .proxy(proxy)
+                            .build()
+                    )
+                    .build()
+            )
     }
 }

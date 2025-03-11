@@ -13,19 +13,25 @@ class EmploymentServiceAsyncTest {
 
     @Test
     fun retrieveMany() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val employmentServiceAsync = client.hris().employments()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val employmentServiceAsync = client.hris().employments()
 
-      val pageFuture = employmentServiceAsync.retrieveMany(HrisEmploymentRetrieveManyParams.builder()
-          .addRequest(HrisEmploymentRetrieveManyParams.Request.builder()
-              .individualId("individual_id")
-              .build())
-          .build())
+        val pageFuture =
+            employmentServiceAsync.retrieveMany(
+                HrisEmploymentRetrieveManyParams.builder()
+                    .addRequest(
+                        HrisEmploymentRetrieveManyParams.Request.builder()
+                            .individualId("individual_id")
+                            .build()
+                    )
+                    .build()
+            )
 
-      val page = pageFuture.get()
-      page.response().validate()
+        val page = pageFuture.get()
+        page.response().validate()
     }
 }

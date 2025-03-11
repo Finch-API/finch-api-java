@@ -18,53 +18,60 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyPage
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 
-class PayStatementServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class PayStatementServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    PayStatementService {
 
-) : PayStatementService {
-
-    private val withRawResponse: PayStatementService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: PayStatementService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): PayStatementService.WithRawResponse = withRawResponse
 
-    override fun retrieveMany(params: HrisPayStatementRetrieveManyParams, requestOptions: RequestOptions): HrisPayStatementRetrieveManyPage =
+    override fun retrieveMany(
+        params: HrisPayStatementRetrieveManyParams,
+        requestOptions: RequestOptions,
+    ): HrisPayStatementRetrieveManyPage =
         // post /employer/pay-statement
         withRawResponse().retrieveMany(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : PayStatementService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PayStatementService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPage.Response> = jsonHandler<HrisPayStatementRetrieveManyPage.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPage.Response> =
+            jsonHandler<HrisPayStatementRetrieveManyPage.Response>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun retrieveMany(params: HrisPayStatementRetrieveManyParams, requestOptions: RequestOptions): HttpResponseFor<HrisPayStatementRetrieveManyPage> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("employer", "pay-statement")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  retrieveManyHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-              .let {
-                  HrisPayStatementRetrieveManyPage.of(PayStatementServiceImpl(clientOptions), params, it)
-              }
-          }
+        override fun retrieveMany(
+            params: HrisPayStatementRetrieveManyParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<HrisPayStatementRetrieveManyPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("employer", "pay-statement")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { retrieveManyHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+                    .let {
+                        HrisPayStatementRetrieveManyPage.of(
+                            PayStatementServiceImpl(clientOptions),
+                            params,
+                            it,
+                        )
+                    }
+            }
         }
     }
 }

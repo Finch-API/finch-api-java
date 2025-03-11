@@ -25,20 +25,17 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Create a new Connect session for reauthenticating an existing connection */
-class ConnectSessionReauthenticateParams private constructor(
+class ConnectSessionReauthenticateParams
+private constructor(
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-
 ) : Params {
 
     /** The ID of the existing connection to reauthenticate */
     fun connectionId(): String = body.connectionId()
 
-    /**
-     * The number of minutes until the session expires (defaults to 43,200, which is 30
-     * days)
-     */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun minutesToExpire(): Optional<Long> = body.minutesToExpire()
 
     /** The products to request access to (optional for reauthentication) */
@@ -50,10 +47,7 @@ class ConnectSessionReauthenticateParams private constructor(
     /** The ID of the existing connection to reauthenticate */
     fun _connectionId(): JsonField<String> = body._connectionId()
 
-    /**
-     * The number of minutes until the session expires (defaults to 43,200, which is 30
-     * days)
-     */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun _minutesToExpire(): JsonField<Long> = body._minutesToExpire()
 
     /** The products to request access to (optional for reauthentication) */
@@ -68,37 +62,48 @@ class ConnectSessionReauthenticateParams private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun _body(): Body = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class Body @JsonCreator private constructor(
-        @JsonProperty("connection_id") @ExcludeMissing private val connectionId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("minutes_to_expire") @ExcludeMissing private val minutesToExpire: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("products") @ExcludeMissing private val products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
-        @JsonProperty("redirect_uri") @ExcludeMissing private val redirectUri: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+    class Body
+    @JsonCreator
+    private constructor(
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        private val connectionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("minutes_to_expire")
+        @ExcludeMissing
+        private val minutesToExpire: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        private val products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
+        @JsonProperty("redirect_uri")
+        @ExcludeMissing
+        private val redirectUri: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The ID of the existing connection to reauthenticate */
         fun connectionId(): String = connectionId.getRequired("connection_id")
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        fun minutesToExpire(): Optional<Long> = Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
+        fun minutesToExpire(): Optional<Long> =
+            Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
 
         /** The products to request access to (optional for reauthentication) */
-        fun products(): Optional<List<ConnectProducts>> = Optional.ofNullable(products.getNullable("products"))
+        fun products(): Optional<List<ConnectProducts>> =
+            Optional.ofNullable(products.getNullable("products"))
 
         /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(): Optional<String> = Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
+        fun redirectUri(): Optional<String> =
+            Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
 
         /** The ID of the existing connection to reauthenticate */
         @JsonProperty("connection_id")
@@ -106,8 +111,7 @@ class ConnectSessionReauthenticateParams private constructor(
         fun _connectionId(): JsonField<String> = connectionId
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         @JsonProperty("minutes_to_expire")
         @ExcludeMissing
@@ -129,18 +133,17 @@ class ConnectSessionReauthenticateParams private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                connectionId()
-                minutesToExpire()
-                products()
-                redirectUri()
-                validated = true
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
             }
+
+            connectionId()
+            minutesToExpire()
+            products()
+            redirectUri()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -150,13 +153,11 @@ class ConnectSessionReauthenticateParams private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             *
              * ```java
              * .connectionId()
              * ```
              */
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Body]. */
@@ -169,29 +170,28 @@ class ConnectSessionReauthenticateParams private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) =
-                apply {
-                    connectionId = body.connectionId
-                    minutesToExpire = body.minutesToExpire
-                    products = body.products.map { it.toMutableList() }
-                    redirectUri = body.redirectUri
-                    additionalProperties = body.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                connectionId = body.connectionId
+                minutesToExpire = body.minutesToExpire
+                products = body.products.map { it.toMutableList() }
+                redirectUri = body.redirectUri
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             /** The ID of the existing connection to reauthenticate */
             fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
             /** The ID of the existing connection to reauthenticate */
-            fun connectionId(connectionId: JsonField<String>) =
-                apply {
-                    this.connectionId = connectionId
-                }
+            fun connectionId(connectionId: JsonField<String>) = apply {
+                this.connectionId = connectionId
+            }
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Long?) = minutesToExpire(JsonField.ofNullable(minutesToExpire))
+            fun minutesToExpire(minutesToExpire: Long?) =
+                minutesToExpire(JsonField.ofNullable(minutesToExpire))
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
@@ -203,36 +203,36 @@ class ConnectSessionReauthenticateParams private constructor(
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Optional<Long>) = minutesToExpire(minutesToExpire.getOrNull())
+            fun minutesToExpire(minutesToExpire: Optional<Long>) =
+                minutesToExpire(minutesToExpire.getOrNull())
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            fun minutesToExpire(minutesToExpire: JsonField<Long>) =
-                apply {
-                    this.minutesToExpire = minutesToExpire
-                }
+            fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
+                this.minutesToExpire = minutesToExpire
+            }
 
             /** The products to request access to (optional for reauthentication) */
-            fun products(products: List<ConnectProducts>?) = products(JsonField.ofNullable(products))
+            fun products(products: List<ConnectProducts>?) =
+                products(JsonField.ofNullable(products))
 
             /** The products to request access to (optional for reauthentication) */
             fun products(products: Optional<List<ConnectProducts>>) = products(products.getOrNull())
 
             /** The products to request access to (optional for reauthentication) */
-            fun products(products: JsonField<List<ConnectProducts>>) =
-                apply {
-                    this.products = products.map { it.toMutableList() }
-                }
+            fun products(products: JsonField<List<ConnectProducts>>) = apply {
+                this.products = products.map { it.toMutableList() }
+            }
 
             /** The products to request access to (optional for reauthentication) */
-            fun addProduct(product: ConnectProducts) =
-                apply {
-                    products = (products ?: JsonField.of(mutableListOf())).also {
+            fun addProduct(product: ConnectProducts) = apply {
+                products =
+                    (products ?: JsonField.of(mutableListOf())).also {
                         checkKnown("products", it).add(product)
                     }
-                }
+            }
 
             /** The URI to redirect to after the Connect flow is completed */
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
@@ -241,55 +241,45 @@ class ConnectSessionReauthenticateParams private constructor(
             fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
             /** The URI to redirect to after the Connect flow is completed */
-            fun redirectUri(redirectUri: JsonField<String>) =
-                apply {
-                    this.redirectUri = redirectUri
-                }
+            fun redirectUri(redirectUri: JsonField<String>) = apply {
+                this.redirectUri = redirectUri
+            }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.putAll(additionalProperties)
-                }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-            fun removeAdditionalProperty(key: String) =
-                apply {
-                    additionalProperties.remove(key)
-                }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) =
-                apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
             fun build(): Body =
                 Body(
-                  checkRequired(
-                    "connectionId", connectionId
-                  ),
-                  minutesToExpire,
-                  (products ?: JsonMissing.of()).map { it.toImmutable() },
-                  redirectUri,
-                  additionalProperties.toImmutable(),
+                    checkRequired("connectionId", connectionId),
+                    minutesToExpire,
+                    (products ?: JsonMissing.of()).map { it.toImmutable() },
+                    redirectUri,
+                    additionalProperties.toImmutable(),
                 )
         }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Body && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -298,7 +288,8 @@ class ConnectSessionReauthenticateParams private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() = "Body{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Body{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -310,13 +301,11 @@ class ConnectSessionReauthenticateParams private constructor(
          * [ConnectSessionReauthenticateParams].
          *
          * The following fields are required:
-         *
          * ```java
          * .connectionId()
          * ```
          */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [ConnectSessionReauthenticateParams]. */
@@ -332,262 +321,202 @@ class ConnectSessionReauthenticateParams private constructor(
             apply {
                 body = connectSessionReauthenticateParams.body.toBuilder()
                 additionalHeaders = connectSessionReauthenticateParams.additionalHeaders.toBuilder()
-                additionalQueryParams = connectSessionReauthenticateParams.additionalQueryParams.toBuilder()
+                additionalQueryParams =
+                    connectSessionReauthenticateParams.additionalQueryParams.toBuilder()
             }
 
         /** The ID of the existing connection to reauthenticate */
-        fun connectionId(connectionId: String) =
-            apply {
-                body.connectionId(connectionId)
-            }
+        fun connectionId(connectionId: String) = apply { body.connectionId(connectionId) }
 
         /** The ID of the existing connection to reauthenticate */
-        fun connectionId(connectionId: JsonField<String>) =
-            apply {
-                body.connectionId(connectionId)
-            }
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            body.connectionId(connectionId)
+        }
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        fun minutesToExpire(minutesToExpire: Long?) =
-            apply {
-                body.minutesToExpire(minutesToExpire)
-            }
+        fun minutesToExpire(minutesToExpire: Long?) = apply {
+            body.minutesToExpire(minutesToExpire)
+        }
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        fun minutesToExpire(minutesToExpire: Optional<Long>) = minutesToExpire(minutesToExpire.getOrNull())
+        fun minutesToExpire(minutesToExpire: Optional<Long>) =
+            minutesToExpire(minutesToExpire.getOrNull())
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        fun minutesToExpire(minutesToExpire: JsonField<Long>) =
-            apply {
-                body.minutesToExpire(minutesToExpire)
-            }
+        fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
+            body.minutesToExpire(minutesToExpire)
+        }
 
         /** The products to request access to (optional for reauthentication) */
-        fun products(products: List<ConnectProducts>?) =
-            apply {
-                body.products(products)
-            }
+        fun products(products: List<ConnectProducts>?) = apply { body.products(products) }
 
         /** The products to request access to (optional for reauthentication) */
         fun products(products: Optional<List<ConnectProducts>>) = products(products.getOrNull())
 
         /** The products to request access to (optional for reauthentication) */
-        fun products(products: JsonField<List<ConnectProducts>>) =
-            apply {
-                body.products(products)
-            }
+        fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
 
         /** The products to request access to (optional for reauthentication) */
-        fun addProduct(product: ConnectProducts) =
-            apply {
-                body.addProduct(product)
-            }
+        fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
         /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(redirectUri: String?) =
-            apply {
-                body.redirectUri(redirectUri)
-            }
+        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
         /** The URI to redirect to after the Connect flow is completed */
         fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
         /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(redirectUri: JsonField<String>) =
-            apply {
-                body.redirectUri(redirectUri)
-            }
+        fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.additionalProperties(additionalBodyProperties)
-            }
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
 
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) =
-            apply {
-                body.putAdditionalProperty(
-                  key, value
-                )
-            }
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) =
-            apply {
-                body.removeAdditionalProperty(key)
-            }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) =
-            apply {
-                body.removeAllAdditionalProperties(keys)
-            }
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
-        fun additionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.clear()
-                putAllAdditionalHeaders(additionalHeaders)
-            }
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
 
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.clear()
-                putAllAdditionalHeaders(additionalHeaders)
-            }
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
 
-        fun putAdditionalHeader(name: String, value: String) =
-            apply {
-                additionalHeaders.put(name, value)
-            }
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
 
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) =
-            apply {
-                additionalHeaders.put(name, values)
-            }
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.putAll(additionalHeaders)
-            }
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.putAll(additionalHeaders)
-            }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
 
-        fun replaceAdditionalHeaders(name: String, value: String) =
-            apply {
-                additionalHeaders.replace(name, value)
-            }
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
 
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) =
-            apply {
-                additionalHeaders.replace(name, values)
-            }
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.replaceAll(additionalHeaders)
-            }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.replaceAll(additionalHeaders)
-            }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
 
-        fun removeAdditionalHeaders(name: String) =
-            apply {
-                additionalHeaders.remove(name)
-            }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
-        fun removeAllAdditionalHeaders(names: Set<String>) =
-            apply {
-                additionalHeaders.removeAll(names)
-            }
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
 
-        fun additionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.clear()
-                putAllAdditionalQueryParams(additionalQueryParams)
-            }
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.clear()
-                putAllAdditionalQueryParams(additionalQueryParams)
-            }
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
 
-        fun putAdditionalQueryParam(key: String, value: String) =
-            apply {
-                additionalQueryParams.put(key, value)
-            }
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
 
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                additionalQueryParams.put(key, values)
-            }
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
 
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.putAll(additionalQueryParams)
-            }
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
 
         fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.putAll(additionalQueryParams)
             }
 
-        fun replaceAdditionalQueryParams(key: String, value: String) =
-            apply {
-                additionalQueryParams.replace(key, value)
-            }
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
 
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                additionalQueryParams.replace(key, values)
-            }
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
 
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.replaceAll(additionalQueryParams)
-            }
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
 
         fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) =
-            apply {
-                additionalQueryParams.remove(key)
-            }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
-        fun removeAllAdditionalQueryParams(keys: Set<String>) =
-            apply {
-                additionalQueryParams.removeAll(keys)
-            }
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
 
         fun build(): ConnectSessionReauthenticateParams =
             ConnectSessionReauthenticateParams(
-              body.build(),
-              additionalHeaders.build(),
-              additionalQueryParams.build(),
+                body.build(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
             )
     }
 
     /** The Finch products that can be requested during the Connect flow. */
-    class ConnectProducts @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -623,16 +552,12 @@ class ConnectSessionReauthenticateParams private constructor(
         }
 
         /**
-         * An enum containing [ConnectProducts]'s known values, as well as an [_UNKNOWN]
-         * member.
+         * An enum containing [ConnectProducts]'s known values, as well as an [_UNKNOWN] member.
          *
-         * An instance of [ConnectProducts] can contain an unknown value in a couple of
-         * cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * An instance of [ConnectProducts] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -645,18 +570,18 @@ class ConnectSessionReauthenticateParams private constructor(
             BENEFITS,
             SSN,
             /**
-             * An enum member indicating that [ConnectProducts] was instantiated with an
-             * unknown value.
+             * An enum member indicating that [ConnectProducts] was instantiated with an unknown
+             * value.
              */
             _UNKNOWN,
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -674,11 +599,10 @@ class ConnectSessionReauthenticateParams private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws FinchInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
          */
         fun known(): Known =
             when (this) {
@@ -696,20 +620,21 @@ class ConnectSessionReauthenticateParams private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws FinchInvalidDataException if this class instance's value does not have
-         * the expected primitive type.
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is ConnectProducts && value == other.value /* spotless:on */
+            return /* spotless:off */ other is ConnectProducts && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -718,14 +643,15 @@ class ConnectSessionReauthenticateParams private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is ConnectSessionReauthenticateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ConnectSessionReauthenticateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
-    override fun toString() = "ConnectSessionReauthenticateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+    override fun toString() =
+        "ConnectSessionReauthenticateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

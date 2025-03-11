@@ -20,12 +20,15 @@ import java.util.Objects
 import java.util.Optional
 
 @NoAutoDetect
-class PayGroupListResponse @JsonCreator private constructor(
+class PayGroupListResponse
+@JsonCreator
+private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
     @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("pay_frequencies") @ExcludeMissing private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
+    @JsonProperty("pay_frequencies")
+    @ExcludeMissing
+    private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     /** Finch id (uuidv4) for the pay group */
@@ -35,17 +38,14 @@ class PayGroupListResponse @JsonCreator private constructor(
     fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
     /** List of pay frequencies associated with this pay group */
-    fun payFrequencies(): Optional<List<PayFrequency>> = Optional.ofNullable(payFrequencies.getNullable("pay_frequencies"))
+    fun payFrequencies(): Optional<List<PayFrequency>> =
+        Optional.ofNullable(payFrequencies.getNullable("pay_frequencies"))
 
     /** Finch id (uuidv4) for the pay group */
-    @JsonProperty("id")
-    @ExcludeMissing
-    fun _id(): JsonField<String> = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** Name of the pay group */
-    @JsonProperty("name")
-    @ExcludeMissing
-    fun _name(): JsonField<String> = name
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /** List of pay frequencies associated with this pay group */
     @JsonProperty("pay_frequencies")
@@ -58,28 +58,23 @@ class PayGroupListResponse @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): PayGroupListResponse =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            id()
-            name()
-            payFrequencies()
-            validated = true
+    fun validate(): PayGroupListResponse = apply {
+        if (validated) {
+            return@apply
         }
+
+        id()
+        name()
+        payFrequencies()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of
-         * [PayGroupListResponse].
-         */
-        @JvmStatic
-        fun builder() = Builder()
+        /** Returns a mutable builder for constructing an instance of [PayGroupListResponse]. */
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [PayGroupListResponse]. */
@@ -91,99 +86,82 @@ class PayGroupListResponse @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(payGroupListResponse: PayGroupListResponse) =
-            apply {
-                id = payGroupListResponse.id
-                name = payGroupListResponse.name
-                payFrequencies = payGroupListResponse.payFrequencies.map { it.toMutableList() }
-                additionalProperties = payGroupListResponse.additionalProperties.toMutableMap()
-            }
+        internal fun from(payGroupListResponse: PayGroupListResponse) = apply {
+            id = payGroupListResponse.id
+            name = payGroupListResponse.name
+            payFrequencies = payGroupListResponse.payFrequencies.map { it.toMutableList() }
+            additionalProperties = payGroupListResponse.additionalProperties.toMutableMap()
+        }
 
         /** Finch id (uuidv4) for the pay group */
         fun id(id: String) = id(JsonField.of(id))
 
         /** Finch id (uuidv4) for the pay group */
-        fun id(id: JsonField<String>) =
-            apply {
-                this.id = id
-            }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Name of the pay group */
         fun name(name: String) = name(JsonField.of(name))
 
         /** Name of the pay group */
-        fun name(name: JsonField<String>) =
-            apply {
-                this.name = name
-            }
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** List of pay frequencies associated with this pay group */
-        fun payFrequencies(payFrequencies: List<PayFrequency>) = payFrequencies(JsonField.of(payFrequencies))
+        fun payFrequencies(payFrequencies: List<PayFrequency>) =
+            payFrequencies(JsonField.of(payFrequencies))
 
         /** List of pay frequencies associated with this pay group */
-        fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) =
-            apply {
-                this.payFrequencies = payFrequencies.map { it.toMutableList() }
-            }
+        fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
+            this.payFrequencies = payFrequencies.map { it.toMutableList() }
+        }
 
         /** List of pay frequencies associated with this pay group */
-        fun addPayFrequency(payFrequency: PayFrequency) =
-            apply {
-                payFrequencies = (payFrequencies ?: JsonField.of(mutableListOf())).also {
+        fun addPayFrequency(payFrequency: PayFrequency) = apply {
+            payFrequencies =
+                (payFrequencies ?: JsonField.of(mutableListOf())).also {
                     checkKnown("payFrequencies", it).add(payFrequency)
                 }
-            }
+        }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
         fun build(): PayGroupListResponse =
             PayGroupListResponse(
-              id,
-              name,
-              (payFrequencies ?: JsonMissing.of()).map { it.toImmutable() },
-              additionalProperties.toImmutable(),
+                id,
+                name,
+                (payFrequencies ?: JsonMissing.of()).map { it.toImmutable() },
+                additionalProperties.toImmutable(),
             )
     }
 
-    class PayFrequency @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class PayFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -222,15 +200,12 @@ class PayGroupListResponse @JsonCreator private constructor(
         }
 
         /**
-         * An enum containing [PayFrequency]'s known values, as well as an [_UNKNOWN]
-         * member.
+         * An enum containing [PayFrequency]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [PayFrequency] can contain an unknown value in a couple of cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -244,18 +219,17 @@ class PayGroupListResponse @JsonCreator private constructor(
             DAILY,
             OTHER,
             /**
-             * An enum member indicating that [PayFrequency] was instantiated with an unknown
-             * value.
+             * An enum member indicating that [PayFrequency] was instantiated with an unknown value.
              */
             _UNKNOWN,
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -274,11 +248,10 @@ class PayGroupListResponse @JsonCreator private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws FinchInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
          */
         fun known(): Known =
             when (this) {
@@ -297,20 +270,21 @@ class PayGroupListResponse @JsonCreator private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws FinchInvalidDataException if this class instance's value does not have
-         * the expected primitive type.
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is PayFrequency && value == other.value /* spotless:on */
+            return /* spotless:off */ other is PayFrequency && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -319,11 +293,11 @@ class PayGroupListResponse @JsonCreator private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is PayGroupListResponse && id == other.id && name == other.name && payFrequencies == other.payFrequencies && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is PayGroupListResponse && id == other.id && name == other.name && payFrequencies == other.payFrequencies && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -332,5 +306,6 @@ class PayGroupListResponse @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "PayGroupListResponse{id=$id, name=$name, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "PayGroupListResponse{id=$id, name=$name, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
 }

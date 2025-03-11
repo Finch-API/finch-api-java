@@ -15,57 +15,67 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisIndividualRetrieveManyPage
 import com.tryfinch.api.models.HrisIndividualRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
-class IndividualServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualServiceAsync {
 
-) : IndividualServiceAsync {
-
-    private val withRawResponse: IndividualServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: IndividualServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): IndividualServiceAsync.WithRawResponse = withRawResponse
 
-    override fun retrieveMany(params: HrisIndividualRetrieveManyParams, requestOptions: RequestOptions): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
+    override fun retrieveMany(
+        params: HrisIndividualRetrieveManyParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
         // post /employer/individual
         withRawResponse().retrieveMany(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : IndividualServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        IndividualServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageAsync.Response> = jsonHandler<HrisIndividualRetrieveManyPageAsync.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageAsync.Response> =
+            jsonHandler<HrisIndividualRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun retrieveMany(params: HrisIndividualRetrieveManyParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("employer", "individual")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  retrieveManyHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-              .let {
-                  HrisIndividualRetrieveManyPageAsync.of(IndividualServiceAsyncImpl(clientOptions), params, it)
-              }
-          } }
+        override fun retrieveMany(
+            params: HrisIndividualRetrieveManyParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("employer", "individual")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { retrieveManyHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                            .let {
+                                HrisIndividualRetrieveManyPageAsync.of(
+                                    IndividualServiceAsyncImpl(clientOptions),
+                                    params,
+                                    it,
+                                )
+                            }
+                    }
+                }
         }
     }
 }
