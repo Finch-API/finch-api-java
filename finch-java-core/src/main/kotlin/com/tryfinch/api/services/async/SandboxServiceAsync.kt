@@ -13,8 +13,7 @@ import com.tryfinch.api.services.async.sandbox.PaymentServiceAsync
 interface SandboxServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -33,8 +32,7 @@ interface SandboxServiceAsync {
     fun jobs(): JobServiceAsync
 
     /**
-     * A view of [SandboxServiceAsync] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [SandboxServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 

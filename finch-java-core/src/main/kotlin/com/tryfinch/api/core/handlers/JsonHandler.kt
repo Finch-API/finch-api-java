@@ -7,7 +7,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.enhanceJacksonException
 import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.errors.FinchException
 
 @JvmSynthetic
 internal inline fun <reified T> jsonHandler(jsonMapper: JsonMapper): Handler<T> =

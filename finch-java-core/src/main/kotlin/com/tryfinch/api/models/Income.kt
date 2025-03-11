@@ -20,18 +20,23 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * The employee's income as reported by the provider. This may not always be
- * annualized income, but may be in units of bi-weekly, semi-monthly, daily, etc,
- * depending on what information the provider returns.
+ * The employee's income as reported by the provider. This may not always be annualized income, but
+ * may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
+ * provider returns.
  */
 @NoAutoDetect
-class Income @JsonCreator private constructor(
+class Income
+@JsonCreator
+private constructor(
     @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("currency") @ExcludeMissing private val currency: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("effective_date") @ExcludeMissing private val effectiveDate: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("currency")
+    @ExcludeMissing
+    private val currency: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("effective_date")
+    @ExcludeMissing
+    private val effectiveDate: JsonField<String> = JsonMissing.of(),
     @JsonProperty("unit") @ExcludeMissing private val unit: JsonField<Unit> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     /** The income amount in cents. */
@@ -41,23 +46,20 @@ class Income @JsonCreator private constructor(
     fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
     /** The date the income amount went into effect. */
-    fun effectiveDate(): Optional<String> = Optional.ofNullable(effectiveDate.getNullable("effective_date"))
+    fun effectiveDate(): Optional<String> =
+        Optional.ofNullable(effectiveDate.getNullable("effective_date"))
 
     /**
-     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`,
-     * `semi_monthly`, `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
      */
     fun unit(): Optional<Unit> = Optional.ofNullable(unit.getNullable("unit"))
 
     /** The income amount in cents. */
-    @JsonProperty("amount")
-    @ExcludeMissing
-    fun _amount(): JsonField<Long> = amount
+    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
     /** The currency code. */
-    @JsonProperty("currency")
-    @ExcludeMissing
-    fun _currency(): JsonField<String> = currency
+    @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
     /** The date the income amount went into effect. */
     @JsonProperty("effective_date")
@@ -65,12 +67,10 @@ class Income @JsonCreator private constructor(
     fun _effectiveDate(): JsonField<String> = effectiveDate
 
     /**
-     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`,
-     * `semi_monthly`, `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
      */
-    @JsonProperty("unit")
-    @ExcludeMissing
-    fun _unit(): JsonField<Unit> = unit
+    @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Unit> = unit
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -78,26 +78,24 @@ class Income @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): Income =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            amount()
-            currency()
-            effectiveDate()
-            unit()
-            validated = true
+    fun validate(): Income = apply {
+        if (validated) {
+            return@apply
         }
+
+        amount()
+        currency()
+        effectiveDate()
+        unit()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /** Returns a mutable builder for constructing an instance of [Income]. */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [Income]. */
@@ -110,14 +108,13 @@ class Income @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(income: Income) =
-            apply {
-                amount = income.amount
-                currency = income.currency
-                effectiveDate = income.effectiveDate
-                unit = income.unit
-                additionalProperties = income.additionalProperties.toMutableMap()
-            }
+        internal fun from(income: Income) = apply {
+            amount = income.amount
+            currency = income.currency
+            effectiveDate = income.effectiveDate
+            unit = income.unit
+            additionalProperties = income.additionalProperties.toMutableMap()
+        }
 
         /** The income amount in cents. */
         fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
@@ -129,10 +126,7 @@ class Income @JsonCreator private constructor(
         fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
         /** The income amount in cents. */
-        fun amount(amount: JsonField<Long>) =
-            apply {
-                this.amount = amount
-            }
+        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         /** The currency code. */
         fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
@@ -141,99 +135,77 @@ class Income @JsonCreator private constructor(
         fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
         /** The currency code. */
-        fun currency(currency: JsonField<String>) =
-            apply {
-                this.currency = currency
-            }
+        fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         /** The date the income amount went into effect. */
-        fun effectiveDate(effectiveDate: String?) = effectiveDate(JsonField.ofNullable(effectiveDate))
+        fun effectiveDate(effectiveDate: String?) =
+            effectiveDate(JsonField.ofNullable(effectiveDate))
 
         /** The date the income amount went into effect. */
-        fun effectiveDate(effectiveDate: Optional<String>) = effectiveDate(effectiveDate.getOrNull())
+        fun effectiveDate(effectiveDate: Optional<String>) =
+            effectiveDate(effectiveDate.getOrNull())
 
         /** The date the income amount went into effect. */
-        fun effectiveDate(effectiveDate: JsonField<String>) =
-            apply {
-                this.effectiveDate = effectiveDate
-            }
+        fun effectiveDate(effectiveDate: JsonField<String>) = apply {
+            this.effectiveDate = effectiveDate
+        }
 
         /**
-         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`,
-         * `semi_monthly`, `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
          */
         fun unit(unit: Unit?) = unit(JsonField.ofNullable(unit))
 
         /**
-         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`,
-         * `semi_monthly`, `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
          */
         fun unit(unit: Optional<Unit>) = unit(unit.getOrNull())
 
         /**
-         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`,
-         * `semi_monthly`, `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
          */
-        fun unit(unit: JsonField<Unit>) =
-            apply {
-                this.unit = unit
-            }
+        fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
         fun build(): Income =
-            Income(
-              amount,
-              currency,
-              effectiveDate,
-              unit,
-              additionalProperties.toImmutable(),
-            )
+            Income(amount, currency, effectiveDate, unit, additionalProperties.toImmutable())
     }
 
     /**
-     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`,
-     * `semi_monthly`, `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
+     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
      */
-    class Unit @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class Unit @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -275,11 +247,9 @@ class Income @JsonCreator private constructor(
          * An enum containing [Unit]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Unit] can contain an unknown value in a couple of cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -297,11 +267,11 @@ class Income @JsonCreator private constructor(
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -320,11 +290,10 @@ class Income @JsonCreator private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws FinchInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
          */
         fun known(): Known =
             when (this) {
@@ -343,20 +312,21 @@ class Income @JsonCreator private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws FinchInvalidDataException if this class instance's value does not have
-         * the expected primitive type.
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Unit && value == other.value /* spotless:on */
+            return /* spotless:off */ other is Unit && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -365,11 +335,11 @@ class Income @JsonCreator private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is Income && amount == other.amount && currency == other.currency && effectiveDate == other.effectiveDate && unit == other.unit && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Income && amount == other.amount && currency == other.currency && effectiveDate == other.effectiveDate && unit == other.unit && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -378,5 +348,6 @@ class Income @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "Income{amount=$amount, currency=$currency, effectiveDate=$effectiveDate, unit=$unit, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "Income{amount=$amount, currency=$currency, effectiveDate=$effectiveDate, unit=$unit, additionalProperties=$additionalProperties}"
 }

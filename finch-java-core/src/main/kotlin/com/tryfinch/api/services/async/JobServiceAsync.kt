@@ -8,8 +8,7 @@ import com.tryfinch.api.services.async.jobs.ManualServiceAsync
 interface JobServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -17,10 +16,7 @@ interface JobServiceAsync {
 
     fun manual(): ManualServiceAsync
 
-    /**
-     * A view of [JobServiceAsync] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [JobServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         fun automated(): AutomatedServiceAsync.WithRawResponse

@@ -20,77 +20,93 @@ import com.tryfinch.api.models.SandboxJobConfigurationRetrieveParams
 import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class ConfigurationServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class ConfigurationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ConfigurationServiceAsync {
 
-) : ConfigurationServiceAsync {
-
-    private val withRawResponse: ConfigurationServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: ConfigurationServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): ConfigurationServiceAsync.WithRawResponse = withRawResponse
 
-    override fun retrieve(params: SandboxJobConfigurationRetrieveParams, requestOptions: RequestOptions): CompletableFuture<List<SandboxJobConfiguration>> =
+    override fun retrieve(
+        params: SandboxJobConfigurationRetrieveParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<List<SandboxJobConfiguration>> =
         // get /sandbox/jobs/configuration
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    override fun update(params: SandboxJobConfigurationUpdateParams, requestOptions: RequestOptions): CompletableFuture<SandboxJobConfiguration> =
+    override fun update(
+        params: SandboxJobConfigurationUpdateParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<SandboxJobConfiguration> =
         // put /sandbox/jobs/configuration
         withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : ConfigurationServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        ConfigurationServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveHandler: Handler<List<SandboxJobConfiguration>> = jsonHandler<List<SandboxJobConfiguration>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<List<SandboxJobConfiguration>> =
+            jsonHandler<List<SandboxJobConfiguration>>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun retrieve(params: SandboxJobConfigurationRetrieveParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.GET)
-            .addPathSegments("sandbox", "jobs", "configuration")
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  retrieveHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.forEach { it.validate() }
-                  }
-              }
-          } }
+        override fun retrieve(
+            params: SandboxJobConfigurationRetrieveParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("sandbox", "jobs", "configuration")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { retrieveHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.forEach { it.validate() }
+                                }
+                            }
+                    }
+                }
         }
 
-        private val updateHandler: Handler<SandboxJobConfiguration> = jsonHandler<SandboxJobConfiguration>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<SandboxJobConfiguration> =
+            jsonHandler<SandboxJobConfiguration>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun update(params: SandboxJobConfigurationUpdateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<SandboxJobConfiguration>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.PUT)
-            .addPathSegments("sandbox", "jobs", "configuration")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  updateHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          } }
+        override fun update(
+            params: SandboxJobConfigurationUpdateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<SandboxJobConfiguration>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("sandbox", "jobs", "configuration")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { updateHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
         }
     }
 }

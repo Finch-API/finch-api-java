@@ -11,28 +11,27 @@ import com.tryfinch.api.models.RequestForwardingForwardResponse
 interface RequestForwardingService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /**
-     * The Forward API allows you to make direct requests to an employment system. If
-     * Finch’s unified API doesn’t have a data model that cleanly fits your needs, then
-     * Forward allows you to push or pull data models directly against an integration’s
-     * API.
+     * The Forward API allows you to make direct requests to an employment system. If Finch’s
+     * unified API doesn’t have a data model that cleanly fits your needs, then Forward allows you
+     * to push or pull data models directly against an integration’s API.
      */
     fun forward(params: RequestForwardingForwardParams): RequestForwardingForwardResponse =
-        forward(
-          params, RequestOptions.none()
-        )
+        forward(params, RequestOptions.none())
 
     /** @see [forward] */
-    fun forward(params: RequestForwardingForwardParams, requestOptions: RequestOptions = RequestOptions.none()): RequestForwardingForwardResponse
+    fun forward(
+        params: RequestForwardingForwardParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RequestForwardingForwardResponse
 
     /**
-     * A view of [RequestForwardingService] that provides access to raw HTTP responses
-     * for each method.
+     * A view of [RequestForwardingService] that provides access to raw HTTP responses for each
+     * method.
      */
     interface WithRawResponse {
 
@@ -41,13 +40,16 @@ interface RequestForwardingService {
          * [RequestForwardingService.forward].
          */
         @MustBeClosed
-        fun forward(params: RequestForwardingForwardParams): HttpResponseFor<RequestForwardingForwardResponse> =
-            forward(
-              params, RequestOptions.none()
-            )
+        fun forward(
+            params: RequestForwardingForwardParams
+        ): HttpResponseFor<RequestForwardingForwardResponse> =
+            forward(params, RequestOptions.none())
 
         /** @see [forward] */
         @MustBeClosed
-        fun forward(params: RequestForwardingForwardParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<RequestForwardingForwardResponse>
+        fun forward(
+            params: RequestForwardingForwardParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RequestForwardingForwardResponse>
     }
 }

@@ -12,8 +12,7 @@ import java.util.concurrent.CompletableFuture
 interface DirectoryServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -21,43 +20,52 @@ interface DirectoryServiceAsync {
     fun create(): CompletableFuture<List<JsonValue>> = create(SandboxDirectoryCreateParams.none())
 
     /** @see [create] */
-    fun create(params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<List<JsonValue>>
+    fun create(
+        params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<List<JsonValue>>
 
     /** @see [create] */
-    fun create(params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()): CompletableFuture<List<JsonValue>> =
-        create(
-          params, RequestOptions.none()
-        )
+    fun create(
+        params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
+    ): CompletableFuture<List<JsonValue>> = create(params, RequestOptions.none())
 
     /** @see [create] */
-    fun create(requestOptions: RequestOptions): CompletableFuture<List<JsonValue>> = create(SandboxDirectoryCreateParams.none(), requestOptions)
+    fun create(requestOptions: RequestOptions): CompletableFuture<List<JsonValue>> =
+        create(SandboxDirectoryCreateParams.none(), requestOptions)
 
     /**
-     * A view of [DirectoryServiceAsync] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [DirectoryServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the
-         * same as [DirectoryServiceAsync.create].
+         * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the same as
+         * [DirectoryServiceAsync.create].
          */
         @MustBeClosed
-        fun create(): CompletableFuture<HttpResponseFor<List<JsonValue>>> = create(SandboxDirectoryCreateParams.none())
+        fun create(): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
+            create(SandboxDirectoryCreateParams.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<List<JsonValue>>>
+        fun create(
+            params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<List<JsonValue>>>
 
         /** @see [create] */
         @MustBeClosed
-        fun create(params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
-            create(
-              params, RequestOptions.none()
-            )
+        fun create(
+            params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
+        ): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
+            create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<List<JsonValue>>> = create(SandboxDirectoryCreateParams.none(), requestOptions)
+        fun create(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
+            create(SandboxDirectoryCreateParams.none(), requestOptions)
     }
 }

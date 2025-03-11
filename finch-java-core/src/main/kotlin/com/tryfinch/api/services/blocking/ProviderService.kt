@@ -11,8 +11,7 @@ import com.tryfinch.api.models.ProviderListParams
 interface ProviderService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -20,21 +19,20 @@ interface ProviderService {
     fun list(): ProviderListPage = list(ProviderListParams.none())
 
     /** @see [list] */
-    fun list(params: ProviderListParams = ProviderListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): ProviderListPage
+    fun list(
+        params: ProviderListParams = ProviderListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ProviderListPage
 
     /** @see [list] */
     fun list(params: ProviderListParams = ProviderListParams.none()): ProviderListPage =
-        list(
-          params, RequestOptions.none()
-        )
+        list(params, RequestOptions.none())
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): ProviderListPage = list(ProviderListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): ProviderListPage =
+        list(ProviderListParams.none(), requestOptions)
 
-    /**
-     * A view of [ProviderService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [ProviderService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
@@ -46,17 +44,20 @@ interface ProviderService {
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: ProviderListParams = ProviderListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<ProviderListPage>
+        fun list(
+            params: ProviderListParams = ProviderListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ProviderListPage>
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: ProviderListParams = ProviderListParams.none()): HttpResponseFor<ProviderListPage> =
-            list(
-              params, RequestOptions.none()
-            )
+        fun list(
+            params: ProviderListParams = ProviderListParams.none()
+        ): HttpResponseFor<ProviderListPage> = list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> = list(ProviderListParams.none(), requestOptions)
+        fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> =
+            list(ProviderListParams.none(), requestOptions)
     }
 }

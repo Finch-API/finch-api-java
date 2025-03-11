@@ -20,76 +20,92 @@ import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
 import java.util.concurrent.CompletableFuture
 
-class DocumentServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class DocumentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    DocumentServiceAsync {
 
-) : DocumentServiceAsync {
-
-    private val withRawResponse: DocumentServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: DocumentServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): DocumentServiceAsync.WithRawResponse = withRawResponse
 
-    override fun list(params: HrisDocumentListParams, requestOptions: RequestOptions): CompletableFuture<DocumentListResponse> =
+    override fun list(
+        params: HrisDocumentListParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<DocumentListResponse> =
         // get /employer/documents
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
-    override fun retreive(params: HrisDocumentRetreiveParams, requestOptions: RequestOptions): CompletableFuture<DocumentRetreiveResponse> =
+    override fun retreive(
+        params: HrisDocumentRetreiveParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<DocumentRetreiveResponse> =
         // get /employer/documents/{document_id}
         withRawResponse().retreive(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : DocumentServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        DocumentServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<DocumentListResponse> = jsonHandler<DocumentListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<DocumentListResponse> =
+            jsonHandler<DocumentListResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun list(params: HrisDocumentListParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<DocumentListResponse>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.GET)
-            .addPathSegments("employer", "documents")
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  listHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          } }
+        override fun list(
+            params: HrisDocumentListParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<DocumentListResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "documents")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { listHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
         }
 
-        private val retreiveHandler: Handler<DocumentRetreiveResponse> = jsonHandler<DocumentRetreiveResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retreiveHandler: Handler<DocumentRetreiveResponse> =
+            jsonHandler<DocumentRetreiveResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun retreive(params: HrisDocumentRetreiveParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.GET)
-            .addPathSegments("employer", "documents", params.getPathParam(0))
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  retreiveHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          } }
+        override fun retreive(
+            params: HrisDocumentRetreiveParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "documents", params.getPathParam(0))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { retreiveHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
         }
     }
 }

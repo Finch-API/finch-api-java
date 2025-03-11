@@ -15,49 +15,57 @@ class IndividualServiceAsyncTest {
 
     @Test
     fun enrolledIds() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val individualServiceAsync = client.hris().benefits().individuals()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val individualServiceAsync = client.hris().benefits().individuals()
 
-      val responseFuture = individualServiceAsync.enrolledIds(HrisBenefitIndividualEnrolledIdsParams.builder()
-          .benefitId("benefit_id")
-          .build())
+        val responseFuture =
+            individualServiceAsync.enrolledIds(
+                HrisBenefitIndividualEnrolledIdsParams.builder().benefitId("benefit_id").build()
+            )
 
-      val response = responseFuture.get()
-      response.validate()
+        val response = responseFuture.get()
+        response.validate()
     }
 
     @Test
     fun retrieveManyBenefits() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val individualServiceAsync = client.hris().benefits().individuals()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val individualServiceAsync = client.hris().benefits().individuals()
 
-      val pageFuture = individualServiceAsync.retrieveManyBenefits(HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
-          .benefitId("benefit_id")
-          .build())
+        val pageFuture =
+            individualServiceAsync.retrieveManyBenefits(
+                HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
+                    .benefitId("benefit_id")
+                    .build()
+            )
 
-      val page = pageFuture.get()
-      page.response().validate()
+        val page = pageFuture.get()
+        page.response().validate()
     }
 
     @Test
     fun unenrollMany() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val individualServiceAsync = client.hris().benefits().individuals()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val individualServiceAsync = client.hris().benefits().individuals()
 
-      val pageFuture = individualServiceAsync.unenrollMany(HrisBenefitIndividualUnenrollManyParams.builder()
-          .benefitId("benefit_id")
-          .build())
+        val pageFuture =
+            individualServiceAsync.unenrollMany(
+                HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+            )
 
-      val page = pageFuture.get()
-      page.response().validate()
+        val page = pageFuture.get()
+        page.response().validate()
     }
 }

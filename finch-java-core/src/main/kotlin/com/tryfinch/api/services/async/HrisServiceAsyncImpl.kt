@@ -20,24 +20,32 @@ import com.tryfinch.api.services.async.hris.PayStatementServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.PaymentServiceAsync
 import com.tryfinch.api.services.async.hris.PaymentServiceAsyncImpl
 
-class HrisServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class HrisServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    HrisServiceAsync {
 
-) : HrisServiceAsync {
-
-    private val withRawResponse: HrisServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: HrisServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     private val company: CompanyServiceAsync by lazy { CompanyServiceAsyncImpl(clientOptions) }
 
-    private val directory: DirectoryServiceAsync by lazy { DirectoryServiceAsyncImpl(clientOptions) }
+    private val directory: DirectoryServiceAsync by lazy {
+        DirectoryServiceAsyncImpl(clientOptions)
+    }
 
-    private val individuals: IndividualServiceAsync by lazy { IndividualServiceAsyncImpl(clientOptions) }
+    private val individuals: IndividualServiceAsync by lazy {
+        IndividualServiceAsyncImpl(clientOptions)
+    }
 
-    private val employments: EmploymentServiceAsync by lazy { EmploymentServiceAsyncImpl(clientOptions) }
+    private val employments: EmploymentServiceAsync by lazy {
+        EmploymentServiceAsyncImpl(clientOptions)
+    }
 
     private val payments: PaymentServiceAsync by lazy { PaymentServiceAsyncImpl(clientOptions) }
 
-    private val payStatements: PayStatementServiceAsync by lazy { PayStatementServiceAsyncImpl(clientOptions) }
+    private val payStatements: PayStatementServiceAsync by lazy {
+        PayStatementServiceAsyncImpl(clientOptions)
+    }
 
     private val documents: DocumentServiceAsync by lazy { DocumentServiceAsyncImpl(clientOptions) }
 
@@ -61,26 +69,40 @@ class HrisServiceAsyncImpl internal constructor(
 
     override fun benefits(): BenefitServiceAsync = benefits
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        HrisServiceAsync.WithRawResponse {
 
-    ) : HrisServiceAsync.WithRawResponse {
+        private val company: CompanyServiceAsync.WithRawResponse by lazy {
+            CompanyServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val company: CompanyServiceAsync.WithRawResponse by lazy { CompanyServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val directory: DirectoryServiceAsync.WithRawResponse by lazy {
+            DirectoryServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val directory: DirectoryServiceAsync.WithRawResponse by lazy { DirectoryServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val individuals: IndividualServiceAsync.WithRawResponse by lazy {
+            IndividualServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val individuals: IndividualServiceAsync.WithRawResponse by lazy { IndividualServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val employments: EmploymentServiceAsync.WithRawResponse by lazy {
+            EmploymentServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val employments: EmploymentServiceAsync.WithRawResponse by lazy { EmploymentServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val payments: PaymentServiceAsync.WithRawResponse by lazy {
+            PaymentServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val payments: PaymentServiceAsync.WithRawResponse by lazy { PaymentServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val payStatements: PayStatementServiceAsync.WithRawResponse by lazy {
+            PayStatementServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val payStatements: PayStatementServiceAsync.WithRawResponse by lazy { PayStatementServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val documents: DocumentServiceAsync.WithRawResponse by lazy {
+            DocumentServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val documents: DocumentServiceAsync.WithRawResponse by lazy { DocumentServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
-
-        private val benefits: BenefitServiceAsync.WithRawResponse by lazy { BenefitServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val benefits: BenefitServiceAsync.WithRawResponse by lazy {
+            BenefitServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
         override fun company(): CompanyServiceAsync.WithRawResponse = company
 

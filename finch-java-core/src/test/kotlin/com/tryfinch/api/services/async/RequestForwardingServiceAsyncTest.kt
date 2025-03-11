@@ -14,23 +14,25 @@ class RequestForwardingServiceAsyncTest {
 
     @Test
     fun forward() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val requestForwardingServiceAsync = client.requestForwarding()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val requestForwardingServiceAsync = client.requestForwarding()
 
-      val responseFuture = requestForwardingServiceAsync.forward(RequestForwardingForwardParams.builder()
-          .method("POST")
-          .route("/people/search")
-          .data(null)
-          .headers(JsonValue.from(mapOf("content-type" to "application/json")))
-          .params(JsonValue.from(mapOf(
-            "showInactive" to true, "humanReadable" to true
-          )))
-          .build())
+        val responseFuture =
+            requestForwardingServiceAsync.forward(
+                RequestForwardingForwardParams.builder()
+                    .method("POST")
+                    .route("/people/search")
+                    .data(null)
+                    .headers(JsonValue.from(mapOf("content-type" to "application/json")))
+                    .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+                    .build()
+            )
 
-      val response = responseFuture.get()
-      response.validate()
+        val response = responseFuture.get()
+        response.validate()
     }
 }

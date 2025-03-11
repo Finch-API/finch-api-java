@@ -9,16 +9,17 @@ class OperationSupportMatrixTest {
 
     @Test
     fun createOperationSupportMatrix() {
-      val operationSupportMatrix = OperationSupportMatrix.builder()
-          .create(OperationSupport.SUPPORTED)
-          .delete(OperationSupport.SUPPORTED)
-          .read(OperationSupport.SUPPORTED)
-          .update(OperationSupport.SUPPORTED)
-          .build()
-      assertThat(operationSupportMatrix).isNotNull
-      assertThat(operationSupportMatrix.create()).contains(OperationSupport.SUPPORTED)
-      assertThat(operationSupportMatrix.delete()).contains(OperationSupport.SUPPORTED)
-      assertThat(operationSupportMatrix.read()).contains(OperationSupport.SUPPORTED)
-      assertThat(operationSupportMatrix.update()).contains(OperationSupport.SUPPORTED)
+        val operationSupportMatrix =
+            OperationSupportMatrix.builder()
+                .create(OperationSupport.SUPPORTED)
+                .delete(OperationSupport.SUPPORTED)
+                .read(OperationSupport.SUPPORTED)
+                .update(OperationSupport.SUPPORTED)
+                .build()
+        assertThat(operationSupportMatrix).isNotNull
+        assertThat(operationSupportMatrix.create()).contains(OperationSupport.SUPPORTED)
+        assertThat(operationSupportMatrix.delete()).contains(OperationSupport.SUPPORTED)
+        assertThat(operationSupportMatrix.read()).contains(OperationSupport.SUPPORTED)
+        assertThat(operationSupportMatrix.update()).contains(OperationSupport.SUPPORTED)
     }
 }

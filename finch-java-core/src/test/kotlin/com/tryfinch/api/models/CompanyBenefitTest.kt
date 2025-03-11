@@ -9,16 +9,17 @@ class CompanyBenefitTest {
 
     @Test
     fun createCompanyBenefit() {
-      val companyBenefit = CompanyBenefit.builder()
-          .benefitId("benefit_id")
-          .description("description")
-          .frequency(BenefitFrequency.ONE_TIME)
-          .type(BenefitType._401K)
-          .build()
-      assertThat(companyBenefit).isNotNull
-      assertThat(companyBenefit.benefitId()).isEqualTo("benefit_id")
-      assertThat(companyBenefit.description()).contains("description")
-      assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)
-      assertThat(companyBenefit.type()).contains(BenefitType._401K)
+        val companyBenefit =
+            CompanyBenefit.builder()
+                .benefitId("benefit_id")
+                .description("description")
+                .frequency(BenefitFrequency.ONE_TIME)
+                .type(BenefitType._401K)
+                .build()
+        assertThat(companyBenefit).isNotNull
+        assertThat(companyBenefit.benefitId()).isEqualTo("benefit_id")
+        assertThat(companyBenefit.description()).contains("description")
+        assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)
+        assertThat(companyBenefit.type()).contains(BenefitType._401K)
     }
 }

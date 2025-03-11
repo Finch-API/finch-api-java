@@ -25,33 +25,40 @@ import com.tryfinch.api.services.blocking.SandboxServiceImpl
 import com.tryfinch.api.services.blocking.WebhookService
 import com.tryfinch.api.services.blocking.WebhookServiceImpl
 
-class FinchClientImpl(
-    private val clientOptions: ClientOptions,
-
-) : FinchClient {
+class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
 
     private val clientOptionsWithUserAgent =
-
-      if (clientOptions.headers.names().contains("User-Agent")) clientOptions
-
-      else clientOptions.toBuilder().putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}").build()
+        if (clientOptions.headers.names().contains("User-Agent")) clientOptions
+        else
+            clientOptions
+                .toBuilder()
+                .putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}")
+                .build()
 
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val async: FinchClientAsync by lazy { FinchClientAsyncImpl(clientOptions) }
 
-    private val withRawResponse: FinchClient.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: FinchClient.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val accessTokens: AccessTokenService by lazy { AccessTokenServiceImpl(clientOptionsWithUserAgent) }
+    private val accessTokens: AccessTokenService by lazy {
+        AccessTokenServiceImpl(clientOptionsWithUserAgent)
+    }
 
     private val hris: HrisService by lazy { HrisServiceImpl(clientOptionsWithUserAgent) }
 
-    private val providers: ProviderService by lazy { ProviderServiceImpl(clientOptionsWithUserAgent) }
+    private val providers: ProviderService by lazy {
+        ProviderServiceImpl(clientOptionsWithUserAgent)
+    }
 
     private val account: AccountService by lazy { AccountServiceImpl(clientOptionsWithUserAgent) }
 
     private val webhooks: WebhookService by lazy { WebhookServiceImpl(clientOptionsWithUserAgent) }
 
-    private val requestForwarding: RequestForwardingService by lazy { RequestForwardingServiceImpl(clientOptionsWithUserAgent) }
+    private val requestForwarding: RequestForwardingService by lazy {
+        RequestForwardingServiceImpl(clientOptionsWithUserAgent)
+    }
 
     private val jobs: JobService by lazy { JobServiceImpl(clientOptionsWithUserAgent) }
 
@@ -87,30 +94,48 @@ class FinchClientImpl(
 
     override fun close() = clientOptions.httpClient.close()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        FinchClient.WithRawResponse {
 
-    ) : FinchClient.WithRawResponse {
+        private val accessTokens: AccessTokenService.WithRawResponse by lazy {
+            AccessTokenServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val accessTokens: AccessTokenService.WithRawResponse by lazy { AccessTokenServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val hris: HrisService.WithRawResponse by lazy {
+            HrisServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val hris: HrisService.WithRawResponse by lazy { HrisServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val providers: ProviderService.WithRawResponse by lazy {
+            ProviderServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val providers: ProviderService.WithRawResponse by lazy { ProviderServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val account: AccountService.WithRawResponse by lazy {
+            AccountServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val account: AccountService.WithRawResponse by lazy { AccountServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val webhooks: WebhookService.WithRawResponse by lazy {
+            WebhookServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val webhooks: WebhookService.WithRawResponse by lazy { WebhookServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val requestForwarding: RequestForwardingService.WithRawResponse by lazy {
+            RequestForwardingServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val requestForwarding: RequestForwardingService.WithRawResponse by lazy { RequestForwardingServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val jobs: JobService.WithRawResponse by lazy {
+            JobServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val jobs: JobService.WithRawResponse by lazy { JobServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val sandbox: SandboxService.WithRawResponse by lazy {
+            SandboxServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val sandbox: SandboxService.WithRawResponse by lazy { SandboxServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val payroll: PayrollService.WithRawResponse by lazy {
+            PayrollServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val payroll: PayrollService.WithRawResponse by lazy { PayrollServiceImpl.WithRawResponseImpl(clientOptions) }
-
-        private val connect: ConnectService.WithRawResponse by lazy { ConnectServiceImpl.WithRawResponseImpl(clientOptions) }
+        private val connect: ConnectService.WithRawResponse by lazy {
+            ConnectServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
         override fun accessTokens(): AccessTokenService.WithRawResponse = accessTokens
 
@@ -122,7 +147,8 @@ class FinchClientImpl(
 
         override fun webhooks(): WebhookService.WithRawResponse = webhooks
 
-        override fun requestForwarding(): RequestForwardingService.WithRawResponse = requestForwarding
+        override fun requestForwarding(): RequestForwardingService.WithRawResponse =
+            requestForwarding
 
         override fun jobs(): JobService.WithRawResponse = jobs
 

@@ -20,80 +20,88 @@ import com.tryfinch.api.models.AccountUpdateResponse
 import com.tryfinch.api.models.SandboxConnectionAccountCreateParams
 import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
 
-class AccountServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class AccountServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    AccountService {
 
-) : AccountService {
-
-    private val withRawResponse: AccountService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: AccountService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): AccountService.WithRawResponse = withRawResponse
 
-    override fun create(params: SandboxConnectionAccountCreateParams, requestOptions: RequestOptions): AccountCreateResponse =
+    override fun create(
+        params: SandboxConnectionAccountCreateParams,
+        requestOptions: RequestOptions,
+    ): AccountCreateResponse =
         // post /sandbox/connections/accounts
         withRawResponse().create(params, requestOptions).parse()
 
-    override fun update(params: SandboxConnectionAccountUpdateParams, requestOptions: RequestOptions): AccountUpdateResponse =
+    override fun update(
+        params: SandboxConnectionAccountUpdateParams,
+        requestOptions: RequestOptions,
+    ): AccountUpdateResponse =
         // put /sandbox/connections/accounts
         withRawResponse().update(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : AccountService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        AccountService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<AccountCreateResponse> = jsonHandler<AccountCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<AccountCreateResponse> =
+            jsonHandler<AccountCreateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun create(params: SandboxConnectionAccountCreateParams, requestOptions: RequestOptions): HttpResponseFor<AccountCreateResponse> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("sandbox", "connections", "accounts")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  createHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override fun create(
+            params: SandboxConnectionAccountCreateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<AccountCreateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("sandbox", "connections", "accounts")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
 
-        private val updateHandler: Handler<AccountUpdateResponse> = jsonHandler<AccountUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<AccountUpdateResponse> =
+            jsonHandler<AccountUpdateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun update(params: SandboxConnectionAccountUpdateParams, requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.PUT)
-            .addPathSegments("sandbox", "connections", "accounts")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  updateHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override fun update(
+            params: SandboxConnectionAccountUpdateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<AccountUpdateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("sandbox", "connections", "accounts")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { updateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
     }
 }

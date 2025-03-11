@@ -19,49 +19,56 @@ import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
 import java.util.concurrent.CompletableFuture
 
-class AccessTokenServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    AccessTokenServiceAsync {
 
-) : AccessTokenServiceAsync {
-
-    private val withRawResponse: AccessTokenServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: AccessTokenServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): AccessTokenServiceAsync.WithRawResponse = withRawResponse
 
-    override fun create(params: AccessTokenCreateParams, requestOptions: RequestOptions): CompletableFuture<CreateAccessTokenResponse> =
+    override fun create(
+        params: AccessTokenCreateParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<CreateAccessTokenResponse> =
         // post /auth/token
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : AccessTokenServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        AccessTokenServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<CreateAccessTokenResponse> = jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<CreateAccessTokenResponse> =
+            jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun create(params: AccessTokenCreateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("auth", "token")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  createHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          } }
+        override fun create(
+            params: AccessTokenCreateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("auth", "token")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
         }
     }
 }

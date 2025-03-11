@@ -9,12 +9,9 @@ class MoneyTest {
 
     @Test
     fun createMoney() {
-      val money = Money.builder()
-          .amount(0L)
-          .currency("currency")
-          .build()
-      assertThat(money).isNotNull
-      assertThat(money.amount()).contains(0L)
-      assertThat(money.currency()).contains("currency")
+        val money = Money.builder().amount(0L).currency("currency").build()
+        assertThat(money).isNotNull
+        assertThat(money.amount()).contains(0L)
+        assertThat(money.currency()).contains("currency")
     }
 }

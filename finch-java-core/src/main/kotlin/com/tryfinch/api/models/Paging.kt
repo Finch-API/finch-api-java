@@ -17,11 +17,12 @@ import java.util.Objects
 import java.util.Optional
 
 @NoAutoDetect
-class Paging @JsonCreator private constructor(
+class Paging
+@JsonCreator
+private constructor(
     @JsonProperty("count") @ExcludeMissing private val count: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("offset") @ExcludeMissing private val offset: JsonField<Long> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     /** The total number of elements for the entire query (not just the given page) */
@@ -31,14 +32,10 @@ class Paging @JsonCreator private constructor(
     fun offset(): Optional<Long> = Optional.ofNullable(offset.getNullable("offset"))
 
     /** The total number of elements for the entire query (not just the given page) */
-    @JsonProperty("count")
-    @ExcludeMissing
-    fun _count(): JsonField<Long> = count
+    @JsonProperty("count") @ExcludeMissing fun _count(): JsonField<Long> = count
 
     /** The current start index of the returned list of elements */
-    @JsonProperty("offset")
-    @ExcludeMissing
-    fun _offset(): JsonField<Long> = offset
+    @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -46,24 +43,22 @@ class Paging @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): Paging =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            count()
-            offset()
-            validated = true
+    fun validate(): Paging = apply {
+        if (validated) {
+            return@apply
         }
+
+        count()
+        offset()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /** Returns a mutable builder for constructing an instance of [Paging]. */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [Paging]. */
@@ -74,71 +69,52 @@ class Paging @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(paging: Paging) =
-            apply {
-                count = paging.count
-                offset = paging.offset
-                additionalProperties = paging.additionalProperties.toMutableMap()
-            }
+        internal fun from(paging: Paging) = apply {
+            count = paging.count
+            offset = paging.offset
+            additionalProperties = paging.additionalProperties.toMutableMap()
+        }
 
         /** The total number of elements for the entire query (not just the given page) */
         fun count(count: Long) = count(JsonField.of(count))
 
         /** The total number of elements for the entire query (not just the given page) */
-        fun count(count: JsonField<Long>) =
-            apply {
-                this.count = count
-            }
+        fun count(count: JsonField<Long>) = apply { this.count = count }
 
         /** The current start index of the returned list of elements */
         fun offset(offset: Long) = offset(JsonField.of(offset))
 
         /** The current start index of the returned list of elements */
-        fun offset(offset: JsonField<Long>) =
-            apply {
-                this.offset = offset
-            }
+        fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
-        fun build(): Paging =
-            Paging(
-              count,
-              offset,
-              additionalProperties.toImmutable(),
-            )
+        fun build(): Paging = Paging(count, offset, additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is Paging && count == other.count && offset == other.offset && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Paging && count == other.count && offset == other.offset && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -147,5 +123,6 @@ class Paging @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "Paging{count=$count, offset=$offset, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "Paging{count=$count, offset=$offset, additionalProperties=$additionalProperties}"
 }

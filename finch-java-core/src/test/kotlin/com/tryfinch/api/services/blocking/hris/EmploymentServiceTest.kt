@@ -13,18 +13,24 @@ class EmploymentServiceTest {
 
     @Test
     fun retrieveMany() {
-      val client = FinchOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val employmentService = client.hris().employments()
+        val client =
+            FinchOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val employmentService = client.hris().employments()
 
-      val page = employmentService.retrieveMany(HrisEmploymentRetrieveManyParams.builder()
-          .addRequest(HrisEmploymentRetrieveManyParams.Request.builder()
-              .individualId("individual_id")
-              .build())
-          .build())
+        val page =
+            employmentService.retrieveMany(
+                HrisEmploymentRetrieveManyParams.builder()
+                    .addRequest(
+                        HrisEmploymentRetrieveManyParams.Request.builder()
+                            .individualId("individual_id")
+                            .build()
+                    )
+                    .build()
+            )
 
-      page.response().validate()
+        page.response().validate()
     }
 }

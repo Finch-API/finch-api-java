@@ -20,16 +20,17 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * A 2005 version of the W-4 tax form containing information on an individual's
- * filing status, dependents, and withholding details.
+ * A 2005 version of the W-4 tax form containing information on an individual's filing status,
+ * dependents, and withholding details.
  */
 @NoAutoDetect
-class W42005 @JsonCreator private constructor(
+class W42005
+@JsonCreator
+private constructor(
     @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
     @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
     @JsonProperty("year") @ExcludeMissing private val year: JsonField<Double> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
 ) {
 
     /** Detailed information specific to the 2005 W4 form. */
@@ -42,19 +43,13 @@ class W42005 @JsonCreator private constructor(
     fun year(): Optional<Double> = Optional.ofNullable(year.getNullable("year"))
 
     /** Detailed information specific to the 2005 W4 form. */
-    @JsonProperty("data")
-    @ExcludeMissing
-    fun _data(): JsonField<Data> = data
+    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
     /** Specifies the form type, indicating that this document is a 2005 W4 form. */
-    @JsonProperty("type")
-    @ExcludeMissing
-    fun _type(): JsonField<Type> = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     /** The tax year this W4 document applies to. */
-    @JsonProperty("year")
-    @ExcludeMissing
-    fun _year(): JsonField<Double> = year
+    @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -62,25 +57,23 @@ class W42005 @JsonCreator private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): W42005 =
-        apply {
-            if (validated) {
-              return@apply
-            }
-
-            data().ifPresent { it.validate() }
-            type()
-            year()
-            validated = true
+    fun validate(): W42005 = apply {
+        if (validated) {
+            return@apply
         }
+
+        data().ifPresent { it.validate() }
+        type()
+        year()
+        validated = true
+    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /** Returns a mutable builder for constructing an instance of [W42005]. */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [W42005]. */
@@ -92,31 +85,24 @@ class W42005 @JsonCreator private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(w42005: W42005) =
-            apply {
-                data = w42005.data
-                type = w42005.type
-                year = w42005.year
-                additionalProperties = w42005.additionalProperties.toMutableMap()
-            }
+        internal fun from(w42005: W42005) = apply {
+            data = w42005.data
+            type = w42005.type
+            year = w42005.year
+            additionalProperties = w42005.additionalProperties.toMutableMap()
+        }
 
         /** Detailed information specific to the 2005 W4 form. */
         fun data(data: Data) = data(JsonField.of(data))
 
         /** Detailed information specific to the 2005 W4 form. */
-        fun data(data: JsonField<Data>) =
-            apply {
-                this.data = data
-            }
+        fun data(data: JsonField<Data>) = apply { this.data = data }
 
         /** Specifies the form type, indicating that this document is a 2005 W4 form. */
         fun type(type: Type) = type(JsonField.of(type))
 
         /** Specifies the form type, indicating that this document is a 2005 W4 form. */
-        fun type(type: JsonField<Type>) =
-            apply {
-                this.type = type
-            }
+        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** The tax year this W4 document applies to. */
         fun year(year: Double?) = year(JsonField.ofNullable(year))
@@ -128,72 +114,73 @@ class W42005 @JsonCreator private constructor(
         fun year(year: Optional<Double>) = year(year.getOrNull())
 
         /** The tax year this W4 document applies to. */
-        fun year(year: JsonField<Double>) =
-            apply {
-                this.year = year
-            }
+        fun year(year: JsonField<Double>) = apply { this.year = year }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) =
-            apply {
-                additionalProperties.put(key, value)
-            }
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
 
-        fun removeAdditionalProperty(key: String) =
-            apply {
-                additionalProperties.remove(key)
-            }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) =
-            apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
 
-        fun build(): W42005 =
-            W42005(
-              data,
-              type,
-              year,
-              additionalProperties.toImmutable(),
-            )
+        fun build(): W42005 = W42005(data, type, year, additionalProperties.toImmutable())
     }
 
     /** Detailed information specific to the 2005 W4 form. */
     @NoAutoDetect
-    class Data @JsonCreator private constructor(
-        @JsonProperty("additional_withholding") @ExcludeMissing private val additionalWithholding: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("exemption") @ExcludeMissing private val exemption: JsonField<Exemption> = JsonMissing.of(),
-        @JsonProperty("filing_status") @ExcludeMissing private val filingStatus: JsonField<FilingStatus> = JsonMissing.of(),
-        @JsonProperty("individual_id") @ExcludeMissing private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("total_number_of_allowances") @ExcludeMissing private val totalNumberOfAllowances: JsonField<Long> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+    class Data
+    @JsonCreator
+    private constructor(
+        @JsonProperty("additional_withholding")
+        @ExcludeMissing
+        private val additionalWithholding: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("exemption")
+        @ExcludeMissing
+        private val exemption: JsonField<Exemption> = JsonMissing.of(),
+        @JsonProperty("filing_status")
+        @ExcludeMissing
+        private val filingStatus: JsonField<FilingStatus> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        private val individualId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("total_number_of_allowances")
+        @ExcludeMissing
+        private val totalNumberOfAllowances: JsonField<Long> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Additional withholding amount (in cents). */
-        fun additionalWithholding(): Optional<Long> = Optional.ofNullable(additionalWithholding.getNullable("additional_withholding"))
+        fun additionalWithholding(): Optional<Long> =
+            Optional.ofNullable(additionalWithholding.getNullable("additional_withholding"))
 
         /** Indicates exemption status from federal tax withholding. */
-        fun exemption(): Optional<Exemption> = Optional.ofNullable(exemption.getNullable("exemption"))
+        fun exemption(): Optional<Exemption> =
+            Optional.ofNullable(exemption.getNullable("exemption"))
 
         /** The individual's filing status for tax purposes. */
-        fun filingStatus(): Optional<FilingStatus> = Optional.ofNullable(filingStatus.getNullable("filing_status"))
+        fun filingStatus(): Optional<FilingStatus> =
+            Optional.ofNullable(filingStatus.getNullable("filing_status"))
 
         /** The unique identifier for the individual associated with this 2005 W4 form. */
-        fun individualId(): Optional<String> = Optional.ofNullable(individualId.getNullable("individual_id"))
+        fun individualId(): Optional<String> =
+            Optional.ofNullable(individualId.getNullable("individual_id"))
 
         /** Total number of allowances claimed (in cents). */
-        fun totalNumberOfAllowances(): Optional<Long> = Optional.ofNullable(totalNumberOfAllowances.getNullable("total_number_of_allowances"))
+        fun totalNumberOfAllowances(): Optional<Long> =
+            Optional.ofNullable(totalNumberOfAllowances.getNullable("total_number_of_allowances"))
 
         /** Additional withholding amount (in cents). */
         @JsonProperty("additional_withholding")
@@ -226,27 +213,25 @@ class W42005 @JsonCreator private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Data =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                additionalWithholding()
-                exemption()
-                filingStatus()
-                individualId()
-                totalNumberOfAllowances()
-                validated = true
+        fun validate(): Data = apply {
+            if (validated) {
+                return@apply
             }
+
+            additionalWithholding()
+            exemption()
+            filingStatus()
+            individualId()
+            totalNumberOfAllowances()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Data]. */
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Data]. */
@@ -260,126 +245,114 @@ class W42005 @JsonCreator private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(data: Data) =
-                apply {
-                    additionalWithholding = data.additionalWithholding
-                    exemption = data.exemption
-                    filingStatus = data.filingStatus
-                    individualId = data.individualId
-                    totalNumberOfAllowances = data.totalNumberOfAllowances
-                    additionalProperties = data.additionalProperties.toMutableMap()
-                }
+            internal fun from(data: Data) = apply {
+                additionalWithholding = data.additionalWithholding
+                exemption = data.exemption
+                filingStatus = data.filingStatus
+                individualId = data.individualId
+                totalNumberOfAllowances = data.totalNumberOfAllowances
+                additionalProperties = data.additionalProperties.toMutableMap()
+            }
 
             /** Additional withholding amount (in cents). */
-            fun additionalWithholding(additionalWithholding: Long?) = additionalWithholding(JsonField.ofNullable(additionalWithholding))
+            fun additionalWithholding(additionalWithholding: Long?) =
+                additionalWithholding(JsonField.ofNullable(additionalWithholding))
 
             /** Additional withholding amount (in cents). */
-            fun additionalWithholding(additionalWithholding: Long) = additionalWithholding(additionalWithholding as Long?)
+            fun additionalWithholding(additionalWithholding: Long) =
+                additionalWithholding(additionalWithholding as Long?)
 
             /** Additional withholding amount (in cents). */
-            fun additionalWithholding(additionalWithholding: Optional<Long>) = additionalWithholding(additionalWithholding.getOrNull())
+            fun additionalWithholding(additionalWithholding: Optional<Long>) =
+                additionalWithholding(additionalWithholding.getOrNull())
 
             /** Additional withholding amount (in cents). */
-            fun additionalWithholding(additionalWithholding: JsonField<Long>) =
-                apply {
-                    this.additionalWithholding = additionalWithholding
-                }
+            fun additionalWithholding(additionalWithholding: JsonField<Long>) = apply {
+                this.additionalWithholding = additionalWithholding
+            }
 
             /** Indicates exemption status from federal tax withholding. */
             fun exemption(exemption: Exemption) = exemption(JsonField.of(exemption))
 
             /** Indicates exemption status from federal tax withholding. */
-            fun exemption(exemption: JsonField<Exemption>) =
-                apply {
-                    this.exemption = exemption
-                }
+            fun exemption(exemption: JsonField<Exemption>) = apply { this.exemption = exemption }
 
             /** The individual's filing status for tax purposes. */
             fun filingStatus(filingStatus: FilingStatus) = filingStatus(JsonField.of(filingStatus))
 
             /** The individual's filing status for tax purposes. */
-            fun filingStatus(filingStatus: JsonField<FilingStatus>) =
-                apply {
-                    this.filingStatus = filingStatus
-                }
+            fun filingStatus(filingStatus: JsonField<FilingStatus>) = apply {
+                this.filingStatus = filingStatus
+            }
 
             /** The unique identifier for the individual associated with this 2005 W4 form. */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
             /** The unique identifier for the individual associated with this 2005 W4 form. */
-            fun individualId(individualId: JsonField<String>) =
-                apply {
-                    this.individualId = individualId
-                }
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
 
             /** Total number of allowances claimed (in cents). */
-            fun totalNumberOfAllowances(totalNumberOfAllowances: Long?) = totalNumberOfAllowances(JsonField.ofNullable(totalNumberOfAllowances))
+            fun totalNumberOfAllowances(totalNumberOfAllowances: Long?) =
+                totalNumberOfAllowances(JsonField.ofNullable(totalNumberOfAllowances))
 
             /** Total number of allowances claimed (in cents). */
-            fun totalNumberOfAllowances(totalNumberOfAllowances: Long) = totalNumberOfAllowances(totalNumberOfAllowances as Long?)
+            fun totalNumberOfAllowances(totalNumberOfAllowances: Long) =
+                totalNumberOfAllowances(totalNumberOfAllowances as Long?)
 
             /** Total number of allowances claimed (in cents). */
-            fun totalNumberOfAllowances(totalNumberOfAllowances: Optional<Long>) = totalNumberOfAllowances(totalNumberOfAllowances.getOrNull())
+            fun totalNumberOfAllowances(totalNumberOfAllowances: Optional<Long>) =
+                totalNumberOfAllowances(totalNumberOfAllowances.getOrNull())
 
             /** Total number of allowances claimed (in cents). */
-            fun totalNumberOfAllowances(totalNumberOfAllowances: JsonField<Long>) =
-                apply {
-                    this.totalNumberOfAllowances = totalNumberOfAllowances
-                }
+            fun totalNumberOfAllowances(totalNumberOfAllowances: JsonField<Long>) = apply {
+                this.totalNumberOfAllowances = totalNumberOfAllowances
+            }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.putAll(additionalProperties)
-                }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-            fun removeAdditionalProperty(key: String) =
-                apply {
-                    additionalProperties.remove(key)
-                }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) =
-                apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
             fun build(): Data =
                 Data(
-                  additionalWithholding,
-                  exemption,
-                  filingStatus,
-                  individualId,
-                  totalNumberOfAllowances,
-                  additionalProperties.toImmutable(),
+                    additionalWithholding,
+                    exemption,
+                    filingStatus,
+                    individualId,
+                    totalNumberOfAllowances,
+                    additionalProperties.toImmutable(),
                 )
         }
 
         /** Indicates exemption status from federal tax withholding. */
-        class Exemption @JsonCreator private constructor(
-            private val value: JsonField<String>,
-
-        ) : Enum {
+        class Exemption @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that
-             * doesn't match any known member, and you want to know that value. For example, if
-             * the SDK is on an older version than the API, then the API may respond with new
-             * members that the SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -400,11 +373,9 @@ class W42005 @JsonCreator private constructor(
              * An enum containing [Exemption]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Exemption] can contain an unknown value in a couple of cases:
-             *
-             * - It was deserialized from data that doesn't match any known member. For
-             *   example, if the SDK is on an older version than the API, then the API may
-             *   respond with new members that the SDK is unaware of.
-             *
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -421,8 +392,8 @@ class W42005 @JsonCreator private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if
-             * you want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -437,8 +408,8 @@ class W42005 @JsonCreator private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a
-             * known member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
              */
             fun known(): Known =
                 when (this) {
@@ -453,17 +424,20 @@ class W42005 @JsonCreator private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have
-             * the expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
              */
-            fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is Exemption && value == other.value /* spotless:on */
+                return /* spotless:off */ other is Exemption && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -472,27 +446,26 @@ class W42005 @JsonCreator private constructor(
         }
 
         /** The individual's filing status for tax purposes. */
-        class FilingStatus @JsonCreator private constructor(
-            private val value: JsonField<String>,
-
-        ) : Enum {
+        class FilingStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that
-             * doesn't match any known member, and you want to know that value. For example, if
-             * the SDK is on an older version than the API, then the API may respond with new
-             * members that the SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
 
                 @JvmField val MARRIED = of("married")
 
-                @JvmField val MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE = of("married_but_withhold_at_higher_single_rate")
+                @JvmField
+                val MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE =
+                    of("married_but_withhold_at_higher_single_rate")
 
                 @JvmField val SINGLE = of("single")
 
@@ -507,15 +480,12 @@ class W42005 @JsonCreator private constructor(
             }
 
             /**
-             * An enum containing [FilingStatus]'s known values, as well as an [_UNKNOWN]
-             * member.
+             * An enum containing [FilingStatus]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [FilingStatus] can contain an unknown value in a couple of cases:
-             *
-             * - It was deserialized from data that doesn't match any known member. For
-             *   example, if the SDK is on an older version than the API, then the API may
-             *   respond with new members that the SDK is unaware of.
-             *
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -533,13 +503,14 @@ class W42005 @JsonCreator private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if
-             * you want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
                     MARRIED -> Value.MARRIED
-                    MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE -> Value.MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE
+                    MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE ->
+                        Value.MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE
                     SINGLE -> Value.SINGLE
                     else -> Value._UNKNOWN
                 }
@@ -550,13 +521,14 @@ class W42005 @JsonCreator private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a
-             * known member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
              */
             fun known(): Known =
                 when (this) {
                     MARRIED -> Known.MARRIED
-                    MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE -> Known.MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE
+                    MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE ->
+                        Known.MARRIED_BUT_WITHHOLD_AT_HIGHER_SINGLE_RATE
                     SINGLE -> Known.SINGLE
                     else -> throw FinchInvalidDataException("Unknown FilingStatus: $value")
                 }
@@ -567,17 +539,20 @@ class W42005 @JsonCreator private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have
-             * the expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
              */
-            fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is FilingStatus && value == other.value /* spotless:on */
+                return /* spotless:off */ other is FilingStatus && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -586,11 +561,11 @@ class W42005 @JsonCreator private constructor(
         }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Data && additionalWithholding == other.additionalWithholding && exemption == other.exemption && filingStatus == other.filingStatus && individualId == other.individualId && totalNumberOfAllowances == other.totalNumberOfAllowances && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Data && additionalWithholding == other.additionalWithholding && exemption == other.exemption && filingStatus == other.filingStatus && individualId == other.individualId && totalNumberOfAllowances == other.totalNumberOfAllowances && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -599,25 +574,22 @@ class W42005 @JsonCreator private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() = "Data{additionalWithholding=$additionalWithholding, exemption=$exemption, filingStatus=$filingStatus, individualId=$individualId, totalNumberOfAllowances=$totalNumberOfAllowances, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Data{additionalWithholding=$additionalWithholding, exemption=$exemption, filingStatus=$filingStatus, individualId=$individualId, totalNumberOfAllowances=$totalNumberOfAllowances, additionalProperties=$additionalProperties}"
     }
 
     /** Specifies the form type, indicating that this document is a 2005 W4 form. */
-    class Type @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -628,18 +600,16 @@ class W42005 @JsonCreator private constructor(
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
-            W4_2005,
+            W4_2005
         }
 
         /**
          * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Type] can contain an unknown value in a couple of cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -649,11 +619,11 @@ class W42005 @JsonCreator private constructor(
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -664,11 +634,10 @@ class W42005 @JsonCreator private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws FinchInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
          */
         fun known(): Known =
             when (this) {
@@ -679,20 +648,21 @@ class W42005 @JsonCreator private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws FinchInvalidDataException if this class instance's value does not have
-         * the expected primitive type.
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -701,11 +671,11 @@ class W42005 @JsonCreator private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is W42005 && data == other.data && type == other.type && year == other.year && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is W42005 && data == other.data && type == other.type && year == other.year && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -714,5 +684,6 @@ class W42005 @JsonCreator private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() = "W42005{data=$data, type=$type, year=$year, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "W42005{data=$data, type=$type, year=$year, additionalProperties=$additionalProperties}"
 }

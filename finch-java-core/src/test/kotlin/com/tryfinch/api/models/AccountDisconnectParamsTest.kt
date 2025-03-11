@@ -8,6 +8,6 @@ class AccountDisconnectParamsTest {
 
     @Test
     fun create() {
-      AccountDisconnectParams.builder().build()
+        AccountDisconnectParams.builder().build()
     }
 }

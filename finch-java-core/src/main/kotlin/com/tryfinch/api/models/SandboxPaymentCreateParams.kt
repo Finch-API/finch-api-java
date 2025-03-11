@@ -24,11 +24,11 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Add a new sandbox payment */
-class SandboxPaymentCreateParams private constructor(
+class SandboxPaymentCreateParams
+private constructor(
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-
 ) : Params {
 
     fun endDate(): Optional<String> = body.endDate()
@@ -49,43 +49,47 @@ class SandboxPaymentCreateParams private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun _body(): Body = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     /**
-     * Fields to configure the payment. Takes all fields from the `/payment` endpoint.
-     * All fields are optional.
+     * Fields to configure the payment. Takes all fields from the `/payment` endpoint. All fields
+     * are optional.
      */
     @NoAutoDetect
-    class Body @JsonCreator private constructor(
-        @JsonProperty("end_date") @ExcludeMissing private val endDate: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("pay_statements") @ExcludeMissing private val payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
-        @JsonProperty("start_date") @ExcludeMissing private val startDate: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+    class Body
+    @JsonCreator
+    private constructor(
+        @JsonProperty("end_date")
+        @ExcludeMissing
+        private val endDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("pay_statements")
+        @ExcludeMissing
+        private val payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
+        @JsonProperty("start_date")
+        @ExcludeMissing
+        private val startDate: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun endDate(): Optional<String> = Optional.ofNullable(endDate.getNullable("end_date"))
 
-        fun payStatements(): Optional<List<PayStatement>> = Optional.ofNullable(payStatements.getNullable("pay_statements"))
+        fun payStatements(): Optional<List<PayStatement>> =
+            Optional.ofNullable(payStatements.getNullable("pay_statements"))
 
         fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
 
-        @JsonProperty("end_date")
-        @ExcludeMissing
-        fun _endDate(): JsonField<String> = endDate
+        @JsonProperty("end_date") @ExcludeMissing fun _endDate(): JsonField<String> = endDate
 
         @JsonProperty("pay_statements")
         @ExcludeMissing
         fun _payStatements(): JsonField<List<PayStatement>> = payStatements
 
-        @JsonProperty("start_date")
-        @ExcludeMissing
-        fun _startDate(): JsonField<String> = startDate
+        @JsonProperty("start_date") @ExcludeMissing fun _startDate(): JsonField<String> = startDate
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -93,25 +97,23 @@ class SandboxPaymentCreateParams private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                endDate()
-                payStatements().ifPresent { it.forEach { it.validate() } }
-                startDate()
-                validated = true
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
             }
+
+            endDate()
+            payStatements().ifPresent { it.forEach { it.validate() } }
+            startDate()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Body]. */
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Body]. */
@@ -123,83 +125,69 @@ class SandboxPaymentCreateParams private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) =
-                apply {
-                    endDate = body.endDate
-                    payStatements = body.payStatements.map { it.toMutableList() }
-                    startDate = body.startDate
-                    additionalProperties = body.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                endDate = body.endDate
+                payStatements = body.payStatements.map { it.toMutableList() }
+                startDate = body.startDate
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             fun endDate(endDate: String) = endDate(JsonField.of(endDate))
 
-            fun endDate(endDate: JsonField<String>) =
-                apply {
-                    this.endDate = endDate
-                }
+            fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
 
-            fun payStatements(payStatements: List<PayStatement>) = payStatements(JsonField.of(payStatements))
+            fun payStatements(payStatements: List<PayStatement>) =
+                payStatements(JsonField.of(payStatements))
 
-            fun payStatements(payStatements: JsonField<List<PayStatement>>) =
-                apply {
-                    this.payStatements = payStatements.map { it.toMutableList() }
-                }
+            fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
+                this.payStatements = payStatements.map { it.toMutableList() }
+            }
 
-            fun addPayStatement(payStatement: PayStatement) =
-                apply {
-                    payStatements = (payStatements ?: JsonField.of(mutableListOf())).also {
+            fun addPayStatement(payStatement: PayStatement) = apply {
+                payStatements =
+                    (payStatements ?: JsonField.of(mutableListOf())).also {
                         checkKnown("payStatements", it).add(payStatement)
                     }
-                }
+            }
 
             fun startDate(startDate: String) = startDate(JsonField.of(startDate))
 
-            fun startDate(startDate: JsonField<String>) =
-                apply {
-                    this.startDate = startDate
-                }
+            fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.putAll(additionalProperties)
-                }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-            fun removeAdditionalProperty(key: String) =
-                apply {
-                    additionalProperties.remove(key)
-                }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) =
-                apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
             fun build(): Body =
                 Body(
-                  endDate,
-                  (payStatements ?: JsonMissing.of()).map { it.toImmutable() },
-                  startDate,
-                  additionalProperties.toImmutable(),
+                    endDate,
+                    (payStatements ?: JsonMissing.of()).map { it.toImmutable() },
+                    startDate,
+                    additionalProperties.toImmutable(),
                 )
         }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Body && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -208,22 +196,20 @@ class SandboxPaymentCreateParams private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() = "Body{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Body{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun none(): SandboxPaymentCreateParams = builder().build()
+        @JvmStatic fun none(): SandboxPaymentCreateParams = builder().build()
 
         /**
-         * Returns a mutable builder for constructing an instance of
-         * [SandboxPaymentCreateParams].
+         * Returns a mutable builder for constructing an instance of [SandboxPaymentCreateParams].
          */
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [SandboxPaymentCreateParams]. */
@@ -235,246 +221,223 @@ class SandboxPaymentCreateParams private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(sandboxPaymentCreateParams: SandboxPaymentCreateParams) =
-            apply {
-                body = sandboxPaymentCreateParams.body.toBuilder()
-                additionalHeaders = sandboxPaymentCreateParams.additionalHeaders.toBuilder()
-                additionalQueryParams = sandboxPaymentCreateParams.additionalQueryParams.toBuilder()
-            }
+        internal fun from(sandboxPaymentCreateParams: SandboxPaymentCreateParams) = apply {
+            body = sandboxPaymentCreateParams.body.toBuilder()
+            additionalHeaders = sandboxPaymentCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxPaymentCreateParams.additionalQueryParams.toBuilder()
+        }
 
-        fun endDate(endDate: String) =
-            apply {
-                body.endDate(endDate)
-            }
+        fun endDate(endDate: String) = apply { body.endDate(endDate) }
 
-        fun endDate(endDate: JsonField<String>) =
-            apply {
-                body.endDate(endDate)
-            }
+        fun endDate(endDate: JsonField<String>) = apply { body.endDate(endDate) }
 
-        fun payStatements(payStatements: List<PayStatement>) =
-            apply {
-                body.payStatements(payStatements)
-            }
+        fun payStatements(payStatements: List<PayStatement>) = apply {
+            body.payStatements(payStatements)
+        }
 
-        fun payStatements(payStatements: JsonField<List<PayStatement>>) =
-            apply {
-                body.payStatements(payStatements)
-            }
+        fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
+            body.payStatements(payStatements)
+        }
 
-        fun addPayStatement(payStatement: PayStatement) =
-            apply {
-                body.addPayStatement(payStatement)
-            }
+        fun addPayStatement(payStatement: PayStatement) = apply {
+            body.addPayStatement(payStatement)
+        }
 
-        fun startDate(startDate: String) =
-            apply {
-                body.startDate(startDate)
-            }
+        fun startDate(startDate: String) = apply { body.startDate(startDate) }
 
-        fun startDate(startDate: JsonField<String>) =
-            apply {
-                body.startDate(startDate)
-            }
+        fun startDate(startDate: JsonField<String>) = apply { body.startDate(startDate) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.additionalProperties(additionalBodyProperties)
-            }
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
 
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) =
-            apply {
-                body.putAdditionalProperty(
-                  key, value
-                )
-            }
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) =
-            apply {
-                body.removeAdditionalProperty(key)
-            }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) =
-            apply {
-                body.removeAllAdditionalProperties(keys)
-            }
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
-        fun additionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.clear()
-                putAllAdditionalHeaders(additionalHeaders)
-            }
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
 
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.clear()
-                putAllAdditionalHeaders(additionalHeaders)
-            }
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
 
-        fun putAdditionalHeader(name: String, value: String) =
-            apply {
-                additionalHeaders.put(name, value)
-            }
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
 
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) =
-            apply {
-                additionalHeaders.put(name, values)
-            }
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.putAll(additionalHeaders)
-            }
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.putAll(additionalHeaders)
-            }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
 
-        fun replaceAdditionalHeaders(name: String, value: String) =
-            apply {
-                additionalHeaders.replace(name, value)
-            }
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
 
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) =
-            apply {
-                additionalHeaders.replace(name, values)
-            }
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.replaceAll(additionalHeaders)
-            }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.replaceAll(additionalHeaders)
-            }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
 
-        fun removeAdditionalHeaders(name: String) =
-            apply {
-                additionalHeaders.remove(name)
-            }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
-        fun removeAllAdditionalHeaders(names: Set<String>) =
-            apply {
-                additionalHeaders.removeAll(names)
-            }
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
 
-        fun additionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.clear()
-                putAllAdditionalQueryParams(additionalQueryParams)
-            }
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.clear()
-                putAllAdditionalQueryParams(additionalQueryParams)
-            }
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
 
-        fun putAdditionalQueryParam(key: String, value: String) =
-            apply {
-                additionalQueryParams.put(key, value)
-            }
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
 
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                additionalQueryParams.put(key, values)
-            }
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
 
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.putAll(additionalQueryParams)
-            }
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
 
         fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.putAll(additionalQueryParams)
             }
 
-        fun replaceAdditionalQueryParams(key: String, value: String) =
-            apply {
-                additionalQueryParams.replace(key, value)
-            }
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
 
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                additionalQueryParams.replace(key, values)
-            }
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
 
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.replaceAll(additionalQueryParams)
-            }
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
 
         fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) =
-            apply {
-                additionalQueryParams.remove(key)
-            }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
-        fun removeAllAdditionalQueryParams(keys: Set<String>) =
-            apply {
-                additionalQueryParams.removeAll(keys)
-            }
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
 
         fun build(): SandboxPaymentCreateParams =
             SandboxPaymentCreateParams(
-              body.build(),
-              additionalHeaders.build(),
-              additionalQueryParams.build(),
+                body.build(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
             )
     }
 
     @NoAutoDetect
-    class PayStatement @JsonCreator private constructor(
-        @JsonProperty("earnings") @ExcludeMissing private val earnings: JsonField<List<Earning?>> = JsonMissing.of(),
-        @JsonProperty("employee_deductions") @ExcludeMissing private val employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
-        @JsonProperty("employer_contributions") @ExcludeMissing private val employerContributions: JsonField<List<EmployerContribution?>> = JsonMissing.of(),
-        @JsonProperty("gross_pay") @ExcludeMissing private val grossPay: JsonField<Money> = JsonMissing.of(),
-        @JsonProperty("individual_id") @ExcludeMissing private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("net_pay") @ExcludeMissing private val netPay: JsonField<Money> = JsonMissing.of(),
-        @JsonProperty("payment_method") @ExcludeMissing private val paymentMethod: JsonField<PaymentMethod> = JsonMissing.of(),
-        @JsonProperty("taxes") @ExcludeMissing private val taxes: JsonField<List<Tax?>> = JsonMissing.of(),
-        @JsonProperty("total_hours") @ExcludeMissing private val totalHours: JsonField<Double> = JsonMissing.of(),
+    class PayStatement
+    @JsonCreator
+    private constructor(
+        @JsonProperty("earnings")
+        @ExcludeMissing
+        private val earnings: JsonField<List<Earning?>> = JsonMissing.of(),
+        @JsonProperty("employee_deductions")
+        @ExcludeMissing
+        private val employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
+        @JsonProperty("employer_contributions")
+        @ExcludeMissing
+        private val employerContributions: JsonField<List<EmployerContribution?>> =
+            JsonMissing.of(),
+        @JsonProperty("gross_pay")
+        @ExcludeMissing
+        private val grossPay: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        private val individualId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("net_pay")
+        @ExcludeMissing
+        private val netPay: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("payment_method")
+        @ExcludeMissing
+        private val paymentMethod: JsonField<PaymentMethod> = JsonMissing.of(),
+        @JsonProperty("taxes")
+        @ExcludeMissing
+        private val taxes: JsonField<List<Tax?>> = JsonMissing.of(),
+        @JsonProperty("total_hours")
+        @ExcludeMissing
+        private val totalHours: JsonField<Double> = JsonMissing.of(),
         @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The array of earnings objects associated with this pay statement */
-        fun earnings(): Optional<List<Earning?>> = Optional.ofNullable(earnings.getNullable("earnings"))
+        fun earnings(): Optional<List<Earning?>> =
+            Optional.ofNullable(earnings.getNullable("earnings"))
 
         /** The array of deductions objects associated with this pay statement. */
-        fun employeeDeductions(): Optional<List<EmployeeDeduction?>> = Optional.ofNullable(employeeDeductions.getNullable("employee_deductions"))
+        fun employeeDeductions(): Optional<List<EmployeeDeduction?>> =
+            Optional.ofNullable(employeeDeductions.getNullable("employee_deductions"))
 
-        fun employerContributions(): Optional<List<EmployerContribution?>> = Optional.ofNullable(employerContributions.getNullable("employer_contributions"))
+        fun employerContributions(): Optional<List<EmployerContribution?>> =
+            Optional.ofNullable(employerContributions.getNullable("employer_contributions"))
 
         fun grossPay(): Optional<Money> = Optional.ofNullable(grossPay.getNullable("gross_pay"))
 
         /** A stable Finch `id` (UUID v4) for an individual in the company */
-        fun individualId(): Optional<String> = Optional.ofNullable(individualId.getNullable("individual_id"))
+        fun individualId(): Optional<String> =
+            Optional.ofNullable(individualId.getNullable("individual_id"))
 
         fun netPay(): Optional<Money> = Optional.ofNullable(netPay.getNullable("net_pay"))
 
         /** The payment method. */
-        fun paymentMethod(): Optional<PaymentMethod> = Optional.ofNullable(paymentMethod.getNullable("payment_method"))
+        fun paymentMethod(): Optional<PaymentMethod> =
+            Optional.ofNullable(paymentMethod.getNullable("payment_method"))
 
         /** The array of taxes objects associated with this pay statement. */
         fun taxes(): Optional<List<Tax?>> = Optional.ofNullable(taxes.getNullable("taxes"))
 
         /** The number of hours worked for this pay period */
-        fun totalHours(): Optional<Double> = Optional.ofNullable(totalHours.getNullable("total_hours"))
+        fun totalHours(): Optional<Double> =
+            Optional.ofNullable(totalHours.getNullable("total_hours"))
 
         /** The type of the payment associated with the pay statement. */
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
@@ -493,18 +456,14 @@ class SandboxPaymentCreateParams private constructor(
         @ExcludeMissing
         fun _employerContributions(): JsonField<List<EmployerContribution?>> = employerContributions
 
-        @JsonProperty("gross_pay")
-        @ExcludeMissing
-        fun _grossPay(): JsonField<Money> = grossPay
+        @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay(): JsonField<Money> = grossPay
 
         /** A stable Finch `id` (UUID v4) for an individual in the company */
         @JsonProperty("individual_id")
         @ExcludeMissing
         fun _individualId(): JsonField<String> = individualId
 
-        @JsonProperty("net_pay")
-        @ExcludeMissing
-        fun _netPay(): JsonField<Money> = netPay
+        @JsonProperty("net_pay") @ExcludeMissing fun _netPay(): JsonField<Money> = netPay
 
         /** The payment method. */
         @JsonProperty("payment_method")
@@ -512,9 +471,7 @@ class SandboxPaymentCreateParams private constructor(
         fun _paymentMethod(): JsonField<PaymentMethod> = paymentMethod
 
         /** The array of taxes objects associated with this pay statement. */
-        @JsonProperty("taxes")
-        @ExcludeMissing
-        fun _taxes(): JsonField<List<Tax?>> = taxes
+        @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax?>> = taxes
 
         /** The number of hours worked for this pay period */
         @JsonProperty("total_hours")
@@ -522,9 +479,7 @@ class SandboxPaymentCreateParams private constructor(
         fun _totalHours(): JsonField<Double> = totalHours
 
         /** The type of the payment associated with the pay statement. */
-        @JsonProperty("type")
-        @ExcludeMissing
-        fun _type(): JsonField<Type> = type
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -532,32 +487,30 @@ class SandboxPaymentCreateParams private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): PayStatement =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                earnings().ifPresent { it.forEach { it?.validate() } }
-                employeeDeductions().ifPresent { it.forEach { it?.validate() } }
-                employerContributions().ifPresent { it.forEach { it?.validate() } }
-                grossPay().ifPresent { it.validate() }
-                individualId()
-                netPay().ifPresent { it.validate() }
-                paymentMethod()
-                taxes().ifPresent { it.forEach { it?.validate() } }
-                totalHours()
-                type()
-                validated = true
+        fun validate(): PayStatement = apply {
+            if (validated) {
+                return@apply
             }
+
+            earnings().ifPresent { it.forEach { it?.validate() } }
+            employeeDeductions().ifPresent { it.forEach { it?.validate() } }
+            employerContributions().ifPresent { it.forEach { it?.validate() } }
+            grossPay().ifPresent { it.validate() }
+            individualId()
+            netPay().ifPresent { it.validate() }
+            paymentMethod()
+            taxes().ifPresent { it.forEach { it?.validate() } }
+            totalHours()
+            type()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [PayStatement]. */
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [PayStatement]. */
@@ -576,20 +529,20 @@ class SandboxPaymentCreateParams private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(payStatement: PayStatement) =
-                apply {
-                    earnings = payStatement.earnings.map { it.toMutableList() }
-                    employeeDeductions = payStatement.employeeDeductions.map { it.toMutableList() }
-                    employerContributions = payStatement.employerContributions.map { it.toMutableList() }
-                    grossPay = payStatement.grossPay
-                    individualId = payStatement.individualId
-                    netPay = payStatement.netPay
-                    paymentMethod = payStatement.paymentMethod
-                    taxes = payStatement.taxes.map { it.toMutableList() }
-                    totalHours = payStatement.totalHours
-                    type = payStatement.type
-                    additionalProperties = payStatement.additionalProperties.toMutableMap()
-                }
+            internal fun from(payStatement: PayStatement) = apply {
+                earnings = payStatement.earnings.map { it.toMutableList() }
+                employeeDeductions = payStatement.employeeDeductions.map { it.toMutableList() }
+                employerContributions =
+                    payStatement.employerContributions.map { it.toMutableList() }
+                grossPay = payStatement.grossPay
+                individualId = payStatement.individualId
+                netPay = payStatement.netPay
+                paymentMethod = payStatement.paymentMethod
+                taxes = payStatement.taxes.map { it.toMutableList() }
+                totalHours = payStatement.totalHours
+                type = payStatement.type
+                additionalProperties = payStatement.additionalProperties.toMutableMap()
+            }
 
             /** The array of earnings objects associated with this pay statement */
             fun earnings(earnings: List<Earning?>?) = earnings(JsonField.ofNullable(earnings))
@@ -598,24 +551,25 @@ class SandboxPaymentCreateParams private constructor(
             fun earnings(earnings: Optional<List<Earning?>>) = earnings(earnings.getOrNull())
 
             /** The array of earnings objects associated with this pay statement */
-            fun earnings(earnings: JsonField<List<Earning?>>) =
-                apply {
-                    this.earnings = earnings.map { it.toMutableList() }
-                }
+            fun earnings(earnings: JsonField<List<Earning?>>) = apply {
+                this.earnings = earnings.map { it.toMutableList() }
+            }
 
             /** The array of earnings objects associated with this pay statement */
-            fun addEarning(earning: Earning) =
-                apply {
-                    earnings = (earnings ?: JsonField.of(mutableListOf())).also {
+            fun addEarning(earning: Earning) = apply {
+                earnings =
+                    (earnings ?: JsonField.of(mutableListOf())).also {
                         checkKnown("earnings", it).add(earning)
                     }
-                }
+            }
 
             /** The array of deductions objects associated with this pay statement. */
-            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) = employeeDeductions(JsonField.ofNullable(employeeDeductions))
+            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) =
+                employeeDeductions(JsonField.ofNullable(employeeDeductions))
 
             /** The array of deductions objects associated with this pay statement. */
-            fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction?>>) = employeeDeductions(employeeDeductions.getOrNull())
+            fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction?>>) =
+                employeeDeductions(employeeDeductions.getOrNull())
 
             /** The array of deductions objects associated with this pay statement. */
             fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) =
@@ -624,67 +578,65 @@ class SandboxPaymentCreateParams private constructor(
                 }
 
             /** The array of deductions objects associated with this pay statement. */
-            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) =
-                apply {
-                    employeeDeductions = (employeeDeductions ?: JsonField.of(mutableListOf())).also {
+            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
+                employeeDeductions =
+                    (employeeDeductions ?: JsonField.of(mutableListOf())).also {
                         checkKnown("employeeDeductions", it).add(employeeDeduction)
                     }
-                }
+            }
 
-            fun employerContributions(employerContributions: List<EmployerContribution?>?) = employerContributions(JsonField.ofNullable(employerContributions))
+            fun employerContributions(employerContributions: List<EmployerContribution?>?) =
+                employerContributions(JsonField.ofNullable(employerContributions))
 
-            fun employerContributions(employerContributions: Optional<List<EmployerContribution?>>) = employerContributions(employerContributions.getOrNull())
+            fun employerContributions(
+                employerContributions: Optional<List<EmployerContribution?>>
+            ) = employerContributions(employerContributions.getOrNull())
 
-            fun employerContributions(employerContributions: JsonField<List<EmployerContribution?>>) =
-                apply {
-                    this.employerContributions = employerContributions.map { it.toMutableList() }
-                }
+            fun employerContributions(
+                employerContributions: JsonField<List<EmployerContribution?>>
+            ) = apply {
+                this.employerContributions = employerContributions.map { it.toMutableList() }
+            }
 
-            fun addEmployerContribution(employerContribution: EmployerContribution) =
-                apply {
-                    employerContributions = (employerContributions ?: JsonField.of(mutableListOf())).also {
+            fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
+                employerContributions =
+                    (employerContributions ?: JsonField.of(mutableListOf())).also {
                         checkKnown("employerContributions", it).add(employerContribution)
                     }
-                }
+            }
 
             fun grossPay(grossPay: Money?) = grossPay(JsonField.ofNullable(grossPay))
 
             fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.getOrNull())
 
-            fun grossPay(grossPay: JsonField<Money>) =
-                apply {
-                    this.grossPay = grossPay
-                }
+            fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
             /** A stable Finch `id` (UUID v4) for an individual in the company */
-            fun individualId(individualId: JsonField<String>) =
-                apply {
-                    this.individualId = individualId
-                }
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
 
             fun netPay(netPay: Money?) = netPay(JsonField.ofNullable(netPay))
 
             fun netPay(netPay: Optional<Money>) = netPay(netPay.getOrNull())
 
-            fun netPay(netPay: JsonField<Money>) =
-                apply {
-                    this.netPay = netPay
-                }
+            fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
             /** The payment method. */
-            fun paymentMethod(paymentMethod: PaymentMethod?) = paymentMethod(JsonField.ofNullable(paymentMethod))
+            fun paymentMethod(paymentMethod: PaymentMethod?) =
+                paymentMethod(JsonField.ofNullable(paymentMethod))
 
             /** The payment method. */
-            fun paymentMethod(paymentMethod: Optional<PaymentMethod>) = paymentMethod(paymentMethod.getOrNull())
+            fun paymentMethod(paymentMethod: Optional<PaymentMethod>) =
+                paymentMethod(paymentMethod.getOrNull())
 
             /** The payment method. */
-            fun paymentMethod(paymentMethod: JsonField<PaymentMethod>) =
-                apply {
-                    this.paymentMethod = paymentMethod
-                }
+            fun paymentMethod(paymentMethod: JsonField<PaymentMethod>) = apply {
+                this.paymentMethod = paymentMethod
+            }
 
             /** The array of taxes objects associated with this pay statement. */
             fun taxes(taxes: List<Tax?>?) = taxes(JsonField.ofNullable(taxes))
@@ -693,18 +645,17 @@ class SandboxPaymentCreateParams private constructor(
             fun taxes(taxes: Optional<List<Tax?>>) = taxes(taxes.getOrNull())
 
             /** The array of taxes objects associated with this pay statement. */
-            fun taxes(taxes: JsonField<List<Tax?>>) =
-                apply {
-                    this.taxes = taxes.map { it.toMutableList() }
-                }
+            fun taxes(taxes: JsonField<List<Tax?>>) = apply {
+                this.taxes = taxes.map { it.toMutableList() }
+            }
 
             /** The array of taxes objects associated with this pay statement. */
-            fun addTax(tax: Tax) =
-                apply {
-                    taxes = (taxes ?: JsonField.of(mutableListOf())).also {
+            fun addTax(tax: Tax) = apply {
+                taxes =
+                    (taxes ?: JsonField.of(mutableListOf())).also {
                         checkKnown("taxes", it).add(tax)
                     }
-                }
+            }
 
             /** The number of hours worked for this pay period */
             fun totalHours(totalHours: Double?) = totalHours(JsonField.ofNullable(totalHours))
@@ -716,10 +667,7 @@ class SandboxPaymentCreateParams private constructor(
             fun totalHours(totalHours: Optional<Double>) = totalHours(totalHours.getOrNull())
 
             /** The number of hours worked for this pay period */
-            fun totalHours(totalHours: JsonField<Double>) =
-                apply {
-                    this.totalHours = totalHours
-                }
+            fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
 
             /** The type of the payment associated with the pay statement. */
             fun type(type: Type?) = type(JsonField.ofNullable(type))
@@ -728,76 +676,81 @@ class SandboxPaymentCreateParams private constructor(
             fun type(type: Optional<Type>) = type(type.getOrNull())
 
             /** The type of the payment associated with the pay statement. */
-            fun type(type: JsonField<Type>) =
-                apply {
-                    this.type = type
-                }
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.putAll(additionalProperties)
-                }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-            fun removeAdditionalProperty(key: String) =
-                apply {
-                    additionalProperties.remove(key)
-                }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) =
-                apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
             fun build(): PayStatement =
                 PayStatement(
-                  (earnings ?: JsonMissing.of()).map { it.toImmutable() },
-                  (employeeDeductions ?: JsonMissing.of()).map { it.toImmutable() },
-                  (employerContributions ?: JsonMissing.of()).map { it.toImmutable() },
-                  grossPay,
-                  individualId,
-                  netPay,
-                  paymentMethod,
-                  (taxes ?: JsonMissing.of()).map { it.toImmutable() },
-                  totalHours,
-                  type,
-                  additionalProperties.toImmutable(),
+                    (earnings ?: JsonMissing.of()).map { it.toImmutable() },
+                    (employeeDeductions ?: JsonMissing.of()).map { it.toImmutable() },
+                    (employerContributions ?: JsonMissing.of()).map { it.toImmutable() },
+                    grossPay,
+                    individualId,
+                    netPay,
+                    paymentMethod,
+                    (taxes ?: JsonMissing.of()).map { it.toImmutable() },
+                    totalHours,
+                    type,
+                    additionalProperties.toImmutable(),
                 )
         }
 
         @NoAutoDetect
-        class Earning @JsonCreator private constructor(
-            @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("attributes") @ExcludeMissing private val attributes: JsonField<Attributes> = JsonMissing.of(),
-            @JsonProperty("currency") @ExcludeMissing private val currency: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("hours") @ExcludeMissing private val hours: JsonField<Double> = JsonMissing.of(),
-            @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+        class Earning
+        @JsonCreator
+        private constructor(
+            @JsonProperty("amount")
+            @ExcludeMissing
+            private val amount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("attributes")
+            @ExcludeMissing
+            private val attributes: JsonField<Attributes> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            private val currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("hours")
+            @ExcludeMissing
+            private val hours: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<Type> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The earnings amount in cents. */
             fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-            fun attributes(): Optional<Attributes> = Optional.ofNullable(attributes.getNullable("attributes"))
+            fun attributes(): Optional<Attributes> =
+                Optional.ofNullable(attributes.getNullable("attributes"))
 
             /** The earnings currency code. */
             fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
             /**
-             * The number of hours associated with this earning. (For salaried employees, this
-             * could be hours per pay period, `0` or `null`, depending on the provider).
+             * The number of hours associated with this earning. (For salaried employees, this could
+             * be hours per pay period, `0` or `null`, depending on the provider).
              */
             fun hours(): Optional<Double> = Optional.ofNullable(hours.getNullable("hours"))
 
@@ -808,36 +761,26 @@ class SandboxPaymentCreateParams private constructor(
             fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
             /** The earnings amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
-            fun _amount(): JsonField<Long> = amount
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
             @JsonProperty("attributes")
             @ExcludeMissing
             fun _attributes(): JsonField<Attributes> = attributes
 
             /** The earnings currency code. */
-            @JsonProperty("currency")
-            @ExcludeMissing
-            fun _currency(): JsonField<String> = currency
+            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
             /**
-             * The number of hours associated with this earning. (For salaried employees, this
-             * could be hours per pay period, `0` or `null`, depending on the provider).
+             * The number of hours associated with this earning. (For salaried employees, this could
+             * be hours per pay period, `0` or `null`, depending on the provider).
              */
-            @JsonProperty("hours")
-            @ExcludeMissing
-            fun _hours(): JsonField<Double> = hours
+            @JsonProperty("hours") @ExcludeMissing fun _hours(): JsonField<Double> = hours
 
             /** The exact name of the deduction from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
-            fun _name(): JsonField<String> = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             /** The type of earning. */
-            @JsonProperty("type")
-            @ExcludeMissing
-            fun _type(): JsonField<Type> = type
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -845,28 +788,26 @@ class SandboxPaymentCreateParams private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): Earning =
-                apply {
-                    if (validated) {
-                      return@apply
-                    }
-
-                    amount()
-                    attributes().ifPresent { it.validate() }
-                    currency()
-                    hours()
-                    name()
-                    type()
-                    validated = true
+            fun validate(): Earning = apply {
+                if (validated) {
+                    return@apply
                 }
+
+                amount()
+                attributes().ifPresent { it.validate() }
+                currency()
+                hours()
+                name()
+                type()
+                validated = true
+            }
 
             fun toBuilder() = Builder().from(this)
 
             companion object {
 
                 /** Returns a mutable builder for constructing an instance of [Earning]. */
-                @JvmStatic
-                fun builder() = Builder()
+                @JvmStatic fun builder() = Builder()
             }
 
             /** A builder for [Earning]. */
@@ -881,16 +822,15 @@ class SandboxPaymentCreateParams private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(earning: Earning) =
-                    apply {
-                        amount = earning.amount
-                        attributes = earning.attributes
-                        currency = earning.currency
-                        hours = earning.hours
-                        name = earning.name
-                        type = earning.type
-                        additionalProperties = earning.additionalProperties.toMutableMap()
-                    }
+                internal fun from(earning: Earning) = apply {
+                    amount = earning.amount
+                    attributes = earning.attributes
+                    currency = earning.currency
+                    hours = earning.hours
+                    name = earning.name
+                    type = earning.type
+                    additionalProperties = earning.additionalProperties.toMutableMap()
+                }
 
                 /** The earnings amount in cents. */
                 fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
@@ -902,19 +842,17 @@ class SandboxPaymentCreateParams private constructor(
                 fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
                 /** The earnings amount in cents. */
-                fun amount(amount: JsonField<Long>) =
-                    apply {
-                        this.amount = amount
-                    }
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
+                fun attributes(attributes: Attributes?) =
+                    attributes(JsonField.ofNullable(attributes))
 
-                fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
+                fun attributes(attributes: Optional<Attributes>) =
+                    attributes(attributes.getOrNull())
 
-                fun attributes(attributes: JsonField<Attributes>) =
-                    apply {
-                        this.attributes = attributes
-                    }
+                fun attributes(attributes: JsonField<Attributes>) = apply {
+                    this.attributes = attributes
+                }
 
                 /** The earnings currency code. */
                 fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
@@ -923,10 +861,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
                 /** The earnings currency code. */
-                fun currency(currency: JsonField<String>) =
-                    apply {
-                        this.currency = currency
-                    }
+                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
                 /**
                  * The number of hours associated with this earning. (For salaried employees, this
@@ -950,10 +885,7 @@ class SandboxPaymentCreateParams private constructor(
                  * The number of hours associated with this earning. (For salaried employees, this
                  * could be hours per pay period, `0` or `null`, depending on the provider).
                  */
-                fun hours(hours: JsonField<Double>) =
-                    apply {
-                        this.hours = hours
-                    }
+                fun hours(hours: JsonField<Double>) = apply { this.hours = hours }
 
                 /** The exact name of the deduction from the pay statement. */
                 fun name(name: String?) = name(JsonField.ofNullable(name))
@@ -962,10 +894,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The exact name of the deduction from the pay statement. */
-                fun name(name: JsonField<String>) =
-                    apply {
-                        this.name = name
-                    }
+                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 /** The type of earning. */
                 fun type(type: Type?) = type(JsonField.ofNullable(type))
@@ -974,57 +903,55 @@ class SandboxPaymentCreateParams private constructor(
                 fun type(type: Optional<Type>) = type(type.getOrNull())
 
                 /** The type of earning. */
-                fun type(type: JsonField<Type>) =
-                    apply {
-                        this.type = type
-                    }
+                fun type(type: JsonField<Type>) = apply { this.type = type }
 
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.clear()
-                        putAllAdditionalProperties(additionalProperties)
-                    }
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-                fun putAdditionalProperty(key: String, value: JsonValue) =
-                    apply {
-                        additionalProperties.put(key, value)
-                    }
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun removeAdditionalProperty(key: String) =
-                    apply {
-                        additionalProperties.remove(key)
-                    }
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
 
-                fun removeAllAdditionalProperties(keys: Set<String>) =
-                    apply {
-                        keys.forEach(::removeAdditionalProperty)
-                    }
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Earning =
                     Earning(
-                      amount,
-                      attributes,
-                      currency,
-                      hours,
-                      name,
-                      type,
-                      additionalProperties.toImmutable(),
+                        amount,
+                        attributes,
+                        currency,
+                        hours,
+                        name,
+                        type,
+                        additionalProperties.toImmutable(),
                     )
             }
 
             @NoAutoDetect
-            class Attributes @JsonCreator private constructor(
-                @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<Metadata> = JsonMissing.of(),
-                @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+            class Attributes
+            @JsonCreator
+            private constructor(
+                @JsonProperty("metadata")
+                @ExcludeMissing
+                private val metadata: JsonField<Metadata> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+                fun metadata(): Optional<Metadata> =
+                    Optional.ofNullable(metadata.getNullable("metadata"))
 
                 @JsonProperty("metadata")
                 @ExcludeMissing
@@ -1036,23 +963,21 @@ class SandboxPaymentCreateParams private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): Attributes =
-                    apply {
-                        if (validated) {
-                          return@apply
-                        }
-
-                        metadata().ifPresent { it.validate() }
-                        validated = true
+                fun validate(): Attributes = apply {
+                    if (validated) {
+                        return@apply
                     }
+
+                    metadata().ifPresent { it.validate() }
+                    validated = true
+                }
 
                 fun toBuilder() = Builder().from(this)
 
                 companion object {
 
                     /** Returns a mutable builder for constructing an instance of [Attributes]. */
-                    @JvmStatic
-                    fun builder() = Builder()
+                    @JvmStatic fun builder() = Builder()
                 }
 
                 /** A builder for [Attributes]. */
@@ -1062,69 +987,64 @@ class SandboxPaymentCreateParams private constructor(
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(attributes: Attributes) =
-                        apply {
-                            metadata = attributes.metadata
-                            additionalProperties = attributes.additionalProperties.toMutableMap()
-                        }
+                    internal fun from(attributes: Attributes) = apply {
+                        metadata = attributes.metadata
+                        additionalProperties = attributes.additionalProperties.toMutableMap()
+                    }
 
                     fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-                    fun metadata(metadata: JsonField<Metadata>) =
-                        apply {
-                            this.metadata = metadata
-                        }
+                    fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.clear()
-                            putAllAdditionalProperties(additionalProperties)
-                        }
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
 
-                    fun putAdditionalProperty(key: String, value: JsonValue) =
-                        apply {
-                            additionalProperties.put(key, value)
-                        }
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                         apply {
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
-                    fun removeAdditionalProperty(key: String) =
-                        apply {
-                            additionalProperties.remove(key)
-                        }
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
 
-                    fun removeAllAdditionalProperties(keys: Set<String>) =
-                        apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
 
                     fun build(): Attributes =
-                        Attributes(
-                          metadata, additionalProperties.toImmutable()
-                        )
+                        Attributes(metadata, additionalProperties.toImmutable())
                 }
 
                 @NoAutoDetect
-                class Metadata @JsonCreator private constructor(
-                    @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
-                    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+                class Metadata
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
+                    @JsonAnySetter
+                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
-                    fun metadata(): Optional<InnerMetadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+                    fun metadata(): Optional<InnerMetadata> =
+                        Optional.ofNullable(metadata.getNullable("metadata"))
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
                     @JsonProperty("metadata")
                     @ExcludeMissing
@@ -1136,54 +1056,51 @@ class SandboxPaymentCreateParams private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): Metadata =
-                        apply {
-                            if (validated) {
-                              return@apply
-                            }
-
-                            metadata().ifPresent { it.validate() }
-                            validated = true
+                    fun validate(): Metadata = apply {
+                        if (validated) {
+                            return@apply
                         }
+
+                        metadata().ifPresent { it.validate() }
+                        validated = true
+                    }
 
                     fun toBuilder() = Builder().from(this)
 
                     companion object {
 
                         /** Returns a mutable builder for constructing an instance of [Metadata]. */
-                        @JvmStatic
-                        fun builder() = Builder()
+                        @JvmStatic fun builder() = Builder()
                     }
 
                     /** A builder for [Metadata]. */
                     class Builder internal constructor() {
 
                         private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
-                        private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(metadata: Metadata) =
-                            apply {
-                                this.metadata = metadata.metadata
-                                additionalProperties = metadata.additionalProperties.toMutableMap()
-                            }
+                        internal fun from(metadata: Metadata) = apply {
+                            this.metadata = metadata.metadata
+                            additionalProperties = metadata.additionalProperties.toMutableMap()
+                        }
 
                         /**
-                         * The metadata to be attached to the entity by existing rules. It is a key-value
-                         * pairs where the values can be of any type (string, number, boolean, object,
-                         * array, etc.).
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
                          */
                         fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
 
                         /**
-                         * The metadata to be attached to the entity by existing rules. It is a key-value
-                         * pairs where the values can be of any type (string, number, boolean, object,
-                         * array, etc.).
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
                          */
-                        fun metadata(metadata: JsonField<InnerMetadata>) =
-                            apply {
-                                this.metadata = metadata
-                            }
+                        fun metadata(metadata: JsonField<InnerMetadata>) = apply {
+                            this.metadata = metadata
+                        }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -1191,41 +1108,38 @@ class SandboxPaymentCreateParams private constructor(
                                 putAllAdditionalProperties(additionalProperties)
                             }
 
-                        fun putAdditionalProperty(key: String, value: JsonValue) =
-                            apply {
-                                additionalProperties.put(key, value)
-                            }
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
 
-                        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                        fun removeAdditionalProperty(key: String) =
-                            apply {
-                                additionalProperties.remove(key)
-                            }
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
 
-                        fun removeAllAdditionalProperties(keys: Set<String>) =
-                            apply {
-                                keys.forEach(::removeAdditionalProperty)
-                            }
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
 
                         fun build(): Metadata =
-                            Metadata(
-                              metadata, additionalProperties.toImmutable()
-                            )
+                            Metadata(metadata, additionalProperties.toImmutable())
                     }
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
                     @NoAutoDetect
-                    class InnerMetadata @JsonCreator private constructor(
-                        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+                    class InnerMetadata
+                    @JsonCreator
+                    private constructor(
+                        @JsonAnySetter
+                        private val additionalProperties: Map<String, JsonValue> =
+                            immutableEmptyMap()
                     ) {
 
                         @JsonAnyGetter
@@ -1234,34 +1148,36 @@ class SandboxPaymentCreateParams private constructor(
 
                         private var validated: Boolean = false
 
-                        fun validate(): InnerMetadata =
-                            apply {
-                                if (validated) {
-                                  return@apply
-                                }
-
-                                validated = true
+                        fun validate(): InnerMetadata = apply {
+                            if (validated) {
+                                return@apply
                             }
+
+                            validated = true
+                        }
 
                         fun toBuilder() = Builder().from(this)
 
                         companion object {
 
-                            /** Returns a mutable builder for constructing an instance of [InnerMetadata]. */
-                            @JvmStatic
-                            fun builder() = Builder()
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerMetadata].
+                             */
+                            @JvmStatic fun builder() = Builder()
                         }
 
                         /** A builder for [InnerMetadata]. */
                         class Builder internal constructor() {
 
-                            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
 
                             @JvmSynthetic
-                            internal fun from(innerMetadata: InnerMetadata) =
-                                apply {
-                                    additionalProperties = innerMetadata.additionalProperties.toMutableMap()
-                                }
+                            internal fun from(innerMetadata: InnerMetadata) = apply {
+                                additionalProperties =
+                                    innerMetadata.additionalProperties.toMutableMap()
+                            }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -1269,35 +1185,32 @@ class SandboxPaymentCreateParams private constructor(
                                     putAllAdditionalProperties(additionalProperties)
                                 }
 
-                            fun putAdditionalProperty(key: String, value: JsonValue) =
-                                apply {
-                                    additionalProperties.put(key, value)
-                                }
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
 
-                            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                                apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                            fun removeAdditionalProperty(key: String) =
-                                apply {
-                                    additionalProperties.remove(key)
-                                }
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
 
-                            fun removeAllAdditionalProperties(keys: Set<String>) =
-                                apply {
-                                    keys.forEach(::removeAdditionalProperty)
-                                }
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
 
-                            fun build(): InnerMetadata = InnerMetadata(additionalProperties.toImmutable())
+                            fun build(): InnerMetadata =
+                                InnerMetadata(additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
-                          if (this === other) {
-                              return true
-                          }
+                            if (this === other) {
+                                return true
+                            }
 
-                          return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
@@ -1306,15 +1219,16 @@ class SandboxPaymentCreateParams private constructor(
 
                         override fun hashCode(): Int = hashCode
 
-                        override fun toString() = "InnerMetadata{additionalProperties=$additionalProperties}"
+                        override fun toString() =
+                            "InnerMetadata{additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
-                      if (this === other) {
-                          return true
-                      }
+                        if (this === other) {
+                            return true
+                        }
 
-                      return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
@@ -1323,15 +1237,16 @@ class SandboxPaymentCreateParams private constructor(
 
                     override fun hashCode(): Int = hashCode
 
-                    override fun toString() = "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                    override fun toString() =
+                        "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
-                  if (this === other) {
-                      return true
-                  }
+                    if (this === other) {
+                        return true
+                    }
 
-                  return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
@@ -1340,14 +1255,13 @@ class SandboxPaymentCreateParams private constructor(
 
                 override fun hashCode(): Int = hashCode
 
-                override fun toString() = "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
+                override fun toString() =
+                    "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
             }
 
             /** The type of earning. */
-            class Type @JsonCreator private constructor(
-                private val value: JsonField<String>,
-
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1357,8 +1271,7 @@ class SandboxPaymentCreateParams private constructor(
                  * the SDK is on an older version than the API, then the API may respond with new
                  * members that the SDK is unaware of.
                  */
-                @com.fasterxml.jackson.annotation.JsonValue
-                fun _value(): JsonField<String> = value
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
                 companion object {
 
@@ -1412,11 +1325,9 @@ class SandboxPaymentCreateParams private constructor(
                  * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
                  *
                  * An instance of [Type] can contain an unknown value in a couple of cases:
-                 *
-                 * - It was deserialized from data that doesn't match any known member. For
-                 *   example, if the SDK is on an older version than the API, then the API may
-                 *   respond with new members that the SDK is unaware of.
-                 *
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
                  * - It was constructed with an arbitrary value using the [of] method.
                  */
                 enum class Value {
@@ -1433,7 +1344,9 @@ class SandboxPaymentCreateParams private constructor(
                     TIPS,
                     _1099,
                     OTHER,
-                    /** An enum member indicating that [Type] was instantiated with an unknown value. */
+                    /**
+                     * An enum member indicating that [Type] was instantiated with an unknown value.
+                     */
                     _UNKNOWN,
                 }
 
@@ -1468,8 +1381,8 @@ class SandboxPaymentCreateParams private constructor(
                  * Use the [value] method instead if you're uncertain the value is always known and
                  * don't want to throw for the unknown case.
                  *
-                 * @throws FinchInvalidDataException if this class instance's value is a not a
-                 * known member.
+                 * @throws FinchInvalidDataException if this class instance's value is a not a known
+                 *   member.
                  */
                 fun known(): Known =
                     when (this) {
@@ -1496,16 +1409,19 @@ class SandboxPaymentCreateParams private constructor(
                  * debugging and generally doesn't throw.
                  *
                  * @throws FinchInvalidDataException if this class instance's value does not have
-                 * the expected primitive type.
+                 *   the expected primitive type.
                  */
-                fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        FinchInvalidDataException("Value is not a String")
+                    }
 
                 override fun equals(other: Any?): Boolean {
-                  if (this === other) {
-                      return true
-                  }
+                    if (this === other) {
+                        return true
+                    }
 
-                  return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1514,11 +1430,11 @@ class SandboxPaymentCreateParams private constructor(
             }
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is Earning && amount == other.amount && attributes == other.attributes && currency == other.currency && hours == other.hours && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Earning && amount == other.amount && attributes == other.attributes && currency == other.currency && hours == other.hours && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
@@ -1527,25 +1443,41 @@ class SandboxPaymentCreateParams private constructor(
 
             override fun hashCode(): Int = hashCode
 
-            override fun toString() = "Earning{amount=$amount, attributes=$attributes, currency=$currency, hours=$hours, name=$name, type=$type, additionalProperties=$additionalProperties}"
+            override fun toString() =
+                "Earning{amount=$amount, attributes=$attributes, currency=$currency, hours=$hours, name=$name, type=$type, additionalProperties=$additionalProperties}"
         }
 
         @NoAutoDetect
-        class EmployeeDeduction @JsonCreator private constructor(
-            @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("attributes") @ExcludeMissing private val attributes: JsonField<Attributes> = JsonMissing.of(),
-            @JsonProperty("currency") @ExcludeMissing private val currency: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("pre_tax") @ExcludeMissing private val preTax: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing private val type: JsonField<BenefitType> = JsonMissing.of(),
-            @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+        class EmployeeDeduction
+        @JsonCreator
+        private constructor(
+            @JsonProperty("amount")
+            @ExcludeMissing
+            private val amount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("attributes")
+            @ExcludeMissing
+            private val attributes: JsonField<Attributes> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            private val currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("pre_tax")
+            @ExcludeMissing
+            private val preTax: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<BenefitType> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The deduction amount in cents. */
             fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-            fun attributes(): Optional<Attributes> = Optional.ofNullable(attributes.getNullable("attributes"))
+            fun attributes(): Optional<Attributes> =
+                Optional.ofNullable(attributes.getNullable("attributes"))
 
             /** The deduction currency. */
             fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
@@ -1560,33 +1492,23 @@ class SandboxPaymentCreateParams private constructor(
             fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
 
             /** The deduction amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
-            fun _amount(): JsonField<Long> = amount
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
             @JsonProperty("attributes")
             @ExcludeMissing
             fun _attributes(): JsonField<Attributes> = attributes
 
             /** The deduction currency. */
-            @JsonProperty("currency")
-            @ExcludeMissing
-            fun _currency(): JsonField<String> = currency
+            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
             /** The deduction name from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
-            fun _name(): JsonField<String> = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             /** Boolean indicating if the deduction is pre-tax. */
-            @JsonProperty("pre_tax")
-            @ExcludeMissing
-            fun _preTax(): JsonField<Boolean> = preTax
+            @JsonProperty("pre_tax") @ExcludeMissing fun _preTax(): JsonField<Boolean> = preTax
 
             /** Type of benefit. */
-            @JsonProperty("type")
-            @ExcludeMissing
-            fun _type(): JsonField<BenefitType> = type
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -1594,28 +1516,28 @@ class SandboxPaymentCreateParams private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): EmployeeDeduction =
-                apply {
-                    if (validated) {
-                      return@apply
-                    }
-
-                    amount()
-                    attributes().ifPresent { it.validate() }
-                    currency()
-                    name()
-                    preTax()
-                    type()
-                    validated = true
+            fun validate(): EmployeeDeduction = apply {
+                if (validated) {
+                    return@apply
                 }
+
+                amount()
+                attributes().ifPresent { it.validate() }
+                currency()
+                name()
+                preTax()
+                type()
+                validated = true
+            }
 
             fun toBuilder() = Builder().from(this)
 
             companion object {
 
-                /** Returns a mutable builder for constructing an instance of [EmployeeDeduction]. */
-                @JvmStatic
-                fun builder() = Builder()
+                /**
+                 * Returns a mutable builder for constructing an instance of [EmployeeDeduction].
+                 */
+                @JvmStatic fun builder() = Builder()
             }
 
             /** A builder for [EmployeeDeduction]. */
@@ -1630,16 +1552,15 @@ class SandboxPaymentCreateParams private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(employeeDeduction: EmployeeDeduction) =
-                    apply {
-                        amount = employeeDeduction.amount
-                        attributes = employeeDeduction.attributes
-                        currency = employeeDeduction.currency
-                        name = employeeDeduction.name
-                        preTax = employeeDeduction.preTax
-                        type = employeeDeduction.type
-                        additionalProperties = employeeDeduction.additionalProperties.toMutableMap()
-                    }
+                internal fun from(employeeDeduction: EmployeeDeduction) = apply {
+                    amount = employeeDeduction.amount
+                    attributes = employeeDeduction.attributes
+                    currency = employeeDeduction.currency
+                    name = employeeDeduction.name
+                    preTax = employeeDeduction.preTax
+                    type = employeeDeduction.type
+                    additionalProperties = employeeDeduction.additionalProperties.toMutableMap()
+                }
 
                 /** The deduction amount in cents. */
                 fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
@@ -1651,19 +1572,17 @@ class SandboxPaymentCreateParams private constructor(
                 fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
                 /** The deduction amount in cents. */
-                fun amount(amount: JsonField<Long>) =
-                    apply {
-                        this.amount = amount
-                    }
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
+                fun attributes(attributes: Attributes?) =
+                    attributes(JsonField.ofNullable(attributes))
 
-                fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
+                fun attributes(attributes: Optional<Attributes>) =
+                    attributes(attributes.getOrNull())
 
-                fun attributes(attributes: JsonField<Attributes>) =
-                    apply {
-                        this.attributes = attributes
-                    }
+                fun attributes(attributes: JsonField<Attributes>) = apply {
+                    this.attributes = attributes
+                }
 
                 /** The deduction currency. */
                 fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
@@ -1672,10 +1591,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
                 /** The deduction currency. */
-                fun currency(currency: JsonField<String>) =
-                    apply {
-                        this.currency = currency
-                    }
+                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
                 /** The deduction name from the pay statement. */
                 fun name(name: String?) = name(JsonField.ofNullable(name))
@@ -1684,10 +1600,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The deduction name from the pay statement. */
-                fun name(name: JsonField<String>) =
-                    apply {
-                        this.name = name
-                    }
+                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 /** Boolean indicating if the deduction is pre-tax. */
                 fun preTax(preTax: Boolean?) = preTax(JsonField.ofNullable(preTax))
@@ -1699,10 +1612,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun preTax(preTax: Optional<Boolean>) = preTax(preTax.getOrNull())
 
                 /** Boolean indicating if the deduction is pre-tax. */
-                fun preTax(preTax: JsonField<Boolean>) =
-                    apply {
-                        this.preTax = preTax
-                    }
+                fun preTax(preTax: JsonField<Boolean>) = apply { this.preTax = preTax }
 
                 /** Type of benefit. */
                 fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
@@ -1711,57 +1621,55 @@ class SandboxPaymentCreateParams private constructor(
                 fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
                 /** Type of benefit. */
-                fun type(type: JsonField<BenefitType>) =
-                    apply {
-                        this.type = type
-                    }
+                fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.clear()
-                        putAllAdditionalProperties(additionalProperties)
-                    }
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-                fun putAdditionalProperty(key: String, value: JsonValue) =
-                    apply {
-                        additionalProperties.put(key, value)
-                    }
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun removeAdditionalProperty(key: String) =
-                    apply {
-                        additionalProperties.remove(key)
-                    }
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
 
-                fun removeAllAdditionalProperties(keys: Set<String>) =
-                    apply {
-                        keys.forEach(::removeAdditionalProperty)
-                    }
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): EmployeeDeduction =
                     EmployeeDeduction(
-                      amount,
-                      attributes,
-                      currency,
-                      name,
-                      preTax,
-                      type,
-                      additionalProperties.toImmutable(),
+                        amount,
+                        attributes,
+                        currency,
+                        name,
+                        preTax,
+                        type,
+                        additionalProperties.toImmutable(),
                     )
             }
 
             @NoAutoDetect
-            class Attributes @JsonCreator private constructor(
-                @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<Metadata> = JsonMissing.of(),
-                @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+            class Attributes
+            @JsonCreator
+            private constructor(
+                @JsonProperty("metadata")
+                @ExcludeMissing
+                private val metadata: JsonField<Metadata> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+                fun metadata(): Optional<Metadata> =
+                    Optional.ofNullable(metadata.getNullable("metadata"))
 
                 @JsonProperty("metadata")
                 @ExcludeMissing
@@ -1773,23 +1681,21 @@ class SandboxPaymentCreateParams private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): Attributes =
-                    apply {
-                        if (validated) {
-                          return@apply
-                        }
-
-                        metadata().ifPresent { it.validate() }
-                        validated = true
+                fun validate(): Attributes = apply {
+                    if (validated) {
+                        return@apply
                     }
+
+                    metadata().ifPresent { it.validate() }
+                    validated = true
+                }
 
                 fun toBuilder() = Builder().from(this)
 
                 companion object {
 
                     /** Returns a mutable builder for constructing an instance of [Attributes]. */
-                    @JvmStatic
-                    fun builder() = Builder()
+                    @JvmStatic fun builder() = Builder()
                 }
 
                 /** A builder for [Attributes]. */
@@ -1799,69 +1705,64 @@ class SandboxPaymentCreateParams private constructor(
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(attributes: Attributes) =
-                        apply {
-                            metadata = attributes.metadata
-                            additionalProperties = attributes.additionalProperties.toMutableMap()
-                        }
+                    internal fun from(attributes: Attributes) = apply {
+                        metadata = attributes.metadata
+                        additionalProperties = attributes.additionalProperties.toMutableMap()
+                    }
 
                     fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-                    fun metadata(metadata: JsonField<Metadata>) =
-                        apply {
-                            this.metadata = metadata
-                        }
+                    fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.clear()
-                            putAllAdditionalProperties(additionalProperties)
-                        }
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
 
-                    fun putAdditionalProperty(key: String, value: JsonValue) =
-                        apply {
-                            additionalProperties.put(key, value)
-                        }
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                         apply {
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
-                    fun removeAdditionalProperty(key: String) =
-                        apply {
-                            additionalProperties.remove(key)
-                        }
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
 
-                    fun removeAllAdditionalProperties(keys: Set<String>) =
-                        apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
 
                     fun build(): Attributes =
-                        Attributes(
-                          metadata, additionalProperties.toImmutable()
-                        )
+                        Attributes(metadata, additionalProperties.toImmutable())
                 }
 
                 @NoAutoDetect
-                class Metadata @JsonCreator private constructor(
-                    @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
-                    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+                class Metadata
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
+                    @JsonAnySetter
+                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
-                    fun metadata(): Optional<InnerMetadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+                    fun metadata(): Optional<InnerMetadata> =
+                        Optional.ofNullable(metadata.getNullable("metadata"))
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
                     @JsonProperty("metadata")
                     @ExcludeMissing
@@ -1873,54 +1774,51 @@ class SandboxPaymentCreateParams private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): Metadata =
-                        apply {
-                            if (validated) {
-                              return@apply
-                            }
-
-                            metadata().ifPresent { it.validate() }
-                            validated = true
+                    fun validate(): Metadata = apply {
+                        if (validated) {
+                            return@apply
                         }
+
+                        metadata().ifPresent { it.validate() }
+                        validated = true
+                    }
 
                     fun toBuilder() = Builder().from(this)
 
                     companion object {
 
                         /** Returns a mutable builder for constructing an instance of [Metadata]. */
-                        @JvmStatic
-                        fun builder() = Builder()
+                        @JvmStatic fun builder() = Builder()
                     }
 
                     /** A builder for [Metadata]. */
                     class Builder internal constructor() {
 
                         private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
-                        private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(metadata: Metadata) =
-                            apply {
-                                this.metadata = metadata.metadata
-                                additionalProperties = metadata.additionalProperties.toMutableMap()
-                            }
+                        internal fun from(metadata: Metadata) = apply {
+                            this.metadata = metadata.metadata
+                            additionalProperties = metadata.additionalProperties.toMutableMap()
+                        }
 
                         /**
-                         * The metadata to be attached to the entity by existing rules. It is a key-value
-                         * pairs where the values can be of any type (string, number, boolean, object,
-                         * array, etc.).
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
                          */
                         fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
 
                         /**
-                         * The metadata to be attached to the entity by existing rules. It is a key-value
-                         * pairs where the values can be of any type (string, number, boolean, object,
-                         * array, etc.).
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
                          */
-                        fun metadata(metadata: JsonField<InnerMetadata>) =
-                            apply {
-                                this.metadata = metadata
-                            }
+                        fun metadata(metadata: JsonField<InnerMetadata>) = apply {
+                            this.metadata = metadata
+                        }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -1928,41 +1826,38 @@ class SandboxPaymentCreateParams private constructor(
                                 putAllAdditionalProperties(additionalProperties)
                             }
 
-                        fun putAdditionalProperty(key: String, value: JsonValue) =
-                            apply {
-                                additionalProperties.put(key, value)
-                            }
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
 
-                        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                        fun removeAdditionalProperty(key: String) =
-                            apply {
-                                additionalProperties.remove(key)
-                            }
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
 
-                        fun removeAllAdditionalProperties(keys: Set<String>) =
-                            apply {
-                                keys.forEach(::removeAdditionalProperty)
-                            }
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
 
                         fun build(): Metadata =
-                            Metadata(
-                              metadata, additionalProperties.toImmutable()
-                            )
+                            Metadata(metadata, additionalProperties.toImmutable())
                     }
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
                     @NoAutoDetect
-                    class InnerMetadata @JsonCreator private constructor(
-                        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+                    class InnerMetadata
+                    @JsonCreator
+                    private constructor(
+                        @JsonAnySetter
+                        private val additionalProperties: Map<String, JsonValue> =
+                            immutableEmptyMap()
                     ) {
 
                         @JsonAnyGetter
@@ -1971,34 +1866,36 @@ class SandboxPaymentCreateParams private constructor(
 
                         private var validated: Boolean = false
 
-                        fun validate(): InnerMetadata =
-                            apply {
-                                if (validated) {
-                                  return@apply
-                                }
-
-                                validated = true
+                        fun validate(): InnerMetadata = apply {
+                            if (validated) {
+                                return@apply
                             }
+
+                            validated = true
+                        }
 
                         fun toBuilder() = Builder().from(this)
 
                         companion object {
 
-                            /** Returns a mutable builder for constructing an instance of [InnerMetadata]. */
-                            @JvmStatic
-                            fun builder() = Builder()
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerMetadata].
+                             */
+                            @JvmStatic fun builder() = Builder()
                         }
 
                         /** A builder for [InnerMetadata]. */
                         class Builder internal constructor() {
 
-                            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
 
                             @JvmSynthetic
-                            internal fun from(innerMetadata: InnerMetadata) =
-                                apply {
-                                    additionalProperties = innerMetadata.additionalProperties.toMutableMap()
-                                }
+                            internal fun from(innerMetadata: InnerMetadata) = apply {
+                                additionalProperties =
+                                    innerMetadata.additionalProperties.toMutableMap()
+                            }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -2006,35 +1903,32 @@ class SandboxPaymentCreateParams private constructor(
                                     putAllAdditionalProperties(additionalProperties)
                                 }
 
-                            fun putAdditionalProperty(key: String, value: JsonValue) =
-                                apply {
-                                    additionalProperties.put(key, value)
-                                }
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
 
-                            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                                apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                            fun removeAdditionalProperty(key: String) =
-                                apply {
-                                    additionalProperties.remove(key)
-                                }
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
 
-                            fun removeAllAdditionalProperties(keys: Set<String>) =
-                                apply {
-                                    keys.forEach(::removeAdditionalProperty)
-                                }
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
 
-                            fun build(): InnerMetadata = InnerMetadata(additionalProperties.toImmutable())
+                            fun build(): InnerMetadata =
+                                InnerMetadata(additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
-                          if (this === other) {
-                              return true
-                          }
+                            if (this === other) {
+                                return true
+                            }
 
-                          return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
@@ -2043,15 +1937,16 @@ class SandboxPaymentCreateParams private constructor(
 
                         override fun hashCode(): Int = hashCode
 
-                        override fun toString() = "InnerMetadata{additionalProperties=$additionalProperties}"
+                        override fun toString() =
+                            "InnerMetadata{additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
-                      if (this === other) {
-                          return true
-                      }
+                        if (this === other) {
+                            return true
+                        }
 
-                      return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
@@ -2060,15 +1955,16 @@ class SandboxPaymentCreateParams private constructor(
 
                     override fun hashCode(): Int = hashCode
 
-                    override fun toString() = "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                    override fun toString() =
+                        "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
-                  if (this === other) {
-                      return true
-                  }
+                    if (this === other) {
+                        return true
+                    }
 
-                  return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
@@ -2077,15 +1973,16 @@ class SandboxPaymentCreateParams private constructor(
 
                 override fun hashCode(): Int = hashCode
 
-                override fun toString() = "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
+                override fun toString() =
+                    "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is EmployeeDeduction && amount == other.amount && attributes == other.attributes && currency == other.currency && name == other.name && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is EmployeeDeduction && amount == other.amount && attributes == other.attributes && currency == other.currency && name == other.name && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
@@ -2094,24 +1991,38 @@ class SandboxPaymentCreateParams private constructor(
 
             override fun hashCode(): Int = hashCode
 
-            override fun toString() = "EmployeeDeduction{amount=$amount, attributes=$attributes, currency=$currency, name=$name, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
+            override fun toString() =
+                "EmployeeDeduction{amount=$amount, attributes=$attributes, currency=$currency, name=$name, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
         }
 
         @NoAutoDetect
-        class EmployerContribution @JsonCreator private constructor(
-            @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("attributes") @ExcludeMissing private val attributes: JsonField<Attributes> = JsonMissing.of(),
-            @JsonProperty("currency") @ExcludeMissing private val currency: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing private val type: JsonField<BenefitType> = JsonMissing.of(),
-            @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+        class EmployerContribution
+        @JsonCreator
+        private constructor(
+            @JsonProperty("amount")
+            @ExcludeMissing
+            private val amount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("attributes")
+            @ExcludeMissing
+            private val attributes: JsonField<Attributes> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            private val currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<BenefitType> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The contribution amount in cents. */
             fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-            fun attributes(): Optional<Attributes> = Optional.ofNullable(attributes.getNullable("attributes"))
+            fun attributes(): Optional<Attributes> =
+                Optional.ofNullable(attributes.getNullable("attributes"))
 
             /** The contribution currency. */
             fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
@@ -2123,28 +2034,20 @@ class SandboxPaymentCreateParams private constructor(
             fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
 
             /** The contribution amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
-            fun _amount(): JsonField<Long> = amount
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
             @JsonProperty("attributes")
             @ExcludeMissing
             fun _attributes(): JsonField<Attributes> = attributes
 
             /** The contribution currency. */
-            @JsonProperty("currency")
-            @ExcludeMissing
-            fun _currency(): JsonField<String> = currency
+            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
             /** The contribution name from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
-            fun _name(): JsonField<String> = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             /** Type of benefit. */
-            @JsonProperty("type")
-            @ExcludeMissing
-            fun _type(): JsonField<BenefitType> = type
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -2152,30 +2055,27 @@ class SandboxPaymentCreateParams private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): EmployerContribution =
-                apply {
-                    if (validated) {
-                      return@apply
-                    }
-
-                    amount()
-                    attributes().ifPresent { it.validate() }
-                    currency()
-                    name()
-                    type()
-                    validated = true
+            fun validate(): EmployerContribution = apply {
+                if (validated) {
+                    return@apply
                 }
+
+                amount()
+                attributes().ifPresent { it.validate() }
+                currency()
+                name()
+                type()
+                validated = true
+            }
 
             fun toBuilder() = Builder().from(this)
 
             companion object {
 
                 /**
-                 * Returns a mutable builder for constructing an instance of
-                 * [EmployerContribution].
+                 * Returns a mutable builder for constructing an instance of [EmployerContribution].
                  */
-                @JvmStatic
-                fun builder() = Builder()
+                @JvmStatic fun builder() = Builder()
             }
 
             /** A builder for [EmployerContribution]. */
@@ -2189,15 +2089,14 @@ class SandboxPaymentCreateParams private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(employerContribution: EmployerContribution) =
-                    apply {
-                        amount = employerContribution.amount
-                        attributes = employerContribution.attributes
-                        currency = employerContribution.currency
-                        name = employerContribution.name
-                        type = employerContribution.type
-                        additionalProperties = employerContribution.additionalProperties.toMutableMap()
-                    }
+                internal fun from(employerContribution: EmployerContribution) = apply {
+                    amount = employerContribution.amount
+                    attributes = employerContribution.attributes
+                    currency = employerContribution.currency
+                    name = employerContribution.name
+                    type = employerContribution.type
+                    additionalProperties = employerContribution.additionalProperties.toMutableMap()
+                }
 
                 /** The contribution amount in cents. */
                 fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
@@ -2209,19 +2108,17 @@ class SandboxPaymentCreateParams private constructor(
                 fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
                 /** The contribution amount in cents. */
-                fun amount(amount: JsonField<Long>) =
-                    apply {
-                        this.amount = amount
-                    }
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
+                fun attributes(attributes: Attributes?) =
+                    attributes(JsonField.ofNullable(attributes))
 
-                fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
+                fun attributes(attributes: Optional<Attributes>) =
+                    attributes(attributes.getOrNull())
 
-                fun attributes(attributes: JsonField<Attributes>) =
-                    apply {
-                        this.attributes = attributes
-                    }
+                fun attributes(attributes: JsonField<Attributes>) = apply {
+                    this.attributes = attributes
+                }
 
                 /** The contribution currency. */
                 fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
@@ -2230,10 +2127,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
                 /** The contribution currency. */
-                fun currency(currency: JsonField<String>) =
-                    apply {
-                        this.currency = currency
-                    }
+                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
                 /** The contribution name from the pay statement. */
                 fun name(name: String?) = name(JsonField.ofNullable(name))
@@ -2242,10 +2136,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The contribution name from the pay statement. */
-                fun name(name: JsonField<String>) =
-                    apply {
-                        this.name = name
-                    }
+                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 /** Type of benefit. */
                 fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
@@ -2254,56 +2145,54 @@ class SandboxPaymentCreateParams private constructor(
                 fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
                 /** Type of benefit. */
-                fun type(type: JsonField<BenefitType>) =
-                    apply {
-                        this.type = type
-                    }
+                fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.clear()
-                        putAllAdditionalProperties(additionalProperties)
-                    }
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-                fun putAdditionalProperty(key: String, value: JsonValue) =
-                    apply {
-                        additionalProperties.put(key, value)
-                    }
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun removeAdditionalProperty(key: String) =
-                    apply {
-                        additionalProperties.remove(key)
-                    }
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
 
-                fun removeAllAdditionalProperties(keys: Set<String>) =
-                    apply {
-                        keys.forEach(::removeAdditionalProperty)
-                    }
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): EmployerContribution =
                     EmployerContribution(
-                      amount,
-                      attributes,
-                      currency,
-                      name,
-                      type,
-                      additionalProperties.toImmutable(),
+                        amount,
+                        attributes,
+                        currency,
+                        name,
+                        type,
+                        additionalProperties.toImmutable(),
                     )
             }
 
             @NoAutoDetect
-            class Attributes @JsonCreator private constructor(
-                @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<Metadata> = JsonMissing.of(),
-                @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+            class Attributes
+            @JsonCreator
+            private constructor(
+                @JsonProperty("metadata")
+                @ExcludeMissing
+                private val metadata: JsonField<Metadata> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+                fun metadata(): Optional<Metadata> =
+                    Optional.ofNullable(metadata.getNullable("metadata"))
 
                 @JsonProperty("metadata")
                 @ExcludeMissing
@@ -2315,23 +2204,21 @@ class SandboxPaymentCreateParams private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): Attributes =
-                    apply {
-                        if (validated) {
-                          return@apply
-                        }
-
-                        metadata().ifPresent { it.validate() }
-                        validated = true
+                fun validate(): Attributes = apply {
+                    if (validated) {
+                        return@apply
                     }
+
+                    metadata().ifPresent { it.validate() }
+                    validated = true
+                }
 
                 fun toBuilder() = Builder().from(this)
 
                 companion object {
 
                     /** Returns a mutable builder for constructing an instance of [Attributes]. */
-                    @JvmStatic
-                    fun builder() = Builder()
+                    @JvmStatic fun builder() = Builder()
                 }
 
                 /** A builder for [Attributes]. */
@@ -2341,69 +2228,64 @@ class SandboxPaymentCreateParams private constructor(
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(attributes: Attributes) =
-                        apply {
-                            metadata = attributes.metadata
-                            additionalProperties = attributes.additionalProperties.toMutableMap()
-                        }
+                    internal fun from(attributes: Attributes) = apply {
+                        metadata = attributes.metadata
+                        additionalProperties = attributes.additionalProperties.toMutableMap()
+                    }
 
                     fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-                    fun metadata(metadata: JsonField<Metadata>) =
-                        apply {
-                            this.metadata = metadata
-                        }
+                    fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.clear()
-                            putAllAdditionalProperties(additionalProperties)
-                        }
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
 
-                    fun putAdditionalProperty(key: String, value: JsonValue) =
-                        apply {
-                            additionalProperties.put(key, value)
-                        }
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                         apply {
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
-                    fun removeAdditionalProperty(key: String) =
-                        apply {
-                            additionalProperties.remove(key)
-                        }
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
 
-                    fun removeAllAdditionalProperties(keys: Set<String>) =
-                        apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
 
                     fun build(): Attributes =
-                        Attributes(
-                          metadata, additionalProperties.toImmutable()
-                        )
+                        Attributes(metadata, additionalProperties.toImmutable())
                 }
 
                 @NoAutoDetect
-                class Metadata @JsonCreator private constructor(
-                    @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
-                    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+                class Metadata
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
+                    @JsonAnySetter
+                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
-                    fun metadata(): Optional<InnerMetadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+                    fun metadata(): Optional<InnerMetadata> =
+                        Optional.ofNullable(metadata.getNullable("metadata"))
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
                     @JsonProperty("metadata")
                     @ExcludeMissing
@@ -2415,54 +2297,51 @@ class SandboxPaymentCreateParams private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): Metadata =
-                        apply {
-                            if (validated) {
-                              return@apply
-                            }
-
-                            metadata().ifPresent { it.validate() }
-                            validated = true
+                    fun validate(): Metadata = apply {
+                        if (validated) {
+                            return@apply
                         }
+
+                        metadata().ifPresent { it.validate() }
+                        validated = true
+                    }
 
                     fun toBuilder() = Builder().from(this)
 
                     companion object {
 
                         /** Returns a mutable builder for constructing an instance of [Metadata]. */
-                        @JvmStatic
-                        fun builder() = Builder()
+                        @JvmStatic fun builder() = Builder()
                     }
 
                     /** A builder for [Metadata]. */
                     class Builder internal constructor() {
 
                         private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
-                        private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(metadata: Metadata) =
-                            apply {
-                                this.metadata = metadata.metadata
-                                additionalProperties = metadata.additionalProperties.toMutableMap()
-                            }
+                        internal fun from(metadata: Metadata) = apply {
+                            this.metadata = metadata.metadata
+                            additionalProperties = metadata.additionalProperties.toMutableMap()
+                        }
 
                         /**
-                         * The metadata to be attached to the entity by existing rules. It is a key-value
-                         * pairs where the values can be of any type (string, number, boolean, object,
-                         * array, etc.).
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
                          */
                         fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
 
                         /**
-                         * The metadata to be attached to the entity by existing rules. It is a key-value
-                         * pairs where the values can be of any type (string, number, boolean, object,
-                         * array, etc.).
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
                          */
-                        fun metadata(metadata: JsonField<InnerMetadata>) =
-                            apply {
-                                this.metadata = metadata
-                            }
+                        fun metadata(metadata: JsonField<InnerMetadata>) = apply {
+                            this.metadata = metadata
+                        }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -2470,41 +2349,38 @@ class SandboxPaymentCreateParams private constructor(
                                 putAllAdditionalProperties(additionalProperties)
                             }
 
-                        fun putAdditionalProperty(key: String, value: JsonValue) =
-                            apply {
-                                additionalProperties.put(key, value)
-                            }
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
 
-                        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                        fun removeAdditionalProperty(key: String) =
-                            apply {
-                                additionalProperties.remove(key)
-                            }
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
 
-                        fun removeAllAdditionalProperties(keys: Set<String>) =
-                            apply {
-                                keys.forEach(::removeAdditionalProperty)
-                            }
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
 
                         fun build(): Metadata =
-                            Metadata(
-                              metadata, additionalProperties.toImmutable()
-                            )
+                            Metadata(metadata, additionalProperties.toImmutable())
                     }
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
                     @NoAutoDetect
-                    class InnerMetadata @JsonCreator private constructor(
-                        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+                    class InnerMetadata
+                    @JsonCreator
+                    private constructor(
+                        @JsonAnySetter
+                        private val additionalProperties: Map<String, JsonValue> =
+                            immutableEmptyMap()
                     ) {
 
                         @JsonAnyGetter
@@ -2513,34 +2389,36 @@ class SandboxPaymentCreateParams private constructor(
 
                         private var validated: Boolean = false
 
-                        fun validate(): InnerMetadata =
-                            apply {
-                                if (validated) {
-                                  return@apply
-                                }
-
-                                validated = true
+                        fun validate(): InnerMetadata = apply {
+                            if (validated) {
+                                return@apply
                             }
+
+                            validated = true
+                        }
 
                         fun toBuilder() = Builder().from(this)
 
                         companion object {
 
-                            /** Returns a mutable builder for constructing an instance of [InnerMetadata]. */
-                            @JvmStatic
-                            fun builder() = Builder()
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerMetadata].
+                             */
+                            @JvmStatic fun builder() = Builder()
                         }
 
                         /** A builder for [InnerMetadata]. */
                         class Builder internal constructor() {
 
-                            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
 
                             @JvmSynthetic
-                            internal fun from(innerMetadata: InnerMetadata) =
-                                apply {
-                                    additionalProperties = innerMetadata.additionalProperties.toMutableMap()
-                                }
+                            internal fun from(innerMetadata: InnerMetadata) = apply {
+                                additionalProperties =
+                                    innerMetadata.additionalProperties.toMutableMap()
+                            }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -2548,35 +2426,32 @@ class SandboxPaymentCreateParams private constructor(
                                     putAllAdditionalProperties(additionalProperties)
                                 }
 
-                            fun putAdditionalProperty(key: String, value: JsonValue) =
-                                apply {
-                                    additionalProperties.put(key, value)
-                                }
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
 
-                            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                                apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                            fun removeAdditionalProperty(key: String) =
-                                apply {
-                                    additionalProperties.remove(key)
-                                }
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
 
-                            fun removeAllAdditionalProperties(keys: Set<String>) =
-                                apply {
-                                    keys.forEach(::removeAdditionalProperty)
-                                }
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
 
-                            fun build(): InnerMetadata = InnerMetadata(additionalProperties.toImmutable())
+                            fun build(): InnerMetadata =
+                                InnerMetadata(additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
-                          if (this === other) {
-                              return true
-                          }
+                            if (this === other) {
+                                return true
+                            }
 
-                          return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
@@ -2585,15 +2460,16 @@ class SandboxPaymentCreateParams private constructor(
 
                         override fun hashCode(): Int = hashCode
 
-                        override fun toString() = "InnerMetadata{additionalProperties=$additionalProperties}"
+                        override fun toString() =
+                            "InnerMetadata{additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
-                      if (this === other) {
-                          return true
-                      }
+                        if (this === other) {
+                            return true
+                        }
 
-                      return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
@@ -2602,15 +2478,16 @@ class SandboxPaymentCreateParams private constructor(
 
                     override fun hashCode(): Int = hashCode
 
-                    override fun toString() = "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                    override fun toString() =
+                        "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
-                  if (this === other) {
-                      return true
-                  }
+                    if (this === other) {
+                        return true
+                    }
 
-                  return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
@@ -2619,15 +2496,16 @@ class SandboxPaymentCreateParams private constructor(
 
                 override fun hashCode(): Int = hashCode
 
-                override fun toString() = "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
+                override fun toString() =
+                    "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is EmployerContribution && amount == other.amount && attributes == other.attributes && currency == other.currency && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is EmployerContribution && amount == other.amount && attributes == other.attributes && currency == other.currency && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
@@ -2636,25 +2514,23 @@ class SandboxPaymentCreateParams private constructor(
 
             override fun hashCode(): Int = hashCode
 
-            override fun toString() = "EmployerContribution{amount=$amount, attributes=$attributes, currency=$currency, name=$name, type=$type, additionalProperties=$additionalProperties}"
+            override fun toString() =
+                "EmployerContribution{amount=$amount, attributes=$attributes, currency=$currency, name=$name, type=$type, additionalProperties=$additionalProperties}"
         }
 
         /** The payment method. */
-        class PaymentMethod @JsonCreator private constructor(
-            private val value: JsonField<String>,
-
-        ) : Enum {
+        class PaymentMethod @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that
-             * doesn't match any known member, and you want to know that value. For example, if
-             * the SDK is on an older version than the API, then the API may respond with new
-             * members that the SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -2672,16 +2548,12 @@ class SandboxPaymentCreateParams private constructor(
             }
 
             /**
-             * An enum containing [PaymentMethod]'s known values, as well as an [_UNKNOWN]
-             * member.
+             * An enum containing [PaymentMethod]'s known values, as well as an [_UNKNOWN] member.
              *
-             * An instance of [PaymentMethod] can contain an unknown value in a couple of
-             * cases:
-             *
-             * - It was deserialized from data that doesn't match any known member. For
-             *   example, if the SDK is on an older version than the API, then the API may
-             *   respond with new members that the SDK is unaware of.
-             *
+             * An instance of [PaymentMethod] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -2698,8 +2570,8 @@ class SandboxPaymentCreateParams private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if
-             * you want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -2714,8 +2586,8 @@ class SandboxPaymentCreateParams private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a
-             * known member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
              */
             fun known(): Known =
                 when (this) {
@@ -2730,17 +2602,20 @@ class SandboxPaymentCreateParams private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have
-             * the expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
              */
-            fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is PaymentMethod && value == other.value /* spotless:on */
+                return /* spotless:off */ other is PaymentMethod && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -2749,27 +2624,43 @@ class SandboxPaymentCreateParams private constructor(
         }
 
         @NoAutoDetect
-        class Tax @JsonCreator private constructor(
-            @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("attributes") @ExcludeMissing private val attributes: JsonField<Attributes> = JsonMissing.of(),
-            @JsonProperty("currency") @ExcludeMissing private val currency: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("employer") @ExcludeMissing private val employer: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+        class Tax
+        @JsonCreator
+        private constructor(
+            @JsonProperty("amount")
+            @ExcludeMissing
+            private val amount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("attributes")
+            @ExcludeMissing
+            private val attributes: JsonField<Attributes> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            private val currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("employer")
+            @ExcludeMissing
+            private val employer: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<Type> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The tax amount in cents. */
             fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-            fun attributes(): Optional<Attributes> = Optional.ofNullable(attributes.getNullable("attributes"))
+            fun attributes(): Optional<Attributes> =
+                Optional.ofNullable(attributes.getNullable("attributes"))
 
             /** The currency code. */
             fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
             /** `true` if the amount is paid by the employers. */
-            fun employer(): Optional<Boolean> = Optional.ofNullable(employer.getNullable("employer"))
+            fun employer(): Optional<Boolean> =
+                Optional.ofNullable(employer.getNullable("employer"))
 
             /** The exact name of tax from the pay statement. */
             fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
@@ -2778,33 +2669,23 @@ class SandboxPaymentCreateParams private constructor(
             fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
             /** The tax amount in cents. */
-            @JsonProperty("amount")
-            @ExcludeMissing
-            fun _amount(): JsonField<Long> = amount
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
             @JsonProperty("attributes")
             @ExcludeMissing
             fun _attributes(): JsonField<Attributes> = attributes
 
             /** The currency code. */
-            @JsonProperty("currency")
-            @ExcludeMissing
-            fun _currency(): JsonField<String> = currency
+            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
             /** `true` if the amount is paid by the employers. */
-            @JsonProperty("employer")
-            @ExcludeMissing
-            fun _employer(): JsonField<Boolean> = employer
+            @JsonProperty("employer") @ExcludeMissing fun _employer(): JsonField<Boolean> = employer
 
             /** The exact name of tax from the pay statement. */
-            @JsonProperty("name")
-            @ExcludeMissing
-            fun _name(): JsonField<String> = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             /** The type of taxes. */
-            @JsonProperty("type")
-            @ExcludeMissing
-            fun _type(): JsonField<Type> = type
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -2812,28 +2693,26 @@ class SandboxPaymentCreateParams private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): Tax =
-                apply {
-                    if (validated) {
-                      return@apply
-                    }
-
-                    amount()
-                    attributes().ifPresent { it.validate() }
-                    currency()
-                    employer()
-                    name()
-                    type()
-                    validated = true
+            fun validate(): Tax = apply {
+                if (validated) {
+                    return@apply
                 }
+
+                amount()
+                attributes().ifPresent { it.validate() }
+                currency()
+                employer()
+                name()
+                type()
+                validated = true
+            }
 
             fun toBuilder() = Builder().from(this)
 
             companion object {
 
                 /** Returns a mutable builder for constructing an instance of [Tax]. */
-                @JvmStatic
-                fun builder() = Builder()
+                @JvmStatic fun builder() = Builder()
             }
 
             /** A builder for [Tax]. */
@@ -2848,16 +2727,15 @@ class SandboxPaymentCreateParams private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(tax: Tax) =
-                    apply {
-                        amount = tax.amount
-                        attributes = tax.attributes
-                        currency = tax.currency
-                        employer = tax.employer
-                        name = tax.name
-                        type = tax.type
-                        additionalProperties = tax.additionalProperties.toMutableMap()
-                    }
+                internal fun from(tax: Tax) = apply {
+                    amount = tax.amount
+                    attributes = tax.attributes
+                    currency = tax.currency
+                    employer = tax.employer
+                    name = tax.name
+                    type = tax.type
+                    additionalProperties = tax.additionalProperties.toMutableMap()
+                }
 
                 /** The tax amount in cents. */
                 fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
@@ -2869,19 +2747,17 @@ class SandboxPaymentCreateParams private constructor(
                 fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
                 /** The tax amount in cents. */
-                fun amount(amount: JsonField<Long>) =
-                    apply {
-                        this.amount = amount
-                    }
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
+                fun attributes(attributes: Attributes?) =
+                    attributes(JsonField.ofNullable(attributes))
 
-                fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
+                fun attributes(attributes: Optional<Attributes>) =
+                    attributes(attributes.getOrNull())
 
-                fun attributes(attributes: JsonField<Attributes>) =
-                    apply {
-                        this.attributes = attributes
-                    }
+                fun attributes(attributes: JsonField<Attributes>) = apply {
+                    this.attributes = attributes
+                }
 
                 /** The currency code. */
                 fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
@@ -2890,10 +2766,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
                 /** The currency code. */
-                fun currency(currency: JsonField<String>) =
-                    apply {
-                        this.currency = currency
-                    }
+                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
                 /** `true` if the amount is paid by the employers. */
                 fun employer(employer: Boolean?) = employer(JsonField.ofNullable(employer))
@@ -2905,10 +2778,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun employer(employer: Optional<Boolean>) = employer(employer.getOrNull())
 
                 /** `true` if the amount is paid by the employers. */
-                fun employer(employer: JsonField<Boolean>) =
-                    apply {
-                        this.employer = employer
-                    }
+                fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
 
                 /** The exact name of tax from the pay statement. */
                 fun name(name: String?) = name(JsonField.ofNullable(name))
@@ -2917,10 +2787,7 @@ class SandboxPaymentCreateParams private constructor(
                 fun name(name: Optional<String>) = name(name.getOrNull())
 
                 /** The exact name of tax from the pay statement. */
-                fun name(name: JsonField<String>) =
-                    apply {
-                        this.name = name
-                    }
+                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 /** The type of taxes. */
                 fun type(type: Type?) = type(JsonField.ofNullable(type))
@@ -2929,57 +2796,55 @@ class SandboxPaymentCreateParams private constructor(
                 fun type(type: Optional<Type>) = type(type.getOrNull())
 
                 /** The type of taxes. */
-                fun type(type: JsonField<Type>) =
-                    apply {
-                        this.type = type
-                    }
+                fun type(type: JsonField<Type>) = apply { this.type = type }
 
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.clear()
-                        putAllAdditionalProperties(additionalProperties)
-                    }
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-                fun putAdditionalProperty(key: String, value: JsonValue) =
-                    apply {
-                        additionalProperties.put(key, value)
-                    }
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun removeAdditionalProperty(key: String) =
-                    apply {
-                        additionalProperties.remove(key)
-                    }
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
 
-                fun removeAllAdditionalProperties(keys: Set<String>) =
-                    apply {
-                        keys.forEach(::removeAdditionalProperty)
-                    }
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Tax =
                     Tax(
-                      amount,
-                      attributes,
-                      currency,
-                      employer,
-                      name,
-                      type,
-                      additionalProperties.toImmutable(),
+                        amount,
+                        attributes,
+                        currency,
+                        employer,
+                        name,
+                        type,
+                        additionalProperties.toImmutable(),
                     )
             }
 
             @NoAutoDetect
-            class Attributes @JsonCreator private constructor(
-                @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<Metadata> = JsonMissing.of(),
-                @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+            class Attributes
+            @JsonCreator
+            private constructor(
+                @JsonProperty("metadata")
+                @ExcludeMissing
+                private val metadata: JsonField<Metadata> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+                fun metadata(): Optional<Metadata> =
+                    Optional.ofNullable(metadata.getNullable("metadata"))
 
                 @JsonProperty("metadata")
                 @ExcludeMissing
@@ -2991,23 +2856,21 @@ class SandboxPaymentCreateParams private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): Attributes =
-                    apply {
-                        if (validated) {
-                          return@apply
-                        }
-
-                        metadata().ifPresent { it.validate() }
-                        validated = true
+                fun validate(): Attributes = apply {
+                    if (validated) {
+                        return@apply
                     }
+
+                    metadata().ifPresent { it.validate() }
+                    validated = true
+                }
 
                 fun toBuilder() = Builder().from(this)
 
                 companion object {
 
                     /** Returns a mutable builder for constructing an instance of [Attributes]. */
-                    @JvmStatic
-                    fun builder() = Builder()
+                    @JvmStatic fun builder() = Builder()
                 }
 
                 /** A builder for [Attributes]. */
@@ -3017,69 +2880,64 @@ class SandboxPaymentCreateParams private constructor(
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
-                    internal fun from(attributes: Attributes) =
-                        apply {
-                            metadata = attributes.metadata
-                            additionalProperties = attributes.additionalProperties.toMutableMap()
-                        }
+                    internal fun from(attributes: Attributes) = apply {
+                        metadata = attributes.metadata
+                        additionalProperties = attributes.additionalProperties.toMutableMap()
+                    }
 
                     fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-                    fun metadata(metadata: JsonField<Metadata>) =
-                        apply {
-                            this.metadata = metadata
-                        }
+                    fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                        apply {
-                            this.additionalProperties.clear()
-                            putAllAdditionalProperties(additionalProperties)
-                        }
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
 
-                    fun putAdditionalProperty(key: String, value: JsonValue) =
-                        apply {
-                            additionalProperties.put(key, value)
-                        }
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                         apply {
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
-                    fun removeAdditionalProperty(key: String) =
-                        apply {
-                            additionalProperties.remove(key)
-                        }
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
 
-                    fun removeAllAdditionalProperties(keys: Set<String>) =
-                        apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
 
                     fun build(): Attributes =
-                        Attributes(
-                          metadata, additionalProperties.toImmutable()
-                        )
+                        Attributes(metadata, additionalProperties.toImmutable())
                 }
 
                 @NoAutoDetect
-                class Metadata @JsonCreator private constructor(
-                    @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
-                    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+                class Metadata
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("metadata")
+                    @ExcludeMissing
+                    private val metadata: JsonField<InnerMetadata> = JsonMissing.of(),
+                    @JsonAnySetter
+                    private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
-                    fun metadata(): Optional<InnerMetadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+                    fun metadata(): Optional<InnerMetadata> =
+                        Optional.ofNullable(metadata.getNullable("metadata"))
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
                     @JsonProperty("metadata")
                     @ExcludeMissing
@@ -3091,54 +2949,51 @@ class SandboxPaymentCreateParams private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): Metadata =
-                        apply {
-                            if (validated) {
-                              return@apply
-                            }
-
-                            metadata().ifPresent { it.validate() }
-                            validated = true
+                    fun validate(): Metadata = apply {
+                        if (validated) {
+                            return@apply
                         }
+
+                        metadata().ifPresent { it.validate() }
+                        validated = true
+                    }
 
                     fun toBuilder() = Builder().from(this)
 
                     companion object {
 
                         /** Returns a mutable builder for constructing an instance of [Metadata]. */
-                        @JvmStatic
-                        fun builder() = Builder()
+                        @JvmStatic fun builder() = Builder()
                     }
 
                     /** A builder for [Metadata]. */
                     class Builder internal constructor() {
 
                         private var metadata: JsonField<InnerMetadata> = JsonMissing.of()
-                        private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(metadata: Metadata) =
-                            apply {
-                                this.metadata = metadata.metadata
-                                additionalProperties = metadata.additionalProperties.toMutableMap()
-                            }
+                        internal fun from(metadata: Metadata) = apply {
+                            this.metadata = metadata.metadata
+                            additionalProperties = metadata.additionalProperties.toMutableMap()
+                        }
 
                         /**
-                         * The metadata to be attached to the entity by existing rules. It is a key-value
-                         * pairs where the values can be of any type (string, number, boolean, object,
-                         * array, etc.).
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
                          */
                         fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
 
                         /**
-                         * The metadata to be attached to the entity by existing rules. It is a key-value
-                         * pairs where the values can be of any type (string, number, boolean, object,
-                         * array, etc.).
+                         * The metadata to be attached to the entity by existing rules. It is a
+                         * key-value pairs where the values can be of any type (string, number,
+                         * boolean, object, array, etc.).
                          */
-                        fun metadata(metadata: JsonField<InnerMetadata>) =
-                            apply {
-                                this.metadata = metadata
-                            }
+                        fun metadata(metadata: JsonField<InnerMetadata>) = apply {
+                            this.metadata = metadata
+                        }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -3146,41 +3001,38 @@ class SandboxPaymentCreateParams private constructor(
                                 putAllAdditionalProperties(additionalProperties)
                             }
 
-                        fun putAdditionalProperty(key: String, value: JsonValue) =
-                            apply {
-                                additionalProperties.put(key, value)
-                            }
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
 
-                        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                        fun removeAdditionalProperty(key: String) =
-                            apply {
-                                additionalProperties.remove(key)
-                            }
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
 
-                        fun removeAllAdditionalProperties(keys: Set<String>) =
-                            apply {
-                                keys.forEach(::removeAdditionalProperty)
-                            }
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
 
                         fun build(): Metadata =
-                            Metadata(
-                              metadata, additionalProperties.toImmutable()
-                            )
+                            Metadata(metadata, additionalProperties.toImmutable())
                     }
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a key-value
-                     * pairs where the values can be of any type (string, number, boolean, object,
-                     * array, etc.).
+                     * The metadata to be attached to the entity by existing rules. It is a
+                     * key-value pairs where the values can be of any type (string, number, boolean,
+                     * object, array, etc.).
                      */
                     @NoAutoDetect
-                    class InnerMetadata @JsonCreator private constructor(
-                        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+                    class InnerMetadata
+                    @JsonCreator
+                    private constructor(
+                        @JsonAnySetter
+                        private val additionalProperties: Map<String, JsonValue> =
+                            immutableEmptyMap()
                     ) {
 
                         @JsonAnyGetter
@@ -3189,34 +3041,36 @@ class SandboxPaymentCreateParams private constructor(
 
                         private var validated: Boolean = false
 
-                        fun validate(): InnerMetadata =
-                            apply {
-                                if (validated) {
-                                  return@apply
-                                }
-
-                                validated = true
+                        fun validate(): InnerMetadata = apply {
+                            if (validated) {
+                                return@apply
                             }
+
+                            validated = true
+                        }
 
                         fun toBuilder() = Builder().from(this)
 
                         companion object {
 
-                            /** Returns a mutable builder for constructing an instance of [InnerMetadata]. */
-                            @JvmStatic
-                            fun builder() = Builder()
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerMetadata].
+                             */
+                            @JvmStatic fun builder() = Builder()
                         }
 
                         /** A builder for [InnerMetadata]. */
                         class Builder internal constructor() {
 
-                            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
 
                             @JvmSynthetic
-                            internal fun from(innerMetadata: InnerMetadata) =
-                                apply {
-                                    additionalProperties = innerMetadata.additionalProperties.toMutableMap()
-                                }
+                            internal fun from(innerMetadata: InnerMetadata) = apply {
+                                additionalProperties =
+                                    innerMetadata.additionalProperties.toMutableMap()
+                            }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -3224,35 +3078,32 @@ class SandboxPaymentCreateParams private constructor(
                                     putAllAdditionalProperties(additionalProperties)
                                 }
 
-                            fun putAdditionalProperty(key: String, value: JsonValue) =
-                                apply {
-                                    additionalProperties.put(key, value)
-                                }
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
 
-                            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                                apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                            fun removeAdditionalProperty(key: String) =
-                                apply {
-                                    additionalProperties.remove(key)
-                                }
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
 
-                            fun removeAllAdditionalProperties(keys: Set<String>) =
-                                apply {
-                                    keys.forEach(::removeAdditionalProperty)
-                                }
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
 
-                            fun build(): InnerMetadata = InnerMetadata(additionalProperties.toImmutable())
+                            fun build(): InnerMetadata =
+                                InnerMetadata(additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
-                          if (this === other) {
-                              return true
-                          }
+                            if (this === other) {
+                                return true
+                            }
 
-                          return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is InnerMetadata && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
@@ -3261,15 +3112,16 @@ class SandboxPaymentCreateParams private constructor(
 
                         override fun hashCode(): Int = hashCode
 
-                        override fun toString() = "InnerMetadata{additionalProperties=$additionalProperties}"
+                        override fun toString() =
+                            "InnerMetadata{additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
-                      if (this === other) {
-                          return true
-                      }
+                        if (this === other) {
+                            return true
+                        }
 
-                      return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is Metadata && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
@@ -3278,15 +3130,16 @@ class SandboxPaymentCreateParams private constructor(
 
                     override fun hashCode(): Int = hashCode
 
-                    override fun toString() = "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                    override fun toString() =
+                        "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
-                  if (this === other) {
-                      return true
-                  }
+                    if (this === other) {
+                        return true
+                    }
 
-                  return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
@@ -3295,14 +3148,13 @@ class SandboxPaymentCreateParams private constructor(
 
                 override fun hashCode(): Int = hashCode
 
-                override fun toString() = "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
+                override fun toString() =
+                    "Attributes{metadata=$metadata, additionalProperties=$additionalProperties}"
             }
 
             /** The type of taxes. */
-            class Type @JsonCreator private constructor(
-                private val value: JsonField<String>,
-
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -3312,8 +3164,7 @@ class SandboxPaymentCreateParams private constructor(
                  * the SDK is on an older version than the API, then the API may respond with new
                  * members that the SDK is unaware of.
                  */
-                @com.fasterxml.jackson.annotation.JsonValue
-                fun _value(): JsonField<String> = value
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
                 companion object {
 
@@ -3340,11 +3191,9 @@ class SandboxPaymentCreateParams private constructor(
                  * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
                  *
                  * An instance of [Type] can contain an unknown value in a couple of cases:
-                 *
-                 * - It was deserialized from data that doesn't match any known member. For
-                 *   example, if the SDK is on an older version than the API, then the API may
-                 *   respond with new members that the SDK is unaware of.
-                 *
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
                  * - It was constructed with an arbitrary value using the [of] method.
                  */
                 enum class Value {
@@ -3352,7 +3201,9 @@ class SandboxPaymentCreateParams private constructor(
                     FEDERAL,
                     LOCAL,
                     FICA,
-                    /** An enum member indicating that [Type] was instantiated with an unknown value. */
+                    /**
+                     * An enum member indicating that [Type] was instantiated with an unknown value.
+                     */
                     _UNKNOWN,
                 }
 
@@ -3378,8 +3229,8 @@ class SandboxPaymentCreateParams private constructor(
                  * Use the [value] method instead if you're uncertain the value is always known and
                  * don't want to throw for the unknown case.
                  *
-                 * @throws FinchInvalidDataException if this class instance's value is a not a
-                 * known member.
+                 * @throws FinchInvalidDataException if this class instance's value is a not a known
+                 *   member.
                  */
                 fun known(): Known =
                     when (this) {
@@ -3397,16 +3248,19 @@ class SandboxPaymentCreateParams private constructor(
                  * debugging and generally doesn't throw.
                  *
                  * @throws FinchInvalidDataException if this class instance's value does not have
-                 * the expected primitive type.
+                 *   the expected primitive type.
                  */
-                fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        FinchInvalidDataException("Value is not a String")
+                    }
 
                 override fun equals(other: Any?): Boolean {
-                  if (this === other) {
-                      return true
-                  }
+                    if (this === other) {
+                        return true
+                    }
 
-                  return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -3415,11 +3269,11 @@ class SandboxPaymentCreateParams private constructor(
             }
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is Tax && amount == other.amount && attributes == other.attributes && currency == other.currency && employer == other.employer && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Tax && amount == other.amount && attributes == other.attributes && currency == other.currency && employer == other.employer && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
@@ -3428,25 +3282,22 @@ class SandboxPaymentCreateParams private constructor(
 
             override fun hashCode(): Int = hashCode
 
-            override fun toString() = "Tax{amount=$amount, attributes=$attributes, currency=$currency, employer=$employer, name=$name, type=$type, additionalProperties=$additionalProperties}"
+            override fun toString() =
+                "Tax{amount=$amount, attributes=$attributes, currency=$currency, employer=$employer, name=$name, type=$type, additionalProperties=$additionalProperties}"
         }
 
         /** The type of the payment associated with the pay statement. */
-        class Type @JsonCreator private constructor(
-            private val value: JsonField<String>,
-
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that
-             * doesn't match any known member, and you want to know that value. For example, if
-             * the SDK is on an older version than the API, then the API may respond with new
-             * members that the SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -3470,11 +3321,9 @@ class SandboxPaymentCreateParams private constructor(
              * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Type] can contain an unknown value in a couple of cases:
-             *
-             * - It was deserialized from data that doesn't match any known member. For
-             *   example, if the SDK is on an older version than the API, then the API may
-             *   respond with new members that the SDK is unaware of.
-             *
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -3489,8 +3338,8 @@ class SandboxPaymentCreateParams private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if
-             * you want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -3506,8 +3355,8 @@ class SandboxPaymentCreateParams private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a
-             * known member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
              */
             fun known(): Known =
                 when (this) {
@@ -3523,17 +3372,20 @@ class SandboxPaymentCreateParams private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have
-             * the expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
              */
-            fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -3542,11 +3394,11 @@ class SandboxPaymentCreateParams private constructor(
         }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is PayStatement && earnings == other.earnings && employeeDeductions == other.employeeDeductions && employerContributions == other.employerContributions && grossPay == other.grossPay && individualId == other.individualId && netPay == other.netPay && paymentMethod == other.paymentMethod && taxes == other.taxes && totalHours == other.totalHours && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is PayStatement && earnings == other.earnings && employeeDeductions == other.employeeDeductions && employerContributions == other.employerContributions && grossPay == other.grossPay && individualId == other.individualId && netPay == other.netPay && paymentMethod == other.paymentMethod && taxes == other.taxes && totalHours == other.totalHours && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -3555,18 +3407,20 @@ class SandboxPaymentCreateParams private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() = "PayStatement{earnings=$earnings, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, grossPay=$grossPay, individualId=$individualId, netPay=$netPay, paymentMethod=$paymentMethod, taxes=$taxes, totalHours=$totalHours, type=$type, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "PayStatement{earnings=$earnings, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, grossPay=$grossPay, individualId=$individualId, netPay=$netPay, paymentMethod=$paymentMethod, taxes=$taxes, totalHours=$totalHours, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is SandboxPaymentCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is SandboxPaymentCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
-    override fun toString() = "SandboxPaymentCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+    override fun toString() =
+        "SandboxPaymentCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

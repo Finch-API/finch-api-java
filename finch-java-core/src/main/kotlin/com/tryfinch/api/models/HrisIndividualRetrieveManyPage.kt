@@ -21,11 +21,11 @@ import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /** Read individual data, excluding income and employment data */
-class HrisIndividualRetrieveManyPage private constructor(
+class HrisIndividualRetrieveManyPage
+private constructor(
     private val individualsService: IndividualService,
     private val params: HrisIndividualRetrieveManyParams,
     private val response: Response,
-
 ) {
 
     fun response(): Response = response
@@ -33,27 +33,28 @@ class HrisIndividualRetrieveManyPage private constructor(
     fun responses(): List<IndividualResponse> = response().responses()
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is HrisIndividualRetrieveManyPage && individualsService == other.individualsService && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisIndividualRetrieveManyPage && individualsService == other.individualsService && params == other.params && response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualsService, params, response) /* spotless:on */
 
-    override fun toString() = "HrisIndividualRetrieveManyPage{individualsService=$individualsService, params=$params, response=$response}"
+    override fun toString() =
+        "HrisIndividualRetrieveManyPage{individualsService=$individualsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-      return !responses().isEmpty()
+        return !responses().isEmpty()
     }
 
     fun getNextPageParams(): Optional<HrisIndividualRetrieveManyParams> {
-      return Optional.empty()
+        return Optional.empty()
     }
 
     fun getNextPage(): Optional<HrisIndividualRetrieveManyPage> {
-      return getNextPageParams().map { individualsService.retrieveMany(it) }
+        return getNextPageParams().map { individualsService.retrieveMany(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -61,25 +62,28 @@ class HrisIndividualRetrieveManyPage private constructor(
     companion object {
 
         @JvmStatic
-        fun of(individualsService: IndividualService, params: HrisIndividualRetrieveManyParams, response: Response) =
-            HrisIndividualRetrieveManyPage(
-              individualsService,
-              params,
-              response,
-            )
+        fun of(
+            individualsService: IndividualService,
+            params: HrisIndividualRetrieveManyParams,
+            response: Response,
+        ) = HrisIndividualRetrieveManyPage(individualsService, params, response)
     }
 
     @NoAutoDetect
-    class Response @JsonCreator constructor(
-        @JsonProperty("responses") private val responses: JsonField<List<IndividualResponse>> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+    class Response
+    @JsonCreator
+    constructor(
+        @JsonProperty("responses")
+        private val responses: JsonField<List<IndividualResponse>> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun responses(): List<IndividualResponse> = responses.getNullable("responses") ?: listOf()
 
         @JsonProperty("responses")
-        fun _responses(): Optional<JsonField<List<IndividualResponse>>> = Optional.ofNullable(responses)
+        fun _responses(): Optional<JsonField<List<IndividualResponse>>> =
+            Optional.ofNullable(responses)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -87,29 +91,29 @@ class HrisIndividualRetrieveManyPage private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Response =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                responses().map { it.validate() }
-                validated = true
+        fun validate(): Response = apply {
+            if (validated) {
+                return@apply
             }
+
+            responses().map { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
 
-        override fun toString() = "Response{responses=$responses, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Response{responses=$responses, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -117,8 +121,7 @@ class HrisIndividualRetrieveManyPage private constructor(
              * Returns a mutable builder for constructing an instance of
              * [HrisIndividualRetrieveManyPage].
              */
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -127,48 +130,42 @@ class HrisIndividualRetrieveManyPage private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(page: Response) =
-                apply {
-                    this.responses = page.responses
-                    this.additionalProperties.putAll(page.additionalProperties)
-                }
+            internal fun from(page: Response) = apply {
+                this.responses = page.responses
+                this.additionalProperties.putAll(page.additionalProperties)
+            }
 
             fun responses(responses: List<IndividualResponse>) = responses(JsonField.of(responses))
 
-            fun responses(responses: JsonField<List<IndividualResponse>>) = apply { this.responses = responses }
+            fun responses(responses: JsonField<List<IndividualResponse>>) = apply {
+                this.responses = responses
+            }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    this.additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
 
-            fun build() =
-                Response(
-                  responses, additionalProperties.toImmutable()
-                )
+            fun build() = Response(responses, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisIndividualRetrieveManyPage,
+    class AutoPager(private val firstPage: HrisIndividualRetrieveManyPage) :
+        Iterable<IndividualResponse> {
 
-    ) : Iterable<IndividualResponse> {
-
-        override fun iterator(): Iterator<IndividualResponse> =
-            iterator {
-                var page = firstPage
-                var index = 0
-                while (true) {
-                  while (index < page.responses().size) {
+        override fun iterator(): Iterator<IndividualResponse> = iterator {
+            var page = firstPage
+            var index = 0
+            while (true) {
+                while (index < page.responses().size) {
                     yield(page.responses()[index++])
-                  }
-                  page = page.getNextPage().getOrNull() ?: break
-                  index = 0
                 }
+                page = page.getNextPage().getOrNull() ?: break
+                index = 0
             }
+        }
 
         fun stream(): Stream<IndividualResponse> {
-          return StreamSupport.stream(spliterator(), false)
+            return StreamSupport.stream(spliterator(), false)
         }
     }
 }

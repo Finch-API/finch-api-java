@@ -24,26 +24,29 @@ internal class ServiceParamsTest {
 
     @BeforeEach
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
-      client = FinchOkHttpClient.builder()
-          .baseUrl(wmRuntimeInfo.httpBaseUrl)
-          .accessToken("My Access Token")
-          .build()
+        client =
+            FinchOkHttpClient.builder()
+                .baseUrl(wmRuntimeInfo.httpBaseUrl)
+                .accessToken("My Access Token")
+                .build()
     }
 
     @Test
     fun list() {
-      val directoryService = client.hris().directory()
-      stubFor(get(anyUrl()).willReturn(ok("{}")))
+        val directoryService = client.hris().directory()
+        stubFor(get(anyUrl()).willReturn(ok("{}")))
 
-      directoryService.list(HrisDirectoryListParams.builder()
-          .putAdditionalHeader("Secret-Header", "42")
-          .putAdditionalQueryParam("secret_query_param", "42")
-          .build())
+        directoryService.list(
+            HrisDirectoryListParams.builder()
+                .putAdditionalHeader("Secret-Header", "42")
+                .putAdditionalQueryParam("secret_query_param", "42")
+                .build()
+        )
 
-      verify(
-          getRequestedFor(anyUrl())
-              .withHeader("Secret-Header", equalTo("42"))
-              .withQueryParam("secret_query_param", equalTo("42"))
-      )
+        verify(
+            getRequestedFor(anyUrl())
+                .withHeader("Secret-Header", equalTo("42"))
+                .withQueryParam("secret_query_param", equalTo("42"))
+        )
     }
 }

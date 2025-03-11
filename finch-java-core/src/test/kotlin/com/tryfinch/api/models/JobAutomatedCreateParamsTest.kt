@@ -10,32 +10,42 @@ class JobAutomatedCreateParamsTest {
 
     @Test
     fun create() {
-      JobAutomatedCreateParams.builder()
-          .body(JobAutomatedCreateParams.Body.DataSyncAll.builder()
-              .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
-              .build())
-          .build()
+        JobAutomatedCreateParams.builder()
+            .body(
+                JobAutomatedCreateParams.Body.DataSyncAll.builder()
+                    .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
+                    .build()
+            )
+            .build()
     }
 
     @Test
     fun body() {
-      val params = JobAutomatedCreateParams.builder()
-          .body(JobAutomatedCreateParams.Body.DataSyncAll.builder()
-              .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
-              .build())
-          .build()
+        val params =
+            JobAutomatedCreateParams.builder()
+                .body(
+                    JobAutomatedCreateParams.Body.DataSyncAll.builder()
+                        .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
+                        .build()
+                )
+                .build()
 
-      val body = params._body().getOrNull()
+        val body = params._body().getOrNull()
 
-      assertThat(body).isEqualTo(JobAutomatedCreateParams.Body.ofDataSyncAll(JobAutomatedCreateParams.Body.DataSyncAll.builder()
-          .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
-          .build()))
+        assertThat(body)
+            .isEqualTo(
+                JobAutomatedCreateParams.Body.ofDataSyncAll(
+                    JobAutomatedCreateParams.Body.DataSyncAll.builder()
+                        .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
+                        .build()
+                )
+            )
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
-      val params = JobAutomatedCreateParams.builder().build()
+        val params = JobAutomatedCreateParams.builder().build()
 
-      val body = params._body().getOrNull()
+        val body = params._body().getOrNull()
     }
 }

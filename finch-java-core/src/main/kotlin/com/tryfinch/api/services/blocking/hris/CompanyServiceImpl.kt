@@ -17,49 +17,51 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
 
-class CompanyServiceImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class CompanyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    CompanyService {
 
-) : CompanyService {
-
-    private val withRawResponse: CompanyService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: CompanyService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): CompanyService.WithRawResponse = withRawResponse
 
-    override fun retrieve(params: HrisCompanyRetrieveParams, requestOptions: RequestOptions): Company =
+    override fun retrieve(
+        params: HrisCompanyRetrieveParams,
+        requestOptions: RequestOptions,
+    ): Company =
         // get /employer/company
         withRawResponse().retrieve(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : CompanyService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        CompanyService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveHandler: Handler<Company> = jsonHandler<Company>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<Company> =
+            jsonHandler<Company>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun retrieve(params: HrisCompanyRetrieveParams, requestOptions: RequestOptions): HttpResponseFor<Company> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.GET)
-            .addPathSegments("employer", "company")
-            .build()
-            .prepare(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.execute(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  retrieveHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override fun retrieve(
+            params: HrisCompanyRetrieveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<Company> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "company")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { retrieveHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
     }
 }
