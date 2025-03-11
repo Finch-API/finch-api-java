@@ -17,8 +17,8 @@ import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.AutomatedAsyncJob
 import com.tryfinch.api.models.AutomatedCreateResponse
+import com.tryfinch.api.models.AutomatedListResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
-import com.tryfinch.api.models.JobAutomatedListPageAsync
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import java.util.concurrent.CompletableFuture
@@ -49,7 +49,7 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
     override fun list(
         params: JobAutomatedListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<JobAutomatedListPageAsync> =
+    ): CompletableFuture<AutomatedListResponse> =
         // get /jobs/automated
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
@@ -118,14 +118,14 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
                 }
         }
 
-        private val listHandler: Handler<JobAutomatedListPageAsync.Response> =
-            jsonHandler<JobAutomatedListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<AutomatedListResponse> =
+            jsonHandler<AutomatedListResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
             params: JobAutomatedListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<JobAutomatedListPageAsync>> {
+        ): CompletableFuture<HttpResponseFor<AutomatedListResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -143,13 +143,6 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
                                 }
-                            }
-                            .let {
-                                JobAutomatedListPageAsync.of(
-                                    AutomatedServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
                             }
                     }
                 }
