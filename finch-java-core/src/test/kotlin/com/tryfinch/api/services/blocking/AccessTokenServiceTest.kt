@@ -13,23 +13,19 @@ class AccessTokenServiceTest {
 
     @Test
     fun create() {
-        val client =
-            FinchOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val accessTokenService = client.accessTokens()
+      val client = FinchOkHttpClient.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .accessToken("My Access Token")
+          .build()
+      val accessTokenService = client.accessTokens()
 
-        val createAccessTokenResponse =
-            accessTokenService.create(
-                AccessTokenCreateParams.builder()
-                    .code("<your_authorization_code>")
-                    .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
-                    .clientSecret("<your_client_secret>")
-                    .redirectUri("https://example.com")
-                    .build()
-            )
+      val createAccessTokenResponse = accessTokenService.create(AccessTokenCreateParams.builder()
+          .code("<your_authorization_code>")
+          .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
+          .clientSecret("<your_client_secret>")
+          .redirectUri("https://example.com")
+          .build())
 
-        createAccessTokenResponse.validate()
+      createAccessTokenResponse.validate()
     }
 }

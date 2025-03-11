@@ -19,13 +19,16 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 
 /** List all company-wide deductions and contributions. */
-class HrisBenefitListPageAsync
-private constructor(
+class HrisBenefitListPageAsync private constructor(
     private val benefitsService: BenefitServiceAsync,
     private val params: HrisBenefitListParams,
     private val response: Response,
+
 ) {
 
     fun response(): Response = response
@@ -33,30 +36,31 @@ private constructor(
     fun items(): List<CompanyBenefit> = response().items()
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is HrisBenefitListPageAsync && benefitsService == other.benefitsService && params == other.params && response == other.response /* spotless:on */
+      return /* spotless:off */ other is HrisBenefitListPageAsync && benefitsService == other.benefitsService && params == other.params && response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitsService, params, response) /* spotless:on */
 
-    override fun toString() =
-        "HrisBenefitListPageAsync{benefitsService=$benefitsService, params=$params, response=$response}"
+    override fun toString() = "HrisBenefitListPageAsync{benefitsService=$benefitsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return !items().isEmpty()
+      return !items().isEmpty()
     }
 
     fun getNextPageParams(): Optional<HrisBenefitListParams> {
-        return Optional.empty()
+      return Optional.empty()
     }
 
     fun getNextPage(): CompletableFuture<Optional<HrisBenefitListPageAsync>> {
-        return getNextPageParams()
-            .map { benefitsService.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
+      return getNextPageParams().map {
+        benefitsService.list(it).thenApply { Optional.of(it) }
+      }.orElseGet {
+          CompletableFuture.completedFuture(Optional.empty())
+      }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -64,21 +68,19 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(
-            benefitsService: BenefitServiceAsync,
-            params: HrisBenefitListParams,
-            response: Response,
-        ) = HrisBenefitListPageAsync(benefitsService, params, response)
+        fun of(benefitsService: BenefitServiceAsync, params: HrisBenefitListParams, response: Response) =
+            HrisBenefitListPageAsync(
+              benefitsService,
+              params,
+              response,
+            )
     }
 
     @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("items")
-        private val items: JsonField<List<CompanyBenefit>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response @JsonCreator constructor(
+        @JsonProperty("items") private val items: JsonField<List<CompanyBenefit>> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         fun items(): List<CompanyBenefit> = items.getNullable("items") ?: listOf()
@@ -92,36 +94,38 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Response =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            items().map { it.validate() }
-            validated = true
-        }
+                items().map { it.validate() }
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
 
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
+        override fun toString() = "Response{items=$items, additionalProperties=$additionalProperties}"
 
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [HrisBenefitListPageAsync].
+             * Returns a mutable builder for constructing an instance of
+             * [HrisBenefitListPageAsync].
              */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         class Builder {
@@ -130,49 +134,63 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
+            internal fun from(page: Response) =
+                apply {
+                    this.items = page.items
+                    this.additionalProperties.putAll(page.additionalProperties)
+                }
 
             fun items(items: List<CompanyBenefit>) = items(JsonField.of(items))
 
             fun items(items: JsonField<List<CompanyBenefit>>) = apply { this.items = items }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    this.additionalProperties.put(key, value)
+                }
 
-            fun build() = Response(items, additionalProperties.toImmutable())
+            fun build() =
+                Response(
+                  items, additionalProperties.toImmutable()
+                )
         }
     }
 
-    class AutoPager(private val firstPage: HrisBenefitListPageAsync) {
+    class AutoPager(
+        private val firstPage: HrisBenefitListPageAsync,
 
-        fun forEach(
-            action: Predicate<CompanyBenefit>,
-            executor: Executor,
-        ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<HrisBenefitListPageAsync>>.forEach(
-                action: (CompanyBenefit) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.items().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
+    ) {
+
+        fun forEach(action: Predicate<CompanyBenefit>, executor: Executor): CompletableFuture<Void> {
+          fun CompletableFuture<Optional<HrisBenefitListPageAsync>>.forEach(action: (CompanyBenefit) -> Boolean, executor: Executor): CompletableFuture<Void> =
+              thenComposeAsync(
+                { page ->
+                    page
+                    .filter {
+                        it.items().all(action)
+                    }
+                    .map {
+                        it.getNextPage().forEach(action, executor)
+                    }
+                    .orElseGet {
+                        CompletableFuture.completedFuture(null)
+                    }
+                }, executor
+              )
+          return CompletableFuture.completedFuture(Optional.of(firstPage))
+          .forEach(
+            action::test, executor
+          )
         }
 
         fun toList(executor: Executor): CompletableFuture<List<CompanyBenefit>> {
-            val values = mutableListOf<CompanyBenefit>()
-            return forEach(values::add, executor).thenApply { values }
+          val values = mutableListOf<CompanyBenefit>()
+          return forEach(
+            values::add, executor
+          )
+          .thenApply {
+              values
+          }
         }
     }
 }

@@ -21,93 +21,78 @@ import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 import java.util.concurrent.CompletableFuture
 
-class SessionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    SessionServiceAsync {
+class SessionServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: SessionServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : SessionServiceAsync {
+
+    private val withRawResponse: SessionServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): SessionServiceAsync.WithRawResponse = withRawResponse
 
-    override fun new_(
-        params: ConnectSessionNewParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<SessionNewResponse> =
+    override fun new_(params: ConnectSessionNewParams, requestOptions: RequestOptions): CompletableFuture<SessionNewResponse> =
         // post /connect/sessions
         withRawResponse().new_(params, requestOptions).thenApply { it.parse() }
 
-    override fun reauthenticate(
-        params: ConnectSessionReauthenticateParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<SessionReauthenticateResponse> =
+    override fun reauthenticate(params: ConnectSessionReauthenticateParams, requestOptions: RequestOptions): CompletableFuture<SessionReauthenticateResponse> =
         // post /connect/sessions/reauthenticate
         withRawResponse().reauthenticate(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        SessionServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : SessionServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val newHandler: Handler<SessionNewResponse> =
-            jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val newHandler: Handler<SessionNewResponse> = jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun new_(
-            params: ConnectSessionNewParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<SessionNewResponse>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("connect", "sessions")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { newHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
+        override fun new_(params: ConnectSessionNewParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<SessionNewResponse>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("connect", "sessions")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  newHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          } }
         }
 
-        private val reauthenticateHandler: Handler<SessionReauthenticateResponse> =
-            jsonHandler<SessionReauthenticateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val reauthenticateHandler: Handler<SessionReauthenticateResponse> = jsonHandler<SessionReauthenticateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun reauthenticate(
-            params: ConnectSessionReauthenticateParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<SessionReauthenticateResponse>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("connect", "sessions", "reauthenticate")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { reauthenticateHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
+        override fun reauthenticate(params: ConnectSessionReauthenticateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<SessionReauthenticateResponse>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("connect", "sessions", "reauthenticate")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  reauthenticateHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          } }
         }
     }
 }

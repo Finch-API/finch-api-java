@@ -9,16 +9,14 @@ class PayGroupListResponseTest {
 
     @Test
     fun createPayGroupListResponse() {
-        val payGroupListResponse =
-            PayGroupListResponse.builder()
-                .id("id")
-                .name("name")
-                .addPayFrequency(PayGroupListResponse.PayFrequency.ANNUALLY)
-                .build()
-        assertThat(payGroupListResponse).isNotNull
-        assertThat(payGroupListResponse.id()).contains("id")
-        assertThat(payGroupListResponse.name()).contains("name")
-        assertThat(payGroupListResponse.payFrequencies().get())
-            .containsExactly(PayGroupListResponse.PayFrequency.ANNUALLY)
+      val payGroupListResponse = PayGroupListResponse.builder()
+          .id("id")
+          .name("name")
+          .addPayFrequency(PayGroupListResponse.PayFrequency.ANNUALLY)
+          .build()
+      assertThat(payGroupListResponse).isNotNull
+      assertThat(payGroupListResponse.id()).contains("id")
+      assertThat(payGroupListResponse.name()).contains("name")
+      assertThat(payGroupListResponse.payFrequencies().get()).containsExactly(PayGroupListResponse.PayFrequency.ANNUALLY)
     }
 }

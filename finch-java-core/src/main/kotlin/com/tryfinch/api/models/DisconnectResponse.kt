@@ -17,20 +17,19 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 @NoAutoDetect
-class DisconnectResponse
-@JsonCreator
-private constructor(
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<String> = JsonMissing.of(),
+class DisconnectResponse @JsonCreator private constructor(
+    @JsonProperty("status") @ExcludeMissing private val status: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
     /** If the request is successful, Finch will return “success” (HTTP 200 status). */
     fun status(): String = status.getRequired("status")
 
     /** If the request is successful, Finch will return “success” (HTTP 200 status). */
-    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<String> = status
+    @JsonProperty("status")
+    @ExcludeMissing
+    fun _status(): JsonField<String> = status
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -38,14 +37,15 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): DisconnectResponse = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): DisconnectResponse =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        status()
-        validated = true
-    }
+            status()
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
@@ -55,11 +55,13 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [DisconnectResponse].
          *
          * The following fields are required:
+         *
          * ```java
          * .status()
          * ```
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [DisconnectResponse]. */
@@ -69,46 +71,61 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(disconnectResponse: DisconnectResponse) = apply {
-            status = disconnectResponse.status
-            additionalProperties = disconnectResponse.additionalProperties.toMutableMap()
-        }
+        internal fun from(disconnectResponse: DisconnectResponse) =
+            apply {
+                status = disconnectResponse.status
+                additionalProperties = disconnectResponse.additionalProperties.toMutableMap()
+            }
 
         /** If the request is successful, Finch will return “success” (HTTP 200 status). */
         fun status(status: String) = status(JsonField.of(status))
 
         /** If the request is successful, Finch will return “success” (HTTP 200 status). */
-        fun status(status: JsonField<String>) = apply { this.status = status }
+        fun status(status: JsonField<String>) =
+            apply {
+                this.status = status
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
         fun build(): DisconnectResponse =
-            DisconnectResponse(checkRequired("status", status), additionalProperties.toImmutable())
+            DisconnectResponse(
+              checkRequired(
+                "status", status
+              ), additionalProperties.toImmutable()
+            )
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is DisconnectResponse && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is DisconnectResponse && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -117,6 +134,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "DisconnectResponse{status=$status, additionalProperties=$additionalProperties}"
+    override fun toString() = "DisconnectResponse{status=$status, additionalProperties=$additionalProperties}"
 }

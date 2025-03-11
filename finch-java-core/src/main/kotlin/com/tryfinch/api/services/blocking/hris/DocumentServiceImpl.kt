@@ -19,86 +19,78 @@ import com.tryfinch.api.models.DocumentRetreiveResponse
 import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
 
-class DocumentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    DocumentService {
+class DocumentServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: DocumentService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : DocumentService {
+
+    private val withRawResponse: DocumentService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): DocumentService.WithRawResponse = withRawResponse
 
-    override fun list(
-        params: HrisDocumentListParams,
-        requestOptions: RequestOptions,
-    ): DocumentListResponse =
+    override fun list(params: HrisDocumentListParams, requestOptions: RequestOptions): DocumentListResponse =
         // get /employer/documents
         withRawResponse().list(params, requestOptions).parse()
 
-    override fun retreive(
-        params: HrisDocumentRetreiveParams,
-        requestOptions: RequestOptions,
-    ): DocumentRetreiveResponse =
+    override fun retreive(params: HrisDocumentRetreiveParams, requestOptions: RequestOptions): DocumentRetreiveResponse =
         // get /employer/documents/{document_id}
         withRawResponse().retreive(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        DocumentService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : DocumentService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<DocumentListResponse> =
-            jsonHandler<DocumentListResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val listHandler: Handler<DocumentListResponse> = jsonHandler<DocumentListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun list(
-            params: HrisDocumentListParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<DocumentListResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("employer", "documents")
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { listHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun list(params: HrisDocumentListParams, requestOptions: RequestOptions): HttpResponseFor<DocumentListResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("employer", "documents")
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  listHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val retreiveHandler: Handler<DocumentRetreiveResponse> =
-            jsonHandler<DocumentRetreiveResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val retreiveHandler: Handler<DocumentRetreiveResponse> = jsonHandler<DocumentRetreiveResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun retreive(
-            params: HrisDocumentRetreiveParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<DocumentRetreiveResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("employer", "documents", params.getPathParam(0))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { retreiveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun retreive(params: HrisDocumentRetreiveParams, requestOptions: RequestOptions): HttpResponseFor<DocumentRetreiveResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("employer", "documents", params.getPathParam(0))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  retreiveHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

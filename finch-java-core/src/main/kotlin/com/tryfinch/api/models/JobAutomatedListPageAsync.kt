@@ -19,17 +19,20 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 
 /**
- * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are sorted in
- * descending order by submission time. For scheduled jobs such as data syncs, only the next
- * scheduled job is shown.
+ * Get all automated jobs. Automated jobs are completed by a machine. By default,
+ * jobs are sorted in descending order by submission time. For scheduled jobs such
+ * as data syncs, only the next scheduled job is shown.
  */
-class JobAutomatedListPageAsync
-private constructor(
+class JobAutomatedListPageAsync private constructor(
     private val automatedService: AutomatedServiceAsync,
     private val params: JobAutomatedListParams,
     private val response: Response,
+
 ) {
 
     fun response(): Response = response
@@ -39,44 +42,39 @@ private constructor(
     fun paging(): Optional<Paging> = response().paging()
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is JobAutomatedListPageAsync && automatedService == other.automatedService && params == other.params && response == other.response /* spotless:on */
+      return /* spotless:off */ other is JobAutomatedListPageAsync && automatedService == other.automatedService && params == other.params && response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(automatedService, params, response) /* spotless:on */
 
-    override fun toString() =
-        "JobAutomatedListPageAsync{automatedService=$automatedService, params=$params, response=$response}"
+    override fun toString() = "JobAutomatedListPageAsync{automatedService=$automatedService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        if (data().isEmpty()) {
-            return false
-        }
+      if (data().isEmpty()) {
+        return false;
+      }
 
-        return paging().flatMap { it.offset() }.orElse(0) + data().count() <
-            paging().flatMap { it.count() }.orElse(Long.MAX_VALUE)
+      return paging().flatMap { it.offset()}.orElse(0) + data().count() < paging().flatMap { it.count()}.orElse(Long.MAX_VALUE);
     }
 
     fun getNextPageParams(): Optional<JobAutomatedListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
-        }
+      if (!hasNextPage()) {
+        return Optional.empty()
+      }
 
-        return Optional.of(
-            JobAutomatedListParams.builder()
-                .from(params)
-                .offset(paging().flatMap { it.offset() }.orElse(0) + data().count())
-                .build()
-        )
+      return Optional.of(JobAutomatedListParams.builder().from(params).offset(paging().flatMap { it.offset()}.orElse(0) + data().count()).build());
     }
 
     fun getNextPage(): CompletableFuture<Optional<JobAutomatedListPageAsync>> {
-        return getNextPageParams()
-            .map { automatedService.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
+      return getNextPageParams().map {
+        automatedService.list(it).thenApply { Optional.of(it) }
+      }.orElseGet {
+          CompletableFuture.completedFuture(Optional.empty())
+      }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -84,22 +82,20 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun of(
-            automatedService: AutomatedServiceAsync,
-            params: JobAutomatedListParams,
-            response: Response,
-        ) = JobAutomatedListPageAsync(automatedService, params, response)
+        fun of(automatedService: AutomatedServiceAsync, params: JobAutomatedListParams, response: Response) =
+            JobAutomatedListPageAsync(
+              automatedService,
+              params,
+              response,
+            )
     }
 
     @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("data")
-        private val data: JsonField<List<AutomatedAsyncJob>> = JsonMissing.of(),
+    class Response @JsonCreator constructor(
+        @JsonProperty("data") private val data: JsonField<List<AutomatedAsyncJob>> = JsonMissing.of(),
         @JsonProperty("paging") private val paging: JsonField<Paging> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         fun data(): List<AutomatedAsyncJob> = data.getNullable("data") ?: listOf()
@@ -118,30 +114,30 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Response =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            data().map { it.validate() }
-            paging().ifPresent { it.validate() }
-            validated = true
-        }
+                data().map { it.validate() }
+                paging().ifPresent { it.validate() }
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Response && data == other.data && paging == other.paging && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Response && data == other.data && paging == other.paging && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int = /* spotless:off */ Objects.hash(data, paging, additionalProperties) /* spotless:on */
 
-        override fun toString() =
-            "Response{data=$data, paging=$paging, additionalProperties=$additionalProperties}"
+        override fun toString() = "Response{data=$data, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -149,7 +145,8 @@ private constructor(
              * Returns a mutable builder for constructing an instance of
              * [JobAutomatedListPageAsync].
              */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         class Builder {
@@ -159,11 +156,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.data = page.data
-                this.paging = page.paging
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
+            internal fun from(page: Response) =
+                apply {
+                    this.data = page.data
+                    this.paging = page.paging
+                    this.additionalProperties.putAll(page.additionalProperties)
+                }
 
             fun data(data: List<AutomatedAsyncJob>) = data(JsonField.of(data))
 
@@ -173,40 +171,55 @@ private constructor(
 
             fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    this.additionalProperties.put(key, value)
+                }
 
-            fun build() = Response(data, paging, additionalProperties.toImmutable())
+            fun build() =
+                Response(
+                  data,
+                  paging,
+                  additionalProperties.toImmutable(),
+                )
         }
     }
 
-    class AutoPager(private val firstPage: JobAutomatedListPageAsync) {
+    class AutoPager(
+        private val firstPage: JobAutomatedListPageAsync,
 
-        fun forEach(
-            action: Predicate<AutomatedAsyncJob>,
-            executor: Executor,
-        ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<JobAutomatedListPageAsync>>.forEach(
-                action: (AutomatedAsyncJob) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.data().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
+    ) {
+
+        fun forEach(action: Predicate<AutomatedAsyncJob>, executor: Executor): CompletableFuture<Void> {
+          fun CompletableFuture<Optional<JobAutomatedListPageAsync>>.forEach(action: (AutomatedAsyncJob) -> Boolean, executor: Executor): CompletableFuture<Void> =
+              thenComposeAsync(
+                { page ->
+                    page
+                    .filter {
+                        it.data().all(action)
+                    }
+                    .map {
+                        it.getNextPage().forEach(action, executor)
+                    }
+                    .orElseGet {
+                        CompletableFuture.completedFuture(null)
+                    }
+                }, executor
+              )
+          return CompletableFuture.completedFuture(Optional.of(firstPage))
+          .forEach(
+            action::test, executor
+          )
         }
 
         fun toList(executor: Executor): CompletableFuture<List<AutomatedAsyncJob>> {
-            val values = mutableListOf<AutomatedAsyncJob>()
-            return forEach(values::add, executor).thenApply { values }
+          val values = mutableListOf<AutomatedAsyncJob>()
+          return forEach(
+            values::add, executor
+          )
+          .thenApply {
+              values
+          }
         }
     }
 }

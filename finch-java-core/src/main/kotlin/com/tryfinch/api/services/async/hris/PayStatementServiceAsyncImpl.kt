@@ -15,67 +15,57 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.models.HrisPayStatementRetrieveManyPage
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
-class PayStatementServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    PayStatementServiceAsync {
+class PayStatementServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: PayStatementServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : PayStatementServiceAsync {
+
+    private val withRawResponse: PayStatementServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): PayStatementServiceAsync.WithRawResponse = withRawResponse
 
-    override fun retrieveMany(
-        params: HrisPayStatementRetrieveManyParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<HrisPayStatementRetrieveManyPageAsync> =
+    override fun retrieveMany(params: HrisPayStatementRetrieveManyParams, requestOptions: RequestOptions): CompletableFuture<HrisPayStatementRetrieveManyPageAsync> =
         // post /employer/pay-statement
         withRawResponse().retrieveMany(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        PayStatementServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : PayStatementServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPageAsync.Response> =
-            jsonHandler<HrisPayStatementRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPageAsync.Response> = jsonHandler<HrisPayStatementRetrieveManyPageAsync.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun retrieveMany(
-            params: HrisPayStatementRetrieveManyParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<HrisPayStatementRetrieveManyPageAsync>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("employer", "pay-statement")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { retrieveManyHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                            .let {
-                                HrisPayStatementRetrieveManyPageAsync.of(
-                                    PayStatementServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
-                            }
-                    }
-                }
+        override fun retrieveMany(params: HrisPayStatementRetrieveManyParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<HrisPayStatementRetrieveManyPageAsync>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("employer", "pay-statement")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  retrieveManyHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+              .let {
+                  HrisPayStatementRetrieveManyPageAsync.of(PayStatementServiceAsyncImpl(clientOptions), params, it)
+              }
+          } }
         }
     }
 }

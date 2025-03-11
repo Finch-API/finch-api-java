@@ -4,6 +4,7 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.models.ProviderListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -12,15 +13,14 @@ class ProviderServiceTest {
 
     @Test
     fun list() {
-        val client =
-            FinchOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val providerService = client.providers()
+      val client = FinchOkHttpClient.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .accessToken("My Access Token")
+          .build()
+      val providerService = client.providers()
 
-        val page = providerService.list()
+      val page = providerService.list()
 
-        page.response().validate()
+      page.response().validate()
     }
 }

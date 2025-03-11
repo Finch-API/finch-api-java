@@ -10,36 +10,35 @@ class HrisBenefitCreateParamsTest {
 
     @Test
     fun create() {
-        HrisBenefitCreateParams.builder()
-            .description("description")
-            .frequency(BenefitFrequency.ONE_TIME)
-            .type(BenefitType._401K)
-            .build()
+      HrisBenefitCreateParams.builder()
+          .description("description")
+          .frequency(BenefitFrequency.ONE_TIME)
+          .type(BenefitType._401K)
+          .build()
     }
 
     @Test
     fun body() {
-        val params =
-            HrisBenefitCreateParams.builder()
-                .description("description")
-                .frequency(BenefitFrequency.ONE_TIME)
-                .type(BenefitType._401K)
-                .build()
+      val params = HrisBenefitCreateParams.builder()
+          .description("description")
+          .frequency(BenefitFrequency.ONE_TIME)
+          .type(BenefitType._401K)
+          .build()
 
-        val body = params._body()
+      val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.description()).contains("description")
-        assertThat(body.frequency()).contains(BenefitFrequency.ONE_TIME)
-        assertThat(body.type()).contains(BenefitType._401K)
+      assertNotNull(body)
+      assertThat(body.description()).contains("description")
+      assertThat(body.frequency()).contains(BenefitFrequency.ONE_TIME)
+      assertThat(body.type()).contains(BenefitType._401K)
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params = HrisBenefitCreateParams.builder().build()
+      val params = HrisBenefitCreateParams.builder().build()
 
-        val body = params._body()
+      val body = params._body()
 
-        assertNotNull(body)
+      assertNotNull(body)
     }
 }

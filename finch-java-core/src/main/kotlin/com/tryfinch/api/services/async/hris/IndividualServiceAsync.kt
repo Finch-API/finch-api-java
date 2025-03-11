@@ -12,66 +12,52 @@ import java.util.concurrent.CompletableFuture
 interface IndividualServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Read individual data, excluding income and employment data */
-    fun retrieveMany(): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
-        retrieveMany(HrisIndividualRetrieveManyParams.none())
+    fun retrieveMany(): CompletableFuture<HrisIndividualRetrieveManyPageAsync> = retrieveMany(HrisIndividualRetrieveManyParams.none())
 
     /** @see [retrieveMany] */
-    fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync>
+    fun retrieveMany(params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HrisIndividualRetrieveManyPageAsync>
 
     /** @see [retrieveMany] */
-    fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
-    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
-        retrieveMany(params, RequestOptions.none())
+    fun retrieveMany(params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
+        retrieveMany(
+          params, RequestOptions.none()
+        )
 
     /** @see [retrieveMany] */
-    fun retrieveMany(
-        requestOptions: RequestOptions
-    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
-        retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
+    fun retrieveMany(requestOptions: RequestOptions): CompletableFuture<HrisIndividualRetrieveManyPageAsync> = retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
     /**
-     * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
-     * method.
+     * A view of [IndividualServiceAsync] that provides access to raw HTTP responses
+     * for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /employer/individual`, but is otherwise the same as
-         * [IndividualServiceAsync.retrieveMany].
+         * Returns a raw HTTP response for `post /employer/individual`, but is otherwise
+         * the same as [IndividualServiceAsync.retrieveMany].
          */
         @MustBeClosed
-        fun retrieveMany():
-            CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
-            retrieveMany(HrisIndividualRetrieveManyParams.none())
+        fun retrieveMany(): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> = retrieveMany(HrisIndividualRetrieveManyParams.none())
 
         /** @see [retrieveMany] */
         @MustBeClosed
-        fun retrieveMany(
-            params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>>
+        fun retrieveMany(params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>>
 
         /** @see [retrieveMany] */
         @MustBeClosed
-        fun retrieveMany(
-            params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
-        ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
-            retrieveMany(params, RequestOptions.none())
+        fun retrieveMany(params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
+            retrieveMany(
+              params, RequestOptions.none()
+            )
 
         /** @see [retrieveMany] */
         @MustBeClosed
-        fun retrieveMany(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
-            retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
+        fun retrieveMany(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> = retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
     }
 }

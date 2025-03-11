@@ -11,37 +11,38 @@ import com.tryfinch.api.models.SandboxIndividualUpdateParams
 interface IndividualService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Update sandbox individual */
     fun update(params: SandboxIndividualUpdateParams): IndividualUpdateResponse =
-        update(params, RequestOptions.none())
+        update(
+          params, RequestOptions.none()
+        )
 
     /** @see [update] */
-    fun update(
-        params: SandboxIndividualUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): IndividualUpdateResponse
+    fun update(params: SandboxIndividualUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): IndividualUpdateResponse
 
-    /** A view of [IndividualService] that provides access to raw HTTP responses for each method. */
+    /**
+     * A view of [IndividualService] that provides access to raw HTTP responses for
+     * each method.
+     */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `put /sandbox/individual/{individual_id}`, but is
-         * otherwise the same as [IndividualService.update].
+         * Returns a raw HTTP response for `put /sandbox/individual/{individual_id}`, but
+         * is otherwise the same as [IndividualService.update].
          */
         @MustBeClosed
-        fun update(
-            params: SandboxIndividualUpdateParams
-        ): HttpResponseFor<IndividualUpdateResponse> = update(params, RequestOptions.none())
+        fun update(params: SandboxIndividualUpdateParams): HttpResponseFor<IndividualUpdateResponse> =
+            update(
+              params, RequestOptions.none()
+            )
 
         /** @see [update] */
         @MustBeClosed
-        fun update(
-            params: SandboxIndividualUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<IndividualUpdateResponse>
+        fun update(params: SandboxIndividualUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<IndividualUpdateResponse>
     }
 }

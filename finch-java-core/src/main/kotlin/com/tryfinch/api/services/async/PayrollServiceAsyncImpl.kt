@@ -6,12 +6,12 @@ import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.async.payroll.PayGroupServiceAsync
 import com.tryfinch.api.services.async.payroll.PayGroupServiceAsyncImpl
 
-class PayrollServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    PayrollServiceAsync {
+class PayrollServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: PayrollServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : PayrollServiceAsync {
+
+    private val withRawResponse: PayrollServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     private val payGroups: PayGroupServiceAsync by lazy { PayGroupServiceAsyncImpl(clientOptions) }
 
@@ -19,12 +19,12 @@ class PayrollServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun payGroups(): PayGroupServiceAsync = payGroups
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        PayrollServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
 
-        private val payGroups: PayGroupServiceAsync.WithRawResponse by lazy {
-            PayGroupServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
+    ) : PayrollServiceAsync.WithRawResponse {
+
+        private val payGroups: PayGroupServiceAsync.WithRawResponse by lazy { PayGroupServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
 
         override fun payGroups(): PayGroupServiceAsync.WithRawResponse = payGroups
     }

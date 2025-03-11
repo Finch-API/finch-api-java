@@ -13,7 +13,8 @@ import java.util.concurrent.CompletableFuture
 interface JobServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -21,34 +22,33 @@ interface JobServiceAsync {
 
     /** Enqueue a new sandbox job */
     fun create(params: SandboxJobCreateParams): CompletableFuture<JobCreateResponse> =
-        create(params, RequestOptions.none())
+        create(
+          params, RequestOptions.none()
+        )
 
     /** @see [create] */
-    fun create(
-        params: SandboxJobCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<JobCreateResponse>
+    fun create(params: SandboxJobCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<JobCreateResponse>
 
-    /** A view of [JobServiceAsync] that provides access to raw HTTP responses for each method. */
+    /**
+     * A view of [JobServiceAsync] that provides access to raw HTTP responses for each
+     * method.
+     */
     interface WithRawResponse {
 
         fun configuration(): ConfigurationServiceAsync.WithRawResponse
 
         /**
-         * Returns a raw HTTP response for `post /sandbox/jobs`, but is otherwise the same as
-         * [JobServiceAsync.create].
+         * Returns a raw HTTP response for `post /sandbox/jobs`, but is otherwise the same
+         * as [JobServiceAsync.create].
          */
         @MustBeClosed
-        fun create(
-            params: SandboxJobCreateParams
-        ): CompletableFuture<HttpResponseFor<JobCreateResponse>> =
-            create(params, RequestOptions.none())
+        fun create(params: SandboxJobCreateParams): CompletableFuture<HttpResponseFor<JobCreateResponse>> =
+            create(
+              params, RequestOptions.none()
+            )
 
         /** @see [create] */
         @MustBeClosed
-        fun create(
-            params: SandboxJobCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<JobCreateResponse>>
+        fun create(params: SandboxJobCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<JobCreateResponse>>
     }
 }

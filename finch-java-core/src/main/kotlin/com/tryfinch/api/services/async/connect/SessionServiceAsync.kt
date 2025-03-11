@@ -14,69 +14,61 @@ import java.util.concurrent.CompletableFuture
 interface SessionServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Create a new connect session for an employer */
     fun new_(params: ConnectSessionNewParams): CompletableFuture<SessionNewResponse> =
-        new_(params, RequestOptions.none())
+        new_(
+          params, RequestOptions.none()
+        )
 
     /** @see [new_] */
-    fun new_(
-        params: ConnectSessionNewParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<SessionNewResponse>
+    fun new_(params: ConnectSessionNewParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<SessionNewResponse>
 
     /** Create a new Connect session for reauthenticating an existing connection */
-    fun reauthenticate(
-        params: ConnectSessionReauthenticateParams
-    ): CompletableFuture<SessionReauthenticateResponse> =
-        reauthenticate(params, RequestOptions.none())
+    fun reauthenticate(params: ConnectSessionReauthenticateParams): CompletableFuture<SessionReauthenticateResponse> =
+        reauthenticate(
+          params, RequestOptions.none()
+        )
 
     /** @see [reauthenticate] */
-    fun reauthenticate(
-        params: ConnectSessionReauthenticateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<SessionReauthenticateResponse>
+    fun reauthenticate(params: ConnectSessionReauthenticateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<SessionReauthenticateResponse>
 
     /**
-     * A view of [SessionServiceAsync] that provides access to raw HTTP responses for each method.
+     * A view of [SessionServiceAsync] that provides access to raw HTTP responses for
+     * each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the same as
-         * [SessionServiceAsync.new_].
+         * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the
+         * same as [SessionServiceAsync.new_].
          */
         @MustBeClosed
-        fun new_(
-            params: ConnectSessionNewParams
-        ): CompletableFuture<HttpResponseFor<SessionNewResponse>> =
-            new_(params, RequestOptions.none())
+        fun new_(params: ConnectSessionNewParams): CompletableFuture<HttpResponseFor<SessionNewResponse>> =
+            new_(
+              params, RequestOptions.none()
+            )
 
         /** @see [new_] */
         @MustBeClosed
-        fun new_(
-            params: ConnectSessionNewParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<SessionNewResponse>>
+        fun new_(params: ConnectSessionNewParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<SessionNewResponse>>
 
         /**
-         * Returns a raw HTTP response for `post /connect/sessions/reauthenticate`, but is otherwise
-         * the same as [SessionServiceAsync.reauthenticate].
+         * Returns a raw HTTP response for `post /connect/sessions/reauthenticate`, but is
+         * otherwise the same as [SessionServiceAsync.reauthenticate].
          */
         @MustBeClosed
-        fun reauthenticate(
-            params: ConnectSessionReauthenticateParams
-        ): CompletableFuture<HttpResponseFor<SessionReauthenticateResponse>> =
-            reauthenticate(params, RequestOptions.none())
+        fun reauthenticate(params: ConnectSessionReauthenticateParams): CompletableFuture<HttpResponseFor<SessionReauthenticateResponse>> =
+            reauthenticate(
+              params, RequestOptions.none()
+            )
 
         /** @see [reauthenticate] */
         @MustBeClosed
-        fun reauthenticate(
-            params: ConnectSessionReauthenticateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<SessionReauthenticateResponse>>
+        fun reauthenticate(params: ConnectSessionReauthenticateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<SessionReauthenticateResponse>>
     }
 }

@@ -14,115 +14,92 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
 import com.tryfinch.api.models.HrisDirectoryListIndividualsPageAsync
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListPageAsync
 import com.tryfinch.api.models.HrisDirectoryListParams
 import java.util.concurrent.CompletableFuture
 
-class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    DirectoryServiceAsync {
+class DirectoryServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: DirectoryServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : DirectoryServiceAsync {
+
+    private val withRawResponse: DirectoryServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): DirectoryServiceAsync.WithRawResponse = withRawResponse
 
-    override fun list(
-        params: HrisDirectoryListParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<HrisDirectoryListPageAsync> =
+    override fun list(params: HrisDirectoryListParams, requestOptions: RequestOptions): CompletableFuture<HrisDirectoryListPageAsync> =
         // get /employer/directory
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
     @Deprecated("use `list` instead")
-    override fun listIndividuals(
-        params: HrisDirectoryListIndividualsParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<HrisDirectoryListIndividualsPageAsync> =
+    override fun listIndividuals(params: HrisDirectoryListIndividualsParams, requestOptions: RequestOptions): CompletableFuture<HrisDirectoryListIndividualsPageAsync> =
         // get /employer/directory
         withRawResponse().listIndividuals(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        DirectoryServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : DirectoryServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<HrisDirectoryListPageAsync.Response> =
-            jsonHandler<HrisDirectoryListPageAsync.Response>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val listHandler: Handler<HrisDirectoryListPageAsync.Response> = jsonHandler<HrisDirectoryListPageAsync.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun list(
-            params: HrisDirectoryListParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("employer", "directory")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { listHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                            .let {
-                                HrisDirectoryListPageAsync.of(
-                                    DirectoryServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
-                            }
-                    }
-                }
+        override fun list(params: HrisDirectoryListParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("employer", "directory")
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  listHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+              .let {
+                  HrisDirectoryListPageAsync.of(DirectoryServiceAsyncImpl(clientOptions), params, it)
+              }
+          } }
         }
 
-        private val listIndividualsHandler:
-            Handler<HrisDirectoryListIndividualsPageAsync.Response> =
-            jsonHandler<HrisDirectoryListIndividualsPageAsync.Response>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPageAsync.Response> = jsonHandler<HrisDirectoryListIndividualsPageAsync.Response>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
         @Deprecated("use `list` instead")
-        override fun listIndividuals(
-            params: HrisDirectoryListIndividualsParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("employer", "directory")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { listIndividualsHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                            .let {
-                                HrisDirectoryListIndividualsPageAsync.of(
-                                    DirectoryServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
-                            }
-                    }
-                }
+        override fun listIndividuals(params: HrisDirectoryListIndividualsParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("employer", "directory")
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  listIndividualsHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+              .let {
+                  HrisDirectoryListIndividualsPageAsync.of(DirectoryServiceAsyncImpl(clientOptions), params, it)
+              }
+          } }
         }
     }
 }
