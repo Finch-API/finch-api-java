@@ -7,8 +7,8 @@ import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AutomatedAsyncJob
 import com.tryfinch.api.models.AutomatedCreateResponse
+import com.tryfinch.api.models.AutomatedListResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
-import com.tryfinch.api.models.JobAutomatedListPageAsync
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import java.util.concurrent.CompletableFuture
@@ -68,21 +68,21 @@ interface AutomatedServiceAsync {
      * sorted in descending order by submission time. For scheduled jobs such as data syncs, only
      * the next scheduled job is shown.
      */
-    fun list(): CompletableFuture<JobAutomatedListPageAsync> = list(JobAutomatedListParams.none())
+    fun list(): CompletableFuture<AutomatedListResponse> = list(JobAutomatedListParams.none())
 
     /** @see [list] */
     fun list(
         params: JobAutomatedListParams = JobAutomatedListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<JobAutomatedListPageAsync>
+    ): CompletableFuture<AutomatedListResponse>
 
     /** @see [list] */
     fun list(
         params: JobAutomatedListParams = JobAutomatedListParams.none()
-    ): CompletableFuture<JobAutomatedListPageAsync> = list(params, RequestOptions.none())
+    ): CompletableFuture<AutomatedListResponse> = list(params, RequestOptions.none())
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): CompletableFuture<JobAutomatedListPageAsync> =
+    fun list(requestOptions: RequestOptions): CompletableFuture<AutomatedListResponse> =
         list(JobAutomatedListParams.none(), requestOptions)
 
     /**
@@ -141,7 +141,7 @@ interface AutomatedServiceAsync {
          * [AutomatedServiceAsync.list].
          */
         @MustBeClosed
-        fun list(): CompletableFuture<HttpResponseFor<JobAutomatedListPageAsync>> =
+        fun list(): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
             list(JobAutomatedListParams.none())
 
         /** @see [list] */
@@ -149,20 +149,20 @@ interface AutomatedServiceAsync {
         fun list(
             params: JobAutomatedListParams = JobAutomatedListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<JobAutomatedListPageAsync>>
+        ): CompletableFuture<HttpResponseFor<AutomatedListResponse>>
 
         /** @see [list] */
         @MustBeClosed
         fun list(
             params: JobAutomatedListParams = JobAutomatedListParams.none()
-        ): CompletableFuture<HttpResponseFor<JobAutomatedListPageAsync>> =
+        ): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<JobAutomatedListPageAsync>> =
+        ): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
             list(JobAutomatedListParams.none(), requestOptions)
     }
 }
