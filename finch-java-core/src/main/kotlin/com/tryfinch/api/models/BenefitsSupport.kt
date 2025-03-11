@@ -18,87 +18,50 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Each benefit type and their supported features. If the benefit type is not supported, the
- * property will be null
+ * Each benefit type and their supported features. If the benefit type is not
+ * supported, the property will be null
  */
 @NoAutoDetect
-class BenefitsSupport
-@JsonCreator
-private constructor(
-    @JsonProperty("commuter")
-    @ExcludeMissing
-    private val commuter: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("custom_post_tax")
-    @ExcludeMissing
-    private val customPostTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("custom_pre_tax")
-    @ExcludeMissing
-    private val customPreTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("fsa_dependent_care")
-    @ExcludeMissing
-    private val fsaDependentCare: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("fsa_medical")
-    @ExcludeMissing
-    private val fsaMedical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("hsa_post")
-    @ExcludeMissing
-    private val hsaPost: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("hsa_pre")
-    @ExcludeMissing
-    private val hsaPre: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("s125_dental")
-    @ExcludeMissing
-    private val s125Dental: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("s125_medical")
-    @ExcludeMissing
-    private val s125Medical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("s125_vision")
-    @ExcludeMissing
-    private val s125Vision: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("simple")
-    @ExcludeMissing
-    private val simple: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("simple_ira")
-    @ExcludeMissing
-    private val simpleIra: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+class BenefitsSupport @JsonCreator private constructor(
+    @JsonProperty("commuter") @ExcludeMissing private val commuter: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("custom_post_tax") @ExcludeMissing private val customPostTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("custom_pre_tax") @ExcludeMissing private val customPreTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("fsa_dependent_care") @ExcludeMissing private val fsaDependentCare: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("fsa_medical") @ExcludeMissing private val fsaMedical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("hsa_post") @ExcludeMissing private val hsaPost: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("hsa_pre") @ExcludeMissing private val hsaPre: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("s125_dental") @ExcludeMissing private val s125Dental: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("s125_medical") @ExcludeMissing private val s125Medical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("s125_vision") @ExcludeMissing private val s125Vision: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("simple") @ExcludeMissing private val simple: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    @JsonProperty("simple_ira") @ExcludeMissing private val simpleIra: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
-    fun commuter(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(commuter.getNullable("commuter"))
+    fun commuter(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(commuter.getNullable("commuter"))
 
-    fun customPostTax(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(customPostTax.getNullable("custom_post_tax"))
+    fun customPostTax(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(customPostTax.getNullable("custom_post_tax"))
 
-    fun customPreTax(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(customPreTax.getNullable("custom_pre_tax"))
+    fun customPreTax(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(customPreTax.getNullable("custom_pre_tax"))
 
-    fun fsaDependentCare(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(fsaDependentCare.getNullable("fsa_dependent_care"))
+    fun fsaDependentCare(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(fsaDependentCare.getNullable("fsa_dependent_care"))
 
-    fun fsaMedical(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(fsaMedical.getNullable("fsa_medical"))
+    fun fsaMedical(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(fsaMedical.getNullable("fsa_medical"))
 
-    fun hsaPost(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(hsaPost.getNullable("hsa_post"))
+    fun hsaPost(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(hsaPost.getNullable("hsa_post"))
 
-    fun hsaPre(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(hsaPre.getNullable("hsa_pre"))
+    fun hsaPre(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(hsaPre.getNullable("hsa_pre"))
 
-    fun s125Dental(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(s125Dental.getNullable("s125_dental"))
+    fun s125Dental(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(s125Dental.getNullable("s125_dental"))
 
-    fun s125Medical(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(s125Medical.getNullable("s125_medical"))
+    fun s125Medical(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(s125Medical.getNullable("s125_medical"))
 
-    fun s125Vision(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(s125Vision.getNullable("s125_vision"))
+    fun s125Vision(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(s125Vision.getNullable("s125_vision"))
 
-    fun simple(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(simple.getNullable("simple"))
+    fun simple(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(simple.getNullable("simple"))
 
-    fun simpleIra(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(simpleIra.getNullable("simple_ira"))
+    fun simpleIra(): Optional<BenefitFeaturesAndOperations> = Optional.ofNullable(simpleIra.getNullable("simple_ira"))
 
     @JsonProperty("commuter")
     @ExcludeMissing
@@ -154,32 +117,34 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): BenefitsSupport = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): BenefitsSupport =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        commuter().ifPresent { it.validate() }
-        customPostTax().ifPresent { it.validate() }
-        customPreTax().ifPresent { it.validate() }
-        fsaDependentCare().ifPresent { it.validate() }
-        fsaMedical().ifPresent { it.validate() }
-        hsaPost().ifPresent { it.validate() }
-        hsaPre().ifPresent { it.validate() }
-        s125Dental().ifPresent { it.validate() }
-        s125Medical().ifPresent { it.validate() }
-        s125Vision().ifPresent { it.validate() }
-        simple().ifPresent { it.validate() }
-        simpleIra().ifPresent { it.validate() }
-        validated = true
-    }
+            commuter().ifPresent { it.validate() }
+            customPostTax().ifPresent { it.validate() }
+            customPreTax().ifPresent { it.validate() }
+            fsaDependentCare().ifPresent { it.validate() }
+            fsaMedical().ifPresent { it.validate() }
+            hsaPost().ifPresent { it.validate() }
+            hsaPre().ifPresent { it.validate() }
+            s125Dental().ifPresent { it.validate() }
+            s125Medical().ifPresent { it.validate() }
+            s125Vision().ifPresent { it.validate() }
+            simple().ifPresent { it.validate() }
+            simpleIra().ifPresent { it.validate() }
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /** Returns a mutable builder for constructing an instance of [BenefitsSupport]. */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [BenefitsSupport]. */
@@ -200,175 +165,181 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(benefitsSupport: BenefitsSupport) = apply {
-            commuter = benefitsSupport.commuter
-            customPostTax = benefitsSupport.customPostTax
-            customPreTax = benefitsSupport.customPreTax
-            fsaDependentCare = benefitsSupport.fsaDependentCare
-            fsaMedical = benefitsSupport.fsaMedical
-            hsaPost = benefitsSupport.hsaPost
-            hsaPre = benefitsSupport.hsaPre
-            s125Dental = benefitsSupport.s125Dental
-            s125Medical = benefitsSupport.s125Medical
-            s125Vision = benefitsSupport.s125Vision
-            simple = benefitsSupport.simple
-            simpleIra = benefitsSupport.simpleIra
-            additionalProperties = benefitsSupport.additionalProperties.toMutableMap()
-        }
+        internal fun from(benefitsSupport: BenefitsSupport) =
+            apply {
+                commuter = benefitsSupport.commuter
+                customPostTax = benefitsSupport.customPostTax
+                customPreTax = benefitsSupport.customPreTax
+                fsaDependentCare = benefitsSupport.fsaDependentCare
+                fsaMedical = benefitsSupport.fsaMedical
+                hsaPost = benefitsSupport.hsaPost
+                hsaPre = benefitsSupport.hsaPre
+                s125Dental = benefitsSupport.s125Dental
+                s125Medical = benefitsSupport.s125Medical
+                s125Vision = benefitsSupport.s125Vision
+                simple = benefitsSupport.simple
+                simpleIra = benefitsSupport.simpleIra
+                additionalProperties = benefitsSupport.additionalProperties.toMutableMap()
+            }
 
-        fun commuter(commuter: BenefitFeaturesAndOperations?) =
-            commuter(JsonField.ofNullable(commuter))
+        fun commuter(commuter: BenefitFeaturesAndOperations?) = commuter(JsonField.ofNullable(commuter))
 
-        fun commuter(commuter: Optional<BenefitFeaturesAndOperations>) =
-            commuter(commuter.getOrNull())
+        fun commuter(commuter: Optional<BenefitFeaturesAndOperations>) = commuter(commuter.getOrNull())
 
-        fun commuter(commuter: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.commuter = commuter
-        }
+        fun commuter(commuter: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.commuter = commuter
+            }
 
-        fun customPostTax(customPostTax: BenefitFeaturesAndOperations?) =
-            customPostTax(JsonField.ofNullable(customPostTax))
+        fun customPostTax(customPostTax: BenefitFeaturesAndOperations?) = customPostTax(JsonField.ofNullable(customPostTax))
 
-        fun customPostTax(customPostTax: Optional<BenefitFeaturesAndOperations>) =
-            customPostTax(customPostTax.getOrNull())
+        fun customPostTax(customPostTax: Optional<BenefitFeaturesAndOperations>) = customPostTax(customPostTax.getOrNull())
 
-        fun customPostTax(customPostTax: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.customPostTax = customPostTax
-        }
+        fun customPostTax(customPostTax: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.customPostTax = customPostTax
+            }
 
-        fun customPreTax(customPreTax: BenefitFeaturesAndOperations?) =
-            customPreTax(JsonField.ofNullable(customPreTax))
+        fun customPreTax(customPreTax: BenefitFeaturesAndOperations?) = customPreTax(JsonField.ofNullable(customPreTax))
 
-        fun customPreTax(customPreTax: Optional<BenefitFeaturesAndOperations>) =
-            customPreTax(customPreTax.getOrNull())
+        fun customPreTax(customPreTax: Optional<BenefitFeaturesAndOperations>) = customPreTax(customPreTax.getOrNull())
 
-        fun customPreTax(customPreTax: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.customPreTax = customPreTax
-        }
+        fun customPreTax(customPreTax: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.customPreTax = customPreTax
+            }
 
-        fun fsaDependentCare(fsaDependentCare: BenefitFeaturesAndOperations?) =
-            fsaDependentCare(JsonField.ofNullable(fsaDependentCare))
+        fun fsaDependentCare(fsaDependentCare: BenefitFeaturesAndOperations?) = fsaDependentCare(JsonField.ofNullable(fsaDependentCare))
 
-        fun fsaDependentCare(fsaDependentCare: Optional<BenefitFeaturesAndOperations>) =
-            fsaDependentCare(fsaDependentCare.getOrNull())
+        fun fsaDependentCare(fsaDependentCare: Optional<BenefitFeaturesAndOperations>) = fsaDependentCare(fsaDependentCare.getOrNull())
 
-        fun fsaDependentCare(fsaDependentCare: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.fsaDependentCare = fsaDependentCare
-        }
+        fun fsaDependentCare(fsaDependentCare: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.fsaDependentCare = fsaDependentCare
+            }
 
-        fun fsaMedical(fsaMedical: BenefitFeaturesAndOperations?) =
-            fsaMedical(JsonField.ofNullable(fsaMedical))
+        fun fsaMedical(fsaMedical: BenefitFeaturesAndOperations?) = fsaMedical(JsonField.ofNullable(fsaMedical))
 
-        fun fsaMedical(fsaMedical: Optional<BenefitFeaturesAndOperations>) =
-            fsaMedical(fsaMedical.getOrNull())
+        fun fsaMedical(fsaMedical: Optional<BenefitFeaturesAndOperations>) = fsaMedical(fsaMedical.getOrNull())
 
-        fun fsaMedical(fsaMedical: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.fsaMedical = fsaMedical
-        }
+        fun fsaMedical(fsaMedical: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.fsaMedical = fsaMedical
+            }
 
         fun hsaPost(hsaPost: BenefitFeaturesAndOperations?) = hsaPost(JsonField.ofNullable(hsaPost))
 
         fun hsaPost(hsaPost: Optional<BenefitFeaturesAndOperations>) = hsaPost(hsaPost.getOrNull())
 
-        fun hsaPost(hsaPost: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.hsaPost = hsaPost
-        }
+        fun hsaPost(hsaPost: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.hsaPost = hsaPost
+            }
 
         fun hsaPre(hsaPre: BenefitFeaturesAndOperations?) = hsaPre(JsonField.ofNullable(hsaPre))
 
         fun hsaPre(hsaPre: Optional<BenefitFeaturesAndOperations>) = hsaPre(hsaPre.getOrNull())
 
-        fun hsaPre(hsaPre: JsonField<BenefitFeaturesAndOperations>) = apply { this.hsaPre = hsaPre }
+        fun hsaPre(hsaPre: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.hsaPre = hsaPre
+            }
 
-        fun s125Dental(s125Dental: BenefitFeaturesAndOperations?) =
-            s125Dental(JsonField.ofNullable(s125Dental))
+        fun s125Dental(s125Dental: BenefitFeaturesAndOperations?) = s125Dental(JsonField.ofNullable(s125Dental))
 
-        fun s125Dental(s125Dental: Optional<BenefitFeaturesAndOperations>) =
-            s125Dental(s125Dental.getOrNull())
+        fun s125Dental(s125Dental: Optional<BenefitFeaturesAndOperations>) = s125Dental(s125Dental.getOrNull())
 
-        fun s125Dental(s125Dental: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.s125Dental = s125Dental
-        }
+        fun s125Dental(s125Dental: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.s125Dental = s125Dental
+            }
 
-        fun s125Medical(s125Medical: BenefitFeaturesAndOperations?) =
-            s125Medical(JsonField.ofNullable(s125Medical))
+        fun s125Medical(s125Medical: BenefitFeaturesAndOperations?) = s125Medical(JsonField.ofNullable(s125Medical))
 
-        fun s125Medical(s125Medical: Optional<BenefitFeaturesAndOperations>) =
-            s125Medical(s125Medical.getOrNull())
+        fun s125Medical(s125Medical: Optional<BenefitFeaturesAndOperations>) = s125Medical(s125Medical.getOrNull())
 
-        fun s125Medical(s125Medical: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.s125Medical = s125Medical
-        }
+        fun s125Medical(s125Medical: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.s125Medical = s125Medical
+            }
 
-        fun s125Vision(s125Vision: BenefitFeaturesAndOperations?) =
-            s125Vision(JsonField.ofNullable(s125Vision))
+        fun s125Vision(s125Vision: BenefitFeaturesAndOperations?) = s125Vision(JsonField.ofNullable(s125Vision))
 
-        fun s125Vision(s125Vision: Optional<BenefitFeaturesAndOperations>) =
-            s125Vision(s125Vision.getOrNull())
+        fun s125Vision(s125Vision: Optional<BenefitFeaturesAndOperations>) = s125Vision(s125Vision.getOrNull())
 
-        fun s125Vision(s125Vision: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.s125Vision = s125Vision
-        }
+        fun s125Vision(s125Vision: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.s125Vision = s125Vision
+            }
 
         fun simple(simple: BenefitFeaturesAndOperations?) = simple(JsonField.ofNullable(simple))
 
         fun simple(simple: Optional<BenefitFeaturesAndOperations>) = simple(simple.getOrNull())
 
-        fun simple(simple: JsonField<BenefitFeaturesAndOperations>) = apply { this.simple = simple }
+        fun simple(simple: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.simple = simple
+            }
 
-        fun simpleIra(simpleIra: BenefitFeaturesAndOperations?) =
-            simpleIra(JsonField.ofNullable(simpleIra))
+        fun simpleIra(simpleIra: BenefitFeaturesAndOperations?) = simpleIra(JsonField.ofNullable(simpleIra))
 
-        fun simpleIra(simpleIra: Optional<BenefitFeaturesAndOperations>) =
-            simpleIra(simpleIra.getOrNull())
+        fun simpleIra(simpleIra: Optional<BenefitFeaturesAndOperations>) = simpleIra(simpleIra.getOrNull())
 
-        fun simpleIra(simpleIra: JsonField<BenefitFeaturesAndOperations>) = apply {
-            this.simpleIra = simpleIra
-        }
+        fun simpleIra(simpleIra: JsonField<BenefitFeaturesAndOperations>) =
+            apply {
+                this.simpleIra = simpleIra
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
         fun build(): BenefitsSupport =
             BenefitsSupport(
-                commuter,
-                customPostTax,
-                customPreTax,
-                fsaDependentCare,
-                fsaMedical,
-                hsaPost,
-                hsaPre,
-                s125Dental,
-                s125Medical,
-                s125Vision,
-                simple,
-                simpleIra,
-                additionalProperties.toImmutable(),
+              commuter,
+              customPostTax,
+              customPreTax,
+              fsaDependentCare,
+              fsaMedical,
+              hsaPost,
+              hsaPre,
+              s125Dental,
+              s125Medical,
+              s125Vision,
+              simple,
+              simpleIra,
+              additionalProperties.toImmutable(),
             )
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is BenefitsSupport && commuter == other.commuter && customPostTax == other.customPostTax && customPreTax == other.customPreTax && fsaDependentCare == other.fsaDependentCare && fsaMedical == other.fsaMedical && hsaPost == other.hsaPost && hsaPre == other.hsaPre && s125Dental == other.s125Dental && s125Medical == other.s125Medical && s125Vision == other.s125Vision && simple == other.simple && simpleIra == other.simpleIra && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is BenefitsSupport && commuter == other.commuter && customPostTax == other.customPostTax && customPreTax == other.customPreTax && fsaDependentCare == other.fsaDependentCare && fsaMedical == other.fsaMedical && hsaPost == other.hsaPost && hsaPre == other.hsaPre && s125Dental == other.s125Dental && s125Medical == other.s125Medical && s125Vision == other.s125Vision && simple == other.simple && simpleIra == other.simpleIra && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -377,6 +348,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "BenefitsSupport{commuter=$commuter, customPostTax=$customPostTax, customPreTax=$customPreTax, fsaDependentCare=$fsaDependentCare, fsaMedical=$fsaMedical, hsaPost=$hsaPost, hsaPre=$hsaPre, s125Dental=$s125Dental, s125Medical=$s125Medical, s125Vision=$s125Vision, simple=$simple, simpleIra=$simpleIra, additionalProperties=$additionalProperties}"
+    override fun toString() = "BenefitsSupport{commuter=$commuter, customPostTax=$customPostTax, customPreTax=$customPreTax, fsaDependentCare=$fsaDependentCare, fsaMedical=$fsaMedical, hsaPost=$hsaPost, hsaPre=$hsaPre, s125Dental=$s125Dental, s125Medical=$s125Medical, s125Vision=$s125Vision, simple=$simple, simpleIra=$simpleIra, additionalProperties=$additionalProperties}"
 }

@@ -21,67 +21,57 @@ import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsync
 import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
-class JobServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    JobServiceAsync {
+class JobServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: JobServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : JobServiceAsync {
 
-    private val configuration: ConfigurationServiceAsync by lazy {
-        ConfigurationServiceAsyncImpl(clientOptions)
-    }
+    private val withRawResponse: JobServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+
+    private val configuration: ConfigurationServiceAsync by lazy { ConfigurationServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): JobServiceAsync.WithRawResponse = withRawResponse
 
     override fun configuration(): ConfigurationServiceAsync = configuration
 
-    override fun create(
-        params: SandboxJobCreateParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<JobCreateResponse> =
+    override fun create(params: SandboxJobCreateParams, requestOptions: RequestOptions): CompletableFuture<JobCreateResponse> =
         // post /sandbox/jobs
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        JobServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : JobServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val configuration: ConfigurationServiceAsync.WithRawResponse by lazy {
-            ConfigurationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
+        private val configuration: ConfigurationServiceAsync.WithRawResponse by lazy { ConfigurationServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
 
         override fun configuration(): ConfigurationServiceAsync.WithRawResponse = configuration
 
-        private val createHandler: Handler<JobCreateResponse> =
-            jsonHandler<JobCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<JobCreateResponse> = jsonHandler<JobCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun create(
-            params: SandboxJobCreateParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<JobCreateResponse>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("sandbox", "jobs")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { createHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
+        override fun create(params: SandboxJobCreateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<JobCreateResponse>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("sandbox", "jobs")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  createHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          } }
         }
     }
 }

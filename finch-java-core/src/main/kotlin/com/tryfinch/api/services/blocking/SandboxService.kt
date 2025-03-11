@@ -13,7 +13,8 @@ import com.tryfinch.api.services.blocking.sandbox.PaymentService
 interface SandboxService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -31,7 +32,10 @@ interface SandboxService {
 
     fun jobs(): JobService
 
-    /** A view of [SandboxService] that provides access to raw HTTP responses for each method. */
+    /**
+     * A view of [SandboxService] that provides access to raw HTTP responses for each
+     * method.
+     */
     interface WithRawResponse {
 
         fun connections(): ConnectionService.WithRawResponse

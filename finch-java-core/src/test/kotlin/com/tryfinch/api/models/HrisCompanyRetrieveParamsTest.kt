@@ -8,6 +8,6 @@ class HrisCompanyRetrieveParamsTest {
 
     @Test
     fun create() {
-        HrisCompanyRetrieveParams.builder().build()
+      HrisCompanyRetrieveParams.builder().build()
     }
 }

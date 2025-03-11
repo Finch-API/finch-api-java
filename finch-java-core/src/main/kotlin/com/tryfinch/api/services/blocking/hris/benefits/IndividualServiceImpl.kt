@@ -24,139 +24,118 @@ import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividual
 
-class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    IndividualService {
+class IndividualServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: IndividualService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : IndividualService {
+
+    private val withRawResponse: IndividualService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): IndividualService.WithRawResponse = withRawResponse
 
-    override fun enrolledIds(
-        params: HrisBenefitIndividualEnrolledIdsParams,
-        requestOptions: RequestOptions,
-    ): IndividualEnrolledIdsResponse =
+    override fun enrolledIds(params: HrisBenefitIndividualEnrolledIdsParams, requestOptions: RequestOptions): IndividualEnrolledIdsResponse =
         // get /employer/benefits/{benefit_id}/enrolled
         withRawResponse().enrolledIds(params, requestOptions).parse()
 
-    override fun retrieveManyBenefits(
-        params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-        requestOptions: RequestOptions,
-    ): HrisBenefitIndividualRetrieveManyBenefitsPage =
+    override fun retrieveManyBenefits(params: HrisBenefitIndividualRetrieveManyBenefitsParams, requestOptions: RequestOptions): HrisBenefitIndividualRetrieveManyBenefitsPage =
         // get /employer/benefits/{benefit_id}/individuals
         withRawResponse().retrieveManyBenefits(params, requestOptions).parse()
 
-    override fun unenrollMany(
-        params: HrisBenefitIndividualUnenrollManyParams,
-        requestOptions: RequestOptions,
-    ): HrisBenefitIndividualUnenrollManyPage =
+    override fun unenrollMany(params: HrisBenefitIndividualUnenrollManyParams, requestOptions: RequestOptions): HrisBenefitIndividualUnenrollManyPage =
         // delete /employer/benefits/{benefit_id}/individuals
         withRawResponse().unenrollMany(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        IndividualService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : IndividualService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> =
-            jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> = jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun enrolledIds(
-            params: HrisBenefitIndividualEnrolledIdsParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<IndividualEnrolledIdsResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("employer", "benefits", params.getPathParam(0), "enrolled")
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { enrolledIdsHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun enrolledIds(params: HrisBenefitIndividualEnrolledIdsParams, requestOptions: RequestOptions): HttpResponseFor<IndividualEnrolledIdsResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("employer", "benefits", params.getPathParam(0), "enrolled")
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  enrolledIdsHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val retrieveManyBenefitsHandler: Handler<List<IndividualBenefit>> =
-            jsonHandler<List<IndividualBenefit>>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val retrieveManyBenefitsHandler: Handler<List<IndividualBenefit>> = jsonHandler<List<IndividualBenefit>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun retrieveManyBenefits(
-            params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPage> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { retrieveManyBenefitsHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.forEach { it.validate() }
-                        }
-                    }
-                    .let {
-                        HrisBenefitIndividualRetrieveManyBenefitsPage.of(
-                            IndividualServiceImpl(clientOptions),
-                            params,
-                            HrisBenefitIndividualRetrieveManyBenefitsPage.Response.builder()
-                                .items(it)
-                                .build(),
-                        )
-                    }
-            }
+        override fun retrieveManyBenefits(params: HrisBenefitIndividualRetrieveManyBenefitsParams, requestOptions: RequestOptions): HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPage> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  retrieveManyBenefitsHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.forEach { it.validate() }
+                  }
+              }
+              .let {
+                  HrisBenefitIndividualRetrieveManyBenefitsPage.of(IndividualServiceImpl(clientOptions), params, HrisBenefitIndividualRetrieveManyBenefitsPage.Response.builder()
+                      .items(it)
+                      .build())
+              }
+          }
         }
 
-        private val unenrollManyHandler: Handler<List<UnenrolledIndividual>> =
-            jsonHandler<List<UnenrolledIndividual>>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val unenrollManyHandler: Handler<List<UnenrolledIndividual>> = jsonHandler<List<UnenrolledIndividual>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun unenrollMany(
-            params: HrisBenefitIndividualUnenrollManyParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<HrisBenefitIndividualUnenrollManyPage> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.DELETE)
-                    .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { unenrollManyHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.forEach { it.validate() }
-                        }
-                    }
-                    .let {
-                        HrisBenefitIndividualUnenrollManyPage.of(
-                            IndividualServiceImpl(clientOptions),
-                            params,
-                            HrisBenefitIndividualUnenrollManyPage.Response.builder()
-                                .items(it)
-                                .build(),
-                        )
-                    }
-            }
+        override fun unenrollMany(params: HrisBenefitIndividualUnenrollManyParams, requestOptions: RequestOptions): HttpResponseFor<HrisBenefitIndividualUnenrollManyPage> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.DELETE)
+            .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  unenrollManyHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.forEach { it.validate() }
+                  }
+              }
+              .let {
+                  HrisBenefitIndividualUnenrollManyPage.of(IndividualServiceImpl(clientOptions), params, HrisBenefitIndividualUnenrollManyPage.Response.builder()
+                      .items(it)
+                      .build())
+              }
+          }
         }
     }
 }

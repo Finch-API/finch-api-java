@@ -17,51 +17,49 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.JobManualRetrieveParams
 import com.tryfinch.api.models.ManualAsyncJob
 
-class ManualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    ManualService {
+class ManualServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: ManualService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : ManualService {
+
+    private val withRawResponse: ManualService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): ManualService.WithRawResponse = withRawResponse
 
-    override fun retrieve(
-        params: JobManualRetrieveParams,
-        requestOptions: RequestOptions,
-    ): ManualAsyncJob =
+    override fun retrieve(params: JobManualRetrieveParams, requestOptions: RequestOptions): ManualAsyncJob =
         // get /jobs/manual/{job_id}
         withRawResponse().retrieve(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        ManualService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : ManualService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveHandler: Handler<ManualAsyncJob> =
-            jsonHandler<ManualAsyncJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<ManualAsyncJob> = jsonHandler<ManualAsyncJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun retrieve(
-            params: JobManualRetrieveParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<ManualAsyncJob> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("jobs", "manual", params.getPathParam(0))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { retrieveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun retrieve(params: JobManualRetrieveParams, requestOptions: RequestOptions): HttpResponseFor<ManualAsyncJob> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("jobs", "manual", params.getPathParam(0))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  retrieveHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

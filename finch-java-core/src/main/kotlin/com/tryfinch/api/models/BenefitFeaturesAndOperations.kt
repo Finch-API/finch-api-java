@@ -21,23 +21,16 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
-class BenefitFeaturesAndOperations
-@JsonCreator
-private constructor(
-    @JsonProperty("supported_features")
-    @ExcludeMissing
-    private val supportedFeatures: JsonField<BenefitFeature> = JsonMissing.of(),
-    @JsonProperty("supported_operations")
-    @ExcludeMissing
-    private val supportedOperations: JsonField<SupportPerBenefitType> = JsonMissing.of(),
+class BenefitFeaturesAndOperations @JsonCreator private constructor(
+    @JsonProperty("supported_features") @ExcludeMissing private val supportedFeatures: JsonField<BenefitFeature> = JsonMissing.of(),
+    @JsonProperty("supported_operations") @ExcludeMissing private val supportedOperations: JsonField<SupportPerBenefitType> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
-    fun supportedFeatures(): Optional<BenefitFeature> =
-        Optional.ofNullable(supportedFeatures.getNullable("supported_features"))
+    fun supportedFeatures(): Optional<BenefitFeature> = Optional.ofNullable(supportedFeatures.getNullable("supported_features"))
 
-    fun supportedOperations(): Optional<SupportPerBenefitType> =
-        Optional.ofNullable(supportedOperations.getNullable("supported_operations"))
+    fun supportedOperations(): Optional<SupportPerBenefitType> = Optional.ofNullable(supportedOperations.getNullable("supported_operations"))
 
     @JsonProperty("supported_features")
     @ExcludeMissing
@@ -53,24 +46,27 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): BenefitFeaturesAndOperations = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): BenefitFeaturesAndOperations =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        supportedFeatures().ifPresent { it.validate() }
-        supportedOperations().ifPresent { it.validate() }
-        validated = true
-    }
+            supportedFeatures().ifPresent { it.validate() }
+            supportedOperations().ifPresent { it.validate() }
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [BenefitFeaturesAndOperations].
+         * Returns a mutable builder for constructing an instance of
+         * [BenefitFeaturesAndOperations].
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [BenefitFeaturesAndOperations]. */
@@ -81,115 +77,105 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(benefitFeaturesAndOperations: BenefitFeaturesAndOperations) = apply {
-            supportedFeatures = benefitFeaturesAndOperations.supportedFeatures
-            supportedOperations = benefitFeaturesAndOperations.supportedOperations
-            additionalProperties = benefitFeaturesAndOperations.additionalProperties.toMutableMap()
-        }
+        internal fun from(benefitFeaturesAndOperations: BenefitFeaturesAndOperations) =
+            apply {
+                supportedFeatures = benefitFeaturesAndOperations.supportedFeatures
+                supportedOperations = benefitFeaturesAndOperations.supportedOperations
+                additionalProperties = benefitFeaturesAndOperations.additionalProperties.toMutableMap()
+            }
 
-        fun supportedFeatures(supportedFeatures: BenefitFeature) =
-            supportedFeatures(JsonField.of(supportedFeatures))
+        fun supportedFeatures(supportedFeatures: BenefitFeature) = supportedFeatures(JsonField.of(supportedFeatures))
 
-        fun supportedFeatures(supportedFeatures: JsonField<BenefitFeature>) = apply {
-            this.supportedFeatures = supportedFeatures
-        }
+        fun supportedFeatures(supportedFeatures: JsonField<BenefitFeature>) =
+            apply {
+                this.supportedFeatures = supportedFeatures
+            }
 
-        fun supportedOperations(supportedOperations: SupportPerBenefitType) =
-            supportedOperations(JsonField.of(supportedOperations))
+        fun supportedOperations(supportedOperations: SupportPerBenefitType) = supportedOperations(JsonField.of(supportedOperations))
 
-        fun supportedOperations(supportedOperations: JsonField<SupportPerBenefitType>) = apply {
-            this.supportedOperations = supportedOperations
-        }
+        fun supportedOperations(supportedOperations: JsonField<SupportPerBenefitType>) =
+            apply {
+                this.supportedOperations = supportedOperations
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
         fun build(): BenefitFeaturesAndOperations =
             BenefitFeaturesAndOperations(
-                supportedFeatures,
-                supportedOperations,
-                additionalProperties.toImmutable(),
+              supportedFeatures,
+              supportedOperations,
+              additionalProperties.toImmutable(),
             )
     }
 
     @NoAutoDetect
-    class BenefitFeature
-    @JsonCreator
-    private constructor(
-        @JsonProperty("annual_maximum")
-        @ExcludeMissing
-        private val annualMaximum: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("catch_up")
-        @ExcludeMissing
-        private val catchUp: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("company_contribution")
-        @ExcludeMissing
-        private val companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of(),
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("employee_deduction")
-        @ExcludeMissing
-        private val employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
-        @JsonProperty("frequencies")
-        @ExcludeMissing
-        private val frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of(),
-        @JsonProperty("hsa_contribution_limit")
-        @ExcludeMissing
-        private val hsaContributionLimit: JsonField<List<HsaContributionLimit?>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class BenefitFeature @JsonCreator private constructor(
+        @JsonProperty("annual_maximum") @ExcludeMissing private val annualMaximum: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("catch_up") @ExcludeMissing private val catchUp: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("company_contribution") @ExcludeMissing private val companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of(),
+        @JsonProperty("description") @ExcludeMissing private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("employee_deduction") @ExcludeMissing private val employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
+        @JsonProperty("frequencies") @ExcludeMissing private val frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of(),
+        @JsonProperty("hsa_contribution_limit") @ExcludeMissing private val hsaContributionLimit: JsonField<List<HsaContributionLimit?>> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         /** Whether the provider supports an annual maximum for this benefit. */
-        fun annualMaximum(): Optional<Boolean> =
-            Optional.ofNullable(annualMaximum.getNullable("annual_maximum"))
+        fun annualMaximum(): Optional<Boolean> = Optional.ofNullable(annualMaximum.getNullable("annual_maximum"))
 
         /**
-         * Whether the provider supports catch up for this benefit. This field will only be true for
-         * retirement benefits.
+         * Whether the provider supports catch up for this benefit. This field will only be
+         * true for retirement benefits.
          */
         fun catchUp(): Optional<Boolean> = Optional.ofNullable(catchUp.getNullable("catch_up"))
 
         /**
-         * Supported contribution types. An empty array indicates contributions are not supported.
+         * Supported contribution types. An empty array indicates contributions are not
+         * supported.
          */
-        fun companyContribution(): Optional<List<CompanyContribution?>> =
-            Optional.ofNullable(companyContribution.getNullable("company_contribution"))
+        fun companyContribution(): Optional<List<CompanyContribution?>> = Optional.ofNullable(companyContribution.getNullable("company_contribution"))
 
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
-
-        /** Supported deduction types. An empty array indicates deductions are not supported. */
-        fun employeeDeduction(): Optional<List<EmployeeDeduction?>> =
-            Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
-
-        /** The list of frequencies supported by the provider for this benefit */
-        fun frequencies(): Optional<List<BenefitFrequency?>> =
-            Optional.ofNullable(frequencies.getNullable("frequencies"))
+        fun description(): Optional<String> = Optional.ofNullable(description.getNullable("description"))
 
         /**
-         * Whether the provider supports HSA contribution limits. Empty if this feature is not
-         * supported for the benefit. This array only has values for HSA benefits.
+         * Supported deduction types. An empty array indicates deductions are not
+         * supported.
          */
-        fun hsaContributionLimit(): Optional<List<HsaContributionLimit?>> =
-            Optional.ofNullable(hsaContributionLimit.getNullable("hsa_contribution_limit"))
+        fun employeeDeduction(): Optional<List<EmployeeDeduction?>> = Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
+
+        /** The list of frequencies supported by the provider for this benefit */
+        fun frequencies(): Optional<List<BenefitFrequency?>> = Optional.ofNullable(frequencies.getNullable("frequencies"))
+
+        /**
+         * Whether the provider supports HSA contribution limits. Empty if this feature is
+         * not supported for the benefit. This array only has values for HSA benefits.
+         */
+        fun hsaContributionLimit(): Optional<List<HsaContributionLimit?>> = Optional.ofNullable(hsaContributionLimit.getNullable("hsa_contribution_limit"))
 
         /** Whether the provider supports an annual maximum for this benefit. */
         @JsonProperty("annual_maximum")
@@ -197,13 +183,16 @@ private constructor(
         fun _annualMaximum(): JsonField<Boolean> = annualMaximum
 
         /**
-         * Whether the provider supports catch up for this benefit. This field will only be true for
-         * retirement benefits.
+         * Whether the provider supports catch up for this benefit. This field will only be
+         * true for retirement benefits.
          */
-        @JsonProperty("catch_up") @ExcludeMissing fun _catchUp(): JsonField<Boolean> = catchUp
+        @JsonProperty("catch_up")
+        @ExcludeMissing
+        fun _catchUp(): JsonField<Boolean> = catchUp
 
         /**
-         * Supported contribution types. An empty array indicates contributions are not supported.
+         * Supported contribution types. An empty array indicates contributions are not
+         * supported.
          */
         @JsonProperty("company_contribution")
         @ExcludeMissing
@@ -213,7 +202,10 @@ private constructor(
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
-        /** Supported deduction types. An empty array indicates deductions are not supported. */
+        /**
+         * Supported deduction types. An empty array indicates deductions are not
+         * supported.
+         */
         @JsonProperty("employee_deduction")
         @ExcludeMissing
         fun _employeeDeduction(): JsonField<List<EmployeeDeduction?>> = employeeDeduction
@@ -224,8 +216,8 @@ private constructor(
         fun _frequencies(): JsonField<List<BenefitFrequency?>> = frequencies
 
         /**
-         * Whether the provider supports HSA contribution limits. Empty if this feature is not
-         * supported for the benefit. This array only has values for HSA benefits.
+         * Whether the provider supports HSA contribution limits. Empty if this feature is
+         * not supported for the benefit. This array only has values for HSA benefits.
          */
         @JsonProperty("hsa_contribution_limit")
         @ExcludeMissing
@@ -237,27 +229,29 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): BenefitFeature = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): BenefitFeature =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            annualMaximum()
-            catchUp()
-            companyContribution()
-            description()
-            employeeDeduction()
-            frequencies()
-            hsaContributionLimit()
-            validated = true
-        }
+                annualMaximum()
+                catchUp()
+                companyContribution()
+                description()
+                employeeDeduction()
+                frequencies()
+                hsaContributionLimit()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [BenefitFeature]. */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [BenefitFeature]. */
@@ -273,71 +267,71 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(benefitFeature: BenefitFeature) = apply {
-                annualMaximum = benefitFeature.annualMaximum
-                catchUp = benefitFeature.catchUp
-                companyContribution = benefitFeature.companyContribution.map { it.toMutableList() }
-                description = benefitFeature.description
-                employeeDeduction = benefitFeature.employeeDeduction.map { it.toMutableList() }
-                frequencies = benefitFeature.frequencies.map { it.toMutableList() }
-                hsaContributionLimit =
-                    benefitFeature.hsaContributionLimit.map { it.toMutableList() }
-                additionalProperties = benefitFeature.additionalProperties.toMutableMap()
-            }
+            internal fun from(benefitFeature: BenefitFeature) =
+                apply {
+                    annualMaximum = benefitFeature.annualMaximum
+                    catchUp = benefitFeature.catchUp
+                    companyContribution = benefitFeature.companyContribution.map { it.toMutableList() }
+                    description = benefitFeature.description
+                    employeeDeduction = benefitFeature.employeeDeduction.map { it.toMutableList() }
+                    frequencies = benefitFeature.frequencies.map { it.toMutableList() }
+                    hsaContributionLimit = benefitFeature.hsaContributionLimit.map { it.toMutableList() }
+                    additionalProperties = benefitFeature.additionalProperties.toMutableMap()
+                }
 
             /** Whether the provider supports an annual maximum for this benefit. */
-            fun annualMaximum(annualMaximum: Boolean?) =
-                annualMaximum(JsonField.ofNullable(annualMaximum))
+            fun annualMaximum(annualMaximum: Boolean?) = annualMaximum(JsonField.ofNullable(annualMaximum))
 
             /** Whether the provider supports an annual maximum for this benefit. */
             fun annualMaximum(annualMaximum: Boolean) = annualMaximum(annualMaximum as Boolean?)
 
             /** Whether the provider supports an annual maximum for this benefit. */
-            fun annualMaximum(annualMaximum: Optional<Boolean>) =
-                annualMaximum(annualMaximum.getOrNull())
+            fun annualMaximum(annualMaximum: Optional<Boolean>) = annualMaximum(annualMaximum.getOrNull())
 
             /** Whether the provider supports an annual maximum for this benefit. */
-            fun annualMaximum(annualMaximum: JsonField<Boolean>) = apply {
-                this.annualMaximum = annualMaximum
-            }
+            fun annualMaximum(annualMaximum: JsonField<Boolean>) =
+                apply {
+                    this.annualMaximum = annualMaximum
+                }
 
             /**
-             * Whether the provider supports catch up for this benefit. This field will only be true
-             * for retirement benefits.
+             * Whether the provider supports catch up for this benefit. This field will only be
+             * true for retirement benefits.
              */
             fun catchUp(catchUp: Boolean?) = catchUp(JsonField.ofNullable(catchUp))
 
             /**
-             * Whether the provider supports catch up for this benefit. This field will only be true
-             * for retirement benefits.
+             * Whether the provider supports catch up for this benefit. This field will only be
+             * true for retirement benefits.
              */
             fun catchUp(catchUp: Boolean) = catchUp(catchUp as Boolean?)
 
             /**
-             * Whether the provider supports catch up for this benefit. This field will only be true
-             * for retirement benefits.
+             * Whether the provider supports catch up for this benefit. This field will only be
+             * true for retirement benefits.
              */
             fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.getOrNull())
 
             /**
-             * Whether the provider supports catch up for this benefit. This field will only be true
-             * for retirement benefits.
+             * Whether the provider supports catch up for this benefit. This field will only be
+             * true for retirement benefits.
              */
-            fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
+            fun catchUp(catchUp: JsonField<Boolean>) =
+                apply {
+                    this.catchUp = catchUp
+                }
 
             /**
              * Supported contribution types. An empty array indicates contributions are not
              * supported.
              */
-            fun companyContribution(companyContribution: List<CompanyContribution?>?) =
-                companyContribution(JsonField.ofNullable(companyContribution))
+            fun companyContribution(companyContribution: List<CompanyContribution?>?) = companyContribution(JsonField.ofNullable(companyContribution))
 
             /**
              * Supported contribution types. An empty array indicates contributions are not
              * supported.
              */
-            fun companyContribution(companyContribution: Optional<List<CompanyContribution?>>) =
-                companyContribution(companyContribution.getOrNull())
+            fun companyContribution(companyContribution: Optional<List<CompanyContribution?>>) = companyContribution(companyContribution.getOrNull())
 
             /**
              * Supported contribution types. An empty array indicates contributions are not
@@ -352,76 +346,86 @@ private constructor(
              * Supported contribution types. An empty array indicates contributions are not
              * supported.
              */
-            fun addCompanyContribution(companyContribution: CompanyContribution) = apply {
-                this.companyContribution =
-                    (this.companyContribution ?: JsonField.of(mutableListOf())).also {
+            fun addCompanyContribution(companyContribution: CompanyContribution) =
+                apply {
+                    this.companyContribution = (this.companyContribution ?: JsonField.of(mutableListOf())).also {
                         checkKnown("companyContribution", it).add(companyContribution)
                     }
-            }
+                }
 
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             fun description(description: Optional<String>) = description(description.getOrNull())
 
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
+            fun description(description: JsonField<String>) =
+                apply {
+                    this.description = description
+                }
 
-            /** Supported deduction types. An empty array indicates deductions are not supported. */
-            fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>?) =
-                employeeDeduction(JsonField.ofNullable(employeeDeduction))
+            /**
+             * Supported deduction types. An empty array indicates deductions are not
+             * supported.
+             */
+            fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>?) = employeeDeduction(JsonField.ofNullable(employeeDeduction))
 
-            /** Supported deduction types. An empty array indicates deductions are not supported. */
-            fun employeeDeduction(employeeDeduction: Optional<List<EmployeeDeduction?>>) =
-                employeeDeduction(employeeDeduction.getOrNull())
+            /**
+             * Supported deduction types. An empty array indicates deductions are not
+             * supported.
+             */
+            fun employeeDeduction(employeeDeduction: Optional<List<EmployeeDeduction?>>) = employeeDeduction(employeeDeduction.getOrNull())
 
-            /** Supported deduction types. An empty array indicates deductions are not supported. */
-            fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction?>>) = apply {
-                this.employeeDeduction = employeeDeduction.map { it.toMutableList() }
-            }
+            /**
+             * Supported deduction types. An empty array indicates deductions are not
+             * supported.
+             */
+            fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction?>>) =
+                apply {
+                    this.employeeDeduction = employeeDeduction.map { it.toMutableList() }
+                }
 
-            /** Supported deduction types. An empty array indicates deductions are not supported. */
-            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
-                this.employeeDeduction =
-                    (this.employeeDeduction ?: JsonField.of(mutableListOf())).also {
+            /**
+             * Supported deduction types. An empty array indicates deductions are not
+             * supported.
+             */
+            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) =
+                apply {
+                    this.employeeDeduction = (this.employeeDeduction ?: JsonField.of(mutableListOf())).also {
                         checkKnown("employeeDeduction", it).add(employeeDeduction)
                     }
-            }
+                }
 
             /** The list of frequencies supported by the provider for this benefit */
-            fun frequencies(frequencies: List<BenefitFrequency?>) =
-                frequencies(JsonField.of(frequencies))
+            fun frequencies(frequencies: List<BenefitFrequency?>) = frequencies(JsonField.of(frequencies))
 
             /** The list of frequencies supported by the provider for this benefit */
-            fun frequencies(frequencies: JsonField<List<BenefitFrequency?>>) = apply {
-                this.frequencies = frequencies.map { it.toMutableList() }
-            }
+            fun frequencies(frequencies: JsonField<List<BenefitFrequency?>>) =
+                apply {
+                    this.frequencies = frequencies.map { it.toMutableList() }
+                }
 
             /** The list of frequencies supported by the provider for this benefit */
-            fun addFrequency(frequency: BenefitFrequency) = apply {
-                frequencies =
-                    (frequencies ?: JsonField.of(mutableListOf())).also {
+            fun addFrequency(frequency: BenefitFrequency) =
+                apply {
+                    frequencies = (frequencies ?: JsonField.of(mutableListOf())).also {
                         checkKnown("frequencies", it).add(frequency)
                     }
-            }
+                }
 
             /**
-             * Whether the provider supports HSA contribution limits. Empty if this feature is not
-             * supported for the benefit. This array only has values for HSA benefits.
+             * Whether the provider supports HSA contribution limits. Empty if this feature is
+             * not supported for the benefit. This array only has values for HSA benefits.
              */
-            fun hsaContributionLimit(hsaContributionLimit: List<HsaContributionLimit?>?) =
-                hsaContributionLimit(JsonField.ofNullable(hsaContributionLimit))
+            fun hsaContributionLimit(hsaContributionLimit: List<HsaContributionLimit?>?) = hsaContributionLimit(JsonField.ofNullable(hsaContributionLimit))
 
             /**
-             * Whether the provider supports HSA contribution limits. Empty if this feature is not
-             * supported for the benefit. This array only has values for HSA benefits.
+             * Whether the provider supports HSA contribution limits. Empty if this feature is
+             * not supported for the benefit. This array only has values for HSA benefits.
              */
-            fun hsaContributionLimit(hsaContributionLimit: Optional<List<HsaContributionLimit?>>) =
-                hsaContributionLimit(hsaContributionLimit.getOrNull())
+            fun hsaContributionLimit(hsaContributionLimit: Optional<List<HsaContributionLimit?>>) = hsaContributionLimit(hsaContributionLimit.getOrNull())
 
             /**
-             * Whether the provider supports HSA contribution limits. Empty if this feature is not
-             * supported for the benefit. This array only has values for HSA benefits.
+             * Whether the provider supports HSA contribution limits. Empty if this feature is
+             * not supported for the benefit. This array only has values for HSA benefits.
              */
             fun hsaContributionLimit(hsaContributionLimit: JsonField<List<HsaContributionLimit?>>) =
                 apply {
@@ -429,61 +433,70 @@ private constructor(
                 }
 
             /**
-             * Whether the provider supports HSA contribution limits. Empty if this feature is not
-             * supported for the benefit. This array only has values for HSA benefits.
+             * Whether the provider supports HSA contribution limits. Empty if this feature is
+             * not supported for the benefit. This array only has values for HSA benefits.
              */
-            fun addHsaContributionLimit(hsaContributionLimit: HsaContributionLimit) = apply {
-                this.hsaContributionLimit =
-                    (this.hsaContributionLimit ?: JsonField.of(mutableListOf())).also {
+            fun addHsaContributionLimit(hsaContributionLimit: HsaContributionLimit) =
+                apply {
+                    this.hsaContributionLimit = (this.hsaContributionLimit ?: JsonField.of(mutableListOf())).also {
                         checkKnown("hsaContributionLimit", it).add(hsaContributionLimit)
                     }
-            }
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): BenefitFeature =
                 BenefitFeature(
-                    annualMaximum,
-                    catchUp,
-                    (companyContribution ?: JsonMissing.of()).map { it.toImmutable() },
-                    description,
-                    (employeeDeduction ?: JsonMissing.of()).map { it.toImmutable() },
-                    (frequencies ?: JsonMissing.of()).map { it.toImmutable() },
-                    (hsaContributionLimit ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toImmutable(),
+                  annualMaximum,
+                  catchUp,
+                  (companyContribution ?: JsonMissing.of()).map { it.toImmutable() },
+                  description,
+                  (employeeDeduction ?: JsonMissing.of()).map { it.toImmutable() },
+                  (frequencies ?: JsonMissing.of()).map { it.toImmutable() },
+                  (hsaContributionLimit ?: JsonMissing.of()).map { it.toImmutable() },
+                  additionalProperties.toImmutable(),
                 )
         }
 
-        class CompanyContribution
-        @JsonCreator
-        private constructor(private val value: JsonField<String>) : Enum {
+        class CompanyContribution @JsonCreator private constructor(
+            private val value: JsonField<String>,
+
+        ) : Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that
+             * doesn't match any known member, and you want to know that value. For example, if
+             * the SDK is on an older version than the API, then the API may respond with new
+             * members that the SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue
+            fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -501,14 +514,16 @@ private constructor(
             }
 
             /**
-             * An enum containing [CompanyContribution]'s known values, as well as an [_UNKNOWN]
-             * member.
+             * An enum containing [CompanyContribution]'s known values, as well as an
+             * [_UNKNOWN] member.
              *
              * An instance of [CompanyContribution] can contain an unknown value in a couple of
              * cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
+             *
+             * - It was deserialized from data that doesn't match any known member. For
+             *   example, if the SDK is on an older version than the API, then the API may
+             *   respond with new members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -525,8 +540,8 @@ private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if
+             * you want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -541,8 +556,8 @@ private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a known
-             *   member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a
+             * known member.
              */
             fun known(): Known =
                 when (this) {
@@ -557,20 +572,17 @@ private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have
+             * the expected primitive type.
              */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    FinchInvalidDataException("Value is not a String")
-                }
+            fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return /* spotless:off */ other is CompanyContribution && value == other.value /* spotless:on */
+              return /* spotless:off */ other is CompanyContribution && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -578,19 +590,21 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        class EmployeeDeduction
-        @JsonCreator
-        private constructor(private val value: JsonField<String>) : Enum {
+        class EmployeeDeduction @JsonCreator private constructor(
+            private val value: JsonField<String>,
+
+        ) : Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that
+             * doesn't match any known member, and you want to know that value. For example, if
+             * the SDK is on an older version than the API, then the API may respond with new
+             * members that the SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue
+            fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -611,10 +625,13 @@ private constructor(
              * An enum containing [EmployeeDeduction]'s known values, as well as an [_UNKNOWN]
              * member.
              *
-             * An instance of [EmployeeDeduction] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
+             * An instance of [EmployeeDeduction] can contain an unknown value in a couple of
+             * cases:
+             *
+             * - It was deserialized from data that doesn't match any known member. For
+             *   example, if the SDK is on an older version than the API, then the API may
+             *   respond with new members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -631,8 +648,8 @@ private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if
+             * you want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -647,8 +664,8 @@ private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a known
-             *   member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a
+             * known member.
              */
             fun known(): Known =
                 when (this) {
@@ -663,20 +680,17 @@ private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have
+             * the expected primitive type.
              */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    FinchInvalidDataException("Value is not a String")
-                }
+            fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return /* spotless:off */ other is EmployeeDeduction && value == other.value /* spotless:on */
+              return /* spotless:off */ other is EmployeeDeduction && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -684,19 +698,21 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        class HsaContributionLimit
-        @JsonCreator
-        private constructor(private val value: JsonField<String>) : Enum {
+        class HsaContributionLimit @JsonCreator private constructor(
+            private val value: JsonField<String>,
+
+        ) : Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that
+             * doesn't match any known member, and you want to know that value. For example, if
+             * the SDK is on an older version than the API, then the API may respond with new
+             * members that the SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue
+            fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -714,14 +730,16 @@ private constructor(
             }
 
             /**
-             * An enum containing [HsaContributionLimit]'s known values, as well as an [_UNKNOWN]
-             * member.
+             * An enum containing [HsaContributionLimit]'s known values, as well as an
+             * [_UNKNOWN] member.
              *
-             * An instance of [HsaContributionLimit] can contain an unknown value in a couple of
-             * cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
+             * An instance of [HsaContributionLimit] can contain an unknown value in a couple
+             * of cases:
+             *
+             * - It was deserialized from data that doesn't match any known member. For
+             *   example, if the SDK is on an older version than the API, then the API may
+             *   respond with new members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -738,8 +756,8 @@ private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if
+             * you want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -754,8 +772,8 @@ private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a known
-             *   member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a
+             * known member.
              */
             fun known(): Known =
                 when (this) {
@@ -770,20 +788,17 @@ private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have
+             * the expected primitive type.
              */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    FinchInvalidDataException("Value is not a String")
-                }
+            fun asString(): String = _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return /* spotless:off */ other is HsaContributionLimit && value == other.value /* spotless:on */
+              return /* spotless:off */ other is HsaContributionLimit && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -792,11 +807,11 @@ private constructor(
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is BenefitFeature && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is BenefitFeature && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -805,16 +820,15 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "BenefitFeature{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
+        override fun toString() = "BenefitFeature{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is BenefitFeaturesAndOperations && supportedFeatures == other.supportedFeatures && supportedOperations == other.supportedOperations && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is BenefitFeaturesAndOperations && supportedFeatures == other.supportedFeatures && supportedOperations == other.supportedOperations && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -823,6 +837,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "BenefitFeaturesAndOperations{supportedFeatures=$supportedFeatures, supportedOperations=$supportedOperations, additionalProperties=$additionalProperties}"
+    override fun toString() = "BenefitFeaturesAndOperations{supportedFeatures=$supportedFeatures, supportedOperations=$supportedOperations, additionalProperties=$additionalProperties}"
 }

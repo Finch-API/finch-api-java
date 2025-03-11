@@ -18,53 +18,50 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
 
-class RequestForwardingServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    RequestForwardingService {
+class RequestForwardingServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: RequestForwardingService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : RequestForwardingService {
+
+    private val withRawResponse: RequestForwardingService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): RequestForwardingService.WithRawResponse = withRawResponse
 
-    override fun forward(
-        params: RequestForwardingForwardParams,
-        requestOptions: RequestOptions,
-    ): RequestForwardingForwardResponse =
+    override fun forward(params: RequestForwardingForwardParams, requestOptions: RequestOptions): RequestForwardingForwardResponse =
         // post /forward
         withRawResponse().forward(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        RequestForwardingService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : RequestForwardingService.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val forwardHandler: Handler<RequestForwardingForwardResponse> =
-            jsonHandler<RequestForwardingForwardResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val forwardHandler: Handler<RequestForwardingForwardResponse> = jsonHandler<RequestForwardingForwardResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun forward(
-            params: RequestForwardingForwardParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<RequestForwardingForwardResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("forward")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { forwardHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun forward(params: RequestForwardingForwardParams, requestOptions: RequestOptions): HttpResponseFor<RequestForwardingForwardResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("forward")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  forwardHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

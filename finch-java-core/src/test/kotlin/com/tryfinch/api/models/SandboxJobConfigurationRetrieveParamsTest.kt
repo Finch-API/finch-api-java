@@ -8,6 +8,6 @@ class SandboxJobConfigurationRetrieveParamsTest {
 
     @Test
     fun create() {
-        SandboxJobConfigurationRetrieveParams.builder().build()
+      SandboxJobConfigurationRetrieveParams.builder().build()
     }
 }

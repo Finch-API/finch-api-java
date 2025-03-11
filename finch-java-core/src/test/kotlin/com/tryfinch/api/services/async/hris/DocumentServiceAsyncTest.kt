@@ -14,42 +14,36 @@ class DocumentServiceAsyncTest {
 
     @Test
     fun list() {
-        val client =
-            FinchOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val documentServiceAsync = client.hris().documents()
+      val client = FinchOkHttpClientAsync.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .accessToken("My Access Token")
+          .build()
+      val documentServiceAsync = client.hris().documents()
 
-        val documentFuture =
-            documentServiceAsync.list(
-                HrisDocumentListParams.builder()
-                    .addIndividualId("string")
-                    .limit(0L)
-                    .offset(0L)
-                    .addType(HrisDocumentListParams.Type.W4_2020)
-                    .build()
-            )
+      val documentFuture = documentServiceAsync.list(HrisDocumentListParams.builder()
+          .addIndividualId("string")
+          .limit(0L)
+          .offset(0L)
+          .addType(HrisDocumentListParams.Type.W4_2020)
+          .build())
 
-        val document = documentFuture.get()
-        document.validate()
+      val document = documentFuture.get()
+      document.validate()
     }
 
     @Test
     fun retreive() {
-        val client =
-            FinchOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val documentServiceAsync = client.hris().documents()
+      val client = FinchOkHttpClientAsync.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .accessToken("My Access Token")
+          .build()
+      val documentServiceAsync = client.hris().documents()
 
-        val responseFuture =
-            documentServiceAsync.retreive(
-                HrisDocumentRetreiveParams.builder().documentId("document_id").build()
-            )
+      val responseFuture = documentServiceAsync.retreive(HrisDocumentRetreiveParams.builder()
+          .documentId("document_id")
+          .build())
 
-        val response = responseFuture.get()
-        response.validate()
+      val response = responseFuture.get()
+      response.validate()
     }
 }

@@ -11,36 +11,38 @@ import com.tryfinch.api.models.HrisPaymentListParams
 interface PaymentService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Read payroll and contractor related payments by the company. */
     fun list(params: HrisPaymentListParams): HrisPaymentListPage =
-        list(params, RequestOptions.none())
+        list(
+          params, RequestOptions.none()
+        )
 
     /** @see [list] */
-    fun list(
-        params: HrisPaymentListParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): HrisPaymentListPage
+    fun list(params: HrisPaymentListParams, requestOptions: RequestOptions = RequestOptions.none()): HrisPaymentListPage
 
-    /** A view of [PaymentService] that provides access to raw HTTP responses for each method. */
+    /**
+     * A view of [PaymentService] that provides access to raw HTTP responses for each
+     * method.
+     */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `get /employer/payment`, but is otherwise the same as
-         * [PaymentService.list].
+         * Returns a raw HTTP response for `get /employer/payment`, but is otherwise the
+         * same as [PaymentService.list].
          */
         @MustBeClosed
         fun list(params: HrisPaymentListParams): HttpResponseFor<HrisPaymentListPage> =
-            list(params, RequestOptions.none())
+            list(
+              params, RequestOptions.none()
+            )
 
         /** @see [list] */
         @MustBeClosed
-        fun list(
-            params: HrisPaymentListParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<HrisPaymentListPage>
+        fun list(params: HrisPaymentListParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<HrisPaymentListPage>
     }
 }

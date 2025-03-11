@@ -19,56 +19,49 @@ import com.tryfinch.api.models.CompanyUpdateResponse
 import com.tryfinch.api.models.SandboxCompanyUpdateParams
 import java.util.concurrent.CompletableFuture
 
-class CompanyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    CompanyServiceAsync {
+class CompanyServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: CompanyServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : CompanyServiceAsync {
+
+    private val withRawResponse: CompanyServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
 
-    override fun update(
-        params: SandboxCompanyUpdateParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<CompanyUpdateResponse> =
+    override fun update(params: SandboxCompanyUpdateParams, requestOptions: RequestOptions): CompletableFuture<CompanyUpdateResponse> =
         // put /sandbox/company
         withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        CompanyServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : CompanyServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val updateHandler: Handler<CompanyUpdateResponse> =
-            jsonHandler<CompanyUpdateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val updateHandler: Handler<CompanyUpdateResponse> = jsonHandler<CompanyUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun update(
-            params: SandboxCompanyUpdateParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<CompanyUpdateResponse>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.PUT)
-                    .addPathSegments("sandbox", "company")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { updateHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
+        override fun update(params: SandboxCompanyUpdateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<CompanyUpdateResponse>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.PUT)
+            .addPathSegments("sandbox", "company")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  updateHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          } }
         }
     }
 }

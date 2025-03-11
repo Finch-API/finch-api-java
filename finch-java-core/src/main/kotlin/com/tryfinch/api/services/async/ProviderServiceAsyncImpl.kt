@@ -15,65 +15,58 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Provider
+import com.tryfinch.api.models.ProviderListPage
 import com.tryfinch.api.models.ProviderListPageAsync
 import com.tryfinch.api.models.ProviderListParams
 import java.util.concurrent.CompletableFuture
 
-class ProviderServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    ProviderServiceAsync {
+class ProviderServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: ProviderServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : ProviderServiceAsync {
+
+    private val withRawResponse: ProviderServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): ProviderServiceAsync.WithRawResponse = withRawResponse
 
-    override fun list(
-        params: ProviderListParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<ProviderListPageAsync> =
+    override fun list(params: ProviderListParams, requestOptions: RequestOptions): CompletableFuture<ProviderListPageAsync> =
         // get /providers
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        ProviderServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : ProviderServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<List<Provider>> =
-            jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<List<Provider>> = jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun list(
-            params: ProviderListParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("providers")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { listHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.forEach { it.validate() }
-                                }
-                            }
-                            .let {
-                                ProviderListPageAsync.of(
-                                    ProviderServiceAsyncImpl(clientOptions),
-                                    params,
-                                    ProviderListPageAsync.Response.builder().items(it).build(),
-                                )
-                            }
-                    }
-                }
+        override fun list(params: ProviderListParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("providers")
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  listHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.forEach { it.validate() }
+                  }
+              }
+              .let {
+                  ProviderListPageAsync.of(ProviderServiceAsyncImpl(clientOptions), params, ProviderListPageAsync.Response.builder()
+                      .items(it)
+                      .build())
+              }
+          } }
         }
     }
 }

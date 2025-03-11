@@ -19,47 +19,44 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 import java.util.concurrent.CompletableFuture
 
-class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    DirectoryServiceAsync {
+class DirectoryServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: DirectoryServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : DirectoryServiceAsync {
+
+    private val withRawResponse: DirectoryServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): DirectoryServiceAsync.WithRawResponse = withRawResponse
 
-    override fun create(
-        params: SandboxDirectoryCreateParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<List<JsonValue>> =
+    override fun create(params: SandboxDirectoryCreateParams, requestOptions: RequestOptions): CompletableFuture<List<JsonValue>> =
         // post /sandbox/directory
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        DirectoryServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : DirectoryServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<List<JsonValue>> =
-            jsonHandler<List<JsonValue>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<List<JsonValue>> = jsonHandler<List<JsonValue>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun create(
-            params: SandboxDirectoryCreateParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<JsonValue>>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("sandbox", "directory")
-                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable { response.use { createHandler.handle(it) } }
-                }
+        override fun create(params: SandboxDirectoryCreateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<List<JsonValue>>> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("sandbox", "directory")
+            .apply { params._body().ifPresent{ body(json(clientOptions.jsonMapper, it)) } }
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
+            it, requestOptions
+          ) }.thenApply { response -> response.parseable {
+              response.use {
+                  createHandler.handle(it)
+              }
+          } }
         }
     }
 }

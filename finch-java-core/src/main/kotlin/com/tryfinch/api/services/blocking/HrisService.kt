@@ -14,7 +14,8 @@ import com.tryfinch.api.services.blocking.hris.PaymentService
 interface HrisService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -34,7 +35,10 @@ interface HrisService {
 
     fun benefits(): BenefitService
 
-    /** A view of [HrisService] that provides access to raw HTTP responses for each method. */
+    /**
+     * A view of [HrisService] that provides access to raw HTTP responses for each
+     * method.
+     */
     interface WithRawResponse {
 
         fun company(): CompanyService.WithRawResponse

@@ -23,6 +23,7 @@ import com.tryfinch.api.errors.RateLimitException
 import com.tryfinch.api.errors.UnauthorizedException
 import com.tryfinch.api.errors.UnexpectedStatusCodeException
 import com.tryfinch.api.errors.UnprocessableEntityException
+import com.tryfinch.api.models.HrisCompanyRetrieveParams
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.entry
 import org.junit.jupiter.api.BeforeEach
@@ -34,10 +35,9 @@ class ErrorHandlingTest {
 
     companion object {
 
-        private val ERROR: FinchError =
-            FinchError.builder()
-                .putAdditionalProperty("errorProperty", JsonValue.from("42"))
-                .build()
+        private val ERROR: FinchError = FinchError.builder()
+            .putAdditionalProperty("errorProperty", JsonValue.from("42"))
+            .build()
 
         private val ERROR_JSON: ByteArray = jsonMapper().writeValueAsBytes(ERROR)
 
@@ -52,144 +52,204 @@ class ErrorHandlingTest {
 
     @BeforeEach
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
-        client =
-            FinchOkHttpClient.builder()
-                .baseUrl(wmRuntimeInfo.httpBaseUrl)
-                .accessToken("My Access Token")
-                .build()
+      client = FinchOkHttpClient.builder()
+          .baseUrl(wmRuntimeInfo.httpBaseUrl)
+          .accessToken("My Access Token")
+          .build()
     }
 
     @Test
     fun companyRetrieve400() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(400).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(400)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e = assertThrows<BadRequestException> { companyService.retrieve() }
+      val e = assertThrows<BadRequestException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e.statusCode()).isEqualTo(400)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(400)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun companyRetrieve401() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(401).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(401)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e = assertThrows<UnauthorizedException> { companyService.retrieve() }
+      val e = assertThrows<UnauthorizedException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e.statusCode()).isEqualTo(401)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(401)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun companyRetrieve403() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(403).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(403)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e = assertThrows<PermissionDeniedException> { companyService.retrieve() }
+      val e = assertThrows<PermissionDeniedException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e.statusCode()).isEqualTo(403)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(403)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun companyRetrieve404() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(404).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(404)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e = assertThrows<NotFoundException> { companyService.retrieve() }
+      val e = assertThrows<NotFoundException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e.statusCode()).isEqualTo(404)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(404)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun companyRetrieve422() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(422).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(422)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e = assertThrows<UnprocessableEntityException> { companyService.retrieve() }
+      val e = assertThrows<UnprocessableEntityException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e.statusCode()).isEqualTo(422)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(422)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun companyRetrieve429() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(429).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(429)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e = assertThrows<RateLimitException> { companyService.retrieve() }
+      val e = assertThrows<RateLimitException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e.statusCode()).isEqualTo(429)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(429)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun companyRetrieve500() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(500).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(500)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e = assertThrows<InternalServerException> { companyService.retrieve() }
+      val e = assertThrows<InternalServerException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e.statusCode()).isEqualTo(500)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(500)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun companyRetrieve999() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(999).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(999)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(ERROR_JSON)
+          )
+      )
 
-        val e = assertThrows<UnexpectedStatusCodeException> { companyService.retrieve() }
+      val e = assertThrows<UnexpectedStatusCodeException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e.statusCode()).isEqualTo(999)
-        assertThat(e.error()).isEqualTo(ERROR)
-        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+      assertThat(e.statusCode()).isEqualTo(999)
+      assertThat(e.error()).isEqualTo(ERROR)
+      assertThat(e.headers().toMap()).contains(
+                        entry(HEADER_NAME, listOf(HEADER_VALUE))
+                    )
     }
 
     @Test
     fun companyRetrieveInvalidJsonBody() {
-        val companyService = client.hris().company()
-        stubFor(
-            get(anyUrl())
-                .willReturn(status(200).withHeader(HEADER_NAME, HEADER_VALUE).withBody(NOT_JSON))
-        )
+      val companyService = client.hris().company()
+      stubFor(
+          get(anyUrl()).willReturn(
+              status(200)
+                  .withHeader(HEADER_NAME, HEADER_VALUE)
+                  .withBody(NOT_JSON)
+          )
+      )
 
-        val e = assertThrows<FinchException> { companyService.retrieve() }
+      val e = assertThrows<FinchException> {
+          companyService.retrieve()
+      }
 
-        assertThat(e).hasMessage("Error reading response")
+      assertThat(e).hasMessage("Error reading response")
     }
 
     private fun Headers.toMap(): Map<String, List<String>> =

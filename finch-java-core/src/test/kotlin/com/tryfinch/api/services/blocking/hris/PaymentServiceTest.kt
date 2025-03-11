@@ -14,21 +14,17 @@ class PaymentServiceTest {
 
     @Test
     fun list() {
-        val client =
-            FinchOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val paymentService = client.hris().payments()
+      val client = FinchOkHttpClient.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .accessToken("My Access Token")
+          .build()
+      val paymentService = client.hris().payments()
 
-        val page =
-            paymentService.list(
-                HrisPaymentListParams.builder()
-                    .endDate(LocalDate.parse("2021-01-01"))
-                    .startDate(LocalDate.parse("2021-01-01"))
-                    .build()
-            )
+      val page = paymentService.list(HrisPaymentListParams.builder()
+          .endDate(LocalDate.parse("2021-01-01"))
+          .startDate(LocalDate.parse("2021-01-01"))
+          .build())
 
-        page.response().validate()
+      page.response().validate()
     }
 }

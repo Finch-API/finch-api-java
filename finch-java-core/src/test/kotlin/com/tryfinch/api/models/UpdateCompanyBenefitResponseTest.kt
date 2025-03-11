@@ -9,9 +9,10 @@ class UpdateCompanyBenefitResponseTest {
 
     @Test
     fun createUpdateCompanyBenefitResponse() {
-        val updateCompanyBenefitResponse =
-            UpdateCompanyBenefitResponse.builder().benefitId("benefit_id").build()
-        assertThat(updateCompanyBenefitResponse).isNotNull
-        assertThat(updateCompanyBenefitResponse.benefitId()).isEqualTo("benefit_id")
+      val updateCompanyBenefitResponse = UpdateCompanyBenefitResponse.builder()
+          .benefitId("benefit_id")
+          .build()
+      assertThat(updateCompanyBenefitResponse).isNotNull
+      assertThat(updateCompanyBenefitResponse.benefitId()).isEqualTo("benefit_id")
     }
 }

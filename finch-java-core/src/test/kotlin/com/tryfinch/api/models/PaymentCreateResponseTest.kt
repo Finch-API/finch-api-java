@@ -9,10 +9,12 @@ class PaymentCreateResponseTest {
 
     @Test
     fun createPaymentCreateResponse() {
-        val paymentCreateResponse =
-            PaymentCreateResponse.builder().payDate("pay_date").paymentId("payment_id").build()
-        assertThat(paymentCreateResponse).isNotNull
-        assertThat(paymentCreateResponse.payDate()).isEqualTo("pay_date")
-        assertThat(paymentCreateResponse.paymentId()).isEqualTo("payment_id")
+      val paymentCreateResponse = PaymentCreateResponse.builder()
+          .payDate("pay_date")
+          .paymentId("payment_id")
+          .build()
+      assertThat(paymentCreateResponse).isNotNull
+      assertThat(paymentCreateResponse.payDate()).isEqualTo("pay_date")
+      assertThat(paymentCreateResponse.paymentId()).isEqualTo("payment_id")
     }
 }

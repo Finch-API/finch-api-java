@@ -12,7 +12,8 @@ import java.util.concurrent.CompletableFuture
 interface ProviderServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
@@ -20,22 +21,20 @@ interface ProviderServiceAsync {
     fun list(): CompletableFuture<ProviderListPageAsync> = list(ProviderListParams.none())
 
     /** @see [list] */
-    fun list(
-        params: ProviderListParams = ProviderListParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ProviderListPageAsync>
+    fun list(params: ProviderListParams = ProviderListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<ProviderListPageAsync>
 
     /** @see [list] */
-    fun list(
-        params: ProviderListParams = ProviderListParams.none()
-    ): CompletableFuture<ProviderListPageAsync> = list(params, RequestOptions.none())
+    fun list(params: ProviderListParams = ProviderListParams.none()): CompletableFuture<ProviderListPageAsync> =
+        list(
+          params, RequestOptions.none()
+        )
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): CompletableFuture<ProviderListPageAsync> =
-        list(ProviderListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): CompletableFuture<ProviderListPageAsync> = list(ProviderListParams.none(), requestOptions)
 
     /**
-     * A view of [ProviderServiceAsync] that provides access to raw HTTP responses for each method.
+     * A view of [ProviderServiceAsync] that provides access to raw HTTP responses for
+     * each method.
      */
     interface WithRawResponse {
 
@@ -44,28 +43,21 @@ interface ProviderServiceAsync {
          * [ProviderServiceAsync.list].
          */
         @MustBeClosed
-        fun list(): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
-            list(ProviderListParams.none())
+        fun list(): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> = list(ProviderListParams.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(
-            params: ProviderListParams = ProviderListParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>>
+        fun list(params: ProviderListParams = ProviderListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<ProviderListPageAsync>>
 
         /** @see [list] */
         @MustBeClosed
-        fun list(
-            params: ProviderListParams = ProviderListParams.none()
-        ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
-            list(params, RequestOptions.none())
+        fun list(params: ProviderListParams = ProviderListParams.none()): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
+            list(
+              params, RequestOptions.none()
+            )
 
         /** @see [list] */
         @MustBeClosed
-        fun list(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
-            list(ProviderListParams.none(), requestOptions)
+        fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> = list(ProviderListParams.none(), requestOptions)
     }
 }

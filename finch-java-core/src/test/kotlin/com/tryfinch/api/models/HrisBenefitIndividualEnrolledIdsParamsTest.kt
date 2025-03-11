@@ -9,17 +9,20 @@ class HrisBenefitIndividualEnrolledIdsParamsTest {
 
     @Test
     fun create() {
-        HrisBenefitIndividualEnrolledIdsParams.builder().benefitId("benefit_id").build()
+      HrisBenefitIndividualEnrolledIdsParams.builder()
+          .benefitId("benefit_id")
+          .build()
     }
 
     @Test
     fun getPathParam() {
-        val params =
-            HrisBenefitIndividualEnrolledIdsParams.builder().benefitId("benefit_id").build()
-        assertThat(params).isNotNull
-        // path param "benefitId"
-        assertThat(params.getPathParam(0)).isEqualTo("benefit_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
+      val params = HrisBenefitIndividualEnrolledIdsParams.builder()
+          .benefitId("benefit_id")
+          .build()
+      assertThat(params).isNotNull
+      // path param "benefitId"
+      assertThat(params.getPathParam(0)).isEqualTo("benefit_id")
+      // out-of-bound path param
+      assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

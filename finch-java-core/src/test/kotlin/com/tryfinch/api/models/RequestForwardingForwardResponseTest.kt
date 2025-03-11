@@ -10,35 +10,28 @@ class RequestForwardingForwardResponseTest {
 
     @Test
     fun createRequestForwardingForwardResponse() {
-        val requestForwardingForwardResponse =
-            RequestForwardingForwardResponse.builder()
-                .data("data")
-                .headers(JsonValue.from(mapOf<String, Any>()))
-                .request(
-                    RequestForwardingForwardResponse.Request.builder()
-                        .data("data")
-                        .headers(JsonValue.from(mapOf<String, Any>()))
-                        .method("method")
-                        .params(JsonValue.from(mapOf<String, Any>()))
-                        .route("route")
-                        .build()
-                )
-                .statusCode(0L)
-                .build()
-        assertThat(requestForwardingForwardResponse).isNotNull
-        assertThat(requestForwardingForwardResponse.data()).contains("data")
-        assertThat(requestForwardingForwardResponse._headers())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
-        assertThat(requestForwardingForwardResponse.request())
-            .isEqualTo(
-                RequestForwardingForwardResponse.Request.builder()
-                    .data("data")
-                    .headers(JsonValue.from(mapOf<String, Any>()))
-                    .method("method")
-                    .params(JsonValue.from(mapOf<String, Any>()))
-                    .route("route")
-                    .build()
-            )
-        assertThat(requestForwardingForwardResponse.statusCode()).isEqualTo(0L)
+      val requestForwardingForwardResponse = RequestForwardingForwardResponse.builder()
+          .data("data")
+          .headers(JsonValue.from(mapOf<String, Any>()))
+          .request(RequestForwardingForwardResponse.Request.builder()
+              .data("data")
+              .headers(JsonValue.from(mapOf<String, Any>()))
+              .method("method")
+              .params(JsonValue.from(mapOf<String, Any>()))
+              .route("route")
+              .build())
+          .statusCode(0L)
+          .build()
+      assertThat(requestForwardingForwardResponse).isNotNull
+      assertThat(requestForwardingForwardResponse.data()).contains("data")
+      assertThat(requestForwardingForwardResponse._headers()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+      assertThat(requestForwardingForwardResponse.request()).isEqualTo(RequestForwardingForwardResponse.Request.builder()
+          .data("data")
+          .headers(JsonValue.from(mapOf<String, Any>()))
+          .method("method")
+          .params(JsonValue.from(mapOf<String, Any>()))
+          .route("route")
+          .build())
+      assertThat(requestForwardingForwardResponse.statusCode()).isEqualTo(0L)
     }
 }

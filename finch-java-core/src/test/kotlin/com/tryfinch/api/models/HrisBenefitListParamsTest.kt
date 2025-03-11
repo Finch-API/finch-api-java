@@ -8,6 +8,6 @@ class HrisBenefitListParamsTest {
 
     @Test
     fun create() {
-        HrisBenefitListParams.builder().build()
+      HrisBenefitListParams.builder().build()
     }
 }

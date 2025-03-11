@@ -8,11 +8,12 @@ import com.tryfinch.api.services.blocking.jobs.AutomatedServiceImpl
 import com.tryfinch.api.services.blocking.jobs.ManualService
 import com.tryfinch.api.services.blocking.jobs.ManualServiceImpl
 
-class JobServiceImpl internal constructor(private val clientOptions: ClientOptions) : JobService {
+class JobServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: JobService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : JobService {
+
+    private val withRawResponse: JobService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     private val automated: AutomatedService by lazy { AutomatedServiceImpl(clientOptions) }
 
@@ -24,16 +25,14 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
 
     override fun manual(): ManualService = manual
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        JobService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
 
-        private val automated: AutomatedService.WithRawResponse by lazy {
-            AutomatedServiceImpl.WithRawResponseImpl(clientOptions)
-        }
+    ) : JobService.WithRawResponse {
 
-        private val manual: ManualService.WithRawResponse by lazy {
-            ManualServiceImpl.WithRawResponseImpl(clientOptions)
-        }
+        private val automated: AutomatedService.WithRawResponse by lazy { AutomatedServiceImpl.WithRawResponseImpl(clientOptions) }
+
+        private val manual: ManualService.WithRawResponse by lazy { ManualServiceImpl.WithRawResponseImpl(clientOptions) }
 
         override fun automated(): AutomatedService.WithRawResponse = automated
 
