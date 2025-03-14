@@ -17,8 +17,8 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.AutomatedAsyncJob
 import com.tryfinch.api.models.AutomatedCreateResponse
+import com.tryfinch.api.models.AutomatedListResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
-import com.tryfinch.api.models.JobAutomatedListPage
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 
@@ -48,7 +48,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
     override fun list(
         params: JobAutomatedListParams,
         requestOptions: RequestOptions,
-    ): JobAutomatedListPage =
+    ): AutomatedListResponse =
         // get /jobs/automated
         withRawResponse().list(params, requestOptions).parse()
 
@@ -111,14 +111,14 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
             }
         }
 
-        private val listHandler: Handler<JobAutomatedListPage.Response> =
-            jsonHandler<JobAutomatedListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<AutomatedListResponse> =
+            jsonHandler<AutomatedListResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
             params: JobAutomatedListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<JobAutomatedListPage> {
+        ): HttpResponseFor<AutomatedListResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -134,9 +134,6 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
                         if (requestOptions.responseValidation!!) {
                             it.validate()
                         }
-                    }
-                    .let {
-                        JobAutomatedListPage.of(AutomatedServiceImpl(clientOptions), params, it)
                     }
             }
         }
