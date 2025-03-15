@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -28,14 +29,32 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Amount for money object (in cents) */
+    /**
+     * Amount for money object (in cents)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
-    /** Amount for money object (in cents) */
+    /**
+     * Returns the raw JSON value of [amount].
+     *
+     * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
+    /**
+     * Returns the raw JSON value of [currency].
+     *
+     * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
     @JsonAnyGetter
@@ -79,17 +98,32 @@ private constructor(
         /** Amount for money object (in cents) */
         fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-        /** Amount for money object (in cents) */
+        /**
+         * Alias for [Builder.amount].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun amount(amount: Long) = amount(amount as Long?)
 
-        /** Amount for money object (in cents) */
+        /** Alias for calling [Builder.amount] with `amount.orElse(null)`. */
         fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
-        /** Amount for money object (in cents) */
+        /**
+         * Sets [Builder.amount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         fun currency(currency: String) = currency(JsonField.of(currency))
 
+        /**
+         * Sets [Builder.currency] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.currency] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

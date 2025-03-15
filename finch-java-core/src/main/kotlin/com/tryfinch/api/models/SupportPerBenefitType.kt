@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -29,16 +30,35 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun companyBenefits(): Optional<OperationSupportMatrix> =
         Optional.ofNullable(companyBenefits.getNullable("company_benefits"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun individualBenefits(): Optional<OperationSupportMatrix> =
         Optional.ofNullable(individualBenefits.getNullable("individual_benefits"))
 
+    /**
+     * Returns the raw JSON value of [companyBenefits].
+     *
+     * Unlike [companyBenefits], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("company_benefits")
     @ExcludeMissing
     fun _companyBenefits(): JsonField<OperationSupportMatrix> = companyBenefits
 
+    /**
+     * Returns the raw JSON value of [individualBenefits].
+     *
+     * Unlike [individualBenefits], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("individual_benefits")
     @ExcludeMissing
     fun _individualBenefits(): JsonField<OperationSupportMatrix> = individualBenefits
@@ -84,6 +104,13 @@ private constructor(
         fun companyBenefits(companyBenefits: OperationSupportMatrix) =
             companyBenefits(JsonField.of(companyBenefits))
 
+        /**
+         * Sets [Builder.companyBenefits] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyBenefits] with a well-typed
+         * [OperationSupportMatrix] value instead. This method is primarily for setting the field to
+         * an undocumented or not yet supported value.
+         */
         fun companyBenefits(companyBenefits: JsonField<OperationSupportMatrix>) = apply {
             this.companyBenefits = companyBenefits
         }
@@ -91,6 +118,13 @@ private constructor(
         fun individualBenefits(individualBenefits: OperationSupportMatrix) =
             individualBenefits(JsonField.of(individualBenefits))
 
+        /**
+         * Sets [Builder.individualBenefits] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualBenefits] with a well-typed
+         * [OperationSupportMatrix] value instead. This method is primarily for setting the field to
+         * an undocumented or not yet supported value.
+         */
         fun individualBenefits(individualBenefits: JsonField<OperationSupportMatrix>) = apply {
             this.individualBenefits = individualBenefits
         }

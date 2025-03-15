@@ -31,29 +31,61 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun companyId(): String = body.companyId()
 
-    /** The provider associated with the `access_token` */
+    /**
+     * The provider associated with the `access_token`
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun providerId(): String = body.providerId()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun authenticationType(): Optional<AuthenticationType> = body.authenticationType()
 
     /**
      * Optional, defaults to Organization products (`company`, `directory`, `employment`,
      * `individual`)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun products(): Optional<List<String>> = body.products()
 
+    /**
+     * Returns the raw JSON value of [companyId].
+     *
+     * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _companyId(): JsonField<String> = body._companyId()
 
-    /** The provider associated with the `access_token` */
+    /**
+     * Returns the raw JSON value of [providerId].
+     *
+     * Unlike [providerId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _providerId(): JsonField<String> = body._providerId()
 
+    /**
+     * Returns the raw JSON value of [authenticationType].
+     *
+     * Unlike [authenticationType], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     fun _authenticationType(): JsonField<AuthenticationType> = body._authenticationType()
 
     /**
-     * Optional, defaults to Organization products (`company`, `directory`, `employment`,
-     * `individual`)
+     * Returns the raw JSON value of [products].
+     *
+     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _products(): JsonField<List<String>> = body._products()
 
@@ -89,35 +121,67 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun companyId(): String = companyId.getRequired("company_id")
 
-        /** The provider associated with the `access_token` */
+        /**
+         * The provider associated with the `access_token`
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun providerId(): String = providerId.getRequired("provider_id")
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun authenticationType(): Optional<AuthenticationType> =
             Optional.ofNullable(authenticationType.getNullable("authentication_type"))
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun products(): Optional<List<String>> =
             Optional.ofNullable(products.getNullable("products"))
 
+        /**
+         * Returns the raw JSON value of [companyId].
+         *
+         * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
-        /** The provider associated with the `access_token` */
+        /**
+         * Returns the raw JSON value of [providerId].
+         *
+         * Unlike [providerId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("provider_id")
         @ExcludeMissing
         fun _providerId(): JsonField<String> = providerId
 
+        /**
+         * Returns the raw JSON value of [authenticationType].
+         *
+         * Unlike [authenticationType], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("authentication_type")
         @ExcludeMissing
         fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
 
         /**
-         * Optional, defaults to Organization products (`company`, `directory`, `employment`,
-         * `individual`)
+         * Returns the raw JSON value of [products].
+         *
+         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("products")
         @ExcludeMissing
@@ -177,17 +241,37 @@ private constructor(
 
             fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
+            /**
+             * Sets [Builder.companyId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.companyId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
             /** The provider associated with the `access_token` */
             fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
-            /** The provider associated with the `access_token` */
+            /**
+             * Sets [Builder.providerId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.providerId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
             fun authenticationType(authenticationType: AuthenticationType) =
                 authenticationType(JsonField.of(authenticationType))
 
+            /**
+             * Sets [Builder.authenticationType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.authenticationType] with a well-typed
+             * [AuthenticationType] value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
+             */
             fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
                 this.authenticationType = authenticationType
             }
@@ -199,16 +283,20 @@ private constructor(
             fun products(products: List<String>) = products(JsonField.of(products))
 
             /**
-             * Optional, defaults to Organization products (`company`, `directory`, `employment`,
-             * `individual`)
+             * Sets [Builder.products] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.products] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun products(products: JsonField<List<String>>) = apply {
                 this.products = products.map { it.toMutableList() }
             }
 
             /**
-             * Optional, defaults to Organization products (`company`, `directory`, `employment`,
-             * `individual`)
+             * Adds a single [String] to [products].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
              */
             fun addProduct(product: String) = apply {
                 products =
@@ -301,18 +389,38 @@ private constructor(
 
         fun companyId(companyId: String) = apply { body.companyId(companyId) }
 
+        /**
+         * Sets [Builder.companyId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun companyId(companyId: JsonField<String>) = apply { body.companyId(companyId) }
 
         /** The provider associated with the `access_token` */
         fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
-        /** The provider associated with the `access_token` */
+        /**
+         * Sets [Builder.providerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.providerId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun providerId(providerId: JsonField<String>) = apply { body.providerId(providerId) }
 
         fun authenticationType(authenticationType: AuthenticationType) = apply {
             body.authenticationType(authenticationType)
         }
 
+        /**
+         * Sets [Builder.authenticationType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.authenticationType] with a well-typed
+         * [AuthenticationType] value instead. This method is primarily for setting the field to an
+         * undocumented or not yet supported value.
+         */
         fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
             body.authenticationType(authenticationType)
         }
@@ -324,14 +432,18 @@ private constructor(
         fun products(products: List<String>) = apply { body.products(products) }
 
         /**
-         * Optional, defaults to Organization products (`company`, `directory`, `employment`,
-         * `individual`)
+         * Sets [Builder.products] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.products] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun products(products: JsonField<List<String>>) = apply { body.products(products) }
 
         /**
-         * Optional, defaults to Organization products (`company`, `directory`, `employment`,
-         * `individual`)
+         * Adds a single [String] to [products].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addProduct(product: String) = apply { body.addProduct(product) }
 

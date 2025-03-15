@@ -16,6 +16,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -30,8 +31,18 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun connectionStatus(): Optional<ConnectionStatusType> = body.connectionStatus()
 
+    /**
+     * Returns the raw JSON value of [connectionStatus].
+     *
+     * Unlike [connectionStatus], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     fun _connectionStatus(): JsonField<ConnectionStatusType> = body._connectionStatus()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -57,9 +68,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun connectionStatus(): Optional<ConnectionStatusType> =
             Optional.ofNullable(connectionStatus.getNullable("connection_status"))
 
+        /**
+         * Returns the raw JSON value of [connectionStatus].
+         *
+         * Unlike [connectionStatus], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("connection_status")
         @ExcludeMissing
         fun _connectionStatus(): JsonField<ConnectionStatusType> = connectionStatus
@@ -102,6 +123,13 @@ private constructor(
             fun connectionStatus(connectionStatus: ConnectionStatusType) =
                 connectionStatus(JsonField.of(connectionStatus))
 
+            /**
+             * Sets [Builder.connectionStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.connectionStatus] with a well-typed
+             * [ConnectionStatusType] value instead. This method is primarily for setting the field
+             * to an undocumented or not yet supported value.
+             */
             fun connectionStatus(connectionStatus: JsonField<ConnectionStatusType>) = apply {
                 this.connectionStatus = connectionStatus
             }
@@ -181,6 +209,13 @@ private constructor(
             body.connectionStatus(connectionStatus)
         }
 
+        /**
+         * Sets [Builder.connectionStatus] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionStatus] with a well-typed
+         * [ConnectionStatusType] value instead. This method is primarily for setting the field to
+         * an undocumented or not yet supported value.
+         */
         fun connectionStatus(connectionStatus: JsonField<ConnectionStatusType>) = apply {
             body.connectionStatus(connectionStatus)
         }

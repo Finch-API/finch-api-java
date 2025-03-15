@@ -15,6 +15,7 @@ import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 @NoAutoDetect
@@ -30,14 +31,32 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun documents(): List<DocumentResponse> = documents.getRequired("documents")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun paging(): Paging = paging.getRequired("paging")
 
+    /**
+     * Returns the raw JSON value of [documents].
+     *
+     * Unlike [documents], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("documents")
     @ExcludeMissing
     fun _documents(): JsonField<List<DocumentResponse>> = documents
 
+    /**
+     * Returns the raw JSON value of [paging].
+     *
+     * Unlike [paging], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("paging") @ExcludeMissing fun _paging(): JsonField<Paging> = paging
 
     @JsonAnyGetter
@@ -88,10 +107,22 @@ private constructor(
 
         fun documents(documents: List<DocumentResponse>) = documents(JsonField.of(documents))
 
+        /**
+         * Sets [Builder.documents] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.documents] with a well-typed `List<DocumentResponse>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun documents(documents: JsonField<List<DocumentResponse>>) = apply {
             this.documents = documents.map { it.toMutableList() }
         }
 
+        /**
+         * Adds a single [DocumentResponse] to [documents].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addDocument(document: DocumentResponse) = apply {
             documents =
                 (documents ?: JsonField.of(mutableListOf())).also {
@@ -101,6 +132,12 @@ private constructor(
 
         fun paging(paging: Paging) = paging(JsonField.of(paging))
 
+        /**
+         * Sets [Builder.paging] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.paging] with a well-typed [Paging] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

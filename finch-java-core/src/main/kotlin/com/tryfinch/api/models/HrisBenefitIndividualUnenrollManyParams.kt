@@ -18,6 +18,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -32,10 +33,19 @@ private constructor(
 
     fun benefitId(): String = benefitId
 
-    /** Array of individual_ids to unenroll. */
+    /**
+     * Array of individual_ids to unenroll.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun individualIds(): Optional<List<String>> = body.individualIds()
 
-    /** Array of individual_ids to unenroll. */
+    /**
+     * Returns the raw JSON value of [individualIds].
+     *
+     * Unlike [individualIds], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _individualIds(): JsonField<List<String>> = body._individualIds()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -68,11 +78,21 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Array of individual_ids to unenroll. */
+        /**
+         * Array of individual_ids to unenroll.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun individualIds(): Optional<List<String>> =
             Optional.ofNullable(individualIds.getNullable("individual_ids"))
 
-        /** Array of individual_ids to unenroll. */
+        /**
+         * Returns the raw JSON value of [individualIds].
+         *
+         * Unlike [individualIds], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("individual_ids")
         @ExcludeMissing
         fun _individualIds(): JsonField<List<String>> = individualIds
@@ -116,12 +136,22 @@ private constructor(
             fun individualIds(individualIds: List<String>) =
                 individualIds(JsonField.of(individualIds))
 
-            /** Array of individual_ids to unenroll. */
+            /**
+             * Sets [Builder.individualIds] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualIds] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun individualIds(individualIds: JsonField<List<String>>) = apply {
                 this.individualIds = individualIds.map { it.toMutableList() }
             }
 
-            /** Array of individual_ids to unenroll. */
+            /**
+             * Adds a single [String] to [individualIds].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addIndividualId(individualId: String) = apply {
                 individualIds =
                     (individualIds ?: JsonField.of(mutableListOf())).also {
@@ -215,12 +245,22 @@ private constructor(
         /** Array of individual_ids to unenroll. */
         fun individualIds(individualIds: List<String>) = apply { body.individualIds(individualIds) }
 
-        /** Array of individual_ids to unenroll. */
+        /**
+         * Sets [Builder.individualIds] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualIds] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
             body.individualIds(individualIds)
         }
 
-        /** Array of individual_ids to unenroll. */
+        /**
+         * Adds a single [String] to [individualIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addIndividualId(individualId: String) = apply { body.addIndividualId(individualId) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

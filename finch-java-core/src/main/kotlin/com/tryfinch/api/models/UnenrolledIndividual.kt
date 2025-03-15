@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -29,19 +30,46 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun body(): Optional<Body> = Optional.ofNullable(body.getNullable("body"))
 
-    /** HTTP status code */
+    /**
+     * HTTP status code
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
 
+    /**
+     * Returns the raw JSON value of [body].
+     *
+     * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<Body> = body
 
-    /** HTTP status code */
+    /**
+     * Returns the raw JSON value of [code].
+     *
+     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
+    /**
+     * Returns the raw JSON value of [individualId].
+     *
+     * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("individual_id")
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
@@ -89,16 +117,34 @@ private constructor(
 
         fun body(body: Body) = body(JsonField.of(body))
 
+        /**
+         * Sets [Builder.body] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.body] with a well-typed [Body] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun body(body: JsonField<Body>) = apply { this.body = body }
 
         /** HTTP status code */
         fun code(code: Long) = code(JsonField.of(code))
 
-        /** HTTP status code */
+        /**
+         * Sets [Builder.code] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.code] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
+        /**
+         * Sets [Builder.individualId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
@@ -143,22 +189,49 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A descriptive identifier for the response. */
+        /**
+         * A descriptive identifier for the response.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun finchCode(): Optional<String> = Optional.ofNullable(finchCode.getNullable("finch_code"))
 
-        /** Short description in English that provides more information about the response. */
+        /**
+         * Short description in English that provides more information about the response.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
 
-        /** Identifier indicating whether the benefit was newly enrolled or updated. */
+        /**
+         * Identifier indicating whether the benefit was newly enrolled or updated.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** A descriptive identifier for the response. */
+        /**
+         * Returns the raw JSON value of [finchCode].
+         *
+         * Unlike [finchCode], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("finch_code") @ExcludeMissing fun _finchCode(): JsonField<String> = finchCode
 
-        /** Short description in English that provides more information about the response. */
+        /**
+         * Returns the raw JSON value of [message].
+         *
+         * Unlike [message], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
-        /** Identifier indicating whether the benefit was newly enrolled or updated. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         @JsonAnyGetter
@@ -205,28 +278,46 @@ private constructor(
             /** A descriptive identifier for the response. */
             fun finchCode(finchCode: String?) = finchCode(JsonField.ofNullable(finchCode))
 
-            /** A descriptive identifier for the response. */
+            /** Alias for calling [Builder.finchCode] with `finchCode.orElse(null)`. */
             fun finchCode(finchCode: Optional<String>) = finchCode(finchCode.getOrNull())
 
-            /** A descriptive identifier for the response. */
+            /**
+             * Sets [Builder.finchCode] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.finchCode] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun finchCode(finchCode: JsonField<String>) = apply { this.finchCode = finchCode }
 
             /** Short description in English that provides more information about the response. */
             fun message(message: String?) = message(JsonField.ofNullable(message))
 
-            /** Short description in English that provides more information about the response. */
+            /** Alias for calling [Builder.message] with `message.orElse(null)`. */
             fun message(message: Optional<String>) = message(message.getOrNull())
 
-            /** Short description in English that provides more information about the response. */
+            /**
+             * Sets [Builder.message] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.message] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun message(message: JsonField<String>) = apply { this.message = message }
 
             /** Identifier indicating whether the benefit was newly enrolled or updated. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** Identifier indicating whether the benefit was newly enrolled or updated. */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** Identifier indicating whether the benefit was newly enrolled or updated. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

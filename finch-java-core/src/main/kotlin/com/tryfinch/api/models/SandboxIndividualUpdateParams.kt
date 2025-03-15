@@ -35,83 +35,179 @@ private constructor(
 
     fun individualId(): String = individualId
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun dob(): Optional<String> = body.dob()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun emails(): Optional<List<Email>> = body.emails()
 
     /**
      * Social Security Number of the individual in **encrypted** format. This field is only
      * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
      * the body.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun encryptedSsn(): Optional<String> = body.encryptedSsn()
 
-    /** The EEOC-defined ethnicity of the individual. */
+    /**
+     * The EEOC-defined ethnicity of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun ethnicity(): Optional<Ethnicity> = body.ethnicity()
 
-    /** The legal first name of the individual. */
+    /**
+     * The legal first name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun firstName(): Optional<String> = body.firstName()
 
-    /** The gender of the individual. */
+    /**
+     * The gender of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun gender(): Optional<Gender> = body.gender()
 
-    /** The legal last name of the individual. */
+    /**
+     * The legal last name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun lastName(): Optional<String> = body.lastName()
 
-    /** The legal middle name of the individual. */
+    /**
+     * The legal middle name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun middleName(): Optional<String> = body.middleName()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun phoneNumbers(): Optional<List<PhoneNumber?>> = body.phoneNumbers()
 
-    /** The preferred name of the individual. */
+    /**
+     * The preferred name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun preferredName(): Optional<String> = body.preferredName()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun residence(): Optional<Location> = body.residence()
 
     /**
      * Social Security Number of the individual. This field is only available with the `ssn` scope
      * enabled and the `options: { include: ['ssn'] }` param set in the body.
      * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun ssn(): Optional<String> = body.ssn()
 
+    /**
+     * Returns the raw JSON value of [dob].
+     *
+     * Unlike [dob], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _dob(): JsonField<String> = body._dob()
 
+    /**
+     * Returns the raw JSON value of [emails].
+     *
+     * Unlike [emails], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _emails(): JsonField<List<Email>> = body._emails()
 
     /**
-     * Social Security Number of the individual in **encrypted** format. This field is only
-     * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
-     * the body.
+     * Returns the raw JSON value of [encryptedSsn].
+     *
+     * Unlike [encryptedSsn], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _encryptedSsn(): JsonField<String> = body._encryptedSsn()
 
-    /** The EEOC-defined ethnicity of the individual. */
+    /**
+     * Returns the raw JSON value of [ethnicity].
+     *
+     * Unlike [ethnicity], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _ethnicity(): JsonField<Ethnicity> = body._ethnicity()
 
-    /** The legal first name of the individual. */
+    /**
+     * Returns the raw JSON value of [firstName].
+     *
+     * Unlike [firstName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _firstName(): JsonField<String> = body._firstName()
 
-    /** The gender of the individual. */
+    /**
+     * Returns the raw JSON value of [gender].
+     *
+     * Unlike [gender], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _gender(): JsonField<Gender> = body._gender()
 
-    /** The legal last name of the individual. */
+    /**
+     * Returns the raw JSON value of [lastName].
+     *
+     * Unlike [lastName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _lastName(): JsonField<String> = body._lastName()
 
-    /** The legal middle name of the individual. */
+    /**
+     * Returns the raw JSON value of [middleName].
+     *
+     * Unlike [middleName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _middleName(): JsonField<String> = body._middleName()
 
+    /**
+     * Returns the raw JSON value of [phoneNumbers].
+     *
+     * Unlike [phoneNumbers], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _phoneNumbers(): JsonField<List<PhoneNumber?>> = body._phoneNumbers()
 
-    /** The preferred name of the individual. */
+    /**
+     * Returns the raw JSON value of [preferredName].
+     *
+     * Unlike [preferredName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _preferredName(): JsonField<String> = body._preferredName()
 
+    /**
+     * Returns the raw JSON value of [residence].
+     *
+     * Unlike [residence], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _residence(): JsonField<Location> = body._residence()
 
     /**
-     * Social Security Number of the individual. This field is only available with the `ssn` scope
-     * enabled and the `options: { include: ['ssn'] }` param set in the body.
-     * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+     * Returns the raw JSON value of [ssn].
+     *
+     * Unlike [ssn], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _ssn(): JsonField<String> = body._ssn()
 
@@ -174,42 +270,91 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun dob(): Optional<String> = Optional.ofNullable(dob.getNullable("dob"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun emails(): Optional<List<Email>> = Optional.ofNullable(emails.getNullable("emails"))
 
         /**
          * Social Security Number of the individual in **encrypted** format. This field is only
          * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
          * in the body.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun encryptedSsn(): Optional<String> =
             Optional.ofNullable(encryptedSsn.getNullable("encrypted_ssn"))
 
-        /** The EEOC-defined ethnicity of the individual. */
+        /**
+         * The EEOC-defined ethnicity of the individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun ethnicity(): Optional<Ethnicity> =
             Optional.ofNullable(ethnicity.getNullable("ethnicity"))
 
-        /** The legal first name of the individual. */
+        /**
+         * The legal first name of the individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun firstName(): Optional<String> = Optional.ofNullable(firstName.getNullable("first_name"))
 
-        /** The gender of the individual. */
+        /**
+         * The gender of the individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun gender(): Optional<Gender> = Optional.ofNullable(gender.getNullable("gender"))
 
-        /** The legal last name of the individual. */
+        /**
+         * The legal last name of the individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun lastName(): Optional<String> = Optional.ofNullable(lastName.getNullable("last_name"))
 
-        /** The legal middle name of the individual. */
+        /**
+         * The legal middle name of the individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun middleName(): Optional<String> =
             Optional.ofNullable(middleName.getNullable("middle_name"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun phoneNumbers(): Optional<List<PhoneNumber?>> =
             Optional.ofNullable(phoneNumbers.getNullable("phone_numbers"))
 
-        /** The preferred name of the individual. */
+        /**
+         * The preferred name of the individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun preferredName(): Optional<String> =
             Optional.ofNullable(preferredName.getNullable("preferred_name"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun residence(): Optional<Location> =
             Optional.ofNullable(residence.getNullable("residence"))
 
@@ -217,56 +362,106 @@ private constructor(
          * Social Security Number of the individual. This field is only available with the `ssn`
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun ssn(): Optional<String> = Optional.ofNullable(ssn.getNullable("ssn"))
 
+        /**
+         * Returns the raw JSON value of [dob].
+         *
+         * Unlike [dob], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dob") @ExcludeMissing fun _dob(): JsonField<String> = dob
 
+        /**
+         * Returns the raw JSON value of [emails].
+         *
+         * Unlike [emails], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("emails") @ExcludeMissing fun _emails(): JsonField<List<Email>> = emails
 
         /**
-         * Social Security Number of the individual in **encrypted** format. This field is only
-         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
-         * in the body.
+         * Returns the raw JSON value of [encryptedSsn].
+         *
+         * Unlike [encryptedSsn], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
         @JsonProperty("encrypted_ssn")
         @ExcludeMissing
         fun _encryptedSsn(): JsonField<String> = encryptedSsn
 
-        /** The EEOC-defined ethnicity of the individual. */
+        /**
+         * Returns the raw JSON value of [ethnicity].
+         *
+         * Unlike [ethnicity], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("ethnicity")
         @ExcludeMissing
         fun _ethnicity(): JsonField<Ethnicity> = ethnicity
 
-        /** The legal first name of the individual. */
+        /**
+         * Returns the raw JSON value of [firstName].
+         *
+         * Unlike [firstName], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("first_name") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
 
-        /** The gender of the individual. */
+        /**
+         * Returns the raw JSON value of [gender].
+         *
+         * Unlike [gender], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("gender") @ExcludeMissing fun _gender(): JsonField<Gender> = gender
 
-        /** The legal last name of the individual. */
+        /**
+         * Returns the raw JSON value of [lastName].
+         *
+         * Unlike [lastName], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("last_name") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
 
-        /** The legal middle name of the individual. */
+        /**
+         * Returns the raw JSON value of [middleName].
+         *
+         * Unlike [middleName], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("middle_name")
         @ExcludeMissing
         fun _middleName(): JsonField<String> = middleName
 
+        /**
+         * Returns the raw JSON value of [phoneNumbers].
+         *
+         * Unlike [phoneNumbers], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("phone_numbers")
         @ExcludeMissing
         fun _phoneNumbers(): JsonField<List<PhoneNumber?>> = phoneNumbers
 
-        /** The preferred name of the individual. */
+        /**
+         * Returns the raw JSON value of [preferredName].
+         *
+         * Unlike [preferredName], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("preferred_name")
         @ExcludeMissing
         fun _preferredName(): JsonField<String> = preferredName
 
+        /**
+         * Returns the raw JSON value of [residence].
+         *
+         * Unlike [residence], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("residence") @ExcludeMissing fun _residence(): JsonField<Location> = residence
 
         /**
-         * Social Security Number of the individual. This field is only available with the `ssn`
-         * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
-         * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+         * Returns the raw JSON value of [ssn].
+         *
+         * Unlike [ssn], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("ssn") @ExcludeMissing fun _ssn(): JsonField<String> = ssn
 
@@ -340,18 +535,39 @@ private constructor(
 
             fun dob(dob: String?) = dob(JsonField.ofNullable(dob))
 
+            /** Alias for calling [Builder.dob] with `dob.orElse(null)`. */
             fun dob(dob: Optional<String>) = dob(dob.getOrNull())
 
+            /**
+             * Sets [Builder.dob] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dob] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun dob(dob: JsonField<String>) = apply { this.dob = dob }
 
             fun emails(emails: List<Email>?) = emails(JsonField.ofNullable(emails))
 
+            /** Alias for calling [Builder.emails] with `emails.orElse(null)`. */
             fun emails(emails: Optional<List<Email>>) = emails(emails.getOrNull())
 
+            /**
+             * Sets [Builder.emails] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.emails] with a well-typed `List<Email>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun emails(emails: JsonField<List<Email>>) = apply {
                 this.emails = emails.map { it.toMutableList() }
             }
 
+            /**
+             * Adds a single [Email] to [emails].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addEmail(email: Email) = apply {
                 emails =
                     (emails ?: JsonField.of(mutableListOf())).also {
@@ -367,18 +583,16 @@ private constructor(
             fun encryptedSsn(encryptedSsn: String?) =
                 encryptedSsn(JsonField.ofNullable(encryptedSsn))
 
-            /**
-             * Social Security Number of the individual in **encrypted** format. This field is only
-             * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param
-             * set in the body.
-             */
+            /** Alias for calling [Builder.encryptedSsn] with `encryptedSsn.orElse(null)`. */
             fun encryptedSsn(encryptedSsn: Optional<String>) =
                 encryptedSsn(encryptedSsn.getOrNull())
 
             /**
-             * Social Security Number of the individual in **encrypted** format. This field is only
-             * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param
-             * set in the body.
+             * Sets [Builder.encryptedSsn] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.encryptedSsn] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun encryptedSsn(encryptedSsn: JsonField<String>) = apply {
                 this.encryptedSsn = encryptedSsn
@@ -387,58 +601,101 @@ private constructor(
             /** The EEOC-defined ethnicity of the individual. */
             fun ethnicity(ethnicity: Ethnicity?) = ethnicity(JsonField.ofNullable(ethnicity))
 
-            /** The EEOC-defined ethnicity of the individual. */
+            /** Alias for calling [Builder.ethnicity] with `ethnicity.orElse(null)`. */
             fun ethnicity(ethnicity: Optional<Ethnicity>) = ethnicity(ethnicity.getOrNull())
 
-            /** The EEOC-defined ethnicity of the individual. */
+            /**
+             * Sets [Builder.ethnicity] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.ethnicity] with a well-typed [Ethnicity] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { this.ethnicity = ethnicity }
 
             /** The legal first name of the individual. */
             fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
 
-            /** The legal first name of the individual. */
+            /** Alias for calling [Builder.firstName] with `firstName.orElse(null)`. */
             fun firstName(firstName: Optional<String>) = firstName(firstName.getOrNull())
 
-            /** The legal first name of the individual. */
+            /**
+             * Sets [Builder.firstName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.firstName] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
             /** The gender of the individual. */
             fun gender(gender: Gender?) = gender(JsonField.ofNullable(gender))
 
-            /** The gender of the individual. */
+            /** Alias for calling [Builder.gender] with `gender.orElse(null)`. */
             fun gender(gender: Optional<Gender>) = gender(gender.getOrNull())
 
-            /** The gender of the individual. */
+            /**
+             * Sets [Builder.gender] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.gender] with a well-typed [Gender] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
 
             /** The legal last name of the individual. */
             fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
 
-            /** The legal last name of the individual. */
+            /** Alias for calling [Builder.lastName] with `lastName.orElse(null)`. */
             fun lastName(lastName: Optional<String>) = lastName(lastName.getOrNull())
 
-            /** The legal last name of the individual. */
+            /**
+             * Sets [Builder.lastName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.lastName] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
             /** The legal middle name of the individual. */
             fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
-            /** The legal middle name of the individual. */
+            /** Alias for calling [Builder.middleName] with `middleName.orElse(null)`. */
             fun middleName(middleName: Optional<String>) = middleName(middleName.getOrNull())
 
-            /** The legal middle name of the individual. */
+            /**
+             * Sets [Builder.middleName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.middleName] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
             fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) =
                 phoneNumbers(JsonField.ofNullable(phoneNumbers))
 
+            /** Alias for calling [Builder.phoneNumbers] with `phoneNumbers.orElse(null)`. */
             fun phoneNumbers(phoneNumbers: Optional<List<PhoneNumber?>>) =
                 phoneNumbers(phoneNumbers.getOrNull())
 
+            /**
+             * Sets [Builder.phoneNumbers] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.phoneNumbers] with a well-typed `List<PhoneNumber?>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun phoneNumbers(phoneNumbers: JsonField<List<PhoneNumber?>>) = apply {
                 this.phoneNumbers = phoneNumbers.map { it.toMutableList() }
             }
 
+            /**
+             * Adds a single [PhoneNumber] to [phoneNumbers].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
                 phoneNumbers =
                     (phoneNumbers ?: JsonField.of(mutableListOf())).also {
@@ -450,19 +707,33 @@ private constructor(
             fun preferredName(preferredName: String?) =
                 preferredName(JsonField.ofNullable(preferredName))
 
-            /** The preferred name of the individual. */
+            /** Alias for calling [Builder.preferredName] with `preferredName.orElse(null)`. */
             fun preferredName(preferredName: Optional<String>) =
                 preferredName(preferredName.getOrNull())
 
-            /** The preferred name of the individual. */
+            /**
+             * Sets [Builder.preferredName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.preferredName] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun preferredName(preferredName: JsonField<String>) = apply {
                 this.preferredName = preferredName
             }
 
             fun residence(residence: Location?) = residence(JsonField.ofNullable(residence))
 
+            /** Alias for calling [Builder.residence] with `residence.orElse(null)`. */
             fun residence(residence: Optional<Location>) = residence(residence.getOrNull())
 
+            /**
+             * Sets [Builder.residence] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.residence] with a well-typed [Location] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun residence(residence: JsonField<Location>) = apply { this.residence = residence }
 
             /**
@@ -472,17 +743,15 @@ private constructor(
              */
             fun ssn(ssn: String?) = ssn(JsonField.ofNullable(ssn))
 
-            /**
-             * Social Security Number of the individual. This field is only available with the `ssn`
-             * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
-             * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
-             */
+            /** Alias for calling [Builder.ssn] with `ssn.orElse(null)`. */
             fun ssn(ssn: Optional<String>) = ssn(ssn.getOrNull())
 
             /**
-             * Social Security Number of the individual. This field is only available with the `ssn`
-             * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
-             * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+             * Sets [Builder.ssn] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.ssn] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
              */
             fun ssn(ssn: JsonField<String>) = apply { this.ssn = ssn }
 
@@ -578,16 +847,36 @@ private constructor(
 
         fun dob(dob: String?) = apply { body.dob(dob) }
 
+        /** Alias for calling [Builder.dob] with `dob.orElse(null)`. */
         fun dob(dob: Optional<String>) = dob(dob.getOrNull())
 
+        /**
+         * Sets [Builder.dob] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dob] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun dob(dob: JsonField<String>) = apply { body.dob(dob) }
 
         fun emails(emails: List<Email>?) = apply { body.emails(emails) }
 
+        /** Alias for calling [Builder.emails] with `emails.orElse(null)`. */
         fun emails(emails: Optional<List<Email>>) = emails(emails.getOrNull())
 
+        /**
+         * Sets [Builder.emails] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.emails] with a well-typed `List<Email>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun emails(emails: JsonField<List<Email>>) = apply { body.emails(emails) }
 
+        /**
+         * Adds a single [Email] to [emails].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addEmail(email: Email) = apply { body.addEmail(email) }
 
         /**
@@ -597,17 +886,15 @@ private constructor(
          */
         fun encryptedSsn(encryptedSsn: String?) = apply { body.encryptedSsn(encryptedSsn) }
 
-        /**
-         * Social Security Number of the individual in **encrypted** format. This field is only
-         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
-         * in the body.
-         */
+        /** Alias for calling [Builder.encryptedSsn] with `encryptedSsn.orElse(null)`. */
         fun encryptedSsn(encryptedSsn: Optional<String>) = encryptedSsn(encryptedSsn.getOrNull())
 
         /**
-         * Social Security Number of the individual in **encrypted** format. This field is only
-         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
-         * in the body.
+         * Sets [Builder.encryptedSsn] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.encryptedSsn] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun encryptedSsn(encryptedSsn: JsonField<String>) = apply {
             body.encryptedSsn(encryptedSsn)
@@ -616,77 +903,132 @@ private constructor(
         /** The EEOC-defined ethnicity of the individual. */
         fun ethnicity(ethnicity: Ethnicity?) = apply { body.ethnicity(ethnicity) }
 
-        /** The EEOC-defined ethnicity of the individual. */
+        /** Alias for calling [Builder.ethnicity] with `ethnicity.orElse(null)`. */
         fun ethnicity(ethnicity: Optional<Ethnicity>) = ethnicity(ethnicity.getOrNull())
 
-        /** The EEOC-defined ethnicity of the individual. */
+        /**
+         * Sets [Builder.ethnicity] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.ethnicity] with a well-typed [Ethnicity] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { body.ethnicity(ethnicity) }
 
         /** The legal first name of the individual. */
         fun firstName(firstName: String?) = apply { body.firstName(firstName) }
 
-        /** The legal first name of the individual. */
+        /** Alias for calling [Builder.firstName] with `firstName.orElse(null)`. */
         fun firstName(firstName: Optional<String>) = firstName(firstName.getOrNull())
 
-        /** The legal first name of the individual. */
+        /**
+         * Sets [Builder.firstName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.firstName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun firstName(firstName: JsonField<String>) = apply { body.firstName(firstName) }
 
         /** The gender of the individual. */
         fun gender(gender: Gender?) = apply { body.gender(gender) }
 
-        /** The gender of the individual. */
+        /** Alias for calling [Builder.gender] with `gender.orElse(null)`. */
         fun gender(gender: Optional<Gender>) = gender(gender.getOrNull())
 
-        /** The gender of the individual. */
+        /**
+         * Sets [Builder.gender] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.gender] with a well-typed [Gender] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun gender(gender: JsonField<Gender>) = apply { body.gender(gender) }
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String?) = apply { body.lastName(lastName) }
 
-        /** The legal last name of the individual. */
+        /** Alias for calling [Builder.lastName] with `lastName.orElse(null)`. */
         fun lastName(lastName: Optional<String>) = lastName(lastName.getOrNull())
 
-        /** The legal last name of the individual. */
+        /**
+         * Sets [Builder.lastName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.lastName] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun lastName(lastName: JsonField<String>) = apply { body.lastName(lastName) }
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: String?) = apply { body.middleName(middleName) }
 
-        /** The legal middle name of the individual. */
+        /** Alias for calling [Builder.middleName] with `middleName.orElse(null)`. */
         fun middleName(middleName: Optional<String>) = middleName(middleName.getOrNull())
 
-        /** The legal middle name of the individual. */
+        /**
+         * Sets [Builder.middleName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.middleName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun middleName(middleName: JsonField<String>) = apply { body.middleName(middleName) }
 
         fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) = apply {
             body.phoneNumbers(phoneNumbers)
         }
 
+        /** Alias for calling [Builder.phoneNumbers] with `phoneNumbers.orElse(null)`. */
         fun phoneNumbers(phoneNumbers: Optional<List<PhoneNumber?>>) =
             phoneNumbers(phoneNumbers.getOrNull())
 
+        /**
+         * Sets [Builder.phoneNumbers] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.phoneNumbers] with a well-typed `List<PhoneNumber?>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun phoneNumbers(phoneNumbers: JsonField<List<PhoneNumber?>>) = apply {
             body.phoneNumbers(phoneNumbers)
         }
 
+        /**
+         * Adds a single [PhoneNumber] to [phoneNumbers].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPhoneNumber(phoneNumber: PhoneNumber) = apply { body.addPhoneNumber(phoneNumber) }
 
         /** The preferred name of the individual. */
         fun preferredName(preferredName: String?) = apply { body.preferredName(preferredName) }
 
-        /** The preferred name of the individual. */
+        /** Alias for calling [Builder.preferredName] with `preferredName.orElse(null)`. */
         fun preferredName(preferredName: Optional<String>) =
             preferredName(preferredName.getOrNull())
 
-        /** The preferred name of the individual. */
+        /**
+         * Sets [Builder.preferredName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.preferredName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun preferredName(preferredName: JsonField<String>) = apply {
             body.preferredName(preferredName)
         }
 
         fun residence(residence: Location?) = apply { body.residence(residence) }
 
+        /** Alias for calling [Builder.residence] with `residence.orElse(null)`. */
         fun residence(residence: Optional<Location>) = residence(residence.getOrNull())
 
+        /**
+         * Sets [Builder.residence] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.residence] with a well-typed [Location] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun residence(residence: JsonField<Location>) = apply { body.residence(residence) }
 
         /**
@@ -696,17 +1038,14 @@ private constructor(
          */
         fun ssn(ssn: String?) = apply { body.ssn(ssn) }
 
-        /**
-         * Social Security Number of the individual. This field is only available with the `ssn`
-         * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
-         * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
-         */
+        /** Alias for calling [Builder.ssn] with `ssn.orElse(null)`. */
         fun ssn(ssn: Optional<String>) = ssn(ssn.getOrNull())
 
         /**
-         * Social Security Number of the individual. This field is only available with the `ssn`
-         * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
-         * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
+         * Sets [Builder.ssn] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.ssn] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun ssn(ssn: JsonField<String>) = apply { body.ssn(ssn) }
 
@@ -848,12 +1187,30 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
+        /**
+         * Returns the raw JSON value of [data].
+         *
+         * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
@@ -896,12 +1253,27 @@ private constructor(
 
             fun data(data: String) = data(JsonField.of(data))
 
+            /**
+             * Sets [Builder.data] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.data] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun data(data: JsonField<String>) = apply { this.data = data }
 
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
             fun type(type: Optional<Type>) = type(type.getOrNull())
 
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1303,12 +1675,30 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
+        /**
+         * Returns the raw JSON value of [data].
+         *
+         * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
@@ -1351,12 +1741,27 @@ private constructor(
 
             fun data(data: String) = data(JsonField.of(data))
 
+            /**
+             * Sets [Builder.data] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.data] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun data(data: JsonField<String>) = apply { this.data = data }
 
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
             fun type(type: Optional<Type>) = type(type.getOrNull())
 
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

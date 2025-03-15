@@ -79,39 +79,74 @@ private constructor(
     /**
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * account ID.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun authenticationMethods(): List<AuthenticationMethod> =
         authenticationMethods.getRequired("authentication_methods")
 
-    /** The client ID of the application associated with the `access_token`. */
+    /**
+     * The client ID of the application associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun clientId(): String = clientId.getRequired("client_id")
 
-    /** The type of application associated with a token. */
+    /**
+     * The type of application associated with a token.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun clientType(): ClientType = clientType.getRequired("client_type")
 
     /**
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * company ID.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
-    /** The Finch UUID of the connection associated with the `access_token`. */
+    /**
+     * The Finch UUID of the connection associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectionId(): String = connectionId.getRequired("connection_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectionStatus(): ConnectionStatus = connectionStatus.getRequired("connection_status")
 
     /**
      * The type of the connection associated with the token.
      * - `provider` - connection to an external provider
      * - `finch` - finch-generated data.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun connectionType(): ConnectionType = connectionType.getRequired("connection_type")
 
     /**
      * The email of your customer you provided to Finch when a connect session was created for this
      * connection.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun customerEmail(): Optional<String> =
         Optional.ofNullable(customerEmail.getNullable("customer_email"))
@@ -119,12 +154,18 @@ private constructor(
     /**
      * The ID of your customer you provided to Finch when a connect session was created for this
      * connection.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun customerId(): Optional<String> = Optional.ofNullable(customerId.getNullable("customer_id"))
 
     /**
      * The name of your customer you provided to Finch when a connect session was created for this
      * connection.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun customerName(): Optional<String> =
         Optional.ofNullable(customerName.getNullable("customer_name"))
@@ -132,115 +173,181 @@ private constructor(
     /**
      * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
      * (`true` if using Assisted Connect, `false` if connection is automated)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun manual(): Boolean = manual.getRequired("manual")
 
     /**
      * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated")
     fun payrollProviderId(): String = payrollProviderId.getRequired("payroll_provider_id")
 
-    /** An array of the authorized products associated with the `access_token`. */
+    /**
+     * An array of the authorized products associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun products(): List<String> = products.getRequired("products")
 
-    /** The ID of the provider associated with the `access_token`. */
+    /**
+     * The ID of the provider associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun providerId(): String = providerId.getRequired("provider_id")
 
-    /** The account username used for login associated with the `access_token`. */
+    /**
+     * The account username used for login associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun username(): String = username.getRequired("username")
 
     /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * account ID.
+     * Returns the raw JSON value of [accountId].
+     *
+     * Unlike [accountId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @Deprecated("deprecated")
     @JsonProperty("account_id")
     @ExcludeMissing
     fun _accountId(): JsonField<String> = accountId
 
+    /**
+     * Returns the raw JSON value of [authenticationMethods].
+     *
+     * Unlike [authenticationMethods], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("authentication_methods")
     @ExcludeMissing
     fun _authenticationMethods(): JsonField<List<AuthenticationMethod>> = authenticationMethods
 
-    /** The client ID of the application associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [clientId].
+     *
+     * Unlike [clientId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("client_id") @ExcludeMissing fun _clientId(): JsonField<String> = clientId
 
-    /** The type of application associated with a token. */
+    /**
+     * Returns the raw JSON value of [clientType].
+     *
+     * Unlike [clientType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("client_type")
     @ExcludeMissing
     fun _clientType(): JsonField<ClientType> = clientType
 
     /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * company ID.
+     * Returns the raw JSON value of [companyId].
+     *
+     * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @Deprecated("deprecated")
     @JsonProperty("company_id")
     @ExcludeMissing
     fun _companyId(): JsonField<String> = companyId
 
-    /** The Finch UUID of the connection associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [connectionId].
+     *
+     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("connection_id")
     @ExcludeMissing
     fun _connectionId(): JsonField<String> = connectionId
 
+    /**
+     * Returns the raw JSON value of [connectionStatus].
+     *
+     * Unlike [connectionStatus], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("connection_status")
     @ExcludeMissing
     fun _connectionStatus(): JsonField<ConnectionStatus> = connectionStatus
 
     /**
-     * The type of the connection associated with the token.
-     * - `provider` - connection to an external provider
-     * - `finch` - finch-generated data.
+     * Returns the raw JSON value of [connectionType].
+     *
+     * Unlike [connectionType], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("connection_type")
     @ExcludeMissing
     fun _connectionType(): JsonField<ConnectionType> = connectionType
 
     /**
-     * The email of your customer you provided to Finch when a connect session was created for this
-     * connection.
+     * Returns the raw JSON value of [customerEmail].
+     *
+     * Unlike [customerEmail], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("customer_email")
     @ExcludeMissing
     fun _customerEmail(): JsonField<String> = customerEmail
 
     /**
-     * The ID of your customer you provided to Finch when a connect session was created for this
-     * connection.
+     * Returns the raw JSON value of [customerId].
+     *
+     * Unlike [customerId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("customer_id") @ExcludeMissing fun _customerId(): JsonField<String> = customerId
 
     /**
-     * The name of your customer you provided to Finch when a connect session was created for this
-     * connection.
+     * Returns the raw JSON value of [customerName].
+     *
+     * Unlike [customerName], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("customer_name")
     @ExcludeMissing
     fun _customerName(): JsonField<String> = customerName
 
     /**
-     * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
-     * (`true` if using Assisted Connect, `false` if connection is automated)
+     * Returns the raw JSON value of [manual].
+     *
+     * Unlike [manual], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
 
     /**
-     * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
+     * Returns the raw JSON value of [payrollProviderId].
+     *
+     * Unlike [payrollProviderId], this method doesn't throw if the JSON field has an unexpected
+     * type.
      */
     @Deprecated("deprecated")
     @JsonProperty("payroll_provider_id")
     @ExcludeMissing
     fun _payrollProviderId(): JsonField<String> = payrollProviderId
 
-    /** An array of the authorized products associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [products].
+     *
+     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("products") @ExcludeMissing fun _products(): JsonField<List<String>> = products
 
-    /** The ID of the provider associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [providerId].
+     *
+     * Unlike [providerId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("provider_id") @ExcludeMissing fun _providerId(): JsonField<String> = providerId
 
-    /** The account username used for login associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [username].
+     *
+     * Unlike [username], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("username") @ExcludeMissing fun _username(): JsonField<String> = username
 
     @JsonAnyGetter
@@ -353,8 +460,11 @@ private constructor(
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this account ID.
+         * Sets [Builder.accountId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.accountId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
@@ -362,11 +472,23 @@ private constructor(
         fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
             authenticationMethods(JsonField.of(authenticationMethods))
 
+        /**
+         * Sets [Builder.authenticationMethods] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.authenticationMethods] with a well-typed
+         * `List<AuthenticationMethod>` value instead. This method is primarily for setting the
+         * field to an undocumented or not yet supported value.
+         */
         fun authenticationMethods(authenticationMethods: JsonField<List<AuthenticationMethod>>) =
             apply {
                 this.authenticationMethods = authenticationMethods.map { it.toMutableList() }
             }
 
+        /**
+         * Adds a single [AuthenticationMethod] to [authenticationMethods].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addAuthenticationMethod(authenticationMethod: AuthenticationMethod) = apply {
             authenticationMethods =
                 (authenticationMethods ?: JsonField.of(mutableListOf())).also {
@@ -377,13 +499,24 @@ private constructor(
         /** The client ID of the application associated with the `access_token`. */
         fun clientId(clientId: String) = clientId(JsonField.of(clientId))
 
-        /** The client ID of the application associated with the `access_token`. */
+        /**
+         * Sets [Builder.clientId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.clientId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
 
         /** The type of application associated with a token. */
         fun clientType(clientType: ClientType) = clientType(JsonField.of(clientType))
 
-        /** The type of application associated with a token. */
+        /**
+         * Sets [Builder.clientType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.clientType] with a well-typed [ClientType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
 
         /**
@@ -394,8 +527,11 @@ private constructor(
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this company ID.
+         * Sets [Builder.companyId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
@@ -403,7 +539,13 @@ private constructor(
         /** The Finch UUID of the connection associated with the `access_token`. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
-        /** The Finch UUID of the connection associated with the `access_token`. */
+        /**
+         * Sets [Builder.connectionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
@@ -411,6 +553,13 @@ private constructor(
         fun connectionStatus(connectionStatus: ConnectionStatus) =
             connectionStatus(JsonField.of(connectionStatus))
 
+        /**
+         * Sets [Builder.connectionStatus] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionStatus] with a well-typed [ConnectionStatus]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun connectionStatus(connectionStatus: JsonField<ConnectionStatus>) = apply {
             this.connectionStatus = connectionStatus
         }
@@ -424,9 +573,11 @@ private constructor(
             connectionType(JsonField.of(connectionType))
 
         /**
-         * The type of the connection associated with the token.
-         * - `provider` - connection to an external provider
-         * - `finch` - finch-generated data.
+         * Sets [Builder.connectionType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionType] with a well-typed [ConnectionType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun connectionType(connectionType: JsonField<ConnectionType>) = apply {
             this.connectionType = connectionType
@@ -439,16 +590,16 @@ private constructor(
         fun customerEmail(customerEmail: String?) =
             customerEmail(JsonField.ofNullable(customerEmail))
 
-        /**
-         * The email of your customer you provided to Finch when a connect session was created for
-         * this connection.
-         */
+        /** Alias for calling [Builder.customerEmail] with `customerEmail.orElse(null)`. */
         fun customerEmail(customerEmail: Optional<String>) =
             customerEmail(customerEmail.getOrNull())
 
         /**
-         * The email of your customer you provided to Finch when a connect session was created for
-         * this connection.
+         * Sets [Builder.customerEmail] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customerEmail] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun customerEmail(customerEmail: JsonField<String>) = apply {
             this.customerEmail = customerEmail
@@ -460,15 +611,15 @@ private constructor(
          */
         fun customerId(customerId: String?) = customerId(JsonField.ofNullable(customerId))
 
-        /**
-         * The ID of your customer you provided to Finch when a connect session was created for this
-         * connection.
-         */
+        /** Alias for calling [Builder.customerId] with `customerId.orElse(null)`. */
         fun customerId(customerId: Optional<String>) = customerId(customerId.getOrNull())
 
         /**
-         * The ID of your customer you provided to Finch when a connect session was created for this
-         * connection.
+         * Sets [Builder.customerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customerId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
@@ -478,15 +629,15 @@ private constructor(
          */
         fun customerName(customerName: String?) = customerName(JsonField.ofNullable(customerName))
 
-        /**
-         * The name of your customer you provided to Finch when a connect session was created for
-         * this connection.
-         */
+        /** Alias for calling [Builder.customerName] with `customerName.orElse(null)`. */
         fun customerName(customerName: Optional<String>) = customerName(customerName.getOrNull())
 
         /**
-         * The name of your customer you provided to Finch when a connect session was created for
-         * this connection.
+         * Sets [Builder.customerName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customerName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun customerName(customerName: JsonField<String>) = apply {
             this.customerName = customerName
@@ -499,8 +650,10 @@ private constructor(
         fun manual(manual: Boolean) = manual(JsonField.of(manual))
 
         /**
-         * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
-         * (`true` if using Assisted Connect, `false` if connection is automated)
+         * Sets [Builder.manual] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.manual] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
@@ -513,8 +666,11 @@ private constructor(
             payrollProviderId(JsonField.of(payrollProviderId))
 
         /**
-         * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider
-         * ID.
+         * Sets [Builder.payrollProviderId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payrollProviderId] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         @Deprecated("deprecated")
         fun payrollProviderId(payrollProviderId: JsonField<String>) = apply {
@@ -524,12 +680,22 @@ private constructor(
         /** An array of the authorized products associated with the `access_token`. */
         fun products(products: List<String>) = products(JsonField.of(products))
 
-        /** An array of the authorized products associated with the `access_token`. */
+        /**
+         * Sets [Builder.products] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.products] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun products(products: JsonField<List<String>>) = apply {
             this.products = products.map { it.toMutableList() }
         }
 
-        /** An array of the authorized products associated with the `access_token`. */
+        /**
+         * Adds a single [String] to [products].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addProduct(product: String) = apply {
             products =
                 (products ?: JsonField.of(mutableListOf())).also {
@@ -540,13 +706,24 @@ private constructor(
         /** The ID of the provider associated with the `access_token`. */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
-        /** The ID of the provider associated with the `access_token`. */
+        /**
+         * Sets [Builder.providerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.providerId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
         /** The account username used for login associated with the `access_token`. */
         fun username(username: String) = username(JsonField.of(username))
 
-        /** The account username used for login associated with the `access_token`. */
+        /**
+         * Sets [Builder.username] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.username] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun username(username: JsonField<String>) = apply { this.username = username }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -607,26 +784,54 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun connectionStatus(): Optional<ConnectionStatus> =
             Optional.ofNullable(connectionStatus.getNullable("connection_status"))
 
-        /** An array of the authorized products associated with the `access_token`. */
+        /**
+         * An array of the authorized products associated with the `access_token`.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun products(): Optional<List<String>> =
             Optional.ofNullable(products.getNullable("products"))
 
-        /** The type of authentication method. */
+        /**
+         * The type of authentication method.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
+        /**
+         * Returns the raw JSON value of [connectionStatus].
+         *
+         * Unlike [connectionStatus], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("connection_status")
         @ExcludeMissing
         fun _connectionStatus(): JsonField<ConnectionStatus> = connectionStatus
 
-        /** An array of the authorized products associated with the `access_token`. */
+        /**
+         * Returns the raw JSON value of [products].
+         *
+         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("products")
         @ExcludeMissing
         fun _products(): JsonField<List<String>> = products
 
-        /** The type of authentication method. */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
@@ -673,6 +878,13 @@ private constructor(
             fun connectionStatus(connectionStatus: ConnectionStatus) =
                 connectionStatus(JsonField.of(connectionStatus))
 
+            /**
+             * Sets [Builder.connectionStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.connectionStatus] with a well-typed
+             * [ConnectionStatus] value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
+             */
             fun connectionStatus(connectionStatus: JsonField<ConnectionStatus>) = apply {
                 this.connectionStatus = connectionStatus
             }
@@ -680,12 +892,22 @@ private constructor(
             /** An array of the authorized products associated with the `access_token`. */
             fun products(products: List<String>) = products(JsonField.of(products))
 
-            /** An array of the authorized products associated with the `access_token`. */
+            /**
+             * Sets [Builder.products] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.products] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun products(products: JsonField<List<String>>) = apply {
                 this.products = products.map { it.toMutableList() }
             }
 
-            /** An array of the authorized products associated with the `access_token`. */
+            /**
+             * Adds a single [String] to [products].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addProduct(product: String) = apply {
                 products =
                     (products ?: JsonField.of(mutableListOf())).also {
@@ -696,7 +918,13 @@ private constructor(
             /** The type of authentication method. */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of authentication method. */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -741,13 +969,31 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun status(): Optional<ConnectionStatusType> =
                 Optional.ofNullable(status.getNullable("status"))
 
+            /**
+             * Returns the raw JSON value of [message].
+             *
+             * Unlike [message], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
+            /**
+             * Returns the raw JSON value of [status].
+             *
+             * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("status")
             @ExcludeMissing
             fun _status(): JsonField<ConnectionStatusType> = status
@@ -792,10 +1038,24 @@ private constructor(
 
                 fun message(message: String) = message(JsonField.of(message))
 
+                /**
+                 * Sets [Builder.message] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.message] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun message(message: JsonField<String>) = apply { this.message = message }
 
                 fun status(status: ConnectionStatusType) = status(JsonField.of(status))
 
+                /**
+                 * Sets [Builder.status] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.status] with a well-typed [ConnectionStatusType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1099,13 +1359,31 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun status(): Optional<ConnectionStatusType> =
             Optional.ofNullable(status.getNullable("status"))
 
+        /**
+         * Returns the raw JSON value of [message].
+         *
+         * Unlike [message], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
+        /**
+         * Returns the raw JSON value of [status].
+         *
+         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("status")
         @ExcludeMissing
         fun _status(): JsonField<ConnectionStatusType> = status
@@ -1150,10 +1428,24 @@ private constructor(
 
             fun message(message: String) = message(JsonField.of(message))
 
+            /**
+             * Sets [Builder.message] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.message] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun message(message: JsonField<String>) = apply { this.message = message }
 
             fun status(status: ConnectionStatusType) = status(JsonField.of(status))
 
+            /**
+             * Sets [Builder.status] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.status] with a well-typed [ConnectionStatusType]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

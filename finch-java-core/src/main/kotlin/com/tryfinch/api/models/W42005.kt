@@ -33,22 +33,49 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Detailed information specific to the 2005 W4 form. */
+    /**
+     * Detailed information specific to the 2005 W4 form.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun data(): Optional<Data> = Optional.ofNullable(data.getNullable("data"))
 
-    /** Specifies the form type, indicating that this document is a 2005 W4 form. */
+    /**
+     * Specifies the form type, indicating that this document is a 2005 W4 form.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
-    /** The tax year this W4 document applies to. */
+    /**
+     * The tax year this W4 document applies to.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun year(): Optional<Double> = Optional.ofNullable(year.getNullable("year"))
 
-    /** Detailed information specific to the 2005 W4 form. */
+    /**
+     * Returns the raw JSON value of [data].
+     *
+     * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
-    /** Specifies the form type, indicating that this document is a 2005 W4 form. */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
-    /** The tax year this W4 document applies to. */
+    /**
+     * Returns the raw JSON value of [year].
+     *
+     * Unlike [year], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
 
     @JsonAnyGetter
@@ -95,25 +122,44 @@ private constructor(
         /** Detailed information specific to the 2005 W4 form. */
         fun data(data: Data) = data(JsonField.of(data))
 
-        /** Detailed information specific to the 2005 W4 form. */
+        /**
+         * Sets [Builder.data] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.data] with a well-typed [Data] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun data(data: JsonField<Data>) = apply { this.data = data }
 
         /** Specifies the form type, indicating that this document is a 2005 W4 form. */
         fun type(type: Type) = type(JsonField.of(type))
 
-        /** Specifies the form type, indicating that this document is a 2005 W4 form. */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** The tax year this W4 document applies to. */
         fun year(year: Double?) = year(JsonField.ofNullable(year))
 
-        /** The tax year this W4 document applies to. */
+        /**
+         * Alias for [Builder.year].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun year(year: Double) = year(year as Double?)
 
-        /** The tax year this W4 document applies to. */
+        /** Alias for calling [Builder.year] with `year.orElse(null)`. */
         fun year(year: Optional<Double>) = year(year.getOrNull())
 
-        /** The tax year this W4 document applies to. */
+        /**
+         * Sets [Builder.year] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.year] with a well-typed [Double] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun year(year: JsonField<Double>) = apply { this.year = year }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -162,47 +208,96 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Additional withholding amount (in cents). */
+        /**
+         * Additional withholding amount (in cents).
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun additionalWithholding(): Optional<Long> =
             Optional.ofNullable(additionalWithholding.getNullable("additional_withholding"))
 
-        /** Indicates exemption status from federal tax withholding. */
+        /**
+         * Indicates exemption status from federal tax withholding.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun exemption(): Optional<Exemption> =
             Optional.ofNullable(exemption.getNullable("exemption"))
 
-        /** The individual's filing status for tax purposes. */
+        /**
+         * The individual's filing status for tax purposes.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun filingStatus(): Optional<FilingStatus> =
             Optional.ofNullable(filingStatus.getNullable("filing_status"))
 
-        /** The unique identifier for the individual associated with this 2005 W4 form. */
+        /**
+         * The unique identifier for the individual associated with this 2005 W4 form.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun individualId(): Optional<String> =
             Optional.ofNullable(individualId.getNullable("individual_id"))
 
-        /** Total number of allowances claimed (in cents). */
+        /**
+         * Total number of allowances claimed (in cents).
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun totalNumberOfAllowances(): Optional<Long> =
             Optional.ofNullable(totalNumberOfAllowances.getNullable("total_number_of_allowances"))
 
-        /** Additional withholding amount (in cents). */
+        /**
+         * Returns the raw JSON value of [additionalWithholding].
+         *
+         * Unlike [additionalWithholding], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("additional_withholding")
         @ExcludeMissing
         fun _additionalWithholding(): JsonField<Long> = additionalWithholding
 
-        /** Indicates exemption status from federal tax withholding. */
+        /**
+         * Returns the raw JSON value of [exemption].
+         *
+         * Unlike [exemption], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("exemption")
         @ExcludeMissing
         fun _exemption(): JsonField<Exemption> = exemption
 
-        /** The individual's filing status for tax purposes. */
+        /**
+         * Returns the raw JSON value of [filingStatus].
+         *
+         * Unlike [filingStatus], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("filing_status")
         @ExcludeMissing
         fun _filingStatus(): JsonField<FilingStatus> = filingStatus
 
-        /** The unique identifier for the individual associated with this 2005 W4 form. */
+        /**
+         * Returns the raw JSON value of [individualId].
+         *
+         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("individual_id")
         @ExcludeMissing
         fun _individualId(): JsonField<String> = individualId
 
-        /** Total number of allowances claimed (in cents). */
+        /**
+         * Returns the raw JSON value of [totalNumberOfAllowances].
+         *
+         * Unlike [totalNumberOfAllowances], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("total_number_of_allowances")
         @ExcludeMissing
         fun _totalNumberOfAllowances(): JsonField<Long> = totalNumberOfAllowances
@@ -258,15 +353,28 @@ private constructor(
             fun additionalWithholding(additionalWithholding: Long?) =
                 additionalWithholding(JsonField.ofNullable(additionalWithholding))
 
-            /** Additional withholding amount (in cents). */
+            /**
+             * Alias for [Builder.additionalWithholding].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun additionalWithholding(additionalWithholding: Long) =
                 additionalWithholding(additionalWithholding as Long?)
 
-            /** Additional withholding amount (in cents). */
+            /**
+             * Alias for calling [Builder.additionalWithholding] with
+             * `additionalWithholding.orElse(null)`.
+             */
             fun additionalWithholding(additionalWithholding: Optional<Long>) =
                 additionalWithholding(additionalWithholding.getOrNull())
 
-            /** Additional withholding amount (in cents). */
+            /**
+             * Sets [Builder.additionalWithholding] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.additionalWithholding] with a well-typed [Long]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun additionalWithholding(additionalWithholding: JsonField<Long>) = apply {
                 this.additionalWithholding = additionalWithholding
             }
@@ -274,13 +382,25 @@ private constructor(
             /** Indicates exemption status from federal tax withholding. */
             fun exemption(exemption: Exemption) = exemption(JsonField.of(exemption))
 
-            /** Indicates exemption status from federal tax withholding. */
+            /**
+             * Sets [Builder.exemption] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.exemption] with a well-typed [Exemption] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun exemption(exemption: JsonField<Exemption>) = apply { this.exemption = exemption }
 
             /** The individual's filing status for tax purposes. */
             fun filingStatus(filingStatus: FilingStatus) = filingStatus(JsonField.of(filingStatus))
 
-            /** The individual's filing status for tax purposes. */
+            /**
+             * Sets [Builder.filingStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.filingStatus] with a well-typed [FilingStatus] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun filingStatus(filingStatus: JsonField<FilingStatus>) = apply {
                 this.filingStatus = filingStatus
             }
@@ -288,7 +408,13 @@ private constructor(
             /** The unique identifier for the individual associated with this 2005 W4 form. */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-            /** The unique identifier for the individual associated with this 2005 W4 form. */
+            /**
+             * Sets [Builder.individualId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun individualId(individualId: JsonField<String>) = apply {
                 this.individualId = individualId
             }
@@ -297,15 +423,28 @@ private constructor(
             fun totalNumberOfAllowances(totalNumberOfAllowances: Long?) =
                 totalNumberOfAllowances(JsonField.ofNullable(totalNumberOfAllowances))
 
-            /** Total number of allowances claimed (in cents). */
+            /**
+             * Alias for [Builder.totalNumberOfAllowances].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun totalNumberOfAllowances(totalNumberOfAllowances: Long) =
                 totalNumberOfAllowances(totalNumberOfAllowances as Long?)
 
-            /** Total number of allowances claimed (in cents). */
+            /**
+             * Alias for calling [Builder.totalNumberOfAllowances] with
+             * `totalNumberOfAllowances.orElse(null)`.
+             */
             fun totalNumberOfAllowances(totalNumberOfAllowances: Optional<Long>) =
                 totalNumberOfAllowances(totalNumberOfAllowances.getOrNull())
 
-            /** Total number of allowances claimed (in cents). */
+            /**
+             * Sets [Builder.totalNumberOfAllowances] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.totalNumberOfAllowances] with a well-typed [Long]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun totalNumberOfAllowances(totalNumberOfAllowances: JsonField<Long>) = apply {
                 this.totalNumberOfAllowances = totalNumberOfAllowances
             }

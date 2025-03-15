@@ -32,50 +32,123 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** An array of bank account objects associated with the payroll/HRIS system. */
+    /**
+     * An array of bank account objects associated with the payroll/HRIS system.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun accounts(): Optional<List<Account>> = body.accounts()
 
-    /** The array of company departments. */
+    /**
+     * The array of company departments.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun departments(): Optional<List<Department?>> = body.departments()
 
-    /** The employer identification number. */
+    /**
+     * The employer identification number.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun ein(): Optional<String> = body.ein()
 
-    /** The entity type object. */
+    /**
+     * The entity type object.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun entity(): Optional<Entity> = body.entity()
 
-    /** The legal name of the company. */
+    /**
+     * The legal name of the company.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun legalName(): Optional<String> = body.legalName()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun locations(): Optional<List<Location?>> = body.locations()
 
-    /** The email of the main administrator on the account. */
+    /**
+     * The email of the main administrator on the account.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun primaryEmail(): Optional<String> = body.primaryEmail()
 
-    /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+    /**
+     * The phone number of the main administrator on the account. Format: `XXXXXXXXXX`
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun primaryPhoneNumber(): Optional<String> = body.primaryPhoneNumber()
 
-    /** An array of bank account objects associated with the payroll/HRIS system. */
+    /**
+     * Returns the raw JSON value of [accounts].
+     *
+     * Unlike [accounts], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _accounts(): JsonField<List<Account>> = body._accounts()
 
-    /** The array of company departments. */
+    /**
+     * Returns the raw JSON value of [departments].
+     *
+     * Unlike [departments], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _departments(): JsonField<List<Department?>> = body._departments()
 
-    /** The employer identification number. */
+    /**
+     * Returns the raw JSON value of [ein].
+     *
+     * Unlike [ein], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _ein(): JsonField<String> = body._ein()
 
-    /** The entity type object. */
+    /**
+     * Returns the raw JSON value of [entity].
+     *
+     * Unlike [entity], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _entity(): JsonField<Entity> = body._entity()
 
-    /** The legal name of the company. */
+    /**
+     * Returns the raw JSON value of [legalName].
+     *
+     * Unlike [legalName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _legalName(): JsonField<String> = body._legalName()
 
+    /**
+     * Returns the raw JSON value of [locations].
+     *
+     * Unlike [locations], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _locations(): JsonField<List<Location?>> = body._locations()
 
-    /** The email of the main administrator on the account. */
+    /**
+     * Returns the raw JSON value of [primaryEmail].
+     *
+     * Unlike [primaryEmail], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _primaryEmail(): JsonField<String> = body._primaryEmail()
 
-    /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+    /**
+     * Returns the raw JSON value of [primaryPhoneNumber].
+     *
+     * Unlike [primaryPhoneNumber], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     fun _primaryPhoneNumber(): JsonField<String> = body._primaryPhoneNumber()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -120,63 +193,137 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** An array of bank account objects associated with the payroll/HRIS system. */
+        /**
+         * An array of bank account objects associated with the payroll/HRIS system.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun accounts(): Optional<List<Account>> =
             Optional.ofNullable(accounts.getNullable("accounts"))
 
-        /** The array of company departments. */
+        /**
+         * The array of company departments.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun departments(): Optional<List<Department?>> =
             Optional.ofNullable(departments.getNullable("departments"))
 
-        /** The employer identification number. */
+        /**
+         * The employer identification number.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun ein(): Optional<String> = Optional.ofNullable(ein.getNullable("ein"))
 
-        /** The entity type object. */
+        /**
+         * The entity type object.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun entity(): Optional<Entity> = Optional.ofNullable(entity.getNullable("entity"))
 
-        /** The legal name of the company. */
+        /**
+         * The legal name of the company.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun legalName(): Optional<String> = Optional.ofNullable(legalName.getNullable("legal_name"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun locations(): Optional<List<Location?>> =
             Optional.ofNullable(locations.getNullable("locations"))
 
-        /** The email of the main administrator on the account. */
+        /**
+         * The email of the main administrator on the account.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun primaryEmail(): Optional<String> =
             Optional.ofNullable(primaryEmail.getNullable("primary_email"))
 
-        /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+        /**
+         * The phone number of the main administrator on the account. Format: `XXXXXXXXXX`
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun primaryPhoneNumber(): Optional<String> =
             Optional.ofNullable(primaryPhoneNumber.getNullable("primary_phone_number"))
 
-        /** An array of bank account objects associated with the payroll/HRIS system. */
+        /**
+         * Returns the raw JSON value of [accounts].
+         *
+         * Unlike [accounts], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("accounts")
         @ExcludeMissing
         fun _accounts(): JsonField<List<Account>> = accounts
 
-        /** The array of company departments. */
+        /**
+         * Returns the raw JSON value of [departments].
+         *
+         * Unlike [departments], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("departments")
         @ExcludeMissing
         fun _departments(): JsonField<List<Department?>> = departments
 
-        /** The employer identification number. */
+        /**
+         * Returns the raw JSON value of [ein].
+         *
+         * Unlike [ein], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("ein") @ExcludeMissing fun _ein(): JsonField<String> = ein
 
-        /** The entity type object. */
+        /**
+         * Returns the raw JSON value of [entity].
+         *
+         * Unlike [entity], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("entity") @ExcludeMissing fun _entity(): JsonField<Entity> = entity
 
-        /** The legal name of the company. */
+        /**
+         * Returns the raw JSON value of [legalName].
+         *
+         * Unlike [legalName], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("legal_name") @ExcludeMissing fun _legalName(): JsonField<String> = legalName
 
+        /**
+         * Returns the raw JSON value of [locations].
+         *
+         * Unlike [locations], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("locations")
         @ExcludeMissing
         fun _locations(): JsonField<List<Location?>> = locations
 
-        /** The email of the main administrator on the account. */
+        /**
+         * Returns the raw JSON value of [primaryEmail].
+         *
+         * Unlike [primaryEmail], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("primary_email")
         @ExcludeMissing
         fun _primaryEmail(): JsonField<String> = primaryEmail
 
-        /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+        /**
+         * Returns the raw JSON value of [primaryPhoneNumber].
+         *
+         * Unlike [primaryPhoneNumber], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("primary_phone_number")
         @ExcludeMissing
         fun _primaryPhoneNumber(): JsonField<String> = primaryPhoneNumber
@@ -254,15 +401,25 @@ private constructor(
             /** An array of bank account objects associated with the payroll/HRIS system. */
             fun accounts(accounts: List<Account>?) = accounts(JsonField.ofNullable(accounts))
 
-            /** An array of bank account objects associated with the payroll/HRIS system. */
+            /** Alias for calling [Builder.accounts] with `accounts.orElse(null)`. */
             fun accounts(accounts: Optional<List<Account>>) = accounts(accounts.getOrNull())
 
-            /** An array of bank account objects associated with the payroll/HRIS system. */
+            /**
+             * Sets [Builder.accounts] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.accounts] with a well-typed `List<Account>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun accounts(accounts: JsonField<List<Account>>) = apply {
                 this.accounts = accounts.map { it.toMutableList() }
             }
 
-            /** An array of bank account objects associated with the payroll/HRIS system. */
+            /**
+             * Adds a single [Account] to [accounts].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addAccount(account: Account) = apply {
                 accounts =
                     (accounts ?: JsonField.of(mutableListOf())).also {
@@ -274,16 +431,26 @@ private constructor(
             fun departments(departments: List<Department?>?) =
                 departments(JsonField.ofNullable(departments))
 
-            /** The array of company departments. */
+            /** Alias for calling [Builder.departments] with `departments.orElse(null)`. */
             fun departments(departments: Optional<List<Department?>>) =
                 departments(departments.getOrNull())
 
-            /** The array of company departments. */
+            /**
+             * Sets [Builder.departments] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.departments] with a well-typed `List<Department?>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun departments(departments: JsonField<List<Department?>>) = apply {
                 this.departments = departments.map { it.toMutableList() }
             }
 
-            /** The array of company departments. */
+            /**
+             * Adds a single [Department] to [departments].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addDepartment(department: Department) = apply {
                 departments =
                     (departments ?: JsonField.of(mutableListOf())).also {
@@ -294,38 +461,69 @@ private constructor(
             /** The employer identification number. */
             fun ein(ein: String?) = ein(JsonField.ofNullable(ein))
 
-            /** The employer identification number. */
+            /** Alias for calling [Builder.ein] with `ein.orElse(null)`. */
             fun ein(ein: Optional<String>) = ein(ein.getOrNull())
 
-            /** The employer identification number. */
+            /**
+             * Sets [Builder.ein] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.ein] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun ein(ein: JsonField<String>) = apply { this.ein = ein }
 
             /** The entity type object. */
             fun entity(entity: Entity?) = entity(JsonField.ofNullable(entity))
 
-            /** The entity type object. */
+            /** Alias for calling [Builder.entity] with `entity.orElse(null)`. */
             fun entity(entity: Optional<Entity>) = entity(entity.getOrNull())
 
-            /** The entity type object. */
+            /**
+             * Sets [Builder.entity] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.entity] with a well-typed [Entity] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
 
             /** The legal name of the company. */
             fun legalName(legalName: String?) = legalName(JsonField.ofNullable(legalName))
 
-            /** The legal name of the company. */
+            /** Alias for calling [Builder.legalName] with `legalName.orElse(null)`. */
             fun legalName(legalName: Optional<String>) = legalName(legalName.getOrNull())
 
-            /** The legal name of the company. */
+            /**
+             * Sets [Builder.legalName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.legalName] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun legalName(legalName: JsonField<String>) = apply { this.legalName = legalName }
 
             fun locations(locations: List<Location?>?) = locations(JsonField.ofNullable(locations))
 
+            /** Alias for calling [Builder.locations] with `locations.orElse(null)`. */
             fun locations(locations: Optional<List<Location?>>) = locations(locations.getOrNull())
 
+            /**
+             * Sets [Builder.locations] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.locations] with a well-typed `List<Location?>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun locations(locations: JsonField<List<Location?>>) = apply {
                 this.locations = locations.map { it.toMutableList() }
             }
 
+            /**
+             * Adds a single [Location] to [locations].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addLocation(location: Location) = apply {
                 locations =
                     (locations ?: JsonField.of(mutableListOf())).also {
@@ -337,11 +535,17 @@ private constructor(
             fun primaryEmail(primaryEmail: String?) =
                 primaryEmail(JsonField.ofNullable(primaryEmail))
 
-            /** The email of the main administrator on the account. */
+            /** Alias for calling [Builder.primaryEmail] with `primaryEmail.orElse(null)`. */
             fun primaryEmail(primaryEmail: Optional<String>) =
                 primaryEmail(primaryEmail.getOrNull())
 
-            /** The email of the main administrator on the account. */
+            /**
+             * Sets [Builder.primaryEmail] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.primaryEmail] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun primaryEmail(primaryEmail: JsonField<String>) = apply {
                 this.primaryEmail = primaryEmail
             }
@@ -350,11 +554,20 @@ private constructor(
             fun primaryPhoneNumber(primaryPhoneNumber: String?) =
                 primaryPhoneNumber(JsonField.ofNullable(primaryPhoneNumber))
 
-            /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+            /**
+             * Alias for calling [Builder.primaryPhoneNumber] with
+             * `primaryPhoneNumber.orElse(null)`.
+             */
             fun primaryPhoneNumber(primaryPhoneNumber: Optional<String>) =
                 primaryPhoneNumber(primaryPhoneNumber.getOrNull())
 
-            /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+            /**
+             * Sets [Builder.primaryPhoneNumber] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.primaryPhoneNumber] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun primaryPhoneNumber(primaryPhoneNumber: JsonField<String>) = apply {
                 this.primaryPhoneNumber = primaryPhoneNumber
             }
@@ -450,72 +663,127 @@ private constructor(
         /** An array of bank account objects associated with the payroll/HRIS system. */
         fun accounts(accounts: List<Account>?) = apply { body.accounts(accounts) }
 
-        /** An array of bank account objects associated with the payroll/HRIS system. */
+        /** Alias for calling [Builder.accounts] with `accounts.orElse(null)`. */
         fun accounts(accounts: Optional<List<Account>>) = accounts(accounts.getOrNull())
 
-        /** An array of bank account objects associated with the payroll/HRIS system. */
+        /**
+         * Sets [Builder.accounts] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.accounts] with a well-typed `List<Account>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun accounts(accounts: JsonField<List<Account>>) = apply { body.accounts(accounts) }
 
-        /** An array of bank account objects associated with the payroll/HRIS system. */
+        /**
+         * Adds a single [Account] to [accounts].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addAccount(account: Account) = apply { body.addAccount(account) }
 
         /** The array of company departments. */
         fun departments(departments: List<Department?>?) = apply { body.departments(departments) }
 
-        /** The array of company departments. */
+        /** Alias for calling [Builder.departments] with `departments.orElse(null)`. */
         fun departments(departments: Optional<List<Department?>>) =
             departments(departments.getOrNull())
 
-        /** The array of company departments. */
+        /**
+         * Sets [Builder.departments] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.departments] with a well-typed `List<Department?>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun departments(departments: JsonField<List<Department?>>) = apply {
             body.departments(departments)
         }
 
-        /** The array of company departments. */
+        /**
+         * Adds a single [Department] to [departments].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addDepartment(department: Department) = apply { body.addDepartment(department) }
 
         /** The employer identification number. */
         fun ein(ein: String?) = apply { body.ein(ein) }
 
-        /** The employer identification number. */
+        /** Alias for calling [Builder.ein] with `ein.orElse(null)`. */
         fun ein(ein: Optional<String>) = ein(ein.getOrNull())
 
-        /** The employer identification number. */
+        /**
+         * Sets [Builder.ein] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.ein] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun ein(ein: JsonField<String>) = apply { body.ein(ein) }
 
         /** The entity type object. */
         fun entity(entity: Entity?) = apply { body.entity(entity) }
 
-        /** The entity type object. */
+        /** Alias for calling [Builder.entity] with `entity.orElse(null)`. */
         fun entity(entity: Optional<Entity>) = entity(entity.getOrNull())
 
-        /** The entity type object. */
+        /**
+         * Sets [Builder.entity] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.entity] with a well-typed [Entity] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun entity(entity: JsonField<Entity>) = apply { body.entity(entity) }
 
         /** The legal name of the company. */
         fun legalName(legalName: String?) = apply { body.legalName(legalName) }
 
-        /** The legal name of the company. */
+        /** Alias for calling [Builder.legalName] with `legalName.orElse(null)`. */
         fun legalName(legalName: Optional<String>) = legalName(legalName.getOrNull())
 
-        /** The legal name of the company. */
+        /**
+         * Sets [Builder.legalName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.legalName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun legalName(legalName: JsonField<String>) = apply { body.legalName(legalName) }
 
         fun locations(locations: List<Location?>?) = apply { body.locations(locations) }
 
+        /** Alias for calling [Builder.locations] with `locations.orElse(null)`. */
         fun locations(locations: Optional<List<Location?>>) = locations(locations.getOrNull())
 
+        /**
+         * Sets [Builder.locations] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.locations] with a well-typed `List<Location?>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun locations(locations: JsonField<List<Location?>>) = apply { body.locations(locations) }
 
+        /**
+         * Adds a single [Location] to [locations].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addLocation(location: Location) = apply { body.addLocation(location) }
 
         /** The email of the main administrator on the account. */
         fun primaryEmail(primaryEmail: String?) = apply { body.primaryEmail(primaryEmail) }
 
-        /** The email of the main administrator on the account. */
+        /** Alias for calling [Builder.primaryEmail] with `primaryEmail.orElse(null)`. */
         fun primaryEmail(primaryEmail: Optional<String>) = primaryEmail(primaryEmail.getOrNull())
 
-        /** The email of the main administrator on the account. */
+        /**
+         * Sets [Builder.primaryEmail] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.primaryEmail] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun primaryEmail(primaryEmail: JsonField<String>) = apply {
             body.primaryEmail(primaryEmail)
         }
@@ -525,11 +793,19 @@ private constructor(
             body.primaryPhoneNumber(primaryPhoneNumber)
         }
 
-        /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+        /**
+         * Alias for calling [Builder.primaryPhoneNumber] with `primaryPhoneNumber.orElse(null)`.
+         */
         fun primaryPhoneNumber(primaryPhoneNumber: Optional<String>) =
             primaryPhoneNumber(primaryPhoneNumber.getOrNull())
 
-        /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+        /**
+         * Sets [Builder.primaryPhoneNumber] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.primaryPhoneNumber] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun primaryPhoneNumber(primaryPhoneNumber: JsonField<String>) = apply {
             body.primaryPhoneNumber(primaryPhoneNumber)
         }
@@ -682,50 +958,94 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The name of the bank associated in the payroll/HRIS system. */
+        /**
+         * The name of the bank associated in the payroll/HRIS system.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun accountName(): Optional<String> =
             Optional.ofNullable(accountName.getNullable("account_name"))
 
-        /** 10-12 digit number to specify the bank account */
+        /**
+         * 10-12 digit number to specify the bank account
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun accountNumber(): Optional<String> =
             Optional.ofNullable(accountNumber.getNullable("account_number"))
 
-        /** The type of bank account. */
+        /**
+         * The type of bank account.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun accountType(): Optional<AccountType> =
             Optional.ofNullable(accountType.getNullable("account_type"))
 
-        /** Name of the banking institution. */
+        /**
+         * Name of the banking institution.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun institutionName(): Optional<String> =
             Optional.ofNullable(institutionName.getNullable("institution_name"))
 
         /**
          * A nine-digit code that's based on the U.S. Bank location where your account was opened.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun routingNumber(): Optional<String> =
             Optional.ofNullable(routingNumber.getNullable("routing_number"))
 
-        /** The name of the bank associated in the payroll/HRIS system. */
+        /**
+         * Returns the raw JSON value of [accountName].
+         *
+         * Unlike [accountName], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("account_name")
         @ExcludeMissing
         fun _accountName(): JsonField<String> = accountName
 
-        /** 10-12 digit number to specify the bank account */
+        /**
+         * Returns the raw JSON value of [accountNumber].
+         *
+         * Unlike [accountNumber], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("account_number")
         @ExcludeMissing
         fun _accountNumber(): JsonField<String> = accountNumber
 
-        /** The type of bank account. */
+        /**
+         * Returns the raw JSON value of [accountType].
+         *
+         * Unlike [accountType], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("account_type")
         @ExcludeMissing
         fun _accountType(): JsonField<AccountType> = accountType
 
-        /** Name of the banking institution. */
+        /**
+         * Returns the raw JSON value of [institutionName].
+         *
+         * Unlike [institutionName], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("institution_name")
         @ExcludeMissing
         fun _institutionName(): JsonField<String> = institutionName
 
         /**
-         * A nine-digit code that's based on the U.S. Bank location where your account was opened.
+         * Returns the raw JSON value of [routingNumber].
+         *
+         * Unlike [routingNumber], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
         @JsonProperty("routing_number")
         @ExcludeMissing
@@ -781,10 +1101,16 @@ private constructor(
             /** The name of the bank associated in the payroll/HRIS system. */
             fun accountName(accountName: String?) = accountName(JsonField.ofNullable(accountName))
 
-            /** The name of the bank associated in the payroll/HRIS system. */
+            /** Alias for calling [Builder.accountName] with `accountName.orElse(null)`. */
             fun accountName(accountName: Optional<String>) = accountName(accountName.getOrNull())
 
-            /** The name of the bank associated in the payroll/HRIS system. */
+            /**
+             * Sets [Builder.accountName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.accountName] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun accountName(accountName: JsonField<String>) = apply {
                 this.accountName = accountName
             }
@@ -793,11 +1119,17 @@ private constructor(
             fun accountNumber(accountNumber: String?) =
                 accountNumber(JsonField.ofNullable(accountNumber))
 
-            /** 10-12 digit number to specify the bank account */
+            /** Alias for calling [Builder.accountNumber] with `accountNumber.orElse(null)`. */
             fun accountNumber(accountNumber: Optional<String>) =
                 accountNumber(accountNumber.getOrNull())
 
-            /** 10-12 digit number to specify the bank account */
+            /**
+             * Sets [Builder.accountNumber] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.accountNumber] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun accountNumber(accountNumber: JsonField<String>) = apply {
                 this.accountNumber = accountNumber
             }
@@ -806,11 +1138,17 @@ private constructor(
             fun accountType(accountType: AccountType?) =
                 accountType(JsonField.ofNullable(accountType))
 
-            /** The type of bank account. */
+            /** Alias for calling [Builder.accountType] with `accountType.orElse(null)`. */
             fun accountType(accountType: Optional<AccountType>) =
                 accountType(accountType.getOrNull())
 
-            /** The type of bank account. */
+            /**
+             * Sets [Builder.accountType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.accountType] with a well-typed [AccountType] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun accountType(accountType: JsonField<AccountType>) = apply {
                 this.accountType = accountType
             }
@@ -819,11 +1157,17 @@ private constructor(
             fun institutionName(institutionName: String?) =
                 institutionName(JsonField.ofNullable(institutionName))
 
-            /** Name of the banking institution. */
+            /** Alias for calling [Builder.institutionName] with `institutionName.orElse(null)`. */
             fun institutionName(institutionName: Optional<String>) =
                 institutionName(institutionName.getOrNull())
 
-            /** Name of the banking institution. */
+            /**
+             * Sets [Builder.institutionName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.institutionName] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun institutionName(institutionName: JsonField<String>) = apply {
                 this.institutionName = institutionName
             }
@@ -835,16 +1179,16 @@ private constructor(
             fun routingNumber(routingNumber: String?) =
                 routingNumber(JsonField.ofNullable(routingNumber))
 
-            /**
-             * A nine-digit code that's based on the U.S. Bank location where your account was
-             * opened.
-             */
+            /** Alias for calling [Builder.routingNumber] with `routingNumber.orElse(null)`. */
             fun routingNumber(routingNumber: Optional<String>) =
                 routingNumber(routingNumber.getOrNull())
 
             /**
-             * A nine-digit code that's based on the U.S. Bank location where your account was
-             * opened.
+             * Sets [Builder.routingNumber] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.routingNumber] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun routingNumber(routingNumber: JsonField<String>) = apply {
                 this.routingNumber = routingNumber
@@ -1017,16 +1361,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The department name. */
+        /**
+         * The department name.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** The parent department, if present. */
+        /**
+         * The parent department, if present.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun parent(): Optional<Parent> = Optional.ofNullable(parent.getNullable("parent"))
 
-        /** The department name. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** The parent department, if present. */
+        /**
+         * Returns the raw JSON value of [parent].
+         *
+         * Unlike [parent], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("parent") @ExcludeMissing fun _parent(): JsonField<Parent> = parent
 
         @JsonAnyGetter
@@ -1070,19 +1432,31 @@ private constructor(
             /** The department name. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** The department name. */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** The department name. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The parent department, if present. */
             fun parent(parent: Parent?) = parent(JsonField.ofNullable(parent))
 
-            /** The parent department, if present. */
+            /** Alias for calling [Builder.parent] with `parent.orElse(null)`. */
             fun parent(parent: Optional<Parent>) = parent(parent.getOrNull())
 
-            /** The parent department, if present. */
+            /**
+             * Sets [Builder.parent] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.parent] with a well-typed [Parent] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1119,10 +1493,19 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
-            /** The parent department's name. */
+            /**
+             * The parent department's name.
+             *
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-            /** The parent department's name. */
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             @JsonAnyGetter
@@ -1163,10 +1546,16 @@ private constructor(
                 /** The parent department's name. */
                 fun name(name: String?) = name(JsonField.ofNullable(name))
 
-                /** The parent department's name. */
+                /** Alias for calling [Builder.name] with `name.orElse(null)`. */
                 fun name(name: Optional<String>) = name(name.getOrNull())
 
-                /** The parent department's name. */
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1243,16 +1632,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The tax payer subtype of the company. */
+        /**
+         * The tax payer subtype of the company.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype.getNullable("subtype"))
 
-        /** The tax payer type of the company. */
+        /**
+         * The tax payer type of the company.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
-        /** The tax payer subtype of the company. */
+        /**
+         * Returns the raw JSON value of [subtype].
+         *
+         * Unlike [subtype], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<Subtype> = subtype
 
-        /** The tax payer type of the company. */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
@@ -1296,19 +1703,31 @@ private constructor(
             /** The tax payer subtype of the company. */
             fun subtype(subtype: Subtype?) = subtype(JsonField.ofNullable(subtype))
 
-            /** The tax payer subtype of the company. */
+            /** Alias for calling [Builder.subtype] with `subtype.orElse(null)`. */
             fun subtype(subtype: Optional<Subtype>) = subtype(subtype.getOrNull())
 
-            /** The tax payer subtype of the company. */
+            /**
+             * Sets [Builder.subtype] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.subtype] with a well-typed [Subtype] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
 
             /** The tax payer type of the company. */
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
-            /** The tax payer type of the company. */
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
             fun type(type: Optional<Type>) = type(type.getOrNull())
 
-            /** The tax payer type of the company. */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
