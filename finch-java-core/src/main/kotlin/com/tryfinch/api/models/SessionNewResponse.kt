@@ -14,6 +14,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 @NoAutoDetect
@@ -29,16 +30,34 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The Connect URL to redirect the user to for authentication */
+    /**
+     * The Connect URL to redirect the user to for authentication
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectUrl(): String = connectUrl.getRequired("connect_url")
 
-    /** The unique identifier for the created connect session */
+    /**
+     * The unique identifier for the created connect session
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun sessionId(): String = sessionId.getRequired("session_id")
 
-    /** The Connect URL to redirect the user to for authentication */
+    /**
+     * Returns the raw JSON value of [connectUrl].
+     *
+     * Unlike [connectUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("connect_url") @ExcludeMissing fun _connectUrl(): JsonField<String> = connectUrl
 
-    /** The unique identifier for the created connect session */
+    /**
+     * Returns the raw JSON value of [sessionId].
+     *
+     * Unlike [sessionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("session_id") @ExcludeMissing fun _sessionId(): JsonField<String> = sessionId
 
     @JsonAnyGetter
@@ -90,13 +109,25 @@ private constructor(
         /** The Connect URL to redirect the user to for authentication */
         fun connectUrl(connectUrl: String) = connectUrl(JsonField.of(connectUrl))
 
-        /** The Connect URL to redirect the user to for authentication */
+        /**
+         * Sets [Builder.connectUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectUrl] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectUrl(connectUrl: JsonField<String>) = apply { this.connectUrl = connectUrl }
 
         /** The unique identifier for the created connect session */
         fun sessionId(sessionId: String) = sessionId(JsonField.of(sessionId))
 
-        /** The unique identifier for the created connect session */
+        /**
+         * Sets [Builder.sessionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.sessionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun sessionId(sessionId: JsonField<String>) = apply { this.sessionId = sessionId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

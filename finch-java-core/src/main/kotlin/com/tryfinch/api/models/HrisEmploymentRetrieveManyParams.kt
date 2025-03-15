@@ -18,6 +18,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 /** Read individual employment and income data */
@@ -28,10 +29,19 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The array of batch requests. */
+    /**
+     * The array of batch requests.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun requests(): List<Request> = body.requests()
 
-    /** The array of batch requests. */
+    /**
+     * Returns the raw JSON value of [requests].
+     *
+     * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _requests(): JsonField<List<Request>> = body._requests()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -58,10 +68,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The array of batch requests. */
+        /**
+         * The array of batch requests.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun requests(): List<Request> = requests.getRequired("requests")
 
-        /** The array of batch requests. */
+        /**
+         * Returns the raw JSON value of [requests].
+         *
+         * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("requests")
         @ExcludeMissing
         fun _requests(): JsonField<List<Request>> = requests
@@ -111,12 +130,22 @@ private constructor(
             /** The array of batch requests. */
             fun requests(requests: List<Request>) = requests(JsonField.of(requests))
 
-            /** The array of batch requests. */
+            /**
+             * Sets [Builder.requests] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.requests] with a well-typed `List<Request>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun requests(requests: JsonField<List<Request>>) = apply {
                 this.requests = requests.map { it.toMutableList() }
             }
 
-            /** The array of batch requests. */
+            /**
+             * Adds a single [Request] to [requests].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addRequest(request: Request) = apply {
                 requests =
                     (requests ?: JsonField.of(mutableListOf())).also {
@@ -204,10 +233,20 @@ private constructor(
         /** The array of batch requests. */
         fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
-        /** The array of batch requests. */
+        /**
+         * Sets [Builder.requests] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.requests] with a well-typed `List<Request>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun requests(requests: JsonField<List<Request>>) = apply { body.requests(requests) }
 
-        /** The array of batch requests. */
+        /**
+         * Adds a single [Request] to [requests].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addRequest(request: Request) = apply { body.addRequest(request) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -350,13 +389,17 @@ private constructor(
          * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to the
          * number of `individual_id` to send per request. It is preferantial to send all ids in a
          * single request for Finch to optimize provider rate-limits.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun individualId(): String = individualId.getRequired("individual_id")
 
         /**
-         * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to the
-         * number of `individual_id` to send per request. It is preferantial to send all ids in a
-         * single request for Finch to optimize provider rate-limits.
+         * Returns the raw JSON value of [individualId].
+         *
+         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
         @JsonProperty("individual_id")
         @ExcludeMissing
@@ -412,9 +455,11 @@ private constructor(
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
             /**
-             * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to
-             * the number of `individual_id` to send per request. It is preferantial to send all ids
-             * in a single request for Finch to optimize provider rate-limits.
+             * Sets [Builder.individualId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun individualId(individualId: JsonField<String>) = apply {
                 this.individualId = individualId

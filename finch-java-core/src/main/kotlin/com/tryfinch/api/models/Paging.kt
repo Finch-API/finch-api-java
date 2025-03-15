@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -25,16 +26,34 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The total number of elements for the entire query (not just the given page) */
+    /**
+     * The total number of elements for the entire query (not just the given page)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun count(): Optional<Long> = Optional.ofNullable(count.getNullable("count"))
 
-    /** The current start index of the returned list of elements */
+    /**
+     * The current start index of the returned list of elements
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun offset(): Optional<Long> = Optional.ofNullable(offset.getNullable("offset"))
 
-    /** The total number of elements for the entire query (not just the given page) */
+    /**
+     * Returns the raw JSON value of [count].
+     *
+     * Unlike [count], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("count") @ExcludeMissing fun _count(): JsonField<Long> = count
 
-    /** The current start index of the returned list of elements */
+    /**
+     * Returns the raw JSON value of [offset].
+     *
+     * Unlike [offset], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
     @JsonAnyGetter
@@ -78,13 +97,23 @@ private constructor(
         /** The total number of elements for the entire query (not just the given page) */
         fun count(count: Long) = count(JsonField.of(count))
 
-        /** The total number of elements for the entire query (not just the given page) */
+        /**
+         * Sets [Builder.count] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.count] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun count(count: JsonField<Long>) = apply { this.count = count }
 
         /** The current start index of the returned list of elements */
         fun offset(offset: Long) = offset(JsonField.of(offset))
 
-        /** The current start index of the returned list of elements */
+        /**
+         * Sets [Builder.offset] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.offset] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

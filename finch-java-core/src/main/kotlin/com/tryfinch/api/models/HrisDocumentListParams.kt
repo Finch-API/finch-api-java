@@ -96,16 +96,14 @@ private constructor(
             this.individualIds = individualIds?.toMutableList()
         }
 
-        /**
-         * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
-         */
+        /** Alias for calling [Builder.individualIds] with `individualIds.orElse(null)`. */
         fun individualIds(individualIds: Optional<List<String>>) =
             individualIds(individualIds.getOrNull())
 
         /**
-         * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
+         * Adds a single [String] to [individualIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addIndividualId(individualId: String) = apply {
             individualIds = (individualIds ?: mutableListOf()).apply { add(individualId) }
@@ -114,28 +112,40 @@ private constructor(
         /** Number of documents to return (defaults to all) */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
-        /** Number of documents to return (defaults to all) */
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun limit(limit: Long) = limit(limit as Long?)
 
-        /** Number of documents to return (defaults to all) */
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
         fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** Index to start from (defaults to 0) */
         fun offset(offset: Long?) = apply { this.offset = offset }
 
-        /** Index to start from (defaults to 0) */
+        /**
+         * Alias for [Builder.offset].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun offset(offset: Long) = offset(offset as Long?)
 
-        /** Index to start from (defaults to 0) */
+        /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
         fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
 
         /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
         fun types(types: List<Type>?) = apply { this.types = types?.toMutableList() }
 
-        /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
+        /** Alias for calling [Builder.types] with `types.orElse(null)`. */
         fun types(types: Optional<List<Type>>) = types(types.getOrNull())
 
-        /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
+        /**
+         * Adds a single [Type] to [types].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addType(type: Type) = apply { types = (types ?: mutableListOf()).apply { add(type) } }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {

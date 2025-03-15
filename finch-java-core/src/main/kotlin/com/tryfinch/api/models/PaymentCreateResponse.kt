@@ -14,6 +14,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 @NoAutoDetect
@@ -29,16 +30,34 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The date of the payment. */
+    /**
+     * The date of the payment.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun payDate(): String = payDate.getRequired("pay_date")
 
-    /** The ID of the payment. */
+    /**
+     * The ID of the payment.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun paymentId(): String = paymentId.getRequired("payment_id")
 
-    /** The date of the payment. */
+    /**
+     * Returns the raw JSON value of [payDate].
+     *
+     * Unlike [payDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("pay_date") @ExcludeMissing fun _payDate(): JsonField<String> = payDate
 
-    /** The ID of the payment. */
+    /**
+     * Returns the raw JSON value of [paymentId].
+     *
+     * Unlike [paymentId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
 
     @JsonAnyGetter
@@ -90,13 +109,24 @@ private constructor(
         /** The date of the payment. */
         fun payDate(payDate: String) = payDate(JsonField.of(payDate))
 
-        /** The date of the payment. */
+        /**
+         * Sets [Builder.payDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payDate] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
 
         /** The ID of the payment. */
         fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
 
-        /** The ID of the payment. */
+        /**
+         * Sets [Builder.paymentId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.paymentId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

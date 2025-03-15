@@ -29,10 +29,19 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The type of job to start. Currently the only supported type is `data_sync_all` */
+    /**
+     * The type of job to start. Currently the only supported type is `data_sync_all`
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun type(): Type = body.type()
 
-    /** The type of job to start. Currently the only supported type is `data_sync_all` */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _type(): JsonField<Type> = body._type()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -56,10 +65,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The type of job to start. Currently the only supported type is `data_sync_all` */
+        /**
+         * The type of job to start. Currently the only supported type is `data_sync_all`
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun type(): Type = type.getRequired("type")
 
-        /** The type of job to start. Currently the only supported type is `data_sync_all` */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
@@ -107,7 +125,13 @@ private constructor(
             /** The type of job to start. Currently the only supported type is `data_sync_all` */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of job to start. Currently the only supported type is `data_sync_all` */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -183,7 +207,12 @@ private constructor(
         /** The type of job to start. Currently the only supported type is `data_sync_all` */
         fun type(type: Type) = apply { body.type(type) }
 
-        /** The type of job to start. Currently the only supported type is `data_sync_all` */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { body.type(type) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

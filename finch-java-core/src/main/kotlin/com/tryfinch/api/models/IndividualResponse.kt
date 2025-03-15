@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -30,17 +31,44 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun body(): Optional<Individual> = Optional.ofNullable(body.getNullable("body"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
 
+    /**
+     * Returns the raw JSON value of [body].
+     *
+     * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<Individual> = body
 
+    /**
+     * Returns the raw JSON value of [code].
+     *
+     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
+    /**
+     * Returns the raw JSON value of [individualId].
+     *
+     * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("individual_id")
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
@@ -88,14 +116,33 @@ private constructor(
 
         fun body(body: Individual) = body(JsonField.of(body))
 
+        /**
+         * Sets [Builder.body] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.body] with a well-typed [Individual] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun body(body: JsonField<Individual>) = apply { this.body = body }
 
         fun code(code: Long) = code(JsonField.of(code))
 
+        /**
+         * Sets [Builder.code] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.code] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
+        /**
+         * Sets [Builder.individualId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }

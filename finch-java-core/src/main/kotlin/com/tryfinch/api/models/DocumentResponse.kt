@@ -33,49 +33,84 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** A stable Finch id for the document. */
+    /**
+     * A stable Finch id for the document.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
     /**
      * The ID of the individual associated with the document. This will be null for employer-level
      * documents.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
 
-    /** The type of document. */
+    /**
+     * The type of document.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
     /**
      * A URL to access the document. Format:
      * `https://api.tryfinch.com/employer/documents/:document_id`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun url(): Optional<String> = Optional.ofNullable(url.getNullable("url"))
 
-    /** The year the document applies to, if available. */
+    /**
+     * The year the document applies to, if available.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun year(): Optional<Double> = Optional.ofNullable(year.getNullable("year"))
 
-    /** A stable Finch id for the document. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
-     * The ID of the individual associated with the document. This will be null for employer-level
-     * documents.
+     * Returns the raw JSON value of [individualId].
+     *
+     * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("individual_id")
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
 
-    /** The type of document. */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     /**
-     * A URL to access the document. Format:
-     * `https://api.tryfinch.com/employer/documents/:document_id`.
+     * Returns the raw JSON value of [url].
+     *
+     * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
-    /** The year the document applies to, if available. */
+    /**
+     * Returns the raw JSON value of [year].
+     *
+     * Unlike [year], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
 
     @JsonAnyGetter
@@ -128,7 +163,12 @@ private constructor(
         /** A stable Finch id for the document. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** A stable Finch id for the document. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /**
@@ -137,15 +177,15 @@ private constructor(
          */
         fun individualId(individualId: String?) = individualId(JsonField.ofNullable(individualId))
 
-        /**
-         * The ID of the individual associated with the document. This will be null for
-         * employer-level documents.
-         */
+        /** Alias for calling [Builder.individualId] with `individualId.orElse(null)`. */
         fun individualId(individualId: Optional<String>) = individualId(individualId.getOrNull())
 
         /**
-         * The ID of the individual associated with the document. This will be null for
-         * employer-level documents.
+         * Sets [Builder.individualId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
@@ -154,7 +194,12 @@ private constructor(
         /** The type of document. */
         fun type(type: Type) = type(JsonField.of(type))
 
-        /** The type of document. */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /**
@@ -164,21 +209,32 @@ private constructor(
         fun url(url: String) = url(JsonField.of(url))
 
         /**
-         * A URL to access the document. Format:
-         * `https://api.tryfinch.com/employer/documents/:document_id`.
+         * Sets [Builder.url] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.url] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun url(url: JsonField<String>) = apply { this.url = url }
 
         /** The year the document applies to, if available. */
         fun year(year: Double?) = year(JsonField.ofNullable(year))
 
-        /** The year the document applies to, if available. */
+        /**
+         * Alias for [Builder.year].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun year(year: Double) = year(year as Double?)
 
-        /** The year the document applies to, if available. */
+        /** Alias for calling [Builder.year] with `year.orElse(null)`. */
         fun year(year: Optional<Double>) = year(year.getOrNull())
 
-        /** The year the document applies to, if available. */
+        /**
+         * Sets [Builder.year] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.year] with a well-typed [Double] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun year(year: JsonField<Double>) = apply { this.year = year }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

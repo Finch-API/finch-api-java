@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -30,16 +31,43 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun body(): Optional<PayStatementResponseBody> = Optional.ofNullable(body.getNullable("body"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun paymentId(): Optional<String> = Optional.ofNullable(paymentId.getNullable("payment_id"))
 
+    /**
+     * Returns the raw JSON value of [body].
+     *
+     * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<PayStatementResponseBody> = body
 
+    /**
+     * Returns the raw JSON value of [code].
+     *
+     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
+    /**
+     * Returns the raw JSON value of [paymentId].
+     *
+     * Unlike [paymentId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
 
     @JsonAnyGetter
@@ -85,14 +113,34 @@ private constructor(
 
         fun body(body: PayStatementResponseBody) = body(JsonField.of(body))
 
+        /**
+         * Sets [Builder.body] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.body] with a well-typed [PayStatementResponseBody] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun body(body: JsonField<PayStatementResponseBody>) = apply { this.body = body }
 
         fun code(code: Long) = code(JsonField.of(code))
 
+        /**
+         * Sets [Builder.code] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.code] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
 
+        /**
+         * Sets [Builder.paymentId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.paymentId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

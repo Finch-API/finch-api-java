@@ -29,14 +29,33 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun completionStatus(): CompletionStatus = completionStatus.getRequired("completion_status")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun type(): Type = type.getRequired("type")
 
+    /**
+     * Returns the raw JSON value of [completionStatus].
+     *
+     * Unlike [completionStatus], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("completion_status")
     @ExcludeMissing
     fun _completionStatus(): JsonField<CompletionStatus> = completionStatus
 
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
@@ -88,12 +107,25 @@ private constructor(
         fun completionStatus(completionStatus: CompletionStatus) =
             completionStatus(JsonField.of(completionStatus))
 
+        /**
+         * Sets [Builder.completionStatus] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.completionStatus] with a well-typed [CompletionStatus]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun completionStatus(completionStatus: JsonField<CompletionStatus>) = apply {
             this.completionStatus = completionStatus
         }
 
         fun type(type: Type) = type(JsonField.of(type))
 
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

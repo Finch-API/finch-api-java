@@ -31,23 +31,50 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Finch id (uuidv4) for the pay group */
+    /**
+     * Finch id (uuidv4) for the pay group
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
-    /** Name of the pay group */
+    /**
+     * Name of the pay group
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-    /** List of pay frequencies associated with this pay group */
+    /**
+     * List of pay frequencies associated with this pay group
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun payFrequencies(): Optional<List<PayFrequency>> =
         Optional.ofNullable(payFrequencies.getNullable("pay_frequencies"))
 
-    /** Finch id (uuidv4) for the pay group */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** Name of the pay group */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    /** List of pay frequencies associated with this pay group */
+    /**
+     * Returns the raw JSON value of [payFrequencies].
+     *
+     * Unlike [payFrequencies], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("pay_frequencies")
     @ExcludeMissing
     fun _payFrequencies(): JsonField<List<PayFrequency>> = payFrequencies
@@ -96,25 +123,45 @@ private constructor(
         /** Finch id (uuidv4) for the pay group */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** Finch id (uuidv4) for the pay group */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Name of the pay group */
         fun name(name: String) = name(JsonField.of(name))
 
-        /** Name of the pay group */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** List of pay frequencies associated with this pay group */
         fun payFrequencies(payFrequencies: List<PayFrequency>) =
             payFrequencies(JsonField.of(payFrequencies))
 
-        /** List of pay frequencies associated with this pay group */
+        /**
+         * Sets [Builder.payFrequencies] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payFrequencies] with a well-typed `List<PayFrequency>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
             this.payFrequencies = payFrequencies.map { it.toMutableList() }
         }
 
-        /** List of pay frequencies associated with this pay group */
+        /**
+         * Adds a single [PayFrequency] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayFrequency(payFrequency: PayFrequency) = apply {
             payFrequencies =
                 (payFrequencies ?: JsonField.of(mutableListOf())).also {

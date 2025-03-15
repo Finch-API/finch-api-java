@@ -110,18 +110,22 @@ private constructor(
 
         fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
 
+        /** Alias for calling [Builder.accessToken] with `accessToken.orElse(null)`. */
         fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.getOrNull())
 
         fun clientId(clientId: String?) = apply { this.clientId = clientId }
 
+        /** Alias for calling [Builder.clientId] with `clientId.orElse(null)`. */
         fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
 
         fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
 
+        /** Alias for calling [Builder.clientSecret] with `clientSecret.orElse(null)`. */
         fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
 
         fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
 
+        /** Alias for calling [Builder.webhookSecret] with `webhookSecret.orElse(null)`. */
         fun webhookSecret(webhookSecret: Optional<String>) =
             webhookSecret(webhookSecret.getOrNull())
 

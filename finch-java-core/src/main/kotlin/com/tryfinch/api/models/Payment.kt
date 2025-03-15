@@ -61,80 +61,188 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The unique id for the payment. */
+    /**
+     * The unique id for the payment.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun companyDebit(): Optional<Money> =
         Optional.ofNullable(companyDebit.getNullable("company_debit"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun debitDate(): Optional<String> = Optional.ofNullable(debitDate.getNullable("debit_date"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun employeeTaxes(): Optional<Money> =
         Optional.ofNullable(employeeTaxes.getNullable("employee_taxes"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun employerTaxes(): Optional<Money> =
         Optional.ofNullable(employerTaxes.getNullable("employer_taxes"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun grossPay(): Optional<Money> = Optional.ofNullable(grossPay.getNullable("gross_pay"))
 
-    /** Array of every individual on this payment. */
+    /**
+     * Array of every individual on this payment.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun individualIds(): Optional<List<String>> =
         Optional.ofNullable(individualIds.getNullable("individual_ids"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun netPay(): Optional<Money> = Optional.ofNullable(netPay.getNullable("net_pay"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun payDate(): Optional<String> = Optional.ofNullable(payDate.getNullable("pay_date"))
 
-    /** List of pay frequencies associated with this payment. */
+    /**
+     * List of pay frequencies associated with this payment.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun payFrequencies(): Optional<List<PayFrequency>> =
         Optional.ofNullable(payFrequencies.getNullable("pay_frequencies"))
 
-    /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+    /**
+     * Array of the Finch id (uuidv4) of every pay group associated with this payment.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun payGroupIds(): Optional<List<String>> =
         Optional.ofNullable(payGroupIds.getNullable("pay_group_ids"))
 
-    /** The pay period object. */
+    /**
+     * The pay period object.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun payPeriod(): Optional<PayPeriod> = Optional.ofNullable(payPeriod.getNullable("pay_period"))
 
-    /** The unique id for the payment. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
+    /**
+     * Returns the raw JSON value of [companyDebit].
+     *
+     * Unlike [companyDebit], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("company_debit")
     @ExcludeMissing
     fun _companyDebit(): JsonField<Money> = companyDebit
 
+    /**
+     * Returns the raw JSON value of [debitDate].
+     *
+     * Unlike [debitDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("debit_date") @ExcludeMissing fun _debitDate(): JsonField<String> = debitDate
 
+    /**
+     * Returns the raw JSON value of [employeeTaxes].
+     *
+     * Unlike [employeeTaxes], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("employee_taxes")
     @ExcludeMissing
     fun _employeeTaxes(): JsonField<Money> = employeeTaxes
 
+    /**
+     * Returns the raw JSON value of [employerTaxes].
+     *
+     * Unlike [employerTaxes], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("employer_taxes")
     @ExcludeMissing
     fun _employerTaxes(): JsonField<Money> = employerTaxes
 
+    /**
+     * Returns the raw JSON value of [grossPay].
+     *
+     * Unlike [grossPay], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay(): JsonField<Money> = grossPay
 
-    /** Array of every individual on this payment. */
+    /**
+     * Returns the raw JSON value of [individualIds].
+     *
+     * Unlike [individualIds], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("individual_ids")
     @ExcludeMissing
     fun _individualIds(): JsonField<List<String>> = individualIds
 
+    /**
+     * Returns the raw JSON value of [netPay].
+     *
+     * Unlike [netPay], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("net_pay") @ExcludeMissing fun _netPay(): JsonField<Money> = netPay
 
+    /**
+     * Returns the raw JSON value of [payDate].
+     *
+     * Unlike [payDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("pay_date") @ExcludeMissing fun _payDate(): JsonField<String> = payDate
 
-    /** List of pay frequencies associated with this payment. */
+    /**
+     * Returns the raw JSON value of [payFrequencies].
+     *
+     * Unlike [payFrequencies], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("pay_frequencies")
     @ExcludeMissing
     fun _payFrequencies(): JsonField<List<PayFrequency>> = payFrequencies
 
-    /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+    /**
+     * Returns the raw JSON value of [payGroupIds].
+     *
+     * Unlike [payGroupIds], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("pay_group_ids")
     @ExcludeMissing
     fun _payGroupIds(): JsonField<List<String>> = payGroupIds
 
-    /** The pay period object. */
+    /**
+     * Returns the raw JSON value of [payPeriod].
+     *
+     * Unlike [payPeriod], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("pay_period") @ExcludeMissing fun _payPeriod(): JsonField<PayPeriod> = payPeriod
 
     @JsonAnyGetter
@@ -208,28 +316,57 @@ private constructor(
         /** The unique id for the payment. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** The unique id for the payment. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         fun companyDebit(companyDebit: Money?) = companyDebit(JsonField.ofNullable(companyDebit))
 
+        /** Alias for calling [Builder.companyDebit] with `companyDebit.orElse(null)`. */
         fun companyDebit(companyDebit: Optional<Money>) = companyDebit(companyDebit.getOrNull())
 
+        /**
+         * Sets [Builder.companyDebit] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyDebit] with a well-typed [Money] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun companyDebit(companyDebit: JsonField<Money>) = apply {
             this.companyDebit = companyDebit
         }
 
         fun debitDate(debitDate: String?) = debitDate(JsonField.ofNullable(debitDate))
 
+        /** Alias for calling [Builder.debitDate] with `debitDate.orElse(null)`. */
         fun debitDate(debitDate: Optional<String>) = debitDate(debitDate.getOrNull())
 
+        /**
+         * Sets [Builder.debitDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.debitDate] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun debitDate(debitDate: JsonField<String>) = apply { this.debitDate = debitDate }
 
         fun employeeTaxes(employeeTaxes: Money?) =
             employeeTaxes(JsonField.ofNullable(employeeTaxes))
 
+        /** Alias for calling [Builder.employeeTaxes] with `employeeTaxes.orElse(null)`. */
         fun employeeTaxes(employeeTaxes: Optional<Money>) = employeeTaxes(employeeTaxes.getOrNull())
 
+        /**
+         * Sets [Builder.employeeTaxes] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.employeeTaxes] with a well-typed [Money] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun employeeTaxes(employeeTaxes: JsonField<Money>) = apply {
             this.employeeTaxes = employeeTaxes
         }
@@ -237,32 +374,57 @@ private constructor(
         fun employerTaxes(employerTaxes: Money?) =
             employerTaxes(JsonField.ofNullable(employerTaxes))
 
+        /** Alias for calling [Builder.employerTaxes] with `employerTaxes.orElse(null)`. */
         fun employerTaxes(employerTaxes: Optional<Money>) = employerTaxes(employerTaxes.getOrNull())
 
+        /**
+         * Sets [Builder.employerTaxes] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.employerTaxes] with a well-typed [Money] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun employerTaxes(employerTaxes: JsonField<Money>) = apply {
             this.employerTaxes = employerTaxes
         }
 
         fun grossPay(grossPay: Money?) = grossPay(JsonField.ofNullable(grossPay))
 
+        /** Alias for calling [Builder.grossPay] with `grossPay.orElse(null)`. */
         fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.getOrNull())
 
+        /**
+         * Sets [Builder.grossPay] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.grossPay] with a well-typed [Money] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
         /** Array of every individual on this payment. */
         fun individualIds(individualIds: List<String>?) =
             individualIds(JsonField.ofNullable(individualIds))
 
-        /** Array of every individual on this payment. */
+        /** Alias for calling [Builder.individualIds] with `individualIds.orElse(null)`. */
         fun individualIds(individualIds: Optional<List<String>>) =
             individualIds(individualIds.getOrNull())
 
-        /** Array of every individual on this payment. */
+        /**
+         * Sets [Builder.individualIds] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualIds] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
             this.individualIds = individualIds.map { it.toMutableList() }
         }
 
-        /** Array of every individual on this payment. */
+        /**
+         * Adds a single [String] to [individualIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addIndividualId(individualId: String) = apply {
             individualIds =
                 (individualIds ?: JsonField.of(mutableListOf())).also {
@@ -272,30 +434,54 @@ private constructor(
 
         fun netPay(netPay: Money?) = netPay(JsonField.ofNullable(netPay))
 
+        /** Alias for calling [Builder.netPay] with `netPay.orElse(null)`. */
         fun netPay(netPay: Optional<Money>) = netPay(netPay.getOrNull())
 
+        /**
+         * Sets [Builder.netPay] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.netPay] with a well-typed [Money] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
         fun payDate(payDate: String?) = payDate(JsonField.ofNullable(payDate))
 
+        /** Alias for calling [Builder.payDate] with `payDate.orElse(null)`. */
         fun payDate(payDate: Optional<String>) = payDate(payDate.getOrNull())
 
+        /**
+         * Sets [Builder.payDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payDate] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
 
         /** List of pay frequencies associated with this payment. */
         fun payFrequencies(payFrequencies: List<PayFrequency>?) =
             payFrequencies(JsonField.ofNullable(payFrequencies))
 
-        /** List of pay frequencies associated with this payment. */
+        /** Alias for calling [Builder.payFrequencies] with `payFrequencies.orElse(null)`. */
         fun payFrequencies(payFrequencies: Optional<List<PayFrequency>>) =
             payFrequencies(payFrequencies.getOrNull())
 
-        /** List of pay frequencies associated with this payment. */
+        /**
+         * Sets [Builder.payFrequencies] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payFrequencies] with a well-typed `List<PayFrequency>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
             this.payFrequencies = payFrequencies.map { it.toMutableList() }
         }
 
-        /** List of pay frequencies associated with this payment. */
+        /**
+         * Adds a single [PayFrequency] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayFrequency(payFrequency: PayFrequency) = apply {
             payFrequencies =
                 (payFrequencies ?: JsonField.of(mutableListOf())).also {
@@ -306,15 +492,25 @@ private constructor(
         /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
         fun payGroupIds(payGroupIds: List<String>?) = payGroupIds(JsonField.ofNullable(payGroupIds))
 
-        /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+        /** Alias for calling [Builder.payGroupIds] with `payGroupIds.orElse(null)`. */
         fun payGroupIds(payGroupIds: Optional<List<String>>) = payGroupIds(payGroupIds.getOrNull())
 
-        /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+        /**
+         * Sets [Builder.payGroupIds] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payGroupIds] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun payGroupIds(payGroupIds: JsonField<List<String>>) = apply {
             this.payGroupIds = payGroupIds.map { it.toMutableList() }
         }
 
-        /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+        /**
+         * Adds a single [String] to [payGroupIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayGroupId(payGroupId: String) = apply {
             payGroupIds =
                 (payGroupIds ?: JsonField.of(mutableListOf())).also {
@@ -325,10 +521,16 @@ private constructor(
         /** The pay period object. */
         fun payPeriod(payPeriod: PayPeriod?) = payPeriod(JsonField.ofNullable(payPeriod))
 
-        /** The pay period object. */
+        /** Alias for calling [Builder.payPeriod] with `payPeriod.orElse(null)`. */
         fun payPeriod(payPeriod: Optional<PayPeriod>) = payPeriod(payPeriod.getOrNull())
 
-        /** The pay period object. */
+        /**
+         * Sets [Builder.payPeriod] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payPeriod] with a well-typed [PayPeriod] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply { this.payPeriod = payPeriod }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -525,12 +727,30 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun endDate(): Optional<String> = Optional.ofNullable(endDate.getNullable("end_date"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
 
+        /**
+         * Returns the raw JSON value of [endDate].
+         *
+         * Unlike [endDate], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("end_date") @ExcludeMissing fun _endDate(): JsonField<String> = endDate
 
+        /**
+         * Returns the raw JSON value of [startDate].
+         *
+         * Unlike [startDate], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("start_date") @ExcludeMissing fun _startDate(): JsonField<String> = startDate
 
         @JsonAnyGetter
@@ -573,14 +793,30 @@ private constructor(
 
             fun endDate(endDate: String?) = endDate(JsonField.ofNullable(endDate))
 
+            /** Alias for calling [Builder.endDate] with `endDate.orElse(null)`. */
             fun endDate(endDate: Optional<String>) = endDate(endDate.getOrNull())
 
+            /**
+             * Sets [Builder.endDate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.endDate] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
 
             fun startDate(startDate: String?) = startDate(JsonField.ofNullable(startDate))
 
+            /** Alias for calling [Builder.startDate] with `startDate.orElse(null)`. */
             fun startDate(startDate: Optional<String>) = startDate(startDate.getOrNull())
 
+            /**
+             * Sets [Builder.startDate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.startDate] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

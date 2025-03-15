@@ -17,6 +17,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -29,12 +30,30 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun options(): Optional<Options> = body.options()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun requests(): Optional<List<Request>> = body.requests()
 
+    /**
+     * Returns the raw JSON value of [options].
+     *
+     * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _options(): JsonField<Options> = body._options()
 
+    /**
+     * Returns the raw JSON value of [requests].
+     *
+     * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _requests(): JsonField<List<Request>> = body._requests()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -63,13 +82,31 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun options(): Optional<Options> = Optional.ofNullable(options.getNullable("options"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun requests(): Optional<List<Request>> =
             Optional.ofNullable(requests.getNullable("requests"))
 
+        /**
+         * Returns the raw JSON value of [options].
+         *
+         * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("options") @ExcludeMissing fun _options(): JsonField<Options> = options
 
+        /**
+         * Returns the raw JSON value of [requests].
+         *
+         * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("requests")
         @ExcludeMissing
         fun _requests(): JsonField<List<Request>> = requests
@@ -114,16 +151,36 @@ private constructor(
 
             fun options(options: Options?) = options(JsonField.ofNullable(options))
 
+            /** Alias for calling [Builder.options] with `options.orElse(null)`. */
             fun options(options: Optional<Options>) = options(options.getOrNull())
 
+            /**
+             * Sets [Builder.options] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.options] with a well-typed [Options] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun options(options: JsonField<Options>) = apply { this.options = options }
 
             fun requests(requests: List<Request>) = requests(JsonField.of(requests))
 
+            /**
+             * Sets [Builder.requests] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.requests] with a well-typed `List<Request>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun requests(requests: JsonField<List<Request>>) = apply {
                 this.requests = requests.map { it.toMutableList() }
             }
 
+            /**
+             * Adds a single [Request] to [requests].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addRequest(request: Request) = apply {
                 requests =
                     (requests ?: JsonField.of(mutableListOf())).also {
@@ -208,14 +265,33 @@ private constructor(
 
         fun options(options: Options?) = apply { body.options(options) }
 
+        /** Alias for calling [Builder.options] with `options.orElse(null)`. */
         fun options(options: Optional<Options>) = options(options.getOrNull())
 
+        /**
+         * Sets [Builder.options] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.options] with a well-typed [Options] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun options(options: JsonField<Options>) = apply { body.options(options) }
 
         fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
+        /**
+         * Sets [Builder.requests] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.requests] with a well-typed `List<Request>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun requests(requests: JsonField<List<Request>>) = apply { body.requests(requests) }
 
+        /**
+         * Adds a single [Request] to [requests].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addRequest(request: Request) = apply { body.addRequest(request) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -354,8 +430,17 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun include(): Optional<List<String>> = Optional.ofNullable(include.getNullable("include"))
 
+        /**
+         * Returns the raw JSON value of [include].
+         *
+         * Unlike [include], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("include") @ExcludeMissing fun _include(): JsonField<List<String>> = include
 
         @JsonAnyGetter
@@ -395,10 +480,22 @@ private constructor(
 
             fun include(include: List<String>) = include(JsonField.of(include))
 
+            /**
+             * Sets [Builder.include] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.include] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun include(include: JsonField<List<String>>) = apply {
                 this.include = include.map { it.toMutableList() }
             }
 
+            /**
+             * Adds a single [String] to [Builder.include].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addInclude(include: String) = apply {
                 this.include =
                     (this.include ?: JsonField.of(mutableListOf())).also {
@@ -461,9 +558,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun individualId(): Optional<String> =
             Optional.ofNullable(individualId.getNullable("individual_id"))
 
+        /**
+         * Returns the raw JSON value of [individualId].
+         *
+         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("individual_id")
         @ExcludeMissing
         fun _individualId(): JsonField<String> = individualId
@@ -505,6 +612,13 @@ private constructor(
 
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
+            /**
+             * Sets [Builder.individualId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun individualId(individualId: JsonField<String>) = apply {
                 this.individualId = individualId
             }

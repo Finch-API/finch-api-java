@@ -17,6 +17,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -28,20 +29,56 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun code(): String = body.code()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun clientId(): Optional<String> = body.clientId()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun clientSecret(): Optional<String> = body.clientSecret()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun redirectUri(): Optional<String> = body.redirectUri()
 
+    /**
+     * Returns the raw JSON value of [code].
+     *
+     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _code(): JsonField<String> = body._code()
 
+    /**
+     * Returns the raw JSON value of [clientId].
+     *
+     * Unlike [clientId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _clientId(): JsonField<String> = body._clientId()
 
+    /**
+     * Returns the raw JSON value of [clientSecret].
+     *
+     * Unlike [clientSecret], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _clientSecret(): JsonField<String> = body._clientSecret()
 
+    /**
+     * Returns the raw JSON value of [redirectUri].
+     *
+     * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _redirectUri(): JsonField<String> = body._redirectUri()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -76,24 +113,61 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun code(): String = code.getRequired("code")
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun clientId(): Optional<String> = Optional.ofNullable(clientId.getNullable("client_id"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun clientSecret(): Optional<String> =
             Optional.ofNullable(clientSecret.getNullable("client_secret"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun redirectUri(): Optional<String> =
             Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
 
+        /**
+         * Returns the raw JSON value of [code].
+         *
+         * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
 
+        /**
+         * Returns the raw JSON value of [clientId].
+         *
+         * Unlike [clientId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("client_id") @ExcludeMissing fun _clientId(): JsonField<String> = clientId
 
+        /**
+         * Returns the raw JSON value of [clientSecret].
+         *
+         * Unlike [clientSecret], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("client_secret")
         @ExcludeMissing
         fun _clientSecret(): JsonField<String> = clientSecret
 
+        /**
+         * Returns the raw JSON value of [redirectUri].
+         *
+         * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("redirect_uri")
         @ExcludeMissing
         fun _redirectUri(): JsonField<String> = redirectUri
@@ -151,20 +225,48 @@ private constructor(
 
             fun code(code: String) = code(JsonField.of(code))
 
+            /**
+             * Sets [Builder.code] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.code] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun code(code: JsonField<String>) = apply { this.code = code }
 
             fun clientId(clientId: String) = clientId(JsonField.of(clientId))
 
+            /**
+             * Sets [Builder.clientId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.clientId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
 
             fun clientSecret(clientSecret: String) = clientSecret(JsonField.of(clientSecret))
 
+            /**
+             * Sets [Builder.clientSecret] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.clientSecret] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun clientSecret(clientSecret: JsonField<String>) = apply {
                 this.clientSecret = clientSecret
             }
 
             fun redirectUri(redirectUri: String) = redirectUri(JsonField.of(redirectUri))
 
+            /**
+             * Sets [Builder.redirectUri] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.redirectUri] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun redirectUri(redirectUri: JsonField<String>) = apply {
                 this.redirectUri = redirectUri
             }
@@ -248,20 +350,46 @@ private constructor(
 
         fun code(code: String) = apply { body.code(code) }
 
+        /**
+         * Sets [Builder.code] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.code] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun code(code: JsonField<String>) = apply { body.code(code) }
 
         fun clientId(clientId: String) = apply { body.clientId(clientId) }
 
+        /**
+         * Sets [Builder.clientId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.clientId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun clientId(clientId: JsonField<String>) = apply { body.clientId(clientId) }
 
         fun clientSecret(clientSecret: String) = apply { body.clientSecret(clientSecret) }
 
+        /**
+         * Sets [Builder.clientSecret] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.clientSecret] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun clientSecret(clientSecret: JsonField<String>) = apply {
             body.clientSecret(clientSecret)
         }
 
         fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
 
+        /**
+         * Sets [Builder.redirectUri] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.redirectUri] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

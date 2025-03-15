@@ -69,15 +69,22 @@ private constructor(
 
         fun individualId(individualId: String?) = apply { this.individualId = individualId }
 
+        /** Alias for calling [Builder.individualId] with `individualId.orElse(null)`. */
         fun individualId(individualId: Optional<String>) = individualId(individualId.getOrNull())
 
         fun payFrequencies(payFrequencies: List<String>?) = apply {
             this.payFrequencies = payFrequencies?.toMutableList()
         }
 
+        /** Alias for calling [Builder.payFrequencies] with `payFrequencies.orElse(null)`. */
         fun payFrequencies(payFrequencies: Optional<List<String>>) =
             payFrequencies(payFrequencies.getOrNull())
 
+        /**
+         * Adds a single [String] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayFrequency(payFrequency: String) = apply {
             payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }
         }
