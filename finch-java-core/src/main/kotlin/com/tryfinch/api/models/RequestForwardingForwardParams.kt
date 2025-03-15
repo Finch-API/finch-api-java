@@ -17,6 +17,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -36,18 +37,27 @@ private constructor(
     /**
      * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
      * `DELETE` , and `PATCH`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun method(): String = body.method()
 
     /**
      * The URL route path for the forwarded request. This value must begin with a forward-slash ( /
      * ) and may only contain alphanumeric characters, hyphens, and underscores.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun route(): String = body.route()
 
     /**
      * The body for the forwarded request. This value must be specified as either a string or a
      * valid JSON object.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun data(): Optional<String> = body.data()
 
@@ -65,20 +75,23 @@ private constructor(
     fun _params(): JsonValue = body._params()
 
     /**
-     * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
-     * `DELETE` , and `PATCH`.
+     * Returns the raw JSON value of [method].
+     *
+     * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _method(): JsonField<String> = body._method()
 
     /**
-     * The URL route path for the forwarded request. This value must begin with a forward-slash ( /
-     * ) and may only contain alphanumeric characters, hyphens, and underscores.
+     * Returns the raw JSON value of [route].
+     *
+     * Unlike [route], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _route(): JsonField<String> = body._route()
 
     /**
-     * The body for the forwarded request. This value must be specified as either a string or a
-     * valid JSON object.
+     * Returns the raw JSON value of [data].
+     *
+     * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _data(): JsonField<String> = body._data()
 
@@ -117,18 +130,27 @@ private constructor(
         /**
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
          * `DELETE` , and `PATCH`.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun method(): String = method.getRequired("method")
 
         /**
          * The URL route path for the forwarded request. This value must begin with a forward-slash
          * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun route(): String = route.getRequired("route")
 
         /**
          * The body for the forwarded request. This value must be specified as either a string or a
          * valid JSON object.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
 
@@ -146,20 +168,23 @@ private constructor(
         @JsonProperty("params") @ExcludeMissing fun _params(): JsonValue = params
 
         /**
-         * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
-         * `DELETE` , and `PATCH`.
+         * Returns the raw JSON value of [method].
+         *
+         * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<String> = method
 
         /**
-         * The URL route path for the forwarded request. This value must begin with a forward-slash
-         * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
+         * Returns the raw JSON value of [route].
+         *
+         * Unlike [route], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("route") @ExcludeMissing fun _route(): JsonField<String> = route
 
         /**
-         * The body for the forwarded request. This value must be specified as either a string or a
-         * valid JSON object.
+         * Returns the raw JSON value of [data].
+         *
+         * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
@@ -223,8 +248,11 @@ private constructor(
             fun method(method: String) = method(JsonField.of(method))
 
             /**
-             * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` ,
-             * `PUT` , `DELETE` , and `PATCH`.
+             * Sets [Builder.method] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.method] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun method(method: JsonField<String>) = apply { this.method = method }
 
@@ -236,9 +264,11 @@ private constructor(
             fun route(route: String) = route(JsonField.of(route))
 
             /**
-             * The URL route path for the forwarded request. This value must begin with a
-             * forward-slash ( / ) and may only contain alphanumeric characters, hyphens, and
-             * underscores.
+             * Sets [Builder.route] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.route] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun route(route: JsonField<String>) = apply { this.route = route }
 
@@ -248,15 +278,15 @@ private constructor(
              */
             fun data(data: String?) = data(JsonField.ofNullable(data))
 
-            /**
-             * The body for the forwarded request. This value must be specified as either a string
-             * or a valid JSON object.
-             */
+            /** Alias for calling [Builder.data] with `data.orElse(null)`. */
             fun data(data: Optional<String>) = data(data.getOrNull())
 
             /**
-             * The body for the forwarded request. This value must be specified as either a string
-             * or a valid JSON object.
+             * Sets [Builder.data] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.data] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
              */
             fun data(data: JsonField<String>) = apply { this.data = data }
 
@@ -360,8 +390,10 @@ private constructor(
         fun method(method: String) = apply { body.method(method) }
 
         /**
-         * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
-         * `DELETE` , and `PATCH`.
+         * Sets [Builder.method] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.method] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun method(method: JsonField<String>) = apply { body.method(method) }
 
@@ -372,8 +404,10 @@ private constructor(
         fun route(route: String) = apply { body.route(route) }
 
         /**
-         * The URL route path for the forwarded request. This value must begin with a forward-slash
-         * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
+         * Sets [Builder.route] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.route] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun route(route: JsonField<String>) = apply { body.route(route) }
 
@@ -383,15 +417,14 @@ private constructor(
          */
         fun data(data: String?) = apply { body.data(data) }
 
-        /**
-         * The body for the forwarded request. This value must be specified as either a string or a
-         * valid JSON object.
-         */
+        /** Alias for calling [Builder.data] with `data.orElse(null)`. */
         fun data(data: Optional<String>) = data(data.getOrNull())
 
         /**
-         * The body for the forwarded request. This value must be specified as either a string or a
-         * valid JSON object.
+         * Sets [Builder.data] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.data] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun data(data: JsonField<String>) = apply { body.data(data) }
 

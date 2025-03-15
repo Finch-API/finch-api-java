@@ -222,10 +222,20 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
-            /** The type of job to start. */
+            /**
+             * The type of job to start.
+             *
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun type(): Type = type.getRequired("type")
 
-            /** The type of job to start. */
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
@@ -273,7 +283,13 @@ private constructor(
                 /** The type of job to start. */
                 fun type(type: Type) = type(JsonField.of(type))
 
-                /** The type of job to start. */
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -432,14 +448,34 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun params(): Params = params.getRequired("params")
 
-            /** The type of job to start. */
+            /**
+             * The type of job to start.
+             *
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun type(): Type = type.getRequired("type")
 
+            /**
+             * Returns the raw JSON value of [params].
+             *
+             * Unlike [params], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("params") @ExcludeMissing fun _params(): JsonField<Params> = params
 
-            /** The type of job to start. */
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
@@ -490,12 +526,25 @@ private constructor(
 
                 fun params(params: Params) = params(JsonField.of(params))
 
+                /**
+                 * Sets [Builder.params] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.params] with a well-typed [Params] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun params(params: JsonField<Params>) = apply { this.params = params }
 
                 /** The type of job to start. */
                 fun type(type: Type) = type(JsonField.of(type))
 
-                /** The type of job to start. */
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -539,10 +588,21 @@ private constructor(
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                /** The unique ID of the individual for W-4 data sync. */
+                /**
+                 * The unique ID of the individual for W-4 data sync.
+                 *
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+                 *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+                 *   value).
+                 */
                 fun individualId(): String = individualId.getRequired("individual_id")
 
-                /** The unique ID of the individual for W-4 data sync. */
+                /**
+                 * Returns the raw JSON value of [individualId].
+                 *
+                 * Unlike [individualId], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("individual_id")
                 @ExcludeMissing
                 fun _individualId(): JsonField<String> = individualId
@@ -593,7 +653,13 @@ private constructor(
                     fun individualId(individualId: String) =
                         individualId(JsonField.of(individualId))
 
-                    /** The unique ID of the individual for W-4 data sync. */
+                    /**
+                     * Sets [Builder.individualId] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.individualId] with a well-typed [String]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
                     fun individualId(individualId: JsonField<String>) = apply {
                         this.individualId = individualId
                     }
@@ -789,13 +855,25 @@ private constructor(
 
         fun body(body: Body?) = apply { this.body = body }
 
+        /** Alias for calling [Builder.body] with `body.orElse(null)`. */
         fun body(body: Optional<Body>) = body(body.getOrNull())
 
+        /** Alias for calling [body] with `Body.ofDataSyncAll(dataSyncAll)`. */
         fun body(dataSyncAll: Body.DataSyncAll) = body(Body.ofDataSyncAll(dataSyncAll))
 
+        /** Alias for calling [body] with `Body.ofW4FormEmployeeSync(w4FormEmployeeSync)`. */
         fun body(w4FormEmployeeSync: Body.W4FormEmployeeSync) =
             body(Body.ofW4FormEmployeeSync(w4FormEmployeeSync))
 
+        /**
+         * Alias for calling [body] with the following:
+         * ```java
+         * Body.W4FormEmployeeSync.builder()
+         *     .type(JobAutomatedCreateParams.Body.W4FormEmployeeSync.Type.W4_FORM_EMPLOYEE_SYNC)
+         *     .params(params)
+         *     .build()
+         * ```
+         */
         fun w4FormEmployeeSyncBody(params: Body.W4FormEmployeeSync.Params) =
             body(
                 Body.W4FormEmployeeSync.builder()

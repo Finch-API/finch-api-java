@@ -94,10 +94,7 @@ private constructor(
          */
         fun individualIds(individualIds: String?) = apply { this.individualIds = individualIds }
 
-        /**
-         * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
-         */
+        /** Alias for calling [Builder.individualIds] with `individualIds.orElse(null)`. */
         fun individualIds(individualIds: Optional<String>) =
             individualIds(individualIds.getOrNull())
 

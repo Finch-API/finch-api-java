@@ -47,53 +47,117 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun accessToken(): String = accessToken.getRequired("access_token")
 
-    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+    /**
+     * [DEPRECATED] Use `connection_id` to associate a connection with an access token
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun authenticationType(): AuthenticationType =
         authenticationType.getRequired("authentication_type")
 
-    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+    /**
+     * [DEPRECATED] Use `connection_id` to associate a connection with an access token
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
-    /** The ID of the new connection */
+    /**
+     * The ID of the new connection
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectionId(): String = connectionId.getRequired("connection_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun products(): List<String> = products.getRequired("products")
 
-    /** The ID of the provider associated with the `access_token` */
+    /**
+     * The ID of the provider associated with the `access_token`
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun providerId(): String = providerId.getRequired("provider_id")
 
+    /**
+     * Returns the raw JSON value of [accessToken].
+     *
+     * Unlike [accessToken], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("access_token")
     @ExcludeMissing
     fun _accessToken(): JsonField<String> = accessToken
 
-    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+    /**
+     * Returns the raw JSON value of [accountId].
+     *
+     * Unlike [accountId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @Deprecated("deprecated")
     @JsonProperty("account_id")
     @ExcludeMissing
     fun _accountId(): JsonField<String> = accountId
 
+    /**
+     * Returns the raw JSON value of [authenticationType].
+     *
+     * Unlike [authenticationType], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("authentication_type")
     @ExcludeMissing
     fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
 
-    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+    /**
+     * Returns the raw JSON value of [companyId].
+     *
+     * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @Deprecated("deprecated")
     @JsonProperty("company_id")
     @ExcludeMissing
     fun _companyId(): JsonField<String> = companyId
 
-    /** The ID of the new connection */
+    /**
+     * Returns the raw JSON value of [connectionId].
+     *
+     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("connection_id")
     @ExcludeMissing
     fun _connectionId(): JsonField<String> = connectionId
 
+    /**
+     * Returns the raw JSON value of [products].
+     *
+     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("products") @ExcludeMissing fun _products(): JsonField<List<String>> = products
 
-    /** The ID of the provider associated with the `access_token` */
+    /**
+     * Returns the raw JSON value of [providerId].
+     *
+     * Unlike [providerId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("provider_id") @ExcludeMissing fun _providerId(): JsonField<String> = providerId
 
     @JsonAnyGetter
@@ -164,19 +228,39 @@ private constructor(
 
         fun accessToken(accessToken: String) = accessToken(JsonField.of(accessToken))
 
+        /**
+         * Sets [Builder.accessToken] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.accessToken] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
 
         /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
         @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
-        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        /**
+         * Sets [Builder.accountId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.accountId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun authenticationType(authenticationType: AuthenticationType) =
             authenticationType(JsonField.of(authenticationType))
 
+        /**
+         * Sets [Builder.authenticationType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.authenticationType] with a well-typed
+         * [AuthenticationType] value instead. This method is primarily for setting the field to an
+         * undocumented or not yet supported value.
+         */
         fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
             this.authenticationType = authenticationType
         }
@@ -185,24 +269,48 @@ private constructor(
         @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
-        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
+        /**
+         * Sets [Builder.companyId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** The ID of the new connection */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
-        /** The ID of the new connection */
+        /**
+         * Sets [Builder.connectionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
 
         fun products(products: List<String>) = products(JsonField.of(products))
 
+        /**
+         * Sets [Builder.products] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.products] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun products(products: JsonField<List<String>>) = apply {
             this.products = products.map { it.toMutableList() }
         }
 
+        /**
+         * Adds a single [String] to [products].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addProduct(product: String) = apply {
             products =
                 (products ?: JsonField.of(mutableListOf())).also {
@@ -213,7 +321,13 @@ private constructor(
         /** The ID of the provider associated with the `access_token` */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
-        /** The ID of the provider associated with the `access_token` */
+        /**
+         * Sets [Builder.providerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.providerId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

@@ -14,6 +14,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 @NoAutoDetect
@@ -33,30 +34,68 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The number of allowed refreshes per hour (per hour, fixed window) */
+    /**
+     * The number of allowed refreshes per hour (per hour, fixed window)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun allowedRefreshes(): Long = allowedRefreshes.getRequired("allowed_refreshes")
 
-    /** The id of the job that has been created. */
+    /**
+     * The id of the job that has been created.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun jobId(): String = jobId.getRequired("job_id")
 
-    /** The url that can be used to retrieve the job status */
+    /**
+     * The url that can be used to retrieve the job status
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun jobUrl(): String = jobUrl.getRequired("job_url")
 
-    /** The number of remaining refreshes available (per hour, fixed window) */
+    /**
+     * The number of remaining refreshes available (per hour, fixed window)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun remainingRefreshes(): Long = remainingRefreshes.getRequired("remaining_refreshes")
 
-    /** The number of allowed refreshes per hour (per hour, fixed window) */
+    /**
+     * Returns the raw JSON value of [allowedRefreshes].
+     *
+     * Unlike [allowedRefreshes], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("allowed_refreshes")
     @ExcludeMissing
     fun _allowedRefreshes(): JsonField<Long> = allowedRefreshes
 
-    /** The id of the job that has been created. */
+    /**
+     * Returns the raw JSON value of [jobId].
+     *
+     * Unlike [jobId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
-    /** The url that can be used to retrieve the job status */
+    /**
+     * Returns the raw JSON value of [jobUrl].
+     *
+     * Unlike [jobUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("job_url") @ExcludeMissing fun _jobUrl(): JsonField<String> = jobUrl
 
-    /** The number of remaining refreshes available (per hour, fixed window) */
+    /**
+     * Returns the raw JSON value of [remainingRefreshes].
+     *
+     * Unlike [remainingRefreshes], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("remaining_refreshes")
     @ExcludeMissing
     fun _remainingRefreshes(): JsonField<Long> = remainingRefreshes
@@ -119,7 +158,13 @@ private constructor(
         fun allowedRefreshes(allowedRefreshes: Long) =
             allowedRefreshes(JsonField.of(allowedRefreshes))
 
-        /** The number of allowed refreshes per hour (per hour, fixed window) */
+        /**
+         * Sets [Builder.allowedRefreshes] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.allowedRefreshes] with a well-typed [Long] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun allowedRefreshes(allowedRefreshes: JsonField<Long>) = apply {
             this.allowedRefreshes = allowedRefreshes
         }
@@ -127,20 +172,36 @@ private constructor(
         /** The id of the job that has been created. */
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
-        /** The id of the job that has been created. */
+        /**
+         * Sets [Builder.jobId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
 
-        /** The url that can be used to retrieve the job status */
+        /**
+         * Sets [Builder.jobUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jobUrl] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
 
         /** The number of remaining refreshes available (per hour, fixed window) */
         fun remainingRefreshes(remainingRefreshes: Long) =
             remainingRefreshes(JsonField.of(remainingRefreshes))
 
-        /** The number of remaining refreshes available (per hour, fixed window) */
+        /**
+         * Sets [Builder.remainingRefreshes] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.remainingRefreshes] with a well-typed [Long] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun remainingRefreshes(remainingRefreshes: JsonField<Long>) = apply {
             this.remainingRefreshes = remainingRefreshes
         }

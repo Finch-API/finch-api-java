@@ -15,6 +15,7 @@ import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -29,12 +30,30 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun data(): List<AutomatedAsyncJob> = data.getRequired("data")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun meta(): Meta = meta.getRequired("meta")
 
+    /**
+     * Returns the raw JSON value of [data].
+     *
+     * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<List<AutomatedAsyncJob>> = data
 
+    /**
+     * Returns the raw JSON value of [meta].
+     *
+     * Unlike [meta], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("meta") @ExcludeMissing fun _meta(): JsonField<Meta> = meta
 
     @JsonAnyGetter
@@ -85,10 +104,22 @@ private constructor(
 
         fun data(data: List<AutomatedAsyncJob>) = data(JsonField.of(data))
 
+        /**
+         * Sets [Builder.data] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.data] with a well-typed `List<AutomatedAsyncJob>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun data(data: JsonField<List<AutomatedAsyncJob>>) = apply {
             this.data = data.map { it.toMutableList() }
         }
 
+        /**
+         * Adds a single [AutomatedAsyncJob] to [Builder.data].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addData(data: AutomatedAsyncJob) = apply {
             this.data =
                 (this.data ?: JsonField.of(mutableListOf())).also {
@@ -98,6 +129,12 @@ private constructor(
 
         fun meta(meta: Meta) = meta(JsonField.of(meta))
 
+        /**
+         * Sets [Builder.meta] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.meta] with a well-typed [Meta] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun meta(meta: JsonField<Meta>) = apply { this.meta = meta }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -142,13 +179,16 @@ private constructor(
          * Information about remaining quotas for this connection. Only applicable for customers
          * opted in to use Finch's Data Sync Refresh endpoint (`POST /jobs/automated`). Please
          * contact a Finch representative for more details.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun quotas(): Optional<Quotas> = Optional.ofNullable(quotas.getNullable("quotas"))
 
         /**
-         * Information about remaining quotas for this connection. Only applicable for customers
-         * opted in to use Finch's Data Sync Refresh endpoint (`POST /jobs/automated`). Please
-         * contact a Finch representative for more details.
+         * Returns the raw JSON value of [quotas].
+         *
+         * Unlike [quotas], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("quotas") @ExcludeMissing fun _quotas(): JsonField<Quotas> = quotas
 
@@ -195,9 +235,11 @@ private constructor(
             fun quotas(quotas: Quotas) = quotas(JsonField.of(quotas))
 
             /**
-             * Information about remaining quotas for this connection. Only applicable for customers
-             * opted in to use Finch's Data Sync Refresh endpoint (`POST /jobs/automated`). Please
-             * contact a Finch representative for more details.
+             * Sets [Builder.quotas] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.quotas] with a well-typed [Quotas] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun quotas(quotas: JsonField<Quotas>) = apply { this.quotas = quotas }
 
@@ -239,9 +281,19 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun dataSyncAll(): Optional<DataSyncAll> =
                 Optional.ofNullable(dataSyncAll.getNullable("data_sync_all"))
 
+            /**
+             * Returns the raw JSON value of [dataSyncAll].
+             *
+             * Unlike [dataSyncAll], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("data_sync_all")
             @ExcludeMissing
             fun _dataSyncAll(): JsonField<DataSyncAll> = dataSyncAll
@@ -283,6 +335,13 @@ private constructor(
 
                 fun dataSyncAll(dataSyncAll: DataSyncAll) = dataSyncAll(JsonField.of(dataSyncAll))
 
+                /**
+                 * Sets [Builder.dataSyncAll] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.dataSyncAll] with a well-typed [DataSyncAll]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun dataSyncAll(dataSyncAll: JsonField<DataSyncAll>) = apply {
                     this.dataSyncAll = dataSyncAll
                 }
@@ -326,16 +385,36 @@ private constructor(
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun allowedRefreshes(): Optional<Long> =
                     Optional.ofNullable(allowedRefreshes.getNullable("allowed_refreshes"))
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun remainingRefreshes(): Optional<Long> =
                     Optional.ofNullable(remainingRefreshes.getNullable("remaining_refreshes"))
 
+                /**
+                 * Returns the raw JSON value of [allowedRefreshes].
+                 *
+                 * Unlike [allowedRefreshes], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("allowed_refreshes")
                 @ExcludeMissing
                 fun _allowedRefreshes(): JsonField<Long> = allowedRefreshes
 
+                /**
+                 * Returns the raw JSON value of [remainingRefreshes].
+                 *
+                 * Unlike [remainingRefreshes], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("remaining_refreshes")
                 @ExcludeMissing
                 fun _remainingRefreshes(): JsonField<Long> = remainingRefreshes
@@ -381,6 +460,13 @@ private constructor(
                     fun allowedRefreshes(allowedRefreshes: Long) =
                         allowedRefreshes(JsonField.of(allowedRefreshes))
 
+                    /**
+                     * Sets [Builder.allowedRefreshes] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.allowedRefreshes] with a well-typed [Long]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
                     fun allowedRefreshes(allowedRefreshes: JsonField<Long>) = apply {
                         this.allowedRefreshes = allowedRefreshes
                     }
@@ -388,6 +474,13 @@ private constructor(
                     fun remainingRefreshes(remainingRefreshes: Long) =
                         remainingRefreshes(JsonField.of(remainingRefreshes))
 
+                    /**
+                     * Sets [Builder.remainingRefreshes] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.remainingRefreshes] with a well-typed [Long]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
                     fun remainingRefreshes(remainingRefreshes: JsonField<Long>) = apply {
                         this.remainingRefreshes = remainingRefreshes
                     }

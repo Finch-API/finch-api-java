@@ -55,70 +55,162 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The array of earnings objects associated with this pay statement */
+    /**
+     * The array of earnings objects associated with this pay statement
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun earnings(): Optional<List<Earning?>> = Optional.ofNullable(earnings.getNullable("earnings"))
 
-    /** The array of deductions objects associated with this pay statement. */
+    /**
+     * The array of deductions objects associated with this pay statement.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun employeeDeductions(): Optional<List<EmployeeDeduction?>> =
         Optional.ofNullable(employeeDeductions.getNullable("employee_deductions"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun employerContributions(): Optional<List<EmployerContribution?>> =
         Optional.ofNullable(employerContributions.getNullable("employer_contributions"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun grossPay(): Optional<Money> = Optional.ofNullable(grossPay.getNullable("gross_pay"))
 
-    /** A stable Finch `id` (UUID v4) for an individual in the company */
+    /**
+     * A stable Finch `id` (UUID v4) for an individual in the company
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun individualId(): Optional<String> =
         Optional.ofNullable(individualId.getNullable("individual_id"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun netPay(): Optional<Money> = Optional.ofNullable(netPay.getNullable("net_pay"))
 
-    /** The payment method. */
+    /**
+     * The payment method.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun paymentMethod(): Optional<PaymentMethod> =
         Optional.ofNullable(paymentMethod.getNullable("payment_method"))
 
-    /** The array of taxes objects associated with this pay statement. */
+    /**
+     * The array of taxes objects associated with this pay statement.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun taxes(): Optional<List<Tax?>> = Optional.ofNullable(taxes.getNullable("taxes"))
 
-    /** The number of hours worked for this pay period */
+    /**
+     * The number of hours worked for this pay period
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun totalHours(): Optional<Double> = Optional.ofNullable(totalHours.getNullable("total_hours"))
 
-    /** The type of the payment associated with the pay statement. */
+    /**
+     * The type of the payment associated with the pay statement.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
-    /** The array of earnings objects associated with this pay statement */
+    /**
+     * Returns the raw JSON value of [earnings].
+     *
+     * Unlike [earnings], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("earnings") @ExcludeMissing fun _earnings(): JsonField<List<Earning?>> = earnings
 
-    /** The array of deductions objects associated with this pay statement. */
+    /**
+     * Returns the raw JSON value of [employeeDeductions].
+     *
+     * Unlike [employeeDeductions], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("employee_deductions")
     @ExcludeMissing
     fun _employeeDeductions(): JsonField<List<EmployeeDeduction?>> = employeeDeductions
 
+    /**
+     * Returns the raw JSON value of [employerContributions].
+     *
+     * Unlike [employerContributions], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("employer_contributions")
     @ExcludeMissing
     fun _employerContributions(): JsonField<List<EmployerContribution?>> = employerContributions
 
+    /**
+     * Returns the raw JSON value of [grossPay].
+     *
+     * Unlike [grossPay], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay(): JsonField<Money> = grossPay
 
-    /** A stable Finch `id` (UUID v4) for an individual in the company */
+    /**
+     * Returns the raw JSON value of [individualId].
+     *
+     * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("individual_id")
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
 
+    /**
+     * Returns the raw JSON value of [netPay].
+     *
+     * Unlike [netPay], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("net_pay") @ExcludeMissing fun _netPay(): JsonField<Money> = netPay
 
-    /** The payment method. */
+    /**
+     * Returns the raw JSON value of [paymentMethod].
+     *
+     * Unlike [paymentMethod], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("payment_method")
     @ExcludeMissing
     fun _paymentMethod(): JsonField<PaymentMethod> = paymentMethod
 
-    /** The array of taxes objects associated with this pay statement. */
+    /**
+     * Returns the raw JSON value of [taxes].
+     *
+     * Unlike [taxes], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax?>> = taxes
 
-    /** The number of hours worked for this pay period */
+    /**
+     * Returns the raw JSON value of [totalHours].
+     *
+     * Unlike [totalHours], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("total_hours") @ExcludeMissing fun _totalHours(): JsonField<Double> = totalHours
 
-    /** The type of the payment associated with the pay statement. */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
@@ -186,15 +278,25 @@ private constructor(
         /** The array of earnings objects associated with this pay statement */
         fun earnings(earnings: List<Earning?>?) = earnings(JsonField.ofNullable(earnings))
 
-        /** The array of earnings objects associated with this pay statement */
+        /** Alias for calling [Builder.earnings] with `earnings.orElse(null)`. */
         fun earnings(earnings: Optional<List<Earning?>>) = earnings(earnings.getOrNull())
 
-        /** The array of earnings objects associated with this pay statement */
+        /**
+         * Sets [Builder.earnings] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.earnings] with a well-typed `List<Earning?>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun earnings(earnings: JsonField<List<Earning?>>) = apply {
             this.earnings = earnings.map { it.toMutableList() }
         }
 
-        /** The array of earnings objects associated with this pay statement */
+        /**
+         * Adds a single [Earning] to [earnings].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addEarning(earning: Earning) = apply {
             earnings =
                 (earnings ?: JsonField.of(mutableListOf())).also {
@@ -206,16 +308,28 @@ private constructor(
         fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) =
             employeeDeductions(JsonField.ofNullable(employeeDeductions))
 
-        /** The array of deductions objects associated with this pay statement. */
+        /**
+         * Alias for calling [Builder.employeeDeductions] with `employeeDeductions.orElse(null)`.
+         */
         fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction?>>) =
             employeeDeductions(employeeDeductions.getOrNull())
 
-        /** The array of deductions objects associated with this pay statement. */
+        /**
+         * Sets [Builder.employeeDeductions] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.employeeDeductions] with a well-typed
+         * `List<EmployeeDeduction?>` value instead. This method is primarily for setting the field
+         * to an undocumented or not yet supported value.
+         */
         fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) = apply {
             this.employeeDeductions = employeeDeductions.map { it.toMutableList() }
         }
 
-        /** The array of deductions objects associated with this pay statement. */
+        /**
+         * Adds a single [EmployeeDeduction] to [employeeDeductions].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
             employeeDeductions =
                 (employeeDeductions ?: JsonField.of(mutableListOf())).also {
@@ -226,14 +340,30 @@ private constructor(
         fun employerContributions(employerContributions: List<EmployerContribution?>?) =
             employerContributions(JsonField.ofNullable(employerContributions))
 
+        /**
+         * Alias for calling [Builder.employerContributions] with
+         * `employerContributions.orElse(null)`.
+         */
         fun employerContributions(employerContributions: Optional<List<EmployerContribution?>>) =
             employerContributions(employerContributions.getOrNull())
 
+        /**
+         * Sets [Builder.employerContributions] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.employerContributions] with a well-typed
+         * `List<EmployerContribution?>` value instead. This method is primarily for setting the
+         * field to an undocumented or not yet supported value.
+         */
         fun employerContributions(employerContributions: JsonField<List<EmployerContribution?>>) =
             apply {
                 this.employerContributions = employerContributions.map { it.toMutableList() }
             }
 
+        /**
+         * Adds a single [EmployerContribution] to [employerContributions].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
             employerContributions =
                 (employerContributions ?: JsonField.of(mutableListOf())).also {
@@ -243,33 +373,59 @@ private constructor(
 
         fun grossPay(grossPay: Money?) = grossPay(JsonField.ofNullable(grossPay))
 
+        /** Alias for calling [Builder.grossPay] with `grossPay.orElse(null)`. */
         fun grossPay(grossPay: Optional<Money>) = grossPay(grossPay.getOrNull())
 
+        /**
+         * Sets [Builder.grossPay] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.grossPay] with a well-typed [Money] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
         /** A stable Finch `id` (UUID v4) for an individual in the company */
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-        /** A stable Finch `id` (UUID v4) for an individual in the company */
+        /**
+         * Sets [Builder.individualId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
 
         fun netPay(netPay: Money?) = netPay(JsonField.ofNullable(netPay))
 
+        /** Alias for calling [Builder.netPay] with `netPay.orElse(null)`. */
         fun netPay(netPay: Optional<Money>) = netPay(netPay.getOrNull())
 
+        /**
+         * Sets [Builder.netPay] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.netPay] with a well-typed [Money] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
         /** The payment method. */
         fun paymentMethod(paymentMethod: PaymentMethod?) =
             paymentMethod(JsonField.ofNullable(paymentMethod))
 
-        /** The payment method. */
+        /** Alias for calling [Builder.paymentMethod] with `paymentMethod.orElse(null)`. */
         fun paymentMethod(paymentMethod: Optional<PaymentMethod>) =
             paymentMethod(paymentMethod.getOrNull())
 
-        /** The payment method. */
+        /**
+         * Sets [Builder.paymentMethod] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.paymentMethod] with a well-typed [PaymentMethod] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun paymentMethod(paymentMethod: JsonField<PaymentMethod>) = apply {
             this.paymentMethod = paymentMethod
         }
@@ -277,15 +433,25 @@ private constructor(
         /** The array of taxes objects associated with this pay statement. */
         fun taxes(taxes: List<Tax?>?) = taxes(JsonField.ofNullable(taxes))
 
-        /** The array of taxes objects associated with this pay statement. */
+        /** Alias for calling [Builder.taxes] with `taxes.orElse(null)`. */
         fun taxes(taxes: Optional<List<Tax?>>) = taxes(taxes.getOrNull())
 
-        /** The array of taxes objects associated with this pay statement. */
+        /**
+         * Sets [Builder.taxes] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.taxes] with a well-typed `List<Tax?>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun taxes(taxes: JsonField<List<Tax?>>) = apply {
             this.taxes = taxes.map { it.toMutableList() }
         }
 
-        /** The array of taxes objects associated with this pay statement. */
+        /**
+         * Adds a single [Tax] to [taxes].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addTax(tax: Tax) = apply {
             taxes =
                 (taxes ?: JsonField.of(mutableListOf())).also { checkKnown("taxes", it).add(tax) }
@@ -294,22 +460,37 @@ private constructor(
         /** The number of hours worked for this pay period */
         fun totalHours(totalHours: Double?) = totalHours(JsonField.ofNullable(totalHours))
 
-        /** The number of hours worked for this pay period */
+        /**
+         * Alias for [Builder.totalHours].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun totalHours(totalHours: Double) = totalHours(totalHours as Double?)
 
-        /** The number of hours worked for this pay period */
+        /** Alias for calling [Builder.totalHours] with `totalHours.orElse(null)`. */
         fun totalHours(totalHours: Optional<Double>) = totalHours(totalHours.getOrNull())
 
-        /** The number of hours worked for this pay period */
+        /**
+         * Sets [Builder.totalHours] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.totalHours] with a well-typed [Double] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
 
         /** The type of the payment associated with the pay statement. */
         fun type(type: Type?) = type(JsonField.ofNullable(type))
 
-        /** The type of the payment associated with the pay statement. */
+        /** Alias for calling [Builder.type] with `type.orElse(null)`. */
         fun type(type: Optional<Type>) = type(type.getOrNull())
 
-        /** The type of the payment associated with the pay statement. */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -371,47 +552,96 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The earnings amount in cents. */
+        /**
+         * The earnings amount in cents.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun attributes(): Optional<Attributes> =
             Optional.ofNullable(attributes.getNullable("attributes"))
 
-        /** The earnings currency code. */
+        /**
+         * The earnings currency code.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
         /**
          * The number of hours associated with this earning. (For salaried employees, this could be
          * hours per pay period, `0` or `null`, depending on the provider).
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun hours(): Optional<Double> = Optional.ofNullable(hours.getNullable("hours"))
 
-        /** The exact name of the deduction from the pay statement. */
+        /**
+         * The exact name of the deduction from the pay statement.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** The type of earning. */
+        /**
+         * The type of earning.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
-        /** The earnings amount in cents. */
+        /**
+         * Returns the raw JSON value of [amount].
+         *
+         * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
+        /**
+         * Returns the raw JSON value of [attributes].
+         *
+         * Unlike [attributes], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("attributes")
         @ExcludeMissing
         fun _attributes(): JsonField<Attributes> = attributes
 
-        /** The earnings currency code. */
+        /**
+         * Returns the raw JSON value of [currency].
+         *
+         * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
         /**
-         * The number of hours associated with this earning. (For salaried employees, this could be
-         * hours per pay period, `0` or `null`, depending on the provider).
+         * Returns the raw JSON value of [hours].
+         *
+         * Unlike [hours], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("hours") @ExcludeMissing fun _hours(): JsonField<Double> = hours
 
-        /** The exact name of the deduction from the pay statement. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** The type of earning. */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
@@ -467,19 +697,37 @@ private constructor(
             /** The earnings amount in cents. */
             fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-            /** The earnings amount in cents. */
+            /**
+             * Alias for [Builder.amount].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun amount(amount: Long) = amount(amount as Long?)
 
-            /** The earnings amount in cents. */
+            /** Alias for calling [Builder.amount] with `amount.orElse(null)`. */
             fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
-            /** The earnings amount in cents. */
+            /**
+             * Sets [Builder.amount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
 
+            /** Alias for calling [Builder.attributes] with `attributes.orElse(null)`. */
             fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
 
+            /**
+             * Sets [Builder.attributes] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.attributes] with a well-typed [Attributes] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun attributes(attributes: JsonField<Attributes>) = apply {
                 this.attributes = attributes
             }
@@ -487,10 +735,16 @@ private constructor(
             /** The earnings currency code. */
             fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
-            /** The earnings currency code. */
+            /** Alias for calling [Builder.currency] with `currency.orElse(null)`. */
             fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
-            /** The earnings currency code. */
+            /**
+             * Sets [Builder.currency] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.currency] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
             /**
@@ -500,39 +754,52 @@ private constructor(
             fun hours(hours: Double?) = hours(JsonField.ofNullable(hours))
 
             /**
-             * The number of hours associated with this earning. (For salaried employees, this could
-             * be hours per pay period, `0` or `null`, depending on the provider).
+             * Alias for [Builder.hours].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun hours(hours: Double) = hours(hours as Double?)
 
-            /**
-             * The number of hours associated with this earning. (For salaried employees, this could
-             * be hours per pay period, `0` or `null`, depending on the provider).
-             */
+            /** Alias for calling [Builder.hours] with `hours.orElse(null)`. */
             fun hours(hours: Optional<Double>) = hours(hours.getOrNull())
 
             /**
-             * The number of hours associated with this earning. (For salaried employees, this could
-             * be hours per pay period, `0` or `null`, depending on the provider).
+             * Sets [Builder.hours] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.hours] with a well-typed [Double] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun hours(hours: JsonField<Double>) = apply { this.hours = hours }
 
             /** The exact name of the deduction from the pay statement. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** The exact name of the deduction from the pay statement. */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** The exact name of the deduction from the pay statement. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The type of earning. */
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
-            /** The type of earning. */
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
             fun type(type: Optional<Type>) = type(type.getOrNull())
 
-            /** The type of earning. */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -577,9 +844,19 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun metadata(): Optional<Metadata> =
                 Optional.ofNullable(metadata.getNullable("metadata"))
 
+            /**
+             * Returns the raw JSON value of [metadata].
+             *
+             * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("metadata")
             @ExcludeMissing
             fun _metadata(): JsonField<Metadata> = metadata
@@ -621,6 +898,13 @@ private constructor(
 
                 fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
+                /**
+                 * Sets [Builder.metadata] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.metadata] with a well-typed [Metadata] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -663,14 +947,18 @@ private constructor(
                  * The metadata to be attached to the entity by existing rules. It is a key-value
                  * pairs where the values can be of any type (string, number, boolean, object,
                  * array, etc.).
+                 *
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
                  */
                 fun metadata(): Optional<InnerMetadata> =
                     Optional.ofNullable(metadata.getNullable("metadata"))
 
                 /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
+                 * Returns the raw JSON value of [metadata].
+                 *
+                 * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
+                 * type.
                  */
                 @JsonProperty("metadata")
                 @ExcludeMissing
@@ -719,9 +1007,11 @@ private constructor(
                     fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
+                     * Sets [Builder.metadata] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.metadata] with a well-typed [InnerMetadata]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
                      */
                     fun metadata(metadata: JsonField<InnerMetadata>) = apply {
                         this.metadata = metadata
@@ -1092,41 +1382,95 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The deduction amount in cents. */
+        /**
+         * The deduction amount in cents.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun attributes(): Optional<Attributes> =
             Optional.ofNullable(attributes.getNullable("attributes"))
 
-        /** The deduction currency. */
+        /**
+         * The deduction currency.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
-        /** The deduction name from the pay statement. */
+        /**
+         * The deduction name from the pay statement.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** Boolean indicating if the deduction is pre-tax. */
+        /**
+         * Boolean indicating if the deduction is pre-tax.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun preTax(): Optional<Boolean> = Optional.ofNullable(preTax.getNullable("pre_tax"))
 
-        /** Type of benefit. */
+        /**
+         * Type of benefit.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
 
-        /** The deduction amount in cents. */
+        /**
+         * Returns the raw JSON value of [amount].
+         *
+         * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
+        /**
+         * Returns the raw JSON value of [attributes].
+         *
+         * Unlike [attributes], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("attributes")
         @ExcludeMissing
         fun _attributes(): JsonField<Attributes> = attributes
 
-        /** The deduction currency. */
+        /**
+         * Returns the raw JSON value of [currency].
+         *
+         * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
-        /** The deduction name from the pay statement. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** Boolean indicating if the deduction is pre-tax. */
+        /**
+         * Returns the raw JSON value of [preTax].
+         *
+         * Unlike [preTax], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("pre_tax") @ExcludeMissing fun _preTax(): JsonField<Boolean> = preTax
 
-        /** Type of benefit. */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
         @JsonAnyGetter
@@ -1182,19 +1526,37 @@ private constructor(
             /** The deduction amount in cents. */
             fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-            /** The deduction amount in cents. */
+            /**
+             * Alias for [Builder.amount].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun amount(amount: Long) = amount(amount as Long?)
 
-            /** The deduction amount in cents. */
+            /** Alias for calling [Builder.amount] with `amount.orElse(null)`. */
             fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
-            /** The deduction amount in cents. */
+            /**
+             * Sets [Builder.amount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
 
+            /** Alias for calling [Builder.attributes] with `attributes.orElse(null)`. */
             fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
 
+            /**
+             * Sets [Builder.attributes] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.attributes] with a well-typed [Attributes] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun attributes(attributes: JsonField<Attributes>) = apply {
                 this.attributes = attributes
             }
@@ -1202,40 +1564,68 @@ private constructor(
             /** The deduction currency. */
             fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
-            /** The deduction currency. */
+            /** Alias for calling [Builder.currency] with `currency.orElse(null)`. */
             fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
-            /** The deduction currency. */
+            /**
+             * Sets [Builder.currency] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.currency] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
             /** The deduction name from the pay statement. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** The deduction name from the pay statement. */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** The deduction name from the pay statement. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** Boolean indicating if the deduction is pre-tax. */
             fun preTax(preTax: Boolean?) = preTax(JsonField.ofNullable(preTax))
 
-            /** Boolean indicating if the deduction is pre-tax. */
+            /**
+             * Alias for [Builder.preTax].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun preTax(preTax: Boolean) = preTax(preTax as Boolean?)
 
-            /** Boolean indicating if the deduction is pre-tax. */
+            /** Alias for calling [Builder.preTax] with `preTax.orElse(null)`. */
             fun preTax(preTax: Optional<Boolean>) = preTax(preTax.getOrNull())
 
-            /** Boolean indicating if the deduction is pre-tax. */
+            /**
+             * Sets [Builder.preTax] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.preTax] with a well-typed [Boolean] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun preTax(preTax: JsonField<Boolean>) = apply { this.preTax = preTax }
 
             /** Type of benefit. */
             fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
-            /** Type of benefit. */
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
             fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
-            /** Type of benefit. */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [BenefitType] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1280,9 +1670,19 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun metadata(): Optional<Metadata> =
                 Optional.ofNullable(metadata.getNullable("metadata"))
 
+            /**
+             * Returns the raw JSON value of [metadata].
+             *
+             * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("metadata")
             @ExcludeMissing
             fun _metadata(): JsonField<Metadata> = metadata
@@ -1324,6 +1724,13 @@ private constructor(
 
                 fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
+                /**
+                 * Sets [Builder.metadata] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.metadata] with a well-typed [Metadata] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1366,14 +1773,18 @@ private constructor(
                  * The metadata to be attached to the entity by existing rules. It is a key-value
                  * pairs where the values can be of any type (string, number, boolean, object,
                  * array, etc.).
+                 *
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
                  */
                 fun metadata(): Optional<InnerMetadata> =
                     Optional.ofNullable(metadata.getNullable("metadata"))
 
                 /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
+                 * Returns the raw JSON value of [metadata].
+                 *
+                 * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
+                 * type.
                  */
                 @JsonProperty("metadata")
                 @ExcludeMissing
@@ -1422,9 +1833,11 @@ private constructor(
                     fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
+                     * Sets [Builder.metadata] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.metadata] with a well-typed [InnerMetadata]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
                      */
                     fun metadata(metadata: JsonField<InnerMetadata>) = apply {
                         this.metadata = metadata
@@ -1625,35 +2038,80 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The contribution amount in cents. */
+        /**
+         * The contribution amount in cents.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun attributes(): Optional<Attributes> =
             Optional.ofNullable(attributes.getNullable("attributes"))
 
-        /** The contribution currency. */
+        /**
+         * The contribution currency.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
-        /** The contribution name from the pay statement. */
+        /**
+         * The contribution name from the pay statement.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** Type of benefit. */
+        /**
+         * Type of benefit.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
 
-        /** The contribution amount in cents. */
+        /**
+         * Returns the raw JSON value of [amount].
+         *
+         * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
+        /**
+         * Returns the raw JSON value of [attributes].
+         *
+         * Unlike [attributes], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("attributes")
         @ExcludeMissing
         fun _attributes(): JsonField<Attributes> = attributes
 
-        /** The contribution currency. */
+        /**
+         * Returns the raw JSON value of [currency].
+         *
+         * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
-        /** The contribution name from the pay statement. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** Type of benefit. */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
         @JsonAnyGetter
@@ -1706,19 +2164,37 @@ private constructor(
             /** The contribution amount in cents. */
             fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-            /** The contribution amount in cents. */
+            /**
+             * Alias for [Builder.amount].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun amount(amount: Long) = amount(amount as Long?)
 
-            /** The contribution amount in cents. */
+            /** Alias for calling [Builder.amount] with `amount.orElse(null)`. */
             fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
-            /** The contribution amount in cents. */
+            /**
+             * Sets [Builder.amount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
 
+            /** Alias for calling [Builder.attributes] with `attributes.orElse(null)`. */
             fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
 
+            /**
+             * Sets [Builder.attributes] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.attributes] with a well-typed [Attributes] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun attributes(attributes: JsonField<Attributes>) = apply {
                 this.attributes = attributes
             }
@@ -1726,28 +2202,46 @@ private constructor(
             /** The contribution currency. */
             fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
-            /** The contribution currency. */
+            /** Alias for calling [Builder.currency] with `currency.orElse(null)`. */
             fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
-            /** The contribution currency. */
+            /**
+             * Sets [Builder.currency] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.currency] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
             /** The contribution name from the pay statement. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** The contribution name from the pay statement. */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** The contribution name from the pay statement. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** Type of benefit. */
             fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
-            /** Type of benefit. */
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
             fun type(type: Optional<BenefitType>) = type(type.getOrNull())
 
-            /** Type of benefit. */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [BenefitType] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1791,9 +2285,19 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun metadata(): Optional<Metadata> =
                 Optional.ofNullable(metadata.getNullable("metadata"))
 
+            /**
+             * Returns the raw JSON value of [metadata].
+             *
+             * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("metadata")
             @ExcludeMissing
             fun _metadata(): JsonField<Metadata> = metadata
@@ -1835,6 +2339,13 @@ private constructor(
 
                 fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
+                /**
+                 * Sets [Builder.metadata] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.metadata] with a well-typed [Metadata] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1877,14 +2388,18 @@ private constructor(
                  * The metadata to be attached to the entity by existing rules. It is a key-value
                  * pairs where the values can be of any type (string, number, boolean, object,
                  * array, etc.).
+                 *
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
                  */
                 fun metadata(): Optional<InnerMetadata> =
                     Optional.ofNullable(metadata.getNullable("metadata"))
 
                 /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
+                 * Returns the raw JSON value of [metadata].
+                 *
+                 * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
+                 * type.
                  */
                 @JsonProperty("metadata")
                 @ExcludeMissing
@@ -1933,9 +2448,11 @@ private constructor(
                     fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
+                     * Sets [Builder.metadata] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.metadata] with a well-typed [InnerMetadata]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
                      */
                     fun metadata(metadata: JsonField<InnerMetadata>) = apply {
                         this.metadata = metadata
@@ -2239,41 +2756,95 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The tax amount in cents. */
+        /**
+         * The tax amount in cents.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun attributes(): Optional<Attributes> =
             Optional.ofNullable(attributes.getNullable("attributes"))
 
-        /** The currency code. */
+        /**
+         * The currency code.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
 
-        /** `true` if the amount is paid by the employers. */
+        /**
+         * `true` if the amount is paid by the employers.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun employer(): Optional<Boolean> = Optional.ofNullable(employer.getNullable("employer"))
 
-        /** The exact name of tax from the pay statement. */
+        /**
+         * The exact name of tax from the pay statement.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
-        /** The type of taxes. */
+        /**
+         * The type of taxes.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
-        /** The tax amount in cents. */
+        /**
+         * Returns the raw JSON value of [amount].
+         *
+         * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
+        /**
+         * Returns the raw JSON value of [attributes].
+         *
+         * Unlike [attributes], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("attributes")
         @ExcludeMissing
         fun _attributes(): JsonField<Attributes> = attributes
 
-        /** The currency code. */
+        /**
+         * Returns the raw JSON value of [currency].
+         *
+         * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
-        /** `true` if the amount is paid by the employers. */
+        /**
+         * Returns the raw JSON value of [employer].
+         *
+         * Unlike [employer], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("employer") @ExcludeMissing fun _employer(): JsonField<Boolean> = employer
 
-        /** The exact name of tax from the pay statement. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** The type of taxes. */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
@@ -2329,19 +2900,37 @@ private constructor(
             /** The tax amount in cents. */
             fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-            /** The tax amount in cents. */
+            /**
+             * Alias for [Builder.amount].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun amount(amount: Long) = amount(amount as Long?)
 
-            /** The tax amount in cents. */
+            /** Alias for calling [Builder.amount] with `amount.orElse(null)`. */
             fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
-            /** The tax amount in cents. */
+            /**
+             * Sets [Builder.amount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
             fun attributes(attributes: Attributes?) = attributes(JsonField.ofNullable(attributes))
 
+            /** Alias for calling [Builder.attributes] with `attributes.orElse(null)`. */
             fun attributes(attributes: Optional<Attributes>) = attributes(attributes.getOrNull())
 
+            /**
+             * Sets [Builder.attributes] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.attributes] with a well-typed [Attributes] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun attributes(attributes: JsonField<Attributes>) = apply {
                 this.attributes = attributes
             }
@@ -2349,40 +2938,68 @@ private constructor(
             /** The currency code. */
             fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
-            /** The currency code. */
+            /** Alias for calling [Builder.currency] with `currency.orElse(null)`. */
             fun currency(currency: Optional<String>) = currency(currency.getOrNull())
 
-            /** The currency code. */
+            /**
+             * Sets [Builder.currency] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.currency] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
             /** `true` if the amount is paid by the employers. */
             fun employer(employer: Boolean?) = employer(JsonField.ofNullable(employer))
 
-            /** `true` if the amount is paid by the employers. */
+            /**
+             * Alias for [Builder.employer].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun employer(employer: Boolean) = employer(employer as Boolean?)
 
-            /** `true` if the amount is paid by the employers. */
+            /** Alias for calling [Builder.employer] with `employer.orElse(null)`. */
             fun employer(employer: Optional<Boolean>) = employer(employer.getOrNull())
 
-            /** `true` if the amount is paid by the employers. */
+            /**
+             * Sets [Builder.employer] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.employer] with a well-typed [Boolean] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
 
             /** The exact name of tax from the pay statement. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** The exact name of tax from the pay statement. */
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
             fun name(name: Optional<String>) = name(name.getOrNull())
 
-            /** The exact name of tax from the pay statement. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The type of taxes. */
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
-            /** The type of taxes. */
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
             fun type(type: Optional<Type>) = type(type.getOrNull())
 
-            /** The type of taxes. */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -2427,9 +3044,19 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun metadata(): Optional<Metadata> =
                 Optional.ofNullable(metadata.getNullable("metadata"))
 
+            /**
+             * Returns the raw JSON value of [metadata].
+             *
+             * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("metadata")
             @ExcludeMissing
             fun _metadata(): JsonField<Metadata> = metadata
@@ -2471,6 +3098,13 @@ private constructor(
 
                 fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
+                /**
+                 * Sets [Builder.metadata] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.metadata] with a well-typed [Metadata] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -2513,14 +3147,18 @@ private constructor(
                  * The metadata to be attached to the entity by existing rules. It is a key-value
                  * pairs where the values can be of any type (string, number, boolean, object,
                  * array, etc.).
+                 *
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
                  */
                 fun metadata(): Optional<InnerMetadata> =
                     Optional.ofNullable(metadata.getNullable("metadata"))
 
                 /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
+                 * Returns the raw JSON value of [metadata].
+                 *
+                 * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
+                 * type.
                  */
                 @JsonProperty("metadata")
                 @ExcludeMissing
@@ -2569,9 +3207,11 @@ private constructor(
                     fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
 
                     /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
+                     * Sets [Builder.metadata] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.metadata] with a well-typed [InnerMetadata]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
                      */
                     fun metadata(metadata: JsonField<InnerMetadata>) = apply {
                         this.metadata = metadata

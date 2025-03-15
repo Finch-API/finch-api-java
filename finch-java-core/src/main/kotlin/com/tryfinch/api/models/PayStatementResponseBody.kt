@@ -14,6 +14,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -30,15 +31,33 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun paging(): Optional<Paging> = Optional.ofNullable(paging.getNullable("paging"))
 
-    /** The array of pay statements for the current payment. */
+    /**
+     * The array of pay statements for the current payment.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun payStatements(): Optional<List<PayStatement>> =
         Optional.ofNullable(payStatements.getNullable("pay_statements"))
 
+    /**
+     * Returns the raw JSON value of [paging].
+     *
+     * Unlike [paging], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("paging") @ExcludeMissing fun _paging(): JsonField<Paging> = paging
 
-    /** The array of pay statements for the current payment. */
+    /**
+     * Returns the raw JSON value of [payStatements].
+     *
+     * Unlike [payStatements], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("pay_statements")
     @ExcludeMissing
     fun _payStatements(): JsonField<List<PayStatement>> = payStatements
@@ -83,18 +102,34 @@ private constructor(
 
         fun paging(paging: Paging) = paging(JsonField.of(paging))
 
+        /**
+         * Sets [Builder.paging] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.paging] with a well-typed [Paging] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
         /** The array of pay statements for the current payment. */
         fun payStatements(payStatements: List<PayStatement>) =
             payStatements(JsonField.of(payStatements))
 
-        /** The array of pay statements for the current payment. */
+        /**
+         * Sets [Builder.payStatements] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payStatements] with a well-typed `List<PayStatement>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
             this.payStatements = payStatements.map { it.toMutableList() }
         }
 
-        /** The array of pay statements for the current payment. */
+        /**
+         * Adds a single [PayStatement] to [payStatements].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayStatement(payStatement: PayStatement) = apply {
             payStatements =
                 (payStatements ?: JsonField.of(mutableListOf())).also {

@@ -28,16 +28,34 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
+    /**
+     * Contribution amount in cents (if `fixed`) or basis points (if `percent`).
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
 
-    /** Contribution type. */
+    /**
+     * Contribution type.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
 
-    /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
+    /**
+     * Returns the raw JSON value of [amount].
+     *
+     * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
-    /** Contribution type. */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     @JsonAnyGetter
@@ -81,22 +99,36 @@ private constructor(
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
         fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-        /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
+        /**
+         * Alias for [Builder.amount].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun amount(amount: Long) = amount(amount as Long?)
 
-        /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
+        /** Alias for calling [Builder.amount] with `amount.orElse(null)`. */
         fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
-        /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
+        /**
+         * Sets [Builder.amount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         /** Contribution type. */
         fun type(type: Type?) = type(JsonField.ofNullable(type))
 
-        /** Contribution type. */
+        /** Alias for calling [Builder.type] with `type.orElse(null)`. */
         fun type(type: Optional<Type>) = type(type.getOrNull())
 
-        /** Contribution type. */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

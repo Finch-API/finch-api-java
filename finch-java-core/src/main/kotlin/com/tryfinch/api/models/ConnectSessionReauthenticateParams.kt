@@ -32,28 +32,64 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The ID of the existing connection to reauthenticate */
+    /**
+     * The ID of the existing connection to reauthenticate
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectionId(): String = body.connectionId()
 
-    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
+    /**
+     * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun minutesToExpire(): Optional<Long> = body.minutesToExpire()
 
-    /** The products to request access to (optional for reauthentication) */
+    /**
+     * The products to request access to (optional for reauthentication)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun products(): Optional<List<ConnectProducts>> = body.products()
 
-    /** The URI to redirect to after the Connect flow is completed */
+    /**
+     * The URI to redirect to after the Connect flow is completed
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun redirectUri(): Optional<String> = body.redirectUri()
 
-    /** The ID of the existing connection to reauthenticate */
+    /**
+     * Returns the raw JSON value of [connectionId].
+     *
+     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _connectionId(): JsonField<String> = body._connectionId()
 
-    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
+    /**
+     * Returns the raw JSON value of [minutesToExpire].
+     *
+     * Unlike [minutesToExpire], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _minutesToExpire(): JsonField<Long> = body._minutesToExpire()
 
-    /** The products to request access to (optional for reauthentication) */
+    /**
+     * Returns the raw JSON value of [products].
+     *
+     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _products(): JsonField<List<ConnectProducts>> = body._products()
 
-    /** The URI to redirect to after the Connect flow is completed */
+    /**
+     * Returns the raw JSON value of [redirectUri].
+     *
+     * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _redirectUri(): JsonField<String> = body._redirectUri()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -88,41 +124,75 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The ID of the existing connection to reauthenticate */
+        /**
+         * The ID of the existing connection to reauthenticate
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun connectionId(): String = connectionId.getRequired("connection_id")
 
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun minutesToExpire(): Optional<Long> =
             Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
 
-        /** The products to request access to (optional for reauthentication) */
+        /**
+         * The products to request access to (optional for reauthentication)
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun products(): Optional<List<ConnectProducts>> =
             Optional.ofNullable(products.getNullable("products"))
 
-        /** The URI to redirect to after the Connect flow is completed */
+        /**
+         * The URI to redirect to after the Connect flow is completed
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun redirectUri(): Optional<String> =
             Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
 
-        /** The ID of the existing connection to reauthenticate */
+        /**
+         * Returns the raw JSON value of [connectionId].
+         *
+         * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("connection_id")
         @ExcludeMissing
         fun _connectionId(): JsonField<String> = connectionId
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * Returns the raw JSON value of [minutesToExpire].
+         *
+         * Unlike [minutesToExpire], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
         @JsonProperty("minutes_to_expire")
         @ExcludeMissing
         fun _minutesToExpire(): JsonField<Long> = minutesToExpire
 
-        /** The products to request access to (optional for reauthentication) */
+        /**
+         * Returns the raw JSON value of [products].
+         *
+         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("products")
         @ExcludeMissing
         fun _products(): JsonField<List<ConnectProducts>> = products
 
-        /** The URI to redirect to after the Connect flow is completed */
+        /**
+         * Returns the raw JSON value of [redirectUri].
+         *
+         * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("redirect_uri")
         @ExcludeMissing
         fun _redirectUri(): JsonField<String> = redirectUri
@@ -181,7 +251,13 @@ private constructor(
             /** The ID of the existing connection to reauthenticate */
             fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
-            /** The ID of the existing connection to reauthenticate */
+            /**
+             * Sets [Builder.connectionId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.connectionId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun connectionId(connectionId: JsonField<String>) = apply {
                 this.connectionId = connectionId
             }
@@ -194,21 +270,22 @@ private constructor(
                 minutesToExpire(JsonField.ofNullable(minutesToExpire))
 
             /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
+             * Alias for [Builder.minutesToExpire].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
 
-            /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
-             */
+            /** Alias for calling [Builder.minutesToExpire] with `minutesToExpire.orElse(null)`. */
             fun minutesToExpire(minutesToExpire: Optional<Long>) =
                 minutesToExpire(minutesToExpire.getOrNull())
 
             /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
+             * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.minutesToExpire] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
                 this.minutesToExpire = minutesToExpire
@@ -218,15 +295,25 @@ private constructor(
             fun products(products: List<ConnectProducts>?) =
                 products(JsonField.ofNullable(products))
 
-            /** The products to request access to (optional for reauthentication) */
+            /** Alias for calling [Builder.products] with `products.orElse(null)`. */
             fun products(products: Optional<List<ConnectProducts>>) = products(products.getOrNull())
 
-            /** The products to request access to (optional for reauthentication) */
+            /**
+             * Sets [Builder.products] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun products(products: JsonField<List<ConnectProducts>>) = apply {
                 this.products = products.map { it.toMutableList() }
             }
 
-            /** The products to request access to (optional for reauthentication) */
+            /**
+             * Adds a single [ConnectProducts] to [products].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addProduct(product: ConnectProducts) = apply {
                 products =
                     (products ?: JsonField.of(mutableListOf())).also {
@@ -237,10 +324,16 @@ private constructor(
             /** The URI to redirect to after the Connect flow is completed */
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
 
-            /** The URI to redirect to after the Connect flow is completed */
+            /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
             fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
-            /** The URI to redirect to after the Connect flow is completed */
+            /**
+             * Sets [Builder.redirectUri] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.redirectUri] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun redirectUri(redirectUri: JsonField<String>) = apply {
                 this.redirectUri = redirectUri
             }
@@ -328,7 +421,13 @@ private constructor(
         /** The ID of the existing connection to reauthenticate */
         fun connectionId(connectionId: String) = apply { body.connectionId(connectionId) }
 
-        /** The ID of the existing connection to reauthenticate */
+        /**
+         * Sets [Builder.connectionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectionId(connectionId: JsonField<String>) = apply {
             body.connectionId(connectionId)
         }
@@ -341,18 +440,22 @@ private constructor(
         }
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * Alias for [Builder.minutesToExpire].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
 
-        /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
-         */
+        /** Alias for calling [Builder.minutesToExpire] with `minutesToExpire.orElse(null)`. */
         fun minutesToExpire(minutesToExpire: Optional<Long>) =
             minutesToExpire(minutesToExpire.getOrNull())
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.minutesToExpire] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
             body.minutesToExpire(minutesToExpire)
@@ -361,22 +464,38 @@ private constructor(
         /** The products to request access to (optional for reauthentication) */
         fun products(products: List<ConnectProducts>?) = apply { body.products(products) }
 
-        /** The products to request access to (optional for reauthentication) */
+        /** Alias for calling [Builder.products] with `products.orElse(null)`. */
         fun products(products: Optional<List<ConnectProducts>>) = products(products.getOrNull())
 
-        /** The products to request access to (optional for reauthentication) */
+        /**
+         * Sets [Builder.products] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
 
-        /** The products to request access to (optional for reauthentication) */
+        /**
+         * Adds a single [ConnectProducts] to [products].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
         /** The URI to redirect to after the Connect flow is completed */
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
-        /** The URI to redirect to after the Connect flow is completed */
+        /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
         fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
-        /** The URI to redirect to after the Connect flow is completed */
+        /**
+         * Sets [Builder.redirectUri] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.redirectUri] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {

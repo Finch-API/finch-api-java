@@ -35,18 +35,45 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** Specific information about the job, such as individual statuses for batch jobs. */
+    /**
+     * Specific information about the job, such as individual statuses for batch jobs.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun body(): Optional<List<JsonValue>> = Optional.ofNullable(body.getNullable("body"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun jobId(): String = jobId.getRequired("job_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun status(): Status = status.getRequired("status")
 
-    /** Specific information about the job, such as individual statuses for batch jobs. */
+    /**
+     * Returns the raw JSON value of [body].
+     *
+     * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<List<JsonValue>> = body
 
+    /**
+     * Returns the raw JSON value of [jobId].
+     *
+     * Unlike [jobId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
+    /**
+     * Returns the raw JSON value of [status].
+     *
+     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     @JsonAnyGetter
@@ -102,15 +129,25 @@ private constructor(
         /** Specific information about the job, such as individual statuses for batch jobs. */
         fun body(body: List<JsonValue>?) = body(JsonField.ofNullable(body))
 
-        /** Specific information about the job, such as individual statuses for batch jobs. */
+        /** Alias for calling [Builder.body] with `body.orElse(null)`. */
         fun body(body: Optional<List<JsonValue>>) = body(body.getOrNull())
 
-        /** Specific information about the job, such as individual statuses for batch jobs. */
+        /**
+         * Sets [Builder.body] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.body] with a well-typed `List<JsonValue>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun body(body: JsonField<List<JsonValue>>) = apply {
             this.body = body.map { it.toMutableList() }
         }
 
-        /** Specific information about the job, such as individual statuses for batch jobs. */
+        /**
+         * Adds a single [JsonValue] to [Builder.body].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addBody(body: JsonValue) = apply {
             this.body =
                 (this.body ?: JsonField.of(mutableListOf())).also {
@@ -120,10 +157,22 @@ private constructor(
 
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
+        /**
+         * Sets [Builder.jobId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         fun status(status: Status) = status(JsonField.of(status))
 
+        /**
+         * Sets [Builder.status] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

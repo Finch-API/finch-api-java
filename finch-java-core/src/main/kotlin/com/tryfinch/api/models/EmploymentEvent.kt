@@ -42,26 +42,46 @@ private constructor(
     /**
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
-    /** Unique Finch ID of the connection associated with the webhook event. */
+    /**
+     * Unique Finch ID of the connection associated with the webhook event.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun connectionId(): Optional<String> =
         Optional.ofNullable(connectionId.getNullable("connection_id"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun data(): Optional<Data> = Optional.ofNullable(data.getNullable("data"))
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun eventType(): Optional<EventType> = Optional.ofNullable(eventType.getNullable("event_type"))
 
     /**
-     * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
-     * `connection_id` instead to identify the connection associated with this event.
+     * Returns the raw JSON value of [accountId].
+     *
+     * Unlike [accountId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @Deprecated("deprecated")
     @JsonProperty("account_id")
@@ -69,21 +89,36 @@ private constructor(
     fun _accountId(): JsonField<String> = accountId
 
     /**
-     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-     * `connection_id` instead to identify the connection associated with this event.
+     * Returns the raw JSON value of [companyId].
+     *
+     * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @Deprecated("deprecated")
     @JsonProperty("company_id")
     @ExcludeMissing
     fun _companyId(): JsonField<String> = companyId
 
-    /** Unique Finch ID of the connection associated with the webhook event. */
+    /**
+     * Returns the raw JSON value of [connectionId].
+     *
+     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("connection_id")
     @ExcludeMissing
     fun _connectionId(): JsonField<String> = connectionId
 
+    /**
+     * Returns the raw JSON value of [data].
+     *
+     * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
+    /**
+     * Returns the raw JSON value of [eventType].
+     *
+     * Unlike [eventType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("event_type") @ExcludeMissing fun _eventType(): JsonField<EventType> = eventType
 
     @JsonAnyGetter
@@ -156,8 +191,11 @@ private constructor(
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
-         * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
-         * `connection_id` instead to identify the connection associated with this event.
+         * Sets [Builder.accountId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.accountId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
@@ -170,8 +208,11 @@ private constructor(
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
-         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-         * `connection_id` instead to identify the connection associated with this event.
+         * Sets [Builder.companyId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
@@ -179,17 +220,36 @@ private constructor(
         /** Unique Finch ID of the connection associated with the webhook event. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
-        /** Unique Finch ID of the connection associated with the webhook event. */
+        /**
+         * Sets [Builder.connectionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
 
         fun data(data: Data) = data(JsonField.of(data))
 
+        /**
+         * Sets [Builder.data] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.data] with a well-typed [Data] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun data(data: JsonField<Data>) = apply { this.data = data }
 
         fun eventType(eventType: EventType) = eventType(JsonField.of(eventType))
 
+        /**
+         * Sets [Builder.eventType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.eventType] with a well-typed [EventType] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun eventType(eventType: JsonField<EventType>) = apply { this.eventType = eventType }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -233,11 +293,21 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The ID of the individual related to the event. */
+        /**
+         * The ID of the individual related to the event.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun individualId(): Optional<String> =
             Optional.ofNullable(individualId.getNullable("individual_id"))
 
-        /** The ID of the individual related to the event. */
+        /**
+         * Returns the raw JSON value of [individualId].
+         *
+         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("individual_id")
         @ExcludeMissing
         fun _individualId(): JsonField<String> = individualId
@@ -280,7 +350,13 @@ private constructor(
             /** The ID of the individual related to the event. */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-            /** The ID of the individual related to the event. */
+            /**
+             * Sets [Builder.individualId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun individualId(individualId: JsonField<String>) = apply {
                 this.individualId = individualId
             }

@@ -18,6 +18,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
@@ -33,10 +34,19 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The array of batch requests. */
+    /**
+     * The array of batch requests.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun requests(): List<Request> = body.requests()
 
-    /** The array of batch requests. */
+    /**
+     * Returns the raw JSON value of [requests].
+     *
+     * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _requests(): JsonField<List<Request>> = body._requests()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -62,10 +72,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The array of batch requests. */
+        /**
+         * The array of batch requests.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun requests(): List<Request> = requests.getRequired("requests")
 
-        /** The array of batch requests. */
+        /**
+         * Returns the raw JSON value of [requests].
+         *
+         * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("requests")
         @ExcludeMissing
         fun _requests(): JsonField<List<Request>> = requests
@@ -115,12 +134,22 @@ private constructor(
             /** The array of batch requests. */
             fun requests(requests: List<Request>) = requests(JsonField.of(requests))
 
-            /** The array of batch requests. */
+            /**
+             * Sets [Builder.requests] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.requests] with a well-typed `List<Request>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun requests(requests: JsonField<List<Request>>) = apply {
                 this.requests = requests.map { it.toMutableList() }
             }
 
-            /** The array of batch requests. */
+            /**
+             * Adds a single [Request] to [requests].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addRequest(request: Request) = apply {
                 requests =
                     (requests ?: JsonField.of(mutableListOf())).also {
@@ -208,10 +237,20 @@ private constructor(
         /** The array of batch requests. */
         fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
-        /** The array of batch requests. */
+        /**
+         * Sets [Builder.requests] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.requests] with a well-typed `List<Request>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun requests(requests: JsonField<List<Request>>) = apply { body.requests(requests) }
 
-        /** The array of batch requests. */
+        /**
+         * Adds a single [Request] to [requests].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addRequest(request: Request) = apply { body.addRequest(request) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -356,22 +395,49 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A stable Finch `id` (UUID v4) for a payment. */
+        /**
+         * A stable Finch `id` (UUID v4) for a payment.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun paymentId(): String = paymentId.getRequired("payment_id")
 
-        /** Number of pay statements to return (defaults to all). */
+        /**
+         * Number of pay statements to return (defaults to all).
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun limit(): Optional<Long> = Optional.ofNullable(limit.getNullable("limit"))
 
-        /** Index to start from. */
+        /**
+         * Index to start from.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun offset(): Optional<Long> = Optional.ofNullable(offset.getNullable("offset"))
 
-        /** A stable Finch `id` (UUID v4) for a payment. */
+        /**
+         * Returns the raw JSON value of [paymentId].
+         *
+         * Unlike [paymentId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
 
-        /** Number of pay statements to return (defaults to all). */
+        /**
+         * Returns the raw JSON value of [limit].
+         *
+         * Unlike [limit], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("limit") @ExcludeMissing fun _limit(): JsonField<Long> = limit
 
-        /** Index to start from. */
+        /**
+         * Returns the raw JSON value of [offset].
+         *
+         * Unlike [offset], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
         @JsonAnyGetter
@@ -425,19 +491,37 @@ private constructor(
             /** A stable Finch `id` (UUID v4) for a payment. */
             fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
 
-            /** A stable Finch `id` (UUID v4) for a payment. */
+            /**
+             * Sets [Builder.paymentId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.paymentId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
             /** Number of pay statements to return (defaults to all). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
 
-            /** Number of pay statements to return (defaults to all). */
+            /**
+             * Sets [Builder.limit] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.limit] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun limit(limit: JsonField<Long>) = apply { this.limit = limit }
 
             /** Index to start from. */
             fun offset(offset: Long) = offset(JsonField.of(offset))
 
-            /** Index to start from. */
+            /**
+             * Sets [Builder.offset] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.offset] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
