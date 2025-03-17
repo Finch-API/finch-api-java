@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package com.tryfinch.api.core.http
 
 import com.tryfinch.api.core.toImmutable
