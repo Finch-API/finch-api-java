@@ -6,7 +6,7 @@ import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisEmploymentRetrieveManyParamsTest {
+internal class HrisEmploymentRetrieveManyParamsTest {
 
     @Test
     fun create() {

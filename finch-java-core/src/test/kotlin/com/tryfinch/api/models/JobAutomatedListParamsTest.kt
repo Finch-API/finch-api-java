@@ -6,7 +6,7 @@ import com.tryfinch.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class JobAutomatedListParamsTest {
+internal class JobAutomatedListParamsTest {
 
     @Test
     fun create() {
