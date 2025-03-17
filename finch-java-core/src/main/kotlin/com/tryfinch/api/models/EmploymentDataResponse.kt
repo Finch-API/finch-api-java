@@ -167,6 +167,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [EmploymentDataResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): EmploymentDataResponse =
             EmploymentDataResponse(body, code, individualId, additionalProperties.toImmutable())
     }

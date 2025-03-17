@@ -341,6 +341,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Location].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): Location =
             Location(
                 city,

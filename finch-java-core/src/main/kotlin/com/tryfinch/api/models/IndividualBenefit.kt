@@ -166,6 +166,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [IndividualBenefit].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): IndividualBenefit =
             IndividualBenefit(body, code, individualId, additionalProperties.toImmutable())
     }
@@ -462,6 +467,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Body =
                 Body(
                     annualMaximum,

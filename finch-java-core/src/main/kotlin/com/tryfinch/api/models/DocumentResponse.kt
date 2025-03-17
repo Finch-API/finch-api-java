@@ -256,6 +256,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [DocumentResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): DocumentResponse =
             DocumentResponse(id, individualId, type, url, year, additionalProperties.toImmutable())
     }

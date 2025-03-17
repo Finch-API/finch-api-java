@@ -243,6 +243,21 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [PayGroupRetrieveResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .individualIds()
+         * .name()
+         * .payFrequencies()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): PayGroupRetrieveResponse =
             PayGroupRetrieveResponse(
                 checkRequired("id", id),

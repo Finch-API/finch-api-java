@@ -181,6 +181,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [W42020].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): W42020 = W42020(data, type, year, additionalProperties.toImmutable())
     }
 
@@ -655,6 +660,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Data].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Data =
                 Data(
                     amountForOtherDependents,

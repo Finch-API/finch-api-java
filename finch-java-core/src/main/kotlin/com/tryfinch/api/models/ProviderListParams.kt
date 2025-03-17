@@ -144,6 +144,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [ProviderListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): ProviderListParams =
             ProviderListParams(additionalHeaders.build(), additionalQueryParams.build())
     }

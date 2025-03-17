@@ -1099,6 +1099,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [EmploymentWithoutId].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): EmploymentWithoutId =
                 EmploymentWithoutId(
                     classCode,
@@ -1594,6 +1599,18 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [SandboxEmploymentUpdateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .individualId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): SandboxEmploymentUpdateParams =
             SandboxEmploymentUpdateParams(
                 checkRequired("individualId", individualId),
@@ -1702,6 +1719,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [CustomField].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): CustomField = CustomField(name, value, additionalProperties.toImmutable())
         }
 
@@ -1819,6 +1841,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Department].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Department = Department(name, additionalProperties.toImmutable())
         }
 
@@ -1974,6 +2001,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Employment].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Employment = Employment(subtype, type, additionalProperties.toImmutable())
         }
 
@@ -2450,6 +2482,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Manager].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Manager = Manager(id, additionalProperties.toImmutable())
         }
 

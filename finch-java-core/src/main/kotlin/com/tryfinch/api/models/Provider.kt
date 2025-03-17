@@ -447,6 +447,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Provider].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): Provider =
             Provider(
                 id,
@@ -645,6 +650,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [AuthenticationMethod].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): AuthenticationMethod =
                 AuthenticationMethod(
                     benefitsSupport,
@@ -971,6 +981,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [SupportedFields].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): SupportedFields =
                     SupportedFields(
                         company,
@@ -1358,6 +1373,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [SupportedCompanyFields].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): SupportedCompanyFields =
                         SupportedCompanyFields(
                             id,
@@ -1621,6 +1641,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Accounts].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Accounts =
                             Accounts(
                                 accountName,
@@ -1780,6 +1805,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Departments].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Departments =
                             Departments(name, parent, additionalProperties.toImmutable())
                     }
@@ -1882,6 +1912,12 @@ private constructor(
                                 keys.forEach(::removeAdditionalProperty)
                             }
 
+                            /**
+                             * Returns an immutable instance of [Parent].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
                             fun build(): Parent = Parent(name, additionalProperties.toImmutable())
                         }
 
@@ -2049,6 +2085,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Entity].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Entity =
                             Entity(subtype, type, additionalProperties.toImmutable())
                     }
@@ -2330,6 +2371,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Locations].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Locations =
                             Locations(
                                 city,
@@ -2512,6 +2558,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [SupportedDirectoryFields].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): SupportedDirectoryFields =
                         SupportedDirectoryFields(
                             individuals,
@@ -2830,6 +2881,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Individuals].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Individuals =
                             Individuals(
                                 id,
@@ -2940,6 +2996,12 @@ private constructor(
                                 keys.forEach(::removeAdditionalProperty)
                             }
 
+                            /**
+                             * Returns an immutable instance of [Manager].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
                             fun build(): Manager = Manager(id, additionalProperties.toImmutable())
                         }
 
@@ -3107,6 +3169,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Paging].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Paging =
                             Paging(count, offset, additionalProperties.toImmutable())
                     }
@@ -3803,6 +3870,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [SupportedEmploymentFields].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): SupportedEmploymentFields =
                         SupportedEmploymentFields(
                             id,
@@ -3922,6 +3994,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Department].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Department =
                             Department(name, additionalProperties.toImmutable())
                     }
@@ -4074,6 +4151,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Employment].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Employment =
                             Employment(subtype, type, additionalProperties.toImmutable())
                     }
@@ -4260,6 +4342,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Income].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Income =
                             Income(amount, currency, unit, additionalProperties.toImmutable())
                     }
@@ -4539,6 +4626,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Location].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Location =
                             Location(
                                 city,
@@ -4663,6 +4755,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Manager].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Manager = Manager(id, additionalProperties.toImmutable())
                     }
 
@@ -5210,6 +5307,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [SupportedIndividualFields].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): SupportedIndividualFields =
                         SupportedIndividualFields(
                             id,
@@ -5354,6 +5456,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Emails].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Emails = Emails(data, type, additionalProperties.toImmutable())
                     }
 
@@ -5502,6 +5609,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [PhoneNumbers].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): PhoneNumbers =
                             PhoneNumbers(data, type, additionalProperties.toImmutable())
                     }
@@ -5783,6 +5895,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Residence].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): Residence =
                             Residence(
                                 city,
@@ -6032,6 +6149,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [SupportedPayGroupFields].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): SupportedPayGroupFields =
                         SupportedPayGroupFields(
                             id,
@@ -6195,6 +6317,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [SupportedPayStatementFields].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): SupportedPayStatementFields =
                         SupportedPayStatementFields(
                             paging,
@@ -6340,6 +6467,19 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [Paging].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .count()
+                         * .offset()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
                         fun build(): Paging =
                             Paging(
                                 checkRequired("count", count),
@@ -6792,6 +6932,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [PayStatements].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): PayStatements =
                             PayStatements(
                                 earnings,
@@ -7008,6 +7153,12 @@ private constructor(
                                 keys.forEach(::removeAdditionalProperty)
                             }
 
+                            /**
+                             * Returns an immutable instance of [Earnings].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
                             fun build(): Earnings =
                                 Earnings(
                                     amount,
@@ -7272,6 +7423,12 @@ private constructor(
                                 keys.forEach(::removeAdditionalProperty)
                             }
 
+                            /**
+                             * Returns an immutable instance of [EmployeeDeductions].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
                             fun build(): EmployeeDeductions =
                                 EmployeeDeductions(
                                     amount,
@@ -7472,6 +7629,12 @@ private constructor(
                                 keys.forEach(::removeAdditionalProperty)
                             }
 
+                            /**
+                             * Returns an immutable instance of [EmployerContributions].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
                             fun build(): EmployerContributions =
                                 EmployerContributions(
                                     amount,
@@ -7735,6 +7898,12 @@ private constructor(
                                 keys.forEach(::removeAdditionalProperty)
                             }
 
+                            /**
+                             * Returns an immutable instance of [Taxes].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
                             fun build(): Taxes =
                                 Taxes(
                                     amount,
@@ -8288,6 +8457,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [SupportedPaymentFields].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): SupportedPaymentFields =
                         SupportedPaymentFields(
                             id,
@@ -8441,6 +8615,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [PayPeriod].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): PayPeriod =
                             PayPeriod(endDate, startDate, additionalProperties.toImmutable())
                     }

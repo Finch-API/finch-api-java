@@ -135,6 +135,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Paging].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): Paging = Paging(count, offset, additionalProperties.toImmutable())
     }
 
