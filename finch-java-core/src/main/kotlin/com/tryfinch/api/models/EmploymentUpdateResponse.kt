@@ -805,6 +805,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [EmploymentUpdateResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): EmploymentUpdateResponse =
             EmploymentUpdateResponse(
                 id,
@@ -929,6 +934,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [CustomField].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): CustomField = CustomField(name, value, additionalProperties.toImmutable())
         }
 
@@ -1046,6 +1056,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Department].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Department = Department(name, additionalProperties.toImmutable())
         }
 
@@ -1201,6 +1216,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Employment].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Employment = Employment(subtype, type, additionalProperties.toImmutable())
         }
 
@@ -1677,6 +1697,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Manager].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Manager = Manager(id, additionalProperties.toImmutable())
         }
 

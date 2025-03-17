@@ -774,6 +774,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [IndividualWithoutId].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): IndividualWithoutId =
                 IndividualWithoutId(
                     dob,
@@ -1166,6 +1171,18 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [SandboxIndividualUpdateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .individualId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): SandboxIndividualUpdateParams =
             SandboxIndividualUpdateParams(
                 checkRequired("individualId", individualId),
@@ -1295,6 +1312,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Email].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Email = Email(data, type, additionalProperties.toImmutable())
         }
 
@@ -1783,6 +1805,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [PhoneNumber].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): PhoneNumber = PhoneNumber(data, type, additionalProperties.toImmutable())
         }
 

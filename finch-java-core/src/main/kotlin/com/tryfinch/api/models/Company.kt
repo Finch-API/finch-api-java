@@ -470,6 +470,26 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Company].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .accounts()
+         * .departments()
+         * .ein()
+         * .entity()
+         * .legalName()
+         * .locations()
+         * .primaryEmail()
+         * .primaryPhoneNumber()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): Company =
             Company(
                 checkRequired("id", id),
@@ -763,6 +783,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Account].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Account =
                 Account(
                     accountName,
@@ -1028,6 +1053,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Department].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Department = Department(name, parent, additionalProperties.toImmutable())
         }
 
@@ -1130,6 +1160,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Parent].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Parent = Parent(name, additionalProperties.toImmutable())
             }
 
@@ -1299,6 +1334,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Entity].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Entity = Entity(subtype, type, additionalProperties.toImmutable())
         }
 

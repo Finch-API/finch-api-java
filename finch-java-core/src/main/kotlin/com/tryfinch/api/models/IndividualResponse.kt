@@ -166,6 +166,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [IndividualResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): IndividualResponse =
             IndividualResponse(body, code, individualId, additionalProperties.toImmutable())
     }

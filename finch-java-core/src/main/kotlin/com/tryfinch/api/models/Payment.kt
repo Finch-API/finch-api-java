@@ -552,6 +552,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Payment].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): Payment =
             Payment(
                 id,
@@ -838,6 +843,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [PayPeriod].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): PayPeriod =
                 PayPeriod(endDate, startDate, additionalProperties.toImmutable())
         }

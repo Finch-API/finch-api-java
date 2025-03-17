@@ -330,6 +330,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [IndividualInDirectory].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): IndividualInDirectory =
             IndividualInDirectory(
                 id,
@@ -439,6 +444,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Department].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Department = Department(name, additionalProperties.toImmutable())
         }
 
@@ -551,6 +561,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Manager].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Manager = Manager(id, additionalProperties.toImmutable())
         }
 

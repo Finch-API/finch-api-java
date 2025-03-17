@@ -154,6 +154,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [BenefitFeaturesAndOperations].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): BenefitFeaturesAndOperations =
             BenefitFeaturesAndOperations(
                 supportedFeatures,
@@ -594,6 +599,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [BenefitFeature].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): BenefitFeature =
                 BenefitFeature(
                     annualMaximum,

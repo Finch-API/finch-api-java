@@ -169,6 +169,11 @@ class FinchOkHttpClient private constructor() {
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
+        /**
+         * Returns an immutable instance of [FinchClient].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): FinchClient =
             FinchClientImpl(
                 clientOptions
