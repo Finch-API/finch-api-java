@@ -6,7 +6,7 @@ import com.tryfinch.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class PayStatementResponseTest {
+internal class PayStatementResponseTest {
 
     @Test
     fun createPayStatementResponse() {

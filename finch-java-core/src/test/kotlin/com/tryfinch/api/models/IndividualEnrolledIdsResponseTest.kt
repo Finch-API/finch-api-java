@@ -5,7 +5,7 @@ package com.tryfinch.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class IndividualEnrolledIdsResponseTest {
+internal class IndividualEnrolledIdsResponseTest {
 
     @Test
     fun createIndividualEnrolledIdsResponse() {
