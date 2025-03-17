@@ -1175,6 +1175,11 @@ private constructor(
              */
             fun title(title: JsonField<String>) = apply { this.title = title }
 
+            /**
+             * Returns an immutable instance of [IndividualOrEmployment].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): IndividualOrEmployment =
                 IndividualOrEmployment(
                     classCode,
@@ -1309,6 +1314,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [CustomField].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): CustomField =
                     CustomField(name, value, additionalProperties.toImmutable())
             }
@@ -1430,6 +1440,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Department].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Department = Department(name, additionalProperties.toImmutable())
             }
 
@@ -1576,6 +1591,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Email].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Email = Email(data, type, additionalProperties.toImmutable())
             }
 
@@ -1839,6 +1859,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Employment].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Employment =
                     Employment(subtype, type, additionalProperties.toImmutable())
             }
@@ -2588,6 +2613,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Manager].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Manager = Manager(id, additionalProperties.toImmutable())
             }
 
@@ -2733,6 +2763,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [PhoneNumber].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): PhoneNumber =
                     PhoneNumber(data, type, additionalProperties.toImmutable())
             }
@@ -3019,6 +3054,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [SandboxDirectoryCreateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): SandboxDirectoryCreateParams =
             SandboxDirectoryCreateParams(
                 body?.toImmutable(),

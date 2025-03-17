@@ -577,6 +577,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [IndividualUpdateResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): IndividualUpdateResponse =
             IndividualUpdateResponse(
                 id,
@@ -716,6 +721,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Email].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Email = Email(data, type, additionalProperties.toImmutable())
         }
 
@@ -1204,6 +1214,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [PhoneNumber].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): PhoneNumber = PhoneNumber(data, type, additionalProperties.toImmutable())
         }
 

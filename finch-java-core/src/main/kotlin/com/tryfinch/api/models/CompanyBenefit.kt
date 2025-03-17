@@ -223,6 +223,21 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [CompanyBenefit].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .benefitId()
+         * .description()
+         * .frequency()
+         * .type()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): CompanyBenefit =
             CompanyBenefit(
                 checkRequired("benefitId", benefitId),

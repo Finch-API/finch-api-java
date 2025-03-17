@@ -165,6 +165,18 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [PayrollPayGroupRetrieveParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .payGroupId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): PayrollPayGroupRetrieveParams =
             PayrollPayGroupRetrieveParams(
                 checkRequired("payGroupId", payGroupId),

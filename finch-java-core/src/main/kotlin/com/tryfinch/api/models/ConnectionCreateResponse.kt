@@ -380,6 +380,24 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [ConnectionCreateResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .accessToken()
+         * .accountId()
+         * .authenticationType()
+         * .companyId()
+         * .connectionId()
+         * .products()
+         * .providerId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): ConnectionCreateResponse =
             ConnectionCreateResponse(
                 checkRequired("accessToken", accessToken),

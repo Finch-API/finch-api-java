@@ -246,6 +246,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisDocumentListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): HrisDocumentListParams =
             HrisDocumentListParams(
                 individualIds?.toImmutable(),

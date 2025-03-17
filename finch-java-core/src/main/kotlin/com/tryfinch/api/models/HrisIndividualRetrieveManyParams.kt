@@ -207,6 +207,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Body =
                 Body(
                     options,
@@ -411,6 +416,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisIndividualRetrieveManyParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): HrisIndividualRetrieveManyParams =
             HrisIndividualRetrieveManyParams(
                 body.build(),
@@ -522,6 +532,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Options].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Options =
                 Options(
                     (include ?: JsonMissing.of()).map { it.toImmutable() },
@@ -642,6 +657,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Request].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Request = Request(individualId, additionalProperties.toImmutable())
         }
 

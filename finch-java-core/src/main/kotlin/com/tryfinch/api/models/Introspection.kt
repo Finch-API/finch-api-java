@@ -745,6 +745,33 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Introspection].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .accountId()
+         * .authenticationMethods()
+         * .clientId()
+         * .clientType()
+         * .companyId()
+         * .connectionId()
+         * .connectionStatus()
+         * .connectionType()
+         * .customerEmail()
+         * .customerId()
+         * .customerName()
+         * .manual()
+         * .payrollProviderId()
+         * .products()
+         * .providerId()
+         * .username()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): Introspection =
             Introspection(
                 checkRequired("accountId", accountId),
@@ -946,6 +973,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [AuthenticationMethod].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): AuthenticationMethod =
                 AuthenticationMethod(
                     connectionStatus,
@@ -1080,6 +1112,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [ConnectionStatus].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): ConnectionStatus =
                     ConnectionStatus(message, status, additionalProperties.toImmutable())
             }
@@ -1467,6 +1504,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [ConnectionStatus].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): ConnectionStatus =
                 ConnectionStatus(message, status, additionalProperties.toImmutable())
         }

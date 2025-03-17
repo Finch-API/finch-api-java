@@ -477,6 +477,25 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [CreateAccessTokenResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .accessToken()
+         * .accountId()
+         * .clientType()
+         * .companyId()
+         * .connectionId()
+         * .connectionType()
+         * .products()
+         * .providerId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): CreateAccessTokenResponse =
             CreateAccessTokenResponse(
                 checkRequired("accessToken", accessToken),

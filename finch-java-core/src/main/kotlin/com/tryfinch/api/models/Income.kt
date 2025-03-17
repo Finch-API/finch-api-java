@@ -237,6 +237,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Income].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): Income =
             Income(amount, currency, effectiveDate, unit, additionalProperties.toImmutable())
     }
