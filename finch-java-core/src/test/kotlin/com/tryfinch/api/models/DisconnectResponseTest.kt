@@ -5,7 +5,7 @@ package com.tryfinch.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class DisconnectResponseTest {
+internal class DisconnectResponseTest {
 
     @Test
     fun createDisconnectResponse() {

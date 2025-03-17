@@ -5,7 +5,7 @@ package com.tryfinch.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class W42005Test {
+internal class W42005Test {
 
     @Test
     fun createW42005() {
