@@ -14,6 +14,15 @@ internal class HrisBenefitUpdateParamsTest {
     }
 
     @Test
+    fun pathParams() {
+        val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
+
+        assertThat(params._pathParam(0)).isEqualTo("benefit_id")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
     fun body() {
         val params =
             HrisBenefitUpdateParams.builder()
@@ -34,15 +43,5 @@ internal class HrisBenefitUpdateParamsTest {
         val body = params._body()
 
         assertNotNull(body)
-    }
-
-    @Test
-    fun getPathParam() {
-        val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
-        assertThat(params).isNotNull
-        // path param "benefitId"
-        assertThat(params.getPathParam(0)).isEqualTo("benefit_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

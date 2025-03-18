@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -113,7 +114,7 @@ internal class PayStatementTest {
                 .type(PayStatement.Type.REGULAR_PAYROLL)
                 .build()
         assertThat(payStatement).isNotNull
-        assertThat(payStatement.earnings().get())
+        assertThat(payStatement.earnings().getOrNull())
             .containsExactly(
                 PayStatement.Earning.builder()
                     .amount(0L)
@@ -137,7 +138,7 @@ internal class PayStatementTest {
                     .type(PayStatement.Earning.Type.SALARY)
                     .build()
             )
-        assertThat(payStatement.employeeDeductions().get())
+        assertThat(payStatement.employeeDeductions().getOrNull())
             .containsExactly(
                 PayStatement.EmployeeDeduction.builder()
                     .amount(0L)
@@ -162,7 +163,7 @@ internal class PayStatementTest {
                     .type(BenefitType._401K)
                     .build()
             )
-        assertThat(payStatement.employerContributions().get())
+        assertThat(payStatement.employerContributions().getOrNull())
             .containsExactly(
                 PayStatement.EmployerContribution.builder()
                     .amount(0L)
@@ -192,7 +193,7 @@ internal class PayStatementTest {
         assertThat(payStatement.netPay())
             .contains(Money.builder().amount(0L).currency("currency").build())
         assertThat(payStatement.paymentMethod()).contains(PayStatement.PaymentMethod.CHECK)
-        assertThat(payStatement.taxes().get())
+        assertThat(payStatement.taxes().getOrNull())
             .containsExactly(
                 PayStatement.Tax.builder()
                     .amount(0L)

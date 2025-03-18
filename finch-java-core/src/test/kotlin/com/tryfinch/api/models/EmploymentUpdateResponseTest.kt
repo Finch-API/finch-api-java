@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -70,7 +71,7 @@ internal class EmploymentUpdateResponseTest {
         assertThat(employmentUpdateResponse).isNotNull
         assertThat(employmentUpdateResponse.id()).contains("id")
         assertThat(employmentUpdateResponse.classCode()).contains("class_code")
-        assertThat(employmentUpdateResponse.customFields().get())
+        assertThat(employmentUpdateResponse.customFields().getOrNull())
             .containsExactly(
                 EmploymentUpdateResponse.CustomField.builder()
                     .name("name")
@@ -99,7 +100,7 @@ internal class EmploymentUpdateResponseTest {
                     .unit(Income.Unit.YEARLY)
                     .build()
             )
-        assertThat(employmentUpdateResponse.incomeHistory().get())
+        assertThat(employmentUpdateResponse.incomeHistory().getOrNull())
             .containsExactly(
                 Income.builder()
                     .amount(0L)
