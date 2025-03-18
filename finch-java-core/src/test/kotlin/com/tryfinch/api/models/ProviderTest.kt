@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -925,7 +926,7 @@ internal class ProviderTest {
                 .build()
         assertThat(provider).isNotNull
         assertThat(provider.id()).contains("id")
-        assertThat(provider.authenticationMethods().get())
+        assertThat(provider.authenticationMethods().getOrNull())
             .containsExactly(
                 Provider.AuthenticationMethod.builder()
                     .benefitsSupport(
@@ -1833,6 +1834,6 @@ internal class ProviderTest {
         assertThat(provider.manual()).contains(true)
         assertThat(provider.mfaRequired()).contains(true)
         assertThat(provider.primaryColor()).contains("primary_color")
-        assertThat(provider.products().get()).containsExactly("string")
+        assertThat(provider.products().getOrNull()).containsExactly("string")
     }
 }

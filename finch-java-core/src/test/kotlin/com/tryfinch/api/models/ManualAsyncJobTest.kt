@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -17,7 +18,7 @@ internal class ManualAsyncJobTest {
                 .status(ManualAsyncJob.Status.PENDING)
                 .build()
         assertThat(manualAsyncJob).isNotNull
-        assertThat(manualAsyncJob.body().get())
+        assertThat(manualAsyncJob.body().getOrNull())
             .containsExactly(JsonValue.from(mapOf<String, Any>()))
         assertThat(manualAsyncJob.jobId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(manualAsyncJob.status()).isEqualTo(ManualAsyncJob.Status.PENDING)

@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -70,6 +71,15 @@ internal class SandboxEmploymentUpdateParamsTest {
     }
 
     @Test
+    fun pathParams() {
+        val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
+
+        assertThat(params._pathParam(0)).isEqualTo("individual_id")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
     fun body() {
         val params =
             SandboxEmploymentUpdateParams.builder()
@@ -133,14 +143,12 @@ internal class SandboxEmploymentUpdateParamsTest {
 
         assertNotNull(body)
         assertThat(body.classCode()).contains("class_code")
-        assertThat(body.customFields())
-            .contains(
-                listOf(
-                    SandboxEmploymentUpdateParams.CustomField.builder()
-                        .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
-                        .build()
-                )
+        assertThat(body.customFields().getOrNull())
+            .containsExactly(
+                SandboxEmploymentUpdateParams.CustomField.builder()
+                    .name("name")
+                    .value(JsonValue.from(mapOf<String, Any>()))
+                    .build()
             )
         assertThat(body.department())
             .contains(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
@@ -164,16 +172,14 @@ internal class SandboxEmploymentUpdateParamsTest {
                     .unit(Income.Unit.YEARLY)
                     .build()
             )
-        assertThat(body.incomeHistory())
-            .contains(
-                listOf(
-                    Income.builder()
-                        .amount(0L)
-                        .currency("currency")
-                        .effectiveDate("effective_date")
-                        .unit(Income.Unit.YEARLY)
-                        .build()
-                )
+        assertThat(body.incomeHistory().getOrNull())
+            .containsExactly(
+                Income.builder()
+                    .amount(0L)
+                    .currency("currency")
+                    .effectiveDate("effective_date")
+                    .unit(Income.Unit.YEARLY)
+                    .build()
             )
         assertThat(body.isActive()).contains(true)
         assertThat(body.lastName()).contains("last_name")
@@ -206,15 +212,5 @@ internal class SandboxEmploymentUpdateParamsTest {
         val body = params._body()
 
         assertNotNull(body)
-    }
-
-    @Test
-    fun getPathParam() {
-        val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
-        assertThat(params).isNotNull
-        // path param "individualId"
-        assertThat(params.getPathParam(0)).isEqualTo("individual_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

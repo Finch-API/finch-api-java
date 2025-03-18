@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.jvm.optionals.getOrNull
 import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -43,13 +44,11 @@ internal class HrisIndividualRetrieveManyParamsTest {
             .contains(
                 HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
-        assertThat(body.requests())
-            .contains(
-                listOf(
-                    HrisIndividualRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+        assertThat(body.requests().getOrNull())
+            .containsExactly(
+                HrisIndividualRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
     }
 

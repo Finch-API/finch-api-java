@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -18,7 +19,7 @@ internal class PayGroupListResponseTest {
         assertThat(payGroupListResponse).isNotNull
         assertThat(payGroupListResponse.id()).contains("id")
         assertThat(payGroupListResponse.name()).contains("name")
-        assertThat(payGroupListResponse.payFrequencies().get())
+        assertThat(payGroupListResponse.payFrequencies().getOrNull())
             .containsExactly(PayGroupListResponse.PayFrequency.ANNUALLY)
     }
 }

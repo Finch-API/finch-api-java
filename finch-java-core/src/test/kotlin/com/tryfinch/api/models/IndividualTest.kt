@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -46,7 +47,7 @@ internal class IndividualTest {
         assertThat(individual).isNotNull
         assertThat(individual.id()).contains("id")
         assertThat(individual.dob()).contains("dob")
-        assertThat(individual.emails().get())
+        assertThat(individual.emails().getOrNull())
             .containsExactly(
                 Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
             )
@@ -56,7 +57,7 @@ internal class IndividualTest {
         assertThat(individual.gender()).contains(Individual.Gender.FEMALE)
         assertThat(individual.lastName()).contains("last_name")
         assertThat(individual.middleName()).contains("middle_name")
-        assertThat(individual.phoneNumbers().get())
+        assertThat(individual.phoneNumbers().getOrNull())
             .containsExactly(
                 Individual.PhoneNumber.builder()
                     .data("data")

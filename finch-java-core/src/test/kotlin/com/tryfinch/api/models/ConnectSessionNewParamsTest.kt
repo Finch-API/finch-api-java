@@ -53,8 +53,7 @@ internal class ConnectSessionNewParamsTest {
         assertNotNull(body)
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
-        assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+        assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
         assertThat(body.customerEmail()).contains("dev@stainless.com")
         assertThat(body.integration())
             .contains(
@@ -83,7 +82,6 @@ internal class ConnectSessionNewParamsTest {
         assertNotNull(body)
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
-        assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+        assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
     }
 }

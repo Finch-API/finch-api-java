@@ -35,23 +35,4 @@ internal class HrisPaymentListParamsTest {
                     .build()
             )
     }
-
-    @Test
-    fun queryParamsWithoutOptionalFields() {
-        val params =
-            HrisPaymentListParams.builder()
-                .endDate(LocalDate.parse("2021-01-01"))
-                .startDate(LocalDate.parse("2021-01-01"))
-                .build()
-
-        val queryParams = params._queryParams()
-
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put("end_date", "2021-01-01")
-                    .put("start_date", "2021-01-01")
-                    .build()
-            )
-    }
 }
