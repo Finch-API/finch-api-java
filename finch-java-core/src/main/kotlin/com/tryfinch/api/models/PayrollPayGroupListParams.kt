@@ -30,13 +30,14 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.individualId?.let { queryParams.put("individual_id", listOf(it.toString())) }
-        this.payFrequencies?.let { queryParams.put("pay_frequencies[]", it.map(Any::toString)) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                individualId?.let { put("individual_id", it) }
+                payFrequencies?.forEach { put("pay_frequencies[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     fun toBuilder() = Builder().from(this)
 
