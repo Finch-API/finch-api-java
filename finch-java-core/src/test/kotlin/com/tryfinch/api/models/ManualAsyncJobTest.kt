@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test
 internal class ManualAsyncJobTest {
 
     @Test
-    fun createManualAsyncJob() {
+    fun create() {
         val manualAsyncJob =
             ManualAsyncJob.builder()
                 .addBody(JsonValue.from(mapOf<String, Any>()))
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .status(ManualAsyncJob.Status.PENDING)
                 .build()
-        assertThat(manualAsyncJob).isNotNull
+
         assertThat(manualAsyncJob.body().getOrNull())
             .containsExactly(JsonValue.from(mapOf<String, Any>()))
         assertThat(manualAsyncJob.jobId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

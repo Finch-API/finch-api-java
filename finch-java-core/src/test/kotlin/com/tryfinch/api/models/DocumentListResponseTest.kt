@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class DocumentListResponseTest {
 
     @Test
-    fun createDocumentListResponse() {
+    fun create() {
         val documentListResponse =
             DocumentListResponse.builder()
                 .addDocument(
@@ -22,7 +22,7 @@ internal class DocumentListResponseTest {
                 )
                 .paging(Paging.builder().count(0L).offset(0L).build())
                 .build()
-        assertThat(documentListResponse).isNotNull
+
         assertThat(documentListResponse.documents())
             .containsExactly(
                 DocumentResponse.builder()

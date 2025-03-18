@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class PaymentTest {
 
     @Test
-    fun createPayment() {
+    fun create() {
         val payment =
             Payment.builder()
                 .id("id")
@@ -27,7 +27,7 @@ internal class PaymentTest {
                     Payment.PayPeriod.builder().endDate("end_date").startDate("start_date").build()
                 )
                 .build()
-        assertThat(payment).isNotNull
+
         assertThat(payment.id()).contains("id")
         assertThat(payment.companyDebit())
             .contains(Money.builder().amount(0L).currency("currency").build())

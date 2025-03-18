@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class IndividualUpdateResponseTest {
 
     @Test
-    fun createIndividualUpdateResponse() {
+    fun create() {
         val individualUpdateResponse =
             IndividualUpdateResponse.builder()
                 .id("id")
@@ -47,7 +47,7 @@ internal class IndividualUpdateResponseTest {
                 )
                 .ssn("ssn")
                 .build()
-        assertThat(individualUpdateResponse).isNotNull
+
         assertThat(individualUpdateResponse.id()).contains("id")
         assertThat(individualUpdateResponse.dob()).contains("dob")
         assertThat(individualUpdateResponse.emails().getOrNull())

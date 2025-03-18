@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class CreateAccessTokenResponseTest {
 
     @Test
-    fun createCreateAccessTokenResponse() {
+    fun create() {
         val createAccessTokenResponse =
             CreateAccessTokenResponse.builder()
                 .accessToken("access_token")
@@ -22,7 +22,7 @@ internal class CreateAccessTokenResponseTest {
                 .customerId("customer_id")
                 .tokenType("token_type")
                 .build()
-        assertThat(createAccessTokenResponse).isNotNull
+
         assertThat(createAccessTokenResponse.accessToken()).isEqualTo("access_token")
         assertThat(createAccessTokenResponse.accountId()).isEqualTo("account_id")
         assertThat(createAccessTokenResponse.clientType())

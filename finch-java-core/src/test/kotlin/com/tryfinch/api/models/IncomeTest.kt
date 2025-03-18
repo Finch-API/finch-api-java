@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class IncomeTest {
 
     @Test
-    fun createIncome() {
+    fun create() {
         val income =
             Income.builder()
                 .amount(0L)
@@ -16,7 +16,7 @@ internal class IncomeTest {
                 .effectiveDate("effective_date")
                 .unit(Income.Unit.YEARLY)
                 .build()
-        assertThat(income).isNotNull
+
         assertThat(income.amount()).contains(0L)
         assertThat(income.currency()).contains("currency")
         assertThat(income.effectiveDate()).contains("effective_date")

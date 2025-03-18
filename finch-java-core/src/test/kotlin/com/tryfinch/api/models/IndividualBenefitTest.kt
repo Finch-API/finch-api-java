@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class IndividualBenefitTest {
 
     @Test
-    fun createIndividualBenefit() {
+    fun create() {
         val individualBenefit =
             IndividualBenefit.builder()
                 .body(
@@ -35,7 +35,7 @@ internal class IndividualBenefitTest {
                 .code(0L)
                 .individualId("individual_id")
                 .build()
-        assertThat(individualBenefit).isNotNull
+
         assertThat(individualBenefit.body())
             .contains(
                 IndividualBenefit.Body.builder()

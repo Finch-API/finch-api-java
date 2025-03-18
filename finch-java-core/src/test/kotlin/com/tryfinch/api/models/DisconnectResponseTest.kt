@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test
 internal class DisconnectResponseTest {
 
     @Test
-    fun createDisconnectResponse() {
+    fun create() {
         val disconnectResponse = DisconnectResponse.builder().status("status").build()
-        assertThat(disconnectResponse).isNotNull
+
         assertThat(disconnectResponse.status()).isEqualTo("status")
     }
 }

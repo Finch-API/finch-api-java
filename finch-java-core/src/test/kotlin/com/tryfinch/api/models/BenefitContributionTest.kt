@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test
 internal class BenefitContributionTest {
 
     @Test
-    fun createBenefitContribution() {
+    fun create() {
         val benefitContribution =
             BenefitContribution.builder().amount(0L).type(BenefitContribution.Type.FIXED).build()
-        assertThat(benefitContribution).isNotNull
+
         assertThat(benefitContribution.amount()).contains(0L)
         assertThat(benefitContribution.type()).contains(BenefitContribution.Type.FIXED)
     }

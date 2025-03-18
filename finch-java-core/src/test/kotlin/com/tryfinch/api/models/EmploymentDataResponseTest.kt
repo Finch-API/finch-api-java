@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class EmploymentDataResponseTest {
 
     @Test
-    fun createEmploymentDataResponse() {
+    fun create() {
         val employmentDataResponse =
             EmploymentDataResponse.builder()
                 .body(
@@ -74,7 +74,7 @@ internal class EmploymentDataResponseTest {
                 .code(0L)
                 .individualId("individual_id")
                 .build()
-        assertThat(employmentDataResponse).isNotNull
+
         assertThat(employmentDataResponse.body())
             .contains(
                 EmploymentData.builder()
