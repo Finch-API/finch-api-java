@@ -27,12 +27,18 @@ internal class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
                     "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
                 )
                 .build()
-        val expected = QueryParams.builder()
-        expected.put(
-            "individual_ids",
-            "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a",
-        )
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put(
+                        "individual_ids",
+                        "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a",
+                    )
+                    .build()
+            )
     }
 
     @Test
@@ -41,8 +47,10 @@ internal class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
             HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
                 .benefitId("benefit_id")
                 .build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test
