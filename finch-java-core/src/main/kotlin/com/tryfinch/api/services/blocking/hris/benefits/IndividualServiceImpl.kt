@@ -70,7 +70,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
-                    .addPathSegments("employer", "benefits", params.getPathParam(0), "enrolled")
+                    .addPathSegments("employer", "benefits", params._pathParam(0), "enrolled")
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -97,7 +97,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
-                    .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
+                    .addPathSegments("employer", "benefits", params._pathParam(0), "individuals")
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -133,7 +133,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
-                    .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
+                    .addPathSegments("employer", "benefits", params._pathParam(0), "individuals")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)

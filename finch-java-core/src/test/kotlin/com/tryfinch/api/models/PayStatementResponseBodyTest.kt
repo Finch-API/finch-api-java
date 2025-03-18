@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -138,7 +139,7 @@ internal class PayStatementResponseBodyTest {
         assertThat(payStatementResponseBody).isNotNull
         assertThat(payStatementResponseBody.paging())
             .contains(Paging.builder().count(0L).offset(0L).build())
-        assertThat(payStatementResponseBody.payStatements().get())
+        assertThat(payStatementResponseBody.payStatements().getOrNull())
             .containsExactly(
                 PayStatement.builder()
                     .addEarning(

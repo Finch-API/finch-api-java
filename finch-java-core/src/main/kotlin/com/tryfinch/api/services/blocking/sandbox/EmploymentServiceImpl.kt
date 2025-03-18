@@ -50,7 +50,7 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
-                    .addPathSegments("sandbox", "employment", params.getPathParam(0))
+                    .addPathSegments("sandbox", "employment", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)

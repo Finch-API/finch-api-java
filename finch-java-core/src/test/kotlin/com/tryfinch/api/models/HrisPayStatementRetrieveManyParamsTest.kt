@@ -38,14 +38,12 @@ internal class HrisPayStatementRetrieveManyParamsTest {
 
         assertNotNull(body)
         assertThat(body.requests())
-            .isEqualTo(
-                listOf(
-                    HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("string")
-                        .limit(50L)
-                        .offset(0L)
-                        .build()
-                )
+            .containsExactly(
+                HrisPayStatementRetrieveManyParams.Request.builder()
+                    .paymentId("string")
+                    .limit(50L)
+                    .offset(0L)
+                    .build()
             )
     }
 
@@ -62,10 +60,8 @@ internal class HrisPayStatementRetrieveManyParamsTest {
 
         assertNotNull(body)
         assertThat(body.requests())
-            .isEqualTo(
-                listOf(
-                    HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
-                )
+            .containsExactly(
+                HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
             )
     }
 }

@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -52,7 +53,7 @@ internal class CompanyTest {
                 .build()
         assertThat(company).isNotNull
         assertThat(company.id()).isEqualTo("id")
-        assertThat(company.accounts().get())
+        assertThat(company.accounts().getOrNull())
             .containsExactly(
                 Company.Account.builder()
                     .accountName("account_name")
@@ -62,7 +63,7 @@ internal class CompanyTest {
                     .routingNumber("routing_number")
                     .build()
             )
-        assertThat(company.departments().get())
+        assertThat(company.departments().getOrNull())
             .containsExactly(
                 Company.Department.builder()
                     .name("name")
@@ -78,7 +79,7 @@ internal class CompanyTest {
                     .build()
             )
         assertThat(company.legalName()).contains("legal_name")
-        assertThat(company.locations().get())
+        assertThat(company.locations().getOrNull())
             .containsExactly(
                 Location.builder()
                     .city("city")
