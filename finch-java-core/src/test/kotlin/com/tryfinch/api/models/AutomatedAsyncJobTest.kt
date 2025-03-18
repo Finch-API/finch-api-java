@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class AutomatedAsyncJobTest {
 
     @Test
-    fun createAutomatedAsyncJob() {
+    fun create() {
         val automatedAsyncJob =
             AutomatedAsyncJob.builder()
                 .completedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -22,7 +22,7 @@ internal class AutomatedAsyncJobTest {
                 .status(AutomatedAsyncJob.Status.PENDING)
                 .type(AutomatedAsyncJob.Type.DATA_SYNC_ALL)
                 .build()
-        assertThat(automatedAsyncJob).isNotNull
+
         assertThat(automatedAsyncJob.completedAt())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(automatedAsyncJob.createdAt())

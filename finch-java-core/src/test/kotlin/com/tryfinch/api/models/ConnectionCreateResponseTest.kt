@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class ConnectionCreateResponseTest {
 
     @Test
-    fun createConnectionCreateResponse() {
+    fun create() {
         val connectionCreateResponse =
             ConnectionCreateResponse.builder()
                 .accessToken("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -20,7 +20,7 @@ internal class ConnectionCreateResponseTest {
                 .providerId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .tokenType("token_type")
                 .build()
-        assertThat(connectionCreateResponse).isNotNull
+
         assertThat(connectionCreateResponse.accessToken())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(connectionCreateResponse.accountId())

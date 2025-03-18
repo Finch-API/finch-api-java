@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test
 internal class PaymentCreateResponseTest {
 
     @Test
-    fun createPaymentCreateResponse() {
+    fun create() {
         val paymentCreateResponse =
             PaymentCreateResponse.builder().payDate("pay_date").paymentId("payment_id").build()
-        assertThat(paymentCreateResponse).isNotNull
+
         assertThat(paymentCreateResponse.payDate()).isEqualTo("pay_date")
         assertThat(paymentCreateResponse.paymentId()).isEqualTo("payment_id")
     }

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class IntrospectionTest {
 
     @Test
-    fun createIntrospection() {
+    fun create() {
         val introspection =
             Introspection.builder()
                 .accountId("account_id")
@@ -44,7 +44,7 @@ internal class IntrospectionTest {
                 .providerId("provider_id")
                 .username("username")
                 .build()
-        assertThat(introspection).isNotNull
+
         assertThat(introspection.accountId()).isEqualTo("account_id")
         assertThat(introspection.authenticationMethods())
             .containsExactly(

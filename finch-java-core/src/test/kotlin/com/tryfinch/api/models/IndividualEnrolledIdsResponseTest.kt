@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test
 internal class IndividualEnrolledIdsResponseTest {
 
     @Test
-    fun createIndividualEnrolledIdsResponse() {
+    fun create() {
         val individualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse.builder()
                 .benefitId("benefit_id")
                 .addIndividualId("string")
                 .build()
-        assertThat(individualEnrolledIdsResponse).isNotNull
+
         assertThat(individualEnrolledIdsResponse.benefitId()).isEqualTo("benefit_id")
         assertThat(individualEnrolledIdsResponse.individualIds()).containsExactly("string")
     }

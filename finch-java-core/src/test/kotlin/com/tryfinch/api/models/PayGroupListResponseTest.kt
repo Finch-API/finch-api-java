@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Test
 internal class PayGroupListResponseTest {
 
     @Test
-    fun createPayGroupListResponse() {
+    fun create() {
         val payGroupListResponse =
             PayGroupListResponse.builder()
                 .id("id")
                 .name("name")
                 .addPayFrequency(PayGroupListResponse.PayFrequency.ANNUALLY)
                 .build()
-        assertThat(payGroupListResponse).isNotNull
+
         assertThat(payGroupListResponse.id()).contains("id")
         assertThat(payGroupListResponse.name()).contains("name")
         assertThat(payGroupListResponse.payFrequencies().getOrNull())

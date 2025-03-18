@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class W42005Test {
 
     @Test
-    fun createW42005() {
+    fun create() {
         val w42005 =
             W42005.builder()
                 .data(
@@ -23,7 +23,7 @@ internal class W42005Test {
                 .type(W42005.Type.W4_2005)
                 .year(0.0)
                 .build()
-        assertThat(w42005).isNotNull
+
         assertThat(w42005.data())
             .contains(
                 W42005.Data.builder()

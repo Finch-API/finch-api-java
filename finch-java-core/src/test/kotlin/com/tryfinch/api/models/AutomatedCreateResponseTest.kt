@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class AutomatedCreateResponseTest {
 
     @Test
-    fun createAutomatedCreateResponse() {
+    fun create() {
         val automatedCreateResponse =
             AutomatedCreateResponse.builder()
                 .allowedRefreshes(0L)
@@ -16,7 +16,7 @@ internal class AutomatedCreateResponseTest {
                 .jobUrl("job_url")
                 .remainingRefreshes(0L)
                 .build()
-        assertThat(automatedCreateResponse).isNotNull
+
         assertThat(automatedCreateResponse.allowedRefreshes()).isEqualTo(0L)
         assertThat(automatedCreateResponse.jobId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

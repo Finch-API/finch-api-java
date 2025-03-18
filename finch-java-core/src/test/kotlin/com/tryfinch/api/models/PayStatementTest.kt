@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class PayStatementTest {
 
     @Test
-    fun createPayStatement() {
+    fun create() {
         val payStatement =
             PayStatement.builder()
                 .addEarning(
@@ -113,7 +113,7 @@ internal class PayStatementTest {
                 .totalHours(0.0)
                 .type(PayStatement.Type.REGULAR_PAYROLL)
                 .build()
-        assertThat(payStatement).isNotNull
+
         assertThat(payStatement.earnings().getOrNull())
             .containsExactly(
                 PayStatement.Earning.builder()

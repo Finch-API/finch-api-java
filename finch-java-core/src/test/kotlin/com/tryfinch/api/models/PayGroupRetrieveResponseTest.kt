@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class PayGroupRetrieveResponseTest {
 
     @Test
-    fun createPayGroupRetrieveResponse() {
+    fun create() {
         val payGroupRetrieveResponse =
             PayGroupRetrieveResponse.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -16,7 +16,7 @@ internal class PayGroupRetrieveResponseTest {
                 .name("name")
                 .addPayFrequency(PayGroupRetrieveResponse.PayFrequency.ANNUALLY)
                 .build()
-        assertThat(payGroupRetrieveResponse).isNotNull
+
         assertThat(payGroupRetrieveResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(payGroupRetrieveResponse.individualIds())
             .containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

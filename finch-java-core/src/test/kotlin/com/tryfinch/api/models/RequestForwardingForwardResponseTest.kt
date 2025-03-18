@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class RequestForwardingForwardResponseTest {
 
     @Test
-    fun createRequestForwardingForwardResponse() {
+    fun create() {
         val requestForwardingForwardResponse =
             RequestForwardingForwardResponse.builder()
                 .data("data")
@@ -25,7 +25,7 @@ internal class RequestForwardingForwardResponseTest {
                 )
                 .statusCode(0L)
                 .build()
-        assertThat(requestForwardingForwardResponse).isNotNull
+
         assertThat(requestForwardingForwardResponse.data()).contains("data")
         assertThat(requestForwardingForwardResponse._headers())
             .isEqualTo(JsonValue.from(mapOf<String, Any>()))

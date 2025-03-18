@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class AccountUpdateResponseTest {
 
     @Test
-    fun createAccountUpdateResponse() {
+    fun create() {
         val accountUpdateResponse =
             AccountUpdateResponse.builder()
                 .accountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -18,7 +18,7 @@ internal class AccountUpdateResponseTest {
                 .providerId("provider_id")
                 .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(accountUpdateResponse).isNotNull
+
         assertThat(accountUpdateResponse.accountId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(accountUpdateResponse.authenticationType())

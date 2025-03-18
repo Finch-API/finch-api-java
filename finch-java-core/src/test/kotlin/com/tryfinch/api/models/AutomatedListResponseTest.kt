@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class AutomatedListResponseTest {
 
     @Test
-    fun createAutomatedListResponse() {
+    fun create() {
         val automatedListResponse =
             AutomatedListResponse.builder()
                 .addData(
@@ -42,7 +42,7 @@ internal class AutomatedListResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(automatedListResponse).isNotNull
+
         assertThat(automatedListResponse.data())
             .containsExactly(
                 AutomatedAsyncJob.builder()

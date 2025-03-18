@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class SupportPerBenefitTypeTest {
 
     @Test
-    fun createSupportPerBenefitType() {
+    fun create() {
         val supportPerBenefitType =
             SupportPerBenefitType.builder()
                 .companyBenefits(
@@ -28,7 +28,7 @@ internal class SupportPerBenefitTypeTest {
                         .build()
                 )
                 .build()
-        assertThat(supportPerBenefitType).isNotNull
+
         assertThat(supportPerBenefitType.companyBenefits())
             .contains(
                 OperationSupportMatrix.builder()

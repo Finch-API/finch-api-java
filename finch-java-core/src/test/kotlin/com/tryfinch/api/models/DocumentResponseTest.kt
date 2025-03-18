@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class DocumentResponseTest {
 
     @Test
-    fun createDocumentResponse() {
+    fun create() {
         val documentResponse =
             DocumentResponse.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -17,7 +17,7 @@ internal class DocumentResponseTest {
                 .url("https://example.com")
                 .year(0.0)
                 .build()
-        assertThat(documentResponse).isNotNull
+
         assertThat(documentResponse.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(documentResponse.individualId()).contains("individual_id")
         assertThat(documentResponse.type()).contains(DocumentResponse.Type.W4_2020)

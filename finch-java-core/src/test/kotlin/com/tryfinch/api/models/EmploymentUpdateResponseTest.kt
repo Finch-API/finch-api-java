@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class EmploymentUpdateResponseTest {
 
     @Test
-    fun createEmploymentUpdateResponse() {
+    fun create() {
         val employmentUpdateResponse =
             EmploymentUpdateResponse.builder()
                 .id("id")
@@ -68,7 +68,7 @@ internal class EmploymentUpdateResponseTest {
                 .startDate("start_date")
                 .title("title")
                 .build()
-        assertThat(employmentUpdateResponse).isNotNull
+
         assertThat(employmentUpdateResponse.id()).contains("id")
         assertThat(employmentUpdateResponse.classCode()).contains("class_code")
         assertThat(employmentUpdateResponse.customFields().getOrNull())

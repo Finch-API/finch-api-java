@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class PayStatementResponseBodyTest {
 
     @Test
-    fun createPayStatementResponseBody() {
+    fun create() {
         val payStatementResponseBody =
             PayStatementResponseBody.builder()
                 .paging(Paging.builder().count(0L).offset(0L).build())
@@ -136,7 +136,7 @@ internal class PayStatementResponseBodyTest {
                         .build()
                 )
                 .build()
-        assertThat(payStatementResponseBody).isNotNull
+
         assertThat(payStatementResponseBody.paging())
             .contains(Paging.builder().count(0L).offset(0L).build())
         assertThat(payStatementResponseBody.payStatements().getOrNull())
