@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class JobCreateResponseTest {
 
     @Test
-    fun createJobCreateResponse() {
+    fun create() {
         val jobCreateResponse =
             JobCreateResponse.builder()
                 .allowedRefreshes(0L)
@@ -16,7 +16,7 @@ internal class JobCreateResponseTest {
                 .jobUrl("job_url")
                 .remainingRefreshes(0L)
                 .build()
-        assertThat(jobCreateResponse).isNotNull
+
         assertThat(jobCreateResponse.allowedRefreshes()).isEqualTo(0L)
         assertThat(jobCreateResponse.jobId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(jobCreateResponse.jobUrl()).isEqualTo("job_url")

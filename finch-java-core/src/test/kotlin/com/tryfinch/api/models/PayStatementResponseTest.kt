@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class PayStatementResponseTest {
 
     @Test
-    fun createPayStatementResponse() {
+    fun create() {
         val payStatementResponse =
             PayStatementResponse.builder()
                 .body(
@@ -146,7 +146,7 @@ internal class PayStatementResponseTest {
                 .code(0L)
                 .paymentId("payment_id")
                 .build()
-        assertThat(payStatementResponse).isNotNull
+
         assertThat(payStatementResponse.body())
             .contains(
                 PayStatementResponseBody.builder()

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class CompanyUpdateResponseTest {
 
     @Test
-    fun createCompanyUpdateResponse() {
+    fun create() {
         val companyUpdateResponse =
             CompanyUpdateResponse.builder()
                 .addAccount(
@@ -52,7 +52,7 @@ internal class CompanyUpdateResponseTest {
                 .primaryEmail("primary_email")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
-        assertThat(companyUpdateResponse).isNotNull
+
         assertThat(companyUpdateResponse.accounts().getOrNull())
             .containsExactly(
                 CompanyUpdateResponse.Account.builder()

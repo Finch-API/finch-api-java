@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test
 internal class BaseWebhookEventTest {
 
     @Test
-    fun createBaseWebhookEvent() {
+    fun create() {
         val baseWebhookEvent =
             BaseWebhookEvent.builder()
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
                 .build()
-        assertThat(baseWebhookEvent).isNotNull
+
         assertThat(baseWebhookEvent.accountId()).isEqualTo("account_id")
         assertThat(baseWebhookEvent.companyId()).isEqualTo("company_id")
         assertThat(baseWebhookEvent.connectionId()).contains("connection_id")

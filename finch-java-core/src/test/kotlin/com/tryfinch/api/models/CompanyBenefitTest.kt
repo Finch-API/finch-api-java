@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class CompanyBenefitTest {
 
     @Test
-    fun createCompanyBenefit() {
+    fun create() {
         val companyBenefit =
             CompanyBenefit.builder()
                 .benefitId("benefit_id")
@@ -16,7 +16,7 @@ internal class CompanyBenefitTest {
                 .frequency(BenefitFrequency.ONE_TIME)
                 .type(BenefitType._401K)
                 .build()
-        assertThat(companyBenefit).isNotNull
+
         assertThat(companyBenefit.benefitId()).isEqualTo("benefit_id")
         assertThat(companyBenefit.description()).contains("description")
         assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)

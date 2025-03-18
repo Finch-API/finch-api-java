@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test
 internal class CreateCompanyBenefitsResponseTest {
 
     @Test
-    fun createCreateCompanyBenefitsResponse() {
+    fun create() {
         val createCompanyBenefitsResponse =
             CreateCompanyBenefitsResponse.builder().benefitId("benefit_id").build()
-        assertThat(createCompanyBenefitsResponse).isNotNull
+
         assertThat(createCompanyBenefitsResponse.benefitId()).isEqualTo("benefit_id")
     }
 }

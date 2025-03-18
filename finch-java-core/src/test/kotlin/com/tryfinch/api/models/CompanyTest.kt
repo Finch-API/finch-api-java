@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class CompanyTest {
 
     @Test
-    fun createCompany() {
+    fun create() {
         val company =
             Company.builder()
                 .id("id")
@@ -51,7 +51,7 @@ internal class CompanyTest {
                 .primaryEmail("primary_email")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
-        assertThat(company).isNotNull
+
         assertThat(company.id()).isEqualTo("id")
         assertThat(company.accounts().getOrNull())
             .containsExactly(

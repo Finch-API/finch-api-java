@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class UnenrolledIndividualTest {
 
     @Test
-    fun createUnenrolledIndividual() {
+    fun create() {
         val unenrolledIndividual =
             UnenrolledIndividual.builder()
                 .body(
@@ -21,7 +21,7 @@ internal class UnenrolledIndividualTest {
                 .code(0L)
                 .individualId("individual_id")
                 .build()
-        assertThat(unenrolledIndividual).isNotNull
+
         assertThat(unenrolledIndividual.body())
             .contains(
                 UnenrolledIndividual.Body.builder()

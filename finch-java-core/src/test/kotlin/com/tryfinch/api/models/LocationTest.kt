@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class LocationTest {
 
     @Test
-    fun createLocation() {
+    fun create() {
         val location =
             Location.builder()
                 .city("city")
@@ -20,7 +20,7 @@ internal class LocationTest {
                 .sourceId("source_id")
                 .state("state")
                 .build()
-        assertThat(location).isNotNull
+
         assertThat(location.city()).contains("city")
         assertThat(location.country()).contains("country")
         assertThat(location.line1()).contains("line1")

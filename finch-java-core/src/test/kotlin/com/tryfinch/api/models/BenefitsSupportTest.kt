@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class BenefitsSupportTest {
 
     @Test
-    fun createBenefitsSupport() {
+    fun create() {
         val benefitsSupport =
             BenefitsSupport.builder()
                 .commuter(
@@ -540,7 +540,7 @@ internal class BenefitsSupportTest {
                         .build()
                 )
                 .build()
-        assertThat(benefitsSupport).isNotNull
+
         assertThat(benefitsSupport.commuter())
             .contains(
                 BenefitFeaturesAndOperations.builder()

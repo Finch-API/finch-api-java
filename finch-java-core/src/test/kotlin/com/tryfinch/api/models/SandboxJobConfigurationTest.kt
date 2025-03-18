@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test
 internal class SandboxJobConfigurationTest {
 
     @Test
-    fun createSandboxJobConfiguration() {
+    fun create() {
         val sandboxJobConfiguration =
             SandboxJobConfiguration.builder()
                 .completionStatus(SandboxJobConfiguration.CompletionStatus.COMPLETE)
                 .type(SandboxJobConfiguration.Type.DATA_SYNC_ALL)
                 .build()
-        assertThat(sandboxJobConfiguration).isNotNull
+
         assertThat(sandboxJobConfiguration.completionStatus())
             .isEqualTo(SandboxJobConfiguration.CompletionStatus.COMPLETE)
         assertThat(sandboxJobConfiguration.type())

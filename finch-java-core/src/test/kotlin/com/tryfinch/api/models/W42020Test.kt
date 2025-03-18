@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class W42020Test {
 
     @Test
-    fun createW42020() {
+    fun create() {
         val w42020 =
             W42020.builder()
                 .data(
@@ -26,7 +26,7 @@ internal class W42020Test {
                 .type(W42020.Type.W4_2020)
                 .year(0.0)
                 .build()
-        assertThat(w42020).isNotNull
+
         assertThat(w42020.data())
             .contains(
                 W42020.Data.builder()

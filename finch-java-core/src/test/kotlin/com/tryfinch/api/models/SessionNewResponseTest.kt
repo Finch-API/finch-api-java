@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test
 internal class SessionNewResponseTest {
 
     @Test
-    fun createSessionNewResponse() {
+    fun create() {
         val sessionNewResponse =
             SessionNewResponse.builder()
                 .connectUrl("https://example.com")
                 .sessionId("session_id")
                 .build()
-        assertThat(sessionNewResponse).isNotNull
+
         assertThat(sessionNewResponse.connectUrl()).isEqualTo("https://example.com")
         assertThat(sessionNewResponse.sessionId()).isEqualTo("session_id")
     }

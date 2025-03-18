@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test
 internal class MoneyTest {
 
     @Test
-    fun createMoney() {
+    fun create() {
         val money = Money.builder().amount(0L).currency("currency").build()
-        assertThat(money).isNotNull
+
         assertThat(money.amount()).contains(0L)
         assertThat(money.currency()).contains("currency")
     }
