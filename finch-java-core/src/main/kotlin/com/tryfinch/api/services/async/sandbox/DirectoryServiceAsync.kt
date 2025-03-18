@@ -3,9 +3,9 @@
 package com.tryfinch.api.services.async.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.DirectoryCreateResponse
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 import java.util.concurrent.CompletableFuture
 
@@ -17,21 +17,22 @@ interface DirectoryServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Add new individuals to a sandbox company */
-    fun create(): CompletableFuture<List<JsonValue>> = create(SandboxDirectoryCreateParams.none())
+    fun create(): CompletableFuture<List<DirectoryCreateResponse>> =
+        create(SandboxDirectoryCreateParams.none())
 
     /** @see [create] */
     fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<JsonValue>>
+    ): CompletableFuture<List<DirectoryCreateResponse>>
 
     /** @see [create] */
     fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
-    ): CompletableFuture<List<JsonValue>> = create(params, RequestOptions.none())
+    ): CompletableFuture<List<DirectoryCreateResponse>> = create(params, RequestOptions.none())
 
     /** @see [create] */
-    fun create(requestOptions: RequestOptions): CompletableFuture<List<JsonValue>> =
+    fun create(requestOptions: RequestOptions): CompletableFuture<List<DirectoryCreateResponse>> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
     /**
@@ -44,7 +45,7 @@ interface DirectoryServiceAsync {
          * [DirectoryServiceAsync.create].
          */
         @MustBeClosed
-        fun create(): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
+        fun create(): CompletableFuture<HttpResponseFor<List<DirectoryCreateResponse>>> =
             create(SandboxDirectoryCreateParams.none())
 
         /** @see [create] */
@@ -52,20 +53,20 @@ interface DirectoryServiceAsync {
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<JsonValue>>>
+        ): CompletableFuture<HttpResponseFor<List<DirectoryCreateResponse>>>
 
         /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
-        ): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
+        ): CompletableFuture<HttpResponseFor<List<DirectoryCreateResponse>>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
         fun create(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<List<JsonValue>>> =
+        ): CompletableFuture<HttpResponseFor<List<DirectoryCreateResponse>>> =
             create(SandboxDirectoryCreateParams.none(), requestOptions)
     }
 }

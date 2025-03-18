@@ -3,7 +3,6 @@
 package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -16,6 +15,7 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.models.DirectoryCreateResponse
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 
 class DirectoryServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -30,7 +30,7 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
     override fun create(
         params: SandboxDirectoryCreateParams,
         requestOptions: RequestOptions,
-    ): List<JsonValue> =
+    ): List<DirectoryCreateResponse> =
         // post /sandbox/directory
         withRawResponse().create(params, requestOptions).parse()
 
@@ -39,13 +39,14 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<List<JsonValue>> =
-            jsonHandler<List<JsonValue>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<List<DirectoryCreateResponse>> =
+            jsonHandler<List<DirectoryCreateResponse>>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
         override fun create(
             params: SandboxDirectoryCreateParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<JsonValue>> {
+        ): HttpResponseFor<List<DirectoryCreateResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -55,7 +56,15 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable { response.use { createHandler.handle(it) } }
+            return response.parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
+                        }
+                    }
+            }
         }
     }
 }

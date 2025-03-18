@@ -156,5 +156,6 @@ internal class DirectoryServiceAsyncTest {
             )
 
         val directories = directoriesFuture.get()
+        directories.forEach { it.validate() }
     }
 }
