@@ -3,7 +3,6 @@
 package com.tryfinch.api.services.async.sandbox
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -16,6 +15,7 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.models.DirectoryCreateResponse
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 import java.util.concurrent.CompletableFuture
 
@@ -31,7 +31,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
     override fun create(
         params: SandboxDirectoryCreateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<JsonValue>> =
+    ): CompletableFuture<List<DirectoryCreateResponse>> =
         // post /sandbox/directory
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
@@ -40,13 +40,14 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<List<JsonValue>> =
-            jsonHandler<List<JsonValue>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<List<DirectoryCreateResponse>> =
+            jsonHandler<List<DirectoryCreateResponse>>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
         override fun create(
             params: SandboxDirectoryCreateParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<JsonValue>>> {
+        ): CompletableFuture<HttpResponseFor<List<DirectoryCreateResponse>>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -58,7 +59,15 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable { response.use { createHandler.handle(it) } }
+                    response.parseable {
+                        response
+                            .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.forEach { it.validate() }
+                                }
+                            }
+                    }
                 }
         }
     }

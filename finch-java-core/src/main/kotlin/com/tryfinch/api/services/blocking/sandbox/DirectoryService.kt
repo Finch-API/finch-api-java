@@ -3,9 +3,9 @@
 package com.tryfinch.api.services.blocking.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.DirectoryCreateResponse
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 
 interface DirectoryService {
@@ -16,21 +16,21 @@ interface DirectoryService {
     fun withRawResponse(): WithRawResponse
 
     /** Add new individuals to a sandbox company */
-    fun create(): List<JsonValue> = create(SandboxDirectoryCreateParams.none())
+    fun create(): List<DirectoryCreateResponse> = create(SandboxDirectoryCreateParams.none())
 
     /** @see [create] */
     fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<JsonValue>
+    ): List<DirectoryCreateResponse>
 
     /** @see [create] */
     fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
-    ): List<JsonValue> = create(params, RequestOptions.none())
+    ): List<DirectoryCreateResponse> = create(params, RequestOptions.none())
 
     /** @see [create] */
-    fun create(requestOptions: RequestOptions): List<JsonValue> =
+    fun create(requestOptions: RequestOptions): List<DirectoryCreateResponse> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
     /** A view of [DirectoryService] that provides access to raw HTTP responses for each method. */
@@ -41,24 +41,25 @@ interface DirectoryService {
          * [DirectoryService.create].
          */
         @MustBeClosed
-        fun create(): HttpResponseFor<List<JsonValue>> = create(SandboxDirectoryCreateParams.none())
+        fun create(): HttpResponseFor<List<DirectoryCreateResponse>> =
+            create(SandboxDirectoryCreateParams.none())
 
         /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<JsonValue>>
+        ): HttpResponseFor<List<DirectoryCreateResponse>>
 
         /** @see [create] */
         @MustBeClosed
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
-        ): HttpResponseFor<List<JsonValue>> = create(params, RequestOptions.none())
+        ): HttpResponseFor<List<DirectoryCreateResponse>> = create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
-        fun create(requestOptions: RequestOptions): HttpResponseFor<List<JsonValue>> =
+        fun create(requestOptions: RequestOptions): HttpResponseFor<List<DirectoryCreateResponse>> =
             create(SandboxDirectoryCreateParams.none(), requestOptions)
     }
 }
