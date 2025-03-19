@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
 import java.util.concurrent.CompletableFuture
@@ -38,7 +38,7 @@ internal constructor(private val clientOptions: ClientOptions) : RequestForwardi
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RequestForwardingServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val forwardHandler: Handler<RequestForwardingForwardResponse> =
             jsonHandler<RequestForwardingForwardResponse>(clientOptions.jsonMapper)

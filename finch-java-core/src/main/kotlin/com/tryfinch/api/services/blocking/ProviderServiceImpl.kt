@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -13,7 +14,6 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Provider
 import com.tryfinch.api.models.ProviderListPage
 import com.tryfinch.api.models.ProviderListParams
@@ -37,7 +37,7 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ProviderService.WithRawResponse {
 
-        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val listHandler: Handler<List<Provider>> =
             jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
