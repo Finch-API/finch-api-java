@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.JobCreateResponse
 import com.tryfinch.api.models.SandboxJobCreateParams
 import com.tryfinch.api.services.blocking.sandbox.jobs.ConfigurationService
@@ -44,7 +44,7 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         JobService.WithRawResponse {
 
-        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val configuration: ConfigurationService.WithRawResponse by lazy {
             ConfigurationServiceImpl.WithRawResponseImpl(clientOptions)
