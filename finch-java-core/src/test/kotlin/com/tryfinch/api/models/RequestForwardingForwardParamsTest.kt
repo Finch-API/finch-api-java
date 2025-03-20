@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -33,7 +32,6 @@ internal class RequestForwardingForwardParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.method()).isEqualTo("POST")
         assertThat(body.route()).isEqualTo("/people/search")
         assertThat(body.data()).isEmpty
@@ -50,7 +48,6 @@ internal class RequestForwardingForwardParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.method()).isEqualTo("POST")
         assertThat(body.route()).isEqualTo("/people/search")
     }

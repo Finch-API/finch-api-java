@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -32,7 +31,6 @@ internal class HrisEmploymentRetrieveManyParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.requests())
             .containsExactly(
                 HrisEmploymentRetrieveManyParams.Request.builder()

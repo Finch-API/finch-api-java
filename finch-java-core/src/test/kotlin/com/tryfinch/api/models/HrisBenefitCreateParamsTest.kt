@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -28,7 +27,6 @@ internal class HrisBenefitCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.description()).contains("description")
         assertThat(body.frequency()).contains(BenefitFrequency.ONE_TIME)
         assertThat(body.type()).contains(BenefitType._401K)
@@ -39,7 +37,5 @@ internal class HrisBenefitCreateParamsTest {
         val params = HrisBenefitCreateParams.builder().build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }

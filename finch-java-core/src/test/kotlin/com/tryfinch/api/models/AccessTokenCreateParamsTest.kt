@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -30,7 +29,6 @@ internal class AccessTokenCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
         assertThat(body.clientId()).contains("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
         assertThat(body.clientSecret()).contains("<your_client_secret>")
@@ -43,7 +41,6 @@ internal class AccessTokenCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
     }
 }
