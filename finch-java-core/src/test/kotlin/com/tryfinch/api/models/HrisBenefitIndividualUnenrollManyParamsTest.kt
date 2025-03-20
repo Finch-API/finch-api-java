@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import kotlin.jvm.optionals.getOrNull
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -37,7 +36,6 @@ internal class HrisBenefitIndividualUnenrollManyParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.individualIds().getOrNull()).containsExactly("string")
     }
 
@@ -47,7 +45,5 @@ internal class HrisBenefitIndividualUnenrollManyParamsTest {
             HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }
