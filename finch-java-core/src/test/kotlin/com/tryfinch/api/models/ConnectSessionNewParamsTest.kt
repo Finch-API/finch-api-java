@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -50,7 +49,6 @@ internal class ConnectSessionNewParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
         assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
@@ -79,7 +77,6 @@ internal class ConnectSessionNewParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
         assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)

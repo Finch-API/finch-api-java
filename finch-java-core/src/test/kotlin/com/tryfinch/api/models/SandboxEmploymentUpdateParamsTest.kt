@@ -4,7 +4,6 @@ package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
 import kotlin.jvm.optionals.getOrNull
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -141,7 +140,6 @@ internal class SandboxEmploymentUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.classCode()).contains("class_code")
         assertThat(body.customFields().getOrNull())
             .containsExactly(
@@ -210,7 +208,5 @@ internal class SandboxEmploymentUpdateParamsTest {
         val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }

@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import kotlin.jvm.optionals.getOrNull
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -31,7 +30,6 @@ internal class SandboxConnectionCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
             .contains(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
@@ -45,7 +43,6 @@ internal class SandboxConnectionCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.providerId()).isEqualTo("provider_id")
     }
 }

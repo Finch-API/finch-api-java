@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import kotlin.jvm.optionals.getOrNull
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -100,7 +99,6 @@ internal class SandboxIndividualUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.dob()).contains("dob")
         assertThat(body.emails().getOrNull())
             .containsExactly(
@@ -144,7 +142,5 @@ internal class SandboxIndividualUpdateParamsTest {
         val params = SandboxIndividualUpdateParams.builder().individualId("individual_id").build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }
