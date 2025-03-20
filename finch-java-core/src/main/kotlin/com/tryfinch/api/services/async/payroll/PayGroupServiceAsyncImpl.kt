@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.payroll
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -13,7 +14,6 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.PayGroupListResponse
 import com.tryfinch.api.models.PayGroupRetrieveResponse
 import com.tryfinch.api.models.PayrollPayGroupListPageAsync
@@ -47,7 +47,7 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PayGroupServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
             jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)

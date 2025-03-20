@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -13,7 +14,6 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Provider
 import com.tryfinch.api.models.ProviderListPageAsync
 import com.tryfinch.api.models.ProviderListParams
@@ -38,7 +38,7 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ProviderServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val listHandler: Handler<List<Provider>> =
             jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

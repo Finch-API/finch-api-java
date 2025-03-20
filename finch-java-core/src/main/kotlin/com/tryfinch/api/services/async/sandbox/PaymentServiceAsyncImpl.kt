@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.sandbox
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.PaymentCreateResponse
 import com.tryfinch.api.models.SandboxPaymentCreateParams
 import java.util.concurrent.CompletableFuture
@@ -38,7 +38,7 @@ class PaymentServiceAsyncImpl internal constructor(private val clientOptions: Cl
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PaymentServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val createHandler: Handler<PaymentCreateResponse> =
             jsonHandler<PaymentCreateResponse>(clientOptions.jsonMapper)

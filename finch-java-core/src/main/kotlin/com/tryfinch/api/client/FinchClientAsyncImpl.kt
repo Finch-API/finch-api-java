@@ -4,6 +4,7 @@ package com.tryfinch.api.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.getPackageVersion
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -12,7 +13,6 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.json
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.*
 import com.tryfinch.api.services.async.AccessTokenServiceAsync
@@ -40,7 +40,7 @@ import java.util.concurrent.CompletableFuture
 
 class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClientAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions

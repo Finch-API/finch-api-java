@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
@@ -40,7 +40,7 @@ class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         AccessTokenServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val createHandler: Handler<CreateAccessTokenResponse> =
             jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper)

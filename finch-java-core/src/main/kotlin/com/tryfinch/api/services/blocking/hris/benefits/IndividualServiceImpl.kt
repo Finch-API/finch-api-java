@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.blocking.hris.benefits
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPage
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
@@ -57,7 +57,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         IndividualService.WithRawResponse {
 
-        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> =
             jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)
