@@ -7,7 +7,7 @@
 
 <!-- x-release-please-end -->
 
-The Finch Java SDK provides convenient access to the Finch REST API from applications written in Java.
+The Finch Java SDK provides convenient access to the [Finch REST API](https://developer.tryfinch.com/) from applications written in Java.
 
 The Finch Java SDK is similar to the Finch Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
@@ -33,9 +33,9 @@ implementation("com.tryfinch.api:finch-java:4.2.0")
 
 ```xml
 <dependency>
-    <groupId>com.tryfinch.api</groupId>
-    <artifactId>finch-java</artifactId>
-    <version>4.2.0</version>
+  <groupId>com.tryfinch.api</groupId>
+  <artifactId>finch-java</artifactId>
+  <version>4.2.0</version>
 </dependency>
 ```
 
