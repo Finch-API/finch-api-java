@@ -2,12 +2,14 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.toImmutable
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
@@ -16,22 +18,22 @@ class AccountDisconnectParams
 private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
+    private val additionalBodyProperties: MutableMap<String, JsonValue>,
 ) : Params {
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JsonAnySetter
+    private fun putAdditionalBodyProperty(key: String, value: JsonValue) {
+        additionalBodyProperties.put(key, value)
+    }
 
-    @JvmSynthetic
-    internal fun _body(): Optional<Map<String, JsonValue>> =
-        Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    @JsonAnyGetter
+    @ExcludeMissing
+    fun _additionalBodyProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalBodyProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -44,7 +46,6 @@ private constructor(
     }
 
     /** A builder for [AccountDisconnectParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -188,9 +189,17 @@ private constructor(
             AccountDisconnectParams(
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
+                additionalBodyProperties.toMutableMap(),
             )
     }
+
+    @JvmSynthetic
+    internal fun _body(): Optional<Map<String, JsonValue>> =
+        Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

@@ -11,39 +11,50 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class AccountUpdateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("account_id")
-    @ExcludeMissing
-    private val accountId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("authentication_type")
-    @ExcludeMissing
-    private val authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    private val companyId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("products")
-    @ExcludeMissing
-    private val products: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("provider_id")
-    @ExcludeMissing
-    private val providerId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val accountId: JsonField<String>,
+    private val authenticationType: JsonField<AuthenticationType>,
+    private val companyId: JsonField<String>,
+    private val products: JsonField<List<String>>,
+    private val providerId: JsonField<String>,
+    private val connectionId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("account_id") @ExcludeMissing accountId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("authentication_type")
+        @ExcludeMissing
+        authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
+        @JsonProperty("company_id") @ExcludeMissing companyId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        products: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        providerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        connectionId: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        accountId,
+        authenticationType,
+        companyId,
+        products,
+        providerId,
+        connectionId,
+        mutableMapOf(),
+    )
 
     /**
      * [DEPRECATED] Use `connection_id` to associate a connection with an access token
@@ -144,25 +155,15 @@ private constructor(
     @ExcludeMissing
     fun _connectionId(): JsonField<String> = connectionId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): AccountUpdateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        accountId()
-        authenticationType()
-        companyId()
-        products()
-        providerId()
-        connectionId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -341,8 +342,24 @@ private constructor(
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
                 connectionId,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): AccountUpdateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        accountId()
+        authenticationType()
+        companyId()
+        products()
+        providerId()
+        connectionId()
+        validated = true
     }
 
     class AuthenticationType

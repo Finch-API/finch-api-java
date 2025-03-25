@@ -11,55 +11,74 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class Payment
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("company_debit")
-    @ExcludeMissing
-    private val companyDebit: JsonField<Money> = JsonMissing.of(),
-    @JsonProperty("debit_date")
-    @ExcludeMissing
-    private val debitDate: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("employee_taxes")
-    @ExcludeMissing
-    private val employeeTaxes: JsonField<Money> = JsonMissing.of(),
-    @JsonProperty("employer_taxes")
-    @ExcludeMissing
-    private val employerTaxes: JsonField<Money> = JsonMissing.of(),
-    @JsonProperty("gross_pay")
-    @ExcludeMissing
-    private val grossPay: JsonField<Money> = JsonMissing.of(),
-    @JsonProperty("individual_ids")
-    @ExcludeMissing
-    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("net_pay")
-    @ExcludeMissing
-    private val netPay: JsonField<Money> = JsonMissing.of(),
-    @JsonProperty("pay_date")
-    @ExcludeMissing
-    private val payDate: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("pay_frequencies")
-    @ExcludeMissing
-    private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
-    @JsonProperty("pay_group_ids")
-    @ExcludeMissing
-    private val payGroupIds: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("pay_period")
-    @ExcludeMissing
-    private val payPeriod: JsonField<PayPeriod> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val companyDebit: JsonField<Money>,
+    private val debitDate: JsonField<String>,
+    private val employeeTaxes: JsonField<Money>,
+    private val employerTaxes: JsonField<Money>,
+    private val grossPay: JsonField<Money>,
+    private val individualIds: JsonField<List<String>>,
+    private val netPay: JsonField<Money>,
+    private val payDate: JsonField<String>,
+    private val payFrequencies: JsonField<List<PayFrequency>>,
+    private val payGroupIds: JsonField<List<String>>,
+    private val payPeriod: JsonField<PayPeriod>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("company_debit")
+        @ExcludeMissing
+        companyDebit: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("debit_date") @ExcludeMissing debitDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("employee_taxes")
+        @ExcludeMissing
+        employeeTaxes: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("employer_taxes")
+        @ExcludeMissing
+        employerTaxes: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("gross_pay") @ExcludeMissing grossPay: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("individual_ids")
+        @ExcludeMissing
+        individualIds: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("net_pay") @ExcludeMissing netPay: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("pay_date") @ExcludeMissing payDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("pay_frequencies")
+        @ExcludeMissing
+        payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
+        @JsonProperty("pay_group_ids")
+        @ExcludeMissing
+        payGroupIds: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("pay_period")
+        @ExcludeMissing
+        payPeriod: JsonField<PayPeriod> = JsonMissing.of(),
+    ) : this(
+        id,
+        companyDebit,
+        debitDate,
+        employeeTaxes,
+        employerTaxes,
+        grossPay,
+        individualIds,
+        netPay,
+        payDate,
+        payFrequencies,
+        payGroupIds,
+        payPeriod,
+        mutableMapOf(),
+    )
 
     /**
      * The unique id for the payment.
@@ -245,31 +264,15 @@ private constructor(
      */
     @JsonProperty("pay_period") @ExcludeMissing fun _payPeriod(): JsonField<PayPeriod> = payPeriod
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Payment = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        companyDebit().ifPresent { it.validate() }
-        debitDate()
-        employeeTaxes().ifPresent { it.validate() }
-        employerTaxes().ifPresent { it.validate() }
-        grossPay().ifPresent { it.validate() }
-        individualIds()
-        netPay().ifPresent { it.validate() }
-        payDate()
-        payFrequencies()
-        payGroupIds()
-        payPeriod().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -571,8 +574,30 @@ private constructor(
                 (payFrequencies ?: JsonMissing.of()).map { it.toImmutable() },
                 (payGroupIds ?: JsonMissing.of()).map { it.toImmutable() },
                 payPeriod,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): Payment = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        companyDebit().ifPresent { it.validate() }
+        debitDate()
+        employeeTaxes().ifPresent { it.validate() }
+        employerTaxes().ifPresent { it.validate() }
+        grossPay().ifPresent { it.validate() }
+        individualIds()
+        netPay().ifPresent { it.validate() }
+        payDate()
+        payFrequencies()
+        payGroupIds()
+        payPeriod().ifPresent { it.validate() }
+        validated = true
     }
 
     class PayFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -718,19 +743,20 @@ private constructor(
     }
 
     /** The pay period object. */
-    @NoAutoDetect
     class PayPeriod
-    @JsonCreator
     private constructor(
-        @JsonProperty("end_date")
-        @ExcludeMissing
-        private val endDate: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("start_date")
-        @ExcludeMissing
-        private val startDate: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val endDate: JsonField<String>,
+        private val startDate: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("end_date") @ExcludeMissing endDate: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("start_date")
+            @ExcludeMissing
+            startDate: JsonField<String> = JsonMissing.of(),
+        ) : this(endDate, startDate, mutableMapOf())
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -758,21 +784,15 @@ private constructor(
          */
         @JsonProperty("start_date") @ExcludeMissing fun _startDate(): JsonField<String> = startDate
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): PayPeriod = apply {
-            if (validated) {
-                return@apply
-            }
-
-            endDate()
-            startDate()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -849,7 +869,19 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): PayPeriod =
-                PayPeriod(endDate, startDate, additionalProperties.toImmutable())
+                PayPeriod(endDate, startDate, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): PayPeriod = apply {
+            if (validated) {
+                return@apply
+            }
+
+            endDate()
+            startDate()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

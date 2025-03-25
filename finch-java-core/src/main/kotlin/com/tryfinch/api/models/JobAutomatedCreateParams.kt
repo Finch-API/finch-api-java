@@ -20,15 +20,13 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -60,6 +58,168 @@ private constructor(
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        @JvmStatic fun none(): JobAutomatedCreateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [JobAutomatedCreateParams]. */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [JobAutomatedCreateParams]. */
+    class Builder internal constructor() {
+
+        private var body: Body? = null
+        private var additionalHeaders: Headers.Builder = Headers.builder()
+        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
+
+        @JvmSynthetic
+        internal fun from(jobAutomatedCreateParams: JobAutomatedCreateParams) = apply {
+            body = jobAutomatedCreateParams.body
+            additionalHeaders = jobAutomatedCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
+        }
+
+        fun body(body: Body?) = apply { this.body = body }
+
+        /** Alias for calling [Builder.body] with `body.orElse(null)`. */
+        fun body(body: Optional<Body>) = body(body.getOrNull())
+
+        /** Alias for calling [body] with `Body.ofDataSyncAll(dataSyncAll)`. */
+        fun body(dataSyncAll: Body.DataSyncAll) = body(Body.ofDataSyncAll(dataSyncAll))
+
+        /** Alias for calling [body] with `Body.ofW4FormEmployeeSync(w4FormEmployeeSync)`. */
+        fun body(w4FormEmployeeSync: Body.W4FormEmployeeSync) =
+            body(Body.ofW4FormEmployeeSync(w4FormEmployeeSync))
+
+        /**
+         * Alias for calling [body] with the following:
+         * ```java
+         * Body.W4FormEmployeeSync.builder()
+         *     .type(JobAutomatedCreateParams.Body.W4FormEmployeeSync.Type.W4_FORM_EMPLOYEE_SYNC)
+         *     .params(params)
+         *     .build()
+         * ```
+         */
+        fun w4FormEmployeeSyncBody(params: Body.W4FormEmployeeSync.Params) =
+            body(
+                Body.W4FormEmployeeSync.builder()
+                    .type(
+                        JobAutomatedCreateParams.Body.W4FormEmployeeSync.Type.W4_FORM_EMPLOYEE_SYNC
+                    )
+                    .params(params)
+                    .build()
+            )
+
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
+
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
+
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
+
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
+
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
+
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
+
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
+
+        /**
+         * Returns an immutable instance of [JobAutomatedCreateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
+        fun build(): JobAutomatedCreateParams =
+            JobAutomatedCreateParams(body, additionalHeaders.build(), additionalQueryParams.build())
+    }
 
     @JvmSynthetic internal fun _body(): Optional<Body> = Optional.ofNullable(body)
 
@@ -211,16 +371,16 @@ private constructor(
             }
         }
 
-        @NoAutoDetect
         class DataSyncAll
-        @JsonCreator
         private constructor(
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of()
+            ) : this(type, mutableMapOf())
 
             /**
              * The type of job to start.
@@ -238,20 +398,15 @@ private constructor(
              */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): DataSyncAll = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                type()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -327,7 +482,18 @@ private constructor(
                  * @throws IllegalStateException if any required field is unset.
                  */
                 fun build(): DataSyncAll =
-                    DataSyncAll(checkRequired("type", type), additionalProperties.toImmutable())
+                    DataSyncAll(checkRequired("type", type), additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): DataSyncAll = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                type()
+                validated = true
             }
 
             /** The type of job to start. */
@@ -446,19 +612,20 @@ private constructor(
                 "DataSyncAll{type=$type, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class W4FormEmployeeSync
-        @JsonCreator
         private constructor(
-            @JsonProperty("params")
-            @ExcludeMissing
-            private val params: JsonField<Params> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val params: JsonField<Params>,
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("params")
+                @ExcludeMissing
+                params: JsonField<Params> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            ) : this(params, type, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -490,21 +657,15 @@ private constructor(
              */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): W4FormEmployeeSync = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                params().validate()
-                type()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -598,20 +759,34 @@ private constructor(
                     W4FormEmployeeSync(
                         checkRequired("params", params),
                         checkRequired("type", type),
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
             }
 
-            @NoAutoDetect
+            private var validated: Boolean = false
+
+            fun validate(): W4FormEmployeeSync = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                params().validate()
+                type()
+                validated = true
+            }
+
             class Params
-            @JsonCreator
             private constructor(
-                @JsonProperty("individual_id")
-                @ExcludeMissing
-                private val individualId: JsonField<String> = JsonMissing.of(),
-                @JsonAnySetter
-                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+                private val individualId: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("individual_id")
+                    @ExcludeMissing
+                    individualId: JsonField<String> = JsonMissing.of()
+                ) : this(individualId, mutableMapOf())
 
                 /**
                  * The unique ID of the individual for W-4 data sync.
@@ -632,20 +807,15 @@ private constructor(
                 @ExcludeMissing
                 fun _individualId(): JsonField<String> = individualId
 
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                private var validated: Boolean = false
-
-                fun validate(): Params = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    individualId()
-                    validated = true
-                }
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
 
                 fun toBuilder() = Builder().from(this)
 
@@ -726,8 +896,19 @@ private constructor(
                     fun build(): Params =
                         Params(
                             checkRequired("individualId", individualId),
-                            additionalProperties.toImmutable(),
+                            additionalProperties.toMutableMap(),
                         )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): Params = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    individualId()
+                    validated = true
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -863,169 +1044,6 @@ private constructor(
             override fun toString() =
                 "W4FormEmployeeSync{params=$params, type=$type, additionalProperties=$additionalProperties}"
         }
-    }
-
-    fun toBuilder() = Builder().from(this)
-
-    companion object {
-
-        @JvmStatic fun none(): JobAutomatedCreateParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [JobAutomatedCreateParams]. */
-        @JvmStatic fun builder() = Builder()
-    }
-
-    /** A builder for [JobAutomatedCreateParams]. */
-    @NoAutoDetect
-    class Builder internal constructor() {
-
-        private var body: Body? = null
-        private var additionalHeaders: Headers.Builder = Headers.builder()
-        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-
-        @JvmSynthetic
-        internal fun from(jobAutomatedCreateParams: JobAutomatedCreateParams) = apply {
-            body = jobAutomatedCreateParams.body
-            additionalHeaders = jobAutomatedCreateParams.additionalHeaders.toBuilder()
-            additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
-        }
-
-        fun body(body: Body?) = apply { this.body = body }
-
-        /** Alias for calling [Builder.body] with `body.orElse(null)`. */
-        fun body(body: Optional<Body>) = body(body.getOrNull())
-
-        /** Alias for calling [body] with `Body.ofDataSyncAll(dataSyncAll)`. */
-        fun body(dataSyncAll: Body.DataSyncAll) = body(Body.ofDataSyncAll(dataSyncAll))
-
-        /** Alias for calling [body] with `Body.ofW4FormEmployeeSync(w4FormEmployeeSync)`. */
-        fun body(w4FormEmployeeSync: Body.W4FormEmployeeSync) =
-            body(Body.ofW4FormEmployeeSync(w4FormEmployeeSync))
-
-        /**
-         * Alias for calling [body] with the following:
-         * ```java
-         * Body.W4FormEmployeeSync.builder()
-         *     .type(JobAutomatedCreateParams.Body.W4FormEmployeeSync.Type.W4_FORM_EMPLOYEE_SYNC)
-         *     .params(params)
-         *     .build()
-         * ```
-         */
-        fun w4FormEmployeeSyncBody(params: Body.W4FormEmployeeSync.Params) =
-            body(
-                Body.W4FormEmployeeSync.builder()
-                    .type(
-                        JobAutomatedCreateParams.Body.W4FormEmployeeSync.Type.W4_FORM_EMPLOYEE_SYNC
-                    )
-                    .params(params)
-                    .build()
-            )
-
-        fun additionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
-
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
-
-        fun putAdditionalHeader(name: String, value: String) = apply {
-            additionalHeaders.put(name, value)
-        }
-
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.put(name, values)
-        }
-
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
-
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
-
-        fun replaceAdditionalHeaders(name: String, value: String) = apply {
-            additionalHeaders.replace(name, value)
-        }
-
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.replace(name, values)
-        }
-
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
-
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
-
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
-
-        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
-            additionalHeaders.removeAll(names)
-        }
-
-        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
-
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
-
-        fun putAdditionalQueryParam(key: String, value: String) = apply {
-            additionalQueryParams.put(key, value)
-        }
-
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.put(key, values)
-        }
-
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.putAll(additionalQueryParams)
-        }
-
-        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.putAll(additionalQueryParams)
-            }
-
-        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
-            additionalQueryParams.replace(key, value)
-        }
-
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.replace(key, values)
-        }
-
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.replaceAll(additionalQueryParams)
-        }
-
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.replaceAll(additionalQueryParams)
-            }
-
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
-
-        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
-            additionalQueryParams.removeAll(keys)
-        }
-
-        /**
-         * Returns an immutable instance of [JobAutomatedCreateParams].
-         *
-         * Further updates to this [Builder] will not mutate the returned instance.
-         */
-        fun build(): JobAutomatedCreateParams =
-            JobAutomatedCreateParams(body, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     override fun equals(other: Any?): Boolean {

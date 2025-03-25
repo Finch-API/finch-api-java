@@ -10,13 +10,11 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -82,215 +80,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("frequency")
-        @ExcludeMissing
-        private val frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
-        @JsonProperty("type")
-        @ExcludeMissing
-        private val type: JsonField<BenefitType> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
-         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun frequency(): Optional<BenefitFrequency> =
-            Optional.ofNullable(frequency.getNullable("frequency"))
-
-        /**
-         * Type of benefit.
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
-
-        /**
-         * Returns the raw JSON value of [description].
-         *
-         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("description")
-        @ExcludeMissing
-        fun _description(): JsonField<String> = description
-
-        /**
-         * Returns the raw JSON value of [frequency].
-         *
-         * Unlike [frequency], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("frequency")
-        @ExcludeMissing
-        fun _frequency(): JsonField<BenefitFrequency> = frequency
-
-        /**
-         * Returns the raw JSON value of [type].
-         *
-         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            description()
-            frequency()
-            type()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Body]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var description: JsonField<String> = JsonMissing.of()
-            private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
-            private var type: JsonField<BenefitType> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                description = body.description
-                frequency = body.frequency
-                type = body.type
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /**
-             * Name of the benefit as it appears in the provider and pay statements. Recommend
-             * limiting this to <30 characters due to limitations in specific providers (e.g.
-             * Justworks).
-             */
-            fun description(description: String) = description(JsonField.of(description))
-
-            /**
-             * Sets [Builder.description] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.description] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
-
-            fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
-
-            /** Alias for calling [Builder.frequency] with `frequency.orElse(null)`. */
-            fun frequency(frequency: Optional<BenefitFrequency>) = frequency(frequency.getOrNull())
-
-            /**
-             * Sets [Builder.frequency] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.frequency] with a well-typed [BenefitFrequency]
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun frequency(frequency: JsonField<BenefitFrequency>) = apply {
-                this.frequency = frequency
-            }
-
-            /** Type of benefit. */
-            fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
-
-            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
-            fun type(type: Optional<BenefitType>) = type(type.getOrNull())
-
-            /**
-             * Sets [Builder.type] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.type] with a well-typed [BenefitType] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun type(type: JsonField<BenefitType>) = apply { this.type = type }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Body =
-                Body(description, frequency, type, additionalProperties.toImmutable())
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && description == other.description && frequency == other.frequency && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(description, frequency, type, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{description=$description, frequency=$frequency, type=$type, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -302,7 +91,6 @@ private constructor(
     }
 
     /** A builder for [HrisBenefitCreateParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var body: Body.Builder = Body.builder()
@@ -488,6 +276,223 @@ private constructor(
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
+    }
+
+    @JvmSynthetic internal fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    private constructor(
+        private val description: JsonField<String>,
+        private val frequency: JsonField<BenefitFrequency>,
+        private val type: JsonField<BenefitType>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("description")
+            @ExcludeMissing
+            description: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("frequency")
+            @ExcludeMissing
+            frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<BenefitType> = JsonMissing.of(),
+        ) : this(description, frequency, type, mutableMapOf())
+
+        /**
+         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
+         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun frequency(): Optional<BenefitFrequency> =
+            Optional.ofNullable(frequency.getNullable("frequency"))
+
+        /**
+         * Type of benefit.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
+
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        /**
+         * Returns the raw JSON value of [frequency].
+         *
+         * Unlike [frequency], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("frequency")
+        @ExcludeMissing
+        fun _frequency(): JsonField<BenefitFrequency> = frequency
+
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Body]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var description: JsonField<String> = JsonMissing.of()
+            private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
+            private var type: JsonField<BenefitType> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                description = body.description
+                frequency = body.frequency
+                type = body.type
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /**
+             * Name of the benefit as it appears in the provider and pay statements. Recommend
+             * limiting this to <30 characters due to limitations in specific providers (e.g.
+             * Justworks).
+             */
+            fun description(description: String) = description(JsonField.of(description))
+
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
+
+            fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
+
+            /** Alias for calling [Builder.frequency] with `frequency.orElse(null)`. */
+            fun frequency(frequency: Optional<BenefitFrequency>) = frequency(frequency.getOrNull())
+
+            /**
+             * Sets [Builder.frequency] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.frequency] with a well-typed [BenefitFrequency]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun frequency(frequency: JsonField<BenefitFrequency>) = apply {
+                this.frequency = frequency
+            }
+
+            /** Type of benefit. */
+            fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
+
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
+            fun type(type: Optional<BenefitType>) = type(type.getOrNull())
+
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [BenefitType] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun type(type: JsonField<BenefitType>) = apply { this.type = type }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Body =
+                Body(description, frequency, type, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            description()
+            frequency()
+            type()
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && description == other.description && frequency == other.frequency && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(description, frequency, type, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{description=$description, frequency=$frequency, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

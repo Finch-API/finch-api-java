@@ -11,10 +11,8 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -24,20 +22,24 @@ import kotlin.jvm.optionals.getOrNull
  * may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
  * provider returns.
  */
-@NoAutoDetect
 class Income
-@JsonCreator
 private constructor(
-    @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("currency")
-    @ExcludeMissing
-    private val currency: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("effective_date")
-    @ExcludeMissing
-    private val effectiveDate: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("unit") @ExcludeMissing private val unit: JsonField<Unit> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val amount: JsonField<Long>,
+    private val currency: JsonField<String>,
+    private val effectiveDate: JsonField<String>,
+    private val unit: JsonField<Unit>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("currency") @ExcludeMissing currency: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("effective_date")
+        @ExcludeMissing
+        effectiveDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("unit") @ExcludeMissing unit: JsonField<Unit> = JsonMissing.of(),
+    ) : this(amount, currency, effectiveDate, unit, mutableMapOf())
 
     /**
      * The income amount in cents.
@@ -103,23 +105,15 @@ private constructor(
      */
     @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Unit> = unit
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Income = apply {
-        if (validated) {
-            return@apply
-        }
-
-        amount()
-        currency()
-        effectiveDate()
-        unit()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -243,7 +237,21 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): Income =
-            Income(amount, currency, effectiveDate, unit, additionalProperties.toImmutable())
+            Income(amount, currency, effectiveDate, unit, additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): Income = apply {
+        if (validated) {
+            return@apply
+        }
+
+        amount()
+        currency()
+        effectiveDate()
+        unit()
+        validated = true
     }
 
     /**

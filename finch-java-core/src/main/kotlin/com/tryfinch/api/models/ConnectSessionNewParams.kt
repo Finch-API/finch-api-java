@@ -11,15 +11,14 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -157,487 +156,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("customer_id")
-        @ExcludeMissing
-        private val customerId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("customer_name")
-        @ExcludeMissing
-        private val customerName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("products")
-        @ExcludeMissing
-        private val products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
-        @JsonProperty("customer_email")
-        @ExcludeMissing
-        private val customerEmail: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("integration")
-        @ExcludeMissing
-        private val integration: JsonField<Integration> = JsonMissing.of(),
-        @JsonProperty("manual")
-        @ExcludeMissing
-        private val manual: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("minutes_to_expire")
-        @ExcludeMissing
-        private val minutesToExpire: JsonField<Double> = JsonMissing.of(),
-        @JsonProperty("redirect_uri")
-        @ExcludeMissing
-        private val redirectUri: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("sandbox")
-        @ExcludeMissing
-        private val sandbox: JsonField<Sandbox> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun customerId(): String = customerId.getRequired("customer_id")
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun customerName(): String = customerName.getRequired("customer_name")
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun products(): List<ConnectProducts> = products.getRequired("products")
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun customerEmail(): Optional<String> =
-            Optional.ofNullable(customerEmail.getNullable("customer_email"))
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun integration(): Optional<Integration> =
-            Optional.ofNullable(integration.getNullable("integration"))
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun manual(): Optional<Boolean> = Optional.ofNullable(manual.getNullable("manual"))
-
-        /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun minutesToExpire(): Optional<Double> =
-            Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun redirectUri(): Optional<String> =
-            Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun sandbox(): Optional<Sandbox> = Optional.ofNullable(sandbox.getNullable("sandbox"))
-
-        /**
-         * Returns the raw JSON value of [customerId].
-         *
-         * Unlike [customerId], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("customer_id")
-        @ExcludeMissing
-        fun _customerId(): JsonField<String> = customerId
-
-        /**
-         * Returns the raw JSON value of [customerName].
-         *
-         * Unlike [customerName], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("customer_name")
-        @ExcludeMissing
-        fun _customerName(): JsonField<String> = customerName
-
-        /**
-         * Returns the raw JSON value of [products].
-         *
-         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("products")
-        @ExcludeMissing
-        fun _products(): JsonField<List<ConnectProducts>> = products
-
-        /**
-         * Returns the raw JSON value of [customerEmail].
-         *
-         * Unlike [customerEmail], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("customer_email")
-        @ExcludeMissing
-        fun _customerEmail(): JsonField<String> = customerEmail
-
-        /**
-         * Returns the raw JSON value of [integration].
-         *
-         * Unlike [integration], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("integration")
-        @ExcludeMissing
-        fun _integration(): JsonField<Integration> = integration
-
-        /**
-         * Returns the raw JSON value of [manual].
-         *
-         * Unlike [manual], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
-
-        /**
-         * Returns the raw JSON value of [minutesToExpire].
-         *
-         * Unlike [minutesToExpire], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("minutes_to_expire")
-        @ExcludeMissing
-        fun _minutesToExpire(): JsonField<Double> = minutesToExpire
-
-        /**
-         * Returns the raw JSON value of [redirectUri].
-         *
-         * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("redirect_uri")
-        @ExcludeMissing
-        fun _redirectUri(): JsonField<String> = redirectUri
-
-        /**
-         * Returns the raw JSON value of [sandbox].
-         *
-         * Unlike [sandbox], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("sandbox") @ExcludeMissing fun _sandbox(): JsonField<Sandbox> = sandbox
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            customerId()
-            customerName()
-            products()
-            customerEmail()
-            integration().ifPresent { it.validate() }
-            manual()
-            minutesToExpire()
-            redirectUri()
-            sandbox()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Body].
-             *
-             * The following fields are required:
-             * ```java
-             * .customerId()
-             * .customerName()
-             * .products()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var customerId: JsonField<String>? = null
-            private var customerName: JsonField<String>? = null
-            private var products: JsonField<MutableList<ConnectProducts>>? = null
-            private var customerEmail: JsonField<String> = JsonMissing.of()
-            private var integration: JsonField<Integration> = JsonMissing.of()
-            private var manual: JsonField<Boolean> = JsonMissing.of()
-            private var minutesToExpire: JsonField<Double> = JsonMissing.of()
-            private var redirectUri: JsonField<String> = JsonMissing.of()
-            private var sandbox: JsonField<Sandbox> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                customerId = body.customerId
-                customerName = body.customerName
-                products = body.products.map { it.toMutableList() }
-                customerEmail = body.customerEmail
-                integration = body.integration
-                manual = body.manual
-                minutesToExpire = body.minutesToExpire
-                redirectUri = body.redirectUri
-                sandbox = body.sandbox
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            fun customerId(customerId: String) = customerId(JsonField.of(customerId))
-
-            /**
-             * Sets [Builder.customerId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.customerId] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
-
-            fun customerName(customerName: String) = customerName(JsonField.of(customerName))
-
-            /**
-             * Sets [Builder.customerName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.customerName] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun customerName(customerName: JsonField<String>) = apply {
-                this.customerName = customerName
-            }
-
-            fun products(products: List<ConnectProducts>) = products(JsonField.of(products))
-
-            /**
-             * Sets [Builder.products] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun products(products: JsonField<List<ConnectProducts>>) = apply {
-                this.products = products.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [ConnectProducts] to [products].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addProduct(product: ConnectProducts) = apply {
-                products =
-                    (products ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("products", it).add(product)
-                    }
-            }
-
-            fun customerEmail(customerEmail: String?) =
-                customerEmail(JsonField.ofNullable(customerEmail))
-
-            /** Alias for calling [Builder.customerEmail] with `customerEmail.orElse(null)`. */
-            fun customerEmail(customerEmail: Optional<String>) =
-                customerEmail(customerEmail.getOrNull())
-
-            /**
-             * Sets [Builder.customerEmail] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.customerEmail] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun customerEmail(customerEmail: JsonField<String>) = apply {
-                this.customerEmail = customerEmail
-            }
-
-            fun integration(integration: Integration?) =
-                integration(JsonField.ofNullable(integration))
-
-            /** Alias for calling [Builder.integration] with `integration.orElse(null)`. */
-            fun integration(integration: Optional<Integration>) =
-                integration(integration.getOrNull())
-
-            /**
-             * Sets [Builder.integration] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.integration] with a well-typed [Integration] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun integration(integration: JsonField<Integration>) = apply {
-                this.integration = integration
-            }
-
-            fun manual(manual: Boolean?) = manual(JsonField.ofNullable(manual))
-
-            /**
-             * Alias for [Builder.manual].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
-            fun manual(manual: Boolean) = manual(manual as Boolean?)
-
-            /** Alias for calling [Builder.manual] with `manual.orElse(null)`. */
-            fun manual(manual: Optional<Boolean>) = manual(manual.getOrNull())
-
-            /**
-             * Sets [Builder.manual] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.manual] with a well-typed [Boolean] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
-
-            /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
-             */
-            fun minutesToExpire(minutesToExpire: Double?) =
-                minutesToExpire(JsonField.ofNullable(minutesToExpire))
-
-            /**
-             * Alias for [Builder.minutesToExpire].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
-            fun minutesToExpire(minutesToExpire: Double) =
-                minutesToExpire(minutesToExpire as Double?)
-
-            /** Alias for calling [Builder.minutesToExpire] with `minutesToExpire.orElse(null)`. */
-            fun minutesToExpire(minutesToExpire: Optional<Double>) =
-                minutesToExpire(minutesToExpire.getOrNull())
-
-            /**
-             * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.minutesToExpire] with a well-typed [Double] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
-                this.minutesToExpire = minutesToExpire
-            }
-
-            fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
-
-            /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
-            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
-
-            /**
-             * Sets [Builder.redirectUri] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.redirectUri] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun redirectUri(redirectUri: JsonField<String>) = apply {
-                this.redirectUri = redirectUri
-            }
-
-            fun sandbox(sandbox: Sandbox?) = sandbox(JsonField.ofNullable(sandbox))
-
-            /** Alias for calling [Builder.sandbox] with `sandbox.orElse(null)`. */
-            fun sandbox(sandbox: Optional<Sandbox>) = sandbox(sandbox.getOrNull())
-
-            /**
-             * Sets [Builder.sandbox] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.sandbox] with a well-typed [Sandbox] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun sandbox(sandbox: JsonField<Sandbox>) = apply { this.sandbox = sandbox }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .customerId()
-             * .customerName()
-             * .products()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Body =
-                Body(
-                    checkRequired("customerId", customerId),
-                    checkRequired("customerName", customerName),
-                    checkRequired("products", products).map { it.toImmutable() },
-                    customerEmail,
-                    integration,
-                    manual,
-                    minutesToExpire,
-                    redirectUri,
-                    sandbox,
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -656,7 +174,6 @@ private constructor(
     }
 
     /** A builder for [ConnectSessionNewParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var body: Body.Builder = Body.builder()
@@ -960,6 +477,510 @@ private constructor(
             )
     }
 
+    @JvmSynthetic internal fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    private constructor(
+        private val customerId: JsonField<String>,
+        private val customerName: JsonField<String>,
+        private val products: JsonField<List<ConnectProducts>>,
+        private val customerEmail: JsonField<String>,
+        private val integration: JsonField<Integration>,
+        private val manual: JsonField<Boolean>,
+        private val minutesToExpire: JsonField<Double>,
+        private val redirectUri: JsonField<String>,
+        private val sandbox: JsonField<Sandbox>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("customer_id")
+            @ExcludeMissing
+            customerId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("customer_name")
+            @ExcludeMissing
+            customerName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("products")
+            @ExcludeMissing
+            products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
+            @JsonProperty("customer_email")
+            @ExcludeMissing
+            customerEmail: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("integration")
+            @ExcludeMissing
+            integration: JsonField<Integration> = JsonMissing.of(),
+            @JsonProperty("manual") @ExcludeMissing manual: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("minutes_to_expire")
+            @ExcludeMissing
+            minutesToExpire: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("redirect_uri")
+            @ExcludeMissing
+            redirectUri: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("sandbox") @ExcludeMissing sandbox: JsonField<Sandbox> = JsonMissing.of(),
+        ) : this(
+            customerId,
+            customerName,
+            products,
+            customerEmail,
+            integration,
+            manual,
+            minutesToExpire,
+            redirectUri,
+            sandbox,
+            mutableMapOf(),
+        )
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun customerId(): String = customerId.getRequired("customer_id")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun customerName(): String = customerName.getRequired("customer_name")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun products(): List<ConnectProducts> = products.getRequired("products")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun customerEmail(): Optional<String> =
+            Optional.ofNullable(customerEmail.getNullable("customer_email"))
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun integration(): Optional<Integration> =
+            Optional.ofNullable(integration.getNullable("integration"))
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun manual(): Optional<Boolean> = Optional.ofNullable(manual.getNullable("manual"))
+
+        /**
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun minutesToExpire(): Optional<Double> =
+            Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun redirectUri(): Optional<String> =
+            Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun sandbox(): Optional<Sandbox> = Optional.ofNullable(sandbox.getNullable("sandbox"))
+
+        /**
+         * Returns the raw JSON value of [customerId].
+         *
+         * Unlike [customerId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("customer_id")
+        @ExcludeMissing
+        fun _customerId(): JsonField<String> = customerId
+
+        /**
+         * Returns the raw JSON value of [customerName].
+         *
+         * Unlike [customerName], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("customer_name")
+        @ExcludeMissing
+        fun _customerName(): JsonField<String> = customerName
+
+        /**
+         * Returns the raw JSON value of [products].
+         *
+         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("products")
+        @ExcludeMissing
+        fun _products(): JsonField<List<ConnectProducts>> = products
+
+        /**
+         * Returns the raw JSON value of [customerEmail].
+         *
+         * Unlike [customerEmail], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("customer_email")
+        @ExcludeMissing
+        fun _customerEmail(): JsonField<String> = customerEmail
+
+        /**
+         * Returns the raw JSON value of [integration].
+         *
+         * Unlike [integration], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("integration")
+        @ExcludeMissing
+        fun _integration(): JsonField<Integration> = integration
+
+        /**
+         * Returns the raw JSON value of [manual].
+         *
+         * Unlike [manual], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
+
+        /**
+         * Returns the raw JSON value of [minutesToExpire].
+         *
+         * Unlike [minutesToExpire], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("minutes_to_expire")
+        @ExcludeMissing
+        fun _minutesToExpire(): JsonField<Double> = minutesToExpire
+
+        /**
+         * Returns the raw JSON value of [redirectUri].
+         *
+         * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("redirect_uri")
+        @ExcludeMissing
+        fun _redirectUri(): JsonField<String> = redirectUri
+
+        /**
+         * Returns the raw JSON value of [sandbox].
+         *
+         * Unlike [sandbox], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("sandbox") @ExcludeMissing fun _sandbox(): JsonField<Sandbox> = sandbox
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .customerId()
+             * .customerName()
+             * .products()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var customerId: JsonField<String>? = null
+            private var customerName: JsonField<String>? = null
+            private var products: JsonField<MutableList<ConnectProducts>>? = null
+            private var customerEmail: JsonField<String> = JsonMissing.of()
+            private var integration: JsonField<Integration> = JsonMissing.of()
+            private var manual: JsonField<Boolean> = JsonMissing.of()
+            private var minutesToExpire: JsonField<Double> = JsonMissing.of()
+            private var redirectUri: JsonField<String> = JsonMissing.of()
+            private var sandbox: JsonField<Sandbox> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                customerId = body.customerId
+                customerName = body.customerName
+                products = body.products.map { it.toMutableList() }
+                customerEmail = body.customerEmail
+                integration = body.integration
+                manual = body.manual
+                minutesToExpire = body.minutesToExpire
+                redirectUri = body.redirectUri
+                sandbox = body.sandbox
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            fun customerId(customerId: String) = customerId(JsonField.of(customerId))
+
+            /**
+             * Sets [Builder.customerId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.customerId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
+
+            fun customerName(customerName: String) = customerName(JsonField.of(customerName))
+
+            /**
+             * Sets [Builder.customerName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.customerName] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun customerName(customerName: JsonField<String>) = apply {
+                this.customerName = customerName
+            }
+
+            fun products(products: List<ConnectProducts>) = products(JsonField.of(products))
+
+            /**
+             * Sets [Builder.products] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun products(products: JsonField<List<ConnectProducts>>) = apply {
+                this.products = products.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [ConnectProducts] to [products].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addProduct(product: ConnectProducts) = apply {
+                products =
+                    (products ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("products", it).add(product)
+                    }
+            }
+
+            fun customerEmail(customerEmail: String?) =
+                customerEmail(JsonField.ofNullable(customerEmail))
+
+            /** Alias for calling [Builder.customerEmail] with `customerEmail.orElse(null)`. */
+            fun customerEmail(customerEmail: Optional<String>) =
+                customerEmail(customerEmail.getOrNull())
+
+            /**
+             * Sets [Builder.customerEmail] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.customerEmail] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun customerEmail(customerEmail: JsonField<String>) = apply {
+                this.customerEmail = customerEmail
+            }
+
+            fun integration(integration: Integration?) =
+                integration(JsonField.ofNullable(integration))
+
+            /** Alias for calling [Builder.integration] with `integration.orElse(null)`. */
+            fun integration(integration: Optional<Integration>) =
+                integration(integration.getOrNull())
+
+            /**
+             * Sets [Builder.integration] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.integration] with a well-typed [Integration] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun integration(integration: JsonField<Integration>) = apply {
+                this.integration = integration
+            }
+
+            fun manual(manual: Boolean?) = manual(JsonField.ofNullable(manual))
+
+            /**
+             * Alias for [Builder.manual].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun manual(manual: Boolean) = manual(manual as Boolean?)
+
+            /** Alias for calling [Builder.manual] with `manual.orElse(null)`. */
+            fun manual(manual: Optional<Boolean>) = manual(manual.getOrNull())
+
+            /**
+             * Sets [Builder.manual] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.manual] with a well-typed [Boolean] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
+
+            /**
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
+             * days)
+             */
+            fun minutesToExpire(minutesToExpire: Double?) =
+                minutesToExpire(JsonField.ofNullable(minutesToExpire))
+
+            /**
+             * Alias for [Builder.minutesToExpire].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun minutesToExpire(minutesToExpire: Double) =
+                minutesToExpire(minutesToExpire as Double?)
+
+            /** Alias for calling [Builder.minutesToExpire] with `minutesToExpire.orElse(null)`. */
+            fun minutesToExpire(minutesToExpire: Optional<Double>) =
+                minutesToExpire(minutesToExpire.getOrNull())
+
+            /**
+             * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.minutesToExpire] with a well-typed [Double] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
+                this.minutesToExpire = minutesToExpire
+            }
+
+            fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
+
+            /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
+            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
+
+            /**
+             * Sets [Builder.redirectUri] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.redirectUri] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun redirectUri(redirectUri: JsonField<String>) = apply {
+                this.redirectUri = redirectUri
+            }
+
+            fun sandbox(sandbox: Sandbox?) = sandbox(JsonField.ofNullable(sandbox))
+
+            /** Alias for calling [Builder.sandbox] with `sandbox.orElse(null)`. */
+            fun sandbox(sandbox: Optional<Sandbox>) = sandbox(sandbox.getOrNull())
+
+            /**
+             * Sets [Builder.sandbox] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.sandbox] with a well-typed [Sandbox] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun sandbox(sandbox: JsonField<Sandbox>) = apply { this.sandbox = sandbox }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .customerId()
+             * .customerName()
+             * .products()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("customerId", customerId),
+                    checkRequired("customerName", customerName),
+                    checkRequired("products", products).map { it.toImmutable() },
+                    customerEmail,
+                    integration,
+                    manual,
+                    minutesToExpire,
+                    redirectUri,
+                    sandbox,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            customerId()
+            customerName()
+            products()
+            customerEmail()
+            integration().ifPresent { it.validate() }
+            manual()
+            minutesToExpire()
+            redirectUri()
+            sandbox()
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
+    }
+
     /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
@@ -1098,19 +1119,20 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @NoAutoDetect
     class Integration
-    @JsonCreator
     private constructor(
-        @JsonProperty("auth_method")
-        @ExcludeMissing
-        private val authMethod: JsonField<AuthMethod> = JsonMissing.of(),
-        @JsonProperty("provider")
-        @ExcludeMissing
-        private val provider: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val authMethod: JsonField<AuthMethod>,
+        private val provider: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("auth_method")
+            @ExcludeMissing
+            authMethod: JsonField<AuthMethod> = JsonMissing.of(),
+            @JsonProperty("provider") @ExcludeMissing provider: JsonField<String> = JsonMissing.of(),
+        ) : this(authMethod, provider, mutableMapOf())
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -1141,21 +1163,15 @@ private constructor(
          */
         @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Integration = apply {
-            if (validated) {
-                return@apply
-            }
-
-            authMethod()
-            provider()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1234,7 +1250,19 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): Integration =
-                Integration(authMethod, provider, additionalProperties.toImmutable())
+                Integration(authMethod, provider, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Integration = apply {
+            if (validated) {
+                return@apply
+            }
+
+            authMethod()
+            provider()
+            validated = true
         }
 
         class AuthMethod @JsonCreator private constructor(private val value: JsonField<String>) :

@@ -11,33 +11,41 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class DirectoryEvent
-@JsonCreator
 private constructor(
-    @JsonProperty("account_id")
-    @ExcludeMissing
-    private val accountId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    private val companyId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
-    @JsonProperty("event_type")
-    @ExcludeMissing
-    private val eventType: JsonField<EventType> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val accountId: JsonField<String>,
+    private val companyId: JsonField<String>,
+    private val connectionId: JsonField<String>,
+    private val data: JsonField<Data>,
+    private val eventType: JsonField<EventType>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("account_id") @ExcludeMissing accountId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("company_id") @ExcludeMissing companyId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        connectionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("data") @ExcludeMissing data: JsonField<Data> = JsonMissing.of(),
+        @JsonProperty("event_type")
+        @ExcludeMissing
+        eventType: JsonField<EventType> = JsonMissing.of(),
+    ) : this(accountId, companyId, connectionId, data, eventType, mutableMapOf())
+
+    fun toBaseWebhookEvent(): BaseWebhookEvent =
+        BaseWebhookEvent.builder()
+            .accountId(accountId)
+            .companyId(companyId)
+            .connectionId(connectionId)
+            .build()
 
     /**
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
@@ -121,31 +129,15 @@ private constructor(
      */
     @JsonProperty("event_type") @ExcludeMissing fun _eventType(): JsonField<EventType> = eventType
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    fun toBaseWebhookEvent(): BaseWebhookEvent =
-        BaseWebhookEvent.builder()
-            .accountId(accountId)
-            .companyId(companyId)
-            .connectionId(connectionId)
-            .build()
-
-    private var validated: Boolean = false
-
-    fun validate(): DirectoryEvent = apply {
-        if (validated) {
-            return@apply
-        }
-
-        accountId()
-        companyId()
-        connectionId()
-        data().ifPresent { it.validate() }
-        eventType()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -291,20 +283,37 @@ private constructor(
                 connectionId,
                 data,
                 eventType,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): DirectoryEvent = apply {
+        if (validated) {
+            return@apply
+        }
+
+        accountId()
+        companyId()
+        connectionId()
+        data().ifPresent { it.validate() }
+        eventType()
+        validated = true
+    }
+
     class Data
-    @JsonCreator
     private constructor(
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val individualId: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            individualId: JsonField<String> = JsonMissing.of()
+        ) : this(individualId, mutableMapOf())
 
         /**
          * The ID of the individual related to the event.
@@ -325,20 +334,15 @@ private constructor(
         @ExcludeMissing
         fun _individualId(): JsonField<String> = individualId
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Data = apply {
-            if (validated) {
-                return@apply
-            }
-
-            individualId()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -398,7 +402,18 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Data = Data(individualId, additionalProperties.toImmutable())
+            fun build(): Data = Data(individualId, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Data = apply {
+            if (validated) {
+                return@apply
+            }
+
+            individualId()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

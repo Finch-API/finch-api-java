@@ -10,10 +10,8 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.async.hris.BenefitServiceAsync
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
@@ -71,24 +69,30 @@ private constructor(
         ) = HrisBenefitListSupportedBenefitsPageAsync(benefitsService, params, response)
     }
 
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("items")
-        private val items: JsonField<List<SupportedBenefit>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response(
+        private val items: JsonField<List<SupportedBenefit>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("items") items: JsonField<List<SupportedBenefit>> = JsonMissing.of()
+        ) : this(items, mutableMapOf())
 
         fun items(): List<SupportedBenefit> = items.getNullable("items") ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<SupportedBenefit>>> = Optional.ofNullable(items)
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         private var validated: Boolean = false
 
@@ -149,7 +153,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Response = Response(items, additionalProperties.toImmutable())
+            fun build(): Response = Response(items, additionalProperties.toMutableMap())
         }
     }
 

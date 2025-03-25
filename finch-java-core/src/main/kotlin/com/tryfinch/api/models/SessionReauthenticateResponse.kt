@@ -10,25 +10,25 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class SessionReauthenticateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("connect_url")
-    @ExcludeMissing
-    private val connectUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("session_id")
-    @ExcludeMissing
-    private val sessionId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val connectUrl: JsonField<String>,
+    private val sessionId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("connect_url")
+        @ExcludeMissing
+        connectUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("session_id") @ExcludeMissing sessionId: JsonField<String> = JsonMissing.of(),
+    ) : this(connectUrl, sessionId, mutableMapOf())
 
     /**
      * The Connect URL to redirect the user to for reauthentication
@@ -60,21 +60,15 @@ private constructor(
      */
     @JsonProperty("session_id") @ExcludeMissing fun _sessionId(): JsonField<String> = sessionId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): SessionReauthenticateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        connectUrl()
-        sessionId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -167,8 +161,20 @@ private constructor(
             SessionReauthenticateResponse(
                 checkRequired("connectUrl", connectUrl),
                 checkRequired("sessionId", sessionId),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): SessionReauthenticateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        connectUrl()
+        sessionId()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {
