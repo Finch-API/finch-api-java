@@ -11,28 +11,33 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class PayGroupRetrieveResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("individual_ids")
-    @ExcludeMissing
-    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("pay_frequencies")
-    @ExcludeMissing
-    private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val individualIds: JsonField<List<String>>,
+    private val name: JsonField<String>,
+    private val payFrequencies: JsonField<List<PayFrequency>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("individual_ids")
+        @ExcludeMissing
+        individualIds: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("pay_frequencies")
+        @ExcludeMissing
+        payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
+    ) : this(id, individualIds, name, payFrequencies, mutableMapOf())
 
     /**
      * Finch id (uuidv4) for the pay group
@@ -96,23 +101,15 @@ private constructor(
     @ExcludeMissing
     fun _payFrequencies(): JsonField<List<PayFrequency>> = payFrequencies
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): PayGroupRetrieveResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        individualIds()
-        name()
-        payFrequencies()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -264,8 +261,22 @@ private constructor(
                 checkRequired("individualIds", individualIds).map { it.toImmutable() },
                 checkRequired("name", name),
                 checkRequired("payFrequencies", payFrequencies).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): PayGroupRetrieveResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        individualIds()
+        name()
+        payFrequencies()
+        validated = true
     }
 
     class PayFrequency @JsonCreator private constructor(private val value: JsonField<String>) :

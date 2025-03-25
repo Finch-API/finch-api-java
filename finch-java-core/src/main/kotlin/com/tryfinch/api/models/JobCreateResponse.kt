@@ -10,29 +10,31 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class JobCreateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("allowed_refreshes")
-    @ExcludeMissing
-    private val allowedRefreshes: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("job_url")
-    @ExcludeMissing
-    private val jobUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("remaining_refreshes")
-    @ExcludeMissing
-    private val remainingRefreshes: JsonField<Long> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val allowedRefreshes: JsonField<Long>,
+    private val jobId: JsonField<String>,
+    private val jobUrl: JsonField<String>,
+    private val remainingRefreshes: JsonField<Long>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("allowed_refreshes")
+        @ExcludeMissing
+        allowedRefreshes: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("job_url") @ExcludeMissing jobUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("remaining_refreshes")
+        @ExcludeMissing
+        remainingRefreshes: JsonField<Long> = JsonMissing.of(),
+    ) : this(allowedRefreshes, jobId, jobUrl, remainingRefreshes, mutableMapOf())
 
     /**
      * The number of allowed refreshes per hour (per hour, fixed window)
@@ -100,23 +102,15 @@ private constructor(
     @ExcludeMissing
     fun _remainingRefreshes(): JsonField<Long> = remainingRefreshes
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): JobCreateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        allowedRefreshes()
-        jobId()
-        jobUrl()
-        remainingRefreshes()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -246,8 +240,22 @@ private constructor(
                 checkRequired("jobId", jobId),
                 checkRequired("jobUrl", jobUrl),
                 checkRequired("remainingRefreshes", remainingRefreshes),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): JobCreateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        allowedRefreshes()
+        jobId()
+        jobUrl()
+        remainingRefreshes()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

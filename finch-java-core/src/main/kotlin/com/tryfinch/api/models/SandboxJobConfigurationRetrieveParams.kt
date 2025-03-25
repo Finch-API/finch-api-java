@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -19,10 +18,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -37,7 +32,6 @@ private constructor(
     }
 
     /** A builder for [SandboxJobConfigurationRetrieveParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -161,6 +155,10 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

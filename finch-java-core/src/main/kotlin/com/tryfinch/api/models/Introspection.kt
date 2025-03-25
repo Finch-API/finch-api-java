@@ -11,70 +11,95 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class Introspection
-@JsonCreator
 private constructor(
-    @JsonProperty("account_id")
-    @ExcludeMissing
-    private val accountId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("authentication_methods")
-    @ExcludeMissing
-    private val authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of(),
-    @JsonProperty("client_id")
-    @ExcludeMissing
-    private val clientId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("client_type")
-    @ExcludeMissing
-    private val clientType: JsonField<ClientType> = JsonMissing.of(),
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    private val companyId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_status")
-    @ExcludeMissing
-    private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
-    @JsonProperty("connection_type")
-    @ExcludeMissing
-    private val connectionType: JsonField<ConnectionType> = JsonMissing.of(),
-    @JsonProperty("customer_email")
-    @ExcludeMissing
-    private val customerEmail: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("customer_id")
-    @ExcludeMissing
-    private val customerId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("customer_name")
-    @ExcludeMissing
-    private val customerName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("manual")
-    @ExcludeMissing
-    private val manual: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("payroll_provider_id")
-    @ExcludeMissing
-    private val payrollProviderId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("products")
-    @ExcludeMissing
-    private val products: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("provider_id")
-    @ExcludeMissing
-    private val providerId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("username")
-    @ExcludeMissing
-    private val username: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val accountId: JsonField<String>,
+    private val authenticationMethods: JsonField<List<AuthenticationMethod>>,
+    private val clientId: JsonField<String>,
+    private val clientType: JsonField<ClientType>,
+    private val companyId: JsonField<String>,
+    private val connectionId: JsonField<String>,
+    private val connectionStatus: JsonField<ConnectionStatus>,
+    private val connectionType: JsonField<ConnectionType>,
+    private val customerEmail: JsonField<String>,
+    private val customerId: JsonField<String>,
+    private val customerName: JsonField<String>,
+    private val manual: JsonField<Boolean>,
+    private val payrollProviderId: JsonField<String>,
+    private val products: JsonField<List<String>>,
+    private val providerId: JsonField<String>,
+    private val username: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("account_id") @ExcludeMissing accountId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("authentication_methods")
+        @ExcludeMissing
+        authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of(),
+        @JsonProperty("client_id") @ExcludeMissing clientId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("client_type")
+        @ExcludeMissing
+        clientType: JsonField<ClientType> = JsonMissing.of(),
+        @JsonProperty("company_id") @ExcludeMissing companyId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        connectionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("connection_status")
+        @ExcludeMissing
+        connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
+        @JsonProperty("connection_type")
+        @ExcludeMissing
+        connectionType: JsonField<ConnectionType> = JsonMissing.of(),
+        @JsonProperty("customer_email")
+        @ExcludeMissing
+        customerEmail: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("customer_id")
+        @ExcludeMissing
+        customerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("customer_name")
+        @ExcludeMissing
+        customerName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("manual") @ExcludeMissing manual: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("payroll_provider_id")
+        @ExcludeMissing
+        payrollProviderId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        products: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        providerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("username") @ExcludeMissing username: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        accountId,
+        authenticationMethods,
+        clientId,
+        clientType,
+        companyId,
+        connectionId,
+        connectionStatus,
+        connectionType,
+        customerEmail,
+        customerId,
+        customerName,
+        manual,
+        payrollProviderId,
+        products,
+        providerId,
+        username,
+        mutableMapOf(),
+    )
 
     /**
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
@@ -350,35 +375,15 @@ private constructor(
      */
     @JsonProperty("username") @ExcludeMissing fun _username(): JsonField<String> = username
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Introspection = apply {
-        if (validated) {
-            return@apply
-        }
-
-        accountId()
-        authenticationMethods().forEach { it.validate() }
-        clientId()
-        clientType()
-        companyId()
-        connectionId()
-        connectionStatus().validate()
-        connectionType()
-        customerEmail()
-        customerId()
-        customerName()
-        manual()
-        payrollProviderId()
-        products()
-        providerId()
-        username()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -792,24 +797,54 @@ private constructor(
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
                 checkRequired("username", username),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): Introspection = apply {
+        if (validated) {
+            return@apply
+        }
+
+        accountId()
+        authenticationMethods().forEach { it.validate() }
+        clientId()
+        clientType()
+        companyId()
+        connectionId()
+        connectionStatus().validate()
+        connectionType()
+        customerEmail()
+        customerId()
+        customerName()
+        manual()
+        payrollProviderId()
+        products()
+        providerId()
+        username()
+        validated = true
+    }
+
     class AuthenticationMethod
-    @JsonCreator
     private constructor(
-        @JsonProperty("connection_status")
-        @ExcludeMissing
-        private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
-        @JsonProperty("products")
-        @ExcludeMissing
-        private val products: JsonField<List<String>> = JsonMissing.of(),
-        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val connectionStatus: JsonField<ConnectionStatus>,
+        private val products: JsonField<List<String>>,
+        private val type: JsonField<Type>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("connection_status")
+            @ExcludeMissing
+            connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
+            @JsonProperty("products")
+            @ExcludeMissing
+            products: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        ) : this(connectionStatus, products, type, mutableMapOf())
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -861,22 +896,15 @@ private constructor(
          */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): AuthenticationMethod = apply {
-            if (validated) {
-                return@apply
-            }
-
-            connectionStatus().ifPresent { it.validate() }
-            products()
-            type()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -983,23 +1011,39 @@ private constructor(
                     connectionStatus,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
                     type,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
         }
 
-        @NoAutoDetect
+        private var validated: Boolean = false
+
+        fun validate(): AuthenticationMethod = apply {
+            if (validated) {
+                return@apply
+            }
+
+            connectionStatus().ifPresent { it.validate() }
+            products()
+            type()
+            validated = true
+        }
+
         class ConnectionStatus
-        @JsonCreator
         private constructor(
-            @JsonProperty("message")
-            @ExcludeMissing
-            private val message: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("status")
-            @ExcludeMissing
-            private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val message: JsonField<String>,
+            private val status: JsonField<ConnectionStatusType>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("message")
+                @ExcludeMissing
+                message: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("status")
+                @ExcludeMissing
+                status: JsonField<ConnectionStatusType> = JsonMissing.of(),
+            ) : this(message, status, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -1030,21 +1074,15 @@ private constructor(
             @ExcludeMissing
             fun _status(): JsonField<ConnectionStatusType> = status
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): ConnectionStatus = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                message()
-                status()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1118,7 +1156,19 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): ConnectionStatus =
-                    ConnectionStatus(message, status, additionalProperties.toImmutable())
+                    ConnectionStatus(message, status, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): ConnectionStatus = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                message()
+                status()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1382,19 +1432,20 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @NoAutoDetect
     class ConnectionStatus
-    @JsonCreator
     private constructor(
-        @JsonProperty("message")
-        @ExcludeMissing
-        private val message: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("status")
-        @ExcludeMissing
-        private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val message: JsonField<String>,
+        private val status: JsonField<ConnectionStatusType>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("status")
+            @ExcludeMissing
+            status: JsonField<ConnectionStatusType> = JsonMissing.of(),
+        ) : this(message, status, mutableMapOf())
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -1425,21 +1476,15 @@ private constructor(
         @ExcludeMissing
         fun _status(): JsonField<ConnectionStatusType> = status
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): ConnectionStatus = apply {
-            if (validated) {
-                return@apply
-            }
-
-            message()
-            status()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1510,7 +1555,19 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): ConnectionStatus =
-                ConnectionStatus(message, status, additionalProperties.toImmutable())
+                ConnectionStatus(message, status, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): ConnectionStatus = apply {
+            if (validated) {
+                return@apply
+            }
+
+            message()
+            status()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

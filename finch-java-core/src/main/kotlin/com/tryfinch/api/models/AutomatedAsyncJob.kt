@@ -11,45 +11,59 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class AutomatedAsyncJob
-@JsonCreator
 private constructor(
-    @JsonProperty("completed_at")
-    @ExcludeMissing
-    private val completedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("created_at")
-    @ExcludeMissing
-    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("job_url")
-    @ExcludeMissing
-    private val jobUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("params")
-    @ExcludeMissing
-    private val params: JsonField<Params> = JsonMissing.of(),
-    @JsonProperty("scheduled_at")
-    @ExcludeMissing
-    private val scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("started_at")
-    @ExcludeMissing
-    private val startedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val completedAt: JsonField<OffsetDateTime>,
+    private val createdAt: JsonField<OffsetDateTime>,
+    private val jobId: JsonField<String>,
+    private val jobUrl: JsonField<String>,
+    private val params: JsonField<Params>,
+    private val scheduledAt: JsonField<OffsetDateTime>,
+    private val startedAt: JsonField<OffsetDateTime>,
+    private val status: JsonField<Status>,
+    private val type: JsonField<Type>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("completed_at")
+        @ExcludeMissing
+        completedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("created_at")
+        @ExcludeMissing
+        createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("job_url") @ExcludeMissing jobUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("params") @ExcludeMissing params: JsonField<Params> = JsonMissing.of(),
+        @JsonProperty("scheduled_at")
+        @ExcludeMissing
+        scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("started_at")
+        @ExcludeMissing
+        startedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+    ) : this(
+        completedAt,
+        createdAt,
+        jobId,
+        jobUrl,
+        params,
+        scheduledAt,
+        startedAt,
+        status,
+        type,
+        mutableMapOf(),
+    )
 
     /**
      * The datetime the job completed.
@@ -197,28 +211,15 @@ private constructor(
      */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): AutomatedAsyncJob = apply {
-        if (validated) {
-            return@apply
-        }
-
-        completedAt()
-        createdAt()
-        jobId()
-        jobUrl()
-        params().ifPresent { it.validate() }
-        scheduledAt()
-        startedAt()
-        status()
-        type()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -451,21 +452,42 @@ private constructor(
                 checkRequired("startedAt", startedAt),
                 checkRequired("status", status),
                 checkRequired("type", type),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): AutomatedAsyncJob = apply {
+        if (validated) {
+            return@apply
+        }
+
+        completedAt()
+        createdAt()
+        jobId()
+        jobUrl()
+        params().ifPresent { it.validate() }
+        scheduledAt()
+        startedAt()
+        status()
+        type()
+        validated = true
+    }
+
     /** The input parameters for the job. */
-    @NoAutoDetect
     class Params
-    @JsonCreator
     private constructor(
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val individualId: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            individualId: JsonField<String> = JsonMissing.of()
+        ) : this(individualId, mutableMapOf())
 
         /**
          * The ID of the individual that the job was completed for.
@@ -486,20 +508,15 @@ private constructor(
         @ExcludeMissing
         fun _individualId(): JsonField<String> = individualId
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Params = apply {
-            if (validated) {
-                return@apply
-            }
-
-            individualId()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -559,7 +576,18 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Params = Params(individualId, additionalProperties.toImmutable())
+            fun build(): Params = Params(individualId, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Params = apply {
+            if (validated) {
+                return@apply
+            }
+
+            individualId()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

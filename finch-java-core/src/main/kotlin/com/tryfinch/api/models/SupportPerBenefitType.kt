@@ -10,25 +10,27 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class SupportPerBenefitType
-@JsonCreator
 private constructor(
-    @JsonProperty("company_benefits")
-    @ExcludeMissing
-    private val companyBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
-    @JsonProperty("individual_benefits")
-    @ExcludeMissing
-    private val individualBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val companyBenefits: JsonField<OperationSupportMatrix>,
+    private val individualBenefits: JsonField<OperationSupportMatrix>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("company_benefits")
+        @ExcludeMissing
+        companyBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
+        @JsonProperty("individual_benefits")
+        @ExcludeMissing
+        individualBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
+    ) : this(companyBenefits, individualBenefits, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -63,21 +65,15 @@ private constructor(
     @ExcludeMissing
     fun _individualBenefits(): JsonField<OperationSupportMatrix> = individualBenefits
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): SupportPerBenefitType = apply {
-        if (validated) {
-            return@apply
-        }
-
-        companyBenefits().ifPresent { it.validate() }
-        individualBenefits().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -157,8 +153,20 @@ private constructor(
             SupportPerBenefitType(
                 companyBenefits,
                 individualBenefits,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): SupportPerBenefitType = apply {
+        if (validated) {
+            return@apply
+        }
+
+        companyBenefits().ifPresent { it.validate() }
+        individualBenefits().ifPresent { it.validate() }
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

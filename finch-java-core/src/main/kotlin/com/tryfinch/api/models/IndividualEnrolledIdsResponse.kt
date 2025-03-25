@@ -10,26 +10,27 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class IndividualEnrolledIdsResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("benefit_id")
-    @ExcludeMissing
-    private val benefitId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("individual_ids")
-    @ExcludeMissing
-    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val benefitId: JsonField<String>,
+    private val individualIds: JsonField<List<String>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("benefit_id") @ExcludeMissing benefitId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("individual_ids")
+        @ExcludeMissing
+        individualIds: JsonField<List<String>> = JsonMissing.of(),
+    ) : this(benefitId, individualIds, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -59,21 +60,15 @@ private constructor(
     @ExcludeMissing
     fun _individualIds(): JsonField<List<String>> = individualIds
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): IndividualEnrolledIdsResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        benefitId()
-        individualIds()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -178,8 +173,20 @@ private constructor(
             IndividualEnrolledIdsResponse(
                 checkRequired("benefitId", benefitId),
                 checkRequired("individualIds", individualIds).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): IndividualEnrolledIdsResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        benefitId()
+        individualIds()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

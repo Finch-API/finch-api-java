@@ -10,25 +10,23 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class PaymentCreateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("pay_date")
-    @ExcludeMissing
-    private val payDate: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("payment_id")
-    @ExcludeMissing
-    private val paymentId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val payDate: JsonField<String>,
+    private val paymentId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("pay_date") @ExcludeMissing payDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("payment_id") @ExcludeMissing paymentId: JsonField<String> = JsonMissing.of(),
+    ) : this(payDate, paymentId, mutableMapOf())
 
     /**
      * The date of the payment.
@@ -60,21 +58,15 @@ private constructor(
      */
     @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): PaymentCreateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        payDate()
-        paymentId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -165,8 +157,20 @@ private constructor(
             PaymentCreateResponse(
                 checkRequired("payDate", payDate),
                 checkRequired("paymentId", paymentId),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): PaymentCreateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        payDate()
+        paymentId()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

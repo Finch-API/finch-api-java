@@ -11,45 +11,58 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class ConnectionCreateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("access_token")
-    @ExcludeMissing
-    private val accessToken: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("account_id")
-    @ExcludeMissing
-    private val accountId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("authentication_type")
-    @ExcludeMissing
-    private val authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    private val companyId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("products")
-    @ExcludeMissing
-    private val products: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("provider_id")
-    @ExcludeMissing
-    private val providerId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("token_type")
-    @ExcludeMissing
-    private val tokenType: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val accessToken: JsonField<String>,
+    private val accountId: JsonField<String>,
+    private val authenticationType: JsonField<AuthenticationType>,
+    private val companyId: JsonField<String>,
+    private val connectionId: JsonField<String>,
+    private val products: JsonField<List<String>>,
+    private val providerId: JsonField<String>,
+    private val tokenType: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("access_token")
+        @ExcludeMissing
+        accessToken: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("account_id") @ExcludeMissing accountId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("authentication_type")
+        @ExcludeMissing
+        authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
+        @JsonProperty("company_id") @ExcludeMissing companyId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        connectionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        products: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        providerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("token_type") @ExcludeMissing tokenType: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        accessToken,
+        accountId,
+        authenticationType,
+        companyId,
+        connectionId,
+        products,
+        providerId,
+        tokenType,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -177,27 +190,15 @@ private constructor(
      */
     @JsonProperty("token_type") @ExcludeMissing fun _tokenType(): JsonField<String> = tokenType
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ConnectionCreateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        accessToken()
-        accountId()
-        authenticationType()
-        companyId()
-        connectionId()
-        products()
-        providerId()
-        tokenType()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -408,8 +409,26 @@ private constructor(
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
                 tokenType,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): ConnectionCreateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        accessToken()
+        accountId()
+        authenticationType()
+        companyId()
+        connectionId()
+        products()
+        providerId()
+        tokenType()
+        validated = true
     }
 
     class AuthenticationType

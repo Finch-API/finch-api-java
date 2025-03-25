@@ -10,26 +10,27 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class PayStatementResponseBody
-@JsonCreator
 private constructor(
-    @JsonProperty("paging")
-    @ExcludeMissing
-    private val paging: JsonField<Paging> = JsonMissing.of(),
-    @JsonProperty("pay_statements")
-    @ExcludeMissing
-    private val payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val paging: JsonField<Paging>,
+    private val payStatements: JsonField<List<PayStatement>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("paging") @ExcludeMissing paging: JsonField<Paging> = JsonMissing.of(),
+        @JsonProperty("pay_statements")
+        @ExcludeMissing
+        payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
+    ) : this(paging, payStatements, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -62,21 +63,15 @@ private constructor(
     @ExcludeMissing
     fun _payStatements(): JsonField<List<PayStatement>> = payStatements
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): PayStatementResponseBody = apply {
-        if (validated) {
-            return@apply
-        }
-
-        paging().ifPresent { it.validate() }
-        payStatements().ifPresent { it.forEach { it.validate() } }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -165,8 +160,20 @@ private constructor(
             PayStatementResponseBody(
                 paging,
                 (payStatements ?: JsonMissing.of()).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): PayStatementResponseBody = apply {
+        if (validated) {
+            return@apply
+        }
+
+        paging().ifPresent { it.validate() }
+        payStatements().ifPresent { it.forEach { it.validate() } }
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

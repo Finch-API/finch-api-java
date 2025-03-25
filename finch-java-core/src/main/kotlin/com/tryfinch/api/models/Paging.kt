@@ -10,21 +10,23 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class Paging
-@JsonCreator
 private constructor(
-    @JsonProperty("count") @ExcludeMissing private val count: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("offset") @ExcludeMissing private val offset: JsonField<Long> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val count: JsonField<Long>,
+    private val offset: JsonField<Long>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("count") @ExcludeMissing count: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
+    ) : this(count, offset, mutableMapOf())
 
     /**
      * The total number of elements for the entire query (not just the given page)
@@ -56,21 +58,15 @@ private constructor(
      */
     @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Paging = apply {
-        if (validated) {
-            return@apply
-        }
-
-        count()
-        offset()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -140,7 +136,19 @@ private constructor(
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): Paging = Paging(count, offset, additionalProperties.toImmutable())
+        fun build(): Paging = Paging(count, offset, additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): Paging = apply {
+        if (validated) {
+            return@apply
+        }
+
+        count()
+        offset()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

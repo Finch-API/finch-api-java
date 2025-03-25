@@ -10,29 +10,29 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class RequestForwardingForwardResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("data") @ExcludeMissing private val data: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("headers") @ExcludeMissing private val headers: JsonValue = JsonMissing.of(),
-    @JsonProperty("request")
-    @ExcludeMissing
-    private val request: JsonField<Request> = JsonMissing.of(),
-    @JsonProperty("statusCode")
-    @ExcludeMissing
-    private val statusCode: JsonField<Long> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val data: JsonField<String>,
+    private val headers: JsonValue,
+    private val request: JsonField<Request>,
+    private val statusCode: JsonField<Long>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("headers") @ExcludeMissing headers: JsonValue = JsonMissing.of(),
+        @JsonProperty("request") @ExcludeMissing request: JsonField<Request> = JsonMissing.of(),
+        @JsonProperty("statusCode") @ExcludeMissing statusCode: JsonField<Long> = JsonMissing.of(),
+    ) : this(data, headers, request, statusCode, mutableMapOf())
 
     /**
      * A string representation of the HTTP response body of the forwarded request’s response
@@ -88,22 +88,15 @@ private constructor(
      */
     @JsonProperty("statusCode") @ExcludeMissing fun _statusCode(): JsonField<Long> = statusCode
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): RequestForwardingForwardResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        data()
-        request().validate()
-        statusCode()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -236,31 +229,44 @@ private constructor(
                 checkRequired("headers", headers),
                 checkRequired("request", request),
                 checkRequired("statusCode", statusCode),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): RequestForwardingForwardResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        data()
+        request().validate()
+        statusCode()
+        validated = true
     }
 
     /**
      * An object containing details of your original forwarded request, for your ease of reference.
      */
-    @NoAutoDetect
     class Request
-    @JsonCreator
     private constructor(
-        @JsonProperty("data")
-        @ExcludeMissing
-        private val data: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("headers") @ExcludeMissing private val headers: JsonValue = JsonMissing.of(),
-        @JsonProperty("method")
-        @ExcludeMissing
-        private val method: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("params") @ExcludeMissing private val params: JsonValue = JsonMissing.of(),
-        @JsonProperty("route")
-        @ExcludeMissing
-        private val route: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val data: JsonField<String>,
+        private val headers: JsonValue,
+        private val method: JsonField<String>,
+        private val params: JsonValue,
+        private val route: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("headers") @ExcludeMissing headers: JsonValue = JsonMissing.of(),
+            @JsonProperty("method") @ExcludeMissing method: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("params") @ExcludeMissing params: JsonValue = JsonMissing.of(),
+            @JsonProperty("route") @ExcludeMissing route: JsonField<String> = JsonMissing.of(),
+        ) : this(data, headers, method, params, route, mutableMapOf())
 
         /**
          * The body that was specified for the forwarded request. If a value was not specified in
@@ -322,22 +328,15 @@ private constructor(
          */
         @JsonProperty("route") @ExcludeMissing fun _route(): JsonField<String> = route
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Request = apply {
-            if (validated) {
-                return@apply
-            }
-
-            data()
-            method()
-            route()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -478,8 +477,21 @@ private constructor(
                     checkRequired("method", method),
                     checkRequired("params", params),
                     checkRequired("route", route),
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Request = apply {
+            if (validated) {
+                return@apply
+            }
+
+            data()
+            method()
+            route()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

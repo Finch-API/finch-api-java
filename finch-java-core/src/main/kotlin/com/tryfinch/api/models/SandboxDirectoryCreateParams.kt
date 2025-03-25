@@ -11,14 +11,13 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -41,6 +40,161 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        @JvmStatic fun none(): SandboxDirectoryCreateParams = builder().build()
+
+        /**
+         * Returns a mutable builder for constructing an instance of [SandboxDirectoryCreateParams].
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [SandboxDirectoryCreateParams]. */
+    class Builder internal constructor() {
+
+        private var body: MutableList<IndividualOrEmployment>? = null
+        private var additionalHeaders: Headers.Builder = Headers.builder()
+        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
+
+        @JvmSynthetic
+        internal fun from(sandboxDirectoryCreateParams: SandboxDirectoryCreateParams) = apply {
+            body = sandboxDirectoryCreateParams.body?.toMutableList()
+            additionalHeaders = sandboxDirectoryCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxDirectoryCreateParams.additionalQueryParams.toBuilder()
+        }
+
+        /**
+         * Array of individuals to create. Takes all combined fields from `/individual` and
+         * `/employment` endpoints. All fields are optional.
+         */
+        fun body(body: List<IndividualOrEmployment>?) = apply { this.body = body?.toMutableList() }
+
+        /** Alias for calling [Builder.body] with `body.orElse(null)`. */
+        fun body(body: Optional<List<IndividualOrEmployment>>) = body(body.getOrNull())
+
+        /**
+         * Adds a single [IndividualOrEmployment] to [Builder.body].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addBody(body: IndividualOrEmployment) = apply {
+            this.body = (this.body ?: mutableListOf()).apply { add(body) }
+        }
+
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
+
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
+
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
+
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
+
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
+
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
+
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
+
+        /**
+         * Returns an immutable instance of [SandboxDirectoryCreateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
+        fun build(): SandboxDirectoryCreateParams =
+            SandboxDirectoryCreateParams(
+                body?.toImmutable(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
+    }
+
     @JvmSynthetic
     internal fun _body(): Optional<List<IndividualOrEmployment>> = Optional.ofNullable(body)
 
@@ -48,87 +202,48 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
-    @NoAutoDetect
     class IndividualOrEmployment
     @JsonCreator
     private constructor(
-        @JsonProperty("class_code")
-        @ExcludeMissing
-        private val classCode: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("class_code") @ExcludeMissing private val classCode: JsonField<String>,
         @JsonProperty("custom_fields")
         @ExcludeMissing
-        private val customFields: JsonField<List<CustomField>> = JsonMissing.of(),
-        @JsonProperty("department")
-        @ExcludeMissing
-        private val department: JsonField<Department> = JsonMissing.of(),
-        @JsonProperty("dob") @ExcludeMissing private val dob: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("emails")
-        @ExcludeMissing
-        private val emails: JsonField<List<Email>> = JsonMissing.of(),
-        @JsonProperty("employment")
-        @ExcludeMissing
-        private val employment: JsonField<Employment> = JsonMissing.of(),
+        private val customFields: JsonField<List<CustomField>>,
+        @JsonProperty("department") @ExcludeMissing private val department: JsonField<Department>,
+        @JsonProperty("dob") @ExcludeMissing private val dob: JsonField<String>,
+        @JsonProperty("emails") @ExcludeMissing private val emails: JsonField<List<Email>>,
+        @JsonProperty("employment") @ExcludeMissing private val employment: JsonField<Employment>,
         @JsonProperty("employment_status")
         @ExcludeMissing
-        private val employmentStatus: JsonField<EmploymentStatus> = JsonMissing.of(),
-        @JsonProperty("encrypted_ssn")
-        @ExcludeMissing
-        private val encryptedSsn: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("end_date")
-        @ExcludeMissing
-        private val endDate: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("ethnicity")
-        @ExcludeMissing
-        private val ethnicity: JsonField<Ethnicity> = JsonMissing.of(),
-        @JsonProperty("first_name")
-        @ExcludeMissing
-        private val firstName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("gender")
-        @ExcludeMissing
-        private val gender: JsonField<Gender> = JsonMissing.of(),
-        @JsonProperty("income")
-        @ExcludeMissing
-        private val income: JsonField<Income> = JsonMissing.of(),
+        private val employmentStatus: JsonField<EmploymentStatus>,
+        @JsonProperty("encrypted_ssn") @ExcludeMissing private val encryptedSsn: JsonField<String>,
+        @JsonProperty("end_date") @ExcludeMissing private val endDate: JsonField<String>,
+        @JsonProperty("ethnicity") @ExcludeMissing private val ethnicity: JsonField<Ethnicity>,
+        @JsonProperty("first_name") @ExcludeMissing private val firstName: JsonField<String>,
+        @JsonProperty("gender") @ExcludeMissing private val gender: JsonField<Gender>,
+        @JsonProperty("income") @ExcludeMissing private val income: JsonField<Income>,
         @JsonProperty("income_history")
         @ExcludeMissing
-        private val incomeHistory: JsonField<List<Income?>> = JsonMissing.of(),
-        @JsonProperty("is_active")
-        @ExcludeMissing
-        private val isActive: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("last_name")
-        @ExcludeMissing
-        private val lastName: JsonField<String> = JsonMissing.of(),
+        private val incomeHistory: JsonField<List<Income?>>,
+        @JsonProperty("is_active") @ExcludeMissing private val isActive: JsonField<Boolean>,
+        @JsonProperty("last_name") @ExcludeMissing private val lastName: JsonField<String>,
         @JsonProperty("latest_rehire_date")
         @ExcludeMissing
-        private val latestRehireDate: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("location")
-        @ExcludeMissing
-        private val location: JsonField<Location> = JsonMissing.of(),
-        @JsonProperty("manager")
-        @ExcludeMissing
-        private val manager: JsonField<Manager> = JsonMissing.of(),
-        @JsonProperty("middle_name")
-        @ExcludeMissing
-        private val middleName: JsonField<String> = JsonMissing.of(),
+        private val latestRehireDate: JsonField<String>,
+        @JsonProperty("location") @ExcludeMissing private val location: JsonField<Location>,
+        @JsonProperty("manager") @ExcludeMissing private val manager: JsonField<Manager>,
+        @JsonProperty("middle_name") @ExcludeMissing private val middleName: JsonField<String>,
         @JsonProperty("phone_numbers")
         @ExcludeMissing
-        private val phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of(),
+        private val phoneNumbers: JsonField<List<PhoneNumber?>>,
         @JsonProperty("preferred_name")
         @ExcludeMissing
-        private val preferredName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("residence")
-        @ExcludeMissing
-        private val residence: JsonField<Location> = JsonMissing.of(),
-        @JsonProperty("source_id")
-        @ExcludeMissing
-        private val sourceId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("ssn") @ExcludeMissing private val ssn: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("start_date")
-        @ExcludeMissing
-        private val startDate: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("title")
-        @ExcludeMissing
-        private val title: JsonField<String> = JsonMissing.of(),
+        private val preferredName: JsonField<String>,
+        @JsonProperty("residence") @ExcludeMissing private val residence: JsonField<Location>,
+        @JsonProperty("source_id") @ExcludeMissing private val sourceId: JsonField<String>,
+        @JsonProperty("ssn") @ExcludeMissing private val ssn: JsonField<String>,
+        @JsonProperty("start_date") @ExcludeMissing private val startDate: JsonField<String>,
+        @JsonProperty("title") @ExcludeMissing private val title: JsonField<String>,
     ) {
 
         /**
@@ -567,43 +682,6 @@ private constructor(
          * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
-
-        private var validated: Boolean = false
-
-        fun validate(): IndividualOrEmployment = apply {
-            if (validated) {
-                return@apply
-            }
-
-            classCode()
-            customFields().ifPresent { it.forEach { it.validate() } }
-            department().ifPresent { it.validate() }
-            dob()
-            emails().ifPresent { it.forEach { it.validate() } }
-            employment().ifPresent { it.validate() }
-            employmentStatus()
-            encryptedSsn()
-            endDate()
-            ethnicity()
-            firstName()
-            gender()
-            income().ifPresent { it.validate() }
-            incomeHistory().ifPresent { it.forEach { it?.validate() } }
-            isActive()
-            lastName()
-            latestRehireDate()
-            location().ifPresent { it.validate() }
-            manager().ifPresent { it.validate() }
-            middleName()
-            phoneNumbers().ifPresent { it.forEach { it?.validate() } }
-            preferredName()
-            residence().ifPresent { it.validate() }
-            sourceId()
-            ssn()
-            startDate()
-            title()
-            validated = true
-        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -1212,17 +1290,55 @@ private constructor(
                 )
         }
 
-        @NoAutoDetect
+        private var validated: Boolean = false
+
+        fun validate(): IndividualOrEmployment = apply {
+            if (validated) {
+                return@apply
+            }
+
+            classCode()
+            customFields().ifPresent { it.forEach { it.validate() } }
+            department().ifPresent { it.validate() }
+            dob()
+            emails().ifPresent { it.forEach { it.validate() } }
+            employment().ifPresent { it.validate() }
+            employmentStatus()
+            encryptedSsn()
+            endDate()
+            ethnicity()
+            firstName()
+            gender()
+            income().ifPresent { it.validate() }
+            incomeHistory().ifPresent { it.forEach { it?.validate() } }
+            isActive()
+            lastName()
+            latestRehireDate()
+            location().ifPresent { it.validate() }
+            manager().ifPresent { it.validate() }
+            middleName()
+            phoneNumbers().ifPresent { it.forEach { it?.validate() } }
+            preferredName()
+            residence().ifPresent { it.validate() }
+            sourceId()
+            ssn()
+            startDate()
+            title()
+            validated = true
+        }
+
         class CustomField
-        @JsonCreator
         private constructor(
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("value") @ExcludeMissing private val value: JsonValue = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val name: JsonField<String>,
+            private val value: JsonValue,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("value") @ExcludeMissing value: JsonValue = JsonMissing.of(),
+            ) : this(name, value, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -1239,20 +1355,15 @@ private constructor(
              */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): CustomField = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                name()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1320,7 +1431,18 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): CustomField =
-                    CustomField(name, value, additionalProperties.toImmutable())
+                    CustomField(name, value, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): CustomField = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                name()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1342,16 +1464,16 @@ private constructor(
         }
 
         /** The department object. */
-        @NoAutoDetect
         class Department
-        @JsonCreator
         private constructor(
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val name: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of()
+            ) : this(name, mutableMapOf())
 
             /**
              * The name of the department associated with the individual.
@@ -1368,20 +1490,15 @@ private constructor(
              */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Department = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                name()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1445,7 +1562,18 @@ private constructor(
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
-                fun build(): Department = Department(name, additionalProperties.toImmutable())
+                fun build(): Department = Department(name, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Department = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                name()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1466,19 +1594,18 @@ private constructor(
                 "Department{name=$name, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class Email
-        @JsonCreator
         private constructor(
-            @JsonProperty("data")
-            @ExcludeMissing
-            private val data: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val data: JsonField<String>,
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            ) : this(data, type, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -1506,21 +1633,15 @@ private constructor(
              */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Email = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                data()
-                type()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1596,7 +1717,19 @@ private constructor(
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
-                fun build(): Email = Email(data, type, additionalProperties.toImmutable())
+                fun build(): Email = Email(data, type, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Email = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                data()
+                type()
+                validated = true
             }
 
             class Type @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -1721,19 +1854,20 @@ private constructor(
         }
 
         /** The employment object. */
-        @NoAutoDetect
         class Employment
-        @JsonCreator
         private constructor(
-            @JsonProperty("subtype")
-            @ExcludeMissing
-            private val subtype: JsonField<Subtype> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val subtype: JsonField<Subtype>,
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("subtype")
+                @ExcludeMissing
+                subtype: JsonField<Subtype> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            ) : this(subtype, type, mutableMapOf())
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
@@ -1766,21 +1900,15 @@ private constructor(
              */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Employment = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                subtype()
-                type()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1865,7 +1993,19 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): Employment =
-                    Employment(subtype, type, additionalProperties.toImmutable())
+                    Employment(subtype, type, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Employment = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                subtype()
+                type()
+                validated = true
             }
 
             /**
@@ -2518,16 +2658,16 @@ private constructor(
         }
 
         /** The manager object representing the manager of the individual within the org. */
-        @NoAutoDetect
         class Manager
-        @JsonCreator
         private constructor(
-            @JsonProperty("id")
-            @ExcludeMissing
-            private val id: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val id: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of()
+            ) : this(id, mutableMapOf())
 
             /**
              * A stable Finch `id` (UUID v4) for an individual in the company.
@@ -2544,20 +2684,15 @@ private constructor(
              */
             @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Manager = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                id()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -2618,7 +2753,18 @@ private constructor(
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
-                fun build(): Manager = Manager(id, additionalProperties.toImmutable())
+                fun build(): Manager = Manager(id, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Manager = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                id()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2638,19 +2784,18 @@ private constructor(
             override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class PhoneNumber
-        @JsonCreator
         private constructor(
-            @JsonProperty("data")
-            @ExcludeMissing
-            private val data: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val data: JsonField<String>,
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            ) : this(data, type, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -2678,21 +2823,15 @@ private constructor(
              */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): PhoneNumber = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                data()
-                type()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -2769,7 +2908,19 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): PhoneNumber =
-                    PhoneNumber(data, type, additionalProperties.toImmutable())
+                    PhoneNumber(data, type, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): PhoneNumber = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                data()
+                type()
+                validated = true
             }
 
             class Type @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -2909,162 +3060,6 @@ private constructor(
 
         override fun toString() =
             "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title}"
-    }
-
-    fun toBuilder() = Builder().from(this)
-
-    companion object {
-
-        @JvmStatic fun none(): SandboxDirectoryCreateParams = builder().build()
-
-        /**
-         * Returns a mutable builder for constructing an instance of [SandboxDirectoryCreateParams].
-         */
-        @JvmStatic fun builder() = Builder()
-    }
-
-    /** A builder for [SandboxDirectoryCreateParams]. */
-    @NoAutoDetect
-    class Builder internal constructor() {
-
-        private var body: MutableList<IndividualOrEmployment>? = null
-        private var additionalHeaders: Headers.Builder = Headers.builder()
-        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-
-        @JvmSynthetic
-        internal fun from(sandboxDirectoryCreateParams: SandboxDirectoryCreateParams) = apply {
-            body = sandboxDirectoryCreateParams.body?.toMutableList()
-            additionalHeaders = sandboxDirectoryCreateParams.additionalHeaders.toBuilder()
-            additionalQueryParams = sandboxDirectoryCreateParams.additionalQueryParams.toBuilder()
-        }
-
-        /**
-         * Array of individuals to create. Takes all combined fields from `/individual` and
-         * `/employment` endpoints. All fields are optional.
-         */
-        fun body(body: List<IndividualOrEmployment>?) = apply { this.body = body?.toMutableList() }
-
-        /** Alias for calling [Builder.body] with `body.orElse(null)`. */
-        fun body(body: Optional<List<IndividualOrEmployment>>) = body(body.getOrNull())
-
-        /**
-         * Adds a single [IndividualOrEmployment] to [Builder.body].
-         *
-         * @throws IllegalStateException if the field was previously set to a non-list.
-         */
-        fun addBody(body: IndividualOrEmployment) = apply {
-            this.body = (this.body ?: mutableListOf()).apply { add(body) }
-        }
-
-        fun additionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
-
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
-
-        fun putAdditionalHeader(name: String, value: String) = apply {
-            additionalHeaders.put(name, value)
-        }
-
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.put(name, values)
-        }
-
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
-
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
-
-        fun replaceAdditionalHeaders(name: String, value: String) = apply {
-            additionalHeaders.replace(name, value)
-        }
-
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.replace(name, values)
-        }
-
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
-
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
-
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
-
-        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
-            additionalHeaders.removeAll(names)
-        }
-
-        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
-
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
-
-        fun putAdditionalQueryParam(key: String, value: String) = apply {
-            additionalQueryParams.put(key, value)
-        }
-
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.put(key, values)
-        }
-
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.putAll(additionalQueryParams)
-        }
-
-        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.putAll(additionalQueryParams)
-            }
-
-        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
-            additionalQueryParams.replace(key, value)
-        }
-
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.replace(key, values)
-        }
-
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.replaceAll(additionalQueryParams)
-        }
-
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.replaceAll(additionalQueryParams)
-            }
-
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
-
-        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
-            additionalQueryParams.removeAll(keys)
-        }
-
-        /**
-         * Returns an immutable instance of [SandboxDirectoryCreateParams].
-         *
-         * Further updates to this [Builder] will not mutate the returned instance.
-         */
-        fun build(): SandboxDirectoryCreateParams =
-            SandboxDirectoryCreateParams(
-                body?.toImmutable(),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
     }
 
     override fun equals(other: Any?): Boolean {

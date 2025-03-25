@@ -10,10 +10,8 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -22,48 +20,76 @@ import kotlin.jvm.optionals.getOrNull
  * Each benefit type and their supported features. If the benefit type is not supported, the
  * property will be null
  */
-@NoAutoDetect
 class BenefitsSupport
-@JsonCreator
 private constructor(
-    @JsonProperty("commuter")
-    @ExcludeMissing
-    private val commuter: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("custom_post_tax")
-    @ExcludeMissing
-    private val customPostTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("custom_pre_tax")
-    @ExcludeMissing
-    private val customPreTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("fsa_dependent_care")
-    @ExcludeMissing
-    private val fsaDependentCare: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("fsa_medical")
-    @ExcludeMissing
-    private val fsaMedical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("hsa_post")
-    @ExcludeMissing
-    private val hsaPost: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("hsa_pre")
-    @ExcludeMissing
-    private val hsaPre: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("s125_dental")
-    @ExcludeMissing
-    private val s125Dental: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("s125_medical")
-    @ExcludeMissing
-    private val s125Medical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("s125_vision")
-    @ExcludeMissing
-    private val s125Vision: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("simple")
-    @ExcludeMissing
-    private val simple: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonProperty("simple_ira")
-    @ExcludeMissing
-    private val simpleIra: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val commuter: JsonField<BenefitFeaturesAndOperations>,
+    private val customPostTax: JsonField<BenefitFeaturesAndOperations>,
+    private val customPreTax: JsonField<BenefitFeaturesAndOperations>,
+    private val fsaDependentCare: JsonField<BenefitFeaturesAndOperations>,
+    private val fsaMedical: JsonField<BenefitFeaturesAndOperations>,
+    private val hsaPost: JsonField<BenefitFeaturesAndOperations>,
+    private val hsaPre: JsonField<BenefitFeaturesAndOperations>,
+    private val s125Dental: JsonField<BenefitFeaturesAndOperations>,
+    private val s125Medical: JsonField<BenefitFeaturesAndOperations>,
+    private val s125Vision: JsonField<BenefitFeaturesAndOperations>,
+    private val simple: JsonField<BenefitFeaturesAndOperations>,
+    private val simpleIra: JsonField<BenefitFeaturesAndOperations>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("commuter")
+        @ExcludeMissing
+        commuter: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("custom_post_tax")
+        @ExcludeMissing
+        customPostTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("custom_pre_tax")
+        @ExcludeMissing
+        customPreTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("fsa_dependent_care")
+        @ExcludeMissing
+        fsaDependentCare: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("fsa_medical")
+        @ExcludeMissing
+        fsaMedical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("hsa_post")
+        @ExcludeMissing
+        hsaPost: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("hsa_pre")
+        @ExcludeMissing
+        hsaPre: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("s125_dental")
+        @ExcludeMissing
+        s125Dental: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("s125_medical")
+        @ExcludeMissing
+        s125Medical: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("s125_vision")
+        @ExcludeMissing
+        s125Vision: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("simple")
+        @ExcludeMissing
+        simple: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+        @JsonProperty("simple_ira")
+        @ExcludeMissing
+        simpleIra: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of(),
+    ) : this(
+        commuter,
+        customPostTax,
+        customPreTax,
+        fsaDependentCare,
+        fsaMedical,
+        hsaPost,
+        hsaPre,
+        s125Dental,
+        s125Medical,
+        s125Vision,
+        simple,
+        simpleIra,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -258,31 +284,15 @@ private constructor(
     @ExcludeMissing
     fun _simpleIra(): JsonField<BenefitFeaturesAndOperations> = simpleIra
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): BenefitsSupport = apply {
-        if (validated) {
-            return@apply
-        }
-
-        commuter().ifPresent { it.validate() }
-        customPostTax().ifPresent { it.validate() }
-        customPreTax().ifPresent { it.validate() }
-        fsaDependentCare().ifPresent { it.validate() }
-        fsaMedical().ifPresent { it.validate() }
-        hsaPost().ifPresent { it.validate() }
-        hsaPre().ifPresent { it.validate() }
-        s125Dental().ifPresent { it.validate() }
-        s125Medical().ifPresent { it.validate() }
-        s125Vision().ifPresent { it.validate() }
-        simple().ifPresent { it.validate() }
-        simpleIra().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -570,8 +580,30 @@ private constructor(
                 s125Vision,
                 simple,
                 simpleIra,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): BenefitsSupport = apply {
+        if (validated) {
+            return@apply
+        }
+
+        commuter().ifPresent { it.validate() }
+        customPostTax().ifPresent { it.validate() }
+        customPreTax().ifPresent { it.validate() }
+        fsaDependentCare().ifPresent { it.validate() }
+        fsaMedical().ifPresent { it.validate() }
+        hsaPost().ifPresent { it.validate() }
+        hsaPre().ifPresent { it.validate() }
+        s125Dental().ifPresent { it.validate() }
+        s125Medical().ifPresent { it.validate() }
+        s125Vision().ifPresent { it.validate() }
+        simple().ifPresent { it.validate() }
+        simpleIra().ifPresent { it.validate() }
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {
