@@ -410,7 +410,12 @@ private constructor(
             fun exemption(exemption: JsonField<Exemption>) = apply { this.exemption = exemption }
 
             /** The individual's filing status for tax purposes. */
-            fun filingStatus(filingStatus: FilingStatus) = filingStatus(JsonField.of(filingStatus))
+            fun filingStatus(filingStatus: FilingStatus?) =
+                filingStatus(JsonField.ofNullable(filingStatus))
+
+            /** Alias for calling [Builder.filingStatus] with `filingStatus.orElse(null)`. */
+            fun filingStatus(filingStatus: Optional<FilingStatus>) =
+                filingStatus(filingStatus.getOrNull())
 
             /**
              * Sets [Builder.filingStatus] to an arbitrary JSON value.
