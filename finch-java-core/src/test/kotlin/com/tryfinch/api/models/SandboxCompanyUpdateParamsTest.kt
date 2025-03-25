@@ -48,7 +48,7 @@ internal class SandboxCompanyUpdateParamsTest {
                     .state("state")
                     .build()
             )
-            .primaryEmail("primary_email")
+            .primaryEmail("dev@stainless.com")
             .primaryPhoneNumber("primary_phone_number")
             .build()
     }
@@ -96,7 +96,7 @@ internal class SandboxCompanyUpdateParamsTest {
                         .state("state")
                         .build()
                 )
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
@@ -143,7 +143,7 @@ internal class SandboxCompanyUpdateParamsTest {
                     .state("state")
                     .build()
             )
-        assertThat(body.primaryEmail()).contains("primary_email")
+        assertThat(body.primaryEmail()).contains("dev@stainless.com")
         assertThat(body.primaryPhoneNumber()).contains("primary_phone_number")
     }
 
@@ -157,7 +157,7 @@ internal class SandboxCompanyUpdateParamsTest {
                 .entity(SandboxCompanyUpdateParams.Entity.builder().build())
                 .legalName("legal_name")
                 .addLocation(Location.builder().build())
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
@@ -171,7 +171,7 @@ internal class SandboxCompanyUpdateParamsTest {
         assertThat(body.entity()).contains(SandboxCompanyUpdateParams.Entity.builder().build())
         assertThat(body.legalName()).contains("legal_name")
         assertThat(body.locations().getOrNull()).containsExactly(Location.builder().build())
-        assertThat(body.primaryEmail()).contains("primary_email")
+        assertThat(body.primaryEmail()).contains("dev@stainless.com")
         assertThat(body.primaryPhoneNumber()).contains("primary_phone_number")
     }
 }
