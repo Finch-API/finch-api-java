@@ -10,26 +10,27 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class EmploymentDataResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("body")
-    @ExcludeMissing
-    private val body: JsonField<EmploymentData> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("individual_id")
-    @ExcludeMissing
-    private val individualId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val body: JsonField<EmploymentData>,
+    private val code: JsonField<Long>,
+    private val individualId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("body") @ExcludeMissing body: JsonField<EmploymentData> = JsonMissing.of(),
+        @JsonProperty("code") @ExcludeMissing code: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        individualId: JsonField<String> = JsonMissing.of(),
+    ) : this(body, code, individualId, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -73,22 +74,15 @@ private constructor(
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): EmploymentDataResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        body().ifPresent { it.validate() }
-        code()
-        individualId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -173,7 +167,20 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): EmploymentDataResponse =
-            EmploymentDataResponse(body, code, individualId, additionalProperties.toImmutable())
+            EmploymentDataResponse(body, code, individualId, additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): EmploymentDataResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        body().ifPresent { it.validate() }
+        code()
+        individualId()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

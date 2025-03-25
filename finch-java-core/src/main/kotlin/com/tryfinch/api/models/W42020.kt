@@ -11,10 +11,8 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -23,15 +21,20 @@ import kotlin.jvm.optionals.getOrNull
  * A 2020 version of the W-4 tax form containing information on an individual's filing status,
  * dependents, and withholding details.
  */
-@NoAutoDetect
 class W42020
-@JsonCreator
 private constructor(
-    @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-    @JsonProperty("year") @ExcludeMissing private val year: JsonField<Double> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val data: JsonField<Data>,
+    private val type: JsonField<Type>,
+    private val year: JsonField<Double>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("data") @ExcludeMissing data: JsonField<Data> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("year") @ExcludeMissing year: JsonField<Double> = JsonMissing.of(),
+    ) : this(data, type, year, mutableMapOf())
 
     /**
      * Detailed information specific to the 2020 W4 form.
@@ -78,22 +81,15 @@ private constructor(
      */
     @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): W42020 = apply {
-        if (validated) {
-            return@apply
-        }
-
-        data().ifPresent { it.validate() }
-        type()
-        year()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -186,41 +182,73 @@ private constructor(
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): W42020 = W42020(data, type, year, additionalProperties.toImmutable())
+        fun build(): W42020 = W42020(data, type, year, additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): W42020 = apply {
+        if (validated) {
+            return@apply
+        }
+
+        data().ifPresent { it.validate() }
+        type()
+        year()
+        validated = true
     }
 
     /** Detailed information specific to the 2020 W4 form. */
-    @NoAutoDetect
     class Data
-    @JsonCreator
     private constructor(
-        @JsonProperty("amount_for_other_dependents")
-        @ExcludeMissing
-        private val amountForOtherDependents: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("amount_for_qualifying_children_under_17")
-        @ExcludeMissing
-        private val amountForQualifyingChildrenUnder17: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("deductions")
-        @ExcludeMissing
-        private val deductions: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("extra_withholding")
-        @ExcludeMissing
-        private val extraWithholding: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("filing_status")
-        @ExcludeMissing
-        private val filingStatus: JsonField<FilingStatus> = JsonMissing.of(),
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("other_income")
-        @ExcludeMissing
-        private val otherIncome: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("total_claim_dependent_and_other_credits")
-        @ExcludeMissing
-        private val totalClaimDependentAndOtherCredits: JsonField<Long> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val amountForOtherDependents: JsonField<Long>,
+        private val amountForQualifyingChildrenUnder17: JsonField<Long>,
+        private val deductions: JsonField<Long>,
+        private val extraWithholding: JsonField<Long>,
+        private val filingStatus: JsonField<FilingStatus>,
+        private val individualId: JsonField<String>,
+        private val otherIncome: JsonField<Long>,
+        private val totalClaimDependentAndOtherCredits: JsonField<Long>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("amount_for_other_dependents")
+            @ExcludeMissing
+            amountForOtherDependents: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("amount_for_qualifying_children_under_17")
+            @ExcludeMissing
+            amountForQualifyingChildrenUnder17: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("deductions")
+            @ExcludeMissing
+            deductions: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("extra_withholding")
+            @ExcludeMissing
+            extraWithholding: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("filing_status")
+            @ExcludeMissing
+            filingStatus: JsonField<FilingStatus> = JsonMissing.of(),
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            individualId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("other_income")
+            @ExcludeMissing
+            otherIncome: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("total_claim_dependent_and_other_credits")
+            @ExcludeMissing
+            totalClaimDependentAndOtherCredits: JsonField<Long> = JsonMissing.of(),
+        ) : this(
+            amountForOtherDependents,
+            amountForQualifyingChildrenUnder17,
+            deductions,
+            extraWithholding,
+            filingStatus,
+            individualId,
+            otherIncome,
+            totalClaimDependentAndOtherCredits,
+            mutableMapOf(),
+        )
 
         /**
          * Amount claimed for dependents other than qualifying children under 17 (in cents).
@@ -379,27 +407,15 @@ private constructor(
         fun _totalClaimDependentAndOtherCredits(): JsonField<Long> =
             totalClaimDependentAndOtherCredits
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Data = apply {
-            if (validated) {
-                return@apply
-            }
-
-            amountForOtherDependents()
-            amountForQualifyingChildrenUnder17()
-            deductions()
-            extraWithholding()
-            filingStatus()
-            individualId()
-            otherIncome()
-            totalClaimDependentAndOtherCredits()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -675,8 +691,26 @@ private constructor(
                     individualId,
                     otherIncome,
                     totalClaimDependentAndOtherCredits,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Data = apply {
+            if (validated) {
+                return@apply
+            }
+
+            amountForOtherDependents()
+            amountForQualifyingChildrenUnder17()
+            deductions()
+            extraWithholding()
+            filingStatus()
+            individualId()
+            otherIncome()
+            totalClaimDependentAndOtherCredits()
+            validated = true
         }
 
         /** The individual's filing status for tax purposes. */

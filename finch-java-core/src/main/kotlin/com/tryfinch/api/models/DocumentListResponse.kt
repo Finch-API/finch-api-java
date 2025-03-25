@@ -10,26 +10,27 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class DocumentListResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("documents")
-    @ExcludeMissing
-    private val documents: JsonField<List<DocumentResponse>> = JsonMissing.of(),
-    @JsonProperty("paging")
-    @ExcludeMissing
-    private val paging: JsonField<Paging> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val documents: JsonField<List<DocumentResponse>>,
+    private val paging: JsonField<Paging>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("documents")
+        @ExcludeMissing
+        documents: JsonField<List<DocumentResponse>> = JsonMissing.of(),
+        @JsonProperty("paging") @ExcludeMissing paging: JsonField<Paging> = JsonMissing.of(),
+    ) : this(documents, paging, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -59,21 +60,15 @@ private constructor(
      */
     @JsonProperty("paging") @ExcludeMissing fun _paging(): JsonField<Paging> = paging
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): DocumentListResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        documents().forEach { it.validate() }
-        paging().validate()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -176,8 +171,20 @@ private constructor(
             DocumentListResponse(
                 checkRequired("documents", documents).map { it.toImmutable() },
                 checkRequired("paging", paging),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): DocumentListResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        documents().forEach { it.validate() }
+        paging().validate()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

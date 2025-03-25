@@ -11,10 +11,8 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -23,15 +21,20 @@ import kotlin.jvm.optionals.getOrNull
  * A 2005 version of the W-4 tax form containing information on an individual's filing status,
  * dependents, and withholding details.
  */
-@NoAutoDetect
 class W42005
-@JsonCreator
 private constructor(
-    @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-    @JsonProperty("year") @ExcludeMissing private val year: JsonField<Double> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val data: JsonField<Data>,
+    private val type: JsonField<Type>,
+    private val year: JsonField<Double>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("data") @ExcludeMissing data: JsonField<Data> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("year") @ExcludeMissing year: JsonField<Double> = JsonMissing.of(),
+    ) : this(data, type, year, mutableMapOf())
 
     /**
      * Detailed information specific to the 2005 W4 form.
@@ -78,22 +81,15 @@ private constructor(
      */
     @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): W42005 = apply {
-        if (validated) {
-            return@apply
-        }
-
-        data().ifPresent { it.validate() }
-        type()
-        year()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -186,32 +182,58 @@ private constructor(
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): W42005 = W42005(data, type, year, additionalProperties.toImmutable())
+        fun build(): W42005 = W42005(data, type, year, additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): W42005 = apply {
+        if (validated) {
+            return@apply
+        }
+
+        data().ifPresent { it.validate() }
+        type()
+        year()
+        validated = true
     }
 
     /** Detailed information specific to the 2005 W4 form. */
-    @NoAutoDetect
     class Data
-    @JsonCreator
     private constructor(
-        @JsonProperty("additional_withholding")
-        @ExcludeMissing
-        private val additionalWithholding: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("exemption")
-        @ExcludeMissing
-        private val exemption: JsonField<Exemption> = JsonMissing.of(),
-        @JsonProperty("filing_status")
-        @ExcludeMissing
-        private val filingStatus: JsonField<FilingStatus> = JsonMissing.of(),
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("total_number_of_allowances")
-        @ExcludeMissing
-        private val totalNumberOfAllowances: JsonField<Long> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val additionalWithholding: JsonField<Long>,
+        private val exemption: JsonField<Exemption>,
+        private val filingStatus: JsonField<FilingStatus>,
+        private val individualId: JsonField<String>,
+        private val totalNumberOfAllowances: JsonField<Long>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("additional_withholding")
+            @ExcludeMissing
+            additionalWithholding: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("exemption")
+            @ExcludeMissing
+            exemption: JsonField<Exemption> = JsonMissing.of(),
+            @JsonProperty("filing_status")
+            @ExcludeMissing
+            filingStatus: JsonField<FilingStatus> = JsonMissing.of(),
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            individualId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("total_number_of_allowances")
+            @ExcludeMissing
+            totalNumberOfAllowances: JsonField<Long> = JsonMissing.of(),
+        ) : this(
+            additionalWithholding,
+            exemption,
+            filingStatus,
+            individualId,
+            totalNumberOfAllowances,
+            mutableMapOf(),
+        )
 
         /**
          * Additional withholding amount (in cents).
@@ -307,24 +329,15 @@ private constructor(
         @ExcludeMissing
         fun _totalNumberOfAllowances(): JsonField<Long> = totalNumberOfAllowances
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Data = apply {
-            if (validated) {
-                return@apply
-            }
-
-            additionalWithholding()
-            exemption()
-            filingStatus()
-            individualId()
-            totalNumberOfAllowances()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -485,8 +498,23 @@ private constructor(
                     filingStatus,
                     individualId,
                     totalNumberOfAllowances,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Data = apply {
+            if (validated) {
+                return@apply
+            }
+
+            additionalWithholding()
+            exemption()
+            filingStatus()
+            individualId()
+            totalNumberOfAllowances()
+            validated = true
         }
 
         /** Indicates exemption status from federal tax withholding. */

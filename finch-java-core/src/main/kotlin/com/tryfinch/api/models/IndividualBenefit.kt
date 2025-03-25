@@ -11,25 +11,28 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class IndividualBenefit
-@JsonCreator
 private constructor(
-    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("individual_id")
-    @ExcludeMissing
-    private val individualId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val body: JsonField<Body>,
+    private val code: JsonField<Long>,
+    private val individualId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("body") @ExcludeMissing body: JsonField<Body> = JsonMissing.of(),
+        @JsonProperty("code") @ExcludeMissing code: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        individualId: JsonField<String> = JsonMissing.of(),
+    ) : this(body, code, individualId, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -73,22 +76,15 @@ private constructor(
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): IndividualBenefit = apply {
-        if (validated) {
-            return@apply
-        }
-
-        body().ifPresent { it.validate() }
-        code()
-        individualId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -172,31 +168,57 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): IndividualBenefit =
-            IndividualBenefit(body, code, individualId, additionalProperties.toImmutable())
+            IndividualBenefit(body, code, individualId, additionalProperties.toMutableMap())
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): IndividualBenefit = apply {
+        if (validated) {
+            return@apply
+        }
+
+        body().ifPresent { it.validate() }
+        code()
+        individualId()
+        validated = true
+    }
+
     class Body
-    @JsonCreator
     private constructor(
-        @JsonProperty("annual_maximum")
-        @ExcludeMissing
-        private val annualMaximum: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("catch_up")
-        @ExcludeMissing
-        private val catchUp: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("company_contribution")
-        @ExcludeMissing
-        private val companyContribution: JsonField<BenefitContribution> = JsonMissing.of(),
-        @JsonProperty("employee_deduction")
-        @ExcludeMissing
-        private val employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of(),
-        @JsonProperty("hsa_contribution_limit")
-        @ExcludeMissing
-        private val hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val annualMaximum: JsonField<Long>,
+        private val catchUp: JsonField<Boolean>,
+        private val companyContribution: JsonField<BenefitContribution>,
+        private val employeeDeduction: JsonField<BenefitContribution>,
+        private val hsaContributionLimit: JsonField<HsaContributionLimit>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("annual_maximum")
+            @ExcludeMissing
+            annualMaximum: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("catch_up")
+            @ExcludeMissing
+            catchUp: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("company_contribution")
+            @ExcludeMissing
+            companyContribution: JsonField<BenefitContribution> = JsonMissing.of(),
+            @JsonProperty("employee_deduction")
+            @ExcludeMissing
+            employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of(),
+            @JsonProperty("hsa_contribution_limit")
+            @ExcludeMissing
+            hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of(),
+        ) : this(
+            annualMaximum,
+            catchUp,
+            companyContribution,
+            employeeDeduction,
+            hsaContributionLimit,
+            mutableMapOf(),
+        )
 
         /**
          * If the benefit supports annual maximum, the amount in cents for this individual.
@@ -286,24 +308,15 @@ private constructor(
         @ExcludeMissing
         fun _hsaContributionLimit(): JsonField<HsaContributionLimit> = hsaContributionLimit
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            annualMaximum()
-            catchUp()
-            companyContribution().ifPresent { it.validate() }
-            employeeDeduction().ifPresent { it.validate() }
-            hsaContributionLimit()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -479,8 +492,23 @@ private constructor(
                     companyContribution,
                     employeeDeduction,
                     hsaContributionLimit,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            annualMaximum()
+            catchUp()
+            companyContribution().ifPresent { it.validate() }
+            employeeDeduction().ifPresent { it.validate() }
+            hsaContributionLimit()
+            validated = true
         }
 
         /** Type for HSA contribution limit if the benefit is a HSA. */

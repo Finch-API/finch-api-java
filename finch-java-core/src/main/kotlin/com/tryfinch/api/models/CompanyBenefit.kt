@@ -10,33 +10,33 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class CompanyBenefit
-@JsonCreator
 private constructor(
-    @JsonProperty("benefit_id")
-    @ExcludeMissing
-    private val benefitId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("description")
-    @ExcludeMissing
-    private val description: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("frequency")
-    @ExcludeMissing
-    private val frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
-    @JsonProperty("type")
-    @ExcludeMissing
-    private val type: JsonField<BenefitType> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val benefitId: JsonField<String>,
+    private val description: JsonField<String>,
+    private val frequency: JsonField<BenefitFrequency>,
+    private val type: JsonField<BenefitType>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("benefit_id") @ExcludeMissing benefitId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("frequency")
+        @ExcludeMissing
+        frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing type: JsonField<BenefitType> = JsonMissing.of(),
+    ) : this(benefitId, description, frequency, type, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -96,23 +96,15 @@ private constructor(
      */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): CompanyBenefit = apply {
-        if (validated) {
-            return@apply
-        }
-
-        benefitId()
-        description()
-        frequency()
-        type()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -244,8 +236,22 @@ private constructor(
                 checkRequired("description", description),
                 checkRequired("frequency", frequency),
                 checkRequired("type", type),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): CompanyBenefit = apply {
+        if (validated) {
+            return@apply
+        }
+
+        benefitId()
+        description()
+        frequency()
+        type()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

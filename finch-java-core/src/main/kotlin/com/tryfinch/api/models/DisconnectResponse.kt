@@ -10,22 +10,21 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class DisconnectResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val status: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("status") @ExcludeMissing status: JsonField<String> = JsonMissing.of()
+    ) : this(status, mutableMapOf())
 
     /**
      * If the request is successful, Finch will return “success” (HTTP 200 status).
@@ -42,20 +41,15 @@ private constructor(
      */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<String> = status
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): DisconnectResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        status()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -127,7 +121,18 @@ private constructor(
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): DisconnectResponse =
-            DisconnectResponse(checkRequired("status", status), additionalProperties.toImmutable())
+            DisconnectResponse(checkRequired("status", status), additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): DisconnectResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        status()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

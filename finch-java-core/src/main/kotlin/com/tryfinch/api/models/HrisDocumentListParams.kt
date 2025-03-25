@@ -5,7 +5,6 @@ package com.tryfinch.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -45,19 +44,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                individualIds?.forEach { put("individual_ids[]", it) }
-                limit?.let { put("limit", it.toString()) }
-                offset?.let { put("offset", it.toString()) }
-                types?.forEach { put("types[]", it.toString()) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -69,7 +55,6 @@ private constructor(
     }
 
     /** A builder for [HrisDocumentListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var individualIds: MutableList<String>? = null
@@ -262,6 +247,19 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                individualIds?.forEach { put("individual_ids[]", it) }
+                limit?.let { put("limit", it.toString()) }
+                offset?.let { put("offset", it.toString()) }
+                types?.forEach { put("types[]", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 

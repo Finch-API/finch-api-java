@@ -10,34 +10,38 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class Location
-@JsonCreator
 private constructor(
-    @JsonProperty("city") @ExcludeMissing private val city: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("country")
-    @ExcludeMissing
-    private val country: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("line1") @ExcludeMissing private val line1: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("line2") @ExcludeMissing private val line2: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("postal_code")
-    @ExcludeMissing
-    private val postalCode: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("source_id")
-    @ExcludeMissing
-    private val sourceId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("state") @ExcludeMissing private val state: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val city: JsonField<String>,
+    private val country: JsonField<String>,
+    private val line1: JsonField<String>,
+    private val line2: JsonField<String>,
+    private val name: JsonField<String>,
+    private val postalCode: JsonField<String>,
+    private val sourceId: JsonField<String>,
+    private val state: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("city") @ExcludeMissing city: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("country") @ExcludeMissing country: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("line1") @ExcludeMissing line1: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("line2") @ExcludeMissing line2: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("postal_code")
+        @ExcludeMissing
+        postalCode: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("source_id") @ExcludeMissing sourceId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("state") @ExcludeMissing state: JsonField<String> = JsonMissing.of(),
+    ) : this(city, country, line1, line2, name, postalCode, sourceId, state, mutableMapOf())
 
     /**
      * City, district, suburb, town, or village.
@@ -155,27 +159,15 @@ private constructor(
      */
     @JsonProperty("state") @ExcludeMissing fun _state(): JsonField<String> = state
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Location = apply {
-        if (validated) {
-            return@apply
-        }
-
-        city()
-        country()
-        line1()
-        line2()
-        name()
-        postalCode()
-        sourceId()
-        state()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -356,8 +348,26 @@ private constructor(
                 postalCode,
                 sourceId,
                 state,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): Location = apply {
+        if (validated) {
+            return@apply
+        }
+
+        city()
+        country()
+        line1()
+        line2()
+        name()
+        postalCode()
+        sourceId()
+        state()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {
