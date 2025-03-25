@@ -49,7 +49,7 @@ internal class CompanyUpdateResponseTest {
                         .state("state")
                         .build()
                 )
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
@@ -92,7 +92,7 @@ internal class CompanyUpdateResponseTest {
                     .state("state")
                     .build()
             )
-        assertThat(companyUpdateResponse.primaryEmail()).contains("primary_email")
+        assertThat(companyUpdateResponse.primaryEmail()).contains("dev@stainless.com")
         assertThat(companyUpdateResponse.primaryPhoneNumber()).contains("primary_phone_number")
     }
 }
