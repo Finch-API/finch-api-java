@@ -337,16 +337,17 @@ private constructor(
 
                 when (type) {
                     "data_sync_all" -> {
-                        tryDeserialize(node, jacksonTypeRef<DataSyncAll>()) { it.validate() }
-                            ?.let {
-                                return Body(dataSyncAll = it, _json = json)
-                            }
+                        return Body(
+                            dataSyncAll = deserialize(node, jacksonTypeRef<DataSyncAll>()),
+                            _json = json,
+                        )
                     }
                     "w4_form_employee_sync" -> {
-                        tryDeserialize(node, jacksonTypeRef<W4FormEmployeeSync>()) { it.validate() }
-                            ?.let {
-                                return Body(w4FormEmployeeSync = it, _json = json)
-                            }
+                        return Body(
+                            w4FormEmployeeSync =
+                                deserialize(node, jacksonTypeRef<W4FormEmployeeSync>()),
+                            _json = json,
+                        )
                     }
                 }
 
