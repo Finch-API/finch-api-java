@@ -165,16 +165,16 @@ private constructor(
 
             when (type) {
                 "w4_2020" -> {
-                    tryDeserialize(node, jacksonTypeRef<W42020>()) { it.validate() }
-                        ?.let {
-                            return DocumentRetreiveResponse(w42020 = it, _json = json)
-                        }
+                    return DocumentRetreiveResponse(
+                        w42020 = deserialize(node, jacksonTypeRef<W42020>()),
+                        _json = json,
+                    )
                 }
                 "w4_2005" -> {
-                    tryDeserialize(node, jacksonTypeRef<W42005>()) { it.validate() }
-                        ?.let {
-                            return DocumentRetreiveResponse(w42005 = it, _json = json)
-                        }
+                    return DocumentRetreiveResponse(
+                        w42005 = deserialize(node, jacksonTypeRef<W42005>()),
+                        _json = json,
+                    )
                 }
             }
 
