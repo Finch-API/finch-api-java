@@ -15,6 +15,7 @@ import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
@@ -1434,6 +1435,7 @@ private constructor(
 
     class ConnectionStatus
     private constructor(
+        private val lastSuccessfulSync: JsonField<OffsetDateTime>,
         private val message: JsonField<String>,
         private val status: JsonField<ConnectionStatusType>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1441,11 +1443,23 @@ private constructor(
 
         @JsonCreator
         private constructor(
+            @JsonProperty("last_successful_sync")
+            @ExcludeMissing
+            lastSuccessfulSync: JsonField<OffsetDateTime> = JsonMissing.of(),
             @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
             @JsonProperty("status")
             @ExcludeMissing
             status: JsonField<ConnectionStatusType> = JsonMissing.of(),
-        ) : this(message, status, mutableMapOf())
+        ) : this(lastSuccessfulSync, message, status, mutableMapOf())
+
+        /**
+         * The datetime when the connection was last successfully synced.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun lastSuccessfulSync(): Optional<OffsetDateTime> =
+            Optional.ofNullable(lastSuccessfulSync.getNullable("last_successful_sync"))
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -1459,6 +1473,16 @@ private constructor(
          */
         fun status(): Optional<ConnectionStatusType> =
             Optional.ofNullable(status.getNullable("status"))
+
+        /**
+         * Returns the raw JSON value of [lastSuccessfulSync].
+         *
+         * Unlike [lastSuccessfulSync], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("last_successful_sync")
+        @ExcludeMissing
+        fun _lastSuccessfulSync(): JsonField<OffsetDateTime> = lastSuccessfulSync
 
         /**
          * Returns the raw JSON value of [message].
@@ -1497,15 +1521,32 @@ private constructor(
         /** A builder for [ConnectionStatus]. */
         class Builder internal constructor() {
 
+            private var lastSuccessfulSync: JsonField<OffsetDateTime> = JsonMissing.of()
             private var message: JsonField<String> = JsonMissing.of()
             private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(connectionStatus: ConnectionStatus) = apply {
+                lastSuccessfulSync = connectionStatus.lastSuccessfulSync
                 message = connectionStatus.message
                 status = connectionStatus.status
                 additionalProperties = connectionStatus.additionalProperties.toMutableMap()
+            }
+
+            /** The datetime when the connection was last successfully synced. */
+            fun lastSuccessfulSync(lastSuccessfulSync: OffsetDateTime) =
+                lastSuccessfulSync(JsonField.of(lastSuccessfulSync))
+
+            /**
+             * Sets [Builder.lastSuccessfulSync] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.lastSuccessfulSync] with a well-typed
+             * [OffsetDateTime] value instead. This method is primarily for setting the field to an
+             * undocumented or not yet supported value.
+             */
+            fun lastSuccessfulSync(lastSuccessfulSync: JsonField<OffsetDateTime>) = apply {
+                this.lastSuccessfulSync = lastSuccessfulSync
             }
 
             fun message(message: String) = message(JsonField.of(message))
@@ -1555,7 +1596,12 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): ConnectionStatus =
-                ConnectionStatus(message, status, additionalProperties.toMutableMap())
+                ConnectionStatus(
+                    lastSuccessfulSync,
+                    message,
+                    status,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -1565,6 +1611,7 @@ private constructor(
                 return@apply
             }
 
+            lastSuccessfulSync()
             message()
             status()
             validated = true
@@ -1575,17 +1622,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionStatus && message == other.message && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ConnectionStatus && lastSuccessfulSync == other.lastSuccessfulSync && message == other.message && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(message, status, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(lastSuccessfulSync, message, status, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ConnectionStatus{message=$message, status=$status, additionalProperties=$additionalProperties}"
+            "ConnectionStatus{lastSuccessfulSync=$lastSuccessfulSync, message=$message, status=$status, additionalProperties=$additionalProperties}"
     }
 
     /**
