@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -30,6 +31,7 @@ internal class IntrospectionTest {
                 .connectionId("connection_id")
                 .connectionStatus(
                     Introspection.ConnectionStatus.builder()
+                        .lastSuccessfulSync(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .message("message")
                         .status(ConnectionStatusType.PENDING)
                         .build()
@@ -66,6 +68,7 @@ internal class IntrospectionTest {
         assertThat(introspection.connectionStatus())
             .isEqualTo(
                 Introspection.ConnectionStatus.builder()
+                    .lastSuccessfulSync(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .message("message")
                     .status(ConnectionStatusType.PENDING)
                     .build()
