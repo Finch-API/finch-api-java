@@ -616,9 +616,9 @@ private constructor(
         dob()
         emails().ifPresent { it.forEach { it.validate() } }
         encryptedSsn()
-        ethnicity()
+        ethnicity().ifPresent { it.validate() }
         firstName()
-        gender()
+        gender().ifPresent { it.validate() }
         lastName()
         middleName()
         phoneNumbers().ifPresent { it.forEach { it?.validate() } }
@@ -627,6 +627,35 @@ private constructor(
         ssn()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (if (dob.asKnown().isPresent) 1 else 0) +
+            (emails.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (encryptedSsn.asKnown().isPresent) 1 else 0) +
+            (ethnicity.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (firstName.asKnown().isPresent) 1 else 0) +
+            (gender.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (lastName.asKnown().isPresent) 1 else 0) +
+            (if (middleName.asKnown().isPresent) 1 else 0) +
+            (phoneNumbers.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+            (if (preferredName.asKnown().isPresent) 1 else 0) +
+            (residence.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (ssn.asKnown().isPresent) 1 else 0)
 
     class Email
     private constructor(
@@ -759,9 +788,27 @@ private constructor(
             }
 
             data()
-            type()
+            type().ifPresent { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (data.asKnown().isPresent) 1 else 0) + (type.asKnown().getOrNull()?.validity() ?: 0)
 
         class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -849,6 +896,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     FinchInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1005,6 +1079,33 @@ private constructor(
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
+        private var validated: Boolean = false
+
+        fun validate(): Ethnicity = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -1114,6 +1215,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): Gender = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1262,9 +1390,27 @@ private constructor(
             }
 
             data()
-            type()
+            type().ifPresent { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (data.asKnown().isPresent) 1 else 0) + (type.asKnown().getOrNull()?.validity() ?: 0)
 
         class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -1352,6 +1498,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     FinchInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -32,5 +34,30 @@ internal class EnrolledIndividualTest {
             )
         assertThat(enrolledIndividual.code()).contains(EnrolledIndividual.Code.OK)
         assertThat(enrolledIndividual.individualId()).contains("individual_id")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val enrolledIndividual =
+            EnrolledIndividual.builder()
+                .body(
+                    EnrolledIndividual.Body.builder()
+                        .finchCode("finch_code")
+                        .message("message")
+                        .name("name")
+                        .build()
+                )
+                .code(EnrolledIndividual.Code.OK)
+                .individualId("individual_id")
+                .build()
+
+        val roundtrippedEnrolledIndividual =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(enrolledIndividual),
+                jacksonTypeRef<EnrolledIndividual>(),
+            )
+
+        assertThat(roundtrippedEnrolledIndividual).isEqualTo(enrolledIndividual)
     }
 }

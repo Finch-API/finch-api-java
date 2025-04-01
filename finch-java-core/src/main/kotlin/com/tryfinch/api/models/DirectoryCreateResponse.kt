@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
@@ -80,6 +81,21 @@ private constructor(private val additionalProperties: MutableMap<String, JsonVal
 
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic internal fun validity(): Int = 0
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

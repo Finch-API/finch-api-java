@@ -299,9 +299,30 @@ private constructor(
         companyId()
         connectionId()
         data().ifPresent { it.validate() }
-        eventType()
+        eventType().ifPresent { it.validate() }
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (accountId.asKnown().isPresent) 1 else 0) +
+            (if (companyId.asKnown().isPresent) 1 else 0) +
+            (if (connectionId.asKnown().isPresent) 1 else 0) +
+            (data.asKnown().getOrNull()?.validity() ?: 0) +
+            (eventType.asKnown().getOrNull()?.validity() ?: 0)
 
     class Data
     private constructor(
@@ -466,9 +487,28 @@ private constructor(
             }
 
             authenticationMethod().validate()
-            status()
+            status().validate()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (authenticationMethod.asKnown().getOrNull()?.validity() ?: 0) +
+                (status.asKnown().getOrNull()?.validity() ?: 0)
 
         class AuthenticationMethod
         private constructor(
@@ -681,9 +721,29 @@ private constructor(
 
                 benefitsSupport().ifPresent { it.validate() }
                 supportedFields().ifPresent { it.validate() }
-                type()
+                type().ifPresent { it.validate() }
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (benefitsSupport.asKnown().getOrNull()?.validity() ?: 0) +
+                    (supportedFields.asKnown().getOrNull()?.validity() ?: 0) +
+                    (type.asKnown().getOrNull()?.validity() ?: 0)
 
             /** The supported data fields returned by our HR and payroll endpoints */
             class SupportedFields
@@ -1048,6 +1108,30 @@ private constructor(
                     payment().ifPresent { it.validate() }
                     validated = true
                 }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (company.asKnown().getOrNull()?.validity() ?: 0) +
+                        (directory.asKnown().getOrNull()?.validity() ?: 0) +
+                        (employment.asKnown().getOrNull()?.validity() ?: 0) +
+                        (individual.asKnown().getOrNull()?.validity() ?: 0) +
+                        (payGroup.asKnown().getOrNull()?.validity() ?: 0) +
+                        (payStatement.asKnown().getOrNull()?.validity() ?: 0) +
+                        (payment.asKnown().getOrNull()?.validity() ?: 0)
 
                 class SupportedCompanyFields
                 private constructor(
@@ -1478,6 +1562,32 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (id.asKnown().isPresent) 1 else 0) +
+                            (accounts.asKnown().getOrNull()?.validity() ?: 0) +
+                            (departments.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (ein.asKnown().isPresent) 1 else 0) +
+                            (entity.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (legalName.asKnown().isPresent) 1 else 0) +
+                            (locations.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (primaryEmail.asKnown().isPresent) 1 else 0) +
+                            (if (primaryPhoneNumber.asKnown().isPresent) 1 else 0)
+
                     class Accounts
                     private constructor(
                         private val accountName: JsonField<Boolean>,
@@ -1764,6 +1874,28 @@ private constructor(
                             validated = true
                         }
 
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (accountName.asKnown().isPresent) 1 else 0) +
+                                (if (accountNumber.asKnown().isPresent) 1 else 0) +
+                                (if (accountType.asKnown().isPresent) 1 else 0) +
+                                (if (institutionName.asKnown().isPresent) 1 else 0) +
+                                (if (routingNumber.asKnown().isPresent) 1 else 0)
+
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
                                 return true
@@ -1934,6 +2066,25 @@ private constructor(
                             validated = true
                         }
 
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (name.asKnown().isPresent) 1 else 0) +
+                                (parent.asKnown().getOrNull()?.validity() ?: 0)
+
                         class Parent
                         private constructor(
                             private val name: JsonField<Boolean>,
@@ -2053,6 +2204,23 @@ private constructor(
                                 name()
                                 validated = true
                             }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
 
                             override fun equals(other: Any?): Boolean {
                                 if (this === other) {
@@ -2241,6 +2409,25 @@ private constructor(
                             type()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (subtype.asKnown().isPresent) 1 else 0) +
+                                (if (type.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -2564,6 +2751,29 @@ private constructor(
                             validated = true
                         }
 
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (city.asKnown().isPresent) 1 else 0) +
+                                (if (country.asKnown().isPresent) 1 else 0) +
+                                (if (line1.asKnown().isPresent) 1 else 0) +
+                                (if (line2.asKnown().isPresent) 1 else 0) +
+                                (if (postalCode.asKnown().isPresent) 1 else 0) +
+                                (if (state.asKnown().isPresent) 1 else 0)
+
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
                                 return true
@@ -2760,6 +2970,25 @@ private constructor(
                         paging().ifPresent { it.validate() }
                         validated = true
                     }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (individuals.asKnown().getOrNull()?.validity() ?: 0) +
+                            (paging.asKnown().getOrNull()?.validity() ?: 0)
 
                     class Individuals
                     private constructor(
@@ -3119,6 +3348,30 @@ private constructor(
                             validated = true
                         }
 
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (id.asKnown().isPresent) 1 else 0) +
+                                (if (department.asKnown().isPresent) 1 else 0) +
+                                (if (firstName.asKnown().isPresent) 1 else 0) +
+                                (if (isActive.asKnown().isPresent) 1 else 0) +
+                                (if (lastName.asKnown().isPresent) 1 else 0) +
+                                (manager.asKnown().getOrNull()?.validity() ?: 0) +
+                                (if (middleName.asKnown().isPresent) 1 else 0)
+
                         class Manager
                         private constructor(
                             private val id: JsonField<Boolean>,
@@ -3235,6 +3488,23 @@ private constructor(
                                 id()
                                 validated = true
                             }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int = (if (id.asKnown().isPresent) 1 else 0)
 
                             override fun equals(other: Any?): Boolean {
                                 if (this === other) {
@@ -3423,6 +3693,25 @@ private constructor(
                             offset()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (count.asKnown().isPresent) 1 else 0) +
+                                (if (offset.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -4200,6 +4489,40 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (id.asKnown().isPresent) 1 else 0) +
+                            (if (classCode.asKnown().isPresent) 1 else 0) +
+                            (if (customFields.asKnown().isPresent) 1 else 0) +
+                            (department.asKnown().getOrNull()?.validity() ?: 0) +
+                            (employment.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (employmentStatus.asKnown().isPresent) 1 else 0) +
+                            (if (endDate.asKnown().isPresent) 1 else 0) +
+                            (if (firstName.asKnown().isPresent) 1 else 0) +
+                            (income.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (incomeHistory.asKnown().isPresent) 1 else 0) +
+                            (if (isActive.asKnown().isPresent) 1 else 0) +
+                            (if (lastName.asKnown().isPresent) 1 else 0) +
+                            (location.asKnown().getOrNull()?.validity() ?: 0) +
+                            (manager.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (middleName.asKnown().isPresent) 1 else 0) +
+                            (if (startDate.asKnown().isPresent) 1 else 0) +
+                            (if (title.asKnown().isPresent) 1 else 0)
+
                     class Department
                     private constructor(
                         private val name: JsonField<Boolean>,
@@ -4316,6 +4639,23 @@ private constructor(
                             name()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -4488,6 +4828,25 @@ private constructor(
                             type()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (subtype.asKnown().isPresent) 1 else 0) +
+                                (if (type.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -4693,6 +5052,26 @@ private constructor(
                             unit()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (amount.asKnown().isPresent) 1 else 0) +
+                                (if (currency.asKnown().isPresent) 1 else 0) +
+                                (if (unit.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -5015,6 +5394,29 @@ private constructor(
                             validated = true
                         }
 
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (city.asKnown().isPresent) 1 else 0) +
+                                (if (country.asKnown().isPresent) 1 else 0) +
+                                (if (line1.asKnown().isPresent) 1 else 0) +
+                                (if (line2.asKnown().isPresent) 1 else 0) +
+                                (if (postalCode.asKnown().isPresent) 1 else 0) +
+                                (if (state.asKnown().isPresent) 1 else 0)
+
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
                                 return true
@@ -5145,6 +5547,23 @@ private constructor(
                             id()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int = (if (id.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -5761,6 +6180,36 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (id.asKnown().isPresent) 1 else 0) +
+                            (if (dob.asKnown().isPresent) 1 else 0) +
+                            (emails.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (encryptedSsn.asKnown().isPresent) 1 else 0) +
+                            (if (ethnicity.asKnown().isPresent) 1 else 0) +
+                            (if (firstName.asKnown().isPresent) 1 else 0) +
+                            (if (gender.asKnown().isPresent) 1 else 0) +
+                            (if (lastName.asKnown().isPresent) 1 else 0) +
+                            (if (middleName.asKnown().isPresent) 1 else 0) +
+                            (phoneNumbers.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (preferredName.asKnown().isPresent) 1 else 0) +
+                            (residence.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (ssn.asKnown().isPresent) 1 else 0)
+
                     class Emails
                     private constructor(
                         private val data: JsonField<Boolean>,
@@ -5908,6 +6357,25 @@ private constructor(
                             type()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (data.asKnown().isPresent) 1 else 0) +
+                                (if (type.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -6076,6 +6544,25 @@ private constructor(
                             type()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (data.asKnown().isPresent) 1 else 0) +
+                                (if (type.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -6399,6 +6886,29 @@ private constructor(
                             validated = true
                         }
 
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (city.asKnown().isPresent) 1 else 0) +
+                                (if (country.asKnown().isPresent) 1 else 0) +
+                                (if (line1.asKnown().isPresent) 1 else 0) +
+                                (if (line2.asKnown().isPresent) 1 else 0) +
+                                (if (postalCode.asKnown().isPresent) 1 else 0) +
+                                (if (state.asKnown().isPresent) 1 else 0)
+
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
                                 return true
@@ -6665,6 +7175,27 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (id.asKnown().isPresent) 1 else 0) +
+                            (if (individualIds.asKnown().isPresent) 1 else 0) +
+                            (if (name.asKnown().isPresent) 1 else 0) +
+                            (if (payFrequencies.asKnown().isPresent) 1 else 0)
+
                     override fun equals(other: Any?): Boolean {
                         if (this === other) {
                             return true
@@ -6845,6 +7376,25 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (paging.asKnown().getOrNull()?.validity() ?: 0) +
+                            (payStatements.asKnown().getOrNull()?.validity() ?: 0)
+
                     class Paging
                     private constructor(
                         private val count: JsonField<Boolean>,
@@ -7014,6 +7564,25 @@ private constructor(
                             offset()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (count.asKnown().isPresent) 1 else 0) +
+                                (if (offset.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -7520,6 +8089,33 @@ private constructor(
                             validated = true
                         }
 
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (earnings.asKnown().getOrNull()?.validity() ?: 0) +
+                                (employeeDeductions.asKnown().getOrNull()?.validity() ?: 0) +
+                                (employerContributions.asKnown().getOrNull()?.validity() ?: 0) +
+                                (if (grossPay.asKnown().isPresent) 1 else 0) +
+                                (if (individualId.asKnown().isPresent) 1 else 0) +
+                                (if (netPay.asKnown().isPresent) 1 else 0) +
+                                (if (paymentMethod.asKnown().isPresent) 1 else 0) +
+                                (taxes.asKnown().getOrNull()?.validity() ?: 0) +
+                                (if (totalHours.asKnown().isPresent) 1 else 0) +
+                                (if (type.asKnown().isPresent) 1 else 0)
+
                         class Earnings
                         private constructor(
                             private val amount: JsonField<Boolean>,
@@ -7754,6 +8350,27 @@ private constructor(
                                 type()
                                 validated = true
                             }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int =
+                                (if (amount.asKnown().isPresent) 1 else 0) +
+                                    (if (currency.asKnown().isPresent) 1 else 0) +
+                                    (if (name.asKnown().isPresent) 1 else 0) +
+                                    (if (type.asKnown().isPresent) 1 else 0)
 
                             override fun equals(other: Any?): Boolean {
                                 if (this === other) {
@@ -8046,6 +8663,28 @@ private constructor(
                                 validated = true
                             }
 
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int =
+                                (if (amount.asKnown().isPresent) 1 else 0) +
+                                    (if (currency.asKnown().isPresent) 1 else 0) +
+                                    (if (name.asKnown().isPresent) 1 else 0) +
+                                    (if (preTax.asKnown().isPresent) 1 else 0) +
+                                    (if (type.asKnown().isPresent) 1 else 0)
+
                             override fun equals(other: Any?): Boolean {
                                 if (this === other) {
                                     return true
@@ -8264,6 +8903,26 @@ private constructor(
                                 name()
                                 validated = true
                             }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int =
+                                (if (amount.asKnown().isPresent) 1 else 0) +
+                                    (if (currency.asKnown().isPresent) 1 else 0) +
+                                    (if (name.asKnown().isPresent) 1 else 0)
 
                             override fun equals(other: Any?): Boolean {
                                 if (this === other) {
@@ -8554,6 +9213,28 @@ private constructor(
                                 type()
                                 validated = true
                             }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int =
+                                (if (amount.asKnown().isPresent) 1 else 0) +
+                                    (if (currency.asKnown().isPresent) 1 else 0) +
+                                    (if (employer.asKnown().isPresent) 1 else 0) +
+                                    (if (name.asKnown().isPresent) 1 else 0) +
+                                    (if (type.asKnown().isPresent) 1 else 0)
 
                             override fun equals(other: Any?): Boolean {
                                 if (this === other) {
@@ -9161,6 +9842,35 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (id.asKnown().isPresent) 1 else 0) +
+                            (if (companyDebit.asKnown().isPresent) 1 else 0) +
+                            (if (debitDate.asKnown().isPresent) 1 else 0) +
+                            (if (employeeTaxes.asKnown().isPresent) 1 else 0) +
+                            (if (employerTaxes.asKnown().isPresent) 1 else 0) +
+                            (if (grossPay.asKnown().isPresent) 1 else 0) +
+                            (if (individualIds.asKnown().isPresent) 1 else 0) +
+                            (if (netPay.asKnown().isPresent) 1 else 0) +
+                            (if (payDate.asKnown().isPresent) 1 else 0) +
+                            (if (payFrequencies.asKnown().isPresent) 1 else 0) +
+                            (if (payGroupIds.asKnown().isPresent) 1 else 0) +
+                            (payPeriod.asKnown().getOrNull()?.validity() ?: 0)
+
                     class PayPeriod
                     private constructor(
                         private val endDate: JsonField<Boolean>,
@@ -9317,6 +10027,25 @@ private constructor(
                             startDate()
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (endDate.asKnown().isPresent) 1 else 0) +
+                                (if (startDate.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -9481,6 +10210,33 @@ private constructor(
                         FinchInvalidDataException("Value is not a String")
                     }
 
+                private var validated: Boolean = false
+
+                fun validate(): Type = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
                         return true
@@ -9609,6 +10365,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): EventType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

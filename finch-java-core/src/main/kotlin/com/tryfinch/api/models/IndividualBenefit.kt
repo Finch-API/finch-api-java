@@ -184,6 +184,25 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (body.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (code.asKnown().isPresent) 1 else 0) +
+            (if (individualId.asKnown().isPresent) 1 else 0)
+
     class Body
     private constructor(
         private val annualMaximum: JsonField<Long>,
@@ -507,9 +526,31 @@ private constructor(
             catchUp()
             companyContribution().ifPresent { it.validate() }
             employeeDeduction().ifPresent { it.validate() }
-            hsaContributionLimit()
+            hsaContributionLimit().ifPresent { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (annualMaximum.asKnown().isPresent) 1 else 0) +
+                (if (catchUp.asKnown().isPresent) 1 else 0) +
+                (companyContribution.asKnown().getOrNull()?.validity() ?: 0) +
+                (employeeDeduction.asKnown().getOrNull()?.validity() ?: 0) +
+                (hsaContributionLimit.asKnown().getOrNull()?.validity() ?: 0)
 
         /** Type for HSA contribution limit if the benefit is a HSA. */
         class HsaContributionLimit
@@ -605,6 +646,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     FinchInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): HsaContributionLimit = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

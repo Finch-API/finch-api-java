@@ -12,6 +12,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.BaseDeserializer
 import com.tryfinch.api.core.BaseSerializer
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.allMaxBy
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -82,8 +83,8 @@ private constructor(
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
-    fun <T> accept(visitor: Visitor<T>): T {
-        return when {
+    fun <T> accept(visitor: Visitor<T>): T =
+        when {
             accountUpdated != null -> visitor.visitAccountUpdated(accountUpdated)
             jobCompletion != null -> visitor.visitJobCompletion(jobCompletion)
             companyUpdated != null -> visitor.visitCompanyUpdated(companyUpdated)
@@ -94,7 +95,6 @@ private constructor(
             payStatement != null -> visitor.visitPayStatement(payStatement)
             else -> visitor.unknown(_json)
         }
-    }
 
     private var validated: Boolean = false
 
@@ -140,6 +140,47 @@ private constructor(
         )
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        accept(
+            object : Visitor<Int> {
+                override fun visitAccountUpdated(accountUpdated: AccountUpdateEvent) =
+                    accountUpdated.validity()
+
+                override fun visitJobCompletion(jobCompletion: JobCompletionEvent) =
+                    jobCompletion.validity()
+
+                override fun visitCompanyUpdated(companyUpdated: CompanyEvent) =
+                    companyUpdated.validity()
+
+                override fun visitDirectory(directory: DirectoryEvent) = directory.validity()
+
+                override fun visitEmployment(employment: EmploymentEvent) = employment.validity()
+
+                override fun visitIndividual(individual: IndividualEvent) = individual.validity()
+
+                override fun visitPayment(payment: PaymentEvent) = payment.validity()
+
+                override fun visitPayStatement(payStatement: PayStatementEvent) =
+                    payStatement.validity()
+
+                override fun unknown(json: JsonValue?) = 0
+            }
+        )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -234,40 +275,45 @@ private constructor(
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
 
-            tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(accountUpdated = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(jobCompletion = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<CompanyEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(companyUpdated = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<DirectoryEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(directory = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<EmploymentEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(employment = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<IndividualEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(individual = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<PaymentEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(payment = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<PayStatementEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(payStatement = it, _json = json)
-                }
-
-            return WebhookEvent(_json = json)
+            val bestMatches =
+                sequenceOf(
+                        tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
+                            WebhookEvent(accountUpdated = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>())?.let {
+                            WebhookEvent(jobCompletion = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
+                            WebhookEvent(companyUpdated = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<DirectoryEvent>())?.let {
+                            WebhookEvent(directory = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<EmploymentEvent>())?.let {
+                            WebhookEvent(employment = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<IndividualEvent>())?.let {
+                            WebhookEvent(individual = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<PaymentEvent>())?.let {
+                            WebhookEvent(payment = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<PayStatementEvent>())?.let {
+                            WebhookEvent(payStatement = it, _json = json)
+                        },
+                    )
+                    .filterNotNull()
+                    .allMaxBy { it.validity() }
+                    .toList()
+            return when (bestMatches.size) {
+                // This can happen if what we're deserializing is completely incompatible with all
+                // the possible variants (e.g. deserializing from boolean).
+                0 -> WebhookEvent(_json = json)
+                1 -> bestMatches.single()
+                // If there's more than one match with the highest validity, then use the first
+                // completely valid match, or simply the first match if none are completely valid.
+                else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+            }
         }
     }
 
