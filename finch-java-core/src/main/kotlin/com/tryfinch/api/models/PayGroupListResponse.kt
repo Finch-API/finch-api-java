@@ -17,6 +17,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class PayGroupListResponse
 private constructor(
@@ -208,9 +209,28 @@ private constructor(
 
         id()
         name()
-        payFrequencies()
+        payFrequencies().ifPresent { it.forEach { it.validate() } }
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (if (name.asKnown().isPresent) 1 else 0) +
+            (payFrequencies.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class PayFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
@@ -340,6 +360,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): PayFrequency = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

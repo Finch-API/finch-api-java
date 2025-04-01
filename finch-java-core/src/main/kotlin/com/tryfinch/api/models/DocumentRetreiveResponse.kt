@@ -61,13 +61,12 @@ private constructor(
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
-    fun <T> accept(visitor: Visitor<T>): T {
-        return when {
+    fun <T> accept(visitor: Visitor<T>): T =
+        when {
             w42020 != null -> visitor.visitW42020(w42020)
             w42005 != null -> visitor.visitW42005(w42005)
             else -> visitor.unknown(_json)
         }
-    }
 
     private var validated: Boolean = false
 
@@ -89,6 +88,31 @@ private constructor(
         )
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        accept(
+            object : Visitor<Int> {
+                override fun visitW42020(w42020: W42020) = w42020.validity()
+
+                override fun visitW42005(w42005: W42005) = w42005.validity()
+
+                override fun unknown(json: JsonValue?) = 0
+            }
+        )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -165,16 +189,14 @@ private constructor(
 
             when (type) {
                 "w4_2020" -> {
-                    return DocumentRetreiveResponse(
-                        w42020 = deserialize(node, jacksonTypeRef<W42020>()),
-                        _json = json,
-                    )
+                    return tryDeserialize(node, jacksonTypeRef<W42020>())?.let {
+                        DocumentRetreiveResponse(w42020 = it, _json = json)
+                    } ?: DocumentRetreiveResponse(_json = json)
                 }
                 "w4_2005" -> {
-                    return DocumentRetreiveResponse(
-                        w42005 = deserialize(node, jacksonTypeRef<W42005>()),
-                        _json = json,
-                    )
+                    return tryDeserialize(node, jacksonTypeRef<W42005>())?.let {
+                        DocumentRetreiveResponse(w42005 = it, _json = json)
+                    } ?: DocumentRetreiveResponse(_json = json)
                 }
             }
 

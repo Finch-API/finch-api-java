@@ -14,6 +14,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class SupportPerBenefitType
 private constructor(
@@ -168,6 +169,24 @@ private constructor(
         individualBenefits().ifPresent { it.validate() }
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (companyBenefits.asKnown().getOrNull()?.validity() ?: 0) +
+            (individualBenefits.asKnown().getOrNull()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

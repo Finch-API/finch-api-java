@@ -812,11 +812,11 @@ private constructor(
         accountId()
         authenticationMethods().forEach { it.validate() }
         clientId()
-        clientType()
+        clientType().validate()
         companyId()
         connectionId()
         connectionStatus().validate()
-        connectionType()
+        connectionType().validate()
         customerEmail()
         customerId()
         customerName()
@@ -827,6 +827,38 @@ private constructor(
         username()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (accountId.asKnown().isPresent) 1 else 0) +
+            (authenticationMethods.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (clientId.asKnown().isPresent) 1 else 0) +
+            (clientType.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (companyId.asKnown().isPresent) 1 else 0) +
+            (if (connectionId.asKnown().isPresent) 1 else 0) +
+            (connectionStatus.asKnown().getOrNull()?.validity() ?: 0) +
+            (connectionType.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (customerEmail.asKnown().isPresent) 1 else 0) +
+            (if (customerId.asKnown().isPresent) 1 else 0) +
+            (if (customerName.asKnown().isPresent) 1 else 0) +
+            (if (manual.asKnown().isPresent) 1 else 0) +
+            (if (payrollProviderId.asKnown().isPresent) 1 else 0) +
+            (products.asKnown().getOrNull()?.size ?: 0) +
+            (if (providerId.asKnown().isPresent) 1 else 0) +
+            (if (username.asKnown().isPresent) 1 else 0)
 
     class AuthenticationMethod
     private constructor(
@@ -1025,9 +1057,29 @@ private constructor(
 
             connectionStatus().ifPresent { it.validate() }
             products()
-            type()
+            type().ifPresent { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (connectionStatus.asKnown().getOrNull()?.validity() ?: 0) +
+                (products.asKnown().getOrNull()?.size ?: 0) +
+                (type.asKnown().getOrNull()?.validity() ?: 0)
 
         class ConnectionStatus
         private constructor(
@@ -1168,9 +1220,28 @@ private constructor(
                 }
 
                 message()
-                status()
+                status().ifPresent { it.validate() }
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (message.asKnown().isPresent) 1 else 0) +
+                    (status.asKnown().getOrNull()?.validity() ?: 0)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1296,6 +1367,33 @@ private constructor(
                     FinchInvalidDataException("Value is not a String")
                 }
 
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
@@ -1419,6 +1517,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): ClientType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1613,9 +1738,29 @@ private constructor(
 
             lastSuccessfulSync()
             message()
-            status()
+            status().ifPresent { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (lastSuccessfulSync.asKnown().isPresent) 1 else 0) +
+                (if (message.asKnown().isPresent) 1 else 0) +
+                (status.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1727,6 +1872,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): ConnectionType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

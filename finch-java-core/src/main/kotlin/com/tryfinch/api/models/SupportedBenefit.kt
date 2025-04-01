@@ -507,14 +507,41 @@ private constructor(
 
         annualMaximum()
         catchUp()
-        companyContribution()
+        companyContribution().ifPresent { it.forEach { it?.validate() } }
         description()
-        employeeDeduction()
-        frequencies()
-        hsaContributionLimit()
-        type()
+        employeeDeduction().ifPresent { it.forEach { it?.validate() } }
+        frequencies().ifPresent { it.forEach { it?.validate() } }
+        hsaContributionLimit().ifPresent { it.forEach { it?.validate() } }
+        type().ifPresent { it.validate() }
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (annualMaximum.asKnown().isPresent) 1 else 0) +
+            (if (catchUp.asKnown().isPresent) 1 else 0) +
+            (companyContribution.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
+                ?: 0) +
+            (if (description.asKnown().isPresent) 1 else 0) +
+            (employeeDeduction.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
+                ?: 0) +
+            (frequencies.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+            (hsaContributionLimit.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
+                ?: 0) +
+            (type.asKnown().getOrNull()?.validity() ?: 0)
 
     class CompanyContribution
     @JsonCreator
@@ -604,6 +631,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): CompanyContribution = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -705,6 +759,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): EmployeeDeduction = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -808,6 +889,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): HsaContributionLimit = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

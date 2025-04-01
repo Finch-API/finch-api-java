@@ -21,6 +21,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Create a new connection (new company/provider pair) with a new account */
 class SandboxConnectionCreateParams
@@ -586,11 +587,32 @@ private constructor(
             }
 
             providerId()
-            authenticationType()
+            authenticationType().ifPresent { it.validate() }
             employeeSize()
             products()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (providerId.asKnown().isPresent) 1 else 0) +
+                (authenticationType.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (employeeSize.asKnown().isPresent) 1 else 0) +
+                (products.asKnown().getOrNull()?.size ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -710,6 +732,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): AuthenticationType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

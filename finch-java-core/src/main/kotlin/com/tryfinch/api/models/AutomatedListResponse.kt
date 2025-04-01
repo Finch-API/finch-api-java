@@ -17,6 +17,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class AutomatedListResponse
 private constructor(
@@ -186,6 +187,24 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (data.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (meta.asKnown().getOrNull()?.validity() ?: 0)
+
     class Meta
     private constructor(
         private val quotas: JsonField<Quotas>,
@@ -297,6 +316,22 @@ private constructor(
             quotas().ifPresent { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = (quotas.asKnown().getOrNull()?.validity() ?: 0)
 
         /**
          * Information about remaining quotas for this connection. Only applicable for customers
@@ -416,6 +451,23 @@ private constructor(
                 dataSyncAll().ifPresent { it.validate() }
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int = (dataSyncAll.asKnown().getOrNull()?.validity() ?: 0)
 
             class DataSyncAll
             private constructor(
@@ -574,6 +626,25 @@ private constructor(
                     remainingRefreshes()
                     validated = true
                 }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (allowedRefreshes.asKnown().isPresent) 1 else 0) +
+                        (if (remainingRefreshes.asKnown().isPresent) 1 else 0)
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {

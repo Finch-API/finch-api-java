@@ -353,6 +353,29 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (department.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (firstName.asKnown().isPresent) 1 else 0) +
+            (if (isActive.asKnown().isPresent) 1 else 0) +
+            (if (lastName.asKnown().isPresent) 1 else 0) +
+            (manager.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (middleName.asKnown().isPresent) 1 else 0)
+
     /** The department object. */
     class Department
     private constructor(
@@ -462,6 +485,22 @@ private constructor(
             name()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -587,6 +626,22 @@ private constructor(
             id()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = (if (id.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
