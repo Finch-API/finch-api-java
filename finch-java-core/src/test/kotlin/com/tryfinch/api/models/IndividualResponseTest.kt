@@ -13,7 +13,7 @@ internal class IndividualResponseTest {
             IndividualResponse.builder()
                 .body(
                     Individual.builder()
-                        .id("id")
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .dob("dob")
                         .addEmail(
                             Individual.Email.builder()
@@ -56,7 +56,7 @@ internal class IndividualResponseTest {
         assertThat(individualResponse.body())
             .contains(
                 Individual.builder()
-                    .id("id")
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .dob("dob")
                     .addEmail(
                         Individual.Email.builder()

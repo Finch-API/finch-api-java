@@ -13,7 +13,7 @@ internal class EmploymentDataTest {
     fun create() {
         val employmentData =
             EmploymentData.builder()
-                .id("id")
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .classCode("class_code")
                 .addCustomField(
                     EmploymentData.CustomField.builder()
@@ -62,7 +62,11 @@ internal class EmploymentDataTest {
                         .state("state")
                         .build()
                 )
-                .manager(EmploymentData.Manager.builder().id("id").build())
+                .manager(
+                    EmploymentData.Manager.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
                 .middleName("middle_name")
                 .sourceId("source_id")
                 .startDate("start_date")
@@ -70,7 +74,7 @@ internal class EmploymentDataTest {
                 .workId("work_id")
                 .build()
 
-        assertThat(employmentData.id()).contains("id")
+        assertThat(employmentData.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(employmentData.classCode()).contains("class_code")
         assertThat(employmentData.customFields().getOrNull())
             .containsExactly(
@@ -127,7 +131,9 @@ internal class EmploymentDataTest {
                     .build()
             )
         assertThat(employmentData.manager())
-            .contains(EmploymentData.Manager.builder().id("id").build())
+            .contains(
+                EmploymentData.Manager.builder().id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
+            )
         assertThat(employmentData.middleName()).contains("middle_name")
         assertThat(employmentData.sourceId()).contains("source_id")
         assertThat(employmentData.startDate()).contains("start_date")
