@@ -14,6 +14,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class OperationSupportMatrix
 private constructor(
@@ -279,12 +280,32 @@ private constructor(
             return@apply
         }
 
-        create()
-        delete()
-        read()
-        update()
+        create().ifPresent { it.validate() }
+        delete().ifPresent { it.validate() }
+        read().ifPresent { it.validate() }
+        update().ifPresent { it.validate() }
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (create.asKnown().getOrNull()?.validity() ?: 0) +
+            (delete.asKnown().getOrNull()?.validity() ?: 0) +
+            (read.asKnown().getOrNull()?.validity() ?: 0) +
+            (update.asKnown().getOrNull()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

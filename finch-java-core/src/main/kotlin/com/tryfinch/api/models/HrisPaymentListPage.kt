@@ -10,6 +10,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import java.util.Collections
 import java.util.Objects
@@ -99,6 +100,14 @@ private constructor(
             items().map { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
 
         fun toBuilder() = Builder().from(this)
 

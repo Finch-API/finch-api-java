@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -25,5 +27,26 @@ internal class IndividualEventTest {
             .contains(IndividualEvent.Data.builder().individualId("individual_id").build())
         assertThat(individualEvent.eventType())
             .contains(IndividualEvent.EventType.INDIVIDUAL_CREATED)
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val individualEvent =
+            IndividualEvent.builder()
+                .accountId("account_id")
+                .companyId("company_id")
+                .connectionId("connection_id")
+                .data(IndividualEvent.Data.builder().individualId("individual_id").build())
+                .eventType(IndividualEvent.EventType.INDIVIDUAL_CREATED)
+                .build()
+
+        val roundtrippedIndividualEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(individualEvent),
+                jacksonTypeRef<IndividualEvent>(),
+            )
+
+        assertThat(roundtrippedIndividualEvent).isEqualTo(individualEvent)
     }
 }

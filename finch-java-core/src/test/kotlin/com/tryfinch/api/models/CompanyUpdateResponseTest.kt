@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -94,5 +96,60 @@ internal class CompanyUpdateResponseTest {
             )
         assertThat(companyUpdateResponse.primaryEmail()).contains("dev@stainless.com")
         assertThat(companyUpdateResponse.primaryPhoneNumber()).contains("primary_phone_number")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val companyUpdateResponse =
+            CompanyUpdateResponse.builder()
+                .addAccount(
+                    CompanyUpdateResponse.Account.builder()
+                        .accountName("account_name")
+                        .accountNumber("account_number")
+                        .accountType(CompanyUpdateResponse.Account.AccountType.CHECKING)
+                        .institutionName("institution_name")
+                        .routingNumber("routing_number")
+                        .build()
+                )
+                .addDepartment(
+                    CompanyUpdateResponse.Department.builder()
+                        .name("name")
+                        .parent(
+                            CompanyUpdateResponse.Department.Parent.builder().name("name").build()
+                        )
+                        .build()
+                )
+                .ein("ein")
+                .entity(
+                    CompanyUpdateResponse.Entity.builder()
+                        .subtype(CompanyUpdateResponse.Entity.Subtype.S_CORPORATION)
+                        .type(CompanyUpdateResponse.Entity.Type.LLC)
+                        .build()
+                )
+                .legalName("legal_name")
+                .addLocation(
+                    Location.builder()
+                        .city("city")
+                        .country("country")
+                        .line1("line1")
+                        .line2("line2")
+                        .name("name")
+                        .postalCode("postal_code")
+                        .sourceId("source_id")
+                        .state("state")
+                        .build()
+                )
+                .primaryEmail("dev@stainless.com")
+                .primaryPhoneNumber("primary_phone_number")
+                .build()
+
+        val roundtrippedCompanyUpdateResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(companyUpdateResponse),
+                jacksonTypeRef<CompanyUpdateResponse>(),
+            )
+
+        assertThat(roundtrippedCompanyUpdateResponse).isEqualTo(companyUpdateResponse)
     }
 }
