@@ -21,7 +21,7 @@ internal class DocumentServiceTest {
                 .build()
         val documentService = client.hris().documents()
 
-        val document =
+        val documents =
             documentService.list(
                 HrisDocumentListParams.builder()
                     .addIndividualId("string")
@@ -31,7 +31,7 @@ internal class DocumentServiceTest {
                     .build()
             )
 
-        document.validate()
+        documents.validate()
     }
 
     @Test
