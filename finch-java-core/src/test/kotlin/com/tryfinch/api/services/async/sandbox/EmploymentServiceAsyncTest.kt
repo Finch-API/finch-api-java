@@ -77,7 +77,11 @@ internal class EmploymentServiceAsyncTest {
                             .state("state")
                             .build()
                     )
-                    .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
+                    .manager(
+                        SandboxEmploymentUpdateParams.Manager.builder()
+                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .build()
+                    )
                     .middleName("middle_name")
                     .sourceId("source_id")
                     .startDate("start_date")

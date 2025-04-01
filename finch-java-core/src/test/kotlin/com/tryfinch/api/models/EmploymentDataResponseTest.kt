@@ -14,7 +14,7 @@ internal class EmploymentDataResponseTest {
             EmploymentDataResponse.builder()
                 .body(
                     EmploymentData.builder()
-                        .id("id")
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .classCode("class_code")
                         .addCustomField(
                             EmploymentData.CustomField.builder()
@@ -63,7 +63,11 @@ internal class EmploymentDataResponseTest {
                                 .state("state")
                                 .build()
                         )
-                        .manager(EmploymentData.Manager.builder().id("id").build())
+                        .manager(
+                            EmploymentData.Manager.builder()
+                                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .build()
+                        )
                         .middleName("middle_name")
                         .sourceId("source_id")
                         .startDate("start_date")
@@ -72,13 +76,13 @@ internal class EmploymentDataResponseTest {
                         .build()
                 )
                 .code(0L)
-                .individualId("individual_id")
+                .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         assertThat(employmentDataResponse.body())
             .contains(
                 EmploymentData.builder()
-                    .id("id")
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .classCode("class_code")
                     .addCustomField(
                         EmploymentData.CustomField.builder()
@@ -127,7 +131,11 @@ internal class EmploymentDataResponseTest {
                             .state("state")
                             .build()
                     )
-                    .manager(EmploymentData.Manager.builder().id("id").build())
+                    .manager(
+                        EmploymentData.Manager.builder()
+                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .build()
+                    )
                     .middleName("middle_name")
                     .sourceId("source_id")
                     .startDate("start_date")
@@ -136,6 +144,7 @@ internal class EmploymentDataResponseTest {
                     .build()
             )
         assertThat(employmentDataResponse.code()).contains(0L)
-        assertThat(employmentDataResponse.individualId()).contains("individual_id")
+        assertThat(employmentDataResponse.individualId())
+            .contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 }

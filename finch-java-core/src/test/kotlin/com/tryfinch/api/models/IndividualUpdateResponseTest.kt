@@ -12,7 +12,7 @@ internal class IndividualUpdateResponseTest {
     fun create() {
         val individualUpdateResponse =
             IndividualUpdateResponse.builder()
-                .id("id")
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dob("dob")
                 .addEmail(
                     IndividualUpdateResponse.Email.builder()
@@ -48,7 +48,7 @@ internal class IndividualUpdateResponseTest {
                 .ssn("ssn")
                 .build()
 
-        assertThat(individualUpdateResponse.id()).contains("id")
+        assertThat(individualUpdateResponse.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(individualUpdateResponse.dob()).contains("dob")
         assertThat(individualUpdateResponse.emails().getOrNull())
             .containsExactly(
