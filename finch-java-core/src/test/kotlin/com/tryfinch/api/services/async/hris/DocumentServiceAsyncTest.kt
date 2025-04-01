@@ -21,7 +21,7 @@ internal class DocumentServiceAsyncTest {
                 .build()
         val documentServiceAsync = client.hris().documents()
 
-        val documentFuture =
+        val documentsFuture =
             documentServiceAsync.list(
                 HrisDocumentListParams.builder()
                     .addIndividualId("string")
@@ -31,8 +31,8 @@ internal class DocumentServiceAsyncTest {
                     .build()
             )
 
-        val document = documentFuture.get()
-        document.validate()
+        val documents = documentsFuture.get()
+        documents.validate()
     }
 
     @Test

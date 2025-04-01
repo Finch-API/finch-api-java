@@ -64,12 +64,12 @@ internal class AutomatedServiceAsyncTest {
                 .build()
         val automatedServiceAsync = client.jobs().automated()
 
-        val automatedFuture =
+        val automatedsFuture =
             automatedServiceAsync.list(
                 JobAutomatedListParams.builder().limit(0L).offset(0L).build()
             )
 
-        val automated = automatedFuture.get()
-        automated.validate()
+        val automateds = automatedsFuture.get()
+        automateds.validate()
     }
 }
