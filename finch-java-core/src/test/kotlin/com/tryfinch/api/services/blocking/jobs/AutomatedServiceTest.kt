@@ -60,9 +60,9 @@ internal class AutomatedServiceTest {
                 .build()
         val automatedService = client.jobs().automated()
 
-        val automated =
+        val automateds =
             automatedService.list(JobAutomatedListParams.builder().limit(0L).offset(0L).build())
 
-        automated.validate()
+        automateds.validate()
     }
 }
