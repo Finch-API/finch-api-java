@@ -12,7 +12,7 @@ internal class HrisPayStatementRetrieveManyParamsTest {
         HrisPayStatementRetrieveManyParams.builder()
             .addRequest(
                 HrisPayStatementRetrieveManyParams.Request.builder()
-                    .paymentId("string")
+                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(50L)
                     .offset(0L)
                     .build()
@@ -26,7 +26,7 @@ internal class HrisPayStatementRetrieveManyParamsTest {
             HrisPayStatementRetrieveManyParams.builder()
                 .addRequest(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("string")
+                        .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .limit(50L)
                         .offset(0L)
                         .build()
@@ -38,7 +38,7 @@ internal class HrisPayStatementRetrieveManyParamsTest {
         assertThat(body.requests())
             .containsExactly(
                 HrisPayStatementRetrieveManyParams.Request.builder()
-                    .paymentId("string")
+                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(50L)
                     .offset(0L)
                     .build()
@@ -50,7 +50,9 @@ internal class HrisPayStatementRetrieveManyParamsTest {
         val params =
             HrisPayStatementRetrieveManyParams.builder()
                 .addRequest(
-                    HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
+                    HrisPayStatementRetrieveManyParams.Request.builder()
+                        .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
                 )
                 .build()
 
@@ -58,7 +60,9 @@ internal class HrisPayStatementRetrieveManyParamsTest {
 
         assertThat(body.requests())
             .containsExactly(
-                HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
+                HrisPayStatementRetrieveManyParams.Request.builder()
+                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
             )
     }
 }

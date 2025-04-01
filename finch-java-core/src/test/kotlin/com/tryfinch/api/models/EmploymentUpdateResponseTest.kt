@@ -13,7 +13,7 @@ internal class EmploymentUpdateResponseTest {
     fun create() {
         val employmentUpdateResponse =
             EmploymentUpdateResponse.builder()
-                .id("id")
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .classCode("class_code")
                 .addCustomField(
                     EmploymentUpdateResponse.CustomField.builder()
@@ -62,14 +62,18 @@ internal class EmploymentUpdateResponseTest {
                         .state("state")
                         .build()
                 )
-                .manager(EmploymentUpdateResponse.Manager.builder().id("id").build())
+                .manager(
+                    EmploymentUpdateResponse.Manager.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
                 .middleName("middle_name")
                 .sourceId("source_id")
                 .startDate("start_date")
                 .title("title")
                 .build()
 
-        assertThat(employmentUpdateResponse.id()).contains("id")
+        assertThat(employmentUpdateResponse.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(employmentUpdateResponse.classCode()).contains("class_code")
         assertThat(employmentUpdateResponse.customFields().getOrNull())
             .containsExactly(
@@ -126,7 +130,11 @@ internal class EmploymentUpdateResponseTest {
                     .build()
             )
         assertThat(employmentUpdateResponse.manager())
-            .contains(EmploymentUpdateResponse.Manager.builder().id("id").build())
+            .contains(
+                EmploymentUpdateResponse.Manager.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
         assertThat(employmentUpdateResponse.middleName()).contains("middle_name")
         assertThat(employmentUpdateResponse.sourceId()).contains("source_id")
         assertThat(employmentUpdateResponse.startDate()).contains("start_date")
