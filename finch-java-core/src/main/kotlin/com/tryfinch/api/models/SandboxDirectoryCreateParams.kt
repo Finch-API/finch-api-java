@@ -195,8 +195,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic
-    internal fun _body(): Optional<List<IndividualOrEmployment>> = Optional.ofNullable(body)
+    fun _body(): Optional<List<IndividualOrEmployment>> = Optional.ofNullable(body)
 
     override fun _headers(): Headers = additionalHeaders
 

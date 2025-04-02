@@ -107,6 +107,17 @@ private constructor(
         }
 
         /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [description]
+         * - [frequency]
+         * - [type]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        /**
          * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
          * this to <30 characters due to limitations in specific providers (e.g. Justworks).
          */
@@ -281,7 +292,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
