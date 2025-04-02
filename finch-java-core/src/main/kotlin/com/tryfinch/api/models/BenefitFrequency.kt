@@ -7,6 +7,7 @@ import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.errors.FinchInvalidDataException
 
+/** The frequency of the benefit deduction/contribution. */
 class BenefitFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
     Enum {
 
