@@ -221,7 +221,7 @@ private constructor(
             JobAutomatedCreateParams(body, additionalHeaders.build(), additionalQueryParams.build())
     }
 
-    @JvmSynthetic internal fun _body(): Optional<Body> = Optional.ofNullable(body)
+    fun _body(): Optional<Body> = Optional.ofNullable(body)
 
     override fun _headers(): Headers = additionalHeaders
 

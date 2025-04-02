@@ -129,6 +129,18 @@ private constructor(
                     connectSessionReauthenticateParams.additionalQueryParams.toBuilder()
             }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [connectionId]
+         * - [minutesToExpire]
+         * - [products]
+         * - [redirectUri]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** The ID of the existing connection to reauthenticate */
         fun connectionId(connectionId: String) = apply { body.connectionId(connectionId) }
 
@@ -346,7 +358,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
