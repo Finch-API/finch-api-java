@@ -13,13 +13,13 @@ internal class CompanyBenefitTest {
     fun create() {
         val companyBenefit =
             CompanyBenefit.builder()
-                .benefitId("benefit_id")
+                .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
                 .type(BenefitType._401K)
                 .build()
 
-        assertThat(companyBenefit.benefitId()).isEqualTo("benefit_id")
+        assertThat(companyBenefit.benefitId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(companyBenefit.description()).contains("description")
         assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)
         assertThat(companyBenefit.type()).contains(BenefitType._401K)
@@ -30,7 +30,7 @@ internal class CompanyBenefitTest {
         val jsonMapper = jsonMapper()
         val companyBenefit =
             CompanyBenefit.builder()
-                .benefitId("benefit_id")
+                .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
                 .type(BenefitType._401K)

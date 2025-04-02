@@ -12,16 +12,21 @@ internal class UpdateCompanyBenefitResponseTest {
     @Test
     fun create() {
         val updateCompanyBenefitResponse =
-            UpdateCompanyBenefitResponse.builder().benefitId("benefit_id").build()
+            UpdateCompanyBenefitResponse.builder()
+                .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .build()
 
-        assertThat(updateCompanyBenefitResponse.benefitId()).isEqualTo("benefit_id")
+        assertThat(updateCompanyBenefitResponse.benefitId())
+            .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
         val updateCompanyBenefitResponse =
-            UpdateCompanyBenefitResponse.builder().benefitId("benefit_id").build()
+            UpdateCompanyBenefitResponse.builder()
+                .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .build()
 
         val roundtrippedUpdateCompanyBenefitResponse =
             jsonMapper.readValue(
