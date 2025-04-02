@@ -341,6 +341,20 @@ private constructor(
 
         fun individualId(individualId: String) = apply { this.individualId = individualId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [classCode]
+         * - [customFields]
+         * - [department]
+         * - [employment]
+         * - [employmentStatus]
+         * - etc.
+         */
+        fun body(body: EmploymentWithoutId) = apply { this.body = body.toBuilder() }
+
         /** Worker's compensation classification code for this employee */
         fun classCode(classCode: String?) = apply { body.classCode(classCode) }
 
@@ -780,7 +794,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): EmploymentWithoutId = body
+    fun _body(): EmploymentWithoutId = body
 
     fun _pathParam(index: Int): String =
         when (index) {
