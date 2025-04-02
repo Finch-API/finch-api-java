@@ -13,12 +13,14 @@ internal class IndividualEnrolledIdsResponseTest {
     fun create() {
         val individualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse.builder()
-                .benefitId("benefit_id")
-                .addIndividualId("string")
+                .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addIndividualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
-        assertThat(individualEnrolledIdsResponse.benefitId()).isEqualTo("benefit_id")
-        assertThat(individualEnrolledIdsResponse.individualIds()).containsExactly("string")
+        assertThat(individualEnrolledIdsResponse.benefitId())
+            .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(individualEnrolledIdsResponse.individualIds())
+            .containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 
     @Test
@@ -26,8 +28,8 @@ internal class IndividualEnrolledIdsResponseTest {
         val jsonMapper = jsonMapper()
         val individualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse.builder()
-                .benefitId("benefit_id")
-                .addIndividualId("string")
+                .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addIndividualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         val roundtrippedIndividualEnrolledIdsResponse =

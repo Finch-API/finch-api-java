@@ -39,6 +39,8 @@ private constructor(
     ) : this(benefitId, description, frequency, type, mutableMapOf())
 
     /**
+     * The id of the benefit.
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -52,6 +54,8 @@ private constructor(
         Optional.ofNullable(description.getNullable("description"))
 
     /**
+     * The frequency of the benefit deduction/contribution.
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -142,6 +146,7 @@ private constructor(
             additionalProperties = companyBenefit.additionalProperties.toMutableMap()
         }
 
+        /** The id of the benefit. */
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
         /**
@@ -167,6 +172,7 @@ private constructor(
          */
         fun description(description: JsonField<String>) = apply { this.description = description }
 
+        /** The frequency of the benefit deduction/contribution. */
         fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
 
         /** Alias for calling [Builder.frequency] with `frequency.orElse(null)`. */
