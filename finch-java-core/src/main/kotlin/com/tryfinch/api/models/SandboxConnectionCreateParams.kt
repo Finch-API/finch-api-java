@@ -380,7 +380,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun authenticationType(): Optional<AuthenticationType> =
-            Optional.ofNullable(authenticationType.getNullable("authentication_type"))
+            authenticationType.getOptional("authentication_type")
 
         /**
          * Optional: the size of the employer to be created with this connection. Defaults to 20.
@@ -390,15 +390,13 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun employeeSize(): Optional<Long> =
-            Optional.ofNullable(employeeSize.getNullable("employee_size"))
+        fun employeeSize(): Optional<Long> = employeeSize.getOptional("employee_size")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun products(): Optional<List<String>> =
-            Optional.ofNullable(products.getNullable("products"))
+        fun products(): Optional<List<String>> = products.getOptional("products")
 
         /**
          * Returns the raw JSON value of [providerId].

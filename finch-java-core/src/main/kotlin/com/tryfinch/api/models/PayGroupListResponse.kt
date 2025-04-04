@@ -42,7 +42,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    fun id(): Optional<String> = id.getOptional("id")
 
     /**
      * Name of the pay group
@@ -50,7 +50,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+    fun name(): Optional<String> = name.getOptional("name")
 
     /**
      * List of pay frequencies associated with this pay group
@@ -59,7 +59,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun payFrequencies(): Optional<List<PayFrequency>> =
-        Optional.ofNullable(payFrequencies.getNullable("pay_frequencies"))
+        payFrequencies.getOptional("pay_frequencies")
 
     /**
      * Returns the raw JSON value of [id].

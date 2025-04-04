@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
@@ -84,7 +85,8 @@ private constructor(
             responses: JsonField<List<RuleListResponse>> = JsonMissing.of()
         ) : this(responses, mutableMapOf())
 
-        fun responses(): List<RuleListResponse> = responses.getNullable("responses") ?: listOf()
+        fun responses(): List<RuleListResponse> =
+            responses.getOptional("responses").getOrNull() ?: listOf()
 
         @JsonProperty("responses")
         fun _responses(): Optional<JsonField<List<RuleListResponse>>> =

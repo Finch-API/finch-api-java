@@ -426,15 +426,13 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun attributes(): Optional<Attributes> =
-            Optional.ofNullable(attributes.getNullable("attributes"))
+        fun attributes(): Optional<Attributes> = attributes.getOptional("attributes")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun conditions(): Optional<List<Condition>> =
-            Optional.ofNullable(conditions.getNullable("conditions"))
+        fun conditions(): Optional<List<Condition>> = conditions.getOptional("conditions")
 
         /**
          * Specifies when the rules should stop applying rules based on the date.
@@ -443,7 +441,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun effectiveEndDate(): Optional<String> =
-            Optional.ofNullable(effectiveEndDate.getNullable("effective_end_date"))
+            effectiveEndDate.getOptional("effective_end_date")
 
         /**
          * Specifies when the rule should begin applying based on the date.
@@ -452,7 +450,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun effectiveStartDate(): Optional<String> =
-            Optional.ofNullable(effectiveStartDate.getNullable("effective_start_date"))
+            effectiveStartDate.getOptional("effective_start_date")
 
         /**
          * The entity type to which the rule is applied.
@@ -460,8 +458,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun entityType(): Optional<EntityType> =
-            Optional.ofNullable(entityType.getNullable("entity_type"))
+        fun entityType(): Optional<EntityType> = entityType.getOptional("entity_type")
 
         /**
          * Returns the raw JSON value of [attributes].
@@ -755,7 +752,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+        fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
         /**
          * Returns the raw JSON value of [metadata].
@@ -1013,7 +1010,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun field(): Optional<String> = Optional.ofNullable(field.getNullable("field"))
+        fun field(): Optional<String> = field.getOptional("field")
 
         /**
          * The operator to be used in the rule.
@@ -1021,7 +1018,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun operator(): Optional<Operator> = Optional.ofNullable(operator.getNullable("operator"))
+        fun operator(): Optional<Operator> = operator.getOptional("operator")
 
         /**
          * The value of the field to be checked in the rule.
@@ -1029,7 +1026,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun value(): Optional<String> = Optional.ofNullable(value.getNullable("value"))
+        fun value(): Optional<String> = value.getOptional("value")
 
         /**
          * Returns the raw JSON value of [field].

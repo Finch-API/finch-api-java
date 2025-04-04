@@ -571,21 +571,19 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun customerEmail(): Optional<String> =
-            Optional.ofNullable(customerEmail.getNullable("customer_email"))
+        fun customerEmail(): Optional<String> = customerEmail.getOptional("customer_email")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun integration(): Optional<Integration> =
-            Optional.ofNullable(integration.getNullable("integration"))
+        fun integration(): Optional<Integration> = integration.getOptional("integration")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun manual(): Optional<Boolean> = Optional.ofNullable(manual.getNullable("manual"))
+        fun manual(): Optional<Boolean> = manual.getOptional("manual")
 
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
@@ -593,21 +591,19 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun minutesToExpire(): Optional<Double> =
-            Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
+        fun minutesToExpire(): Optional<Double> = minutesToExpire.getOptional("minutes_to_expire")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun redirectUri(): Optional<String> =
-            Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
+        fun redirectUri(): Optional<String> = redirectUri.getOptional("redirect_uri")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun sandbox(): Optional<Sandbox> = Optional.ofNullable(sandbox.getNullable("sandbox"))
+        fun sandbox(): Optional<Sandbox> = sandbox.getOptional("sandbox")
 
         /**
          * Returns the raw JSON value of [customerId].
@@ -1205,14 +1201,13 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun authMethod(): Optional<AuthMethod> =
-            Optional.ofNullable(authMethod.getNullable("auth_method"))
+        fun authMethod(): Optional<AuthMethod> = authMethod.getOptional("auth_method")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun provider(): Optional<String> = Optional.ofNullable(provider.getNullable("provider"))
+        fun provider(): Optional<String> = provider.getOptional("provider")
 
         /**
          * Returns the raw JSON value of [authMethod].

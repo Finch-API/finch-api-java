@@ -258,7 +258,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun connectionStatus(): Optional<ConnectionStatusType> =
-            Optional.ofNullable(connectionStatus.getNullable("connection_status"))
+            connectionStatus.getOptional("connection_status")
 
         /**
          * Returns the raw JSON value of [connectionStatus].

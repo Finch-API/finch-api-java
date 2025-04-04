@@ -82,7 +82,8 @@ private constructor(
             responses: JsonField<List<RuleListResponse>> = JsonMissing.of()
         ) : this(responses, mutableMapOf())
 
-        fun responses(): List<RuleListResponse> = responses.getNullable("responses") ?: listOf()
+        fun responses(): List<RuleListResponse> =
+            responses.getOptional("responses").getOrNull() ?: listOf()
 
         @JsonProperty("responses")
         fun _responses(): Optional<JsonField<List<RuleListResponse>>> =

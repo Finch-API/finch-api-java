@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** Read individual employment and income data */
 class HrisEmploymentRetrieveManyPageAsync
@@ -82,7 +83,7 @@ private constructor(
         ) : this(responses, mutableMapOf())
 
         fun responses(): List<EmploymentDataResponse> =
-            responses.getNullable("responses") ?: listOf()
+            responses.getOptional("responses").getOrNull() ?: listOf()
 
         @JsonProperty("responses")
         fun _responses(): Optional<JsonField<List<EmploymentDataResponse>>> =

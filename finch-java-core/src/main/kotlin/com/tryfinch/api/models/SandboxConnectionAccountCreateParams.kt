@@ -389,7 +389,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun authenticationType(): Optional<AuthenticationType> =
-            Optional.ofNullable(authenticationType.getNullable("authentication_type"))
+            authenticationType.getOptional("authentication_type")
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
@@ -398,8 +398,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun products(): Optional<List<String>> =
-            Optional.ofNullable(products.getNullable("products"))
+        fun products(): Optional<List<String>> = products.getOptional("products")
 
         /**
          * Returns the raw JSON value of [companyId].

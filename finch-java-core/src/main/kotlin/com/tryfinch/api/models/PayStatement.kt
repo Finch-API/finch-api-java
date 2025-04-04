@@ -78,7 +78,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun earnings(): Optional<List<Earning?>> = Optional.ofNullable(earnings.getNullable("earnings"))
+    fun earnings(): Optional<List<Earning?>> = earnings.getOptional("earnings")
 
     /**
      * The array of deductions objects associated with this pay statement.
@@ -87,20 +87,20 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun employeeDeductions(): Optional<List<EmployeeDeduction?>> =
-        Optional.ofNullable(employeeDeductions.getNullable("employee_deductions"))
+        employeeDeductions.getOptional("employee_deductions")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun employerContributions(): Optional<List<EmployerContribution?>> =
-        Optional.ofNullable(employerContributions.getNullable("employer_contributions"))
+        employerContributions.getOptional("employer_contributions")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun grossPay(): Optional<Money> = Optional.ofNullable(grossPay.getNullable("gross_pay"))
+    fun grossPay(): Optional<Money> = grossPay.getOptional("gross_pay")
 
     /**
      * A stable Finch `id` (UUID v4) for an individual in the company
@@ -108,14 +108,13 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun individualId(): Optional<String> =
-        Optional.ofNullable(individualId.getNullable("individual_id"))
+    fun individualId(): Optional<String> = individualId.getOptional("individual_id")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun netPay(): Optional<Money> = Optional.ofNullable(netPay.getNullable("net_pay"))
+    fun netPay(): Optional<Money> = netPay.getOptional("net_pay")
 
     /**
      * The payment method.
@@ -123,8 +122,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun paymentMethod(): Optional<PaymentMethod> =
-        Optional.ofNullable(paymentMethod.getNullable("payment_method"))
+    fun paymentMethod(): Optional<PaymentMethod> = paymentMethod.getOptional("payment_method")
 
     /**
      * The array of taxes objects associated with this pay statement.
@@ -132,7 +130,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun taxes(): Optional<List<Tax?>> = Optional.ofNullable(taxes.getNullable("taxes"))
+    fun taxes(): Optional<List<Tax?>> = taxes.getOptional("taxes")
 
     /**
      * The number of hours worked for this pay period
@@ -140,7 +138,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun totalHours(): Optional<Double> = Optional.ofNullable(totalHours.getNullable("total_hours"))
+    fun totalHours(): Optional<Double> = totalHours.getOptional("total_hours")
 
     /**
      * The type of the payment associated with the pay statement.
@@ -148,7 +146,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+    fun type(): Optional<Type> = type.getOptional("type")
 
     /**
      * Returns the raw JSON value of [earnings].
@@ -615,14 +613,13 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
+        fun amount(): Optional<Long> = amount.getOptional("amount")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun attributes(): Optional<Attributes> =
-            Optional.ofNullable(attributes.getNullable("attributes"))
+        fun attributes(): Optional<Attributes> = attributes.getOptional("attributes")
 
         /**
          * The earnings currency code.
@@ -630,7 +627,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
+        fun currency(): Optional<String> = currency.getOptional("currency")
 
         /**
          * The number of hours associated with this earning. (For salaried employees, this could be
@@ -639,7 +636,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun hours(): Optional<Double> = Optional.ofNullable(hours.getNullable("hours"))
+        fun hours(): Optional<Double> = hours.getOptional("hours")
 
         /**
          * The exact name of the deduction from the pay statement.
@@ -647,7 +644,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * The type of earning.
@@ -655,7 +652,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<Type> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [amount].
@@ -941,8 +938,7 @@ private constructor(
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun metadata(): Optional<Metadata> =
-                Optional.ofNullable(metadata.getNullable("metadata"))
+            fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
             /**
              * Returns the raw JSON value of [metadata].
@@ -1074,8 +1070,7 @@ private constructor(
                  * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
                  *   if the server responded with an unexpected value).
                  */
-                fun metadata(): Optional<InnerMetadata> =
-                    Optional.ofNullable(metadata.getNullable("metadata"))
+                fun metadata(): Optional<InnerMetadata> = metadata.getOptional("metadata")
 
                 /**
                  * Returns the raw JSON value of [metadata].
@@ -1589,14 +1584,13 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
+        fun amount(): Optional<Long> = amount.getOptional("amount")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun attributes(): Optional<Attributes> =
-            Optional.ofNullable(attributes.getNullable("attributes"))
+        fun attributes(): Optional<Attributes> = attributes.getOptional("attributes")
 
         /**
          * The deduction currency.
@@ -1604,7 +1598,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
+        fun currency(): Optional<String> = currency.getOptional("currency")
 
         /**
          * The deduction name from the pay statement.
@@ -1612,7 +1606,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * Boolean indicating if the deduction is pre-tax.
@@ -1620,7 +1614,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun preTax(): Optional<Boolean> = Optional.ofNullable(preTax.getNullable("pre_tax"))
+        fun preTax(): Optional<Boolean> = preTax.getOptional("pre_tax")
 
         /**
          * Type of benefit.
@@ -1628,7 +1622,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<BenefitType> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [amount].
@@ -1911,8 +1905,7 @@ private constructor(
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun metadata(): Optional<Metadata> =
-                Optional.ofNullable(metadata.getNullable("metadata"))
+            fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
             /**
              * Returns the raw JSON value of [metadata].
@@ -2044,8 +2037,7 @@ private constructor(
                  * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
                  *   if the server responded with an unexpected value).
                  */
-                fun metadata(): Optional<InnerMetadata> =
-                    Optional.ofNullable(metadata.getNullable("metadata"))
+                fun metadata(): Optional<InnerMetadata> = metadata.getOptional("metadata")
 
                 /**
                  * Returns the raw JSON value of [metadata].
@@ -2363,14 +2355,13 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
+        fun amount(): Optional<Long> = amount.getOptional("amount")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun attributes(): Optional<Attributes> =
-            Optional.ofNullable(attributes.getNullable("attributes"))
+        fun attributes(): Optional<Attributes> = attributes.getOptional("attributes")
 
         /**
          * The contribution currency.
@@ -2378,7 +2369,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
+        fun currency(): Optional<String> = currency.getOptional("currency")
 
         /**
          * The contribution name from the pay statement.
@@ -2386,7 +2377,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * Type of benefit.
@@ -2394,7 +2385,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<BenefitType> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [amount].
@@ -2643,8 +2634,7 @@ private constructor(
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun metadata(): Optional<Metadata> =
-                Optional.ofNullable(metadata.getNullable("metadata"))
+            fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
             /**
              * Returns the raw JSON value of [metadata].
@@ -2776,8 +2766,7 @@ private constructor(
                  * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
                  *   if the server responded with an unexpected value).
                  */
-                fun metadata(): Optional<InnerMetadata> =
-                    Optional.ofNullable(metadata.getNullable("metadata"))
+                fun metadata(): Optional<InnerMetadata> = metadata.getOptional("metadata")
 
                 /**
                  * Returns the raw JSON value of [metadata].
@@ -3228,14 +3217,13 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
+        fun amount(): Optional<Long> = amount.getOptional("amount")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun attributes(): Optional<Attributes> =
-            Optional.ofNullable(attributes.getNullable("attributes"))
+        fun attributes(): Optional<Attributes> = attributes.getOptional("attributes")
 
         /**
          * The currency code.
@@ -3243,7 +3231,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
+        fun currency(): Optional<String> = currency.getOptional("currency")
 
         /**
          * `true` if the amount is paid by the employers.
@@ -3251,7 +3239,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun employer(): Optional<Boolean> = Optional.ofNullable(employer.getNullable("employer"))
+        fun employer(): Optional<Boolean> = employer.getOptional("employer")
 
         /**
          * The exact name of tax from the pay statement.
@@ -3259,7 +3247,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * The type of taxes.
@@ -3267,7 +3255,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<Type> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [amount].
@@ -3550,8 +3538,7 @@ private constructor(
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun metadata(): Optional<Metadata> =
-                Optional.ofNullable(metadata.getNullable("metadata"))
+            fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
             /**
              * Returns the raw JSON value of [metadata].
@@ -3683,8 +3670,7 @@ private constructor(
                  * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
                  *   if the server responded with an unexpected value).
                  */
-                fun metadata(): Optional<InnerMetadata> =
-                    Optional.ofNullable(metadata.getNullable("metadata"))
+                fun metadata(): Optional<InnerMetadata> = metadata.getOptional("metadata")
 
                 /**
                  * Returns the raw JSON value of [metadata].

@@ -148,7 +148,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun customerId(): Optional<String> = Optional.ofNullable(customerId.getNullable("customer_id"))
+    fun customerId(): Optional<String> = customerId.getOptional("customer_id")
 
     /**
      * The RFC 8693 token type (Finch uses `bearer` tokens)
@@ -156,7 +156,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tokenType(): Optional<String> = Optional.ofNullable(tokenType.getNullable("token_type"))
+    fun tokenType(): Optional<String> = tokenType.getOptional("token_type")
 
     /**
      * Returns the raw JSON value of [accessToken].

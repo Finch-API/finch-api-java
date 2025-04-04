@@ -37,19 +37,19 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun body(): Optional<PayStatementResponseBody> = Optional.ofNullable(body.getNullable("body"))
+    fun body(): Optional<PayStatementResponseBody> = body.getOptional("body")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
+    fun code(): Optional<Long> = code.getOptional("code")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun paymentId(): Optional<String> = Optional.ofNullable(paymentId.getNullable("payment_id"))
+    fun paymentId(): Optional<String> = paymentId.getOptional("payment_id")
 
     /**
      * Returns the raw JSON value of [body].

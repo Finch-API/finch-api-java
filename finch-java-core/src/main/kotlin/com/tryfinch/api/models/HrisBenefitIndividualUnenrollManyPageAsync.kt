@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyPageAsync
@@ -80,7 +81,7 @@ private constructor(
             @JsonProperty("items") items: JsonField<List<UnenrolledIndividual>> = JsonMissing.of()
         ) : this(items, mutableMapOf())
 
-        fun items(): List<UnenrolledIndividual> = items.getNullable("items") ?: listOf()
+        fun items(): List<UnenrolledIndividual> = items.getOptional("items").getOrNull() ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<UnenrolledIndividual>>> = Optional.ofNullable(items)

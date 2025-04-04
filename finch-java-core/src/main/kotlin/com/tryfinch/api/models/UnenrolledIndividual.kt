@@ -37,7 +37,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun body(): Optional<Body> = Optional.ofNullable(body.getNullable("body"))
+    fun body(): Optional<Body> = body.getOptional("body")
 
     /**
      * HTTP status code
@@ -45,14 +45,13 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
+    fun code(): Optional<Long> = code.getOptional("code")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun individualId(): Optional<String> =
-        Optional.ofNullable(individualId.getNullable("individual_id"))
+    fun individualId(): Optional<String> = individualId.getOptional("individual_id")
 
     /**
      * Returns the raw JSON value of [body].
@@ -228,7 +227,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun finchCode(): Optional<String> = Optional.ofNullable(finchCode.getNullable("finch_code"))
+        fun finchCode(): Optional<String> = finchCode.getOptional("finch_code")
 
         /**
          * Short description in English that provides more information about the response.
@@ -236,7 +235,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+        fun message(): Optional<String> = message.getOptional("message")
 
         /**
          * Identifier indicating whether the benefit was newly enrolled or updated.
@@ -244,7 +243,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * Returns the raw JSON value of [finchCode].
