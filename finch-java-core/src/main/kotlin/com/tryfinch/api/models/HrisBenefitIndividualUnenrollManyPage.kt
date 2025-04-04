@@ -29,7 +29,7 @@ private constructor(
 
     fun response(): Response = response
 
-    fun items(): List<IndividualUnenrollManyResponse> = response().items()
+    fun items(): List<UnenrolledIndividual> = response().items()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -69,21 +69,19 @@ private constructor(
     }
 
     class Response(
-        private val items: JsonField<List<IndividualUnenrollManyResponse>>,
+        private val items: JsonField<List<UnenrolledIndividual>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("items")
-            items: JsonField<List<IndividualUnenrollManyResponse>> = JsonMissing.of()
+            @JsonProperty("items") items: JsonField<List<UnenrolledIndividual>> = JsonMissing.of()
         ) : this(items, mutableMapOf())
 
-        fun items(): List<IndividualUnenrollManyResponse> = items.getNullable("items") ?: listOf()
+        fun items(): List<UnenrolledIndividual> = items.getNullable("items") ?: listOf()
 
         @JsonProperty("items")
-        fun _items(): Optional<JsonField<List<IndividualUnenrollManyResponse>>> =
-            Optional.ofNullable(items)
+        fun _items(): Optional<JsonField<List<UnenrolledIndividual>>> = Optional.ofNullable(items)
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -140,7 +138,7 @@ private constructor(
 
         class Builder {
 
-            private var items: JsonField<List<IndividualUnenrollManyResponse>> = JsonMissing.of()
+            private var items: JsonField<List<UnenrolledIndividual>> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -149,11 +147,9 @@ private constructor(
                 this.additionalProperties.putAll(page.additionalProperties)
             }
 
-            fun items(items: List<IndividualUnenrollManyResponse>) = items(JsonField.of(items))
+            fun items(items: List<UnenrolledIndividual>) = items(JsonField.of(items))
 
-            fun items(items: JsonField<List<IndividualUnenrollManyResponse>>) = apply {
-                this.items = items
-            }
+            fun items(items: JsonField<List<UnenrolledIndividual>>) = apply { this.items = items }
 
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
@@ -169,9 +165,9 @@ private constructor(
     }
 
     class AutoPager(private val firstPage: HrisBenefitIndividualUnenrollManyPage) :
-        Iterable<IndividualUnenrollManyResponse> {
+        Iterable<UnenrolledIndividual> {
 
-        override fun iterator(): Iterator<IndividualUnenrollManyResponse> = iterator {
+        override fun iterator(): Iterator<UnenrolledIndividual> = iterator {
             var page = firstPage
             var index = 0
             while (true) {
@@ -183,7 +179,7 @@ private constructor(
             }
         }
 
-        fun stream(): Stream<IndividualUnenrollManyResponse> {
+        fun stream(): Stream<UnenrolledIndividual> {
             return StreamSupport.stream(spliterator(), false)
         }
     }
