@@ -98,9 +98,9 @@ private constructor(
         ) : this(individuals, paging, mutableMapOf())
 
         fun individuals(): List<IndividualInDirectory> =
-            individuals.getNullable("individuals") ?: listOf()
+            individuals.getOptional("individuals").getOrNull() ?: listOf()
 
-        fun paging(): Optional<Paging> = Optional.ofNullable(paging.getNullable("paging"))
+        fun paging(): Optional<Paging> = paging.getOptional("paging")
 
         @JsonProperty("individuals")
         fun _individuals(): Optional<JsonField<List<IndividualInDirectory>>> =

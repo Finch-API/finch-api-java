@@ -120,7 +120,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tokenType(): Optional<String> = Optional.ofNullable(tokenType.getNullable("token_type"))
+    fun tokenType(): Optional<String> = tokenType.getOptional("token_type")
 
     /**
      * Returns the raw JSON value of [accessToken].

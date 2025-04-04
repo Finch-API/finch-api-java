@@ -51,7 +51,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun create(): Optional<OperationSupport> = Optional.ofNullable(create.getNullable("create"))
+    fun create(): Optional<OperationSupport> = create.getOptional("create")
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -65,7 +65,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun delete(): Optional<OperationSupport> = Optional.ofNullable(delete.getNullable("delete"))
+    fun delete(): Optional<OperationSupport> = delete.getOptional("delete")
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -79,7 +79,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun read(): Optional<OperationSupport> = Optional.ofNullable(read.getNullable("read"))
+    fun read(): Optional<OperationSupport> = read.getOptional("read")
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -93,7 +93,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun update(): Optional<OperationSupport> = Optional.ofNullable(update.getNullable("update"))
+    fun update(): Optional<OperationSupport> = update.getOptional("update")
 
     /**
      * Returns the raw JSON value of [create].

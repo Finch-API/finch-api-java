@@ -291,8 +291,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun individualIds(): Optional<List<String>> =
-            Optional.ofNullable(individualIds.getNullable("individual_ids"))
+        fun individualIds(): Optional<List<String>> = individualIds.getOptional("individual_ids")
 
         /**
          * Returns the raw JSON value of [individualIds].

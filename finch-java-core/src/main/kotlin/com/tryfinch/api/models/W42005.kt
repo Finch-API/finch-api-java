@@ -42,7 +42,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun data(): Optional<Data> = Optional.ofNullable(data.getNullable("data"))
+    fun data(): Optional<Data> = data.getOptional("data")
 
     /**
      * Specifies the form type, indicating that this document is a 2005 W4 form.
@@ -50,7 +50,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+    fun type(): Optional<Type> = type.getOptional("type")
 
     /**
      * The tax year this W4 document applies to.
@@ -58,7 +58,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun year(): Optional<Double> = Optional.ofNullable(year.getNullable("year"))
+    fun year(): Optional<Double> = year.getOptional("year")
 
     /**
      * Returns the raw JSON value of [data].
@@ -261,7 +261,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun additionalWithholding(): Optional<Long> =
-            Optional.ofNullable(additionalWithholding.getNullable("additional_withholding"))
+            additionalWithholding.getOptional("additional_withholding")
 
         /**
          * Indicates exemption status from federal tax withholding.
@@ -269,8 +269,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun exemption(): Optional<Exemption> =
-            Optional.ofNullable(exemption.getNullable("exemption"))
+        fun exemption(): Optional<Exemption> = exemption.getOptional("exemption")
 
         /**
          * The individual's filing status for tax purposes.
@@ -278,8 +277,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun filingStatus(): Optional<FilingStatus> =
-            Optional.ofNullable(filingStatus.getNullable("filing_status"))
+        fun filingStatus(): Optional<FilingStatus> = filingStatus.getOptional("filing_status")
 
         /**
          * The unique identifier for the individual associated with this 2005 W4 form.
@@ -287,8 +285,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun individualId(): Optional<String> =
-            Optional.ofNullable(individualId.getNullable("individual_id"))
+        fun individualId(): Optional<String> = individualId.getOptional("individual_id")
 
         /**
          * Total number of allowances claimed (in cents).
@@ -297,7 +294,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun totalNumberOfAllowances(): Optional<Long> =
-            Optional.ofNullable(totalNumberOfAllowances.getNullable("total_number_of_allowances"))
+            totalNumberOfAllowances.getOptional("total_number_of_allowances")
 
         /**
          * Returns the raw JSON value of [additionalWithholding].

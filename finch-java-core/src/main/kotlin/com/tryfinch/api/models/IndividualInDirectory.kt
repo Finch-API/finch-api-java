@@ -49,7 +49,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    fun id(): Optional<String> = id.getOptional("id")
 
     /**
      * The department object.
@@ -57,8 +57,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun department(): Optional<Department> =
-        Optional.ofNullable(department.getNullable("department"))
+    fun department(): Optional<Department> = department.getOptional("department")
 
     /**
      * The legal first name of the individual.
@@ -66,7 +65,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun firstName(): Optional<String> = Optional.ofNullable(firstName.getNullable("first_name"))
+    fun firstName(): Optional<String> = firstName.getOptional("first_name")
 
     /**
      * `true` if the individual is an active employee or contractor at the company.
@@ -74,7 +73,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive.getNullable("is_active"))
+    fun isActive(): Optional<Boolean> = isActive.getOptional("is_active")
 
     /**
      * The legal last name of the individual.
@@ -82,7 +81,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun lastName(): Optional<String> = Optional.ofNullable(lastName.getNullable("last_name"))
+    fun lastName(): Optional<String> = lastName.getOptional("last_name")
 
     /**
      * The manager object.
@@ -90,7 +89,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun manager(): Optional<Manager> = Optional.ofNullable(manager.getNullable("manager"))
+    fun manager(): Optional<Manager> = manager.getOptional("manager")
 
     /**
      * The legal middle name of the individual.
@@ -98,7 +97,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun middleName(): Optional<String> = Optional.ofNullable(middleName.getNullable("middle_name"))
+    fun middleName(): Optional<String> = middleName.getOptional("middle_name")
 
     /**
      * Returns the raw JSON value of [id].
@@ -394,7 +393,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * Returns the raw JSON value of [name].
@@ -538,7 +537,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+        fun id(): Optional<String> = id.getOptional("id")
 
         /**
          * Returns the raw JSON value of [id].

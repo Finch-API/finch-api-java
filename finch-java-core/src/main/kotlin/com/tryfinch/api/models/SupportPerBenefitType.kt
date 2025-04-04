@@ -38,14 +38,14 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun companyBenefits(): Optional<OperationSupportMatrix> =
-        Optional.ofNullable(companyBenefits.getNullable("company_benefits"))
+        companyBenefits.getOptional("company_benefits")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun individualBenefits(): Optional<OperationSupportMatrix> =
-        Optional.ofNullable(individualBenefits.getNullable("individual_benefits"))
+        individualBenefits.getOptional("individual_benefits")
 
     /**
      * Returns the raw JSON value of [companyBenefits].

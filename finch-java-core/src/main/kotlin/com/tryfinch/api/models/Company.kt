@@ -82,7 +82,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun accounts(): Optional<List<Account>> = Optional.ofNullable(accounts.getNullable("accounts"))
+    fun accounts(): Optional<List<Account>> = accounts.getOptional("accounts")
 
     /**
      * The array of company departments.
@@ -90,8 +90,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun departments(): Optional<List<Department?>> =
-        Optional.ofNullable(departments.getNullable("departments"))
+    fun departments(): Optional<List<Department?>> = departments.getOptional("departments")
 
     /**
      * The employer identification number.
@@ -99,7 +98,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun ein(): Optional<String> = Optional.ofNullable(ein.getNullable("ein"))
+    fun ein(): Optional<String> = ein.getOptional("ein")
 
     /**
      * The entity type object.
@@ -107,7 +106,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun entity(): Optional<Entity> = Optional.ofNullable(entity.getNullable("entity"))
+    fun entity(): Optional<Entity> = entity.getOptional("entity")
 
     /**
      * The legal name of the company.
@@ -115,14 +114,13 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun legalName(): Optional<String> = Optional.ofNullable(legalName.getNullable("legal_name"))
+    fun legalName(): Optional<String> = legalName.getOptional("legal_name")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun locations(): Optional<List<Location?>> =
-        Optional.ofNullable(locations.getNullable("locations"))
+    fun locations(): Optional<List<Location?>> = locations.getOptional("locations")
 
     /**
      * The email of the main administrator on the account.
@@ -130,8 +128,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun primaryEmail(): Optional<String> =
-        Optional.ofNullable(primaryEmail.getNullable("primary_email"))
+    fun primaryEmail(): Optional<String> = primaryEmail.getOptional("primary_email")
 
     /**
      * The phone number of the main administrator on the account. Format: `XXXXXXXXXX`
@@ -140,7 +137,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun primaryPhoneNumber(): Optional<String> =
-        Optional.ofNullable(primaryPhoneNumber.getNullable("primary_phone_number"))
+        primaryPhoneNumber.getOptional("primary_phone_number")
 
     /**
      * Returns the raw JSON value of [id].
@@ -595,8 +592,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun accountName(): Optional<String> =
-            Optional.ofNullable(accountName.getNullable("account_name"))
+        fun accountName(): Optional<String> = accountName.getOptional("account_name")
 
         /**
          * 10-12 digit number to specify the bank account
@@ -604,8 +600,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun accountNumber(): Optional<String> =
-            Optional.ofNullable(accountNumber.getNullable("account_number"))
+        fun accountNumber(): Optional<String> = accountNumber.getOptional("account_number")
 
         /**
          * The type of bank account.
@@ -613,8 +608,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun accountType(): Optional<AccountType> =
-            Optional.ofNullable(accountType.getNullable("account_type"))
+        fun accountType(): Optional<AccountType> = accountType.getOptional("account_type")
 
         /**
          * Name of the banking institution.
@@ -622,8 +616,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun institutionName(): Optional<String> =
-            Optional.ofNullable(institutionName.getNullable("institution_name"))
+        fun institutionName(): Optional<String> = institutionName.getOptional("institution_name")
 
         /**
          * A nine-digit code that's based on the U.S. Bank location where your account was opened.
@@ -631,8 +624,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun routingNumber(): Optional<String> =
-            Optional.ofNullable(routingNumber.getNullable("routing_number"))
+        fun routingNumber(): Optional<String> = routingNumber.getOptional("routing_number")
 
         /**
          * Returns the raw JSON value of [accountName].
@@ -1057,7 +1049,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * The parent department, if present.
@@ -1065,7 +1057,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun parent(): Optional<Parent> = Optional.ofNullable(parent.getNullable("parent"))
+        fun parent(): Optional<Parent> = parent.getOptional("parent")
 
         /**
          * Returns the raw JSON value of [name].
@@ -1219,7 +1211,7 @@ private constructor(
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+            fun name(): Optional<String> = name.getOptional("name")
 
             /**
              * Returns the raw JSON value of [name].
@@ -1386,7 +1378,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype.getNullable("subtype"))
+        fun subtype(): Optional<Subtype> = subtype.getOptional("subtype")
 
         /**
          * The tax payer type of the company.
@@ -1394,7 +1386,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<Type> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [subtype].

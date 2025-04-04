@@ -71,8 +71,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun completedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(completedAt.getNullable("completed_at"))
+    fun completedAt(): Optional<OffsetDateTime> = completedAt.getOptional("completed_at")
 
     /**
      * The datetime when the job was created. for scheduled jobs, this will be the initial
@@ -105,7 +104,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun params(): Optional<Params> = Optional.ofNullable(params.getNullable("params"))
+    fun params(): Optional<Params> = params.getOptional("params")
 
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
@@ -114,8 +113,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun scheduledAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(scheduledAt.getNullable("scheduled_at"))
+    fun scheduledAt(): Optional<OffsetDateTime> = scheduledAt.getOptional("scheduled_at")
 
     /**
      * The datetime a job entered into the job queue.
@@ -123,8 +121,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun startedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(startedAt.getNullable("started_at"))
+    fun startedAt(): Optional<OffsetDateTime> = startedAt.getOptional("started_at")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -520,8 +517,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun individualId(): Optional<String> =
-            Optional.ofNullable(individualId.getNullable("individual_id"))
+        fun individualId(): Optional<String> = individualId.getOptional("individual_id")
 
         /**
          * Returns the raw JSON value of [individualId].

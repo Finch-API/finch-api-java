@@ -42,7 +42,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
+    fun data(): Optional<String> = data.getOptional("data")
 
     /**
      * The HTTP headers of the forwarded request’s response, exactly as received from the underlying
@@ -295,7 +295,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun data(): Optional<String> = Optional.ofNullable(data.getNullable("data"))
+        fun data(): Optional<String> = data.getOptional("data")
 
         /**
          * The specified HTTP headers that were included in the forwarded request. If no headers

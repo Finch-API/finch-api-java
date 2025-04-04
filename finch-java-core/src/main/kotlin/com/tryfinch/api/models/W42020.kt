@@ -42,7 +42,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun data(): Optional<Data> = Optional.ofNullable(data.getNullable("data"))
+    fun data(): Optional<Data> = data.getOptional("data")
 
     /**
      * Specifies the form type, indicating that this document is a 2020 W4 form.
@@ -50,7 +50,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+    fun type(): Optional<Type> = type.getOptional("type")
 
     /**
      * The tax year this W4 document applies to.
@@ -58,7 +58,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun year(): Optional<Double> = Optional.ofNullable(year.getNullable("year"))
+    fun year(): Optional<Double> = year.getOptional("year")
 
     /**
      * Returns the raw JSON value of [data].
@@ -276,7 +276,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun amountForOtherDependents(): Optional<Long> =
-            Optional.ofNullable(amountForOtherDependents.getNullable("amount_for_other_dependents"))
+            amountForOtherDependents.getOptional("amount_for_other_dependents")
 
         /**
          * Amount claimed for dependents under 17 years old (in cents).
@@ -285,10 +285,8 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun amountForQualifyingChildrenUnder17(): Optional<Long> =
-            Optional.ofNullable(
-                amountForQualifyingChildrenUnder17.getNullable(
-                    "amount_for_qualifying_children_under_17"
-                )
+            amountForQualifyingChildrenUnder17.getOptional(
+                "amount_for_qualifying_children_under_17"
             )
 
         /**
@@ -297,7 +295,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun deductions(): Optional<Long> = Optional.ofNullable(deductions.getNullable("deductions"))
+        fun deductions(): Optional<Long> = deductions.getOptional("deductions")
 
         /**
          * Additional withholding amount (in cents).
@@ -305,8 +303,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun extraWithholding(): Optional<Long> =
-            Optional.ofNullable(extraWithholding.getNullable("extra_withholding"))
+        fun extraWithholding(): Optional<Long> = extraWithholding.getOptional("extra_withholding")
 
         /**
          * The individual's filing status for tax purposes.
@@ -314,8 +311,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun filingStatus(): Optional<FilingStatus> =
-            Optional.ofNullable(filingStatus.getNullable("filing_status"))
+        fun filingStatus(): Optional<FilingStatus> = filingStatus.getOptional("filing_status")
 
         /**
          * The unique identifier for the individual associated with this document.
@@ -323,8 +319,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun individualId(): Optional<String> =
-            Optional.ofNullable(individualId.getNullable("individual_id"))
+        fun individualId(): Optional<String> = individualId.getOptional("individual_id")
 
         /**
          * Additional income from sources outside of primary employment (in cents).
@@ -332,8 +327,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun otherIncome(): Optional<Long> =
-            Optional.ofNullable(otherIncome.getNullable("other_income"))
+        fun otherIncome(): Optional<Long> = otherIncome.getOptional("other_income")
 
         /**
          * Total amount claimed for dependents and other credits (in cents).
@@ -342,10 +336,8 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun totalClaimDependentAndOtherCredits(): Optional<Long> =
-            Optional.ofNullable(
-                totalClaimDependentAndOtherCredits.getNullable(
-                    "total_claim_dependent_and_other_credits"
-                )
+            totalClaimDependentAndOtherCredits.getOptional(
+                "total_claim_dependent_and_other_credits"
             )
 
         /**

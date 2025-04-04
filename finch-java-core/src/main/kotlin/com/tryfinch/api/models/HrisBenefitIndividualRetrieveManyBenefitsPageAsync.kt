@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsPageAsync
@@ -81,7 +82,7 @@ private constructor(
             @JsonProperty("items") items: JsonField<List<IndividualBenefit>> = JsonMissing.of()
         ) : this(items, mutableMapOf())
 
-        fun items(): List<IndividualBenefit> = items.getNullable("items") ?: listOf()
+        fun items(): List<IndividualBenefit> = items.getOptional("items").getOrNull() ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<IndividualBenefit>>> = Optional.ofNullable(items)

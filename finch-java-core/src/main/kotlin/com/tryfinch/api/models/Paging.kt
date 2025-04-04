@@ -34,7 +34,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun count(): Optional<Long> = Optional.ofNullable(count.getNullable("count"))
+    fun count(): Optional<Long> = count.getOptional("count")
 
     /**
      * The current start index of the returned list of elements
@@ -42,7 +42,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun offset(): Optional<Long> = Optional.ofNullable(offset.getNullable("offset"))
+    fun offset(): Optional<Long> = offset.getOptional("offset")
 
     /**
      * Returns the raw JSON value of [count].

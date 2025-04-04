@@ -286,14 +286,13 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun options(): Optional<Options> = Optional.ofNullable(options.getNullable("options"))
+        fun options(): Optional<Options> = options.getOptional("options")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun requests(): Optional<List<Request>> =
-            Optional.ofNullable(requests.getNullable("requests"))
+        fun requests(): Optional<List<Request>> = requests.getOptional("requests")
 
         /**
          * Returns the raw JSON value of [options].
@@ -480,7 +479,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun include(): Optional<List<String>> = Optional.ofNullable(include.getNullable("include"))
+        fun include(): Optional<List<String>> = include.getOptional("include")
 
         /**
          * Returns the raw JSON value of [include].
@@ -637,8 +636,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun individualId(): Optional<String> =
-            Optional.ofNullable(individualId.getNullable("individual_id"))
+        fun individualId(): Optional<String> = individualId.getOptional("individual_id")
 
         /**
          * Returns the raw JSON value of [individualId].

@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Read detailed pay statements for each individual.
@@ -85,7 +86,8 @@ private constructor(
             responses: JsonField<List<PayStatementResponse>> = JsonMissing.of()
         ) : this(responses, mutableMapOf())
 
-        fun responses(): List<PayStatementResponse> = responses.getNullable("responses") ?: listOf()
+        fun responses(): List<PayStatementResponse> =
+            responses.getOptional("responses").getOrNull() ?: listOf()
 
         @JsonProperty("responses")
         fun _responses(): Optional<JsonField<List<PayStatementResponse>>> =

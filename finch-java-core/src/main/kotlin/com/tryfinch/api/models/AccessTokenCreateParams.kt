@@ -346,21 +346,19 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun clientId(): Optional<String> = Optional.ofNullable(clientId.getNullable("client_id"))
+        fun clientId(): Optional<String> = clientId.getOptional("client_id")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun clientSecret(): Optional<String> =
-            Optional.ofNullable(clientSecret.getNullable("client_secret"))
+        fun clientSecret(): Optional<String> = clientSecret.getOptional("client_secret")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun redirectUri(): Optional<String> =
-            Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
+        fun redirectUri(): Optional<String> = redirectUri.getOptional("redirect_uri")
 
         /**
          * Returns the raw JSON value of [code].

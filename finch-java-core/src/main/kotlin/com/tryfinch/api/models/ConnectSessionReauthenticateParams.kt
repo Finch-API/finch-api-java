@@ -403,8 +403,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun minutesToExpire(): Optional<Long> =
-            Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
+        fun minutesToExpire(): Optional<Long> = minutesToExpire.getOptional("minutes_to_expire")
 
         /**
          * The products to request access to (optional for reauthentication)
@@ -412,8 +411,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun products(): Optional<List<ConnectProducts>> =
-            Optional.ofNullable(products.getNullable("products"))
+        fun products(): Optional<List<ConnectProducts>> = products.getOptional("products")
 
         /**
          * The URI to redirect to after the Connect flow is completed
@@ -421,8 +419,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun redirectUri(): Optional<String> =
-            Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
+        fun redirectUri(): Optional<String> = redirectUri.getOptional("redirect_uri")
 
         /**
          * Returns the raw JSON value of [connectionId].

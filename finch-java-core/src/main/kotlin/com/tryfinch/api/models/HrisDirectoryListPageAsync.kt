@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** Read company directory and organization structure */
 class HrisDirectoryListPageAsync
@@ -100,9 +101,9 @@ private constructor(
         ) : this(individuals, paging, mutableMapOf())
 
         fun individuals(): List<IndividualInDirectory> =
-            individuals.getNullable("individuals") ?: listOf()
+            individuals.getOptional("individuals").getOrNull() ?: listOf()
 
-        fun paging(): Optional<Paging> = Optional.ofNullable(paging.getNullable("paging"))
+        fun paging(): Optional<Paging> = paging.getOptional("paging")
 
         @JsonProperty("individuals")
         fun _individuals(): Optional<JsonField<List<IndividualInDirectory>>> =
