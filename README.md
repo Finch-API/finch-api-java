@@ -429,6 +429,20 @@ JsonValue complexValue = JsonValue.from(Map.of(
 ));
 ```
 
+Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
+
+To forcibly omit a required parameter or property, pass [`JsonMissing`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/Values.kt):
+
+```java
+import com.tryfinch.api.core.JsonMissing;
+import com.tryfinch.api.models.AccessTokenCreateParams;
+import com.tryfinch.api.models.HrisDirectoryListParams;
+
+HrisDirectoryListParams params = AccessTokenCreateParams.builder()
+    .code(JsonMissing.of())
+    .build();
+```
+
 ### Response properties
 
 To access undocumented response properties, call the `_additionalProperties()` method:
