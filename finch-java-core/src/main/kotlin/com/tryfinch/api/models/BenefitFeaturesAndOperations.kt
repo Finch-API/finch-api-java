@@ -41,14 +41,14 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun supportedFeatures(): Optional<BenefitFeature> =
-        Optional.ofNullable(supportedFeatures.getNullable("supported_features"))
+        supportedFeatures.getOptional("supported_features")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun supportedOperations(): Optional<SupportPerBenefitType> =
-        Optional.ofNullable(supportedOperations.getNullable("supported_operations"))
+        supportedOperations.getOptional("supported_operations")
 
     /**
      * Returns the raw JSON value of [supportedFeatures].
@@ -246,8 +246,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun annualMaximum(): Optional<Boolean> =
-            Optional.ofNullable(annualMaximum.getNullable("annual_maximum"))
+        fun annualMaximum(): Optional<Boolean> = annualMaximum.getOptional("annual_maximum")
 
         /**
          * Whether the provider supports catch up for this benefit. This field will only be true for
@@ -256,7 +255,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun catchUp(): Optional<Boolean> = Optional.ofNullable(catchUp.getNullable("catch_up"))
+        fun catchUp(): Optional<Boolean> = catchUp.getOptional("catch_up")
 
         /**
          * Supported contribution types. An empty array indicates contributions are not supported.
@@ -265,14 +264,13 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun companyContribution(): Optional<List<CompanyContribution?>> =
-            Optional.ofNullable(companyContribution.getNullable("company_contribution"))
+            companyContribution.getOptional("company_contribution")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Supported deduction types. An empty array indicates deductions are not supported.
@@ -281,7 +279,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun employeeDeduction(): Optional<List<EmployeeDeduction?>> =
-            Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
+            employeeDeduction.getOptional("employee_deduction")
 
         /**
          * The list of frequencies supported by the provider for this benefit
@@ -290,7 +288,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun frequencies(): Optional<List<BenefitFrequency?>> =
-            Optional.ofNullable(frequencies.getNullable("frequencies"))
+            frequencies.getOptional("frequencies")
 
         /**
          * Whether the provider supports HSA contribution limits. Empty if this feature is not
@@ -300,7 +298,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun hsaContributionLimit(): Optional<List<HsaContributionLimit?>> =
-            Optional.ofNullable(hsaContributionLimit.getNullable("hsa_contribution_limit"))
+            hsaContributionLimit.getOptional("hsa_contribution_limit")
 
         /**
          * Returns the raw JSON value of [annualMaximum].

@@ -49,7 +49,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun city(): Optional<String> = Optional.ofNullable(city.getNullable("city"))
+    fun city(): Optional<String> = city.getOptional("city")
 
     /**
      * The 2-letter ISO 3166 country code.
@@ -57,7 +57,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun country(): Optional<String> = Optional.ofNullable(country.getNullable("country"))
+    fun country(): Optional<String> = country.getOptional("country")
 
     /**
      * Street address or PO box.
@@ -65,7 +65,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun line1(): Optional<String> = Optional.ofNullable(line1.getNullable("line1"))
+    fun line1(): Optional<String> = line1.getOptional("line1")
 
     /**
      * Apartment, suite, unit, or building.
@@ -73,13 +73,13 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun line2(): Optional<String> = Optional.ofNullable(line2.getNullable("line2"))
+    fun line2(): Optional<String> = line2.getOptional("line2")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+    fun name(): Optional<String> = name.getOptional("name")
 
     /**
      * The postal code or zip code.
@@ -87,13 +87,13 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun postalCode(): Optional<String> = Optional.ofNullable(postalCode.getNullable("postal_code"))
+    fun postalCode(): Optional<String> = postalCode.getOptional("postal_code")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun sourceId(): Optional<String> = Optional.ofNullable(sourceId.getNullable("source_id"))
+    fun sourceId(): Optional<String> = sourceId.getOptional("source_id")
 
     /**
      * The state code.
@@ -101,7 +101,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun state(): Optional<String> = Optional.ofNullable(state.getNullable("state"))
+    fun state(): Optional<String> = state.getOptional("state")
 
     /**
      * Returns the raw JSON value of [city].

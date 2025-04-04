@@ -95,85 +95,77 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun commuter(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(commuter.getNullable("commuter"))
+    fun commuter(): Optional<BenefitFeaturesAndOperations> = commuter.getOptional("commuter")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun customPostTax(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(customPostTax.getNullable("custom_post_tax"))
+        customPostTax.getOptional("custom_post_tax")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun customPreTax(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(customPreTax.getNullable("custom_pre_tax"))
+        customPreTax.getOptional("custom_pre_tax")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun fsaDependentCare(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(fsaDependentCare.getNullable("fsa_dependent_care"))
+        fsaDependentCare.getOptional("fsa_dependent_care")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun fsaMedical(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(fsaMedical.getNullable("fsa_medical"))
+    fun fsaMedical(): Optional<BenefitFeaturesAndOperations> = fsaMedical.getOptional("fsa_medical")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun hsaPost(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(hsaPost.getNullable("hsa_post"))
+    fun hsaPost(): Optional<BenefitFeaturesAndOperations> = hsaPost.getOptional("hsa_post")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun hsaPre(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(hsaPre.getNullable("hsa_pre"))
+    fun hsaPre(): Optional<BenefitFeaturesAndOperations> = hsaPre.getOptional("hsa_pre")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun s125Dental(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(s125Dental.getNullable("s125_dental"))
+    fun s125Dental(): Optional<BenefitFeaturesAndOperations> = s125Dental.getOptional("s125_dental")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun s125Medical(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(s125Medical.getNullable("s125_medical"))
+        s125Medical.getOptional("s125_medical")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun s125Vision(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(s125Vision.getNullable("s125_vision"))
+    fun s125Vision(): Optional<BenefitFeaturesAndOperations> = s125Vision.getOptional("s125_vision")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun simple(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(simple.getNullable("simple"))
+    fun simple(): Optional<BenefitFeaturesAndOperations> = simple.getOptional("simple")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun simpleIra(): Optional<BenefitFeaturesAndOperations> =
-        Optional.ofNullable(simpleIra.getNullable("simple_ira"))
+    fun simpleIra(): Optional<BenefitFeaturesAndOperations> = simpleIra.getOptional("simple_ira")
 
     /**
      * Returns the raw JSON value of [commuter].

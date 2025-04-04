@@ -83,7 +83,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    fun id(): Optional<String> = id.getOptional("id")
 
     /**
      * Specifies the fields to be applied when the condition is met.
@@ -91,15 +91,13 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun attributes(): Optional<Attributes> =
-        Optional.ofNullable(attributes.getNullable("attributes"))
+    fun attributes(): Optional<Attributes> = attributes.getOptional("attributes")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun conditions(): Optional<List<Condition>> =
-        Optional.ofNullable(conditions.getNullable("conditions"))
+    fun conditions(): Optional<List<Condition>> = conditions.getOptional("conditions")
 
     /**
      * The datetime when the rule was created.
@@ -107,8 +105,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun createdAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(createdAt.getNullable("created_at"))
+    fun createdAt(): Optional<OffsetDateTime> = createdAt.getOptional("created_at")
 
     /**
      * The datetime when the rule was deleted.
@@ -116,8 +113,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun deletedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(deletedAt.getNullable("deleted_at"))
+    fun deletedAt(): Optional<OffsetDateTime> = deletedAt.getOptional("deleted_at")
 
     /**
      * Specifies when the rules should stop applying rules based on the date.
@@ -125,8 +121,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun effectiveEndDate(): Optional<String> =
-        Optional.ofNullable(effectiveEndDate.getNullable("effective_end_date"))
+    fun effectiveEndDate(): Optional<String> = effectiveEndDate.getOptional("effective_end_date")
 
     /**
      * Specifies when the rule should begin applying based on the date.
@@ -135,7 +130,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun effectiveStartDate(): Optional<String> =
-        Optional.ofNullable(effectiveStartDate.getNullable("effective_start_date"))
+        effectiveStartDate.getOptional("effective_start_date")
 
     /**
      * The entity type to which the rule is applied.
@@ -143,8 +138,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun entityType(): Optional<EntityType> =
-        Optional.ofNullable(entityType.getNullable("entity_type"))
+    fun entityType(): Optional<EntityType> = entityType.getOptional("entity_type")
 
     /**
      * The priority of the rule.
@@ -152,7 +146,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun priority(): Optional<Long> = Optional.ofNullable(priority.getNullable("priority"))
+    fun priority(): Optional<Long> = priority.getOptional("priority")
 
     /**
      * The datetime when the rule was last updated.
@@ -160,8 +154,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun updatedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(updatedAt.getNullable("updated_at"))
+    fun updatedAt(): Optional<OffsetDateTime> = updatedAt.getOptional("updated_at")
 
     /**
      * Returns the raw JSON value of [id].
@@ -553,7 +546,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+        fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
         /**
          * Returns the raw JSON value of [metadata].
@@ -811,7 +804,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun field(): Optional<String> = Optional.ofNullable(field.getNullable("field"))
+        fun field(): Optional<String> = field.getOptional("field")
 
         /**
          * The operator to be used in the rule.
@@ -819,7 +812,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun operator(): Optional<Operator> = Optional.ofNullable(operator.getNullable("operator"))
+        fun operator(): Optional<Operator> = operator.getOptional("operator")
 
         /**
          * The value of the field to be checked in the rule.
@@ -827,7 +820,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun value(): Optional<String> = Optional.ofNullable(value.getNullable("value"))
+        fun value(): Optional<String> = value.getOptional("value")
 
         /**
          * Returns the raw JSON value of [field].

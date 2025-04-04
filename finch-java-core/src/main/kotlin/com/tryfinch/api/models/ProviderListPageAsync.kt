@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** Return details on all available payroll and HR systems. */
 class ProviderListPageAsync
@@ -80,7 +81,7 @@ private constructor(
             @JsonProperty("items") items: JsonField<List<Provider>> = JsonMissing.of()
         ) : this(items, mutableMapOf())
 
-        fun items(): List<Provider> = items.getNullable("items") ?: listOf()
+        fun items(): List<Provider> = items.getOptional("items").getOrNull() ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<Provider>>> = Optional.ofNullable(items)

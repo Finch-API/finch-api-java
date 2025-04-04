@@ -41,7 +41,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun body(): Optional<List<JsonValue>> = Optional.ofNullable(body.getNullable("body"))
+    fun body(): Optional<List<JsonValue>> = body.getOptional("body")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly

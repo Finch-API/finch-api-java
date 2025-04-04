@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** Read company pay groups and frequencies */
 class PayrollPayGroupListPageAsync
@@ -80,7 +81,7 @@ private constructor(
             @JsonProperty("items") items: JsonField<List<PayGroupListResponse>> = JsonMissing.of()
         ) : this(items, mutableMapOf())
 
-        fun items(): List<PayGroupListResponse> = items.getNullable("items") ?: listOf()
+        fun items(): List<PayGroupListResponse> = items.getOptional("items").getOrNull() ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<PayGroupListResponse>>> = Optional.ofNullable(items)

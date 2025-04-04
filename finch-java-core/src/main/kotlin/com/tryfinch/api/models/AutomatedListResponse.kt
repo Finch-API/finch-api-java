@@ -224,7 +224,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun quotas(): Optional<Quotas> = Optional.ofNullable(quotas.getNullable("quotas"))
+        fun quotas(): Optional<Quotas> = quotas.getOptional("quotas")
 
         /**
          * Returns the raw JSON value of [quotas].
@@ -355,8 +355,7 @@ private constructor(
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun dataSyncAll(): Optional<DataSyncAll> =
-                Optional.ofNullable(dataSyncAll.getNullable("data_sync_all"))
+            fun dataSyncAll(): Optional<DataSyncAll> = dataSyncAll.getOptional("data_sync_all")
 
             /**
              * Returns the raw JSON value of [dataSyncAll].
@@ -491,14 +490,14 @@ private constructor(
                  *   if the server responded with an unexpected value).
                  */
                 fun allowedRefreshes(): Optional<Long> =
-                    Optional.ofNullable(allowedRefreshes.getNullable("allowed_refreshes"))
+                    allowedRefreshes.getOptional("allowed_refreshes")
 
                 /**
                  * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
                  *   if the server responded with an unexpected value).
                  */
                 fun remainingRefreshes(): Optional<Long> =
-                    Optional.ofNullable(remainingRefreshes.getNullable("remaining_refreshes"))
+                    remainingRefreshes.getOptional("remaining_refreshes")
 
                 /**
                  * Returns the raw JSON value of [allowedRefreshes].

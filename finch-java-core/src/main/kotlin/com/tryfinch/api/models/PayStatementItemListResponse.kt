@@ -40,8 +40,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun attributes(): Optional<Attributes> =
-        Optional.ofNullable(attributes.getNullable("attributes"))
+    fun attributes(): Optional<Attributes> = attributes.getOptional("attributes")
 
     /**
      * The category of the pay statement item.
@@ -49,7 +48,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun category(): Optional<Category> = Optional.ofNullable(category.getNullable("category"))
+    fun category(): Optional<Category> = category.getOptional("category")
 
     /**
      * The name of the pay statement item.
@@ -57,7 +56,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+    fun name(): Optional<String> = name.getOptional("name")
 
     /**
      * Returns the raw JSON value of [attributes].
@@ -244,7 +243,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun employer(): Optional<Boolean> = Optional.ofNullable(employer.getNullable("employer"))
+        fun employer(): Optional<Boolean> = employer.getOptional("employer")
 
         /**
          * The metadata of the pay statement item derived by the rules engine if available. Each
@@ -259,7 +258,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun preTax(): Optional<Boolean> = Optional.ofNullable(preTax.getNullable("pre_tax"))
+        fun preTax(): Optional<Boolean> = preTax.getOptional("pre_tax")
 
         /**
          * The type of the pay statement item.
@@ -267,7 +266,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun type(): Optional<String> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<String> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [employer].

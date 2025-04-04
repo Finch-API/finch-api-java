@@ -18,6 +18,7 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** List all company-wide deductions and contributions. */
 class HrisBenefitListPageAsync
@@ -80,7 +81,7 @@ private constructor(
             @JsonProperty("items") items: JsonField<List<CompanyBenefit>> = JsonMissing.of()
         ) : this(items, mutableMapOf())
 
-        fun items(): List<CompanyBenefit> = items.getNullable("items") ?: listOf()
+        fun items(): List<CompanyBenefit> = items.getOptional("items").getOrNull() ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<CompanyBenefit>>> = Optional.ofNullable(items)

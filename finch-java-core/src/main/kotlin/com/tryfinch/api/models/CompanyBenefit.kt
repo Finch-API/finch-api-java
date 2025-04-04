@@ -50,8 +50,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun description(): Optional<String> =
-        Optional.ofNullable(description.getNullable("description"))
+    fun description(): Optional<String> = description.getOptional("description")
 
     /**
      * The frequency of the benefit deduction/contribution.
@@ -59,8 +58,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun frequency(): Optional<BenefitFrequency> =
-        Optional.ofNullable(frequency.getNullable("frequency"))
+    fun frequency(): Optional<BenefitFrequency> = frequency.getOptional("frequency")
 
     /**
      * Type of benefit.
@@ -68,7 +66,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun type(): Optional<BenefitType> = Optional.ofNullable(type.getNullable("type"))
+    fun type(): Optional<BenefitType> = type.getOptional("type")
 
     /**
      * Returns the raw JSON value of [benefitId].

@@ -72,20 +72,19 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun connectionId(): Optional<String> =
-        Optional.ofNullable(connectionId.getNullable("connection_id"))
+    fun connectionId(): Optional<String> = connectionId.getOptional("connection_id")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun data(): Optional<Data> = Optional.ofNullable(data.getNullable("data"))
+    fun data(): Optional<Data> = data.getOptional("data")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun eventType(): Optional<EventType> = Optional.ofNullable(eventType.getNullable("event_type"))
+    fun eventType(): Optional<EventType> = eventType.getOptional("event_type")
 
     /**
      * Returns the raw JSON value of [accountId].

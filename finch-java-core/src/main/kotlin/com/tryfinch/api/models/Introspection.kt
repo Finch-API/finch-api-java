@@ -174,8 +174,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun customerEmail(): Optional<String> =
-        Optional.ofNullable(customerEmail.getNullable("customer_email"))
+    fun customerEmail(): Optional<String> = customerEmail.getOptional("customer_email")
 
     /**
      * The ID of your customer you provided to Finch when a connect session was created for this
@@ -184,7 +183,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun customerId(): Optional<String> = Optional.ofNullable(customerId.getNullable("customer_id"))
+    fun customerId(): Optional<String> = customerId.getOptional("customer_id")
 
     /**
      * The name of your customer you provided to Finch when a connect session was created for this
@@ -193,8 +192,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun customerName(): Optional<String> =
-        Optional.ofNullable(customerName.getNullable("customer_name"))
+    fun customerName(): Optional<String> = customerName.getOptional("customer_name")
 
     /**
      * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
@@ -884,7 +882,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun connectionStatus(): Optional<ConnectionStatus> =
-            Optional.ofNullable(connectionStatus.getNullable("connection_status"))
+            connectionStatus.getOptional("connection_status")
 
         /**
          * An array of the authorized products associated with the `access_token`.
@@ -892,8 +890,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun products(): Optional<List<String>> =
-            Optional.ofNullable(products.getNullable("products"))
+        fun products(): Optional<List<String>> = products.getOptional("products")
 
         /**
          * The type of authentication method.
@@ -901,7 +898,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+        fun type(): Optional<Type> = type.getOptional("type")
 
         /**
          * Returns the raw JSON value of [connectionStatus].
@@ -1102,14 +1099,13 @@ private constructor(
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+            fun message(): Optional<String> = message.getOptional("message")
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun status(): Optional<ConnectionStatusType> =
-                Optional.ofNullable(status.getNullable("status"))
+            fun status(): Optional<ConnectionStatusType> = status.getOptional("status")
 
             /**
              * Returns the raw JSON value of [message].
@@ -1584,20 +1580,19 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun lastSuccessfulSync(): Optional<OffsetDateTime> =
-            Optional.ofNullable(lastSuccessfulSync.getNullable("last_successful_sync"))
+            lastSuccessfulSync.getOptional("last_successful_sync")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+        fun message(): Optional<String> = message.getOptional("message")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun status(): Optional<ConnectionStatusType> =
-            Optional.ofNullable(status.getNullable("status"))
+        fun status(): Optional<ConnectionStatusType> = status.getOptional("status")
 
         /**
          * Returns the raw JSON value of [lastSuccessfulSync].

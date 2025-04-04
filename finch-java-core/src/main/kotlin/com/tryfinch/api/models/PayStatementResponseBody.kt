@@ -37,7 +37,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun paging(): Optional<Paging> = Optional.ofNullable(paging.getNullable("paging"))
+    fun paging(): Optional<Paging> = paging.getOptional("paging")
 
     /**
      * The array of pay statements for the current payment.
@@ -45,8 +45,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun payStatements(): Optional<List<PayStatement>> =
-        Optional.ofNullable(payStatements.getNullable("pay_statements"))
+    fun payStatements(): Optional<List<PayStatement>> = payStatements.getOptional("pay_statements")
 
     /**
      * Returns the raw JSON value of [paging].

@@ -38,20 +38,19 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun body(): Optional<Body> = Optional.ofNullable(body.getNullable("body"))
+    fun body(): Optional<Body> = body.getOptional("body")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
+    fun code(): Optional<Long> = code.getOptional("code")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun individualId(): Optional<String> =
-        Optional.ofNullable(individualId.getNullable("individual_id"))
+    fun individualId(): Optional<String> = individualId.getOptional("individual_id")
 
     /**
      * Returns the raw JSON value of [body].
@@ -245,8 +244,7 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun annualMaximum(): Optional<Long> =
-            Optional.ofNullable(annualMaximum.getNullable("annual_maximum"))
+        fun annualMaximum(): Optional<Long> = annualMaximum.getOptional("annual_maximum")
 
         /**
          * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for this
@@ -255,21 +253,21 @@ private constructor(
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun catchUp(): Optional<Boolean> = Optional.ofNullable(catchUp.getNullable("catch_up"))
+        fun catchUp(): Optional<Boolean> = catchUp.getOptional("catch_up")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun companyContribution(): Optional<BenefitContribution> =
-            Optional.ofNullable(companyContribution.getNullable("company_contribution"))
+            companyContribution.getOptional("company_contribution")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun employeeDeduction(): Optional<BenefitContribution> =
-            Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
+            employeeDeduction.getOptional("employee_deduction")
 
         /**
          * Type for HSA contribution limit if the benefit is a HSA.
@@ -278,7 +276,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun hsaContributionLimit(): Optional<HsaContributionLimit> =
-            Optional.ofNullable(hsaContributionLimit.getNullable("hsa_contribution_limit"))
+            hsaContributionLimit.getOptional("hsa_contribution_limit")
 
         /**
          * Returns the raw JSON value of [annualMaximum].
