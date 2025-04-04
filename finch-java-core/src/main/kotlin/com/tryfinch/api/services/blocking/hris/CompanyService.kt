@@ -7,6 +7,7 @@ import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
+import com.tryfinch.api.services.blocking.hris.company.PayStatementItemService
 
 interface CompanyService {
 
@@ -14,6 +15,8 @@ interface CompanyService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    fun payStatementItem(): PayStatementItemService
 
     /** Read basic company data */
     fun retrieve(): Company = retrieve(HrisCompanyRetrieveParams.none())
@@ -34,6 +37,8 @@ interface CompanyService {
 
     /** A view of [CompanyService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        fun payStatementItem(): PayStatementItemService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
