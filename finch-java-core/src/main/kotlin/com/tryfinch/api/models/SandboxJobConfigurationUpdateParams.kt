@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
@@ -27,21 +26,23 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): SandboxJobConfiguration = sandboxJobConfiguration
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SandboxJobConfigurationUpdateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .sandboxJobConfiguration()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [SandboxJobConfigurationUpdateParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var sandboxJobConfiguration: SandboxJobConfiguration? = null
@@ -160,6 +161,18 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [SandboxJobConfigurationUpdateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .sandboxJobConfiguration()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): SandboxJobConfigurationUpdateParams =
             SandboxJobConfigurationUpdateParams(
                 checkRequired("sandboxJobConfiguration", sandboxJobConfiguration),
@@ -167,6 +180,12 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    fun _body(): SandboxJobConfiguration = sandboxJobConfiguration
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

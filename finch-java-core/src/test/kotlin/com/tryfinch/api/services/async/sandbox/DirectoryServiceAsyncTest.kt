@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class DirectoryServiceAsyncTest {
+internal class DirectoryServiceAsyncTest {
 
     @Test
     fun create() {
@@ -117,7 +117,7 @@ class DirectoryServiceAsyncTest {
                             .manager(
                                 SandboxDirectoryCreateParams.IndividualOrEmployment.Manager
                                     .builder()
-                                    .id("id")
+                                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                     .build()
                             )
                             .middleName("middle_name")
@@ -156,5 +156,6 @@ class DirectoryServiceAsyncTest {
             )
 
         val directories = directoriesFuture.get()
+        directories.forEach { it.validate() }
     }
 }

@@ -2,13 +2,16 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class CompanyUpdateResponseTest {
+internal class CompanyUpdateResponseTest {
 
     @Test
-    fun createCompanyUpdateResponse() {
+    fun create() {
         val companyUpdateResponse =
             CompanyUpdateResponse.builder()
                 .addAccount(
@@ -48,11 +51,11 @@ class CompanyUpdateResponseTest {
                         .state("state")
                         .build()
                 )
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
-        assertThat(companyUpdateResponse).isNotNull
-        assertThat(companyUpdateResponse.accounts().get())
+
+        assertThat(companyUpdateResponse.accounts().getOrNull())
             .containsExactly(
                 CompanyUpdateResponse.Account.builder()
                     .accountName("account_name")
@@ -62,7 +65,7 @@ class CompanyUpdateResponseTest {
                     .routingNumber("routing_number")
                     .build()
             )
-        assertThat(companyUpdateResponse.departments().get())
+        assertThat(companyUpdateResponse.departments().getOrNull())
             .containsExactly(
                 CompanyUpdateResponse.Department.builder()
                     .name("name")
@@ -78,7 +81,7 @@ class CompanyUpdateResponseTest {
                     .build()
             )
         assertThat(companyUpdateResponse.legalName()).contains("legal_name")
-        assertThat(companyUpdateResponse.locations().get())
+        assertThat(companyUpdateResponse.locations().getOrNull())
             .containsExactly(
                 Location.builder()
                     .city("city")
@@ -91,7 +94,62 @@ class CompanyUpdateResponseTest {
                     .state("state")
                     .build()
             )
-        assertThat(companyUpdateResponse.primaryEmail()).contains("primary_email")
+        assertThat(companyUpdateResponse.primaryEmail()).contains("dev@stainless.com")
         assertThat(companyUpdateResponse.primaryPhoneNumber()).contains("primary_phone_number")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val companyUpdateResponse =
+            CompanyUpdateResponse.builder()
+                .addAccount(
+                    CompanyUpdateResponse.Account.builder()
+                        .accountName("account_name")
+                        .accountNumber("account_number")
+                        .accountType(CompanyUpdateResponse.Account.AccountType.CHECKING)
+                        .institutionName("institution_name")
+                        .routingNumber("routing_number")
+                        .build()
+                )
+                .addDepartment(
+                    CompanyUpdateResponse.Department.builder()
+                        .name("name")
+                        .parent(
+                            CompanyUpdateResponse.Department.Parent.builder().name("name").build()
+                        )
+                        .build()
+                )
+                .ein("ein")
+                .entity(
+                    CompanyUpdateResponse.Entity.builder()
+                        .subtype(CompanyUpdateResponse.Entity.Subtype.S_CORPORATION)
+                        .type(CompanyUpdateResponse.Entity.Type.LLC)
+                        .build()
+                )
+                .legalName("legal_name")
+                .addLocation(
+                    Location.builder()
+                        .city("city")
+                        .country("country")
+                        .line1("line1")
+                        .line2("line2")
+                        .name("name")
+                        .postalCode("postal_code")
+                        .sourceId("source_id")
+                        .state("state")
+                        .build()
+                )
+                .primaryEmail("dev@stainless.com")
+                .primaryPhoneNumber("primary_phone_number")
+                .build()
+
+        val roundtrippedCompanyUpdateResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(companyUpdateResponse),
+                jacksonTypeRef<CompanyUpdateResponse>(),
+            )
+
+        assertThat(roundtrippedCompanyUpdateResponse).isEqualTo(companyUpdateResponse)
     }
 }

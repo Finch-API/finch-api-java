@@ -11,61 +11,85 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class IndividualBenefit
-@JsonCreator
 private constructor(
-    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("individual_id")
-    @ExcludeMissing
-    private val individualId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val body: JsonField<Body>,
+    private val code: JsonField<Long>,
+    private val individualId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    fun body(): Optional<Body> = Optional.ofNullable(body.getNullable("body"))
+    @JsonCreator
+    private constructor(
+        @JsonProperty("body") @ExcludeMissing body: JsonField<Body> = JsonMissing.of(),
+        @JsonProperty("code") @ExcludeMissing code: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        individualId: JsonField<String> = JsonMissing.of(),
+    ) : this(body, code, individualId, mutableMapOf())
 
-    fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun body(): Optional<Body> = body.getOptional("body")
 
-    fun individualId(): Optional<String> =
-        Optional.ofNullable(individualId.getNullable("individual_id"))
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun code(): Optional<Long> = code.getOptional("code")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun individualId(): Optional<String> = individualId.getOptional("individual_id")
+
+    /**
+     * Returns the raw JSON value of [body].
+     *
+     * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<Body> = body
 
+    /**
+     * Returns the raw JSON value of [code].
+     *
+     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
+    /**
+     * Returns the raw JSON value of [individualId].
+     *
+     * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("individual_id")
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): IndividualBenefit = apply {
-        if (validated) {
-            return@apply
-        }
-
-        body().ifPresent { it.validate() }
-        code()
-        individualId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [IndividualBenefit]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -87,14 +111,33 @@ private constructor(
 
         fun body(body: Body) = body(JsonField.of(body))
 
+        /**
+         * Sets [Builder.body] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.body] with a well-typed [Body] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun body(body: JsonField<Body>) = apply { this.body = body }
 
         fun code(code: Long) = code(JsonField.of(code))
 
+        /**
+         * Sets [Builder.code] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.code] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
+        /**
+         * Sets [Builder.individualId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
@@ -118,100 +161,185 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [IndividualBenefit].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): IndividualBenefit =
-            IndividualBenefit(body, code, individualId, additionalProperties.toImmutable())
+            IndividualBenefit(body, code, individualId, additionalProperties.toMutableMap())
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): IndividualBenefit = apply {
+        if (validated) {
+            return@apply
+        }
+
+        body().ifPresent { it.validate() }
+        code()
+        individualId()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (body.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (code.asKnown().isPresent) 1 else 0) +
+            (if (individualId.asKnown().isPresent) 1 else 0)
+
     class Body
-    @JsonCreator
     private constructor(
-        @JsonProperty("annual_maximum")
-        @ExcludeMissing
-        private val annualMaximum: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("catch_up")
-        @ExcludeMissing
-        private val catchUp: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("company_contribution")
-        @ExcludeMissing
-        private val companyContribution: JsonField<BenefitContribution> = JsonMissing.of(),
-        @JsonProperty("employee_deduction")
-        @ExcludeMissing
-        private val employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of(),
-        @JsonProperty("hsa_contribution_limit")
-        @ExcludeMissing
-        private val hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val annualMaximum: JsonField<Long>,
+        private val catchUp: JsonField<Boolean>,
+        private val companyContribution: JsonField<BenefitContribution>,
+        private val employeeDeduction: JsonField<BenefitContribution>,
+        private val hsaContributionLimit: JsonField<HsaContributionLimit>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        /** If the benefit supports annual maximum, the amount in cents for this individual. */
-        fun annualMaximum(): Optional<Long> =
-            Optional.ofNullable(annualMaximum.getNullable("annual_maximum"))
+        @JsonCreator
+        private constructor(
+            @JsonProperty("annual_maximum")
+            @ExcludeMissing
+            annualMaximum: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("catch_up")
+            @ExcludeMissing
+            catchUp: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("company_contribution")
+            @ExcludeMissing
+            companyContribution: JsonField<BenefitContribution> = JsonMissing.of(),
+            @JsonProperty("employee_deduction")
+            @ExcludeMissing
+            employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of(),
+            @JsonProperty("hsa_contribution_limit")
+            @ExcludeMissing
+            hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of(),
+        ) : this(
+            annualMaximum,
+            catchUp,
+            companyContribution,
+            employeeDeduction,
+            hsaContributionLimit,
+            mutableMapOf(),
+        )
+
+        /**
+         * If the benefit supports annual maximum, the amount in cents for this individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun annualMaximum(): Optional<Long> = annualMaximum.getOptional("annual_maximum")
 
         /**
          * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for this
          * individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        fun catchUp(): Optional<Boolean> = Optional.ofNullable(catchUp.getNullable("catch_up"))
+        fun catchUp(): Optional<Boolean> = catchUp.getOptional("catch_up")
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun companyContribution(): Optional<BenefitContribution> =
-            Optional.ofNullable(companyContribution.getNullable("company_contribution"))
+            companyContribution.getOptional("company_contribution")
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun employeeDeduction(): Optional<BenefitContribution> =
-            Optional.ofNullable(employeeDeduction.getNullable("employee_deduction"))
+            employeeDeduction.getOptional("employee_deduction")
 
-        /** Type for HSA contribution limit if the benefit is a HSA. */
+        /**
+         * Type for HSA contribution limit if the benefit is a HSA.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun hsaContributionLimit(): Optional<HsaContributionLimit> =
-            Optional.ofNullable(hsaContributionLimit.getNullable("hsa_contribution_limit"))
+            hsaContributionLimit.getOptional("hsa_contribution_limit")
 
-        /** If the benefit supports annual maximum, the amount in cents for this individual. */
+        /**
+         * Returns the raw JSON value of [annualMaximum].
+         *
+         * Unlike [annualMaximum], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("annual_maximum")
         @ExcludeMissing
         fun _annualMaximum(): JsonField<Long> = annualMaximum
 
         /**
-         * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for this
-         * individual.
+         * Returns the raw JSON value of [catchUp].
+         *
+         * Unlike [catchUp], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("catch_up") @ExcludeMissing fun _catchUp(): JsonField<Boolean> = catchUp
 
+        /**
+         * Returns the raw JSON value of [companyContribution].
+         *
+         * Unlike [companyContribution], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("company_contribution")
         @ExcludeMissing
         fun _companyContribution(): JsonField<BenefitContribution> = companyContribution
 
+        /**
+         * Returns the raw JSON value of [employeeDeduction].
+         *
+         * Unlike [employeeDeduction], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("employee_deduction")
         @ExcludeMissing
         fun _employeeDeduction(): JsonField<BenefitContribution> = employeeDeduction
 
-        /** Type for HSA contribution limit if the benefit is a HSA. */
+        /**
+         * Returns the raw JSON value of [hsaContributionLimit].
+         *
+         * Unlike [hsaContributionLimit], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("hsa_contribution_limit")
         @ExcludeMissing
         fun _hsaContributionLimit(): JsonField<HsaContributionLimit> = hsaContributionLimit
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            annualMaximum()
-            catchUp()
-            companyContribution().ifPresent { it.validate() }
-            employeeDeduction().ifPresent { it.validate() }
-            hsaContributionLimit()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -239,15 +367,24 @@ private constructor(
             fun annualMaximum(annualMaximum: Long?) =
                 annualMaximum(JsonField.ofNullable(annualMaximum))
 
-            /** If the benefit supports annual maximum, the amount in cents for this individual. */
+            /**
+             * Alias for [Builder.annualMaximum].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
             fun annualMaximum(annualMaximum: Long) = annualMaximum(annualMaximum as Long?)
 
-            /** If the benefit supports annual maximum, the amount in cents for this individual. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            /** Alias for calling [Builder.annualMaximum] with `annualMaximum.orElse(null)`. */
             fun annualMaximum(annualMaximum: Optional<Long>) =
-                annualMaximum(annualMaximum.orElse(null) as Long?)
+                annualMaximum(annualMaximum.getOrNull())
 
-            /** If the benefit supports annual maximum, the amount in cents for this individual. */
+            /**
+             * Sets [Builder.annualMaximum] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.annualMaximum] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun annualMaximum(annualMaximum: JsonField<Long>) = apply {
                 this.annualMaximum = annualMaximum
             }
@@ -259,30 +396,41 @@ private constructor(
             fun catchUp(catchUp: Boolean?) = catchUp(JsonField.ofNullable(catchUp))
 
             /**
-             * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
-             * this individual.
+             * Alias for [Builder.catchUp].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
              */
             fun catchUp(catchUp: Boolean) = catchUp(catchUp as Boolean?)
 
-            /**
-             * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
-             * this individual.
-             */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.orElse(null) as Boolean?)
+            /** Alias for calling [Builder.catchUp] with `catchUp.orElse(null)`. */
+            fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.getOrNull())
 
             /**
-             * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
-             * this individual.
+             * Sets [Builder.catchUp] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.catchUp] with a well-typed [Boolean] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
 
             fun companyContribution(companyContribution: BenefitContribution?) =
                 companyContribution(JsonField.ofNullable(companyContribution))
 
+            /**
+             * Alias for calling [Builder.companyContribution] with
+             * `companyContribution.orElse(null)`.
+             */
             fun companyContribution(companyContribution: Optional<BenefitContribution>) =
-                companyContribution(companyContribution.orElse(null))
+                companyContribution(companyContribution.getOrNull())
 
+            /**
+             * Sets [Builder.companyContribution] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.companyContribution] with a well-typed
+             * [BenefitContribution] value instead. This method is primarily for setting the field
+             * to an undocumented or not yet supported value.
+             */
             fun companyContribution(companyContribution: JsonField<BenefitContribution>) = apply {
                 this.companyContribution = companyContribution
             }
@@ -290,9 +438,19 @@ private constructor(
             fun employeeDeduction(employeeDeduction: BenefitContribution?) =
                 employeeDeduction(JsonField.ofNullable(employeeDeduction))
 
+            /**
+             * Alias for calling [Builder.employeeDeduction] with `employeeDeduction.orElse(null)`.
+             */
             fun employeeDeduction(employeeDeduction: Optional<BenefitContribution>) =
-                employeeDeduction(employeeDeduction.orElse(null))
+                employeeDeduction(employeeDeduction.getOrNull())
 
+            /**
+             * Sets [Builder.employeeDeduction] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.employeeDeduction] with a well-typed
+             * [BenefitContribution] value instead. This method is primarily for setting the field
+             * to an undocumented or not yet supported value.
+             */
             fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
                 this.employeeDeduction = employeeDeduction
             }
@@ -301,11 +459,20 @@ private constructor(
             fun hsaContributionLimit(hsaContributionLimit: HsaContributionLimit?) =
                 hsaContributionLimit(JsonField.ofNullable(hsaContributionLimit))
 
-            /** Type for HSA contribution limit if the benefit is a HSA. */
+            /**
+             * Alias for calling [Builder.hsaContributionLimit] with
+             * `hsaContributionLimit.orElse(null)`.
+             */
             fun hsaContributionLimit(hsaContributionLimit: Optional<HsaContributionLimit>) =
-                hsaContributionLimit(hsaContributionLimit.orElse(null))
+                hsaContributionLimit(hsaContributionLimit.getOrNull())
 
-            /** Type for HSA contribution limit if the benefit is a HSA. */
+            /**
+             * Sets [Builder.hsaContributionLimit] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.hsaContributionLimit] with a well-typed
+             * [HsaContributionLimit] value instead. This method is primarily for setting the field
+             * to an undocumented or not yet supported value.
+             */
             fun hsaContributionLimit(hsaContributionLimit: JsonField<HsaContributionLimit>) =
                 apply {
                     this.hsaContributionLimit = hsaContributionLimit
@@ -330,6 +497,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Body =
                 Body(
                     annualMaximum,
@@ -337,9 +509,46 @@ private constructor(
                     companyContribution,
                     employeeDeduction,
                     hsaContributionLimit,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            annualMaximum()
+            catchUp()
+            companyContribution().ifPresent { it.validate() }
+            employeeDeduction().ifPresent { it.validate() }
+            hsaContributionLimit().ifPresent { it.validate() }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (annualMaximum.asKnown().isPresent) 1 else 0) +
+                (if (catchUp.asKnown().isPresent) 1 else 0) +
+                (companyContribution.asKnown().getOrNull()?.validity() ?: 0) +
+                (employeeDeduction.asKnown().getOrNull()?.validity() ?: 0) +
+                (hsaContributionLimit.asKnown().getOrNull()?.validity() ?: 0)
 
         /** Type for HSA contribution limit if the benefit is a HSA. */
         class HsaContributionLimit
@@ -435,6 +644,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     FinchInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): HsaContributionLimit = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

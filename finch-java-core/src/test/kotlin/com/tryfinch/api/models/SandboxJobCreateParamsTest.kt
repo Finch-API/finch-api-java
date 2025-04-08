@@ -2,11 +2,10 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxJobCreateParamsTest {
+internal class SandboxJobCreateParamsTest {
 
     @Test
     fun create() {
@@ -20,18 +19,6 @@ class SandboxJobCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.type()).isEqualTo(SandboxJobCreateParams.Type.DATA_SYNC_ALL)
-    }
-
-    @Test
-    fun bodyWithoutOptionalFields() {
-        val params =
-            SandboxJobCreateParams.builder().type(SandboxJobCreateParams.Type.DATA_SYNC_ALL).build()
-
-        val body = params._body()
-
-        assertNotNull(body)
         assertThat(body.type()).isEqualTo(SandboxJobCreateParams.Type.DATA_SYNC_ALL)
     }
 }

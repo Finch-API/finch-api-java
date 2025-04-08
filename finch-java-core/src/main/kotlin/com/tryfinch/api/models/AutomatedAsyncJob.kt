@@ -11,147 +11,233 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class AutomatedAsyncJob
-@JsonCreator
 private constructor(
-    @JsonProperty("completed_at")
-    @ExcludeMissing
-    private val completedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("created_at")
-    @ExcludeMissing
-    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("job_url")
-    @ExcludeMissing
-    private val jobUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("params")
-    @ExcludeMissing
-    private val params: JsonField<Params> = JsonMissing.of(),
-    @JsonProperty("scheduled_at")
-    @ExcludeMissing
-    private val scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("started_at")
-    @ExcludeMissing
-    private val startedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val completedAt: JsonField<OffsetDateTime>,
+    private val createdAt: JsonField<OffsetDateTime>,
+    private val jobId: JsonField<String>,
+    private val jobUrl: JsonField<String>,
+    private val params: JsonField<Params>,
+    private val scheduledAt: JsonField<OffsetDateTime>,
+    private val startedAt: JsonField<OffsetDateTime>,
+    private val status: JsonField<Status>,
+    private val type: JsonField<Type>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** The datetime the job completed. */
-    fun completedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(completedAt.getNullable("completed_at"))
+    @JsonCreator
+    private constructor(
+        @JsonProperty("completed_at")
+        @ExcludeMissing
+        completedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("created_at")
+        @ExcludeMissing
+        createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("job_url") @ExcludeMissing jobUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("params") @ExcludeMissing params: JsonField<Params> = JsonMissing.of(),
+        @JsonProperty("scheduled_at")
+        @ExcludeMissing
+        scheduledAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("started_at")
+        @ExcludeMissing
+        startedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+    ) : this(
+        completedAt,
+        createdAt,
+        jobId,
+        jobUrl,
+        params,
+        scheduledAt,
+        startedAt,
+        status,
+        type,
+        mutableMapOf(),
+    )
+
+    /**
+     * The datetime the job completed.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun completedAt(): Optional<OffsetDateTime> = completedAt.getOptional("completed_at")
 
     /**
      * The datetime when the job was created. for scheduled jobs, this will be the initial
      * connection time. For ad-hoc jobs, this will be the time the creation request was received.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun createdAt(): OffsetDateTime = createdAt.getRequired("created_at")
 
-    /** The id of the job that has been created. */
+    /**
+     * The id of the job that has been created.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun jobId(): String = jobId.getRequired("job_id")
 
-    /** The url that can be used to retrieve the job status */
+    /**
+     * The url that can be used to retrieve the job status
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun jobUrl(): String = jobUrl.getRequired("job_url")
 
-    /** The input parameters for the job. */
-    fun params(): Optional<Params> = Optional.ofNullable(params.getNullable("params"))
+    /**
+     * The input parameters for the job.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun params(): Optional<Params> = params.getOptional("params")
 
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
      * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun scheduledAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(scheduledAt.getNullable("scheduled_at"))
+    fun scheduledAt(): Optional<OffsetDateTime> = scheduledAt.getOptional("scheduled_at")
 
-    /** The datetime a job entered into the job queue. */
-    fun startedAt(): Optional<OffsetDateTime> =
-        Optional.ofNullable(startedAt.getNullable("started_at"))
+    /**
+     * The datetime a job entered into the job queue.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun startedAt(): Optional<OffsetDateTime> = startedAt.getOptional("started_at")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun status(): Status = status.getRequired("status")
 
-    /** The type of automated job */
+    /**
+     * The type of automated job
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun type(): Type = type.getRequired("type")
 
-    /** The datetime the job completed. */
+    /**
+     * Returns the raw JSON value of [completedAt].
+     *
+     * Unlike [completedAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("completed_at")
     @ExcludeMissing
     fun _completedAt(): JsonField<OffsetDateTime> = completedAt
 
     /**
-     * The datetime when the job was created. for scheduled jobs, this will be the initial
-     * connection time. For ad-hoc jobs, this will be the time the creation request was received.
+     * Returns the raw JSON value of [createdAt].
+     *
+     * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("created_at")
     @ExcludeMissing
     fun _createdAt(): JsonField<OffsetDateTime> = createdAt
 
-    /** The id of the job that has been created. */
+    /**
+     * Returns the raw JSON value of [jobId].
+     *
+     * Unlike [jobId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
-    /** The url that can be used to retrieve the job status */
+    /**
+     * Returns the raw JSON value of [jobUrl].
+     *
+     * Unlike [jobUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("job_url") @ExcludeMissing fun _jobUrl(): JsonField<String> = jobUrl
 
-    /** The input parameters for the job. */
+    /**
+     * Returns the raw JSON value of [params].
+     *
+     * Unlike [params], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("params") @ExcludeMissing fun _params(): JsonField<Params> = params
 
     /**
-     * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
-     * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
+     * Returns the raw JSON value of [scheduledAt].
+     *
+     * Unlike [scheduledAt], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("scheduled_at")
     @ExcludeMissing
     fun _scheduledAt(): JsonField<OffsetDateTime> = scheduledAt
 
-    /** The datetime a job entered into the job queue. */
+    /**
+     * Returns the raw JSON value of [startedAt].
+     *
+     * Unlike [startedAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("started_at")
     @ExcludeMissing
     fun _startedAt(): JsonField<OffsetDateTime> = startedAt
 
+    /**
+     * Returns the raw JSON value of [status].
+     *
+     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
-    /** The type of automated job */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): AutomatedAsyncJob = apply {
-        if (validated) {
-            return@apply
-        }
-
-        completedAt()
-        createdAt()
-        jobId()
-        jobUrl()
-        params().ifPresent { it.validate() }
-        scheduledAt()
-        startedAt()
-        status()
-        type()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AutomatedAsyncJob].
+         *
+         * The following fields are required:
+         * ```java
+         * .completedAt()
+         * .createdAt()
+         * .jobId()
+         * .jobUrl()
+         * .params()
+         * .scheduledAt()
+         * .startedAt()
+         * .status()
+         * .type()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -187,11 +273,17 @@ private constructor(
         fun completedAt(completedAt: OffsetDateTime?) =
             completedAt(JsonField.ofNullable(completedAt))
 
-        /** The datetime the job completed. */
+        /** Alias for calling [Builder.completedAt] with `completedAt.orElse(null)`. */
         fun completedAt(completedAt: Optional<OffsetDateTime>) =
-            completedAt(completedAt.orElse(null))
+            completedAt(completedAt.getOrNull())
 
-        /** The datetime the job completed. */
+        /**
+         * Sets [Builder.completedAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.completedAt] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun completedAt(completedAt: JsonField<OffsetDateTime>) = apply {
             this.completedAt = completedAt
         }
@@ -204,31 +296,48 @@ private constructor(
         fun createdAt(createdAt: OffsetDateTime) = createdAt(JsonField.of(createdAt))
 
         /**
-         * The datetime when the job was created. for scheduled jobs, this will be the initial
-         * connection time. For ad-hoc jobs, this will be the time the creation request was
-         * received.
+         * Sets [Builder.createdAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.createdAt] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply { this.createdAt = createdAt }
 
         /** The id of the job that has been created. */
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
-        /** The id of the job that has been created. */
+        /**
+         * Sets [Builder.jobId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
 
-        /** The url that can be used to retrieve the job status */
+        /**
+         * Sets [Builder.jobUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jobUrl] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
 
         /** The input parameters for the job. */
         fun params(params: Params?) = params(JsonField.ofNullable(params))
 
-        /** The input parameters for the job. */
-        fun params(params: Optional<Params>) = params(params.orElse(null))
+        /** Alias for calling [Builder.params] with `params.orElse(null)`. */
+        fun params(params: Optional<Params>) = params(params.getOrNull())
 
-        /** The input parameters for the job. */
+        /**
+         * Sets [Builder.params] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.params] with a well-typed [Params] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun params(params: JsonField<Params>) = apply { this.params = params }
 
         /**
@@ -239,18 +348,16 @@ private constructor(
         fun scheduledAt(scheduledAt: OffsetDateTime?) =
             scheduledAt(JsonField.ofNullable(scheduledAt))
 
-        /**
-         * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
-         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
-         * be null.
-         */
+        /** Alias for calling [Builder.scheduledAt] with `scheduledAt.orElse(null)`. */
         fun scheduledAt(scheduledAt: Optional<OffsetDateTime>) =
-            scheduledAt(scheduledAt.orElse(null))
+            scheduledAt(scheduledAt.getOrNull())
 
         /**
-         * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
-         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
-         * be null.
+         * Sets [Builder.scheduledAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.scheduledAt] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun scheduledAt(scheduledAt: JsonField<OffsetDateTime>) = apply {
             this.scheduledAt = scheduledAt
@@ -259,20 +366,37 @@ private constructor(
         /** The datetime a job entered into the job queue. */
         fun startedAt(startedAt: OffsetDateTime?) = startedAt(JsonField.ofNullable(startedAt))
 
-        /** The datetime a job entered into the job queue. */
-        fun startedAt(startedAt: Optional<OffsetDateTime>) = startedAt(startedAt.orElse(null))
+        /** Alias for calling [Builder.startedAt] with `startedAt.orElse(null)`. */
+        fun startedAt(startedAt: Optional<OffsetDateTime>) = startedAt(startedAt.getOrNull())
 
-        /** The datetime a job entered into the job queue. */
+        /**
+         * Sets [Builder.startedAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.startedAt] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun startedAt(startedAt: JsonField<OffsetDateTime>) = apply { this.startedAt = startedAt }
 
         fun status(status: Status) = status(JsonField.of(status))
 
+        /**
+         * Sets [Builder.status] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** The type of automated job */
         fun type(type: Type) = type(JsonField.of(type))
 
-        /** The type of automated job */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -294,6 +418,26 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [AutomatedAsyncJob].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .completedAt()
+         * .createdAt()
+         * .jobId()
+         * .jobUrl()
+         * .params()
+         * .scheduledAt()
+         * .startedAt()
+         * .status()
+         * .type()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): AutomatedAsyncJob =
             AutomatedAsyncJob(
                 checkRequired("completedAt", completedAt),
@@ -305,50 +449,101 @@ private constructor(
                 checkRequired("startedAt", startedAt),
                 checkRequired("status", status),
                 checkRequired("type", type),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): AutomatedAsyncJob = apply {
+        if (validated) {
+            return@apply
+        }
+
+        completedAt()
+        createdAt()
+        jobId()
+        jobUrl()
+        params().ifPresent { it.validate() }
+        scheduledAt()
+        startedAt()
+        status().validate()
+        type().validate()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (completedAt.asKnown().isPresent) 1 else 0) +
+            (if (createdAt.asKnown().isPresent) 1 else 0) +
+            (if (jobId.asKnown().isPresent) 1 else 0) +
+            (if (jobUrl.asKnown().isPresent) 1 else 0) +
+            (params.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (scheduledAt.asKnown().isPresent) 1 else 0) +
+            (if (startedAt.asKnown().isPresent) 1 else 0) +
+            (status.asKnown().getOrNull()?.validity() ?: 0) +
+            (type.asKnown().getOrNull()?.validity() ?: 0)
+
     /** The input parameters for the job. */
-    @NoAutoDetect
     class Params
-    @JsonCreator
     private constructor(
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val individualId: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        /** The ID of the individual that the job was completed for. */
-        fun individualId(): Optional<String> =
-            Optional.ofNullable(individualId.getNullable("individual_id"))
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            individualId: JsonField<String> = JsonMissing.of()
+        ) : this(individualId, mutableMapOf())
 
-        /** The ID of the individual that the job was completed for. */
+        /**
+         * The ID of the individual that the job was completed for.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun individualId(): Optional<String> = individualId.getOptional("individual_id")
+
+        /**
+         * Returns the raw JSON value of [individualId].
+         *
+         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("individual_id")
         @ExcludeMissing
         fun _individualId(): JsonField<String> = individualId
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Params = apply {
-            if (validated) {
-                return@apply
-            }
-
-            individualId()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Params]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -367,7 +562,13 @@ private constructor(
             /** The ID of the individual that the job was completed for. */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-            /** The ID of the individual that the job was completed for. */
+            /**
+             * Sets [Builder.individualId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun individualId(individualId: JsonField<String>) = apply {
                 this.individualId = individualId
             }
@@ -391,8 +592,41 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Params = Params(individualId, additionalProperties.toImmutable())
+            /**
+             * Returns an immutable instance of [Params].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Params = Params(individualId, additionalProperties.toMutableMap())
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): Params = apply {
+            if (validated) {
+                return@apply
+            }
+
+            individualId()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int = (if (individualId.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -520,6 +754,33 @@ private constructor(
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
+        private var validated: Boolean = false
+
+        fun validate(): Status = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -617,6 +878,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): Type = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

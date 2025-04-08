@@ -6,7 +6,7 @@ import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class JobAutomatedCreateParamsTest {
+internal class JobAutomatedCreateParamsTest {
 
     @Test
     fun create() {

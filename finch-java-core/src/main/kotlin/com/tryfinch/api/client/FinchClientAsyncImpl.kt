@@ -4,6 +4,7 @@ package com.tryfinch.api.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.getPackageVersion
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -11,8 +12,7 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.core.json
-import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.core.http.json
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.*
 import com.tryfinch.api.services.async.AccessTokenServiceAsync
@@ -40,7 +40,7 @@ import java.util.concurrent.CompletableFuture
 
 class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClientAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions
@@ -51,6 +51,10 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
                 .build()
 
     private val sync: FinchClient by lazy { FinchClientImpl(clientOptions) }
+
+    private val withRawResponse: FinchClientAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     private val accessTokens: AccessTokenServiceAsync by lazy {
         AccessTokenServiceAsyncImpl(clientOptionsWithUserAgent)
@@ -93,6 +97,8 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
 
     override fun sync(): FinchClient = sync
 
+    override fun withRawResponse(): FinchClientAsync.WithRawResponse = withRawResponse
+
     override fun accessTokens(): AccessTokenServiceAsync = accessTokens
 
     override fun hris(): HrisServiceAsync = hris
@@ -121,10 +127,10 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
         code: String,
         redirectUri: String?,
     ): CompletableFuture<String> {
-        if (clientOptions.clientId == null) {
+        if (!clientOptions.clientId().isPresent) {
             throw FinchException("clientId must be set in order to call getAccessToken")
         }
-        if (clientOptions.clientSecret == null) {
+        if (!clientOptions.clientSecret().isPresent) {
             throw FinchException("clientSecret must be set in order to call getAccessToken")
         }
         val request =
@@ -144,11 +150,11 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
     }
 
     override fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String {
-        if (clientOptions.clientId == null) {
+        if (!clientOptions.clientId().isPresent) {
             throw FinchException("Expected the clientId to be set in order to call getAuthUrl")
         }
         return "https://connect.tryfinch.com/authorize" +
-            "?client_id=${URLEncoder.encode(clientOptions.clientId, Charsets.UTF_8.name())}" +
+            "?client_id=${URLEncoder.encode(clientOptions.clientId().get(), Charsets.UTF_8.name())}" +
             "&products=${URLEncoder.encode(products, Charsets.UTF_8.name())}" +
             "&redirect_uri=${URLEncoder.encode(redirectUri, Charsets.UTF_8.name())}" +
             "&sandbox=${if (sandbox) "true" else "false"}"
@@ -162,9 +168,9 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
                 .clock(clientOptions.clock)
                 .baseUrl(clientOptions.baseUrl)
                 .accessToken(accessToken)
-                .apply { clientOptions.clientId?.let(::clientId) }
-                .apply { clientOptions.clientSecret?.let(::clientSecret) }
-                .apply { clientOptions.webhookSecret?.let(::webhookSecret) }
+                .clientId(clientOptions.clientId())
+                .clientSecret(clientOptions.clientSecret())
+                .webhookSecret(clientOptions.webhookSecret())
                 .headers(clientOptions.headers)
                 .responseValidation(clientOptions.responseValidation)
                 .build()
@@ -172,21 +178,80 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
     }
 
     private data class GetAccessTokenParams(
-        @JsonProperty("client_id") val clientId: String,
-        @JsonProperty("client_secret") val clientSecret: String,
-        @JsonProperty("code") val code: String,
-        @JsonProperty("redirect_uri") val redirectUri: String?,
+        @get:JsonProperty("client_id") val clientId: String,
+        @get:JsonProperty("client_secret") val clientSecret: String,
+        @get:JsonProperty("code") val code: String,
+        @get:JsonProperty("redirect_uri") val redirectUri: String?,
     )
 
     private data class GetAccessTokenResponse(
-        @JsonProperty("access_token") val accessToken: String,
-        @JsonProperty("account_id") val accountId: String,
-        @JsonProperty("client_type") val clientType: String,
-        @JsonProperty("company_id") val companyId: String,
-        @JsonProperty("connection_type") val connectionType: String,
-        @JsonProperty("products") val products: List<String>,
-        @JsonProperty("provider_id") val providerId: String,
+        @get:JsonProperty("access_token") val accessToken: String,
+        @get:JsonProperty("account_id") val accountId: String,
+        @get:JsonProperty("client_type") val clientType: String,
+        @get:JsonProperty("company_id") val companyId: String,
+        @get:JsonProperty("connection_type") val connectionType: String,
+        @get:JsonProperty("products") val products: List<String>,
+        @get:JsonProperty("provider_id") val providerId: String,
     )
 
     override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        FinchClientAsync.WithRawResponse {
+
+        private val accessTokens: AccessTokenServiceAsync.WithRawResponse by lazy {
+            AccessTokenServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val hris: HrisServiceAsync.WithRawResponse by lazy {
+            HrisServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val providers: ProviderServiceAsync.WithRawResponse by lazy {
+            ProviderServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val account: AccountServiceAsync.WithRawResponse by lazy {
+            AccountServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val requestForwarding: RequestForwardingServiceAsync.WithRawResponse by lazy {
+            RequestForwardingServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val jobs: JobServiceAsync.WithRawResponse by lazy {
+            JobServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val sandbox: SandboxServiceAsync.WithRawResponse by lazy {
+            SandboxServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val payroll: PayrollServiceAsync.WithRawResponse by lazy {
+            PayrollServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val connect: ConnectServiceAsync.WithRawResponse by lazy {
+            ConnectServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun accessTokens(): AccessTokenServiceAsync.WithRawResponse = accessTokens
+
+        override fun hris(): HrisServiceAsync.WithRawResponse = hris
+
+        override fun providers(): ProviderServiceAsync.WithRawResponse = providers
+
+        override fun account(): AccountServiceAsync.WithRawResponse = account
+
+        override fun requestForwarding(): RequestForwardingServiceAsync.WithRawResponse =
+            requestForwarding
+
+        override fun jobs(): JobServiceAsync.WithRawResponse = jobs
+
+        override fun sandbox(): SandboxServiceAsync.WithRawResponse = sandbox
+
+        override fun payroll(): PayrollServiceAsync.WithRawResponse = payroll
+
+        override fun connect(): ConnectServiceAsync.WithRawResponse = connect
+    }
 }

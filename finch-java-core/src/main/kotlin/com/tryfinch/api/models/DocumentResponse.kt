@@ -11,95 +11,127 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class DocumentResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("individual_id")
-    @ExcludeMissing
-    private val individualId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-    @JsonProperty("url") @ExcludeMissing private val url: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("year") @ExcludeMissing private val year: JsonField<Double> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val individualId: JsonField<String>,
+    private val type: JsonField<Type>,
+    private val url: JsonField<String>,
+    private val year: JsonField<Double>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** A stable Finch id for the document. */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        individualId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("year") @ExcludeMissing year: JsonField<Double> = JsonMissing.of(),
+    ) : this(id, individualId, type, url, year, mutableMapOf())
+
+    /**
+     * A stable Finch id for the document.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun id(): Optional<String> = id.getOptional("id")
 
     /**
      * The ID of the individual associated with the document. This will be null for employer-level
      * documents.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun individualId(): Optional<String> =
-        Optional.ofNullable(individualId.getNullable("individual_id"))
+    fun individualId(): Optional<String> = individualId.getOptional("individual_id")
 
-    /** The type of document. */
-    fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+    /**
+     * The type of document.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun type(): Optional<Type> = type.getOptional("type")
 
     /**
      * A URL to access the document. Format:
      * `https://api.tryfinch.com/employer/documents/:document_id`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun url(): Optional<String> = Optional.ofNullable(url.getNullable("url"))
+    fun url(): Optional<String> = url.getOptional("url")
 
-    /** The year the document applies to, if available. */
-    fun year(): Optional<Double> = Optional.ofNullable(year.getNullable("year"))
+    /**
+     * The year the document applies to, if available.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun year(): Optional<Double> = year.getOptional("year")
 
-    /** A stable Finch id for the document. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
-     * The ID of the individual associated with the document. This will be null for employer-level
-     * documents.
+     * Returns the raw JSON value of [individualId].
+     *
+     * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("individual_id")
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
 
-    /** The type of document. */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     /**
-     * A URL to access the document. Format:
-     * `https://api.tryfinch.com/employer/documents/:document_id`.
+     * Returns the raw JSON value of [url].
+     *
+     * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
-    /** The year the document applies to, if available. */
+    /**
+     * Returns the raw JSON value of [year].
+     *
+     * Unlike [year], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): DocumentResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        individualId()
-        type()
-        url()
-        year()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [DocumentResponse]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -126,7 +158,12 @@ private constructor(
         /** A stable Finch id for the document. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** A stable Finch id for the document. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /**
@@ -135,15 +172,15 @@ private constructor(
          */
         fun individualId(individualId: String?) = individualId(JsonField.ofNullable(individualId))
 
-        /**
-         * The ID of the individual associated with the document. This will be null for
-         * employer-level documents.
-         */
-        fun individualId(individualId: Optional<String>) = individualId(individualId.orElse(null))
+        /** Alias for calling [Builder.individualId] with `individualId.orElse(null)`. */
+        fun individualId(individualId: Optional<String>) = individualId(individualId.getOrNull())
 
         /**
-         * The ID of the individual associated with the document. This will be null for
-         * employer-level documents.
+         * Sets [Builder.individualId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
@@ -152,7 +189,12 @@ private constructor(
         /** The type of document. */
         fun type(type: Type) = type(JsonField.of(type))
 
-        /** The type of document. */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /**
@@ -162,22 +204,32 @@ private constructor(
         fun url(url: String) = url(JsonField.of(url))
 
         /**
-         * A URL to access the document. Format:
-         * `https://api.tryfinch.com/employer/documents/:document_id`.
+         * Sets [Builder.url] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.url] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun url(url: JsonField<String>) = apply { this.url = url }
 
         /** The year the document applies to, if available. */
         fun year(year: Double?) = year(JsonField.ofNullable(year))
 
-        /** The year the document applies to, if available. */
+        /**
+         * Alias for [Builder.year].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun year(year: Double) = year(year as Double?)
 
-        /** The year the document applies to, if available. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun year(year: Optional<Double>) = year(year.orElse(null) as Double?)
+        /** Alias for calling [Builder.year] with `year.orElse(null)`. */
+        fun year(year: Optional<Double>) = year(year.getOrNull())
 
-        /** The year the document applies to, if available. */
+        /**
+         * Sets [Builder.year] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.year] with a well-typed [Double] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun year(year: JsonField<Double>) = apply { this.year = year }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -199,9 +251,50 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [DocumentResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): DocumentResponse =
-            DocumentResponse(id, individualId, type, url, year, additionalProperties.toImmutable())
+            DocumentResponse(id, individualId, type, url, year, additionalProperties.toMutableMap())
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): DocumentResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        individualId()
+        type().ifPresent { it.validate() }
+        url()
+        year()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (if (individualId.asKnown().isPresent) 1 else 0) +
+            (type.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (url.asKnown().isPresent) 1 else 0) +
+            (if (year.asKnown().isPresent) 1 else 0)
 
     /** The type of document. */
     class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -287,6 +380,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): Type = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

@@ -2,18 +2,17 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisPayStatementRetrieveManyParamsTest {
+internal class HrisPayStatementRetrieveManyParamsTest {
 
     @Test
     fun create() {
         HrisPayStatementRetrieveManyParams.builder()
             .addRequest(
                 HrisPayStatementRetrieveManyParams.Request.builder()
-                    .paymentId("string")
+                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .limit(50L)
                     .offset(0L)
                     .build()
@@ -27,7 +26,7 @@ class HrisPayStatementRetrieveManyParamsTest {
             HrisPayStatementRetrieveManyParams.builder()
                 .addRequest(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("string")
+                        .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .limit(50L)
                         .offset(0L)
                         .build()
@@ -36,16 +35,13 @@ class HrisPayStatementRetrieveManyParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.requests())
-            .isEqualTo(
-                listOf(
-                    HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("string")
-                        .limit(50L)
-                        .offset(0L)
-                        .build()
-                )
+            .containsExactly(
+                HrisPayStatementRetrieveManyParams.Request.builder()
+                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .limit(50L)
+                    .offset(0L)
+                    .build()
             )
     }
 
@@ -54,18 +50,19 @@ class HrisPayStatementRetrieveManyParamsTest {
         val params =
             HrisPayStatementRetrieveManyParams.builder()
                 .addRequest(
-                    HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
+                    HrisPayStatementRetrieveManyParams.Request.builder()
+                        .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
                 )
                 .build()
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.requests())
-            .isEqualTo(
-                listOf(
-                    HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
-                )
+            .containsExactly(
+                HrisPayStatementRetrieveManyParams.Request.builder()
+                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
             )
     }
 }

@@ -2,12 +2,12 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Read company directory and organization structure */
 class HrisDirectoryListParams
@@ -28,27 +28,17 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.offset?.let { queryParams.put("offset", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         @JvmStatic fun none(): HrisDirectoryListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [HrisDirectoryListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [HrisDirectoryListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var limit: Long? = null
@@ -67,22 +57,28 @@ private constructor(
         /** Number of employees to return (defaults to all) */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
-        /** Number of employees to return (defaults to all) */
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun limit(limit: Long) = limit(limit as Long?)
 
-        /** Number of employees to return (defaults to all) */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** Index to start from (defaults to 0) */
         fun offset(offset: Long?) = apply { this.offset = offset }
 
-        /** Index to start from (defaults to 0) */
+        /**
+         * Alias for [Builder.offset].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun offset(offset: Long) = offset(offset as Long?)
 
-        /** Index to start from (defaults to 0) */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun offset(offset: Optional<Long>) = offset(offset.orElse(null) as Long?)
+        /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
+        fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -182,6 +178,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisDirectoryListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): HrisDirectoryListParams =
             HrisDirectoryListParams(
                 limit,
@@ -190,6 +191,17 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                limit?.let { put("limit", it.toString()) }
+                offset?.let { put("offset", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

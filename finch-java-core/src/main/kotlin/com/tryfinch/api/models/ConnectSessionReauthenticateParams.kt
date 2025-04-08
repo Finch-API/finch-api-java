@@ -11,16 +11,17 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Create a new Connect session for reauthenticating an existing connection */
 class ConnectSessionReauthenticateParams
@@ -30,28 +31,64 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The ID of the existing connection to reauthenticate */
+    /**
+     * The ID of the existing connection to reauthenticate
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectionId(): String = body.connectionId()
 
-    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
+    /**
+     * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun minutesToExpire(): Optional<Long> = body.minutesToExpire()
 
-    /** The products to request access to (optional for reauthentication) */
+    /**
+     * The products to request access to (optional for reauthentication)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun products(): Optional<List<ConnectProducts>> = body.products()
 
-    /** The URI to redirect to after the Connect flow is completed */
+    /**
+     * The URI to redirect to after the Connect flow is completed
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun redirectUri(): Optional<String> = body.redirectUri()
 
-    /** The ID of the existing connection to reauthenticate */
+    /**
+     * Returns the raw JSON value of [connectionId].
+     *
+     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _connectionId(): JsonField<String> = body._connectionId()
 
-    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
+    /**
+     * Returns the raw JSON value of [minutesToExpire].
+     *
+     * Unlike [minutesToExpire], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _minutesToExpire(): JsonField<Long> = body._minutesToExpire()
 
-    /** The products to request access to (optional for reauthentication) */
+    /**
+     * Returns the raw JSON value of [products].
+     *
+     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _products(): JsonField<List<ConnectProducts>> = body._products()
 
-    /** The URI to redirect to after the Connect flow is completed */
+    /**
+     * Returns the raw JSON value of [redirectUri].
+     *
+     * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _redirectUri(): JsonField<String> = body._redirectUri()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -60,245 +97,23 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("connection_id")
-        @ExcludeMissing
-        private val connectionId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("minutes_to_expire")
-        @ExcludeMissing
-        private val minutesToExpire: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("products")
-        @ExcludeMissing
-        private val products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
-        @JsonProperty("redirect_uri")
-        @ExcludeMissing
-        private val redirectUri: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /** The ID of the existing connection to reauthenticate */
-        fun connectionId(): String = connectionId.getRequired("connection_id")
-
-        /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
-         */
-        fun minutesToExpire(): Optional<Long> =
-            Optional.ofNullable(minutesToExpire.getNullable("minutes_to_expire"))
-
-        /** The products to request access to (optional for reauthentication) */
-        fun products(): Optional<List<ConnectProducts>> =
-            Optional.ofNullable(products.getNullable("products"))
-
-        /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(): Optional<String> =
-            Optional.ofNullable(redirectUri.getNullable("redirect_uri"))
-
-        /** The ID of the existing connection to reauthenticate */
-        @JsonProperty("connection_id")
-        @ExcludeMissing
-        fun _connectionId(): JsonField<String> = connectionId
-
-        /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
-         */
-        @JsonProperty("minutes_to_expire")
-        @ExcludeMissing
-        fun _minutesToExpire(): JsonField<Long> = minutesToExpire
-
-        /** The products to request access to (optional for reauthentication) */
-        @JsonProperty("products")
-        @ExcludeMissing
-        fun _products(): JsonField<List<ConnectProducts>> = products
-
-        /** The URI to redirect to after the Connect flow is completed */
-        @JsonProperty("redirect_uri")
-        @ExcludeMissing
-        fun _redirectUri(): JsonField<String> = redirectUri
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            connectionId()
-            minutesToExpire()
-            products()
-            redirectUri()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var connectionId: JsonField<String>? = null
-            private var minutesToExpire: JsonField<Long> = JsonMissing.of()
-            private var products: JsonField<MutableList<ConnectProducts>>? = null
-            private var redirectUri: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                connectionId = body.connectionId
-                minutesToExpire = body.minutesToExpire
-                products = body.products.map { it.toMutableList() }
-                redirectUri = body.redirectUri
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /** The ID of the existing connection to reauthenticate */
-            fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
-
-            /** The ID of the existing connection to reauthenticate */
-            fun connectionId(connectionId: JsonField<String>) = apply {
-                this.connectionId = connectionId
-            }
-
-            /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
-             */
-            fun minutesToExpire(minutesToExpire: Long?) =
-                minutesToExpire(JsonField.ofNullable(minutesToExpire))
-
-            /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
-             */
-            fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
-
-            /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
-             */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun minutesToExpire(minutesToExpire: Optional<Long>) =
-                minutesToExpire(minutesToExpire.orElse(null) as Long?)
-
-            /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
-             */
-            fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
-                this.minutesToExpire = minutesToExpire
-            }
-
-            /** The products to request access to (optional for reauthentication) */
-            fun products(products: List<ConnectProducts>?) =
-                products(JsonField.ofNullable(products))
-
-            /** The products to request access to (optional for reauthentication) */
-            fun products(products: Optional<List<ConnectProducts>>) =
-                products(products.orElse(null))
-
-            /** The products to request access to (optional for reauthentication) */
-            fun products(products: JsonField<List<ConnectProducts>>) = apply {
-                this.products = products.map { it.toMutableList() }
-            }
-
-            /** The products to request access to (optional for reauthentication) */
-            fun addProduct(product: ConnectProducts) = apply {
-                products =
-                    (products ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(product)
-                    }
-            }
-
-            /** The URI to redirect to after the Connect flow is completed */
-            fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
-
-            /** The URI to redirect to after the Connect flow is completed */
-            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
-
-            /** The URI to redirect to after the Connect flow is completed */
-            fun redirectUri(redirectUri: JsonField<String>) = apply {
-                this.redirectUri = redirectUri
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            fun build(): Body =
-                Body(
-                    checkRequired("connectionId", connectionId),
-                    minutesToExpire,
-                    (products ?: JsonMissing.of()).map { it.toImmutable() },
-                    redirectUri,
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(connectionId, minutesToExpire, products, redirectUri, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [ConnectSessionReauthenticateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .connectionId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [ConnectSessionReauthenticateParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var body: Body.Builder = Body.builder()
@@ -314,10 +129,28 @@ private constructor(
                     connectSessionReauthenticateParams.additionalQueryParams.toBuilder()
             }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [connectionId]
+         * - [minutesToExpire]
+         * - [products]
+         * - [redirectUri]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** The ID of the existing connection to reauthenticate */
         fun connectionId(connectionId: String) = apply { body.connectionId(connectionId) }
 
-        /** The ID of the existing connection to reauthenticate */
+        /**
+         * Sets [Builder.connectionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectionId(connectionId: JsonField<String>) = apply {
             body.connectionId(connectionId)
         }
@@ -330,19 +163,22 @@ private constructor(
         }
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * Alias for [Builder.minutesToExpire].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
          */
         fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
 
-        /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
-         */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        /** Alias for calling [Builder.minutesToExpire] with `minutesToExpire.orElse(null)`. */
         fun minutesToExpire(minutesToExpire: Optional<Long>) =
-            minutesToExpire(minutesToExpire.orElse(null) as Long?)
+            minutesToExpire(minutesToExpire.getOrNull())
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.minutesToExpire] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
             body.minutesToExpire(minutesToExpire)
@@ -351,22 +187,38 @@ private constructor(
         /** The products to request access to (optional for reauthentication) */
         fun products(products: List<ConnectProducts>?) = apply { body.products(products) }
 
-        /** The products to request access to (optional for reauthentication) */
-        fun products(products: Optional<List<ConnectProducts>>) = products(products.orElse(null))
+        /** Alias for calling [Builder.products] with `products.orElse(null)`. */
+        fun products(products: Optional<List<ConnectProducts>>) = products(products.getOrNull())
 
-        /** The products to request access to (optional for reauthentication) */
+        /**
+         * Sets [Builder.products] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
 
-        /** The products to request access to (optional for reauthentication) */
+        /**
+         * Adds a single [ConnectProducts] to [products].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
         /** The URI to redirect to after the Connect flow is completed */
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
-        /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.orElse(null))
+        /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
+        fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
 
-        /** The URI to redirect to after the Connect flow is completed */
+        /**
+         * Sets [Builder.redirectUri] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.redirectUri] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -486,12 +338,352 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [ConnectSessionReauthenticateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .connectionId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): ConnectSessionReauthenticateParams =
             ConnectSessionReauthenticateParams(
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
+    }
+
+    fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    private constructor(
+        private val connectionId: JsonField<String>,
+        private val minutesToExpire: JsonField<Long>,
+        private val products: JsonField<List<ConnectProducts>>,
+        private val redirectUri: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("connection_id")
+            @ExcludeMissing
+            connectionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("minutes_to_expire")
+            @ExcludeMissing
+            minutesToExpire: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("products")
+            @ExcludeMissing
+            products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
+            @JsonProperty("redirect_uri")
+            @ExcludeMissing
+            redirectUri: JsonField<String> = JsonMissing.of(),
+        ) : this(connectionId, minutesToExpire, products, redirectUri, mutableMapOf())
+
+        /**
+         * The ID of the existing connection to reauthenticate
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun connectionId(): String = connectionId.getRequired("connection_id")
+
+        /**
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun minutesToExpire(): Optional<Long> = minutesToExpire.getOptional("minutes_to_expire")
+
+        /**
+         * The products to request access to (optional for reauthentication)
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun products(): Optional<List<ConnectProducts>> = products.getOptional("products")
+
+        /**
+         * The URI to redirect to after the Connect flow is completed
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun redirectUri(): Optional<String> = redirectUri.getOptional("redirect_uri")
+
+        /**
+         * Returns the raw JSON value of [connectionId].
+         *
+         * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        fun _connectionId(): JsonField<String> = connectionId
+
+        /**
+         * Returns the raw JSON value of [minutesToExpire].
+         *
+         * Unlike [minutesToExpire], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("minutes_to_expire")
+        @ExcludeMissing
+        fun _minutesToExpire(): JsonField<Long> = minutesToExpire
+
+        /**
+         * Returns the raw JSON value of [products].
+         *
+         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("products")
+        @ExcludeMissing
+        fun _products(): JsonField<List<ConnectProducts>> = products
+
+        /**
+         * Returns the raw JSON value of [redirectUri].
+         *
+         * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("redirect_uri")
+        @ExcludeMissing
+        fun _redirectUri(): JsonField<String> = redirectUri
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .connectionId()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var connectionId: JsonField<String>? = null
+            private var minutesToExpire: JsonField<Long> = JsonMissing.of()
+            private var products: JsonField<MutableList<ConnectProducts>>? = null
+            private var redirectUri: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                connectionId = body.connectionId
+                minutesToExpire = body.minutesToExpire
+                products = body.products.map { it.toMutableList() }
+                redirectUri = body.redirectUri
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The ID of the existing connection to reauthenticate */
+            fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+
+            /**
+             * Sets [Builder.connectionId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.connectionId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun connectionId(connectionId: JsonField<String>) = apply {
+                this.connectionId = connectionId
+            }
+
+            /**
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
+             * days)
+             */
+            fun minutesToExpire(minutesToExpire: Long?) =
+                minutesToExpire(JsonField.ofNullable(minutesToExpire))
+
+            /**
+             * Alias for [Builder.minutesToExpire].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
+
+            /** Alias for calling [Builder.minutesToExpire] with `minutesToExpire.orElse(null)`. */
+            fun minutesToExpire(minutesToExpire: Optional<Long>) =
+                minutesToExpire(minutesToExpire.getOrNull())
+
+            /**
+             * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.minutesToExpire] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
+                this.minutesToExpire = minutesToExpire
+            }
+
+            /** The products to request access to (optional for reauthentication) */
+            fun products(products: List<ConnectProducts>?) =
+                products(JsonField.ofNullable(products))
+
+            /** Alias for calling [Builder.products] with `products.orElse(null)`. */
+            fun products(products: Optional<List<ConnectProducts>>) = products(products.getOrNull())
+
+            /**
+             * Sets [Builder.products] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun products(products: JsonField<List<ConnectProducts>>) = apply {
+                this.products = products.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [ConnectProducts] to [products].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addProduct(product: ConnectProducts) = apply {
+                products =
+                    (products ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("products", it).add(product)
+                    }
+            }
+
+            /** The URI to redirect to after the Connect flow is completed */
+            fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
+
+            /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
+            fun redirectUri(redirectUri: Optional<String>) = redirectUri(redirectUri.getOrNull())
+
+            /**
+             * Sets [Builder.redirectUri] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.redirectUri] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun redirectUri(redirectUri: JsonField<String>) = apply {
+                this.redirectUri = redirectUri
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .connectionId()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("connectionId", connectionId),
+                    minutesToExpire,
+                    (products ?: JsonMissing.of()).map { it.toImmutable() },
+                    redirectUri,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            connectionId()
+            minutesToExpire()
+            products().ifPresent { it.forEach { it.validate() } }
+            redirectUri()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (connectionId.asKnown().isPresent) 1 else 0) +
+                (if (minutesToExpire.asKnown().isPresent) 1 else 0) +
+                (products.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (redirectUri.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(connectionId, minutesToExpire, products, redirectUri, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
     /** The Finch products that can be requested during the Connect flow. */
@@ -618,6 +810,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): ConnectProducts = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

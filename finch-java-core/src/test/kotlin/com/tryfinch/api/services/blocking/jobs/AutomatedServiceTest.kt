@@ -5,12 +5,13 @@ package com.tryfinch.api.services.blocking.jobs
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.JobAutomatedCreateParams
+import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class AutomatedServiceTest {
+internal class AutomatedServiceTest {
 
     @Test
     fun create() {
@@ -59,8 +60,9 @@ class AutomatedServiceTest {
                 .build()
         val automatedService = client.jobs().automated()
 
-        val page = automatedService.list()
+        val automateds =
+            automatedService.list(JobAutomatedListParams.builder().limit(0L).offset(0L).build())
 
-        page.response().validate()
+        automateds.validate()
     }
 }

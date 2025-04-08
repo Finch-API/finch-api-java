@@ -11,270 +11,406 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class Introspection
-@JsonCreator
 private constructor(
-    @JsonProperty("account_id")
-    @ExcludeMissing
-    private val accountId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("authentication_methods")
-    @ExcludeMissing
-    private val authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of(),
-    @JsonProperty("client_id")
-    @ExcludeMissing
-    private val clientId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("client_type")
-    @ExcludeMissing
-    private val clientType: JsonField<ClientType> = JsonMissing.of(),
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    private val companyId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("connection_status")
-    @ExcludeMissing
-    private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
-    @JsonProperty("connection_type")
-    @ExcludeMissing
-    private val connectionType: JsonField<ConnectionType> = JsonMissing.of(),
-    @JsonProperty("customer_email")
-    @ExcludeMissing
-    private val customerEmail: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("customer_id")
-    @ExcludeMissing
-    private val customerId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("customer_name")
-    @ExcludeMissing
-    private val customerName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("manual")
-    @ExcludeMissing
-    private val manual: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("payroll_provider_id")
-    @ExcludeMissing
-    private val payrollProviderId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("products")
-    @ExcludeMissing
-    private val products: JsonField<List<String>> = JsonMissing.of(),
-    @JsonProperty("provider_id")
-    @ExcludeMissing
-    private val providerId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("username")
-    @ExcludeMissing
-    private val username: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val accountId: JsonField<String>,
+    private val authenticationMethods: JsonField<List<AuthenticationMethod>>,
+    private val clientId: JsonField<String>,
+    private val clientType: JsonField<ClientType>,
+    private val companyId: JsonField<String>,
+    private val connectionId: JsonField<String>,
+    private val connectionStatus: JsonField<ConnectionStatus>,
+    private val connectionType: JsonField<ConnectionType>,
+    private val customerEmail: JsonField<String>,
+    private val customerId: JsonField<String>,
+    private val customerName: JsonField<String>,
+    private val manual: JsonField<Boolean>,
+    private val payrollProviderId: JsonField<String>,
+    private val products: JsonField<List<String>>,
+    private val providerId: JsonField<String>,
+    private val username: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("account_id") @ExcludeMissing accountId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("authentication_methods")
+        @ExcludeMissing
+        authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of(),
+        @JsonProperty("client_id") @ExcludeMissing clientId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("client_type")
+        @ExcludeMissing
+        clientType: JsonField<ClientType> = JsonMissing.of(),
+        @JsonProperty("company_id") @ExcludeMissing companyId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        connectionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("connection_status")
+        @ExcludeMissing
+        connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
+        @JsonProperty("connection_type")
+        @ExcludeMissing
+        connectionType: JsonField<ConnectionType> = JsonMissing.of(),
+        @JsonProperty("customer_email")
+        @ExcludeMissing
+        customerEmail: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("customer_id")
+        @ExcludeMissing
+        customerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("customer_name")
+        @ExcludeMissing
+        customerName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("manual") @ExcludeMissing manual: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("payroll_provider_id")
+        @ExcludeMissing
+        payrollProviderId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        products: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        providerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("username") @ExcludeMissing username: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        accountId,
+        authenticationMethods,
+        clientId,
+        clientType,
+        companyId,
+        connectionId,
+        connectionStatus,
+        connectionType,
+        customerEmail,
+        customerId,
+        customerName,
+        manual,
+        payrollProviderId,
+        products,
+        providerId,
+        username,
+        mutableMapOf(),
+    )
 
     /**
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * account ID.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun authenticationMethods(): List<AuthenticationMethod> =
         authenticationMethods.getRequired("authentication_methods")
 
-    /** The client ID of the application associated with the `access_token`. */
+    /**
+     * The client ID of the application associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun clientId(): String = clientId.getRequired("client_id")
 
-    /** The type of application associated with a token. */
+    /**
+     * The type of application associated with a token.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun clientType(): ClientType = clientType.getRequired("client_type")
 
     /**
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * company ID.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
-    /** The Finch UUID of the connection associated with the `access_token`. */
+    /**
+     * The Finch UUID of the connection associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectionId(): String = connectionId.getRequired("connection_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectionStatus(): ConnectionStatus = connectionStatus.getRequired("connection_status")
 
     /**
      * The type of the connection associated with the token.
      * - `provider` - connection to an external provider
      * - `finch` - finch-generated data.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun connectionType(): ConnectionType = connectionType.getRequired("connection_type")
 
     /**
      * The email of your customer you provided to Finch when a connect session was created for this
      * connection.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun customerEmail(): Optional<String> =
-        Optional.ofNullable(customerEmail.getNullable("customer_email"))
+    fun customerEmail(): Optional<String> = customerEmail.getOptional("customer_email")
 
     /**
      * The ID of your customer you provided to Finch when a connect session was created for this
      * connection.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun customerId(): Optional<String> = Optional.ofNullable(customerId.getNullable("customer_id"))
+    fun customerId(): Optional<String> = customerId.getOptional("customer_id")
 
     /**
      * The name of your customer you provided to Finch when a connect session was created for this
      * connection.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun customerName(): Optional<String> =
-        Optional.ofNullable(customerName.getNullable("customer_name"))
+    fun customerName(): Optional<String> = customerName.getOptional("customer_name")
 
     /**
      * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
      * (`true` if using Assisted Connect, `false` if connection is automated)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun manual(): Boolean = manual.getRequired("manual")
 
     /**
      * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated")
     fun payrollProviderId(): String = payrollProviderId.getRequired("payroll_provider_id")
 
-    /** An array of the authorized products associated with the `access_token`. */
+    /**
+     * An array of the authorized products associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun products(): List<String> = products.getRequired("products")
 
-    /** The ID of the provider associated with the `access_token`. */
+    /**
+     * The ID of the provider associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun providerId(): String = providerId.getRequired("provider_id")
 
-    /** The account username used for login associated with the `access_token`. */
+    /**
+     * The account username used for login associated with the `access_token`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun username(): String = username.getRequired("username")
 
     /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * account ID.
+     * Returns the raw JSON value of [accountId].
+     *
+     * Unlike [accountId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @Deprecated("deprecated")
     @JsonProperty("account_id")
     @ExcludeMissing
     fun _accountId(): JsonField<String> = accountId
 
+    /**
+     * Returns the raw JSON value of [authenticationMethods].
+     *
+     * Unlike [authenticationMethods], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("authentication_methods")
     @ExcludeMissing
     fun _authenticationMethods(): JsonField<List<AuthenticationMethod>> = authenticationMethods
 
-    /** The client ID of the application associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [clientId].
+     *
+     * Unlike [clientId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("client_id") @ExcludeMissing fun _clientId(): JsonField<String> = clientId
 
-    /** The type of application associated with a token. */
+    /**
+     * Returns the raw JSON value of [clientType].
+     *
+     * Unlike [clientType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("client_type")
     @ExcludeMissing
     fun _clientType(): JsonField<ClientType> = clientType
 
     /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * company ID.
+     * Returns the raw JSON value of [companyId].
+     *
+     * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @Deprecated("deprecated")
     @JsonProperty("company_id")
     @ExcludeMissing
     fun _companyId(): JsonField<String> = companyId
 
-    /** The Finch UUID of the connection associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [connectionId].
+     *
+     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("connection_id")
     @ExcludeMissing
     fun _connectionId(): JsonField<String> = connectionId
 
+    /**
+     * Returns the raw JSON value of [connectionStatus].
+     *
+     * Unlike [connectionStatus], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("connection_status")
     @ExcludeMissing
     fun _connectionStatus(): JsonField<ConnectionStatus> = connectionStatus
 
     /**
-     * The type of the connection associated with the token.
-     * - `provider` - connection to an external provider
-     * - `finch` - finch-generated data.
+     * Returns the raw JSON value of [connectionType].
+     *
+     * Unlike [connectionType], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("connection_type")
     @ExcludeMissing
     fun _connectionType(): JsonField<ConnectionType> = connectionType
 
     /**
-     * The email of your customer you provided to Finch when a connect session was created for this
-     * connection.
+     * Returns the raw JSON value of [customerEmail].
+     *
+     * Unlike [customerEmail], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("customer_email")
     @ExcludeMissing
     fun _customerEmail(): JsonField<String> = customerEmail
 
     /**
-     * The ID of your customer you provided to Finch when a connect session was created for this
-     * connection.
+     * Returns the raw JSON value of [customerId].
+     *
+     * Unlike [customerId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("customer_id") @ExcludeMissing fun _customerId(): JsonField<String> = customerId
 
     /**
-     * The name of your customer you provided to Finch when a connect session was created for this
-     * connection.
+     * Returns the raw JSON value of [customerName].
+     *
+     * Unlike [customerName], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("customer_name")
     @ExcludeMissing
     fun _customerName(): JsonField<String> = customerName
 
     /**
-     * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
-     * (`true` if using Assisted Connect, `false` if connection is automated)
+     * Returns the raw JSON value of [manual].
+     *
+     * Unlike [manual], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
 
     /**
-     * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
+     * Returns the raw JSON value of [payrollProviderId].
+     *
+     * Unlike [payrollProviderId], this method doesn't throw if the JSON field has an unexpected
+     * type.
      */
     @Deprecated("deprecated")
     @JsonProperty("payroll_provider_id")
     @ExcludeMissing
     fun _payrollProviderId(): JsonField<String> = payrollProviderId
 
-    /** An array of the authorized products associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [products].
+     *
+     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("products") @ExcludeMissing fun _products(): JsonField<List<String>> = products
 
-    /** The ID of the provider associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [providerId].
+     *
+     * Unlike [providerId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("provider_id") @ExcludeMissing fun _providerId(): JsonField<String> = providerId
 
-    /** The account username used for login associated with the `access_token`. */
+    /**
+     * Returns the raw JSON value of [username].
+     *
+     * Unlike [username], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("username") @ExcludeMissing fun _username(): JsonField<String> = username
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Introspection = apply {
-        if (validated) {
-            return@apply
-        }
-
-        accountId()
-        authenticationMethods().forEach { it.validate() }
-        clientId()
-        clientType()
-        companyId()
-        connectionId()
-        connectionStatus().validate()
-        connectionType()
-        customerEmail()
-        customerId()
-        customerName()
-        manual()
-        payrollProviderId()
-        products()
-        providerId()
-        username()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Introspection].
+         *
+         * The following fields are required:
+         * ```java
+         * .accountId()
+         * .authenticationMethods()
+         * .clientId()
+         * .clientType()
+         * .companyId()
+         * .connectionId()
+         * .connectionStatus()
+         * .connectionType()
+         * .customerEmail()
+         * .customerId()
+         * .customerName()
+         * .manual()
+         * .payrollProviderId()
+         * .products()
+         * .providerId()
+         * .username()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -328,8 +464,11 @@ private constructor(
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this account ID.
+         * Sets [Builder.accountId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.accountId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
@@ -337,34 +476,51 @@ private constructor(
         fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
             authenticationMethods(JsonField.of(authenticationMethods))
 
+        /**
+         * Sets [Builder.authenticationMethods] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.authenticationMethods] with a well-typed
+         * `List<AuthenticationMethod>` value instead. This method is primarily for setting the
+         * field to an undocumented or not yet supported value.
+         */
         fun authenticationMethods(authenticationMethods: JsonField<List<AuthenticationMethod>>) =
             apply {
                 this.authenticationMethods = authenticationMethods.map { it.toMutableList() }
             }
 
+        /**
+         * Adds a single [AuthenticationMethod] to [authenticationMethods].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addAuthenticationMethod(authenticationMethod: AuthenticationMethod) = apply {
             authenticationMethods =
-                (authenticationMethods ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(authenticationMethod)
+                (authenticationMethods ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("authenticationMethods", it).add(authenticationMethod)
                 }
         }
 
         /** The client ID of the application associated with the `access_token`. */
         fun clientId(clientId: String) = clientId(JsonField.of(clientId))
 
-        /** The client ID of the application associated with the `access_token`. */
+        /**
+         * Sets [Builder.clientId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.clientId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
 
         /** The type of application associated with a token. */
         fun clientType(clientType: ClientType) = clientType(JsonField.of(clientType))
 
-        /** The type of application associated with a token. */
+        /**
+         * Sets [Builder.clientType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.clientType] with a well-typed [ClientType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
 
         /**
@@ -375,8 +531,11 @@ private constructor(
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this company ID.
+         * Sets [Builder.companyId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
@@ -384,7 +543,13 @@ private constructor(
         /** The Finch UUID of the connection associated with the `access_token`. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
-        /** The Finch UUID of the connection associated with the `access_token`. */
+        /**
+         * Sets [Builder.connectionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
@@ -392,6 +557,13 @@ private constructor(
         fun connectionStatus(connectionStatus: ConnectionStatus) =
             connectionStatus(JsonField.of(connectionStatus))
 
+        /**
+         * Sets [Builder.connectionStatus] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionStatus] with a well-typed [ConnectionStatus]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun connectionStatus(connectionStatus: JsonField<ConnectionStatus>) = apply {
             this.connectionStatus = connectionStatus
         }
@@ -405,9 +577,11 @@ private constructor(
             connectionType(JsonField.of(connectionType))
 
         /**
-         * The type of the connection associated with the token.
-         * - `provider` - connection to an external provider
-         * - `finch` - finch-generated data.
+         * Sets [Builder.connectionType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionType] with a well-typed [ConnectionType] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun connectionType(connectionType: JsonField<ConnectionType>) = apply {
             this.connectionType = connectionType
@@ -420,16 +594,16 @@ private constructor(
         fun customerEmail(customerEmail: String?) =
             customerEmail(JsonField.ofNullable(customerEmail))
 
-        /**
-         * The email of your customer you provided to Finch when a connect session was created for
-         * this connection.
-         */
+        /** Alias for calling [Builder.customerEmail] with `customerEmail.orElse(null)`. */
         fun customerEmail(customerEmail: Optional<String>) =
-            customerEmail(customerEmail.orElse(null))
+            customerEmail(customerEmail.getOrNull())
 
         /**
-         * The email of your customer you provided to Finch when a connect session was created for
-         * this connection.
+         * Sets [Builder.customerEmail] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customerEmail] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun customerEmail(customerEmail: JsonField<String>) = apply {
             this.customerEmail = customerEmail
@@ -441,15 +615,15 @@ private constructor(
          */
         fun customerId(customerId: String?) = customerId(JsonField.ofNullable(customerId))
 
-        /**
-         * The ID of your customer you provided to Finch when a connect session was created for this
-         * connection.
-         */
-        fun customerId(customerId: Optional<String>) = customerId(customerId.orElse(null))
+        /** Alias for calling [Builder.customerId] with `customerId.orElse(null)`. */
+        fun customerId(customerId: Optional<String>) = customerId(customerId.getOrNull())
 
         /**
-         * The ID of your customer you provided to Finch when a connect session was created for this
-         * connection.
+         * Sets [Builder.customerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customerId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
@@ -459,15 +633,15 @@ private constructor(
          */
         fun customerName(customerName: String?) = customerName(JsonField.ofNullable(customerName))
 
-        /**
-         * The name of your customer you provided to Finch when a connect session was created for
-         * this connection.
-         */
-        fun customerName(customerName: Optional<String>) = customerName(customerName.orElse(null))
+        /** Alias for calling [Builder.customerName] with `customerName.orElse(null)`. */
+        fun customerName(customerName: Optional<String>) = customerName(customerName.getOrNull())
 
         /**
-         * The name of your customer you provided to Finch when a connect session was created for
-         * this connection.
+         * Sets [Builder.customerName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customerName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun customerName(customerName: JsonField<String>) = apply {
             this.customerName = customerName
@@ -480,8 +654,10 @@ private constructor(
         fun manual(manual: Boolean) = manual(JsonField.of(manual))
 
         /**
-         * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
-         * (`true` if using Assisted Connect, `false` if connection is automated)
+         * Sets [Builder.manual] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.manual] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
@@ -494,8 +670,11 @@ private constructor(
             payrollProviderId(JsonField.of(payrollProviderId))
 
         /**
-         * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider
-         * ID.
+         * Sets [Builder.payrollProviderId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payrollProviderId] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         @Deprecated("deprecated")
         fun payrollProviderId(payrollProviderId: JsonField<String>) = apply {
@@ -505,35 +684,50 @@ private constructor(
         /** An array of the authorized products associated with the `access_token`. */
         fun products(products: List<String>) = products(JsonField.of(products))
 
-        /** An array of the authorized products associated with the `access_token`. */
+        /**
+         * Sets [Builder.products] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.products] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun products(products: JsonField<List<String>>) = apply {
             this.products = products.map { it.toMutableList() }
         }
 
-        /** An array of the authorized products associated with the `access_token`. */
+        /**
+         * Adds a single [String] to [products].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addProduct(product: String) = apply {
             products =
-                (products ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(product)
+                (products ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("products", it).add(product)
                 }
         }
 
         /** The ID of the provider associated with the `access_token`. */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
-        /** The ID of the provider associated with the `access_token`. */
+        /**
+         * Sets [Builder.providerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.providerId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
         /** The account username used for login associated with the `access_token`. */
         fun username(username: String) = username(JsonField.of(username))
 
-        /** The account username used for login associated with the `access_token`. */
+        /**
+         * Sets [Builder.username] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.username] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun username(username: JsonField<String>) = apply { this.username = username }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -555,6 +749,33 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Introspection].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .accountId()
+         * .authenticationMethods()
+         * .clientId()
+         * .clientType()
+         * .companyId()
+         * .connectionId()
+         * .connectionStatus()
+         * .connectionType()
+         * .customerEmail()
+         * .customerId()
+         * .customerName()
+         * .manual()
+         * .payrollProviderId()
+         * .products()
+         * .providerId()
+         * .username()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): Introspection =
             Introspection(
                 checkRequired("accountId", accountId),
@@ -575,68 +796,151 @@ private constructor(
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
                 checkRequired("username", username),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): Introspection = apply {
+        if (validated) {
+            return@apply
+        }
+
+        accountId()
+        authenticationMethods().forEach { it.validate() }
+        clientId()
+        clientType().validate()
+        companyId()
+        connectionId()
+        connectionStatus().validate()
+        connectionType().validate()
+        customerEmail()
+        customerId()
+        customerName()
+        manual()
+        payrollProviderId()
+        products()
+        providerId()
+        username()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (accountId.asKnown().isPresent) 1 else 0) +
+            (authenticationMethods.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (clientId.asKnown().isPresent) 1 else 0) +
+            (clientType.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (companyId.asKnown().isPresent) 1 else 0) +
+            (if (connectionId.asKnown().isPresent) 1 else 0) +
+            (connectionStatus.asKnown().getOrNull()?.validity() ?: 0) +
+            (connectionType.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (customerEmail.asKnown().isPresent) 1 else 0) +
+            (if (customerId.asKnown().isPresent) 1 else 0) +
+            (if (customerName.asKnown().isPresent) 1 else 0) +
+            (if (manual.asKnown().isPresent) 1 else 0) +
+            (if (payrollProviderId.asKnown().isPresent) 1 else 0) +
+            (products.asKnown().getOrNull()?.size ?: 0) +
+            (if (providerId.asKnown().isPresent) 1 else 0) +
+            (if (username.asKnown().isPresent) 1 else 0)
+
     class AuthenticationMethod
-    @JsonCreator
     private constructor(
-        @JsonProperty("connection_status")
-        @ExcludeMissing
-        private val connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
-        @JsonProperty("products")
-        @ExcludeMissing
-        private val products: JsonField<List<String>> = JsonMissing.of(),
-        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val connectionStatus: JsonField<ConnectionStatus>,
+        private val products: JsonField<List<String>>,
+        private val type: JsonField<Type>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
+        @JsonCreator
+        private constructor(
+            @JsonProperty("connection_status")
+            @ExcludeMissing
+            connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of(),
+            @JsonProperty("products")
+            @ExcludeMissing
+            products: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        ) : this(connectionStatus, products, type, mutableMapOf())
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun connectionStatus(): Optional<ConnectionStatus> =
-            Optional.ofNullable(connectionStatus.getNullable("connection_status"))
+            connectionStatus.getOptional("connection_status")
 
-        /** An array of the authorized products associated with the `access_token`. */
-        fun products(): Optional<List<String>> =
-            Optional.ofNullable(products.getNullable("products"))
+        /**
+         * An array of the authorized products associated with the `access_token`.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun products(): Optional<List<String>> = products.getOptional("products")
 
-        /** The type of authentication method. */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
+        /**
+         * The type of authentication method.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun type(): Optional<Type> = type.getOptional("type")
 
+        /**
+         * Returns the raw JSON value of [connectionStatus].
+         *
+         * Unlike [connectionStatus], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("connection_status")
         @ExcludeMissing
         fun _connectionStatus(): JsonField<ConnectionStatus> = connectionStatus
 
-        /** An array of the authorized products associated with the `access_token`. */
+        /**
+         * Returns the raw JSON value of [products].
+         *
+         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("products")
         @ExcludeMissing
         fun _products(): JsonField<List<String>> = products
 
-        /** The type of authentication method. */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): AuthenticationMethod = apply {
-            if (validated) {
-                return@apply
-            }
-
-            connectionStatus().ifPresent { it.validate() }
-            products()
-            type()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [AuthenticationMethod]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -659,6 +963,13 @@ private constructor(
             fun connectionStatus(connectionStatus: ConnectionStatus) =
                 connectionStatus(JsonField.of(connectionStatus))
 
+            /**
+             * Sets [Builder.connectionStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.connectionStatus] with a well-typed
+             * [ConnectionStatus] value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
+             */
             fun connectionStatus(connectionStatus: JsonField<ConnectionStatus>) = apply {
                 this.connectionStatus = connectionStatus
             }
@@ -666,29 +977,39 @@ private constructor(
             /** An array of the authorized products associated with the `access_token`. */
             fun products(products: List<String>) = products(JsonField.of(products))
 
-            /** An array of the authorized products associated with the `access_token`. */
+            /**
+             * Sets [Builder.products] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.products] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun products(products: JsonField<List<String>>) = apply {
                 this.products = products.map { it.toMutableList() }
             }
 
-            /** An array of the authorized products associated with the `access_token`. */
+            /**
+             * Adds a single [String] to [products].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addProduct(product: String) = apply {
                 products =
-                    (products ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(product)
+                    (products ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("products", it).add(product)
                     }
             }
 
             /** The type of authentication method. */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of authentication method. */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -710,60 +1031,113 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [AuthenticationMethod].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): AuthenticationMethod =
                 AuthenticationMethod(
                     connectionStatus,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
                     type,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
         }
 
-        @NoAutoDetect
+        private var validated: Boolean = false
+
+        fun validate(): AuthenticationMethod = apply {
+            if (validated) {
+                return@apply
+            }
+
+            connectionStatus().ifPresent { it.validate() }
+            products()
+            type().ifPresent { it.validate() }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (connectionStatus.asKnown().getOrNull()?.validity() ?: 0) +
+                (products.asKnown().getOrNull()?.size ?: 0) +
+                (type.asKnown().getOrNull()?.validity() ?: 0)
+
         class ConnectionStatus
-        @JsonCreator
         private constructor(
-            @JsonProperty("message")
-            @ExcludeMissing
-            private val message: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("status")
-            @ExcludeMissing
-            private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val message: JsonField<String>,
+            private val status: JsonField<ConnectionStatusType>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
-            fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+            @JsonCreator
+            private constructor(
+                @JsonProperty("message")
+                @ExcludeMissing
+                message: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("status")
+                @ExcludeMissing
+                status: JsonField<ConnectionStatusType> = JsonMissing.of(),
+            ) : this(message, status, mutableMapOf())
 
-            fun status(): Optional<ConnectionStatusType> =
-                Optional.ofNullable(status.getNullable("status"))
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun message(): Optional<String> = message.getOptional("message")
 
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun status(): Optional<ConnectionStatusType> = status.getOptional("status")
+
+            /**
+             * Returns the raw JSON value of [message].
+             *
+             * Unlike [message], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
+            /**
+             * Returns the raw JSON value of [status].
+             *
+             * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("status")
             @ExcludeMissing
             fun _status(): JsonField<ConnectionStatusType> = status
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): ConnectionStatus = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                message()
-                status()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [ConnectionStatus]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -783,10 +1157,24 @@ private constructor(
 
                 fun message(message: String) = message(JsonField.of(message))
 
+                /**
+                 * Sets [Builder.message] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.message] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun message(message: JsonField<String>) = apply { this.message = message }
 
                 fun status(status: ConnectionStatusType) = status(JsonField.of(status))
 
+                /**
+                 * Sets [Builder.status] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.status] with a well-typed [ConnectionStatusType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -811,9 +1199,45 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [ConnectionStatus].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): ConnectionStatus =
-                    ConnectionStatus(message, status, additionalProperties.toImmutable())
+                    ConnectionStatus(message, status, additionalProperties.toMutableMap())
             }
+
+            private var validated: Boolean = false
+
+            fun validate(): ConnectionStatus = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                message()
+                status().ifPresent { it.validate() }
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (message.asKnown().isPresent) 1 else 0) +
+                    (status.asKnown().getOrNull()?.validity() ?: 0)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -939,6 +1363,33 @@ private constructor(
                     FinchInvalidDataException("Value is not a String")
                 }
 
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
@@ -1063,6 +1514,33 @@ private constructor(
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
+        private var validated: Boolean = false
+
+        fun validate(): ClientType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -1076,74 +1554,141 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @NoAutoDetect
     class ConnectionStatus
-    @JsonCreator
     private constructor(
-        @JsonProperty("message")
-        @ExcludeMissing
-        private val message: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("status")
-        @ExcludeMissing
-        private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val lastSuccessfulSync: JsonField<OffsetDateTime>,
+        private val message: JsonField<String>,
+        private val status: JsonField<ConnectionStatusType>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        fun message(): Optional<String> = Optional.ofNullable(message.getNullable("message"))
+        @JsonCreator
+        private constructor(
+            @JsonProperty("last_successful_sync")
+            @ExcludeMissing
+            lastSuccessfulSync: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("status")
+            @ExcludeMissing
+            status: JsonField<ConnectionStatusType> = JsonMissing.of(),
+        ) : this(lastSuccessfulSync, message, status, mutableMapOf())
 
-        fun status(): Optional<ConnectionStatusType> =
-            Optional.ofNullable(status.getNullable("status"))
+        /**
+         * The datetime when the connection was last successfully synced.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun lastSuccessfulSync(): Optional<OffsetDateTime> =
+            lastSuccessfulSync.getOptional("last_successful_sync")
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun message(): Optional<String> = message.getOptional("message")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun status(): Optional<ConnectionStatusType> = status.getOptional("status")
+
+        /**
+         * Returns the raw JSON value of [lastSuccessfulSync].
+         *
+         * Unlike [lastSuccessfulSync], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("last_successful_sync")
+        @ExcludeMissing
+        fun _lastSuccessfulSync(): JsonField<OffsetDateTime> = lastSuccessfulSync
+
+        /**
+         * Returns the raw JSON value of [message].
+         *
+         * Unlike [message], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
+        /**
+         * Returns the raw JSON value of [status].
+         *
+         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("status")
         @ExcludeMissing
         fun _status(): JsonField<ConnectionStatusType> = status
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): ConnectionStatus = apply {
-            if (validated) {
-                return@apply
-            }
-
-            message()
-            status()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [ConnectionStatus]. */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [ConnectionStatus]. */
         class Builder internal constructor() {
 
+            private var lastSuccessfulSync: JsonField<OffsetDateTime> = JsonMissing.of()
             private var message: JsonField<String> = JsonMissing.of()
             private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(connectionStatus: ConnectionStatus) = apply {
+                lastSuccessfulSync = connectionStatus.lastSuccessfulSync
                 message = connectionStatus.message
                 status = connectionStatus.status
                 additionalProperties = connectionStatus.additionalProperties.toMutableMap()
             }
 
+            /** The datetime when the connection was last successfully synced. */
+            fun lastSuccessfulSync(lastSuccessfulSync: OffsetDateTime) =
+                lastSuccessfulSync(JsonField.of(lastSuccessfulSync))
+
+            /**
+             * Sets [Builder.lastSuccessfulSync] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.lastSuccessfulSync] with a well-typed
+             * [OffsetDateTime] value instead. This method is primarily for setting the field to an
+             * undocumented or not yet supported value.
+             */
+            fun lastSuccessfulSync(lastSuccessfulSync: JsonField<OffsetDateTime>) = apply {
+                this.lastSuccessfulSync = lastSuccessfulSync
+            }
+
             fun message(message: String) = message(JsonField.of(message))
 
+            /**
+             * Sets [Builder.message] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.message] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun message(message: JsonField<String>) = apply { this.message = message }
 
             fun status(status: ConnectionStatusType) = status(JsonField.of(status))
 
+            /**
+             * Sets [Builder.status] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.status] with a well-typed [ConnectionStatusType]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1165,26 +1710,69 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [ConnectionStatus].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): ConnectionStatus =
-                ConnectionStatus(message, status, additionalProperties.toImmutable())
+                ConnectionStatus(
+                    lastSuccessfulSync,
+                    message,
+                    status,
+                    additionalProperties.toMutableMap(),
+                )
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): ConnectionStatus = apply {
+            if (validated) {
+                return@apply
+            }
+
+            lastSuccessfulSync()
+            message()
+            status().ifPresent { it.validate() }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (lastSuccessfulSync.asKnown().isPresent) 1 else 0) +
+                (if (message.asKnown().isPresent) 1 else 0) +
+                (status.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionStatus && message == other.message && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ConnectionStatus && lastSuccessfulSync == other.lastSuccessfulSync && message == other.message && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(message, status, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(lastSuccessfulSync, message, status, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ConnectionStatus{message=$message, status=$status, additionalProperties=$additionalProperties}"
+            "ConnectionStatus{lastSuccessfulSync=$lastSuccessfulSync, message=$message, status=$status, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -1279,6 +1867,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): ConnectionType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

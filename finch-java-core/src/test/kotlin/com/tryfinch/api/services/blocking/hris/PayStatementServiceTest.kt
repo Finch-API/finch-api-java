@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class PayStatementServiceTest {
+internal class PayStatementServiceTest {
 
     @Test
     fun retrieveMany() {
@@ -25,7 +25,7 @@ class PayStatementServiceTest {
                 HrisPayStatementRetrieveManyParams.builder()
                     .addRequest(
                         HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("string")
+                            .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
                     )
                     .build()

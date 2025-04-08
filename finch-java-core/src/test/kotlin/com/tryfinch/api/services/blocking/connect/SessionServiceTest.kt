@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class SessionServiceTest {
+internal class SessionServiceTest {
 
     @Test
     fun new_() {
@@ -27,7 +27,7 @@ class SessionServiceTest {
                     .customerId("x")
                     .customerName("x")
                     .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
-                    .customerEmail("dev@stainlessapi.com")
+                    .customerEmail("dev@stainless.com")
                     .integration(
                         ConnectSessionNewParams.Integration.builder()
                             .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)

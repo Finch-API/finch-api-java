@@ -10,14 +10,14 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.services.blocking.payroll.PayGroupService
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
+import kotlin.jvm.optionals.getOrNull
 
 /** Read company pay groups and frequencies */
 class PayrollPayGroupListPage
@@ -68,24 +68,30 @@ private constructor(
         ) = PayrollPayGroupListPage(payGroupsService, params, response)
     }
 
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("items")
-        private val items: JsonField<List<PayGroupListResponse>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response(
+        private val items: JsonField<List<PayGroupListResponse>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        fun items(): List<PayGroupListResponse> = items.getNullable("items") ?: listOf()
+        @JsonCreator
+        private constructor(
+            @JsonProperty("items") items: JsonField<List<PayGroupListResponse>> = JsonMissing.of()
+        ) : this(items, mutableMapOf())
+
+        fun items(): List<PayGroupListResponse> = items.getOptional("items").getOrNull() ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<PayGroupListResponse>>> = Optional.ofNullable(items)
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         private var validated: Boolean = false
 
@@ -97,6 +103,14 @@ private constructor(
             items().map { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
 
         fun toBuilder() = Builder().from(this)
 
@@ -115,6 +129,9 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [PayrollPayGroupListPage].
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -137,7 +154,12 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() = Response(items, additionalProperties.toImmutable())
+            /**
+             * Returns an immutable instance of [Response].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Response = Response(items, additionalProperties.toMutableMap())
         }
     }
 
@@ -151,7 +173,7 @@ private constructor(
                 while (index < page.items().size) {
                     yield(page.items()[index++])
                 }
-                page = page.getNextPage().orElse(null) ?: break
+                page = page.getNextPage().getOrNull() ?: break
                 index = 0
             }
         }

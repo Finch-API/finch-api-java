@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class CompanyServiceAsyncTest {
+internal class CompanyServiceAsyncTest {
 
     @Test
     fun update() {
@@ -63,7 +63,7 @@ class CompanyServiceAsyncTest {
                             .state("state")
                             .build()
                     )
-                    .primaryEmail("primary_email")
+                    .primaryEmail("dev@stainless.com")
                     .primaryPhoneNumber("primary_phone_number")
                     .build()
             )

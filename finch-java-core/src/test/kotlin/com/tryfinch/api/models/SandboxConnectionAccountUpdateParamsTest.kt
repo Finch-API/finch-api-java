@@ -2,16 +2,15 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxConnectionAccountUpdateParamsTest {
+internal class SandboxConnectionAccountUpdateParamsTest {
 
     @Test
     fun create() {
         SandboxConnectionAccountUpdateParams.builder()
-            .connectionStatus(ConnectionStatusType.PENDING)
+            .connectionStatus(ConnectionStatusType.REAUTH)
             .build()
     }
 
@@ -19,13 +18,12 @@ class SandboxConnectionAccountUpdateParamsTest {
     fun body() {
         val params =
             SandboxConnectionAccountUpdateParams.builder()
-                .connectionStatus(ConnectionStatusType.PENDING)
+                .connectionStatus(ConnectionStatusType.REAUTH)
                 .build()
 
         val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.connectionStatus()).contains(ConnectionStatusType.PENDING)
+        assertThat(body.connectionStatus()).contains(ConnectionStatusType.REAUTH)
     }
 
     @Test
@@ -33,7 +31,5 @@ class SandboxConnectionAccountUpdateParamsTest {
         val params = SandboxConnectionAccountUpdateParams.builder().build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }

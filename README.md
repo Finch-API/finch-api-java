@@ -2,19 +2,22 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/4.2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/5.0.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/5.0.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.0.0)
 
 <!-- x-release-please-end -->
 
-The Finch Java SDK provides convenient access to the Finch REST API from applications written in Java.
+The Finch Java SDK provides convenient access to the [Finch REST API](https://developer.tryfinch.com/) from applications written in Java.
 
 The Finch Java SDK is similar to the Finch Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
+<!-- x-release-please-start-version -->
 
----
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.0.0).
+
+<!-- x-release-please-end -->
 
 ## Installation
 
@@ -23,16 +26,16 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:4.2.0")
+implementation("com.tryfinch.api:finch-java:5.0.0")
 ```
 
 ### Maven
 
 ```xml
 <dependency>
-    <groupId>com.tryfinch.api</groupId>
-    <artifactId>finch-java</artifactId>
-    <version>4.2.0</version>
+  <groupId>com.tryfinch.api</groupId>
+  <artifactId>finch-java</artifactId>
+  <version>5.0.0</version>
 </dependency>
 ```
 
@@ -164,22 +167,48 @@ CompletableFuture<HrisDirectoryListPageAsync> page = client.hris().directory().l
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
 
+## Raw responses
+
+The SDK defines methods that deserialize responses into instances of Java classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
+
+To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
+
+```java
+import com.tryfinch.api.core.http.Headers;
+import com.tryfinch.api.core.http.HttpResponseFor;
+import com.tryfinch.api.models.HrisDirectoryListPage;
+import com.tryfinch.api.models.HrisDirectoryListParams;
+
+HttpResponseFor<HrisDirectoryListPage> page = client.hris().directory().withRawResponse().list();
+
+int statusCode = page.statusCode();
+Headers headers = page.headers();
+```
+
+You can still deserialize the response into an instance of a Java class if needed:
+
+```java
+import com.tryfinch.api.models.HrisDirectoryListPage;
+
+HrisDirectoryListPage parsedPage = page.parse();
+```
+
 ## Error handling
 
 The SDK throws custom unchecked exception types:
 
 - [`FinchServiceException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/FinchServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
-  | Status | Exception                       |
-  | ------ | ------------------------------- |
-  | 400    | `BadRequestException`           |
-  | 401    | `AuthenticationException`       |
-  | 403    | `PermissionDeniedException`     |
-  | 404    | `NotFoundException`             |
-  | 422    | `UnprocessableEntityException`  |
-  | 429    | `RateLimitException`            |
-  | 5xx    | `InternalServerException`       |
-  | others | `UnexpectedStatusCodeException` |
+  | Status | Exception                                                                                                                   |
+  | ------ | --------------------------------------------------------------------------------------------------------------------------- |
+  | 400    | [`BadRequestException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/BadRequestException.kt)                     |
+  | 401    | [`UnauthorizedException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/UnauthorizedException.kt)                 |
+  | 403    | [`PermissionDeniedException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/PermissionDeniedException.kt)         |
+  | 404    | [`NotFoundException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/NotFoundException.kt)                         |
+  | 422    | [`UnprocessableEntityException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/UnprocessableEntityException.kt)   |
+  | 429    | [`RateLimitException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/RateLimitException.kt)                       |
+  | 5xx    | [`InternalServerException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/InternalServerException.kt)             |
+  | others | [`UnexpectedStatusCodeException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/UnexpectedStatusCodeException.kt) |
 
 - [`FinchIoException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/FinchIoException.kt): I/O networking errors.
 
@@ -361,14 +390,67 @@ HrisDirectoryListParams params = HrisDirectoryListParams.builder()
     .build();
 ```
 
-These can be accessed on the built object later using the `_additionalHeaders()`, `_additionalQueryParams()`, and `_additionalBodyProperties()` methods. You can also set undocumented parameters on nested headers, query params, or body classes using the `putAdditionalProperty` method. These properties can be accessed on the built object later using the `_additionalProperties()` method.
+These can be accessed on the built object later using the `_additionalHeaders()`, `_additionalQueryParams()`, and `_additionalBodyProperties()` methods.
 
-To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/JsonValue.kt) object to its setter:
+To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/Values.kt) object to its setter:
 
 ```java
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
 HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
+```
+
+The most straightforward way to create a [`JsonValue`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/Values.kt) is using its `from(...)` method:
+
+```java
+import com.tryfinch.api.core.JsonValue;
+import java.util.List;
+import java.util.Map;
+
+// Create primitive JSON values
+JsonValue nullValue = JsonValue.from(null);
+JsonValue booleanValue = JsonValue.from(true);
+JsonValue numberValue = JsonValue.from(42);
+JsonValue stringValue = JsonValue.from("Hello World!");
+
+// Create a JSON array value equivalent to `["Hello", "World"]`
+JsonValue arrayValue = JsonValue.from(List.of(
+  "Hello", "World"
+));
+
+// Create a JSON object value equivalent to `{ "a": 1, "b": 2 }`
+JsonValue objectValue = JsonValue.from(Map.of(
+  "a", 1,
+  "b", 2
+));
+
+// Create an arbitrarily nested JSON equivalent to:
+// {
+//   "a": [1, 2],
+//   "b": [3, 4]
+// }
+JsonValue complexValue = JsonValue.from(Map.of(
+  "a", List.of(
+    1, 2
+  ),
+  "b", List.of(
+    3, 4
+  )
+));
+```
+
+Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
+
+To forcibly omit a required parameter or property, pass [`JsonMissing`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/Values.kt):
+
+```java
+import com.tryfinch.api.core.JsonMissing;
+import com.tryfinch.api.models.AccessTokenCreateParams;
+import com.tryfinch.api.models.HrisDirectoryListParams;
+
+HrisDirectoryListParams params = AccessTokenCreateParams.builder()
+    .code(JsonMissing.of())
+    .build();
 ```
 
 ### Response properties

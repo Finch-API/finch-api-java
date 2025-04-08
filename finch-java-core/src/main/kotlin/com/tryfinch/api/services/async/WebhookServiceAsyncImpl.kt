@@ -5,10 +5,7 @@ package com.tryfinch.api.services.async
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.getRequiredHeader
-import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.http.Headers
-import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.WebhookEvent
 import java.security.MessageDigest
@@ -17,11 +14,10 @@ import java.time.Instant
 import java.util.Base64
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
+import kotlin.jvm.optionals.getOrNull
 
 class WebhookServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     WebhookServiceAsync {
-
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
     override fun unwrap(payload: String, headers: Headers, secret: String?): WebhookEvent {
         verifySignature(payload, headers, secret)
@@ -35,7 +31,7 @@ class WebhookServiceAsyncImpl internal constructor(private val clientOptions: Cl
     override fun verifySignature(payload: String, headers: Headers, secret: String?) {
         val webhookSecret =
             secret
-                ?: clientOptions.webhookSecret
+                ?: clientOptions.webhookSecret().getOrNull()
                 ?: throw FinchException(
                     "The webhook secret must either be set using the env var, FINCH_WEBHOOK_SECRET, on the client class, or passed to this method"
                 )

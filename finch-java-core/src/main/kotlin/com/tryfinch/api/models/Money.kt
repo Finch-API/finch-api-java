@@ -10,53 +10,68 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class Money
-@JsonCreator
 private constructor(
-    @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("currency")
-    @ExcludeMissing
-    private val currency: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val amount: JsonField<Long>,
+    private val currency: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** Amount for money object (in cents) */
-    fun amount(): Optional<Long> = Optional.ofNullable(amount.getNullable("amount"))
+    @JsonCreator
+    private constructor(
+        @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("currency") @ExcludeMissing currency: JsonField<String> = JsonMissing.of(),
+    ) : this(amount, currency, mutableMapOf())
 
-    fun currency(): Optional<String> = Optional.ofNullable(currency.getNullable("currency"))
+    /**
+     * Amount for money object (in cents)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun amount(): Optional<Long> = amount.getOptional("amount")
 
-    /** Amount for money object (in cents) */
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun currency(): Optional<String> = currency.getOptional("currency")
+
+    /**
+     * Returns the raw JSON value of [amount].
+     *
+     * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
+    /**
+     * Returns the raw JSON value of [currency].
+     *
+     * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Money = apply {
-        if (validated) {
-            return@apply
-        }
-
-        amount()
-        currency()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [Money]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -77,18 +92,32 @@ private constructor(
         /** Amount for money object (in cents) */
         fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-        /** Amount for money object (in cents) */
+        /**
+         * Alias for [Builder.amount].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun amount(amount: Long) = amount(amount as Long?)
 
-        /** Amount for money object (in cents) */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun amount(amount: Optional<Long>) = amount(amount.orElse(null) as Long?)
+        /** Alias for calling [Builder.amount] with `amount.orElse(null)`. */
+        fun amount(amount: Optional<Long>) = amount(amount.getOrNull())
 
-        /** Amount for money object (in cents) */
+        /**
+         * Sets [Builder.amount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         fun currency(currency: String) = currency(JsonField.of(currency))
 
+        /**
+         * Sets [Builder.currency] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.currency] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -110,8 +139,42 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
-        fun build(): Money = Money(amount, currency, additionalProperties.toImmutable())
+        /**
+         * Returns an immutable instance of [Money].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
+        fun build(): Money = Money(amount, currency, additionalProperties.toMutableMap())
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): Money = apply {
+        if (validated) {
+            return@apply
+        }
+
+        amount()
+        currency()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (amount.asKnown().isPresent) 1 else 0) + (if (currency.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

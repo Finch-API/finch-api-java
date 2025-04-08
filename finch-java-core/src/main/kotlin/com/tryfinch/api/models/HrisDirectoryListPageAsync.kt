@@ -10,15 +10,15 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** Read company directory and organization structure */
 class HrisDirectoryListPageAsync
@@ -32,7 +32,7 @@ private constructor(
 
     fun individuals(): List<IndividualInDirectory> = response().individuals()
 
-    fun paging(): Optional<Paging> = response().paging()
+    fun paging(): Paging = response().paging()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -52,8 +52,8 @@ private constructor(
             return false
         }
 
-        return paging().flatMap { it.offset() }.orElse(0) + individuals().count() <
-            paging().flatMap { it.count() }.orElse(Long.MAX_VALUE)
+        return paging().offset().orElse(0) + individuals().count() <
+            paging().count().orElse(Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): Optional<HrisDirectoryListParams> {
@@ -64,7 +64,7 @@ private constructor(
         return Optional.of(
             HrisDirectoryListParams.builder()
                 .from(params)
-                .offset(paging().flatMap { it.offset() }.orElse(0) + individuals().count())
+                .offset(paging().offset().orElse(0) + individuals().count())
                 .build()
         )
     }
@@ -87,21 +87,23 @@ private constructor(
         ) = HrisDirectoryListPageAsync(directoryService, params, response)
     }
 
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("individuals")
-        private val individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of(),
-        @JsonProperty("paging") private val paging: JsonField<Paging> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response(
+        private val individuals: JsonField<List<IndividualInDirectory>>,
+        private val paging: JsonField<Paging>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        fun individuals(): List<IndividualInDirectory> =
-            individuals.getNullable("individuals") ?: listOf()
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individuals")
+            individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of(),
+            @JsonProperty("paging") paging: JsonField<Paging> = JsonMissing.of(),
+        ) : this(individuals, paging, mutableMapOf())
 
-        fun paging(): Optional<Paging> = Optional.ofNullable(paging.getNullable("paging"))
+        fun individuals(): List<IndividualInDirectory> =
+            individuals.getOptional("individuals").getOrNull() ?: listOf()
+
+        fun paging(): Paging = paging.getRequired("paging")
 
         @JsonProperty("individuals")
         fun _individuals(): Optional<JsonField<List<IndividualInDirectory>>> =
@@ -110,9 +112,15 @@ private constructor(
         @JsonProperty("paging")
         fun _paging(): Optional<JsonField<Paging>> = Optional.ofNullable(paging)
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         private var validated: Boolean = false
 
@@ -122,9 +130,17 @@ private constructor(
             }
 
             individuals().map { it.validate() }
-            paging().ifPresent { it.validate() }
+            paging().validate()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
 
         fun toBuilder() = Builder().from(this)
 
@@ -143,6 +159,10 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of
+             * [HrisDirectoryListPageAsync].
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -174,7 +194,13 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() = Response(individuals, paging, additionalProperties.toImmutable())
+            /**
+             * Returns an immutable instance of [Response].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Response =
+                Response(individuals, paging, additionalProperties.toMutableMap())
         }
     }
 

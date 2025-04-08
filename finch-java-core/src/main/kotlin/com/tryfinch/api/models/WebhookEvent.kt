@@ -12,6 +12,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.BaseDeserializer
 import com.tryfinch.api.core.BaseSerializer
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.allMaxBy
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -21,9 +22,9 @@ import java.util.Optional
 @JsonSerialize(using = WebhookEvent.Serializer::class)
 class WebhookEvent
 private constructor(
-    private val accountUpdate: AccountUpdateEvent? = null,
+    private val accountUpdated: AccountUpdateEvent? = null,
     private val jobCompletion: JobCompletionEvent? = null,
-    private val company: CompanyEvent? = null,
+    private val companyUpdated: CompanyEvent? = null,
     private val directory: DirectoryEvent? = null,
     private val employment: EmploymentEvent? = null,
     private val individual: IndividualEvent? = null,
@@ -32,11 +33,11 @@ private constructor(
     private val _json: JsonValue? = null,
 ) {
 
-    fun accountUpdate(): Optional<AccountUpdateEvent> = Optional.ofNullable(accountUpdate)
+    fun accountUpdated(): Optional<AccountUpdateEvent> = Optional.ofNullable(accountUpdated)
 
     fun jobCompletion(): Optional<JobCompletionEvent> = Optional.ofNullable(jobCompletion)
 
-    fun company(): Optional<CompanyEvent> = Optional.ofNullable(company)
+    fun companyUpdated(): Optional<CompanyEvent> = Optional.ofNullable(companyUpdated)
 
     fun directory(): Optional<DirectoryEvent> = Optional.ofNullable(directory)
 
@@ -48,11 +49,11 @@ private constructor(
 
     fun payStatement(): Optional<PayStatementEvent> = Optional.ofNullable(payStatement)
 
-    fun isAccountUpdate(): Boolean = accountUpdate != null
+    fun isAccountUpdated(): Boolean = accountUpdated != null
 
     fun isJobCompletion(): Boolean = jobCompletion != null
 
-    fun isCompany(): Boolean = company != null
+    fun isCompanyUpdated(): Boolean = companyUpdated != null
 
     fun isDirectory(): Boolean = directory != null
 
@@ -64,11 +65,11 @@ private constructor(
 
     fun isPayStatement(): Boolean = payStatement != null
 
-    fun asAccountUpdate(): AccountUpdateEvent = accountUpdate.getOrThrow("accountUpdate")
+    fun asAccountUpdated(): AccountUpdateEvent = accountUpdated.getOrThrow("accountUpdated")
 
     fun asJobCompletion(): JobCompletionEvent = jobCompletion.getOrThrow("jobCompletion")
 
-    fun asCompany(): CompanyEvent = company.getOrThrow("company")
+    fun asCompanyUpdated(): CompanyEvent = companyUpdated.getOrThrow("companyUpdated")
 
     fun asDirectory(): DirectoryEvent = directory.getOrThrow("directory")
 
@@ -82,11 +83,11 @@ private constructor(
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
-    fun <T> accept(visitor: Visitor<T>): T {
-        return when {
-            accountUpdate != null -> visitor.visitAccountUpdate(accountUpdate)
+    fun <T> accept(visitor: Visitor<T>): T =
+        when {
+            accountUpdated != null -> visitor.visitAccountUpdated(accountUpdated)
             jobCompletion != null -> visitor.visitJobCompletion(jobCompletion)
-            company != null -> visitor.visitCompany(company)
+            companyUpdated != null -> visitor.visitCompanyUpdated(companyUpdated)
             directory != null -> visitor.visitDirectory(directory)
             employment != null -> visitor.visitEmployment(employment)
             individual != null -> visitor.visitIndividual(individual)
@@ -94,7 +95,6 @@ private constructor(
             payStatement != null -> visitor.visitPayStatement(payStatement)
             else -> visitor.unknown(_json)
         }
-    }
 
     private var validated: Boolean = false
 
@@ -105,16 +105,16 @@ private constructor(
 
         accept(
             object : Visitor<Unit> {
-                override fun visitAccountUpdate(accountUpdate: AccountUpdateEvent) {
-                    accountUpdate.validate()
+                override fun visitAccountUpdated(accountUpdated: AccountUpdateEvent) {
+                    accountUpdated.validate()
                 }
 
                 override fun visitJobCompletion(jobCompletion: JobCompletionEvent) {
                     jobCompletion.validate()
                 }
 
-                override fun visitCompany(company: CompanyEvent) {
-                    company.validate()
+                override fun visitCompanyUpdated(companyUpdated: CompanyEvent) {
+                    companyUpdated.validate()
                 }
 
                 override fun visitDirectory(directory: DirectoryEvent) {
@@ -141,21 +141,62 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        accept(
+            object : Visitor<Int> {
+                override fun visitAccountUpdated(accountUpdated: AccountUpdateEvent) =
+                    accountUpdated.validity()
+
+                override fun visitJobCompletion(jobCompletion: JobCompletionEvent) =
+                    jobCompletion.validity()
+
+                override fun visitCompanyUpdated(companyUpdated: CompanyEvent) =
+                    companyUpdated.validity()
+
+                override fun visitDirectory(directory: DirectoryEvent) = directory.validity()
+
+                override fun visitEmployment(employment: EmploymentEvent) = employment.validity()
+
+                override fun visitIndividual(individual: IndividualEvent) = individual.validity()
+
+                override fun visitPayment(payment: PaymentEvent) = payment.validity()
+
+                override fun visitPayStatement(payStatement: PayStatementEvent) =
+                    payStatement.validity()
+
+                override fun unknown(json: JsonValue?) = 0
+            }
+        )
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is WebhookEvent && accountUpdate == other.accountUpdate && jobCompletion == other.jobCompletion && company == other.company && directory == other.directory && employment == other.employment && individual == other.individual && payment == other.payment && payStatement == other.payStatement /* spotless:on */
+        return /* spotless:off */ other is WebhookEvent && accountUpdated == other.accountUpdated && jobCompletion == other.jobCompletion && companyUpdated == other.companyUpdated && directory == other.directory && employment == other.employment && individual == other.individual && payment == other.payment && payStatement == other.payStatement /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accountUpdate, jobCompletion, company, directory, employment, individual, payment, payStatement) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accountUpdated, jobCompletion, companyUpdated, directory, employment, individual, payment, payStatement) /* spotless:on */
 
     override fun toString(): String =
         when {
-            accountUpdate != null -> "WebhookEvent{accountUpdate=$accountUpdate}"
+            accountUpdated != null -> "WebhookEvent{accountUpdated=$accountUpdated}"
             jobCompletion != null -> "WebhookEvent{jobCompletion=$jobCompletion}"
-            company != null -> "WebhookEvent{company=$company}"
+            companyUpdated != null -> "WebhookEvent{companyUpdated=$companyUpdated}"
             directory != null -> "WebhookEvent{directory=$directory}"
             employment != null -> "WebhookEvent{employment=$employment}"
             individual != null -> "WebhookEvent{individual=$individual}"
@@ -168,14 +209,16 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun ofAccountUpdate(accountUpdate: AccountUpdateEvent) =
-            WebhookEvent(accountUpdate = accountUpdate)
+        fun ofAccountUpdated(accountUpdated: AccountUpdateEvent) =
+            WebhookEvent(accountUpdated = accountUpdated)
 
         @JvmStatic
         fun ofJobCompletion(jobCompletion: JobCompletionEvent) =
             WebhookEvent(jobCompletion = jobCompletion)
 
-        @JvmStatic fun ofCompany(company: CompanyEvent) = WebhookEvent(company = company)
+        @JvmStatic
+        fun ofCompanyUpdated(companyUpdated: CompanyEvent) =
+            WebhookEvent(companyUpdated = companyUpdated)
 
         @JvmStatic fun ofDirectory(directory: DirectoryEvent) = WebhookEvent(directory = directory)
 
@@ -197,11 +240,11 @@ private constructor(
      */
     interface Visitor<out T> {
 
-        fun visitAccountUpdate(accountUpdate: AccountUpdateEvent): T
+        fun visitAccountUpdated(accountUpdated: AccountUpdateEvent): T
 
         fun visitJobCompletion(jobCompletion: JobCompletionEvent): T
 
-        fun visitCompany(company: CompanyEvent): T
+        fun visitCompanyUpdated(companyUpdated: CompanyEvent): T
 
         fun visitDirectory(directory: DirectoryEvent): T
 
@@ -232,40 +275,45 @@ private constructor(
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
 
-            tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(accountUpdate = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(jobCompletion = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<CompanyEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(company = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<DirectoryEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(directory = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<EmploymentEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(employment = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<IndividualEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(individual = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<PaymentEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(payment = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<PayStatementEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(payStatement = it, _json = json)
-                }
-
-            return WebhookEvent(_json = json)
+            val bestMatches =
+                sequenceOf(
+                        tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
+                            WebhookEvent(accountUpdated = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>())?.let {
+                            WebhookEvent(jobCompletion = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
+                            WebhookEvent(companyUpdated = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<DirectoryEvent>())?.let {
+                            WebhookEvent(directory = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<EmploymentEvent>())?.let {
+                            WebhookEvent(employment = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<IndividualEvent>())?.let {
+                            WebhookEvent(individual = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<PaymentEvent>())?.let {
+                            WebhookEvent(payment = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<PayStatementEvent>())?.let {
+                            WebhookEvent(payStatement = it, _json = json)
+                        },
+                    )
+                    .filterNotNull()
+                    .allMaxBy { it.validity() }
+                    .toList()
+            return when (bestMatches.size) {
+                // This can happen if what we're deserializing is completely incompatible with all
+                // the possible variants (e.g. deserializing from boolean).
+                0 -> WebhookEvent(_json = json)
+                1 -> bestMatches.single()
+                // If there's more than one match with the highest validity, then use the first
+                // completely valid match, or simply the first match if none are completely valid.
+                else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+            }
         }
     }
 
@@ -277,9 +325,9 @@ private constructor(
             provider: SerializerProvider,
         ) {
             when {
-                value.accountUpdate != null -> generator.writeObject(value.accountUpdate)
+                value.accountUpdated != null -> generator.writeObject(value.accountUpdated)
                 value.jobCompletion != null -> generator.writeObject(value.jobCompletion)
-                value.company != null -> generator.writeObject(value.company)
+                value.companyUpdated != null -> generator.writeObject(value.companyUpdated)
                 value.directory != null -> generator.writeObject(value.directory)
                 value.employment != null -> generator.writeObject(value.employment)
                 value.individual != null -> generator.writeObject(value.individual)

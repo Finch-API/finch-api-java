@@ -10,45 +10,60 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class CreateCompanyBenefitsResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("benefit_id")
-    @ExcludeMissing
-    private val benefitId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val benefitId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
+    @JsonCreator
+    private constructor(
+        @JsonProperty("benefit_id") @ExcludeMissing benefitId: JsonField<String> = JsonMissing.of()
+    ) : this(benefitId, mutableMapOf())
+
+    /**
+     * The id of the benefit.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
+    /**
+     * Returns the raw JSON value of [benefitId].
+     *
+     * Unlike [benefitId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): CreateCompanyBenefitsResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        benefitId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [CreateCompanyBenefitsResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .benefitId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -64,8 +79,16 @@ private constructor(
             additionalProperties = createCompanyBenefitsResponse.additionalProperties.toMutableMap()
         }
 
+        /** The id of the benefit. */
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
+        /**
+         * Sets [Builder.benefitId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.benefitId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -87,12 +110,50 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [CreateCompanyBenefitsResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .benefitId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): CreateCompanyBenefitsResponse =
             CreateCompanyBenefitsResponse(
                 checkRequired("benefitId", benefitId),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): CreateCompanyBenefitsResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        benefitId()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic internal fun validity(): Int = (if (benefitId.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

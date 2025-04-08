@@ -2,11 +2,11 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisIndividualRetrieveManyParamsTest {
+internal class HrisIndividualRetrieveManyParamsTest {
 
     @Test
     fun create() {
@@ -38,18 +38,15 @@ class HrisIndividualRetrieveManyParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.options())
             .contains(
                 HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
-        assertThat(body.requests())
-            .contains(
-                listOf(
-                    HrisIndividualRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+        assertThat(body.requests().getOrNull())
+            .containsExactly(
+                HrisIndividualRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
     }
 
@@ -58,7 +55,5 @@ class HrisIndividualRetrieveManyParamsTest {
         val params = HrisIndividualRetrieveManyParams.builder().build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }

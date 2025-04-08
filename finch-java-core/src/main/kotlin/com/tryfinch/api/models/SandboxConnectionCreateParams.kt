@@ -11,16 +11,17 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Create a new connection (new company/provider pair) with a new account */
 class SandboxConnectionCreateParams
@@ -30,32 +31,63 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The provider associated with the connection */
+    /**
+     * The provider associated with the connection
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun providerId(): String = body.providerId()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun authenticationType(): Optional<AuthenticationType> = body.authenticationType()
 
     /**
      * Optional: the size of the employer to be created with this connection. Defaults to 20. Note
      * that if this is higher than 100, historical payroll data will not be generated, and instead
      * only one pay period will be created.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun employeeSize(): Optional<Long> = body.employeeSize()
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun products(): Optional<List<String>> = body.products()
 
-    /** The provider associated with the connection */
+    /**
+     * Returns the raw JSON value of [providerId].
+     *
+     * Unlike [providerId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _providerId(): JsonField<String> = body._providerId()
 
+    /**
+     * Returns the raw JSON value of [authenticationType].
+     *
+     * Unlike [authenticationType], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     fun _authenticationType(): JsonField<AuthenticationType> = body._authenticationType()
 
     /**
-     * Optional: the size of the employer to be created with this connection. Defaults to 20. Note
-     * that if this is higher than 100, historical payroll data will not be generated, and instead
-     * only one pay period will be created.
+     * Returns the raw JSON value of [employeeSize].
+     *
+     * Unlike [employeeSize], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _employeeSize(): JsonField<Long> = body._employeeSize()
 
+    /**
+     * Returns the raw JSON value of [products].
+     *
+     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _products(): JsonField<List<String>> = body._products()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -64,218 +96,23 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("provider_id")
-        @ExcludeMissing
-        private val providerId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("authentication_type")
-        @ExcludeMissing
-        private val authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
-        @JsonProperty("employee_size")
-        @ExcludeMissing
-        private val employeeSize: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("products")
-        @ExcludeMissing
-        private val products: JsonField<List<String>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /** The provider associated with the connection */
-        fun providerId(): String = providerId.getRequired("provider_id")
-
-        fun authenticationType(): Optional<AuthenticationType> =
-            Optional.ofNullable(authenticationType.getNullable("authentication_type"))
-
-        /**
-         * Optional: the size of the employer to be created with this connection. Defaults to 20.
-         * Note that if this is higher than 100, historical payroll data will not be generated, and
-         * instead only one pay period will be created.
-         */
-        fun employeeSize(): Optional<Long> =
-            Optional.ofNullable(employeeSize.getNullable("employee_size"))
-
-        fun products(): Optional<List<String>> =
-            Optional.ofNullable(products.getNullable("products"))
-
-        /** The provider associated with the connection */
-        @JsonProperty("provider_id")
-        @ExcludeMissing
-        fun _providerId(): JsonField<String> = providerId
-
-        @JsonProperty("authentication_type")
-        @ExcludeMissing
-        fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
-
-        /**
-         * Optional: the size of the employer to be created with this connection. Defaults to 20.
-         * Note that if this is higher than 100, historical payroll data will not be generated, and
-         * instead only one pay period will be created.
-         */
-        @JsonProperty("employee_size")
-        @ExcludeMissing
-        fun _employeeSize(): JsonField<Long> = employeeSize
-
-        @JsonProperty("products")
-        @ExcludeMissing
-        fun _products(): JsonField<List<String>> = products
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            providerId()
-            authenticationType()
-            employeeSize()
-            products()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var providerId: JsonField<String>? = null
-            private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
-            private var employeeSize: JsonField<Long> = JsonMissing.of()
-            private var products: JsonField<MutableList<String>>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                providerId = body.providerId
-                authenticationType = body.authenticationType
-                employeeSize = body.employeeSize
-                products = body.products.map { it.toMutableList() }
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /** The provider associated with the connection */
-            fun providerId(providerId: String) = providerId(JsonField.of(providerId))
-
-            /** The provider associated with the connection */
-            fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
-
-            fun authenticationType(authenticationType: AuthenticationType) =
-                authenticationType(JsonField.of(authenticationType))
-
-            fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
-                this.authenticationType = authenticationType
-            }
-
-            /**
-             * Optional: the size of the employer to be created with this connection. Defaults
-             * to 20. Note that if this is higher than 100, historical payroll data will not be
-             * generated, and instead only one pay period will be created.
-             */
-            fun employeeSize(employeeSize: Long) = employeeSize(JsonField.of(employeeSize))
-
-            /**
-             * Optional: the size of the employer to be created with this connection. Defaults
-             * to 20. Note that if this is higher than 100, historical payroll data will not be
-             * generated, and instead only one pay period will be created.
-             */
-            fun employeeSize(employeeSize: JsonField<Long>) = apply {
-                this.employeeSize = employeeSize
-            }
-
-            fun products(products: List<String>) = products(JsonField.of(products))
-
-            fun products(products: JsonField<List<String>>) = apply {
-                this.products = products.map { it.toMutableList() }
-            }
-
-            fun addProduct(product: String) = apply {
-                products =
-                    (products ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(product)
-                    }
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            fun build(): Body =
-                Body(
-                    checkRequired("providerId", providerId),
-                    authenticationType,
-                    employeeSize,
-                    (products ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && providerId == other.providerId && authenticationType == other.authenticationType && employeeSize == other.employeeSize && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(providerId, authenticationType, employeeSize, products, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{providerId=$providerId, authenticationType=$authenticationType, employeeSize=$employeeSize, products=$products, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SandboxConnectionCreateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .providerId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [SandboxConnectionCreateParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var body: Body.Builder = Body.builder()
@@ -289,16 +126,41 @@ private constructor(
             additionalQueryParams = sandboxConnectionCreateParams.additionalQueryParams.toBuilder()
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [providerId]
+         * - [authenticationType]
+         * - [employeeSize]
+         * - [products]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** The provider associated with the connection */
         fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
-        /** The provider associated with the connection */
+        /**
+         * Sets [Builder.providerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.providerId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun providerId(providerId: JsonField<String>) = apply { body.providerId(providerId) }
 
         fun authenticationType(authenticationType: AuthenticationType) = apply {
             body.authenticationType(authenticationType)
         }
 
+        /**
+         * Sets [Builder.authenticationType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.authenticationType] with a well-typed
+         * [AuthenticationType] value instead. This method is primarily for setting the field to an
+         * undocumented or not yet supported value.
+         */
         fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
             body.authenticationType(authenticationType)
         }
@@ -311,16 +173,30 @@ private constructor(
         fun employeeSize(employeeSize: Long) = apply { body.employeeSize(employeeSize) }
 
         /**
-         * Optional: the size of the employer to be created with this connection. Defaults to 20.
-         * Note that if this is higher than 100, historical payroll data will not be generated, and
-         * instead only one pay period will be created.
+         * Sets [Builder.employeeSize] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.employeeSize] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun employeeSize(employeeSize: JsonField<Long>) = apply { body.employeeSize(employeeSize) }
 
         fun products(products: List<String>) = apply { body.products(products) }
 
+        /**
+         * Sets [Builder.products] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.products] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun products(products: JsonField<List<String>>) = apply { body.products(products) }
 
+        /**
+         * Adds a single [String] to [products].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addProduct(product: String) = apply { body.addProduct(product) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -440,12 +316,330 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [SandboxConnectionCreateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .providerId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): SandboxConnectionCreateParams =
             SandboxConnectionCreateParams(
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
+    }
+
+    fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    private constructor(
+        private val providerId: JsonField<String>,
+        private val authenticationType: JsonField<AuthenticationType>,
+        private val employeeSize: JsonField<Long>,
+        private val products: JsonField<List<String>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("provider_id")
+            @ExcludeMissing
+            providerId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("authentication_type")
+            @ExcludeMissing
+            authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
+            @JsonProperty("employee_size")
+            @ExcludeMissing
+            employeeSize: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("products")
+            @ExcludeMissing
+            products: JsonField<List<String>> = JsonMissing.of(),
+        ) : this(providerId, authenticationType, employeeSize, products, mutableMapOf())
+
+        /**
+         * The provider associated with the connection
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun providerId(): String = providerId.getRequired("provider_id")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun authenticationType(): Optional<AuthenticationType> =
+            authenticationType.getOptional("authentication_type")
+
+        /**
+         * Optional: the size of the employer to be created with this connection. Defaults to 20.
+         * Note that if this is higher than 100, historical payroll data will not be generated, and
+         * instead only one pay period will be created.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun employeeSize(): Optional<Long> = employeeSize.getOptional("employee_size")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun products(): Optional<List<String>> = products.getOptional("products")
+
+        /**
+         * Returns the raw JSON value of [providerId].
+         *
+         * Unlike [providerId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("provider_id")
+        @ExcludeMissing
+        fun _providerId(): JsonField<String> = providerId
+
+        /**
+         * Returns the raw JSON value of [authenticationType].
+         *
+         * Unlike [authenticationType], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("authentication_type")
+        @ExcludeMissing
+        fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
+
+        /**
+         * Returns the raw JSON value of [employeeSize].
+         *
+         * Unlike [employeeSize], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("employee_size")
+        @ExcludeMissing
+        fun _employeeSize(): JsonField<Long> = employeeSize
+
+        /**
+         * Returns the raw JSON value of [products].
+         *
+         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("products")
+        @ExcludeMissing
+        fun _products(): JsonField<List<String>> = products
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .providerId()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var providerId: JsonField<String>? = null
+            private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
+            private var employeeSize: JsonField<Long> = JsonMissing.of()
+            private var products: JsonField<MutableList<String>>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                providerId = body.providerId
+                authenticationType = body.authenticationType
+                employeeSize = body.employeeSize
+                products = body.products.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The provider associated with the connection */
+            fun providerId(providerId: String) = providerId(JsonField.of(providerId))
+
+            /**
+             * Sets [Builder.providerId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.providerId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+
+            fun authenticationType(authenticationType: AuthenticationType) =
+                authenticationType(JsonField.of(authenticationType))
+
+            /**
+             * Sets [Builder.authenticationType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.authenticationType] with a well-typed
+             * [AuthenticationType] value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
+             */
+            fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
+                this.authenticationType = authenticationType
+            }
+
+            /**
+             * Optional: the size of the employer to be created with this connection. Defaults
+             * to 20. Note that if this is higher than 100, historical payroll data will not be
+             * generated, and instead only one pay period will be created.
+             */
+            fun employeeSize(employeeSize: Long) = employeeSize(JsonField.of(employeeSize))
+
+            /**
+             * Sets [Builder.employeeSize] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.employeeSize] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun employeeSize(employeeSize: JsonField<Long>) = apply {
+                this.employeeSize = employeeSize
+            }
+
+            fun products(products: List<String>) = products(JsonField.of(products))
+
+            /**
+             * Sets [Builder.products] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.products] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun products(products: JsonField<List<String>>) = apply {
+                this.products = products.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [products].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addProduct(product: String) = apply {
+                products =
+                    (products ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("products", it).add(product)
+                    }
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .providerId()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("providerId", providerId),
+                    authenticationType,
+                    employeeSize,
+                    (products ?: JsonMissing.of()).map { it.toImmutable() },
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            providerId()
+            authenticationType().ifPresent { it.validate() }
+            employeeSize()
+            products()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (providerId.asKnown().isPresent) 1 else 0) +
+                (authenticationType.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (employeeSize.asKnown().isPresent) 1 else 0) +
+                (products.asKnown().getOrNull()?.size ?: 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && providerId == other.providerId && authenticationType == other.authenticationType && employeeSize == other.employeeSize && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(providerId, authenticationType, employeeSize, products, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{providerId=$providerId, authenticationType=$authenticationType, employeeSize=$employeeSize, products=$products, additionalProperties=$additionalProperties}"
     }
 
     class AuthenticationType
@@ -548,6 +742,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): AuthenticationType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

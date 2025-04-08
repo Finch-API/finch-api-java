@@ -7,6 +7,7 @@ import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.errors.FinchInvalidDataException
 
+/** The frequency of the benefit deduction/contribution. */
 class BenefitFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
     Enum {
 
@@ -98,6 +99,32 @@ class BenefitFrequency @JsonCreator private constructor(private val value: JsonF
      */
     fun asString(): String =
         _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+    private var validated: Boolean = false
+
+    fun validate(): BenefitFrequency = apply {
+        if (validated) {
+            return@apply
+        }
+
+        known()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

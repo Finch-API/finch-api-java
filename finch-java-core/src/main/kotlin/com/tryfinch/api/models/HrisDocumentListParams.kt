@@ -5,7 +5,6 @@ package com.tryfinch.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -13,6 +12,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents. */
 class HrisDocumentListParams
@@ -44,29 +44,17 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.individualIds?.let { queryParams.put("individual_ids[]", it.map(Any::toString)) }
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.offset?.let { queryParams.put("offset", listOf(it.toString())) }
-        this.types?.let { queryParams.put("types[]", it.map(Any::toString)) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         @JvmStatic fun none(): HrisDocumentListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [HrisDocumentListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [HrisDocumentListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var individualIds: MutableList<String>? = null
@@ -94,16 +82,14 @@ private constructor(
             this.individualIds = individualIds?.toMutableList()
         }
 
-        /**
-         * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
-         */
+        /** Alias for calling [Builder.individualIds] with `individualIds.orElse(null)`. */
         fun individualIds(individualIds: Optional<List<String>>) =
-            individualIds(individualIds.orElse(null))
+            individualIds(individualIds.getOrNull())
 
         /**
-         * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
+         * Adds a single [String] to [individualIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addIndividualId(individualId: String) = apply {
             individualIds = (individualIds ?: mutableListOf()).apply { add(individualId) }
@@ -112,30 +98,40 @@ private constructor(
         /** Number of documents to return (defaults to all) */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
-        /** Number of documents to return (defaults to all) */
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun limit(limit: Long) = limit(limit as Long?)
 
-        /** Number of documents to return (defaults to all) */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun limit(limit: Optional<Long>) = limit(limit.orElse(null) as Long?)
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** Index to start from (defaults to 0) */
         fun offset(offset: Long?) = apply { this.offset = offset }
 
-        /** Index to start from (defaults to 0) */
+        /**
+         * Alias for [Builder.offset].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun offset(offset: Long) = offset(offset as Long?)
 
-        /** Index to start from (defaults to 0) */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun offset(offset: Optional<Long>) = offset(offset.orElse(null) as Long?)
+        /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
+        fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
 
         /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
         fun types(types: List<Type>?) = apply { this.types = types?.toMutableList() }
 
-        /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
-        fun types(types: Optional<List<Type>>) = types(types.orElse(null))
+        /** Alias for calling [Builder.types] with `types.orElse(null)`. */
+        fun types(types: Optional<List<Type>>) = types(types.getOrNull())
 
-        /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
+        /**
+         * Adds a single [Type] to [types].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addType(type: Type) = apply { types = (types ?: mutableListOf()).apply { add(type) } }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -236,6 +232,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisDocumentListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): HrisDocumentListParams =
             HrisDocumentListParams(
                 individualIds?.toImmutable(),
@@ -246,6 +247,19 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                individualIds?.forEach { put("individual_ids[]", it) }
+                limit?.let { put("limit", it.toString()) }
+                offset?.let { put("offset", it.toString()) }
+                types?.forEach { put("types[]", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -330,6 +344,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): Type = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

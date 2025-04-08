@@ -2,11 +2,11 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxCompanyUpdateParamsTest {
+internal class SandboxCompanyUpdateParamsTest {
 
     @Test
     fun create() {
@@ -48,7 +48,7 @@ class SandboxCompanyUpdateParamsTest {
                     .state("state")
                     .build()
             )
-            .primaryEmail("primary_email")
+            .primaryEmail("dev@stainless.com")
             .primaryPhoneNumber("primary_phone_number")
             .build()
     }
@@ -96,37 +96,30 @@ class SandboxCompanyUpdateParamsTest {
                         .state("state")
                         .build()
                 )
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
         val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.accounts())
-            .contains(
-                listOf(
-                    SandboxCompanyUpdateParams.Account.builder()
-                        .accountName("account_name")
-                        .accountNumber("account_number")
-                        .accountType(SandboxCompanyUpdateParams.Account.AccountType.CHECKING)
-                        .institutionName("institution_name")
-                        .routingNumber("routing_number")
-                        .build()
-                )
+        assertThat(body.accounts().getOrNull())
+            .containsExactly(
+                SandboxCompanyUpdateParams.Account.builder()
+                    .accountName("account_name")
+                    .accountNumber("account_number")
+                    .accountType(SandboxCompanyUpdateParams.Account.AccountType.CHECKING)
+                    .institutionName("institution_name")
+                    .routingNumber("routing_number")
+                    .build()
             )
-        assertThat(body.departments())
-            .contains(
-                listOf(
-                    SandboxCompanyUpdateParams.Department.builder()
-                        .name("name")
-                        .parent(
-                            SandboxCompanyUpdateParams.Department.Parent.builder()
-                                .name("name")
-                                .build()
-                        )
-                        .build()
-                )
+        assertThat(body.departments().getOrNull())
+            .containsExactly(
+                SandboxCompanyUpdateParams.Department.builder()
+                    .name("name")
+                    .parent(
+                        SandboxCompanyUpdateParams.Department.Parent.builder().name("name").build()
+                    )
+                    .build()
             )
         assertThat(body.ein()).contains("ein")
         assertThat(body.entity())
@@ -137,22 +130,20 @@ class SandboxCompanyUpdateParamsTest {
                     .build()
             )
         assertThat(body.legalName()).contains("legal_name")
-        assertThat(body.locations())
-            .contains(
-                listOf(
-                    Location.builder()
-                        .city("city")
-                        .country("country")
-                        .line1("line1")
-                        .line2("line2")
-                        .name("name")
-                        .postalCode("postal_code")
-                        .sourceId("source_id")
-                        .state("state")
-                        .build()
-                )
+        assertThat(body.locations().getOrNull())
+            .containsExactly(
+                Location.builder()
+                    .city("city")
+                    .country("country")
+                    .line1("line1")
+                    .line2("line2")
+                    .name("name")
+                    .postalCode("postal_code")
+                    .sourceId("source_id")
+                    .state("state")
+                    .build()
             )
-        assertThat(body.primaryEmail()).contains("primary_email")
+        assertThat(body.primaryEmail()).contains("dev@stainless.com")
         assertThat(body.primaryPhoneNumber()).contains("primary_phone_number")
     }
 
@@ -166,22 +157,21 @@ class SandboxCompanyUpdateParamsTest {
                 .entity(SandboxCompanyUpdateParams.Entity.builder().build())
                 .legalName("legal_name")
                 .addLocation(Location.builder().build())
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
         val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.accounts())
-            .contains(listOf(SandboxCompanyUpdateParams.Account.builder().build()))
-        assertThat(body.departments())
-            .contains(listOf(SandboxCompanyUpdateParams.Department.builder().build()))
+        assertThat(body.accounts().getOrNull())
+            .containsExactly(SandboxCompanyUpdateParams.Account.builder().build())
+        assertThat(body.departments().getOrNull())
+            .containsExactly(SandboxCompanyUpdateParams.Department.builder().build())
         assertThat(body.ein()).contains("ein")
         assertThat(body.entity()).contains(SandboxCompanyUpdateParams.Entity.builder().build())
         assertThat(body.legalName()).contains("legal_name")
-        assertThat(body.locations()).contains(listOf(Location.builder().build()))
-        assertThat(body.primaryEmail()).contains("primary_email")
+        assertThat(body.locations().getOrNull()).containsExactly(Location.builder().build())
+        assertThat(body.primaryEmail()).contains("dev@stainless.com")
         assertThat(body.primaryPhoneNumber()).contains("primary_phone_number")
     }
 }

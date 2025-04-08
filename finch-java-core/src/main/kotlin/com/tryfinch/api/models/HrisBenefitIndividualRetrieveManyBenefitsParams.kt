@@ -2,13 +2,13 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsParams
@@ -31,31 +31,23 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.individualIds?.let { queryParams.put("individual_ids", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
-
-    fun getPathParam(index: Int): String {
-        return when (index) {
-            0 -> benefitId
-            else -> ""
-        }
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisBenefitIndividualRetrieveManyBenefitsParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .benefitId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [HrisBenefitIndividualRetrieveManyBenefitsParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var benefitId: String? = null
@@ -84,12 +76,9 @@ private constructor(
          */
         fun individualIds(individualIds: String?) = apply { this.individualIds = individualIds }
 
-        /**
-         * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
-         */
+        /** Alias for calling [Builder.individualIds] with `individualIds.orElse(null)`. */
         fun individualIds(individualIds: Optional<String>) =
-            individualIds(individualIds.orElse(null))
+            individualIds(individualIds.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -189,6 +178,18 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisBenefitIndividualRetrieveManyBenefitsParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .benefitId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): HrisBenefitIndividualRetrieveManyBenefitsParams =
             HrisBenefitIndividualRetrieveManyBenefitsParams(
                 checkRequired("benefitId", benefitId),
@@ -197,6 +198,22 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> benefitId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                individualIds?.let { put("individual_ids", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

@@ -10,59 +10,83 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class PayStatementResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("body")
-    @ExcludeMissing
-    private val body: JsonField<PayStatementResponseBody> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("payment_id")
-    @ExcludeMissing
-    private val paymentId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val body: JsonField<PayStatementResponseBody>,
+    private val code: JsonField<Long>,
+    private val paymentId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    fun body(): Optional<PayStatementResponseBody> = Optional.ofNullable(body.getNullable("body"))
+    @JsonCreator
+    private constructor(
+        @JsonProperty("body")
+        @ExcludeMissing
+        body: JsonField<PayStatementResponseBody> = JsonMissing.of(),
+        @JsonProperty("code") @ExcludeMissing code: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("payment_id") @ExcludeMissing paymentId: JsonField<String> = JsonMissing.of(),
+    ) : this(body, code, paymentId, mutableMapOf())
 
-    fun code(): Optional<Long> = Optional.ofNullable(code.getNullable("code"))
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun body(): Optional<PayStatementResponseBody> = body.getOptional("body")
 
-    fun paymentId(): Optional<String> = Optional.ofNullable(paymentId.getNullable("payment_id"))
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun code(): Optional<Long> = code.getOptional("code")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun paymentId(): Optional<String> = paymentId.getOptional("payment_id")
+
+    /**
+     * Returns the raw JSON value of [body].
+     *
+     * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<PayStatementResponseBody> = body
 
+    /**
+     * Returns the raw JSON value of [code].
+     *
+     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
+    /**
+     * Returns the raw JSON value of [paymentId].
+     *
+     * Unlike [paymentId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("payment_id") @ExcludeMissing fun _paymentId(): JsonField<String> = paymentId
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): PayStatementResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        body().ifPresent { it.validate() }
-        code()
-        paymentId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [PayStatementResponse]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -84,14 +108,34 @@ private constructor(
 
         fun body(body: PayStatementResponseBody) = body(JsonField.of(body))
 
+        /**
+         * Sets [Builder.body] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.body] with a well-typed [PayStatementResponseBody] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun body(body: JsonField<PayStatementResponseBody>) = apply { this.body = body }
 
         fun code(code: Long) = code(JsonField.of(code))
 
+        /**
+         * Sets [Builder.code] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.code] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
 
+        /**
+         * Sets [Builder.paymentId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.paymentId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -113,9 +157,46 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [PayStatementResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): PayStatementResponse =
-            PayStatementResponse(body, code, paymentId, additionalProperties.toImmutable())
+            PayStatementResponse(body, code, paymentId, additionalProperties.toMutableMap())
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): PayStatementResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        body().ifPresent { it.validate() }
+        code()
+        paymentId()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (body.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (code.asKnown().isPresent) 1 else 0) +
+            (if (paymentId.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

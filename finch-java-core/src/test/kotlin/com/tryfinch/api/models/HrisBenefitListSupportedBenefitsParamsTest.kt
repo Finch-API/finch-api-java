@@ -4,7 +4,7 @@ package com.tryfinch.api.models
 
 import org.junit.jupiter.api.Test
 
-class HrisBenefitListSupportedBenefitsParamsTest {
+internal class HrisBenefitListSupportedBenefitsParamsTest {
 
     @Test
     fun create() {

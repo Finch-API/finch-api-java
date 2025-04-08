@@ -1,7 +1,10 @@
 plugins {
-    id("finch.kotlin")
-    id("java")
+    id("finch.java")
     application
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {

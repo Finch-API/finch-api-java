@@ -11,63 +11,95 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class ManualAsyncJob
-@JsonCreator
 private constructor(
-    @JsonProperty("body")
-    @ExcludeMissing
-    private val body: JsonField<List<JsonValue>> = JsonMissing.of(),
-    @JsonProperty("job_id") @ExcludeMissing private val jobId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val body: JsonField<List<JsonValue>>,
+    private val jobId: JsonField<String>,
+    private val status: JsonField<Status>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** Specific information about the job, such as individual statuses for batch jobs. */
-    fun body(): Optional<List<JsonValue>> = Optional.ofNullable(body.getNullable("body"))
+    @JsonCreator
+    private constructor(
+        @JsonProperty("body") @ExcludeMissing body: JsonField<List<JsonValue>> = JsonMissing.of(),
+        @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+    ) : this(body, jobId, status, mutableMapOf())
 
+    /**
+     * Specific information about the job, such as individual statuses for batch jobs.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun body(): Optional<List<JsonValue>> = body.getOptional("body")
+
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun jobId(): String = jobId.getRequired("job_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun status(): Status = status.getRequired("status")
 
-    /** Specific information about the job, such as individual statuses for batch jobs. */
+    /**
+     * Returns the raw JSON value of [body].
+     *
+     * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<List<JsonValue>> = body
 
+    /**
+     * Returns the raw JSON value of [jobId].
+     *
+     * Unlike [jobId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
+    /**
+     * Returns the raw JSON value of [status].
+     *
+     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): ManualAsyncJob = apply {
-        if (validated) {
-            return@apply
-        }
-
-        body()
-        jobId()
-        status()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ManualAsyncJob].
+         *
+         * The following fields are required:
+         * ```java
+         * .body()
+         * .jobId()
+         * .status()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -90,34 +122,50 @@ private constructor(
         /** Specific information about the job, such as individual statuses for batch jobs. */
         fun body(body: List<JsonValue>?) = body(JsonField.ofNullable(body))
 
-        /** Specific information about the job, such as individual statuses for batch jobs. */
-        fun body(body: Optional<List<JsonValue>>) = body(body.orElse(null))
+        /** Alias for calling [Builder.body] with `body.orElse(null)`. */
+        fun body(body: Optional<List<JsonValue>>) = body(body.getOrNull())
 
-        /** Specific information about the job, such as individual statuses for batch jobs. */
+        /**
+         * Sets [Builder.body] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.body] with a well-typed `List<JsonValue>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun body(body: JsonField<List<JsonValue>>) = apply {
             this.body = body.map { it.toMutableList() }
         }
 
-        /** Specific information about the job, such as individual statuses for batch jobs. */
+        /**
+         * Adds a single [JsonValue] to [Builder.body].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addBody(body: JsonValue) = apply {
             this.body =
-                (this.body ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(body)
+                (this.body ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("body", it).add(body)
                 }
         }
 
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
+        /**
+         * Sets [Builder.jobId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         fun status(status: Status) = status(JsonField.of(status))
 
+        /**
+         * Sets [Builder.status] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -139,14 +187,60 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [ManualAsyncJob].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .body()
+         * .jobId()
+         * .status()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): ManualAsyncJob =
             ManualAsyncJob(
                 checkRequired("body", body).map { it.toImmutable() },
                 checkRequired("jobId", jobId),
                 checkRequired("status", status),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): ManualAsyncJob = apply {
+        if (validated) {
+            return@apply
+        }
+
+        body()
+        jobId()
+        status().validate()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (body.asKnown().getOrNull()?.size ?: 0) +
+            (if (jobId.asKnown().isPresent) 1 else 0) +
+            (status.asKnown().getOrNull()?.validity() ?: 0)
 
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -243,6 +337,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): Status = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

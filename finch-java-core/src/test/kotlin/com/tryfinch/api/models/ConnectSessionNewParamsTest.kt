@@ -2,11 +2,10 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ConnectSessionNewParamsTest {
+internal class ConnectSessionNewParamsTest {
 
     @Test
     fun create() {
@@ -14,7 +13,7 @@ class ConnectSessionNewParamsTest {
             .customerId("x")
             .customerName("x")
             .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
-            .customerEmail("dev@stainlessapi.com")
+            .customerEmail("dev@stainless.com")
             .integration(
                 ConnectSessionNewParams.Integration.builder()
                     .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
@@ -35,7 +34,7 @@ class ConnectSessionNewParamsTest {
                 .customerId("x")
                 .customerName("x")
                 .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
-                .customerEmail("dev@stainlessapi.com")
+                .customerEmail("dev@stainless.com")
                 .integration(
                     ConnectSessionNewParams.Integration.builder()
                         .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
@@ -50,12 +49,10 @@ class ConnectSessionNewParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
-        assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
-        assertThat(body.customerEmail()).contains("dev@stainlessapi.com")
+        assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
+        assertThat(body.customerEmail()).contains("dev@stainless.com")
         assertThat(body.integration())
             .contains(
                 ConnectSessionNewParams.Integration.builder()
@@ -80,10 +77,8 @@ class ConnectSessionNewParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
-        assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+        assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
     }
 }

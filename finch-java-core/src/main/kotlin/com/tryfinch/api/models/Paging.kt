@@ -10,53 +10,69 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class Paging
-@JsonCreator
 private constructor(
-    @JsonProperty("count") @ExcludeMissing private val count: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("offset") @ExcludeMissing private val offset: JsonField<Long> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val count: JsonField<Long>,
+    private val offset: JsonField<Long>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** The total number of elements for the entire query (not just the given page) */
-    fun count(): Optional<Long> = Optional.ofNullable(count.getNullable("count"))
+    @JsonCreator
+    private constructor(
+        @JsonProperty("count") @ExcludeMissing count: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
+    ) : this(count, offset, mutableMapOf())
 
-    /** The current start index of the returned list of elements */
-    fun offset(): Optional<Long> = Optional.ofNullable(offset.getNullable("offset"))
+    /**
+     * The total number of elements for the entire query (not just the given page)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun count(): Optional<Long> = count.getOptional("count")
 
-    /** The total number of elements for the entire query (not just the given page) */
+    /**
+     * The current start index of the returned list of elements
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun offset(): Optional<Long> = offset.getOptional("offset")
+
+    /**
+     * Returns the raw JSON value of [count].
+     *
+     * Unlike [count], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("count") @ExcludeMissing fun _count(): JsonField<Long> = count
 
-    /** The current start index of the returned list of elements */
+    /**
+     * Returns the raw JSON value of [offset].
+     *
+     * Unlike [offset], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Paging = apply {
-        if (validated) {
-            return@apply
-        }
-
-        count()
-        offset()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [Paging]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -77,13 +93,23 @@ private constructor(
         /** The total number of elements for the entire query (not just the given page) */
         fun count(count: Long) = count(JsonField.of(count))
 
-        /** The total number of elements for the entire query (not just the given page) */
+        /**
+         * Sets [Builder.count] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.count] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun count(count: JsonField<Long>) = apply { this.count = count }
 
         /** The current start index of the returned list of elements */
         fun offset(offset: Long) = offset(JsonField.of(offset))
 
-        /** The current start index of the returned list of elements */
+        /**
+         * Sets [Builder.offset] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.offset] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -105,8 +131,42 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
-        fun build(): Paging = Paging(count, offset, additionalProperties.toImmutable())
+        /**
+         * Returns an immutable instance of [Paging].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
+        fun build(): Paging = Paging(count, offset, additionalProperties.toMutableMap())
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): Paging = apply {
+        if (validated) {
+            return@apply
+        }
+
+        count()
+        offset()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (count.asKnown().isPresent) 1 else 0) + (if (offset.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

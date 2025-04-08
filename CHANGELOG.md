@@ -1,5 +1,107 @@
 # Changelog
 
+## 5.0.0 (2025-04-08)
+
+Full Changelog: [v4.2.0...v5.0.0](https://github.com/Finch-API/finch-api-java/compare/v4.2.0...v5.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** refactor exception structure and methods ([#505](https://github.com/Finch-API/finch-api-java/issues/505))
+* **client:** refactor multipart formdata impl ([#473](https://github.com/Finch-API/finch-api-java/issues/473))
+
+### Features
+
+* **api:** add new endpoints for pay statement items ([#526](https://github.com/Finch-API/finch-api-java/issues/526)) ([1ab19a3](https://github.com/Finch-API/finch-api-java/commit/1ab19a34148407ce143df4d49697af386e17f560))
+* **api:** api update ([#513](https://github.com/Finch-API/finch-api-java/issues/513)) ([5849824](https://github.com/Finch-API/finch-api-java/commit/5849824f4a7704255935cd6e13c1761427b8ca62))
+* **api:** api update ([#515](https://github.com/Finch-API/finch-api-java/issues/515)) ([dffd823](https://github.com/Finch-API/finch-api-java/commit/dffd823f5649b18ca44e06d5f0f8bcb68ba43879))
+* **api:** api update ([#517](https://github.com/Finch-API/finch-api-java/issues/517)) ([0123042](https://github.com/Finch-API/finch-api-java/commit/01230422dedfd1f4432fc84e4ed517eaf31319a9))
+* **api:** api update ([#520](https://github.com/Finch-API/finch-api-java/issues/520)) ([a6b3092](https://github.com/Finch-API/finch-api-java/commit/a6b3092d8ce9e17f78f267d36467ca2057e6ac1f))
+* **api:** api update ([#523](https://github.com/Finch-API/finch-api-java/issues/523)) ([842bb3f](https://github.com/Finch-API/finch-api-java/commit/842bb3fa15300004eea197bb5a8f57365f1eee78))
+* **api:** manual updates ([#477](https://github.com/Finch-API/finch-api-java/issues/477)) ([83f00bd](https://github.com/Finch-API/finch-api-java/commit/83f00bd2aadd9049da1d8365dfa9bdd03d52a159))
+* **api:** manual updates ([#527](https://github.com/Finch-API/finch-api-java/issues/527)) ([b5a2343](https://github.com/Finch-API/finch-api-java/commit/b5a2343b89278949689abdfb5b1303713ac57fbf))
+* **client:** accept `InputStream` and `Path` for file params ([#479](https://github.com/Finch-API/finch-api-java/issues/479)) ([721cd2c](https://github.com/Finch-API/finch-api-java/commit/721cd2c2696a8929f3b7bbe27ba5df82f872df4f))
+* **client:** add enum validation method ([1bd0c25](https://github.com/Finch-API/finch-api-java/commit/1bd0c2538ce50578fcd7ae51c944cdfb0736aa9b))
+* **client:** allow configuring timeouts granularly ([#470](https://github.com/Finch-API/finch-api-java/issues/470)) ([4d3b414](https://github.com/Finch-API/finch-api-java/commit/4d3b414c120045834dc829e12cbc185c88fe2764))
+* **client:** detect binary incompatible jackson versions ([#480](https://github.com/Finch-API/finch-api-java/issues/480)) ([fcf521a](https://github.com/Finch-API/finch-api-java/commit/fcf521a7e262ad96d7f3703114b221a4d2622d50))
+* **client:** expose request body setter and getter ([#524](https://github.com/Finch-API/finch-api-java/issues/524)) ([1b97fe6](https://github.com/Finch-API/finch-api-java/commit/1b97fe6e3dc9b0e83c9f267fd37e985258b958e5))
+* **client:** make datetime deserialization more lenient ([#522](https://github.com/Finch-API/finch-api-java/issues/522)) ([c7265b7](https://github.com/Finch-API/finch-api-java/commit/c7265b7fec4baacc24dba2415a9bb734731a46e3))
+* **client:** make union deserialization more robust ([#521](https://github.com/Finch-API/finch-api-java/issues/521)) ([1bd0c25](https://github.com/Finch-API/finch-api-java/commit/1bd0c2538ce50578fcd7ae51c944cdfb0736aa9b))
+* **client:** support a lower jackson version ([#512](https://github.com/Finch-API/finch-api-java/issues/512)) ([2897011](https://github.com/Finch-API/finch-api-java/commit/289701192191a42ca4f28eabb6ac73651f7d9909))
+* **client:** support raw response access ([#471](https://github.com/Finch-API/finch-api-java/issues/471)) ([481c99c](https://github.com/Finch-API/finch-api-java/commit/481c99cf2bc062b137c99a69bfce289c3e570a5a))
+* **client:** throw on incompatible jackson version ([2897011](https://github.com/Finch-API/finch-api-java/commit/289701192191a42ca4f28eabb6ac73651f7d9909))
+* generate and publish docs ([#481](https://github.com/Finch-API/finch-api-java/issues/481)) ([c5c4196](https://github.com/Finch-API/finch-api-java/commit/c5c4196d609a6db22887e580ad14323506f0aa2a))
+
+
+### Bug Fixes
+
+* **client:** don't call `validate()` during deserialization if we don't have to ([#516](https://github.com/Finch-API/finch-api-java/issues/516)) ([e988e9d](https://github.com/Finch-API/finch-api-java/commit/e988e9da5f57c5d201021842312fd60ae4c41ae1))
+* **client:** limit json deserialization coercion ([#518](https://github.com/Finch-API/finch-api-java/issues/518)) ([0bd7dd5](https://github.com/Finch-API/finch-api-java/commit/0bd7dd5974c4d30f0adc02b6af1f4f227d2c743e))
+* **client:** map deserialization bug ([8d03e6d](https://github.com/Finch-API/finch-api-java/commit/8d03e6dd61fa910bcd9788a58ad4cbd0141356ac))
+* **client:** return `Optional&lt;T&gt;` instead of `Optional<? extends T>` ([#529](https://github.com/Finch-API/finch-api-java/issues/529)) ([8b601dc](https://github.com/Finch-API/finch-api-java/commit/8b601dc398296e351a1f0590ef858063fec9f48a))
+* **client:** support kotlin 1.8 runtime ([#502](https://github.com/Finch-API/finch-api-java/issues/502)) ([0fb2cbc](https://github.com/Finch-API/finch-api-java/commit/0fb2cbc5711394b6f823e5e9c985cd64b11bbc21))
+* compilation error ([ebc6f30](https://github.com/Finch-API/finch-api-java/commit/ebc6f30543123460b1c6f297c6c1ad32453ff77c))
+* pluralize `list` response variables ([#519](https://github.com/Finch-API/finch-api-java/issues/519)) ([17c4e8f](https://github.com/Finch-API/finch-api-java/commit/17c4e8fbbf4698f67ddcfedb383d677e5e5a9d1d))
+* **tests:** fix jackson attributes ([3ccd785](https://github.com/Finch-API/finch-api-java/commit/3ccd785da8291d41d74aa71bfaa604b5a38295b6))
+
+
+### Performance Improvements
+
+* **client:** cached parsed type in `HttpResponseFor` ([#525](https://github.com/Finch-API/finch-api-java/issues/525)) ([16616bf](https://github.com/Finch-API/finch-api-java/commit/16616bf6a5dab5996375d41d9b8404fb2928ac89))
+
+
+### Chores
+
+* **client:** expose `Optional`, not nullable, from `ClientOptions` ([#476](https://github.com/Finch-API/finch-api-java/issues/476)) ([fc827bc](https://github.com/Finch-API/finch-api-java/commit/fc827bc6bd38e80bf7f09b241e559e46d7adcf2a))
+* **client:** refactor exception structure and methods ([#505](https://github.com/Finch-API/finch-api-java/issues/505)) ([4be4f06](https://github.com/Finch-API/finch-api-java/commit/4be4f068408cf19a55f8fcc1b64aac6fc24fd73d))
+* **client:** refactor multipart formdata impl ([#473](https://github.com/Finch-API/finch-api-java/issues/473)) ([7cb2a7f](https://github.com/Finch-API/finch-api-java/commit/7cb2a7f642d7bcaf67deec5d5f355682fe9b8e3e))
+* **client:** remove unnecessary json state from some query param classes ([1bd0c25](https://github.com/Finch-API/finch-api-java/commit/1bd0c2538ce50578fcd7ae51c944cdfb0736aa9b))
+* **internal:** add `.kotlin` to `.gitignore` ([#483](https://github.com/Finch-API/finch-api-java/issues/483)) ([473058a](https://github.com/Finch-API/finch-api-java/commit/473058a82d86a318c3c467d60e6cedfcd416fb22))
+* **internal:** add generated comment ([#496](https://github.com/Finch-API/finch-api-java/issues/496)) ([9543169](https://github.com/Finch-API/finch-api-java/commit/9543169b8b1af2c39666c6be1df6ea40f0e1a67f))
+* **internal:** add invalid json deserialization tests ([1bd0c25](https://github.com/Finch-API/finch-api-java/commit/1bd0c2538ce50578fcd7ae51c944cdfb0736aa9b))
+* **internal:** add json roundtripping tests ([1bd0c25](https://github.com/Finch-API/finch-api-java/commit/1bd0c2538ce50578fcd7ae51c944cdfb0736aa9b))
+* **internal:** add some tests for union classes ([#501](https://github.com/Finch-API/finch-api-java/issues/501)) ([4aff498](https://github.com/Finch-API/finch-api-java/commit/4aff4981754d9336e20b29713c5b95a03819dfec))
+* **internal:** codegen related update ([60e5c13](https://github.com/Finch-API/finch-api-java/commit/60e5c131ff4b41265efd39bff4c29a6c1a4df442))
+* **internal:** codegen related update ([#469](https://github.com/Finch-API/finch-api-java/issues/469)) ([a308954](https://github.com/Finch-API/finch-api-java/commit/a3089549cd0743446d2b906db5fcd830f579ddd8))
+* **internal:** codegen related update ([#488](https://github.com/Finch-API/finch-api-java/issues/488)) ([5742de2](https://github.com/Finch-API/finch-api-java/commit/5742de269c36314324b0fb8f4214efb87af09dff))
+* **internal:** codegen related update ([#504](https://github.com/Finch-API/finch-api-java/issues/504)) ([9be38e0](https://github.com/Finch-API/finch-api-java/commit/9be38e0fce500731d023902658ec0fa8926b27e1))
+* **internal:** codegen related update ([#531](https://github.com/Finch-API/finch-api-java/issues/531)) ([433f15a](https://github.com/Finch-API/finch-api-java/commit/433f15ad426ef4e24d4ca9c0bf7254d2b6a859bc))
+* **internal:** delete duplicate tests ([d1b1bd2](https://github.com/Finch-API/finch-api-java/commit/d1b1bd2847f0ffa069f9d9bce5702f093b129797))
+* **internal:** delete unused methods and annotations ([#514](https://github.com/Finch-API/finch-api-java/issues/514)) ([8d03e6d](https://github.com/Finch-API/finch-api-java/commit/8d03e6dd61fa910bcd9788a58ad4cbd0141356ac))
+* **internal:** don't use `JvmOverloads` in interfaces ([0d38744](https://github.com/Finch-API/finch-api-java/commit/0d387447276d8cbe1dad8c4ab69fc6d72e5b36d6))
+* **internal:** fix example formatting ([#508](https://github.com/Finch-API/finch-api-java/issues/508)) ([89c25c1](https://github.com/Finch-API/finch-api-java/commit/89c25c19eca3db5ef766e64e605291d6dad69d05))
+* **internal:** generate more tests ([35fd786](https://github.com/Finch-API/finch-api-java/commit/35fd7864ce86a276116c74475f5654579f5fd7a2))
+* **internal:** make multipart assertions more robust ([f0417a8](https://github.com/Finch-API/finch-api-java/commit/f0417a891f12e01d7040af3ccb07e13f07ca8034))
+* **internal:** make test classes internal ([#495](https://github.com/Finch-API/finch-api-java/issues/495)) ([2048a6a](https://github.com/Finch-API/finch-api-java/commit/2048a6a29711b2436894c0498bcd97c89ce7ac4c))
+* **internal:** reenable warnings as errors ([#485](https://github.com/Finch-API/finch-api-java/issues/485)) ([0d38744](https://github.com/Finch-API/finch-api-java/commit/0d387447276d8cbe1dad8c4ab69fc6d72e5b36d6))
+* **internal:** refactor enum query param serialization ([#503](https://github.com/Finch-API/finch-api-java/issues/503)) ([8894d83](https://github.com/Finch-API/finch-api-java/commit/8894d8307db6b7bdc92319b6f356addec96c64a5))
+* **internal:** refactor query param serialization impl and tests ([#498](https://github.com/Finch-API/finch-api-java/issues/498)) ([6da412b](https://github.com/Finch-API/finch-api-java/commit/6da412b3e388bc9034c4ec7bdfd5579657b39a47))
+* **internal:** refactor some test assertions ([d1b1bd2](https://github.com/Finch-API/finch-api-java/commit/d1b1bd2847f0ffa069f9d9bce5702f093b129797))
+* **internal:** reformat some tests ([#500](https://github.com/Finch-API/finch-api-java/issues/500)) ([35fd786](https://github.com/Finch-API/finch-api-java/commit/35fd7864ce86a276116c74475f5654579f5fd7a2))
+* **internal:** remove unnecessary `assertNotNull` calls ([f0417a8](https://github.com/Finch-API/finch-api-java/commit/f0417a891f12e01d7040af3ccb07e13f07ca8034))
+* **internal:** remove unnecessary import ([#509](https://github.com/Finch-API/finch-api-java/issues/509)) ([4b12e68](https://github.com/Finch-API/finch-api-java/commit/4b12e6826583668726201f446ccb63bd4e97d51c))
+* **internal:** rename `getPathParam` ([#499](https://github.com/Finch-API/finch-api-java/issues/499)) ([d1b1bd2](https://github.com/Finch-API/finch-api-java/commit/d1b1bd2847f0ffa069f9d9bce5702f093b129797))
+* **internal:** reorder some params methodsc ([d1b1bd2](https://github.com/Finch-API/finch-api-java/commit/d1b1bd2847f0ffa069f9d9bce5702f093b129797))
+* **internal:** swap from `getNullable` to `getOptional` ([#528](https://github.com/Finch-API/finch-api-java/issues/528)) ([70033bd](https://github.com/Finch-API/finch-api-java/commit/70033bd2f85bbb1cccefbff8eb86193f912e92c2))
+* **internal:** use `getOrNull` instead of `orElse(null)` ([#484](https://github.com/Finch-API/finch-api-java/issues/484)) ([9c0806b](https://github.com/Finch-API/finch-api-java/commit/9c0806b3134e745134ee74cbeda97d2e80584c57))
+* **tests:** improve enum examples ([#532](https://github.com/Finch-API/finch-api-java/issues/532)) ([775392d](https://github.com/Finch-API/finch-api-java/commit/775392dc621cd9a1f297897b00aba7264c294e2a))
+
+
+### Documentation
+
+* add `build` method comments ([#497](https://github.com/Finch-API/finch-api-java/issues/497)) ([d199989](https://github.com/Finch-API/finch-api-java/commit/d199989894e98456e329085b6904bc58f889bae6))
+* add comments to `JsonField` classes ([8b601dc](https://github.com/Finch-API/finch-api-java/commit/8b601dc398296e351a1f0590ef858063fec9f48a))
+* add raw response readme documentation ([#474](https://github.com/Finch-API/finch-api-java/issues/474)) ([81a5824](https://github.com/Finch-API/finch-api-java/commit/81a5824dbff19ae8328a747aed49dc5ea1fbc2c8))
+* deduplicate and refine comments ([#494](https://github.com/Finch-API/finch-api-java/issues/494)) ([651b10e](https://github.com/Finch-API/finch-api-java/commit/651b10e981e1c1e182fce79205176e637930473b))
+* document `JsonValue` construction in readme ([#487](https://github.com/Finch-API/finch-api-java/issues/487)) ([e790ad5](https://github.com/Finch-API/finch-api-java/commit/e790ad57e21491a0edcada3ae2d544f3ae7eb35e))
+* document how to forcibly omit required field ([7989f32](https://github.com/Finch-API/finch-api-java/commit/7989f32f6893b9374514ccda99c88d8ab093bf11))
+* minor readme tweak ([#511](https://github.com/Finch-API/finch-api-java/issues/511)) ([12e8d47](https://github.com/Finch-API/finch-api-java/commit/12e8d474f44c2e32c74eed6beb57a8fa2080de03))
+* note required fields in `builder` javadoc ([#475](https://github.com/Finch-API/finch-api-java/issues/475)) ([2d0c4c8](https://github.com/Finch-API/finch-api-java/commit/2d0c4c8f7d3b629db18937db95415474b10f8bc9))
+* refine comments on multipart params ([#507](https://github.com/Finch-API/finch-api-java/issues/507)) ([f0417a8](https://github.com/Finch-API/finch-api-java/commit/f0417a891f12e01d7040af3ccb07e13f07ca8034))
+* revise readme docs about nested params ([#486](https://github.com/Finch-API/finch-api-java/issues/486)) ([3682e62](https://github.com/Finch-API/finch-api-java/commit/3682e62316dcbac48b8c2a7e3b1df8f19ae5d96e))
+* swap examples used in readme ([#530](https://github.com/Finch-API/finch-api-java/issues/530)) ([7989f32](https://github.com/Finch-API/finch-api-java/commit/7989f32f6893b9374514ccda99c88d8ab093bf11))
+* update readme exception docs ([#510](https://github.com/Finch-API/finch-api-java/issues/510)) ([949341a](https://github.com/Finch-API/finch-api-java/commit/949341a607502df838f4c062d4a4afaaa4bdf2b8))
+* update URLs from stainlessapi.com to stainless.com ([#467](https://github.com/Finch-API/finch-api-java/issues/467)) ([238b853](https://github.com/Finch-API/finch-api-java/commit/238b853b930f203759499a7d9540c35b586a3915))
+
 ## 4.2.0 (2025-02-27)
 
 Full Changelog: [v4.1.0...v4.2.0](https://github.com/Finch-API/finch-api-java/compare/v4.1.0...v4.2.0)

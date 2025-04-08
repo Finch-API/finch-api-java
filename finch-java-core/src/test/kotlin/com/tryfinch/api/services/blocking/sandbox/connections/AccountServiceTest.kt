@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class AccountServiceTest {
+internal class AccountServiceTest {
 
     @Test
     fun create() {
@@ -49,7 +49,7 @@ class AccountServiceTest {
         val account =
             accountService.update(
                 SandboxConnectionAccountUpdateParams.builder()
-                    .connectionStatus(ConnectionStatusType.PENDING)
+                    .connectionStatus(ConnectionStatusType.REAUTH)
                     .build()
             )
 

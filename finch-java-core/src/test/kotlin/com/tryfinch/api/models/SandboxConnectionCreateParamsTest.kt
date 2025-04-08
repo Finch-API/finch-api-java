@@ -2,11 +2,11 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxConnectionCreateParamsTest {
+internal class SandboxConnectionCreateParamsTest {
 
     @Test
     fun create() {
@@ -30,12 +30,11 @@ class SandboxConnectionCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
             .contains(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
         assertThat(body.employeeSize()).contains(0L)
-        assertThat(body.products()).contains(listOf("string"))
+        assertThat(body.products().getOrNull()).containsExactly("string")
     }
 
     @Test
@@ -44,7 +43,6 @@ class SandboxConnectionCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.providerId()).isEqualTo("provider_id")
     }
 }

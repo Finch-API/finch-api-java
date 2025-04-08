@@ -10,15 +10,15 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyPageAsync
@@ -71,24 +71,30 @@ private constructor(
         ) = HrisBenefitIndividualUnenrollManyPageAsync(individualsService, params, response)
     }
 
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("items")
-        private val items: JsonField<List<UnenrolledIndividual>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response(
+        private val items: JsonField<List<UnenrolledIndividual>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        fun items(): List<UnenrolledIndividual> = items.getNullable("items") ?: listOf()
+        @JsonCreator
+        private constructor(
+            @JsonProperty("items") items: JsonField<List<UnenrolledIndividual>> = JsonMissing.of()
+        ) : this(items, mutableMapOf())
+
+        fun items(): List<UnenrolledIndividual> = items.getOptional("items").getOrNull() ?: listOf()
 
         @JsonProperty("items")
         fun _items(): Optional<JsonField<List<UnenrolledIndividual>>> = Optional.ofNullable(items)
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         private var validated: Boolean = false
 
@@ -100,6 +106,14 @@ private constructor(
             items().map { it.validate() }
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
 
         fun toBuilder() = Builder().from(this)
 
@@ -118,6 +132,10 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of
+             * [HrisBenefitIndividualUnenrollManyPageAsync].
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -140,7 +158,12 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() = Response(items, additionalProperties.toImmutable())
+            /**
+             * Returns an immutable instance of [Response].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Response = Response(items, additionalProperties.toMutableMap())
         }
     }
 
