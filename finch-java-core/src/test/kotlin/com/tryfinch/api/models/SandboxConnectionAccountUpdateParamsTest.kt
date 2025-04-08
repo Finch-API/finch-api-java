@@ -10,7 +10,7 @@ internal class SandboxConnectionAccountUpdateParamsTest {
     @Test
     fun create() {
         SandboxConnectionAccountUpdateParams.builder()
-            .connectionStatus(ConnectionStatusType.PENDING)
+            .connectionStatus(ConnectionStatusType.REAUTH)
             .build()
     }
 
@@ -18,12 +18,12 @@ internal class SandboxConnectionAccountUpdateParamsTest {
     fun body() {
         val params =
             SandboxConnectionAccountUpdateParams.builder()
-                .connectionStatus(ConnectionStatusType.PENDING)
+                .connectionStatus(ConnectionStatusType.REAUTH)
                 .build()
 
         val body = params._body()
 
-        assertThat(body.connectionStatus()).contains(ConnectionStatusType.PENDING)
+        assertThat(body.connectionStatus()).contains(ConnectionStatusType.REAUTH)
     }
 
     @Test
