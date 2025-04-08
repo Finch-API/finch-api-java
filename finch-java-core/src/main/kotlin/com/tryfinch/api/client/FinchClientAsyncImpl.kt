@@ -178,20 +178,20 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
     }
 
     private data class GetAccessTokenParams(
-        @JsonProperty("client_id") val clientId: String,
-        @JsonProperty("client_secret") val clientSecret: String,
-        @JsonProperty("code") val code: String,
-        @JsonProperty("redirect_uri") val redirectUri: String?,
+        @get:JsonProperty("client_id") val clientId: String,
+        @get:JsonProperty("client_secret") val clientSecret: String,
+        @get:JsonProperty("code") val code: String,
+        @get:JsonProperty("redirect_uri") val redirectUri: String?,
     )
 
     private data class GetAccessTokenResponse(
-        @JsonProperty("access_token") val accessToken: String,
-        @JsonProperty("account_id") val accountId: String,
-        @JsonProperty("client_type") val clientType: String,
-        @JsonProperty("company_id") val companyId: String,
-        @JsonProperty("connection_type") val connectionType: String,
-        @JsonProperty("products") val products: List<String>,
-        @JsonProperty("provider_id") val providerId: String,
+        @get:JsonProperty("access_token") val accessToken: String,
+        @get:JsonProperty("account_id") val accountId: String,
+        @get:JsonProperty("client_type") val clientType: String,
+        @get:JsonProperty("company_id") val companyId: String,
+        @get:JsonProperty("connection_type") val connectionType: String,
+        @get:JsonProperty("products") val products: List<String>,
+        @get:JsonProperty("provider_id") val providerId: String,
     )
 
     override fun close() = clientOptions.httpClient.close()
