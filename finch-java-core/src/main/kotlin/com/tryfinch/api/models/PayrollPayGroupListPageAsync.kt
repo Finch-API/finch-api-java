@@ -2,56 +2,40 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.services.async.payroll.PayGroupServiceAsync
-import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
-import kotlin.jvm.optionals.getOrNull
 
 /** Read company pay groups and frequencies */
 class PayrollPayGroupListPageAsync
 private constructor(
     private val payGroupsService: PayGroupServiceAsync,
     private val params: PayrollPayGroupListParams,
-    private val response: Response,
+    private val items: List<PayGroupListResponse>,
 ) {
 
-    fun response(): Response = response
-
-    fun items(): List<PayGroupListResponse> = response().items()
+    /** Returns the response that this page was parsed from. */
+    fun items(): List<PayGroupListResponse> = items
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is PayrollPayGroupListPageAsync && payGroupsService == other.payGroupsService && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is PayrollPayGroupListPageAsync && payGroupsService == other.payGroupsService && params == other.params && items == other.items /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payGroupsService, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payGroupsService, params, items) /* spotless:on */
 
     override fun toString() =
-        "PayrollPayGroupListPageAsync{payGroupsService=$payGroupsService, params=$params, response=$response}"
+        "PayrollPayGroupListPageAsync{payGroupsService=$payGroupsService, params=$params, items=$items}"
 
-    fun hasNextPage(): Boolean {
-        return !items().isEmpty()
-    }
+    fun hasNextPage(): Boolean = items.isNotEmpty()
 
-    fun getNextPageParams(): Optional<PayrollPayGroupListParams> {
-        return Optional.empty()
-    }
+    fun getNextPageParams(): Optional<PayrollPayGroupListParams> = Optional.empty()
 
     fun getNextPage(): CompletableFuture<Optional<PayrollPayGroupListPageAsync>> {
         return getNextPageParams()
@@ -67,104 +51,8 @@ private constructor(
         fun of(
             payGroupsService: PayGroupServiceAsync,
             params: PayrollPayGroupListParams,
-            response: Response,
-        ) = PayrollPayGroupListPageAsync(payGroupsService, params, response)
-    }
-
-    class Response(
-        private val items: JsonField<List<PayGroupListResponse>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("items") items: JsonField<List<PayGroupListResponse>> = JsonMissing.of()
-        ) : this(items, mutableMapOf())
-
-        fun items(): List<PayGroupListResponse> = items.getOptional("items").getOrNull() ?: listOf()
-
-        @JsonProperty("items")
-        fun _items(): Optional<JsonField<List<PayGroupListResponse>>> = Optional.ofNullable(items)
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            items().map { it.validate() }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [PayrollPayGroupListPageAsync].
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var items: JsonField<List<PayGroupListResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun items(items: List<PayGroupListResponse>) = items(JsonField.of(items))
-
-            fun items(items: JsonField<List<PayGroupListResponse>>) = apply { this.items = items }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(items, additionalProperties.toMutableMap())
-        }
+            items: List<PayGroupListResponse>,
+        ) = PayrollPayGroupListPageAsync(payGroupsService, params, items)
     }
 
     class AutoPager(private val firstPage: PayrollPayGroupListPageAsync) {

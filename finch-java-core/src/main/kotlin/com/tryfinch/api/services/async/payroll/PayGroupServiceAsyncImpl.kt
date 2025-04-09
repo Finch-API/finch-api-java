@@ -109,9 +109,7 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
                                 PayrollPayGroupListPageAsync.of(
                                     PayGroupServiceAsyncImpl(clientOptions),
                                     params,
-                                    PayrollPayGroupListPageAsync.Response.builder()
-                                        .items(it)
-                                        .build(),
+                                    it,
                                 )
                             }
                     }

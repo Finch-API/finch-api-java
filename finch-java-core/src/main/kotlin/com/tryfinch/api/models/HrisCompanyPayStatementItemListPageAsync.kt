@@ -2,17 +2,7 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
-import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
@@ -29,12 +19,20 @@ class HrisCompanyPayStatementItemListPageAsync
 private constructor(
     private val payStatementItemService: PayStatementItemServiceAsync,
     private val params: HrisCompanyPayStatementItemListParams,
-    private val response: Response,
+    private val response: HrisCompanyPayStatementItemListPageResponse,
 ) {
 
-    fun response(): Response = response
+    /** Returns the response that this page was parsed from. */
+    fun response(): HrisCompanyPayStatementItemListPageResponse = response
 
-    fun responses(): List<PayStatementItemListResponse> = response().responses()
+    /**
+     * Delegates to [HrisCompanyPayStatementItemListPageResponse], but gracefully handles missing
+     * data.
+     *
+     * @see [HrisCompanyPayStatementItemListPageResponse.responses]
+     */
+    fun responses(): List<PayStatementItemListResponse> =
+        response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -49,13 +47,9 @@ private constructor(
     override fun toString() =
         "HrisCompanyPayStatementItemListPageAsync{payStatementItemService=$payStatementItemService, params=$params, response=$response}"
 
-    fun hasNextPage(): Boolean {
-        return !responses().isEmpty()
-    }
+    fun hasNextPage(): Boolean = responses().isNotEmpty()
 
-    fun getNextPageParams(): Optional<HrisCompanyPayStatementItemListParams> {
-        return Optional.empty()
-    }
+    fun getNextPageParams(): Optional<HrisCompanyPayStatementItemListParams> = Optional.empty()
 
     fun getNextPage(): CompletableFuture<Optional<HrisCompanyPayStatementItemListPageAsync>> {
         return getNextPageParams()
@@ -71,110 +65,8 @@ private constructor(
         fun of(
             payStatementItemService: PayStatementItemServiceAsync,
             params: HrisCompanyPayStatementItemListParams,
-            response: Response,
+            response: HrisCompanyPayStatementItemListPageResponse,
         ) = HrisCompanyPayStatementItemListPageAsync(payStatementItemService, params, response)
-    }
-
-    class Response(
-        private val responses: JsonField<List<PayStatementItemListResponse>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("responses")
-            responses: JsonField<List<PayStatementItemListResponse>> = JsonMissing.of()
-        ) : this(responses, mutableMapOf())
-
-        fun responses(): List<PayStatementItemListResponse> =
-            responses.getOptional("responses").getOrNull() ?: listOf()
-
-        @JsonProperty("responses")
-        fun _responses(): Optional<JsonField<List<PayStatementItemListResponse>>> =
-            Optional.ofNullable(responses)
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            responses().map { it.validate() }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{responses=$responses, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [HrisCompanyPayStatementItemListPageAsync].
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var responses: JsonField<List<PayStatementItemListResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.responses = page.responses
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun responses(responses: List<PayStatementItemListResponse>) =
-                responses(JsonField.of(responses))
-
-            fun responses(responses: JsonField<List<PayStatementItemListResponse>>) = apply {
-                this.responses = responses
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(responses, additionalProperties.toMutableMap())
-        }
     }
 
     class AutoPager(private val firstPage: HrisCompanyPayStatementItemListPageAsync) {

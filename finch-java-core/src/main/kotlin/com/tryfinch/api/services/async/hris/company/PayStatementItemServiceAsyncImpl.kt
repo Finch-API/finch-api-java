@@ -15,6 +15,7 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListPageAsync
+import com.tryfinch.api.models.HrisCompanyPayStatementItemListPageResponse
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListParams
 import com.tryfinch.api.services.async.hris.company.payStatementItem.RuleServiceAsync
 import com.tryfinch.api.services.async.hris.company.payStatementItem.RuleServiceAsyncImpl
@@ -51,8 +52,8 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
 
         override fun rules(): RuleServiceAsync.WithRawResponse = rules
 
-        private val listHandler: Handler<HrisCompanyPayStatementItemListPageAsync.Response> =
-            jsonHandler<HrisCompanyPayStatementItemListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<HrisCompanyPayStatementItemListPageResponse> =
+            jsonHandler<HrisCompanyPayStatementItemListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

@@ -29,6 +29,6 @@ internal class PaymentServiceTest {
                     .build()
             )
 
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 }
