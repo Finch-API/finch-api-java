@@ -79,11 +79,11 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
                                 }
                             }
                             .let {
-                                HrisCompanyPayStatementItemListPageAsync.of(
-                                    PayStatementItemServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                HrisCompanyPayStatementItemListPageAsync.builder()
+                                    .service(PayStatementItemServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

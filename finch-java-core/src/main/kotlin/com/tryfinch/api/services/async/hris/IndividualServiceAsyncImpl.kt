@@ -69,11 +69,11 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                                 }
                             }
                             .let {
-                                HrisIndividualRetrieveManyPageAsync.of(
-                                    IndividualServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                HrisIndividualRetrieveManyPageAsync.builder()
+                                    .service(IndividualServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

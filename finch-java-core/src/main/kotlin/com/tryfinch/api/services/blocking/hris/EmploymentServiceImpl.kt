@@ -66,11 +66,11 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
                         }
                     }
                     .let {
-                        HrisEmploymentRetrieveManyPage.of(
-                            EmploymentServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisEmploymentRetrieveManyPage.builder()
+                            .service(EmploymentServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
