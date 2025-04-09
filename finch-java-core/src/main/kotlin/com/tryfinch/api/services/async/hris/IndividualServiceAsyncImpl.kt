@@ -16,6 +16,7 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.HrisIndividualRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisIndividualRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
@@ -40,8 +41,8 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageAsync.Response> =
-            jsonHandler<HrisIndividualRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
+        private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageResponse> =
+            jsonHandler<HrisIndividualRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun retrieveMany(

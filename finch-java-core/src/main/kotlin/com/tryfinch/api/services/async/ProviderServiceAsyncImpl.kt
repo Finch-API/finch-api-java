@@ -69,7 +69,7 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
                                 ProviderListPageAsync.of(
                                     ProviderServiceAsyncImpl(clientOptions),
                                     params,
-                                    ProviderListPageAsync.Response.builder().items(it).build(),
+                                    it,
                                 )
                             }
                     }

@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleCreateParams
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleDeleteParams
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleListPage
+import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleListPageResponse
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleListParams
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleUpdateParams
 import com.tryfinch.api.models.RuleCreateResponse
@@ -119,8 +120,8 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             }
         }
 
-        private val listHandler: Handler<HrisCompanyPayStatementItemRuleListPage.Response> =
-            jsonHandler<HrisCompanyPayStatementItemRuleListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<HrisCompanyPayStatementItemRuleListPageResponse> =
+            jsonHandler<HrisCompanyPayStatementItemRuleListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(

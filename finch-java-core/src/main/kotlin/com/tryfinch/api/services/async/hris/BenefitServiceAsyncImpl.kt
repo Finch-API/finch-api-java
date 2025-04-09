@@ -28,6 +28,7 @@ import com.tryfinch.api.models.HrisBenefitUpdateParams
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsyncImpl
+import java.util.Optional
 import java.util.concurrent.CompletableFuture
 
 class BenefitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -212,7 +213,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                                 HrisBenefitListPageAsync.of(
                                     BenefitServiceAsyncImpl(clientOptions),
                                     params,
-                                    HrisBenefitListPageAsync.Response.builder().items(it).build(),
+                                    it,
                                 )
                             }
                     }
@@ -220,8 +221,10 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
         }
 
         private val listSupportedBenefitsHandler:
-            Handler<List<BenefitListSupportedBenefitsResponse>> =
-            jsonHandler<List<BenefitListSupportedBenefitsResponse>>(clientOptions.jsonMapper)
+            Handler<Optional<List<BenefitListSupportedBenefitsResponse>>> =
+            jsonHandler<Optional<List<BenefitListSupportedBenefitsResponse>>>(
+                    clientOptions.jsonMapper
+                )
                 .withErrorHandler(errorHandler)
 
         override fun listSupportedBenefits(
@@ -250,9 +253,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                                 HrisBenefitListSupportedBenefitsPageAsync.of(
                                     BenefitServiceAsyncImpl(clientOptions),
                                     params,
-                                    HrisBenefitListSupportedBenefitsPageAsync.Response.builder()
-                                        .items(it)
-                                        .build(),
+                                    it,
                                 )
                             }
                     }
