@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsync
 import java.util.Objects
 import java.util.Optional
@@ -10,20 +11,13 @@ import java.util.concurrent.Executor
 import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Read detailed pay statements for each individual.
- *
- * Deduction and contribution types are supported by the payroll systems that supports Benefits.
- */
+/** @see [PayStatementServiceAsync.retrieveMany] */
 class HrisPayStatementRetrieveManyPageAsync
 private constructor(
-    private val payStatementsService: PayStatementServiceAsync,
+    private val service: PayStatementServiceAsync,
     private val params: HrisPayStatementRetrieveManyParams,
     private val response: HrisPayStatementRetrieveManyPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): HrisPayStatementRetrieveManyPageResponse = response
 
     /**
      * Delegates to [HrisPayStatementRetrieveManyPageResponse], but gracefully handles missing data.
@@ -33,39 +27,87 @@ private constructor(
     fun responses(): List<PayStatementResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisPayStatementRetrieveManyPageAsync && payStatementsService == other.payStatementsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payStatementsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisPayStatementRetrieveManyPageAsync{payStatementsService=$payStatementsService, params=$params, response=$response}"
-
     fun hasNextPage(): Boolean = responses().isNotEmpty()
 
     fun getNextPageParams(): Optional<HrisPayStatementRetrieveManyParams> = Optional.empty()
 
-    fun getNextPage(): CompletableFuture<Optional<HrisPayStatementRetrieveManyPageAsync>> {
-        return getNextPageParams()
-            .map { payStatementsService.retrieveMany(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<HrisPayStatementRetrieveManyPageAsync>> =
+        getNextPageParams()
+            .map { service.retrieveMany(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisPayStatementRetrieveManyParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisPayStatementRetrieveManyPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            payStatementsService: PayStatementServiceAsync,
-            params: HrisPayStatementRetrieveManyParams,
-            response: HrisPayStatementRetrieveManyPageResponse,
-        ) = HrisPayStatementRetrieveManyPageAsync(payStatementsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisPayStatementRetrieveManyPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [HrisPayStatementRetrieveManyPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: PayStatementServiceAsync? = null
+        private var params: HrisPayStatementRetrieveManyParams? = null
+        private var response: HrisPayStatementRetrieveManyPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(
+            hrisPayStatementRetrieveManyPageAsync: HrisPayStatementRetrieveManyPageAsync
+        ) = apply {
+            service = hrisPayStatementRetrieveManyPageAsync.service
+            params = hrisPayStatementRetrieveManyPageAsync.params
+            response = hrisPayStatementRetrieveManyPageAsync.response
+        }
+
+        fun service(service: PayStatementServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisPayStatementRetrieveManyParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: HrisPayStatementRetrieveManyPageResponse) = apply {
+            this.response = response
+        }
+
+        /**
+         * Returns an immutable instance of [HrisPayStatementRetrieveManyPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisPayStatementRetrieveManyPageAsync =
+            HrisPayStatementRetrieveManyPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisPayStatementRetrieveManyPageAsync) {
@@ -96,4 +138,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisPayStatementRetrieveManyPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisPayStatementRetrieveManyPageAsync{service=$service, params=$params, response=$response}"
 }

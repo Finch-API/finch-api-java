@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.BenefitServiceAsync
 import java.util.Objects
 import java.util.Optional
@@ -9,50 +10,90 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
 
-/** List all company-wide deductions and contributions. */
+/** @see [BenefitServiceAsync.list] */
 class HrisBenefitListPageAsync
 private constructor(
-    private val benefitsService: BenefitServiceAsync,
+    private val service: BenefitServiceAsync,
     private val params: HrisBenefitListParams,
     private val items: List<CompanyBenefit>,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun items(): List<CompanyBenefit> = items
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisBenefitListPageAsync && benefitsService == other.benefitsService && params == other.params && items == other.items /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitsService, params, items) /* spotless:on */
-
-    override fun toString() =
-        "HrisBenefitListPageAsync{benefitsService=$benefitsService, params=$params, items=$items}"
 
     fun hasNextPage(): Boolean = items.isNotEmpty()
 
     fun getNextPageParams(): Optional<HrisBenefitListParams> = Optional.empty()
 
-    fun getNextPage(): CompletableFuture<Optional<HrisBenefitListPageAsync>> {
-        return getNextPageParams()
-            .map { benefitsService.list(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<HrisBenefitListPageAsync>> =
+        getNextPageParams()
+            .map { service.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisBenefitListParams = params
+
+    /** The response that this page was parsed from. */
+    fun items(): List<CompanyBenefit> = items
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            benefitsService: BenefitServiceAsync,
-            params: HrisBenefitListParams,
-            items: List<CompanyBenefit>,
-        ) = HrisBenefitListPageAsync(benefitsService, params, items)
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisBenefitListPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [HrisBenefitListPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: BenefitServiceAsync? = null
+        private var params: HrisBenefitListParams? = null
+        private var items: List<CompanyBenefit>? = null
+
+        @JvmSynthetic
+        internal fun from(hrisBenefitListPageAsync: HrisBenefitListPageAsync) = apply {
+            service = hrisBenefitListPageAsync.service
+            params = hrisBenefitListPageAsync.params
+            items = hrisBenefitListPageAsync.items
+        }
+
+        fun service(service: BenefitServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisBenefitListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun items(items: List<CompanyBenefit>) = apply { this.items = items }
+
+        /**
+         * Returns an immutable instance of [HrisBenefitListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisBenefitListPageAsync =
+            HrisBenefitListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
+            )
     }
 
     class AutoPager(private val firstPage: HrisBenefitListPageAsync) {
@@ -83,4 +124,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisBenefitListPageAsync && service == other.service && params == other.params && items == other.items /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, items) /* spotless:on */
+
+    override fun toString() =
+        "HrisBenefitListPageAsync{service=$service, params=$params, items=$items}"
 }

@@ -76,11 +76,11 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
                         }
                     }
                     .let {
-                        HrisCompanyPayStatementItemListPage.of(
-                            PayStatementItemServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisCompanyPayStatementItemListPage.builder()
+                            .service(PayStatementItemServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

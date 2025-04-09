@@ -145,11 +145,11 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                         }
                     }
                     .let {
-                        HrisCompanyPayStatementItemRuleListPage.of(
-                            RuleServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisCompanyPayStatementItemRuleListPage.builder()
+                            .service(RuleServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
