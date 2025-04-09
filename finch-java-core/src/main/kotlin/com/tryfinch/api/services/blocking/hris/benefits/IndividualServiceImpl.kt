@@ -18,7 +18,6 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPage
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyPage
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
@@ -50,7 +49,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
     override fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions,
-    ): HrisBenefitIndividualUnenrollManyPage =
+    ): IndividualUnenrollManyResponse =
         // delete /employer/benefits/{benefit_id}/individuals
         withRawResponse().unenrollMany(params, requestOptions).parse()
 
@@ -120,14 +119,14 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
             }
         }
 
-        private val unenrollManyHandler: Handler<List<IndividualUnenrollManyResponse>> =
-            jsonHandler<List<IndividualUnenrollManyResponse>>(clientOptions.jsonMapper)
+        private val unenrollManyHandler: Handler<IndividualUnenrollManyResponse> =
+            jsonHandler<IndividualUnenrollManyResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<HrisBenefitIndividualUnenrollManyPage> {
+        ): HttpResponseFor<IndividualUnenrollManyResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
@@ -142,15 +141,8 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                     .use { unenrollManyHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
-                            it.forEach { it.validate() }
+                            it.validate()
                         }
-                    }
-                    .let {
-                        HrisBenefitIndividualUnenrollManyPage.of(
-                            IndividualServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
                     }
             }
         }
