@@ -18,13 +18,15 @@ import java.util.Objects
 class CreateCompanyBenefitsResponse
 private constructor(
     private val benefitId: JsonField<String>,
+    private val jobId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("benefit_id") @ExcludeMissing benefitId: JsonField<String> = JsonMissing.of()
-    ) : this(benefitId, mutableMapOf())
+        @JsonProperty("benefit_id") @ExcludeMissing benefitId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
+    ) : this(benefitId, jobId, mutableMapOf())
 
     /**
      * The id of the benefit.
@@ -35,11 +37,24 @@ private constructor(
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
     /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun jobId(): String = jobId.getRequired("job_id")
+
+    /**
      * Returns the raw JSON value of [benefitId].
      *
      * Unlike [benefitId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
+
+    /**
+     * Returns the raw JSON value of [jobId].
+     *
+     * Unlike [jobId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -62,6 +77,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .benefitId()
+         * .jobId()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -71,11 +87,13 @@ private constructor(
     class Builder internal constructor() {
 
         private var benefitId: JsonField<String>? = null
+        private var jobId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(createCompanyBenefitsResponse: CreateCompanyBenefitsResponse) = apply {
             benefitId = createCompanyBenefitsResponse.benefitId
+            jobId = createCompanyBenefitsResponse.jobId
             additionalProperties = createCompanyBenefitsResponse.additionalProperties.toMutableMap()
         }
 
@@ -90,6 +108,16 @@ private constructor(
          * value.
          */
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
+
+        fun jobId(jobId: String) = jobId(JsonField.of(jobId))
+
+        /**
+         * Sets [Builder.jobId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -118,6 +146,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .benefitId()
+         * .jobId()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -125,6 +154,7 @@ private constructor(
         fun build(): CreateCompanyBenefitsResponse =
             CreateCompanyBenefitsResponse(
                 checkRequired("benefitId", benefitId),
+                checkRequired("jobId", jobId),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -137,6 +167,7 @@ private constructor(
         }
 
         benefitId()
+        jobId()
         validated = true
     }
 
@@ -153,22 +184,24 @@ private constructor(
      *
      * Used for best match union deserialization.
      */
-    @JvmSynthetic internal fun validity(): Int = (if (benefitId.asKnown().isPresent) 1 else 0)
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (benefitId.asKnown().isPresent) 1 else 0) + (if (jobId.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is CreateCompanyBenefitsResponse && benefitId == other.benefitId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is CreateCompanyBenefitsResponse && benefitId == other.benefitId && jobId == other.jobId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(benefitId, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(benefitId, jobId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CreateCompanyBenefitsResponse{benefitId=$benefitId, additionalProperties=$additionalProperties}"
+        "CreateCompanyBenefitsResponse{benefitId=$benefitId, jobId=$jobId, additionalProperties=$additionalProperties}"
 }

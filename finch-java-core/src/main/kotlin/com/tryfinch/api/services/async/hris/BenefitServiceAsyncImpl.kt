@@ -15,6 +15,7 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
+import com.tryfinch.api.models.BenefitListSupportedBenefitsResponse
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
 import com.tryfinch.api.models.HrisBenefitCreateParams
@@ -24,7 +25,6 @@ import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
-import com.tryfinch.api.models.SupportedBenefit
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsyncImpl
@@ -219,8 +219,9 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 }
         }
 
-        private val listSupportedBenefitsHandler: Handler<List<SupportedBenefit>> =
-            jsonHandler<List<SupportedBenefit>>(clientOptions.jsonMapper)
+        private val listSupportedBenefitsHandler:
+            Handler<List<BenefitListSupportedBenefitsResponse>> =
+            jsonHandler<List<BenefitListSupportedBenefitsResponse>>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun listSupportedBenefits(
@@ -242,7 +243,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .use { listSupportedBenefitsHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
-                                    it.forEach { it.validate() }
+                                    it.ifPresent { it.forEach { it.validate() } }
                                 }
                             }
                             .let {

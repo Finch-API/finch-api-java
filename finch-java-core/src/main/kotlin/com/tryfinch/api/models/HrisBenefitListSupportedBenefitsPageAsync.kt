@@ -30,7 +30,7 @@ private constructor(
 
     fun response(): Response = response
 
-    fun items(): List<SupportedBenefit> = response().items()
+    fun items(): List<BenefitListSupportedBenefitsResponse> = response().items()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -72,19 +72,22 @@ private constructor(
     }
 
     class Response(
-        private val items: JsonField<List<SupportedBenefit>>,
+        private val items: JsonField<List<BenefitListSupportedBenefitsResponse>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("items") items: JsonField<List<SupportedBenefit>> = JsonMissing.of()
+            @JsonProperty("items")
+            items: JsonField<List<BenefitListSupportedBenefitsResponse>> = JsonMissing.of()
         ) : this(items, mutableMapOf())
 
-        fun items(): List<SupportedBenefit> = items.getOptional("items").getOrNull() ?: listOf()
+        fun items(): List<BenefitListSupportedBenefitsResponse> =
+            items.getOptional("items").getOrNull() ?: listOf()
 
         @JsonProperty("items")
-        fun _items(): Optional<JsonField<List<SupportedBenefit>>> = Optional.ofNullable(items)
+        fun _items(): Optional<JsonField<List<BenefitListSupportedBenefitsResponse>>> =
+            Optional.ofNullable(items)
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -141,7 +144,8 @@ private constructor(
 
         class Builder {
 
-            private var items: JsonField<List<SupportedBenefit>> = JsonMissing.of()
+            private var items: JsonField<List<BenefitListSupportedBenefitsResponse>> =
+                JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -150,9 +154,12 @@ private constructor(
                 this.additionalProperties.putAll(page.additionalProperties)
             }
 
-            fun items(items: List<SupportedBenefit>) = items(JsonField.of(items))
+            fun items(items: List<BenefitListSupportedBenefitsResponse>) =
+                items(JsonField.of(items))
 
-            fun items(items: JsonField<List<SupportedBenefit>>) = apply { this.items = items }
+            fun items(items: JsonField<List<BenefitListSupportedBenefitsResponse>>) = apply {
+                this.items = items
+            }
 
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
@@ -170,11 +177,11 @@ private constructor(
     class AutoPager(private val firstPage: HrisBenefitListSupportedBenefitsPageAsync) {
 
         fun forEach(
-            action: Predicate<SupportedBenefit>,
+            action: Predicate<BenefitListSupportedBenefitsResponse>,
             executor: Executor,
         ): CompletableFuture<Void> {
             fun CompletableFuture<Optional<HrisBenefitListSupportedBenefitsPageAsync>>.forEach(
-                action: (SupportedBenefit) -> Boolean,
+                action: (BenefitListSupportedBenefitsResponse) -> Boolean,
                 executor: Executor,
             ): CompletableFuture<Void> =
                 thenComposeAsync(
@@ -190,8 +197,10 @@ private constructor(
                 .forEach(action::test, executor)
         }
 
-        fun toList(executor: Executor): CompletableFuture<List<SupportedBenefit>> {
-            val values = mutableListOf<SupportedBenefit>()
+        fun toList(
+            executor: Executor
+        ): CompletableFuture<List<BenefitListSupportedBenefitsResponse>> {
+            val values = mutableListOf<BenefitListSupportedBenefitsResponse>()
             return forEach(values::add, executor).thenApply { values }
         }
     }
