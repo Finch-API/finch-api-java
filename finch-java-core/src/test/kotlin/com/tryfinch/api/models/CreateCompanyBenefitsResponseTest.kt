@@ -14,9 +14,12 @@ internal class CreateCompanyBenefitsResponseTest {
         val createCompanyBenefitsResponse =
             CreateCompanyBenefitsResponse.builder()
                 .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         assertThat(createCompanyBenefitsResponse.benefitId())
+            .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(createCompanyBenefitsResponse.jobId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 
@@ -26,6 +29,7 @@ internal class CreateCompanyBenefitsResponseTest {
         val createCompanyBenefitsResponse =
             CreateCompanyBenefitsResponse.builder()
                 .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         val roundtrippedCreateCompanyBenefitsResponse =
