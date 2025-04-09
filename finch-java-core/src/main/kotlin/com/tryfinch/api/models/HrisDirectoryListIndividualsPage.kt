@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.DirectoryService
 import java.util.Objects
 import java.util.Optional
@@ -10,17 +11,14 @@ import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrDefault
 import kotlin.jvm.optionals.getOrNull
 
-/** Read company directory and organization structure */
+/** @see [DirectoryService.listIndividuals] */
 @Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPage
 private constructor(
-    private val directoryService: DirectoryService,
+    private val service: DirectoryService,
     private val params: HrisDirectoryListIndividualsParams,
     private val response: HrisDirectoryListIndividualsPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): HrisDirectoryListIndividualsPageResponse = response
 
     /**
      * Delegates to [HrisDirectoryListIndividualsPageResponse], but gracefully handles missing data.
@@ -36,19 +34,6 @@ private constructor(
      * @see [HrisDirectoryListIndividualsPageResponse.paging]
      */
     fun paging(): Optional<Paging> = response._paging().getOptional("paging")
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisDirectoryListIndividualsPage && directoryService == other.directoryService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(directoryService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisDirectoryListIndividualsPage{directoryService=$directoryService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         if (individuals().isEmpty()) {
@@ -70,20 +55,80 @@ private constructor(
         return Optional.of(params.toBuilder().offset(offset + individuals().size).build())
     }
 
-    fun getNextPage(): Optional<HrisDirectoryListIndividualsPage> {
-        return getNextPageParams().map { directoryService.listIndividuals(it) }
-    }
+    fun getNextPage(): Optional<HrisDirectoryListIndividualsPage> =
+        getNextPageParams().map { service.listIndividuals(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisDirectoryListIndividualsParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisDirectoryListIndividualsPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            directoryService: DirectoryService,
-            params: HrisDirectoryListIndividualsParams,
-            response: HrisDirectoryListIndividualsPageResponse,
-        ) = HrisDirectoryListIndividualsPage(directoryService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisDirectoryListIndividualsPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [HrisDirectoryListIndividualsPage]. */
+    class Builder internal constructor() {
+
+        private var service: DirectoryService? = null
+        private var params: HrisDirectoryListIndividualsParams? = null
+        private var response: HrisDirectoryListIndividualsPageResponse? = null
+
+        @JvmSynthetic
+        internal fun from(hrisDirectoryListIndividualsPage: HrisDirectoryListIndividualsPage) =
+            apply {
+                service = hrisDirectoryListIndividualsPage.service
+                params = hrisDirectoryListIndividualsPage.params
+                response = hrisDirectoryListIndividualsPage.response
+            }
+
+        fun service(service: DirectoryService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisDirectoryListIndividualsParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: HrisDirectoryListIndividualsPageResponse) = apply {
+            this.response = response
+        }
+
+        /**
+         * Returns an immutable instance of [HrisDirectoryListIndividualsPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisDirectoryListIndividualsPage =
+            HrisDirectoryListIndividualsPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisDirectoryListIndividualsPage) :
@@ -105,4 +150,17 @@ private constructor(
             return StreamSupport.stream(spliterator(), false)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisDirectoryListIndividualsPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisDirectoryListIndividualsPage{service=$service, params=$params, response=$response}"
 }

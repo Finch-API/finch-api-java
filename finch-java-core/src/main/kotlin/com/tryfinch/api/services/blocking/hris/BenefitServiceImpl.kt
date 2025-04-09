@@ -195,7 +195,13 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                             it.forEach { it.validate() }
                         }
                     }
-                    .let { HrisBenefitListPage.of(BenefitServiceImpl(clientOptions), params, it) }
+                    .let {
+                        HrisBenefitListPage.builder()
+                            .service(BenefitServiceImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
+                    }
             }
         }
 
@@ -227,11 +233,11 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                         }
                     }
                     .let {
-                        HrisBenefitListSupportedBenefitsPage.of(
-                            BenefitServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisBenefitListSupportedBenefitsPage.builder()
+                            .service(BenefitServiceImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
                     }
             }
         }

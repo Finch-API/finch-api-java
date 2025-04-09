@@ -75,7 +75,11 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
                         }
                     }
                     .let {
-                        HrisDirectoryListPage.of(DirectoryServiceImpl(clientOptions), params, it)
+                        HrisDirectoryListPage.builder()
+                            .service(DirectoryServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
@@ -106,11 +110,11 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
                         }
                     }
                     .let {
-                        HrisDirectoryListIndividualsPage.of(
-                            DirectoryServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisDirectoryListIndividualsPage.builder()
+                            .service(DirectoryServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

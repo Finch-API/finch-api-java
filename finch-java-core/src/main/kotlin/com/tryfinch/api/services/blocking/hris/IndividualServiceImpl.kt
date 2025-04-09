@@ -66,11 +66,11 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                         }
                     }
                     .let {
-                        HrisIndividualRetrieveManyPage.of(
-                            IndividualServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisIndividualRetrieveManyPage.builder()
+                            .service(IndividualServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

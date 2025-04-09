@@ -155,11 +155,11 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                                 }
                             }
                             .let {
-                                HrisCompanyPayStatementItemRuleListPageAsync.of(
-                                    RuleServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                HrisCompanyPayStatementItemRuleListPageAsync.builder()
+                                    .service(RuleServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

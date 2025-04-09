@@ -110,11 +110,11 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                         }
                     }
                     .let {
-                        HrisBenefitIndividualRetrieveManyBenefitsPage.of(
-                            IndividualServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisBenefitIndividualRetrieveManyBenefitsPage.builder()
+                            .service(IndividualServiceImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
                     }
             }
         }

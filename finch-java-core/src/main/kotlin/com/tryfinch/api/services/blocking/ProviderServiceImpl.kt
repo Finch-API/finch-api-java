@@ -62,7 +62,13 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
                             it.forEach { it.validate() }
                         }
                     }
-                    .let { ProviderListPage.of(ProviderServiceImpl(clientOptions), params, it) }
+                    .let {
+                        ProviderListPage.builder()
+                            .service(ProviderServiceImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
+                    }
             }
         }
     }
