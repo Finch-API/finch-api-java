@@ -114,9 +114,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                         HrisBenefitIndividualRetrieveManyBenefitsPage.of(
                             IndividualServiceImpl(clientOptions),
                             params,
-                            HrisBenefitIndividualRetrieveManyBenefitsPage.Response.builder()
-                                .items(it)
-                                .build(),
+                            it,
                         )
                     }
             }
@@ -151,9 +149,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                         HrisBenefitIndividualUnenrollManyPage.of(
                             IndividualServiceImpl(clientOptions),
                             params,
-                            HrisBenefitIndividualUnenrollManyPage.Response.builder()
-                                .items(it)
-                                .build(),
+                            it,
                         )
                     }
             }

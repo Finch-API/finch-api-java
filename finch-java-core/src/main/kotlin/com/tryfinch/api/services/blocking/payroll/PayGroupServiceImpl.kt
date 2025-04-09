@@ -100,11 +100,7 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
                         }
                     }
                     .let {
-                        PayrollPayGroupListPage.of(
-                            PayGroupServiceImpl(clientOptions),
-                            params,
-                            PayrollPayGroupListPage.Response.builder().items(it).build(),
-                        )
+                        PayrollPayGroupListPage.of(PayGroupServiceImpl(clientOptions), params, it)
                     }
             }
         }

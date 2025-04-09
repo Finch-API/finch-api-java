@@ -88,7 +88,7 @@ internal class BenefitServiceAsyncTest {
         val pageFuture = benefitServiceAsync.list()
 
         val page = pageFuture.get()
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 
     @Test
@@ -103,6 +103,6 @@ internal class BenefitServiceAsyncTest {
         val pageFuture = benefitServiceAsync.listSupportedBenefits()
 
         val page = pageFuture.get()
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 }
