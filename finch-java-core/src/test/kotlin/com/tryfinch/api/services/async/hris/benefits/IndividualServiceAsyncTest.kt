@@ -60,12 +60,15 @@ internal class IndividualServiceAsyncTest {
                 .build()
         val individualServiceAsync = client.hris().benefits().individuals()
 
-        val pageFuture =
+        val responseFuture =
             individualServiceAsync.unenrollMany(
-                HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+                HrisBenefitIndividualUnenrollManyParams.builder()
+                    .benefitId("benefit_id")
+                    .addIndividualId("string")
+                    .build()
             )
 
-        val page = pageFuture.get()
-        page.items().forEach { it.validate() }
+        val response = responseFuture.get()
+        response.validate()
     }
 }
