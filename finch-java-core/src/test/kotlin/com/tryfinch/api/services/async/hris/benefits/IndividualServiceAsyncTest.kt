@@ -60,7 +60,7 @@ internal class IndividualServiceAsyncTest {
                 .build()
         val individualServiceAsync = client.hris().benefits().individuals()
 
-        val responseFuture =
+        val unenrolledIndividualBenefitResponseFuture =
             individualServiceAsync.unenrollMany(
                 HrisBenefitIndividualUnenrollManyParams.builder()
                     .benefitId("benefit_id")
@@ -68,7 +68,7 @@ internal class IndividualServiceAsyncTest {
                     .build()
             )
 
-        val response = responseFuture.get()
-        response.validate()
+        val unenrolledIndividualBenefitResponse = unenrolledIndividualBenefitResponseFuture.get()
+        unenrolledIndividualBenefitResponse.validate()
     }
 }

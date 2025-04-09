@@ -10,7 +10,7 @@ import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsyn
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
-import com.tryfinch.api.models.IndividualUnenrollManyResponse
+import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
 import java.util.concurrent.CompletableFuture
 
 interface IndividualServiceAsync {
@@ -46,14 +46,14 @@ interface IndividualServiceAsync {
     /** Unenroll individuals from a deduction or contribution */
     fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams
-    ): CompletableFuture<IndividualUnenrollManyResponse> =
+    ): CompletableFuture<UnenrolledIndividualBenefitResponse> =
         unenrollMany(params, RequestOptions.none())
 
     /** @see [unenrollMany] */
     fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<IndividualUnenrollManyResponse>
+    ): CompletableFuture<UnenrolledIndividualBenefitResponse>
 
     /**
      * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
@@ -102,7 +102,7 @@ interface IndividualServiceAsync {
         @MustBeClosed
         fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams
-        ): CompletableFuture<HttpResponseFor<IndividualUnenrollManyResponse>> =
+        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>> =
             unenrollMany(params, RequestOptions.none())
 
         /** @see [unenrollMany] */
@@ -110,6 +110,6 @@ interface IndividualServiceAsync {
         fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<IndividualUnenrollManyResponse>>
+        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>>
     }
 }
