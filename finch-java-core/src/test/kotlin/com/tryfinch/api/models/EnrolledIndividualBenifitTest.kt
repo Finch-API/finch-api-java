@@ -7,34 +7,33 @@ import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class IndividualUnenrollManyResponseTest {
+internal class EnrolledIndividualBenifitTest {
 
     @Test
     fun create() {
-        val individualUnenrollManyResponse =
-            IndividualUnenrollManyResponse.builder()
+        val enrolledIndividualBenifit =
+            EnrolledIndividualBenifit.builder()
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
-        assertThat(individualUnenrollManyResponse.jobId())
+        assertThat(enrolledIndividualBenifit.jobId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val individualUnenrollManyResponse =
-            IndividualUnenrollManyResponse.builder()
+        val enrolledIndividualBenifit =
+            EnrolledIndividualBenifit.builder()
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
-        val roundtrippedIndividualUnenrollManyResponse =
+        val roundtrippedEnrolledIndividualBenifit =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(individualUnenrollManyResponse),
-                jacksonTypeRef<IndividualUnenrollManyResponse>(),
+                jsonMapper.writeValueAsString(enrolledIndividualBenifit),
+                jacksonTypeRef<EnrolledIndividualBenifit>(),
             )
 
-        assertThat(roundtrippedIndividualUnenrollManyResponse)
-            .isEqualTo(individualUnenrollManyResponse)
+        assertThat(roundtrippedEnrolledIndividualBenifit).isEqualTo(enrolledIndividualBenifit)
     }
 }
