@@ -15,7 +15,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
-class EnrolledIndividualBenefit
+class EnrolledIndividualBenefitResponse
 private constructor(
     private val jobId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -54,7 +54,8 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [EnrolledIndividualBenefit].
+         * Returns a mutable builder for constructing an instance of
+         * [EnrolledIndividualBenefitResponse].
          *
          * The following fields are required:
          * ```java
@@ -64,17 +65,19 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [EnrolledIndividualBenefit]. */
+    /** A builder for [EnrolledIndividualBenefitResponse]. */
     class Builder internal constructor() {
 
         private var jobId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(enrolledIndividualBenefit: EnrolledIndividualBenefit) = apply {
-            jobId = enrolledIndividualBenefit.jobId
-            additionalProperties = enrolledIndividualBenefit.additionalProperties.toMutableMap()
-        }
+        internal fun from(enrolledIndividualBenefitResponse: EnrolledIndividualBenefitResponse) =
+            apply {
+                jobId = enrolledIndividualBenefitResponse.jobId
+                additionalProperties =
+                    enrolledIndividualBenefitResponse.additionalProperties.toMutableMap()
+            }
 
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
@@ -106,7 +109,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [EnrolledIndividualBenefit].
+         * Returns an immutable instance of [EnrolledIndividualBenefitResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -117,8 +120,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): EnrolledIndividualBenefit =
-            EnrolledIndividualBenefit(
+        fun build(): EnrolledIndividualBenefitResponse =
+            EnrolledIndividualBenefitResponse(
                 checkRequired("jobId", jobId),
                 additionalProperties.toMutableMap(),
             )
@@ -126,7 +129,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): EnrolledIndividualBenefit = apply {
+    fun validate(): EnrolledIndividualBenefitResponse = apply {
         if (validated) {
             return@apply
         }
@@ -155,7 +158,7 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnrolledIndividualBenefit && jobId == other.jobId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is EnrolledIndividualBenefitResponse && jobId == other.jobId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -165,5 +168,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "EnrolledIndividualBenefit{jobId=$jobId, additionalProperties=$additionalProperties}"
+        "EnrolledIndividualBenefitResponse{jobId=$jobId, additionalProperties=$additionalProperties}"
 }
