@@ -19,7 +19,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-class SupportedBenefit
+class BenefitListSupportedBenefitsResponse
 private constructor(
     private val annualMaximum: JsonField<Boolean>,
     private val catchUp: JsonField<Boolean>,
@@ -198,11 +198,14 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [SupportedBenefit]. */
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [BenefitListSupportedBenefitsResponse].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [SupportedBenefit]. */
+    /** A builder for [BenefitListSupportedBenefitsResponse]. */
     class Builder internal constructor() {
 
         private var annualMaximum: JsonField<Boolean> = JsonMissing.of()
@@ -215,15 +218,22 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(supportedBenefit: SupportedBenefit) = apply {
-            annualMaximum = supportedBenefit.annualMaximum
-            catchUp = supportedBenefit.catchUp
-            companyContribution = supportedBenefit.companyContribution.map { it.toMutableList() }
-            description = supportedBenefit.description
-            employeeDeduction = supportedBenefit.employeeDeduction.map { it.toMutableList() }
-            frequencies = supportedBenefit.frequencies.map { it.toMutableList() }
-            hsaContributionLimit = supportedBenefit.hsaContributionLimit.map { it.toMutableList() }
-            additionalProperties = supportedBenefit.additionalProperties.toMutableMap()
+        internal fun from(
+            benefitListSupportedBenefitsResponse: BenefitListSupportedBenefitsResponse
+        ) = apply {
+            annualMaximum = benefitListSupportedBenefitsResponse.annualMaximum
+            catchUp = benefitListSupportedBenefitsResponse.catchUp
+            companyContribution =
+                benefitListSupportedBenefitsResponse.companyContribution.map { it.toMutableList() }
+            description = benefitListSupportedBenefitsResponse.description
+            employeeDeduction =
+                benefitListSupportedBenefitsResponse.employeeDeduction.map { it.toMutableList() }
+            frequencies =
+                benefitListSupportedBenefitsResponse.frequencies.map { it.toMutableList() }
+            hsaContributionLimit =
+                benefitListSupportedBenefitsResponse.hsaContributionLimit.map { it.toMutableList() }
+            additionalProperties =
+                benefitListSupportedBenefitsResponse.additionalProperties.toMutableMap()
         }
 
         /** Whether the provider supports an annual maximum for this benefit. */
@@ -442,12 +452,12 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [SupportedBenefit].
+         * Returns an immutable instance of [BenefitListSupportedBenefitsResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): SupportedBenefit =
-            SupportedBenefit(
+        fun build(): BenefitListSupportedBenefitsResponse =
+            BenefitListSupportedBenefitsResponse(
                 annualMaximum,
                 catchUp,
                 (companyContribution ?: JsonMissing.of()).map { it.toImmutable() },
@@ -461,7 +471,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): SupportedBenefit = apply {
+    fun validate(): BenefitListSupportedBenefitsResponse = apply {
         if (validated) {
             return@apply
         }
@@ -894,7 +904,7 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SupportedBenefit && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is BenefitListSupportedBenefitsResponse && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -904,5 +914,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SupportedBenefit{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
+        "BenefitListSupportedBenefitsResponse{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
 }
