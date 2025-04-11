@@ -1,5 +1,42 @@
 # Changelog
 
+## 5.1.0 (2025-04-11)
+
+Full Changelog: [v5.0.0...v5.1.0](https://github.com/Finch-API/finch-api-java/compare/v5.0.0...v5.1.0)
+
+### Features
+
+* **api:** add models for hrs benefits individuals async responses ([511b7fb](https://github.com/Finch-API/finch-api-java/commit/511b7fb4b6969bfded3c4f021753c1823b10baf1))
+* **api:** api update ([#533](https://github.com/Finch-API/finch-api-java/issues/533)) ([a7c802c](https://github.com/Finch-API/finch-api-java/commit/a7c802c84dff751a252c17ea3d4b19624792cba1))
+* **api:** benefits mutation API endpoints (create benefit, update benefit, enroll individual, unenroll individual) now properly return async response types ([#539](https://github.com/Finch-API/finch-api-java/issues/539)) ([4d1722f](https://github.com/Finch-API/finch-api-java/commit/4d1722feebfff70b762a41c6ea7c7a72299de8a8))
+* **client:** make pagination robust to missing data ([c054662](https://github.com/Finch-API/finch-api-java/commit/c054662ddf6e98fb805574d6851f8f81933bc07a))
+* **client:** support setting base URL via env var ([#535](https://github.com/Finch-API/finch-api-java/issues/535)) ([2a19f7e](https://github.com/Finch-API/finch-api-java/commit/2a19f7ec2159e69798afdb92f6f220254276a5fe))
+
+
+### Bug Fixes
+
+* **client:** bump to better jackson version ([#537](https://github.com/Finch-API/finch-api-java/issues/537)) ([4b3bc8d](https://github.com/Finch-API/finch-api-java/commit/4b3bc8d9e5a06356889f49afd96b19085c0aedfe))
+* **client:** page compilation error ([4da1190](https://github.com/Finch-API/finch-api-java/commit/4da1190d2b90298fb4d24ac48f2b9009fb39534f))
+
+
+### Chores
+
+* fix typo ([94a98e8](https://github.com/Finch-API/finch-api-java/commit/94a98e8ccff95f19fb8faf965525dd063745a3cb))
+* fix typo ([#540](https://github.com/Finch-API/finch-api-java/issues/540)) ([c56d73d](https://github.com/Finch-API/finch-api-java/commit/c56d73d2d29464841ec771edfa791fda80fb073f))
+* **internal:** expand CI branch coverage ([#536](https://github.com/Finch-API/finch-api-java/issues/536)) ([ed70465](https://github.com/Finch-API/finch-api-java/commit/ed704657d81ca00bc2e0baf40291d754b343d2aa))
+* **internal:** reduce CI branch coverage ([72adfa6](https://github.com/Finch-API/finch-api-java/commit/72adfa647da7ce56023200595f04f46379245ff8))
+
+
+### Documentation
+
+* add comments for page methods ([c054662](https://github.com/Finch-API/finch-api-java/commit/c054662ddf6e98fb805574d6851f8f81933bc07a))
+
+
+### Refactors
+
+* **client:** deduplicate page response classes ([#538](https://github.com/Finch-API/finch-api-java/issues/538)) ([c054662](https://github.com/Finch-API/finch-api-java/commit/c054662ddf6e98fb805574d6851f8f81933bc07a))
+* **client:** migrate pages to builder pattern ([#541](https://github.com/Finch-API/finch-api-java/issues/541)) ([5463e75](https://github.com/Finch-API/finch-api-java/commit/5463e75521312f9b219be62a6c7b4d090bec0754))
+
 ## 5.0.0 (2025-04-08)
 
 Full Changelog: [v4.2.0...v5.0.0](https://github.com/Finch-API/finch-api-java/compare/v4.2.0...v5.0.0)
