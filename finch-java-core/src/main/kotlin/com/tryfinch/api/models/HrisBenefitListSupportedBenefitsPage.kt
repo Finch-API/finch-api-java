@@ -15,7 +15,7 @@ class HrisBenefitListSupportedBenefitsPage
 private constructor(
     private val service: BenefitService,
     private val params: HrisBenefitListSupportedBenefitsParams,
-    private val items: Optional<List<BenefitListSupportedBenefitsResponse>>,
+    private val items: List<BenefitListSupportedBenefitsResponse>,
 ) {
 
     fun hasNextPage(): Boolean = items.isNotEmpty()
@@ -31,7 +31,7 @@ private constructor(
     fun params(): HrisBenefitListSupportedBenefitsParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): Optional<List<BenefitListSupportedBenefitsResponse>> = items
+    fun items(): List<BenefitListSupportedBenefitsResponse> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -64,7 +64,7 @@ private constructor(
         ) = apply {
             service = hrisBenefitListSupportedBenefitsPage.service
             params = hrisBenefitListSupportedBenefitsPage.params
-            items = hrisBenefitListSupportedBenefitsPage.items
+            items = Optional.of(hrisBenefitListSupportedBenefitsPage.items)
         }
 
         fun service(service: BenefitService) = apply { this.service = service }
@@ -95,7 +95,7 @@ private constructor(
             HrisBenefitListSupportedBenefitsPage(
                 checkRequired("service", service),
                 checkRequired("params", params),
-                checkRequired("items", items),
+                checkRequired("items", items).getOrNull() ?: emptyList(),
             )
     }
 
