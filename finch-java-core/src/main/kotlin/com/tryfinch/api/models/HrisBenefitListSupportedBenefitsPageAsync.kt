@@ -9,13 +9,14 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.function.Predicate
+import kotlin.jvm.optionals.getOrNull
 
 /** @see [BenefitServiceAsync.listSupportedBenefits] */
 class HrisBenefitListSupportedBenefitsPageAsync
 private constructor(
     private val service: BenefitServiceAsync,
     private val params: HrisBenefitListSupportedBenefitsParams,
-    private val items: Optional<List<BenefitListSupportedBenefitsResponse>>,
+    private val items: List<BenefitListSupportedBenefitsResponse>,
 ) {
 
     fun hasNextPage(): Boolean = items.isNotEmpty()
@@ -33,7 +34,7 @@ private constructor(
     fun params(): HrisBenefitListSupportedBenefitsParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): Optional<List<BenefitListSupportedBenefitsResponse>> = items
+    fun items(): List<BenefitListSupportedBenefitsResponse> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -66,7 +67,7 @@ private constructor(
         ) = apply {
             service = hrisBenefitListSupportedBenefitsPageAsync.service
             params = hrisBenefitListSupportedBenefitsPageAsync.params
-            items = hrisBenefitListSupportedBenefitsPageAsync.items
+            items = Optional.of(hrisBenefitListSupportedBenefitsPageAsync.items)
         }
 
         fun service(service: BenefitServiceAsync) = apply { this.service = service }
@@ -97,7 +98,7 @@ private constructor(
             HrisBenefitListSupportedBenefitsPageAsync(
                 checkRequired("service", service),
                 checkRequired("params", params),
-                checkRequired("items", items),
+                checkRequired("items", items).getOrNull() ?: emptyList(),
             )
     }
 
