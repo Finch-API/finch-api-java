@@ -15,6 +15,7 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListPage
+import com.tryfinch.api.models.HrisCompanyPayStatementItemListPageResponse
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListParams
 import com.tryfinch.api.services.blocking.hris.company.payStatementItem.RuleService
 import com.tryfinch.api.services.blocking.hris.company.payStatementItem.RuleServiceImpl
@@ -50,8 +51,8 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
 
         override fun rules(): RuleService.WithRawResponse = rules
 
-        private val listHandler: Handler<HrisCompanyPayStatementItemListPage.Response> =
-            jsonHandler<HrisCompanyPayStatementItemListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<HrisCompanyPayStatementItemListPageResponse> =
+            jsonHandler<HrisCompanyPayStatementItemListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
@@ -75,11 +76,11 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
                         }
                     }
                     .let {
-                        HrisCompanyPayStatementItemListPage.of(
-                            PayStatementItemServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisCompanyPayStatementItemListPage.builder()
+                            .service(PayStatementItemServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

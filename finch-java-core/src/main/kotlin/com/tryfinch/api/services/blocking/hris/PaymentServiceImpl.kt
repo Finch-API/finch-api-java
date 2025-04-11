@@ -63,11 +63,11 @@ class PaymentServiceImpl internal constructor(private val clientOptions: ClientO
                         }
                     }
                     .let {
-                        HrisPaymentListPage.of(
-                            PaymentServiceImpl(clientOptions),
-                            params,
-                            HrisPaymentListPage.Response.builder().items(it).build(),
-                        )
+                        HrisPaymentListPage.builder()
+                            .service(PaymentServiceImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
                     }
             }
         }

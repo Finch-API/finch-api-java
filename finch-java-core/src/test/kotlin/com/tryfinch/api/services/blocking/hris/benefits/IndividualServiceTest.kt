@@ -46,7 +46,7 @@ internal class IndividualServiceTest {
                     .build()
             )
 
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 
     @Test
@@ -58,11 +58,14 @@ internal class IndividualServiceTest {
                 .build()
         val individualService = client.hris().benefits().individuals()
 
-        val page =
+        val unenrolledIndividualBenefitResponse =
             individualService.unenrollMany(
-                HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+                HrisBenefitIndividualUnenrollManyParams.builder()
+                    .benefitId("benefit_id")
+                    .addIndividualId("string")
+                    .build()
             )
 
-        page.response().validate()
+        unenrolledIndividualBenefitResponse.validate()
     }
 }

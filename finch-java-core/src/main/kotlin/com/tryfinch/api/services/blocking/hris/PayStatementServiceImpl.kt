@@ -16,6 +16,7 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyPage
+import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 
 class PayStatementServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -39,8 +40,8 @@ class PayStatementServiceImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPage.Response> =
-            jsonHandler<HrisPayStatementRetrieveManyPage.Response>(clientOptions.jsonMapper)
+        private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPageResponse> =
+            jsonHandler<HrisPayStatementRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun retrieveMany(
@@ -65,11 +66,11 @@ class PayStatementServiceImpl internal constructor(private val clientOptions: Cl
                         }
                     }
                     .let {
-                        HrisPayStatementRetrieveManyPage.of(
-                            PayStatementServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisPayStatementRetrieveManyPage.builder()
+                            .service(PayStatementServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

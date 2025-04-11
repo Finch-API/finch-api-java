@@ -2,165 +2,96 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.payroll.PayGroupService
-import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/** Read company pay groups and frequencies */
+/** @see [PayGroupService.list] */
 class PayrollPayGroupListPage
 private constructor(
-    private val payGroupsService: PayGroupService,
+    private val service: PayGroupService,
     private val params: PayrollPayGroupListParams,
-    private val response: Response,
+    private val items: List<PayGroupListResponse>,
 ) {
 
-    fun response(): Response = response
+    fun hasNextPage(): Boolean = items.isNotEmpty()
 
-    fun items(): List<PayGroupListResponse> = response().items()
+    fun getNextPageParams(): Optional<PayrollPayGroupListParams> = Optional.empty()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is PayrollPayGroupListPage && payGroupsService == other.payGroupsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payGroupsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "PayrollPayGroupListPage{payGroupsService=$payGroupsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !items().isEmpty()
-    }
-
-    fun getNextPageParams(): Optional<PayrollPayGroupListParams> {
-        return Optional.empty()
-    }
-
-    fun getNextPage(): Optional<PayrollPayGroupListPage> {
-        return getNextPageParams().map { payGroupsService.list(it) }
-    }
+    fun getNextPage(): Optional<PayrollPayGroupListPage> =
+        getNextPageParams().map { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): PayrollPayGroupListParams = params
+
+    /** The response that this page was parsed from. */
+    fun items(): List<PayGroupListResponse> = items
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            payGroupsService: PayGroupService,
-            params: PayrollPayGroupListParams,
-            response: Response,
-        ) = PayrollPayGroupListPage(payGroupsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of [PayrollPayGroupListPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
     }
 
-    class Response(
-        private val items: JsonField<List<PayGroupListResponse>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
+    /** A builder for [PayrollPayGroupListPage]. */
+    class Builder internal constructor() {
 
-        @JsonCreator
-        private constructor(
-            @JsonProperty("items") items: JsonField<List<PayGroupListResponse>> = JsonMissing.of()
-        ) : this(items, mutableMapOf())
+        private var service: PayGroupService? = null
+        private var params: PayrollPayGroupListParams? = null
+        private var items: List<PayGroupListResponse>? = null
 
-        fun items(): List<PayGroupListResponse> = items.getOptional("items").getOrNull() ?: listOf()
-
-        @JsonProperty("items")
-        fun _items(): Optional<JsonField<List<PayGroupListResponse>>> = Optional.ofNullable(items)
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
+        @JvmSynthetic
+        internal fun from(payrollPayGroupListPage: PayrollPayGroupListPage) = apply {
+            service = payrollPayGroupListPage.service
+            params = payrollPayGroupListPage.params
+            items = payrollPayGroupListPage.items
         }
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
+        fun service(service: PayGroupService) = apply { this.service = service }
 
-        private var validated: Boolean = false
+        /** The parameters that were used to request this page. */
+        fun params(params: PayrollPayGroupListParams) = apply { this.params = params }
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
+        /** The response that this page was parsed from. */
+        fun items(items: List<PayGroupListResponse>) = apply { this.items = items }
 
-            items().map { it.validate() }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [PayrollPayGroupListPage].
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var items: JsonField<List<PayGroupListResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun items(items: List<PayGroupListResponse>) = items(JsonField.of(items))
-
-            fun items(items: JsonField<List<PayGroupListResponse>>) = apply { this.items = items }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(items, additionalProperties.toMutableMap())
-        }
+        /**
+         * Returns an immutable instance of [PayrollPayGroupListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): PayrollPayGroupListPage =
+            PayrollPayGroupListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
+            )
     }
 
     class AutoPager(private val firstPage: PayrollPayGroupListPage) :
@@ -182,4 +113,17 @@ private constructor(
             return StreamSupport.stream(spliterator(), false)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is PayrollPayGroupListPage && service == other.service && params == other.params && items == other.items /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, items) /* spotless:on */
+
+    override fun toString() =
+        "PayrollPayGroupListPage{service=$service, params=$params, items=$items}"
 }

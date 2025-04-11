@@ -15,6 +15,7 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
+import com.tryfinch.api.models.BenefitListSupportedBenefitsResponse
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
 import com.tryfinch.api.models.HrisBenefitCreateParams
@@ -24,10 +25,10 @@ import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPage
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
-import com.tryfinch.api.models.SupportedBenefit
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualServiceImpl
+import java.util.Optional
 
 class BenefitServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     BenefitService {
@@ -195,17 +196,20 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                         }
                     }
                     .let {
-                        HrisBenefitListPage.of(
-                            BenefitServiceImpl(clientOptions),
-                            params,
-                            HrisBenefitListPage.Response.builder().items(it).build(),
-                        )
+                        HrisBenefitListPage.builder()
+                            .service(BenefitServiceImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
                     }
             }
         }
 
-        private val listSupportedBenefitsHandler: Handler<List<SupportedBenefit>> =
-            jsonHandler<List<SupportedBenefit>>(clientOptions.jsonMapper)
+        private val listSupportedBenefitsHandler:
+            Handler<Optional<List<BenefitListSupportedBenefitsResponse>>> =
+            jsonHandler<Optional<List<BenefitListSupportedBenefitsResponse>>>(
+                    clientOptions.jsonMapper
+                )
                 .withErrorHandler(errorHandler)
 
         override fun listSupportedBenefits(
@@ -225,17 +229,15 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                     .use { listSupportedBenefitsHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
-                            it.forEach { it.validate() }
+                            it.ifPresent { it.forEach { it.validate() } }
                         }
                     }
                     .let {
-                        HrisBenefitListSupportedBenefitsPage.of(
-                            BenefitServiceImpl(clientOptions),
-                            params,
-                            HrisBenefitListSupportedBenefitsPage.Response.builder()
-                                .items(it)
-                                .build(),
-                        )
+                        HrisBenefitListSupportedBenefitsPage.builder()
+                            .service(BenefitServiceImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
                     }
             }
         }

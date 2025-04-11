@@ -48,7 +48,7 @@ internal class IndividualServiceAsyncTest {
             )
 
         val page = pageFuture.get()
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 
     @Test
@@ -60,12 +60,15 @@ internal class IndividualServiceAsyncTest {
                 .build()
         val individualServiceAsync = client.hris().benefits().individuals()
 
-        val pageFuture =
+        val unenrolledIndividualBenefitResponseFuture =
             individualServiceAsync.unenrollMany(
-                HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+                HrisBenefitIndividualUnenrollManyParams.builder()
+                    .benefitId("benefit_id")
+                    .addIndividualId("string")
+                    .build()
             )
 
-        val page = pageFuture.get()
-        page.response().validate()
+        val unenrolledIndividualBenefitResponse = unenrolledIndividualBenefitResponseFuture.get()
+        unenrolledIndividualBenefitResponse.validate()
     }
 }

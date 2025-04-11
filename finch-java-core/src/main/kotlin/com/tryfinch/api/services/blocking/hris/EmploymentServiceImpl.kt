@@ -16,6 +16,7 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPage
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 
 class EmploymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -39,8 +40,8 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPage.Response> =
-            jsonHandler<HrisEmploymentRetrieveManyPage.Response>(clientOptions.jsonMapper)
+        private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageResponse> =
+            jsonHandler<HrisEmploymentRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun retrieveMany(
@@ -65,11 +66,11 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
                         }
                     }
                     .let {
-                        HrisEmploymentRetrieveManyPage.of(
-                            EmploymentServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisEmploymentRetrieveManyPage.builder()
+                            .service(EmploymentServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

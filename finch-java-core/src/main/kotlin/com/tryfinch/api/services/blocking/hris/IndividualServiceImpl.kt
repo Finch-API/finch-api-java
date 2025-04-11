@@ -16,6 +16,7 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisIndividualRetrieveManyPage
+import com.tryfinch.api.models.HrisIndividualRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 
 class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -39,8 +40,8 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPage.Response> =
-            jsonHandler<HrisIndividualRetrieveManyPage.Response>(clientOptions.jsonMapper)
+        private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageResponse> =
+            jsonHandler<HrisIndividualRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun retrieveMany(
@@ -65,11 +66,11 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
                         }
                     }
                     .let {
-                        HrisIndividualRetrieveManyPage.of(
-                            IndividualServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisIndividualRetrieveManyPage.builder()
+                            .service(IndividualServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/5.0.0)
-[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/5.0.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.0.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/5.1.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/5.1.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.1.0)
 
 <!-- x-release-please-end -->
 
@@ -15,7 +15,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.0.0).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.1.0).
 
 <!-- x-release-please-end -->
 
@@ -26,7 +26,7 @@ The REST API documentation can be found on [developer.tryfinch.com](https://deve
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:5.0.0")
+implementation("com.tryfinch.api:finch-java:5.1.0")
 ```
 
 ### Maven
@@ -35,7 +35,7 @@ implementation("com.tryfinch.api:finch-java:5.0.0")
 <dependency>
   <groupId>com.tryfinch.api</groupId>
   <artifactId>finch-java</artifactId>
-  <version>5.0.0</version>
+  <version>5.1.0</version>
 </dependency>
 ```
 
@@ -54,7 +54,7 @@ import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
 FinchClient client = FinchOkHttpClient.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -71,7 +71,7 @@ import com.tryfinch.api.client.FinchClient;
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -95,7 +95,7 @@ import com.tryfinch.api.client.FinchClient;
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -103,11 +103,12 @@ FinchClient client = FinchOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter          | Environment variable   | Required | Default value |
-| --------------- | ---------------------- | -------- | ------------- |
-| `clientId`      | `FINCH_CLIENT_ID`      | false    | -             |
-| `clientSecret`  | `FINCH_CLIENT_SECRET`  | false    | -             |
-| `webhookSecret` | `FINCH_WEBHOOK_SECRET` | false    | -             |
+| Setter          | Environment variable   | Required | Default value                |
+| --------------- | ---------------------- | -------- | ---------------------------- |
+| `clientId`      | `FINCH_CLIENT_ID`      | false    | -                            |
+| `clientSecret`  | `FINCH_CLIENT_SECRET`  | false    | -                            |
+| `webhookSecret` | `FINCH_WEBHOOK_SECRET` | false    | -                            |
+| `baseUrl`       | `FINCH_BASE_URL`       | true     | `"https://api.tryfinch.com"` |
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -139,7 +140,7 @@ import com.tryfinch.api.models.HrisDirectoryListParams;
 import java.util.concurrent.CompletableFuture;
 
 FinchClient client = FinchOkHttpClient.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -157,7 +158,7 @@ import com.tryfinch.api.models.HrisDirectoryListParams;
 import java.util.concurrent.CompletableFuture;
 
 FinchClientAsync client = FinchOkHttpClientAsync.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` and `FINCH_WEBHOOK_SECRET` environment variables
+    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();

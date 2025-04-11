@@ -2,17 +2,8 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
-import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
@@ -20,161 +11,104 @@ import java.util.concurrent.Executor
 import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon Retrieve a list of detailed pay statement items for the access token's
- * connection account.
- */
+/** @see [PayStatementItemServiceAsync.list] */
 class HrisCompanyPayStatementItemListPageAsync
 private constructor(
-    private val payStatementItemService: PayStatementItemServiceAsync,
+    private val service: PayStatementItemServiceAsync,
     private val params: HrisCompanyPayStatementItemListParams,
-    private val response: Response,
+    private val response: HrisCompanyPayStatementItemListPageResponse,
 ) {
 
-    fun response(): Response = response
+    /**
+     * Delegates to [HrisCompanyPayStatementItemListPageResponse], but gracefully handles missing
+     * data.
+     *
+     * @see [HrisCompanyPayStatementItemListPageResponse.responses]
+     */
+    fun responses(): List<PayStatementItemListResponse> =
+        response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun responses(): List<PayStatementItemListResponse> = response().responses()
+    fun hasNextPage(): Boolean = responses().isNotEmpty()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+    fun getNextPageParams(): Optional<HrisCompanyPayStatementItemListParams> = Optional.empty()
 
-        return /* spotless:off */ other is HrisCompanyPayStatementItemListPageAsync && payStatementItemService == other.payStatementItemService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payStatementItemService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisCompanyPayStatementItemListPageAsync{payStatementItemService=$payStatementItemService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !responses().isEmpty()
-    }
-
-    fun getNextPageParams(): Optional<HrisCompanyPayStatementItemListParams> {
-        return Optional.empty()
-    }
-
-    fun getNextPage(): CompletableFuture<Optional<HrisCompanyPayStatementItemListPageAsync>> {
-        return getNextPageParams()
-            .map { payStatementItemService.list(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<HrisCompanyPayStatementItemListPageAsync>> =
+        getNextPageParams()
+            .map { service.list(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisCompanyPayStatementItemListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisCompanyPayStatementItemListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            payStatementItemService: PayStatementItemServiceAsync,
-            params: HrisCompanyPayStatementItemListParams,
-            response: Response,
-        ) = HrisCompanyPayStatementItemListPageAsync(payStatementItemService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisCompanyPayStatementItemListPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
     }
 
-    class Response(
-        private val responses: JsonField<List<PayStatementItemListResponse>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
+    /** A builder for [HrisCompanyPayStatementItemListPageAsync]. */
+    class Builder internal constructor() {
 
-        @JsonCreator
-        private constructor(
-            @JsonProperty("responses")
-            responses: JsonField<List<PayStatementItemListResponse>> = JsonMissing.of()
-        ) : this(responses, mutableMapOf())
+        private var service: PayStatementItemServiceAsync? = null
+        private var params: HrisCompanyPayStatementItemListParams? = null
+        private var response: HrisCompanyPayStatementItemListPageResponse? = null
 
-        fun responses(): List<PayStatementItemListResponse> =
-            responses.getOptional("responses").getOrNull() ?: listOf()
-
-        @JsonProperty("responses")
-        fun _responses(): Optional<JsonField<List<PayStatementItemListResponse>>> =
-            Optional.ofNullable(responses)
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
+        @JvmSynthetic
+        internal fun from(
+            hrisCompanyPayStatementItemListPageAsync: HrisCompanyPayStatementItemListPageAsync
+        ) = apply {
+            service = hrisCompanyPayStatementItemListPageAsync.service
+            params = hrisCompanyPayStatementItemListPageAsync.params
+            response = hrisCompanyPayStatementItemListPageAsync.response
         }
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
+        fun service(service: PayStatementItemServiceAsync) = apply { this.service = service }
 
-        private var validated: Boolean = false
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisCompanyPayStatementItemListParams) = apply { this.params = params }
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            responses().map { it.validate() }
-            validated = true
+        /** The response that this page was parsed from. */
+        fun response(response: HrisCompanyPayStatementItemListPageResponse) = apply {
+            this.response = response
         }
 
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{responses=$responses, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [HrisCompanyPayStatementItemListPageAsync].
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var responses: JsonField<List<PayStatementItemListResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.responses = page.responses
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun responses(responses: List<PayStatementItemListResponse>) =
-                responses(JsonField.of(responses))
-
-            fun responses(responses: JsonField<List<PayStatementItemListResponse>>) = apply {
-                this.responses = responses
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(responses, additionalProperties.toMutableMap())
-        }
+        /**
+         * Returns an immutable instance of [HrisCompanyPayStatementItemListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisCompanyPayStatementItemListPageAsync =
+            HrisCompanyPayStatementItemListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisCompanyPayStatementItemListPageAsync) {
@@ -205,4 +139,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisCompanyPayStatementItemListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisCompanyPayStatementItemListPageAsync{service=$service, params=$params, response=$response}"
 }

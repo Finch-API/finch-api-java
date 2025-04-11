@@ -18,11 +18,10 @@ import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
-import com.tryfinch.api.models.UnenrolledIndividual
+import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
 import java.util.concurrent.CompletableFuture
 
 class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -51,7 +50,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
     override fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<HrisBenefitIndividualUnenrollManyPageAsync> =
+    ): CompletableFuture<UnenrolledIndividualBenefitResponse> =
         // delete /employer/benefits/{benefit_id}/individuals
         withRawResponse().unenrollMany(params, requestOptions).thenApply { it.parse() }
 
@@ -117,27 +116,24 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                                 }
                             }
                             .let {
-                                HrisBenefitIndividualRetrieveManyBenefitsPageAsync.of(
-                                    IndividualServiceAsyncImpl(clientOptions),
-                                    params,
-                                    HrisBenefitIndividualRetrieveManyBenefitsPageAsync.Response
-                                        .builder()
-                                        .items(it)
-                                        .build(),
-                                )
+                                HrisBenefitIndividualRetrieveManyBenefitsPageAsync.builder()
+                                    .service(IndividualServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .items(it)
+                                    .build()
                             }
                     }
                 }
         }
 
-        private val unenrollManyHandler: Handler<List<UnenrolledIndividual>> =
-            jsonHandler<List<UnenrolledIndividual>>(clientOptions.jsonMapper)
+        private val unenrollManyHandler: Handler<UnenrolledIndividualBenefitResponse> =
+            jsonHandler<UnenrolledIndividualBenefitResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualUnenrollManyPageAsync>> {
+        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
@@ -154,17 +150,8 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                             .use { unenrollManyHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
-                                    it.forEach { it.validate() }
+                                    it.validate()
                                 }
-                            }
-                            .let {
-                                HrisBenefitIndividualUnenrollManyPageAsync.of(
-                                    IndividualServiceAsyncImpl(clientOptions),
-                                    params,
-                                    HrisBenefitIndividualUnenrollManyPageAsync.Response.builder()
-                                        .items(it)
-                                        .build(),
-                                )
                             }
                     }
                 }

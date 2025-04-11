@@ -222,7 +222,10 @@ private constructor(
 
         fun removeAllQueryParams(keys: Set<String>) = apply { queryParams.removeAll(keys) }
 
+        fun baseUrl(): String = baseUrl
+
         fun fromEnv() = apply {
+            System.getenv("FINCH_BASE_URL")?.let { baseUrl(it) }
             System.getenv("FINCH_CLIENT_ID")?.let { clientId(it) }
             System.getenv("FINCH_CLIENT_SECRET")?.let { clientSecret(it) }
             System.getenv("FINCH_WEBHOOK_SECRET")?.let { webhookSecret(it) }

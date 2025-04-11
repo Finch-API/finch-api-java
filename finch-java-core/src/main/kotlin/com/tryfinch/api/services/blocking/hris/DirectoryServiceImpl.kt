@@ -15,8 +15,10 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPageResponse
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPage
+import com.tryfinch.api.models.HrisDirectoryListPageResponse
 import com.tryfinch.api.models.HrisDirectoryListParams
 
 class DirectoryServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -48,8 +50,8 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<HrisDirectoryListPage.Response> =
-            jsonHandler<HrisDirectoryListPage.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<HrisDirectoryListPageResponse> =
+            jsonHandler<HrisDirectoryListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
@@ -73,13 +75,17 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
                         }
                     }
                     .let {
-                        HrisDirectoryListPage.of(DirectoryServiceImpl(clientOptions), params, it)
+                        HrisDirectoryListPage.builder()
+                            .service(DirectoryServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
 
-        private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPage.Response> =
-            jsonHandler<HrisDirectoryListIndividualsPage.Response>(clientOptions.jsonMapper)
+        private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPageResponse> =
+            jsonHandler<HrisDirectoryListIndividualsPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         @Deprecated("use `list` instead")
@@ -104,11 +110,11 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
                         }
                     }
                     .let {
-                        HrisDirectoryListIndividualsPage.of(
-                            DirectoryServiceImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisDirectoryListIndividualsPage.builder()
+                            .service(DirectoryServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

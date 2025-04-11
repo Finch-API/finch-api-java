@@ -21,6 +21,6 @@ internal class ProviderServiceTest {
 
         val page = providerService.list()
 
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 }

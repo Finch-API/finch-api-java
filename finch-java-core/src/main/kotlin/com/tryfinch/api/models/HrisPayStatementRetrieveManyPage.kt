@@ -2,176 +2,108 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.PayStatementService
-import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Read detailed pay statements for each individual.
- *
- * Deduction and contribution types are supported by the payroll systems that supports Benefits.
- */
+/** @see [PayStatementService.retrieveMany] */
 class HrisPayStatementRetrieveManyPage
 private constructor(
-    private val payStatementsService: PayStatementService,
+    private val service: PayStatementService,
     private val params: HrisPayStatementRetrieveManyParams,
-    private val response: Response,
+    private val response: HrisPayStatementRetrieveManyPageResponse,
 ) {
 
-    fun response(): Response = response
+    /**
+     * Delegates to [HrisPayStatementRetrieveManyPageResponse], but gracefully handles missing data.
+     *
+     * @see [HrisPayStatementRetrieveManyPageResponse.responses]
+     */
+    fun responses(): List<PayStatementResponse> =
+        response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun responses(): List<PayStatementResponse> = response().responses()
+    fun hasNextPage(): Boolean = responses().isNotEmpty()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+    fun getNextPageParams(): Optional<HrisPayStatementRetrieveManyParams> = Optional.empty()
 
-        return /* spotless:off */ other is HrisPayStatementRetrieveManyPage && payStatementsService == other.payStatementsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payStatementsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisPayStatementRetrieveManyPage{payStatementsService=$payStatementsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !responses().isEmpty()
-    }
-
-    fun getNextPageParams(): Optional<HrisPayStatementRetrieveManyParams> {
-        return Optional.empty()
-    }
-
-    fun getNextPage(): Optional<HrisPayStatementRetrieveManyPage> {
-        return getNextPageParams().map { payStatementsService.retrieveMany(it) }
-    }
+    fun getNextPage(): Optional<HrisPayStatementRetrieveManyPage> =
+        getNextPageParams().map { service.retrieveMany(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisPayStatementRetrieveManyParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisPayStatementRetrieveManyPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            payStatementsService: PayStatementService,
-            params: HrisPayStatementRetrieveManyParams,
-            response: Response,
-        ) = HrisPayStatementRetrieveManyPage(payStatementsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisPayStatementRetrieveManyPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
     }
 
-    class Response(
-        private val responses: JsonField<List<PayStatementResponse>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
+    /** A builder for [HrisPayStatementRetrieveManyPage]. */
+    class Builder internal constructor() {
 
-        @JsonCreator
-        private constructor(
-            @JsonProperty("responses")
-            responses: JsonField<List<PayStatementResponse>> = JsonMissing.of()
-        ) : this(responses, mutableMapOf())
+        private var service: PayStatementService? = null
+        private var params: HrisPayStatementRetrieveManyParams? = null
+        private var response: HrisPayStatementRetrieveManyPageResponse? = null
 
-        fun responses(): List<PayStatementResponse> =
-            responses.getOptional("responses").getOrNull() ?: listOf()
+        @JvmSynthetic
+        internal fun from(hrisPayStatementRetrieveManyPage: HrisPayStatementRetrieveManyPage) =
+            apply {
+                service = hrisPayStatementRetrieveManyPage.service
+                params = hrisPayStatementRetrieveManyPage.params
+                response = hrisPayStatementRetrieveManyPage.response
+            }
 
-        @JsonProperty("responses")
-        fun _responses(): Optional<JsonField<List<PayStatementResponse>>> =
-            Optional.ofNullable(responses)
+        fun service(service: PayStatementService) = apply { this.service = service }
 
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisPayStatementRetrieveManyParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: HrisPayStatementRetrieveManyPageResponse) = apply {
+            this.response = response
         }
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            responses().map { it.validate() }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{responses=$responses, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [HrisPayStatementRetrieveManyPage].
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var responses: JsonField<List<PayStatementResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.responses = page.responses
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun responses(responses: List<PayStatementResponse>) =
-                responses(JsonField.of(responses))
-
-            fun responses(responses: JsonField<List<PayStatementResponse>>) = apply {
-                this.responses = responses
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(responses, additionalProperties.toMutableMap())
-        }
+        /**
+         * Returns an immutable instance of [HrisPayStatementRetrieveManyPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisPayStatementRetrieveManyPage =
+            HrisPayStatementRetrieveManyPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisPayStatementRetrieveManyPage) :
@@ -193,4 +125,17 @@ private constructor(
             return StreamSupport.stream(spliterator(), false)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisPayStatementRetrieveManyPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisPayStatementRetrieveManyPage{service=$service, params=$params, response=$response}"
 }

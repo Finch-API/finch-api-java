@@ -106,13 +106,11 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
                                 }
                             }
                             .let {
-                                PayrollPayGroupListPageAsync.of(
-                                    PayGroupServiceAsyncImpl(clientOptions),
-                                    params,
-                                    PayrollPayGroupListPageAsync.Response.builder()
-                                        .items(it)
-                                        .build(),
-                                )
+                                PayrollPayGroupListPageAsync.builder()
+                                    .service(PayGroupServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .items(it)
+                                    .build()
                             }
                     }
                 }

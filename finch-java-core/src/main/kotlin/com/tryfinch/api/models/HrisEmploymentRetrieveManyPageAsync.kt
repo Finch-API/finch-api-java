@@ -2,17 +2,8 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
-import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
@@ -20,157 +11,103 @@ import java.util.concurrent.Executor
 import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
-/** Read individual employment and income data */
+/** @see [EmploymentServiceAsync.retrieveMany] */
 class HrisEmploymentRetrieveManyPageAsync
 private constructor(
-    private val employmentsService: EmploymentServiceAsync,
+    private val service: EmploymentServiceAsync,
     private val params: HrisEmploymentRetrieveManyParams,
-    private val response: Response,
+    private val response: HrisEmploymentRetrieveManyPageResponse,
 ) {
 
-    fun response(): Response = response
+    /**
+     * Delegates to [HrisEmploymentRetrieveManyPageResponse], but gracefully handles missing data.
+     *
+     * @see [HrisEmploymentRetrieveManyPageResponse.responses]
+     */
+    fun responses(): List<EmploymentDataResponse> =
+        response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun responses(): List<EmploymentDataResponse> = response().responses()
+    fun hasNextPage(): Boolean = responses().isNotEmpty()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+    fun getNextPageParams(): Optional<HrisEmploymentRetrieveManyParams> = Optional.empty()
 
-        return /* spotless:off */ other is HrisEmploymentRetrieveManyPageAsync && employmentsService == other.employmentsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(employmentsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisEmploymentRetrieveManyPageAsync{employmentsService=$employmentsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !responses().isEmpty()
-    }
-
-    fun getNextPageParams(): Optional<HrisEmploymentRetrieveManyParams> {
-        return Optional.empty()
-    }
-
-    fun getNextPage(): CompletableFuture<Optional<HrisEmploymentRetrieveManyPageAsync>> {
-        return getNextPageParams()
-            .map { employmentsService.retrieveMany(it).thenApply { Optional.of(it) } }
+    fun getNextPage(): CompletableFuture<Optional<HrisEmploymentRetrieveManyPageAsync>> =
+        getNextPageParams()
+            .map { service.retrieveMany(it).thenApply { Optional.of(it) } }
             .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisEmploymentRetrieveManyParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisEmploymentRetrieveManyPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        @JvmStatic
-        fun of(
-            employmentsService: EmploymentServiceAsync,
-            params: HrisEmploymentRetrieveManyParams,
-            response: Response,
-        ) = HrisEmploymentRetrieveManyPageAsync(employmentsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisEmploymentRetrieveManyPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
     }
 
-    class Response(
-        private val responses: JsonField<List<EmploymentDataResponse>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
+    /** A builder for [HrisEmploymentRetrieveManyPageAsync]. */
+    class Builder internal constructor() {
 
-        @JsonCreator
-        private constructor(
-            @JsonProperty("responses")
-            responses: JsonField<List<EmploymentDataResponse>> = JsonMissing.of()
-        ) : this(responses, mutableMapOf())
+        private var service: EmploymentServiceAsync? = null
+        private var params: HrisEmploymentRetrieveManyParams? = null
+        private var response: HrisEmploymentRetrieveManyPageResponse? = null
 
-        fun responses(): List<EmploymentDataResponse> =
-            responses.getOptional("responses").getOrNull() ?: listOf()
-
-        @JsonProperty("responses")
-        fun _responses(): Optional<JsonField<List<EmploymentDataResponse>>> =
-            Optional.ofNullable(responses)
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
+        @JvmSynthetic
+        internal fun from(
+            hrisEmploymentRetrieveManyPageAsync: HrisEmploymentRetrieveManyPageAsync
+        ) = apply {
+            service = hrisEmploymentRetrieveManyPageAsync.service
+            params = hrisEmploymentRetrieveManyPageAsync.params
+            response = hrisEmploymentRetrieveManyPageAsync.response
         }
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
+        fun service(service: EmploymentServiceAsync) = apply { this.service = service }
 
-        private var validated: Boolean = false
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisEmploymentRetrieveManyParams) = apply { this.params = params }
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            responses().map { it.validate() }
-            validated = true
+        /** The response that this page was parsed from. */
+        fun response(response: HrisEmploymentRetrieveManyPageResponse) = apply {
+            this.response = response
         }
 
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{responses=$responses, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [HrisEmploymentRetrieveManyPageAsync].
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var responses: JsonField<List<EmploymentDataResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.responses = page.responses
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun responses(responses: List<EmploymentDataResponse>) =
-                responses(JsonField.of(responses))
-
-            fun responses(responses: JsonField<List<EmploymentDataResponse>>) = apply {
-                this.responses = responses
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(responses, additionalProperties.toMutableMap())
-        }
+        /**
+         * Returns an immutable instance of [HrisEmploymentRetrieveManyPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisEmploymentRetrieveManyPageAsync =
+            HrisEmploymentRetrieveManyPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisEmploymentRetrieveManyPageAsync) {
@@ -201,4 +138,17 @@ private constructor(
             return forEach(values::add, executor).thenApply { values }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisEmploymentRetrieveManyPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisEmploymentRetrieveManyPageAsync{service=$service, params=$params, response=$response}"
 }

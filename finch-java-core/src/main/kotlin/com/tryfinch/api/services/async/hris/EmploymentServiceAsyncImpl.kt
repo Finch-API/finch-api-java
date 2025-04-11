@@ -16,6 +16,7 @@ import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 import java.util.concurrent.CompletableFuture
 
@@ -40,8 +41,8 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageAsync.Response> =
-            jsonHandler<HrisEmploymentRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
+        private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageResponse> =
+            jsonHandler<HrisEmploymentRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun retrieveMany(
@@ -68,11 +69,11 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
                                 }
                             }
                             .let {
-                                HrisEmploymentRetrieveManyPageAsync.of(
-                                    EmploymentServiceAsyncImpl(clientOptions),
-                                    params,
-                                    it,
-                                )
+                                HrisEmploymentRetrieveManyPageAsync.builder()
+                                    .service(EmploymentServiceAsyncImpl(clientOptions))
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }
