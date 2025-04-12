@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.2.0 (2025-04-12)
+
+Full Changelog: [v5.1.0...v5.2.0](https://github.com/Finch-API/finch-api-java/compare/v5.1.0...v5.2.0)
+
+### Features
+
+* **api:** api update ([544560e](https://github.com/Finch-API/finch-api-java/commit/544560e359f1a248bda35b6d076f0711bcec181b))
+
 ## 5.1.0 (2025-04-11)
 
 Full Changelog: [v5.0.0...v5.1.0](https://github.com/Finch-API/finch-api-java/compare/v5.0.0...v5.1.0)
