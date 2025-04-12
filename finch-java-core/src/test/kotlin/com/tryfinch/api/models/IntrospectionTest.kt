@@ -14,6 +14,7 @@ internal class IntrospectionTest {
     fun create() {
         val introspection =
             Introspection.builder()
+                .id("id")
                 .accountId("account_id")
                 .addAuthenticationMethod(
                     Introspection.AuthenticationMethod.builder()
@@ -49,6 +50,7 @@ internal class IntrospectionTest {
                 .username("username")
                 .build()
 
+        assertThat(introspection.id()).isEqualTo("id")
         assertThat(introspection.accountId()).isEqualTo("account_id")
         assertThat(introspection.authenticationMethods())
             .containsExactly(
@@ -91,6 +93,7 @@ internal class IntrospectionTest {
         val jsonMapper = jsonMapper()
         val introspection =
             Introspection.builder()
+                .id("id")
                 .accountId("account_id")
                 .addAuthenticationMethod(
                     Introspection.AuthenticationMethod.builder()
