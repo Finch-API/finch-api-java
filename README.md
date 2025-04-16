@@ -383,6 +383,42 @@ FinchClient client = FinchOkHttpClient.builder()
     .build();
 ```
 
+### Custom HTTP client
+
+The SDK consists of three artifacts:
+
+- `finch-java-core`
+  - Contains core SDK logic
+  - Does not depend on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`FinchClient`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClient.kt), [`FinchClientAsync`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsync.kt), [`FinchClientImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientImpl.kt), and [`FinchClientAsyncImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsyncImpl.kt), all of which can work with any HTTP client
+- `finch-java-client-okhttp`
+  - Depends on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`FinchOkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClient.kt) and [`FinchOkHttpClientAsync`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClientAsync.kt), which provide a way to construct [`FinchClientImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientImpl.kt) and [`FinchClientAsyncImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsyncImpl.kt), respectively, using OkHttp
+- `finch-java`
+  - Depends on and exposes the APIs of both `finch-java-core` and `finch-java-client-okhttp`
+  - Does not have its own logic
+
+This structure allows replacing the SDK's default HTTP client without pulling in unnecessary dependencies.
+
+#### Customized [`OkHttpClient`](https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html)
+
+> [!TIP]
+> Try the available [network options](#network-options) before replacing the default client.
+
+To use a customized `OkHttpClient`:
+
+1. Replace your [`finch-java` dependency](#installation) with `finch-java-core`
+2. Copy `finch-java-client-okhttp`'s [`OkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`FinchClientImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientImpl.kt) or [`FinchClientAsyncImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsyncImpl.kt), similarly to [`FinchOkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClient.kt) or [`FinchOkHttpClientAsync`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClientAsync.kt), using your customized client
+
+### Completely custom HTTP client
+
+To use a completely custom HTTP client:
+
+1. Replace your [`finch-java` dependency](#installation) with `finch-java-core`
+2. Write a class that implements the [`HttpClient`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/http/HttpClient.kt) interface
+3. Construct [`FinchClientImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientImpl.kt) or [`FinchClientAsyncImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsyncImpl.kt), similarly to [`FinchOkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClient.kt) or [`FinchOkHttpClientAsync`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClientAsync.kt), using your new client class
+
 ## Undocumented API functionality
 
 The SDK is typed for convenient usage of the documented API. However, it also supports working with undocumented or not yet supported parts of the API.
