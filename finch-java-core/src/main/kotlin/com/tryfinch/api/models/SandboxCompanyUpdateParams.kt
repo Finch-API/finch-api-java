@@ -86,7 +86,8 @@ private constructor(
     fun primaryEmail(): Optional<String> = body.primaryEmail()
 
     /**
-     * The phone number of the main administrator on the account. Format: `XXXXXXXXXX`
+     * The phone number of the main administrator on the account. Format: E.164, with extension
+     * where applicable, e.g. `+NNNNNNNNNNN xExtension`
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -334,7 +335,10 @@ private constructor(
             body.primaryEmail(primaryEmail)
         }
 
-        /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+        /**
+         * The phone number of the main administrator on the account. Format: E.164, with extension
+         * where applicable, e.g. `+NNNNNNNNNNN xExtension`
+         */
         fun primaryPhoneNumber(primaryPhoneNumber: String?) = apply {
             body.primaryPhoneNumber(primaryPhoneNumber)
         }
@@ -608,7 +612,8 @@ private constructor(
         fun primaryEmail(): Optional<String> = primaryEmail.getOptional("primary_email")
 
         /**
-         * The phone number of the main administrator on the account. Format: `XXXXXXXXXX`
+         * The phone number of the main administrator on the account. Format: E.164, with extension
+         * where applicable, e.g. `+NNNNNNNNNNN xExtension`
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -894,7 +899,10 @@ private constructor(
                 this.primaryEmail = primaryEmail
             }
 
-            /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+            /**
+             * The phone number of the main administrator on the account. Format: E.164, with
+             * extension where applicable, e.g. `+NNNNNNNNNNN xExtension`
+             */
             fun primaryPhoneNumber(primaryPhoneNumber: String?) =
                 primaryPhoneNumber(JsonField.ofNullable(primaryPhoneNumber))
 
