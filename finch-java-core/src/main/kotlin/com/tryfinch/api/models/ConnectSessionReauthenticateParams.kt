@@ -718,6 +718,10 @@ private constructor(
 
             @JvmField val SSN = of("ssn")
 
+            @JvmField val DEDUCTION = of("deduction")
+
+            @JvmField val DOCUMENTS = of("documents")
+
             @JvmStatic fun of(value: String) = ConnectProducts(JsonField.of(value))
         }
 
@@ -731,6 +735,8 @@ private constructor(
             PAY_STATEMENT,
             BENEFITS,
             SSN,
+            DEDUCTION,
+            DOCUMENTS,
         }
 
         /**
@@ -751,6 +757,8 @@ private constructor(
             PAY_STATEMENT,
             BENEFITS,
             SSN,
+            DEDUCTION,
+            DOCUMENTS,
             /**
              * An enum member indicating that [ConnectProducts] was instantiated with an unknown
              * value.
@@ -775,6 +783,8 @@ private constructor(
                 PAY_STATEMENT -> Value.PAY_STATEMENT
                 BENEFITS -> Value.BENEFITS
                 SSN -> Value.SSN
+                DEDUCTION -> Value.DEDUCTION
+                DOCUMENTS -> Value.DOCUMENTS
                 else -> Value._UNKNOWN
             }
 
@@ -796,6 +806,8 @@ private constructor(
                 PAY_STATEMENT -> Known.PAY_STATEMENT
                 BENEFITS -> Known.BENEFITS
                 SSN -> Known.SSN
+                DEDUCTION -> Known.DEDUCTION
+                DOCUMENTS -> Known.DOCUMENTS
                 else -> throw FinchInvalidDataException("Unknown ConnectProducts: $value")
             }
 
