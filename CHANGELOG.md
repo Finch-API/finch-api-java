@@ -1,5 +1,26 @@
 # Changelog
 
+## 5.3.0 (2025-04-18)
+
+Full Changelog: [v5.2.0...v5.3.0](https://github.com/Finch-API/finch-api-java/compare/v5.2.0...v5.3.0)
+
+### Features
+
+* **api:** api update ([8a943e8](https://github.com/Finch-API/finch-api-java/commit/8a943e843922b45684c633f2ef1d0e158b04c6d7))
+
+
+### Performance Improvements
+
+* **internal:** improve compilation+test speed ([7ce9aa1](https://github.com/Finch-API/finch-api-java/commit/7ce9aa1115f40676d990dabb5fbeb365b834cdcc))
+
+
+### Documentation
+
+* **client:** update jackson compat error message ([3966f0e](https://github.com/Finch-API/finch-api-java/commit/3966f0eb05820ed6359991b877d3599727b295d7))
+* explain http client customization ([09d6b33](https://github.com/Finch-API/finch-api-java/commit/09d6b33bc87d1232cc855d0e9621a4f594985878))
+* explain jackson compat in readme ([acd26d9](https://github.com/Finch-API/finch-api-java/commit/acd26d9181ec31200b4c820bffde37761aa18d52))
+* update documentation links to be more uniform ([184534f](https://github.com/Finch-API/finch-api-java/commit/184534f3eda9aeffde671073fcd6b140620da87e))
+
 ## 5.2.0 (2025-04-12)
 
 Full Changelog: [v5.1.0...v5.2.0](https://github.com/Finch-API/finch-api-java/compare/v5.1.0...v5.2.0)

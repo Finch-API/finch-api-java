@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/5.2.0)
-[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/5.2.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/5.3.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/5.3.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.3.0)
 
 <!-- x-release-please-end -->
 
@@ -15,7 +15,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.2.0).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/5.3.0).
 
 <!-- x-release-please-end -->
 
@@ -26,7 +26,7 @@ The REST API documentation can be found on [developer.tryfinch.com](https://deve
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:5.2.0")
+implementation("com.tryfinch.api:finch-java:5.3.0")
 ```
 
 ### Maven
@@ -35,7 +35,7 @@ implementation("com.tryfinch.api:finch-java:5.2.0")
 <dependency>
   <groupId>com.tryfinch.api</groupId>
   <artifactId>finch-java</artifactId>
-  <version>5.2.0</version>
+  <version>5.3.0</version>
 </dependency>
 ```
 
@@ -295,6 +295,17 @@ both of which will raise an error if the signature is invalid.
 Note that the "body" parameter must be the raw JSON string sent from the server (do not parse it first).
 The `.unwrap()` method can parse this JSON for you.
 
+## Jackson
+
+The SDK depends on [Jackson](https://github.com/FasterXML/jackson) for JSON serialization/deserialization. It is compatible with version 2.13.4 or higher, but depends on version 2.18.2 by default.
+
+The SDK throws an exception if it detects an incompatible Jackson version at runtime (e.g. if the default version was overridden in your Maven or Gradle config).
+
+If the SDK threw an exception, but you're _certain_ the version is compatible, then disable the version check using the `checkJacksonVersionCompatibility` on [`FinchOkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClient.kt) or [`FinchOkHttpClientAsync`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClientAsync.kt).
+
+> [!CAUTION]
+> We make no guarantee that the SDK works correctly when the Jackson version check is disabled.
+
 ## Network options
 
 ### Retries
@@ -371,6 +382,42 @@ FinchClient client = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build();
 ```
+
+### Custom HTTP client
+
+The SDK consists of three artifacts:
+
+- `finch-java-core`
+  - Contains core SDK logic
+  - Does not depend on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`FinchClient`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClient.kt), [`FinchClientAsync`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsync.kt), [`FinchClientImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientImpl.kt), and [`FinchClientAsyncImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsyncImpl.kt), all of which can work with any HTTP client
+- `finch-java-client-okhttp`
+  - Depends on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`FinchOkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClient.kt) and [`FinchOkHttpClientAsync`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClientAsync.kt), which provide a way to construct [`FinchClientImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientImpl.kt) and [`FinchClientAsyncImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsyncImpl.kt), respectively, using OkHttp
+- `finch-java`
+  - Depends on and exposes the APIs of both `finch-java-core` and `finch-java-client-okhttp`
+  - Does not have its own logic
+
+This structure allows replacing the SDK's default HTTP client without pulling in unnecessary dependencies.
+
+#### Customized [`OkHttpClient`](https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html)
+
+> [!TIP]
+> Try the available [network options](#network-options) before replacing the default client.
+
+To use a customized `OkHttpClient`:
+
+1. Replace your [`finch-java` dependency](#installation) with `finch-java-core`
+2. Copy `finch-java-client-okhttp`'s [`OkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`FinchClientImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientImpl.kt) or [`FinchClientAsyncImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsyncImpl.kt), similarly to [`FinchOkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClient.kt) or [`FinchOkHttpClientAsync`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClientAsync.kt), using your customized client
+
+### Completely custom HTTP client
+
+To use a completely custom HTTP client:
+
+1. Replace your [`finch-java` dependency](#installation) with `finch-java-core`
+2. Write a class that implements the [`HttpClient`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/http/HttpClient.kt) interface
+3. Construct [`FinchClientImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientImpl.kt) or [`FinchClientAsyncImpl`](finch-java-core/src/main/kotlin/com/tryfinch/api/client/FinchClientAsyncImpl.kt), similarly to [`FinchOkHttpClient`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClient.kt) or [`FinchOkHttpClientAsync`](finch-java-client-okhttp/src/main/kotlin/com/tryfinch/api/client/okhttp/FinchOkHttpClientAsync.kt), using your new client class
 
 ## Undocumented API functionality
 
