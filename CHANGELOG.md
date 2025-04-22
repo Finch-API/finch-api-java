@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.4.0 (2025-04-22)
+
+Full Changelog: [v5.3.0...v5.4.0](https://github.com/Finch-API/finch-api-java/compare/v5.3.0...v5.4.0)
+
+### Features
+
+* **api:** api update ([b8eba3e](https://github.com/Finch-API/finch-api-java/commit/b8eba3e183936982616060b0a73178e18e6db94a))
+
+
+### Chores
+
+* **ci:** add timeout thresholds for CI jobs ([6504b18](https://github.com/Finch-API/finch-api-java/commit/6504b185e8e4f58384f6eab74da25b6697e66d8d))
+
 ## 5.3.0 (2025-04-18)
 
 Full Changelog: [v5.2.0...v5.3.0](https://github.com/Finch-API/finch-api-java/compare/v5.2.0...v5.3.0)
