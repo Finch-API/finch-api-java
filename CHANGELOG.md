@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.5.0 (2025-04-23)
+
+Full Changelog: [v5.4.0...v5.5.0](https://github.com/Finch-API/finch-api-java/compare/v5.4.0...v5.5.0)
+
+### Features
+
+* **api:** api update ([8cdf256](https://github.com/Finch-API/finch-api-java/commit/8cdf256b5b9e96b4162b8baa3fc068cb510613e2))
+
+
+### Chores
+
+* **ci:** only use depot for staging repos ([415d708](https://github.com/Finch-API/finch-api-java/commit/415d708c3acfe3ab0b718e89178632d5952e261a))
+* **ci:** run on more branches and use depot runners ([876a6f9](https://github.com/Finch-API/finch-api-java/commit/876a6f9fb669c659dda8a349ba676545c5b78568))
+* **internal:** java 17 -&gt; 21 on ci ([5982e36](https://github.com/Finch-API/finch-api-java/commit/5982e367891992a817ad418309b575ba207a04b5))
+
 ## 5.4.0 (2025-04-22)
 
 Full Changelog: [v5.3.0...v5.4.0](https://github.com/Finch-API/finch-api-java/compare/v5.3.0...v5.4.0)
