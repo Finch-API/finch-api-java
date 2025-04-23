@@ -17,7 +17,11 @@ internal class PayStatementItemListResponseTest {
                 .attributes(
                     PayStatementItemListResponse.Attributes.builder()
                         .employer(true)
-                        .metadata(JsonValue.from(mapOf<String, Any>()))
+                        .metadata(
+                            PayStatementItemListResponse.Attributes.Metadata.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
                         .preTax(true)
                         .type("type")
                         .build()
@@ -30,7 +34,11 @@ internal class PayStatementItemListResponseTest {
             .contains(
                 PayStatementItemListResponse.Attributes.builder()
                     .employer(true)
-                    .metadata(JsonValue.from(mapOf<String, Any>()))
+                    .metadata(
+                        PayStatementItemListResponse.Attributes.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .preTax(true)
                     .type("type")
                     .build()
@@ -48,7 +56,11 @@ internal class PayStatementItemListResponseTest {
                 .attributes(
                     PayStatementItemListResponse.Attributes.builder()
                         .employer(true)
-                        .metadata(JsonValue.from(mapOf<String, Any>()))
+                        .metadata(
+                            PayStatementItemListResponse.Attributes.Metadata.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
                         .preTax(true)
                         .type("type")
                         .build()
