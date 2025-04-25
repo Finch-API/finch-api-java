@@ -71,10 +71,10 @@ internal class EmploymentServiceAsyncTest {
                             .country("country")
                             .line1("line1")
                             .line2("line2")
-                            .name("name")
                             .postalCode("postal_code")
-                            .sourceId("source_id")
                             .state("state")
+                            .name("name")
+                            .sourceId("source_id")
                             .build()
                     )
                     .manager(
