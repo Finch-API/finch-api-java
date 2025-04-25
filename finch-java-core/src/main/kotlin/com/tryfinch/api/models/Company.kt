@@ -692,18 +692,29 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Account]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Account].
+             *
+             * The following fields are required:
+             * ```java
+             * .accountName()
+             * .accountNumber()
+             * .accountType()
+             * .institutionName()
+             * .routingNumber()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Account]. */
         class Builder internal constructor() {
 
-            private var accountName: JsonField<String> = JsonMissing.of()
-            private var accountNumber: JsonField<String> = JsonMissing.of()
-            private var accountType: JsonField<AccountType> = JsonMissing.of()
-            private var institutionName: JsonField<String> = JsonMissing.of()
-            private var routingNumber: JsonField<String> = JsonMissing.of()
+            private var accountName: JsonField<String>? = null
+            private var accountNumber: JsonField<String>? = null
+            private var accountType: JsonField<AccountType>? = null
+            private var institutionName: JsonField<String>? = null
+            private var routingNumber: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -835,14 +846,25 @@ private constructor(
              * Returns an immutable instance of [Account].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .accountName()
+             * .accountNumber()
+             * .accountType()
+             * .institutionName()
+             * .routingNumber()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Account =
                 Account(
-                    accountName,
-                    accountNumber,
-                    accountType,
-                    institutionName,
-                    routingNumber,
+                    checkRequired("accountName", accountName),
+                    checkRequired("accountNumber", accountNumber),
+                    checkRequired("accountType", accountType),
+                    checkRequired("institutionName", institutionName),
+                    checkRequired("routingNumber", routingNumber),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -1091,15 +1113,23 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Department]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Department].
+             *
+             * The following fields are required:
+             * ```java
+             * .name()
+             * .parent()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Department]. */
         class Builder internal constructor() {
 
-            private var name: JsonField<String> = JsonMissing.of()
-            private var parent: JsonField<Parent> = JsonMissing.of()
+            private var name: JsonField<String>? = null
+            private var parent: JsonField<Parent>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1162,8 +1192,21 @@ private constructor(
              * Returns an immutable instance of [Department].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .name()
+             * .parent()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): Department = Department(name, parent, additionalProperties.toMutableMap())
+            fun build(): Department =
+                Department(
+                    checkRequired("name", name),
+                    checkRequired("parent", parent),
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -1238,14 +1281,21 @@ private constructor(
 
             companion object {
 
-                /** Returns a mutable builder for constructing an instance of [Parent]. */
+                /**
+                 * Returns a mutable builder for constructing an instance of [Parent].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .name()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
             /** A builder for [Parent]. */
             class Builder internal constructor() {
 
-                private var name: JsonField<String> = JsonMissing.of()
+                private var name: JsonField<String>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -1295,8 +1345,16 @@ private constructor(
                  * Returns an immutable instance of [Parent].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .name()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): Parent = Parent(name, additionalProperties.toMutableMap())
+                fun build(): Parent =
+                    Parent(checkRequired("name", name), additionalProperties.toMutableMap())
             }
 
             private var validated: Boolean = false
@@ -1420,15 +1478,23 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Entity]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Entity].
+             *
+             * The following fields are required:
+             * ```java
+             * .subtype()
+             * .type()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Entity]. */
         class Builder internal constructor() {
 
-            private var subtype: JsonField<Subtype> = JsonMissing.of()
-            private var type: JsonField<Type> = JsonMissing.of()
+            private var subtype: JsonField<Subtype>? = null
+            private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1491,8 +1557,21 @@ private constructor(
              * Returns an immutable instance of [Entity].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .subtype()
+             * .type()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): Entity = Entity(subtype, type, additionalProperties.toMutableMap())
+            fun build(): Entity =
+                Entity(
+                    checkRequired("subtype", subtype),
+                    checkRequired("type", type),
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
