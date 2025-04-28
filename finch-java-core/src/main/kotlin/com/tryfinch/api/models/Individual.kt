@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
@@ -23,8 +24,6 @@ class Individual
 private constructor(
     private val id: JsonField<String>,
     private val dob: JsonField<String>,
-    private val emails: JsonField<List<Email>>,
-    private val encryptedSsn: JsonField<String>,
     private val ethnicity: JsonField<Ethnicity>,
     private val firstName: JsonField<String>,
     private val gender: JsonField<Gender>,
@@ -33,6 +32,8 @@ private constructor(
     private val phoneNumbers: JsonField<List<PhoneNumber?>>,
     private val preferredName: JsonField<String>,
     private val residence: JsonField<Location>,
+    private val emails: JsonField<List<Email>>,
+    private val encryptedSsn: JsonField<String>,
     private val ssn: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -41,10 +42,6 @@ private constructor(
     private constructor(
         @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
         @JsonProperty("dob") @ExcludeMissing dob: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("emails") @ExcludeMissing emails: JsonField<List<Email>> = JsonMissing.of(),
-        @JsonProperty("encrypted_ssn")
-        @ExcludeMissing
-        encryptedSsn: JsonField<String> = JsonMissing.of(),
         @JsonProperty("ethnicity")
         @ExcludeMissing
         ethnicity: JsonField<Ethnicity> = JsonMissing.of(),
@@ -63,12 +60,14 @@ private constructor(
         @JsonProperty("residence")
         @ExcludeMissing
         residence: JsonField<Location> = JsonMissing.of(),
+        @JsonProperty("emails") @ExcludeMissing emails: JsonField<List<Email>> = JsonMissing.of(),
+        @JsonProperty("encrypted_ssn")
+        @ExcludeMissing
+        encryptedSsn: JsonField<String> = JsonMissing.of(),
         @JsonProperty("ssn") @ExcludeMissing ssn: JsonField<String> = JsonMissing.of(),
     ) : this(
         id,
         dob,
-        emails,
-        encryptedSsn,
         ethnicity,
         firstName,
         gender,
@@ -77,6 +76,8 @@ private constructor(
         phoneNumbers,
         preferredName,
         residence,
+        emails,
+        encryptedSsn,
         ssn,
         mutableMapOf(),
     )
@@ -84,32 +85,16 @@ private constructor(
     /**
      * A stable Finch `id` (UUID v4) for an individual in the company.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun id(): Optional<String> = id.getOptional("id")
+    fun id(): String = id.getRequired("id")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun dob(): Optional<String> = dob.getOptional("dob")
-
-    /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun emails(): Optional<List<Email>> = emails.getOptional("emails")
-
-    /**
-     * Social Security Number of the individual in **encrypted** format. This field is only
-     * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
-     * the body.
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun encryptedSsn(): Optional<String> = encryptedSsn.getOptional("encrypted_ssn")
 
     /**
      * The EEOC-defined ethnicity of the individual.
@@ -172,6 +157,22 @@ private constructor(
     fun residence(): Optional<Location> = residence.getOptional("residence")
 
     /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun emails(): Optional<List<Email>> = emails.getOptional("emails")
+
+    /**
+     * Social Security Number of the individual in **encrypted** format. This field is only
+     * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
+     * the body.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun encryptedSsn(): Optional<String> = encryptedSsn.getOptional("encrypted_ssn")
+
+    /**
      * Social Security Number of the individual. This field is only available with the `ssn` scope
      * enabled and the `options: { include: ['ssn'] }` param set in the body.
      * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
@@ -194,22 +195,6 @@ private constructor(
      * Unlike [dob], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("dob") @ExcludeMissing fun _dob(): JsonField<String> = dob
-
-    /**
-     * Returns the raw JSON value of [emails].
-     *
-     * Unlike [emails], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("emails") @ExcludeMissing fun _emails(): JsonField<List<Email>> = emails
-
-    /**
-     * Returns the raw JSON value of [encryptedSsn].
-     *
-     * Unlike [encryptedSsn], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("encrypted_ssn")
-    @ExcludeMissing
-    fun _encryptedSsn(): JsonField<String> = encryptedSsn
 
     /**
      * Returns the raw JSON value of [ethnicity].
@@ -272,6 +257,22 @@ private constructor(
     @JsonProperty("residence") @ExcludeMissing fun _residence(): JsonField<Location> = residence
 
     /**
+     * Returns the raw JSON value of [emails].
+     *
+     * Unlike [emails], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("emails") @ExcludeMissing fun _emails(): JsonField<List<Email>> = emails
+
+    /**
+     * Returns the raw JSON value of [encryptedSsn].
+     *
+     * Unlike [encryptedSsn], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("encrypted_ssn")
+    @ExcludeMissing
+    fun _encryptedSsn(): JsonField<String> = encryptedSsn
+
+    /**
      * Returns the raw JSON value of [ssn].
      *
      * Unlike [ssn], this method doesn't throw if the JSON field has an unexpected type.
@@ -292,25 +293,41 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [Individual]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [Individual].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .dob()
+         * .ethnicity()
+         * .firstName()
+         * .gender()
+         * .lastName()
+         * .middleName()
+         * .phoneNumbers()
+         * .preferredName()
+         * .residence()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [Individual]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var dob: JsonField<String> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var dob: JsonField<String>? = null
+        private var ethnicity: JsonField<Ethnicity>? = null
+        private var firstName: JsonField<String>? = null
+        private var gender: JsonField<Gender>? = null
+        private var lastName: JsonField<String>? = null
+        private var middleName: JsonField<String>? = null
+        private var phoneNumbers: JsonField<MutableList<PhoneNumber?>>? = null
+        private var preferredName: JsonField<String>? = null
+        private var residence: JsonField<Location>? = null
         private var emails: JsonField<MutableList<Email>>? = null
         private var encryptedSsn: JsonField<String> = JsonMissing.of()
-        private var ethnicity: JsonField<Ethnicity> = JsonMissing.of()
-        private var firstName: JsonField<String> = JsonMissing.of()
-        private var gender: JsonField<Gender> = JsonMissing.of()
-        private var lastName: JsonField<String> = JsonMissing.of()
-        private var middleName: JsonField<String> = JsonMissing.of()
-        private var phoneNumbers: JsonField<MutableList<PhoneNumber?>>? = null
-        private var preferredName: JsonField<String> = JsonMissing.of()
-        private var residence: JsonField<Location> = JsonMissing.of()
         private var ssn: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -318,8 +335,6 @@ private constructor(
         internal fun from(individual: Individual) = apply {
             id = individual.id
             dob = individual.dob
-            emails = individual.emails.map { it.toMutableList() }
-            encryptedSsn = individual.encryptedSsn
             ethnicity = individual.ethnicity
             firstName = individual.firstName
             gender = individual.gender
@@ -328,6 +343,8 @@ private constructor(
             phoneNumbers = individual.phoneNumbers.map { it.toMutableList() }
             preferredName = individual.preferredName
             residence = individual.residence
+            emails = individual.emails.map { it.toMutableList() }
+            encryptedSsn = individual.encryptedSsn
             ssn = individual.ssn
             additionalProperties = individual.additionalProperties.toMutableMap()
         }
@@ -355,55 +372,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun dob(dob: JsonField<String>) = apply { this.dob = dob }
-
-        fun emails(emails: List<Email>?) = emails(JsonField.ofNullable(emails))
-
-        /** Alias for calling [Builder.emails] with `emails.orElse(null)`. */
-        fun emails(emails: Optional<List<Email>>) = emails(emails.getOrNull())
-
-        /**
-         * Sets [Builder.emails] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.emails] with a well-typed `List<Email>` value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun emails(emails: JsonField<List<Email>>) = apply {
-            this.emails = emails.map { it.toMutableList() }
-        }
-
-        /**
-         * Adds a single [Email] to [emails].
-         *
-         * @throws IllegalStateException if the field was previously set to a non-list.
-         */
-        fun addEmail(email: Email) = apply {
-            emails =
-                (emails ?: JsonField.of(mutableListOf())).also {
-                    checkKnown("emails", it).add(email)
-                }
-        }
-
-        /**
-         * Social Security Number of the individual in **encrypted** format. This field is only
-         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
-         * in the body.
-         */
-        fun encryptedSsn(encryptedSsn: String?) = encryptedSsn(JsonField.ofNullable(encryptedSsn))
-
-        /** Alias for calling [Builder.encryptedSsn] with `encryptedSsn.orElse(null)`. */
-        fun encryptedSsn(encryptedSsn: Optional<String>) = encryptedSsn(encryptedSsn.getOrNull())
-
-        /**
-         * Sets [Builder.encryptedSsn] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.encryptedSsn] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun encryptedSsn(encryptedSsn: JsonField<String>) = apply {
-            this.encryptedSsn = encryptedSsn
-        }
 
         /** The EEOC-defined ethnicity of the individual. */
         fun ethnicity(ethnicity: Ethnicity?) = ethnicity(JsonField.ofNullable(ethnicity))
@@ -541,6 +509,55 @@ private constructor(
          */
         fun residence(residence: JsonField<Location>) = apply { this.residence = residence }
 
+        fun emails(emails: List<Email>?) = emails(JsonField.ofNullable(emails))
+
+        /** Alias for calling [Builder.emails] with `emails.orElse(null)`. */
+        fun emails(emails: Optional<List<Email>>) = emails(emails.getOrNull())
+
+        /**
+         * Sets [Builder.emails] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.emails] with a well-typed `List<Email>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun emails(emails: JsonField<List<Email>>) = apply {
+            this.emails = emails.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [Email] to [emails].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEmail(email: Email) = apply {
+            emails =
+                (emails ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("emails", it).add(email)
+                }
+        }
+
+        /**
+         * Social Security Number of the individual in **encrypted** format. This field is only
+         * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
+         * in the body.
+         */
+        fun encryptedSsn(encryptedSsn: String?) = encryptedSsn(JsonField.ofNullable(encryptedSsn))
+
+        /** Alias for calling [Builder.encryptedSsn] with `encryptedSsn.orElse(null)`. */
+        fun encryptedSsn(encryptedSsn: Optional<String>) = encryptedSsn(encryptedSsn.getOrNull())
+
+        /**
+         * Sets [Builder.encryptedSsn] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.encryptedSsn] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun encryptedSsn(encryptedSsn: JsonField<String>) = apply {
+            this.encryptedSsn = encryptedSsn
+        }
+
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
@@ -582,21 +599,37 @@ private constructor(
          * Returns an immutable instance of [Individual].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .dob()
+         * .ethnicity()
+         * .firstName()
+         * .gender()
+         * .lastName()
+         * .middleName()
+         * .phoneNumbers()
+         * .preferredName()
+         * .residence()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): Individual =
             Individual(
-                id,
-                dob,
+                checkRequired("id", id),
+                checkRequired("dob", dob),
+                checkRequired("ethnicity", ethnicity),
+                checkRequired("firstName", firstName),
+                checkRequired("gender", gender),
+                checkRequired("lastName", lastName),
+                checkRequired("middleName", middleName),
+                checkRequired("phoneNumbers", phoneNumbers).map { it.toImmutable() },
+                checkRequired("preferredName", preferredName),
+                checkRequired("residence", residence),
                 (emails ?: JsonMissing.of()).map { it.toImmutable() },
                 encryptedSsn,
-                ethnicity,
-                firstName,
-                gender,
-                lastName,
-                middleName,
-                (phoneNumbers ?: JsonMissing.of()).map { it.toImmutable() },
-                preferredName,
-                residence,
                 ssn,
                 additionalProperties.toMutableMap(),
             )
@@ -611,8 +644,6 @@ private constructor(
 
         id()
         dob()
-        emails().ifPresent { it.forEach { it.validate() } }
-        encryptedSsn()
         ethnicity().ifPresent { it.validate() }
         firstName()
         gender().ifPresent { it.validate() }
@@ -621,6 +652,8 @@ private constructor(
         phoneNumbers().ifPresent { it.forEach { it?.validate() } }
         preferredName()
         residence().ifPresent { it.validate() }
+        emails().ifPresent { it.forEach { it.validate() } }
+        encryptedSsn()
         ssn()
         validated = true
     }
@@ -642,8 +675,6 @@ private constructor(
     internal fun validity(): Int =
         (if (id.asKnown().isPresent) 1 else 0) +
             (if (dob.asKnown().isPresent) 1 else 0) +
-            (emails.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-            (if (encryptedSsn.asKnown().isPresent) 1 else 0) +
             (ethnicity.asKnown().getOrNull()?.validity() ?: 0) +
             (if (firstName.asKnown().isPresent) 1 else 0) +
             (gender.asKnown().getOrNull()?.validity() ?: 0) +
@@ -652,305 +683,9 @@ private constructor(
             (phoneNumbers.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
             (if (preferredName.asKnown().isPresent) 1 else 0) +
             (residence.asKnown().getOrNull()?.validity() ?: 0) +
+            (emails.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (encryptedSsn.asKnown().isPresent) 1 else 0) +
             (if (ssn.asKnown().isPresent) 1 else 0)
-
-    class Email
-    private constructor(
-        private val data: JsonField<String>,
-        private val type: JsonField<Type>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-        ) : this(data, type, mutableMapOf())
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun data(): Optional<String> = data.getOptional("data")
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun type(): Optional<Type> = type.getOptional("type")
-
-        /**
-         * Returns the raw JSON value of [data].
-         *
-         * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
-
-        /**
-         * Returns the raw JSON value of [type].
-         *
-         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Email]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Email]. */
-        class Builder internal constructor() {
-
-            private var data: JsonField<String> = JsonMissing.of()
-            private var type: JsonField<Type> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(email: Email) = apply {
-                data = email.data
-                type = email.type
-                additionalProperties = email.additionalProperties.toMutableMap()
-            }
-
-            fun data(data: String) = data(JsonField.of(data))
-
-            /**
-             * Sets [Builder.data] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.data] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun data(data: JsonField<String>) = apply { this.data = data }
-
-            fun type(type: Type?) = type(JsonField.ofNullable(type))
-
-            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
-            fun type(type: Optional<Type>) = type(type.getOrNull())
-
-            /**
-             * Sets [Builder.type] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun type(type: JsonField<Type>) = apply { this.type = type }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Email].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Email = Email(data, type, additionalProperties.toMutableMap())
-        }
-
-        private var validated: Boolean = false
-
-        fun validate(): Email = apply {
-            if (validated) {
-                return@apply
-            }
-
-            data()
-            type().ifPresent { it.validate() }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (if (data.asKnown().isPresent) 1 else 0) + (type.asKnown().getOrNull()?.validity() ?: 0)
-
-        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                @JvmField val WORK = of("work")
-
-                @JvmField val PERSONAL = of("personal")
-
-                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-            }
-
-            /** An enum containing [Type]'s known values. */
-            enum class Known {
-                WORK,
-                PERSONAL,
-            }
-
-            /**
-             * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Type] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                WORK,
-                PERSONAL,
-                /** An enum member indicating that [Type] was instantiated with an unknown value. */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    WORK -> Value.WORK
-                    PERSONAL -> Value.PERSONAL
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws FinchInvalidDataException if this class instance's value is a not a known
-             *   member.
-             */
-            fun known(): Known =
-                when (this) {
-                    WORK -> Known.WORK
-                    PERSONAL -> Known.PERSONAL
-                    else -> throw FinchInvalidDataException("Unknown Type: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws FinchInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    FinchInvalidDataException("Value is not a String")
-                }
-
-            private var validated: Boolean = false
-
-            fun validate(): Type = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: FinchInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Email && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
-    }
 
     /** The EEOC-defined ethnicity of the individual. */
     class Ethnicity @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -1306,15 +1041,23 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [PhoneNumber]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [PhoneNumber].
+             *
+             * The following fields are required:
+             * ```java
+             * .data()
+             * .type()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [PhoneNumber]. */
         class Builder internal constructor() {
 
-            private var data: JsonField<String> = JsonMissing.of()
-            private var type: JsonField<Type> = JsonMissing.of()
+            private var data: JsonField<String>? = null
+            private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1375,8 +1118,21 @@ private constructor(
              * Returns an immutable instance of [PhoneNumber].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .data()
+             * .type()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): PhoneNumber = PhoneNumber(data, type, additionalProperties.toMutableMap())
+            fun build(): PhoneNumber =
+                PhoneNumber(
+                    checkRequired("data", data),
+                    checkRequired("type", type),
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -1554,20 +1310,339 @@ private constructor(
             "PhoneNumber{data=$data, type=$type, additionalProperties=$additionalProperties}"
     }
 
+    class Email
+    private constructor(
+        private val data: JsonField<String>,
+        private val type: JsonField<Type>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        ) : this(data, type, mutableMapOf())
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun data(): String = data.getRequired("data")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun type(): Optional<Type> = type.getOptional("type")
+
+        /**
+         * Returns the raw JSON value of [data].
+         *
+         * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
+
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Email].
+             *
+             * The following fields are required:
+             * ```java
+             * .data()
+             * .type()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Email]. */
+        class Builder internal constructor() {
+
+            private var data: JsonField<String>? = null
+            private var type: JsonField<Type>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(email: Email) = apply {
+                data = email.data
+                type = email.type
+                additionalProperties = email.additionalProperties.toMutableMap()
+            }
+
+            fun data(data: String) = data(JsonField.of(data))
+
+            /**
+             * Sets [Builder.data] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.data] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun data(data: JsonField<String>) = apply { this.data = data }
+
+            fun type(type: Type?) = type(JsonField.ofNullable(type))
+
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
+            fun type(type: Optional<Type>) = type(type.getOrNull())
+
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Email].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .data()
+             * .type()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Email =
+                Email(
+                    checkRequired("data", data),
+                    checkRequired("type", type),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Email = apply {
+            if (validated) {
+                return@apply
+            }
+
+            data()
+            type().ifPresent { it.validate() }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (data.asKnown().isPresent) 1 else 0) + (type.asKnown().getOrNull()?.validity() ?: 0)
+
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val WORK = of("work")
+
+                @JvmField val PERSONAL = of("personal")
+
+                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+            }
+
+            /** An enum containing [Type]'s known values. */
+            enum class Known {
+                WORK,
+                PERSONAL,
+            }
+
+            /**
+             * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Type] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                WORK,
+                PERSONAL,
+                /** An enum member indicating that [Type] was instantiated with an unknown value. */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    WORK -> Value.WORK
+                    PERSONAL -> Value.PERSONAL
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    WORK -> Known.WORK
+                    PERSONAL -> Known.PERSONAL
+                    else -> throw FinchInvalidDataException("Unknown Type: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Email && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is Individual && id == other.id && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Individual && id == other.id && dob == other.dob && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && emails == other.emails && encryptedSsn == other.encryptedSsn && ssn == other.ssn && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, dob, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, emails, encryptedSsn, ssn, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Individual{id=$id, dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
+        "Individual{id=$id, dob=$dob, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, emails=$emails, encryptedSsn=$encryptedSsn, ssn=$ssn, additionalProperties=$additionalProperties}"
 }

@@ -16,10 +16,6 @@ internal class IndividualTest {
             Individual.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dob("dob")
-                .addEmail(
-                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
-                )
-                .encryptedSsn("encrypted_ssn")
                 .ethnicity(Individual.Ethnicity.ASIAN)
                 .firstName("first_name")
                 .gender(Individual.Gender.FEMALE)
@@ -44,16 +40,15 @@ internal class IndividualTest {
                         .sourceId("source_id")
                         .build()
                 )
+                .addEmail(
+                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
+                )
+                .encryptedSsn("encrypted_ssn")
                 .ssn("ssn")
                 .build()
 
-        assertThat(individual.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(individual.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(individual.dob()).contains("dob")
-        assertThat(individual.emails().getOrNull())
-            .containsExactly(
-                Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
-            )
-        assertThat(individual.encryptedSsn()).contains("encrypted_ssn")
         assertThat(individual.ethnicity()).contains(Individual.Ethnicity.ASIAN)
         assertThat(individual.firstName()).contains("first_name")
         assertThat(individual.gender()).contains(Individual.Gender.FEMALE)
@@ -80,6 +75,11 @@ internal class IndividualTest {
                     .sourceId("source_id")
                     .build()
             )
+        assertThat(individual.emails().getOrNull())
+            .containsExactly(
+                Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
+            )
+        assertThat(individual.encryptedSsn()).contains("encrypted_ssn")
         assertThat(individual.ssn()).contains("ssn")
     }
 
@@ -90,10 +90,6 @@ internal class IndividualTest {
             Individual.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dob("dob")
-                .addEmail(
-                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
-                )
-                .encryptedSsn("encrypted_ssn")
                 .ethnicity(Individual.Ethnicity.ASIAN)
                 .firstName("first_name")
                 .gender(Individual.Gender.FEMALE)
@@ -118,6 +114,10 @@ internal class IndividualTest {
                         .sourceId("source_id")
                         .build()
                 )
+                .addEmail(
+                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
+                )
+                .encryptedSsn("encrypted_ssn")
                 .ssn("ssn")
                 .build()
 

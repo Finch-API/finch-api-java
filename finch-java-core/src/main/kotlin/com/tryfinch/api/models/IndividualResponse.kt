@@ -10,10 +10,10 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
-import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class IndividualResponse
@@ -34,22 +34,22 @@ private constructor(
     ) : this(body, code, individualId, mutableMapOf())
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun body(): Optional<Individual> = body.getOptional("body")
+    fun body(): Individual = body.getRequired("body")
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun code(): Optional<Long> = code.getOptional("code")
+    fun code(): Long = code.getRequired("code")
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun individualId(): Optional<String> = individualId.getOptional("individual_id")
+    fun individualId(): String = individualId.getRequired("individual_id")
 
     /**
      * Returns the raw JSON value of [body].
@@ -88,16 +88,25 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [IndividualResponse]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [IndividualResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .body()
+         * .code()
+         * .individualId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [IndividualResponse]. */
     class Builder internal constructor() {
 
-        private var body: JsonField<Individual> = JsonMissing.of()
-        private var code: JsonField<Long> = JsonMissing.of()
-        private var individualId: JsonField<String> = JsonMissing.of()
+        private var body: JsonField<Individual>? = null
+        private var code: JsonField<Long>? = null
+        private var individualId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -164,9 +173,23 @@ private constructor(
          * Returns an immutable instance of [IndividualResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .body()
+         * .code()
+         * .individualId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): IndividualResponse =
-            IndividualResponse(body, code, individualId, additionalProperties.toMutableMap())
+            IndividualResponse(
+                checkRequired("body", body),
+                checkRequired("code", code),
+                checkRequired("individualId", individualId),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
@@ -176,7 +199,7 @@ private constructor(
             return@apply
         }
 
-        body().ifPresent { it.validate() }
+        body().validate()
         code()
         individualId()
         validated = true
