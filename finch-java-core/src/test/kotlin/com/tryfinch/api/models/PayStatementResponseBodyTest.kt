@@ -15,7 +15,7 @@ internal class PayStatementResponseBodyTest {
     fun create() {
         val payStatementResponseBody =
             PayStatementResponseBody.builder()
-                .paging(Paging.builder().count(0L).offset(0L).build())
+                .paging(Paging.builder().offset(0L).count(0L).build())
                 .addPayStatement(
                     PayStatement.builder()
                         .addEarning(
@@ -140,7 +140,7 @@ internal class PayStatementResponseBodyTest {
                 .build()
 
         assertThat(payStatementResponseBody.paging())
-            .contains(Paging.builder().count(0L).offset(0L).build())
+            .contains(Paging.builder().offset(0L).count(0L).build())
         assertThat(payStatementResponseBody.payStatements().getOrNull())
             .containsExactly(
                 PayStatement.builder()
@@ -267,7 +267,7 @@ internal class PayStatementResponseBodyTest {
         val jsonMapper = jsonMapper()
         val payStatementResponseBody =
             PayStatementResponseBody.builder()
-                .paging(Paging.builder().count(0L).offset(0L).build())
+                .paging(Paging.builder().offset(0L).count(0L).build())
                 .addPayStatement(
                     PayStatement.builder()
                         .addEarning(

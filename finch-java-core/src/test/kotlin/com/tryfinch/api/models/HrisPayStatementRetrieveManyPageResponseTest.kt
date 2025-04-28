@@ -18,7 +18,7 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                     PayStatementResponse.builder()
                         .body(
                             PayStatementResponseBody.builder()
-                                .paging(Paging.builder().count(0L).offset(0L).build())
+                                .paging(Paging.builder().offset(0L).count(0L).build())
                                 .addPayStatement(
                                     PayStatement.builder()
                                         .addEarning(
@@ -170,7 +170,7 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                 PayStatementResponse.builder()
                     .body(
                         PayStatementResponseBody.builder()
-                            .paging(Paging.builder().count(0L).offset(0L).build())
+                            .paging(Paging.builder().offset(0L).count(0L).build())
                             .addPayStatement(
                                 PayStatement.builder()
                                     .addEarning(
@@ -319,7 +319,7 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                     PayStatementResponse.builder()
                         .body(
                             PayStatementResponseBody.builder()
-                                .paging(Paging.builder().count(0L).offset(0L).build())
+                                .paging(Paging.builder().offset(0L).count(0L).build())
                                 .addPayStatement(
                                     PayStatement.builder()
                                         .addEarning(

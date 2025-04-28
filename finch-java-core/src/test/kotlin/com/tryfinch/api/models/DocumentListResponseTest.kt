@@ -22,7 +22,7 @@ internal class DocumentListResponseTest {
                         .year(0.0)
                         .build()
                 )
-                .paging(Paging.builder().count(0L).offset(0L).build())
+                .paging(Paging.builder().offset(0L).count(0L).build())
                 .build()
 
         assertThat(documentListResponse.documents())
@@ -36,7 +36,7 @@ internal class DocumentListResponseTest {
                     .build()
             )
         assertThat(documentListResponse.paging())
-            .isEqualTo(Paging.builder().count(0L).offset(0L).build())
+            .isEqualTo(Paging.builder().offset(0L).count(0L).build())
     }
 
     @Test
@@ -53,7 +53,7 @@ internal class DocumentListResponseTest {
                         .year(0.0)
                         .build()
                 )
-                .paging(Paging.builder().count(0L).offset(0L).build())
+                .paging(Paging.builder().offset(0L).count(0L).build())
                 .build()
 
         val roundtrippedDocumentListResponse =
