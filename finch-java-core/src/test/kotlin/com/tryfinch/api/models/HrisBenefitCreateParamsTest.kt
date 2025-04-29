@@ -10,6 +10,17 @@ internal class HrisBenefitCreateParamsTest {
     @Test
     fun create() {
         HrisBenefitCreateParams.builder()
+            .companyContribution(
+                HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
+                    .addTier(
+                        HrisBenefitCreateParams.BenefitCompanyMatchContribution.Tier.builder()
+                            .match(1L)
+                            .threshold(1L)
+                            .build()
+                    )
+                    .type(HrisBenefitCreateParams.BenefitCompanyMatchContribution.Type.MATCH)
+                    .build()
+            )
             .description("description")
             .frequency(BenefitFrequency.ONE_TIME)
             .type(BenefitType._401K)
@@ -20,6 +31,17 @@ internal class HrisBenefitCreateParamsTest {
     fun body() {
         val params =
             HrisBenefitCreateParams.builder()
+                .companyContribution(
+                    HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
+                        .addTier(
+                            HrisBenefitCreateParams.BenefitCompanyMatchContribution.Tier.builder()
+                                .match(1L)
+                                .threshold(1L)
+                                .build()
+                        )
+                        .type(HrisBenefitCreateParams.BenefitCompanyMatchContribution.Type.MATCH)
+                        .build()
+                )
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
                 .type(BenefitType._401K)
@@ -27,6 +49,18 @@ internal class HrisBenefitCreateParamsTest {
 
         val body = params._body()
 
+        assertThat(body.companyContribution())
+            .contains(
+                HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
+                    .addTier(
+                        HrisBenefitCreateParams.BenefitCompanyMatchContribution.Tier.builder()
+                            .match(1L)
+                            .threshold(1L)
+                            .build()
+                    )
+                    .type(HrisBenefitCreateParams.BenefitCompanyMatchContribution.Type.MATCH)
+                    .build()
+            )
         assertThat(body.description()).contains("description")
         assertThat(body.frequency()).contains(BenefitFrequency.ONE_TIME)
         assertThat(body.type()).contains(BenefitType._401K)
