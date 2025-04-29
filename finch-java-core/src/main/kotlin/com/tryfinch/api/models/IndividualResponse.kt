@@ -127,6 +127,14 @@ private constructor(
          */
         fun body(body: JsonField<Individual>) = apply { this.body = body }
 
+        /** Alias for calling [body] with `Individual.ofUnionMember0(unionMember0)`. */
+        fun body(unionMember0: Individual.UnionMember0) =
+            body(Individual.ofUnionMember0(unionMember0))
+
+        /** Alias for calling [body] with `Individual.ofUnionMember1(unionMember1)`. */
+        fun body(unionMember1: Individual.UnionMember1) =
+            body(Individual.ofUnionMember1(unionMember1))
+
         fun code(code: Long) = code(JsonField.of(code))
 
         /**
