@@ -131,9 +131,8 @@ private constructor(
         fun body(unionMember0: Individual.UnionMember0) =
             body(Individual.ofUnionMember0(unionMember0))
 
-        /** Alias for calling [body] with `Individual.ofUnionMember1(unionMember1)`. */
-        fun body(unionMember1: Individual.UnionMember1) =
-            body(Individual.ofUnionMember1(unionMember1))
+        /** Alias for calling [body] with `Individual.ofBatchError(batchError)`. */
+        fun body(batchError: Individual.BatchError) = body(Individual.ofBatchError(batchError))
 
         fun code(code: Long) = code(JsonField.of(code))
 

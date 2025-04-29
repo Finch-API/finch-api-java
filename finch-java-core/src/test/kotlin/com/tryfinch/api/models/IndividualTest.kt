@@ -57,7 +57,7 @@ internal class IndividualTest {
         val individual = Individual.ofUnionMember0(unionMember0)
 
         assertThat(individual.unionMember0()).contains(unionMember0)
-        assertThat(individual.unionMember1()).isEmpty
+        assertThat(individual.batchError()).isEmpty
     }
 
     @Test
@@ -113,27 +113,27 @@ internal class IndividualTest {
     }
 
     @Test
-    fun ofUnionMember1() {
-        val unionMember1 =
-            Individual.UnionMember1.builder()
+    fun ofBatchError() {
+        val batchError =
+            Individual.BatchError.builder()
                 .code(0.0)
                 .message("message")
                 .name("name")
                 .finchCode("finch_code")
                 .build()
 
-        val individual = Individual.ofUnionMember1(unionMember1)
+        val individual = Individual.ofBatchError(batchError)
 
         assertThat(individual.unionMember0()).isEmpty
-        assertThat(individual.unionMember1()).contains(unionMember1)
+        assertThat(individual.batchError()).contains(batchError)
     }
 
     @Test
-    fun ofUnionMember1Roundtrip() {
+    fun ofBatchErrorRoundtrip() {
         val jsonMapper = jsonMapper()
         val individual =
-            Individual.ofUnionMember1(
-                Individual.UnionMember1.builder()
+            Individual.ofBatchError(
+                Individual.BatchError.builder()
                     .code(0.0)
                     .message("message")
                     .name("name")

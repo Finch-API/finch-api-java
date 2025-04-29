@@ -36,28 +36,28 @@ import kotlin.jvm.optionals.getOrNull
 class Individual
 private constructor(
     private val unionMember0: UnionMember0? = null,
-    private val unionMember1: UnionMember1? = null,
+    private val batchError: BatchError? = null,
     private val _json: JsonValue? = null,
 ) {
 
     fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
 
-    fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
+    fun batchError(): Optional<BatchError> = Optional.ofNullable(batchError)
 
     fun isUnionMember0(): Boolean = unionMember0 != null
 
-    fun isUnionMember1(): Boolean = unionMember1 != null
+    fun isBatchError(): Boolean = batchError != null
 
     fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
 
-    fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
+    fun asBatchError(): BatchError = batchError.getOrThrow("batchError")
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
     fun <T> accept(visitor: Visitor<T>): T =
         when {
             unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
-            unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
+            batchError != null -> visitor.visitBatchError(batchError)
             else -> visitor.unknown(_json)
         }
 
@@ -74,8 +74,8 @@ private constructor(
                     unionMember0.validate()
                 }
 
-                override fun visitUnionMember1(unionMember1: UnionMember1) {
-                    unionMember1.validate()
+                override fun visitBatchError(batchError: BatchError) {
+                    batchError.validate()
                 }
             }
         )
@@ -101,7 +101,7 @@ private constructor(
             object : Visitor<Int> {
                 override fun visitUnionMember0(unionMember0: UnionMember0) = unionMember0.validity()
 
-                override fun visitUnionMember1(unionMember1: UnionMember1) = unionMember1.validity()
+                override fun visitBatchError(batchError: BatchError) = batchError.validity()
 
                 override fun unknown(json: JsonValue?) = 0
             }
@@ -112,15 +112,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Individual && unionMember0 == other.unionMember0 && unionMember1 == other.unionMember1 /* spotless:on */
+        return /* spotless:off */ other is Individual && unionMember0 == other.unionMember0 && batchError == other.batchError /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(unionMember0, unionMember1) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(unionMember0, batchError) /* spotless:on */
 
     override fun toString(): String =
         when {
             unionMember0 != null -> "Individual{unionMember0=$unionMember0}"
-            unionMember1 != null -> "Individual{unionMember1=$unionMember1}"
+            batchError != null -> "Individual{batchError=$batchError}"
             _json != null -> "Individual{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid Individual")
         }
@@ -130,8 +130,7 @@ private constructor(
         @JvmStatic
         fun ofUnionMember0(unionMember0: UnionMember0) = Individual(unionMember0 = unionMember0)
 
-        @JvmStatic
-        fun ofUnionMember1(unionMember1: UnionMember1) = Individual(unionMember1 = unionMember1)
+        @JvmStatic fun ofBatchError(batchError: BatchError) = Individual(batchError = batchError)
     }
 
     /** An interface that defines how to map each variant of [Individual] to a value of type [T]. */
@@ -139,7 +138,7 @@ private constructor(
 
         fun visitUnionMember0(unionMember0: UnionMember0): T
 
-        fun visitUnionMember1(unionMember1: UnionMember1): T
+        fun visitBatchError(batchError: BatchError): T
 
         /**
          * Maps an unknown variant of [Individual] to a value of type [T].
@@ -165,8 +164,8 @@ private constructor(
                         tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
                             Individual(unionMember0 = it, _json = json)
                         },
-                        tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
-                            Individual(unionMember1 = it, _json = json)
+                        tryDeserialize(node, jacksonTypeRef<BatchError>())?.let {
+                            Individual(batchError = it, _json = json)
                         },
                     )
                     .filterNotNull()
@@ -193,7 +192,7 @@ private constructor(
         ) {
             when {
                 value.unionMember0 != null -> generator.writeObject(value.unionMember0)
-                value.unionMember1 != null -> generator.writeObject(value.unionMember1)
+                value.batchError != null -> generator.writeObject(value.batchError)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid Individual")
             }
@@ -1874,7 +1873,7 @@ private constructor(
             "UnionMember0{id=$id, dob=$dob, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, emails=$emails, encryptedSsn=$encryptedSsn, ssn=$ssn, additionalProperties=$additionalProperties}"
     }
 
-    class UnionMember1
+    class BatchError
     private constructor(
         private val code: JsonField<Double>,
         private val message: JsonField<String>,
@@ -1960,7 +1959,7 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [UnionMember1].
+             * Returns a mutable builder for constructing an instance of [BatchError].
              *
              * The following fields are required:
              * ```java
@@ -1972,7 +1971,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [UnionMember1]. */
+        /** A builder for [BatchError]. */
         class Builder internal constructor() {
 
             private var code: JsonField<Double>? = null
@@ -1982,12 +1981,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(unionMember1: UnionMember1) = apply {
-                code = unionMember1.code
-                message = unionMember1.message
-                name = unionMember1.name
-                finchCode = unionMember1.finchCode
-                additionalProperties = unionMember1.additionalProperties.toMutableMap()
+            internal fun from(batchError: BatchError) = apply {
+                code = batchError.code
+                message = batchError.message
+                name = batchError.name
+                finchCode = batchError.finchCode
+                additionalProperties = batchError.additionalProperties.toMutableMap()
             }
 
             fun code(code: Double) = code(JsonField.of(code))
@@ -2054,7 +2053,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [UnionMember1].
+             * Returns an immutable instance of [BatchError].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -2067,8 +2066,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): UnionMember1 =
-                UnionMember1(
+            fun build(): BatchError =
+                BatchError(
                     checkRequired("code", code),
                     checkRequired("message", message),
                     checkRequired("name", name),
@@ -2079,7 +2078,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): UnionMember1 = apply {
+        fun validate(): BatchError = apply {
             if (validated) {
                 return@apply
             }
@@ -2117,7 +2116,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is UnionMember1 && code == other.code && message == other.message && name == other.name && finchCode == other.finchCode && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is BatchError && code == other.code && message == other.message && name == other.name && finchCode == other.finchCode && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -2127,6 +2126,6 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "UnionMember1{code=$code, message=$message, name=$name, finchCode=$finchCode, additionalProperties=$additionalProperties}"
+            "BatchError{code=$code, message=$message, name=$name, finchCode=$finchCode, additionalProperties=$additionalProperties}"
     }
 }
