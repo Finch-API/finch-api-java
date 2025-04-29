@@ -3,28 +3,32 @@
 package com.tryfinch.api.models
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.jsonMapper
-import kotlin.jvm.optionals.getOrNull
+import com.tryfinch.api.errors.FinchInvalidDataException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 
 internal class IndividualTest {
 
     @Test
-    fun create() {
-        val individual =
-            Individual.builder()
+    fun ofUnionMember0() {
+        val unionMember0 =
+            Individual.UnionMember0.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dob("dob")
-                .ethnicity(Individual.Ethnicity.ASIAN)
+                .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
                 .firstName("first_name")
-                .gender(Individual.Gender.FEMALE)
+                .gender(Individual.UnionMember0.Gender.FEMALE)
                 .lastName("last_name")
                 .middleName("middle_name")
                 .addPhoneNumber(
-                    Individual.PhoneNumber.builder()
+                    Individual.UnionMember0.PhoneNumber.builder()
                         .data("data")
-                        .type(Individual.PhoneNumber.Type.WORK)
+                        .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
                         .build()
                 )
                 .preferredName("preferred_name")
@@ -41,85 +45,63 @@ internal class IndividualTest {
                         .build()
                 )
                 .addEmail(
-                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
+                    Individual.UnionMember0.Email.builder()
+                        .data("data")
+                        .type(Individual.UnionMember0.Email.Type.WORK)
+                        .build()
                 )
                 .encryptedSsn("encrypted_ssn")
                 .ssn("ssn")
                 .build()
 
-        assertThat(individual.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(individual.dob()).contains("dob")
-        assertThat(individual.ethnicity()).contains(Individual.Ethnicity.ASIAN)
-        assertThat(individual.firstName()).contains("first_name")
-        assertThat(individual.gender()).contains(Individual.Gender.FEMALE)
-        assertThat(individual.lastName()).contains("last_name")
-        assertThat(individual.middleName()).contains("middle_name")
-        assertThat(individual.phoneNumbers().getOrNull())
-            .containsExactly(
-                Individual.PhoneNumber.builder()
-                    .data("data")
-                    .type(Individual.PhoneNumber.Type.WORK)
-                    .build()
-            )
-        assertThat(individual.preferredName()).contains("preferred_name")
-        assertThat(individual.residence())
-            .contains(
-                Location.builder()
-                    .city("city")
-                    .country("country")
-                    .line1("line1")
-                    .line2("line2")
-                    .postalCode("postal_code")
-                    .state("state")
-                    .name("name")
-                    .sourceId("source_id")
-                    .build()
-            )
-        assertThat(individual.emails().getOrNull())
-            .containsExactly(
-                Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
-            )
-        assertThat(individual.encryptedSsn()).contains("encrypted_ssn")
-        assertThat(individual.ssn()).contains("ssn")
+        val individual = Individual.ofUnionMember0(unionMember0)
+
+        assertThat(individual.unionMember0()).contains(unionMember0)
+        assertThat(individual.unionMember1()).isEmpty
     }
 
     @Test
-    fun roundtrip() {
+    fun ofUnionMember0Roundtrip() {
         val jsonMapper = jsonMapper()
         val individual =
-            Individual.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .dob("dob")
-                .ethnicity(Individual.Ethnicity.ASIAN)
-                .firstName("first_name")
-                .gender(Individual.Gender.FEMALE)
-                .lastName("last_name")
-                .middleName("middle_name")
-                .addPhoneNumber(
-                    Individual.PhoneNumber.builder()
-                        .data("data")
-                        .type(Individual.PhoneNumber.Type.WORK)
-                        .build()
-                )
-                .preferredName("preferred_name")
-                .residence(
-                    Location.builder()
-                        .city("city")
-                        .country("country")
-                        .line1("line1")
-                        .line2("line2")
-                        .postalCode("postal_code")
-                        .state("state")
-                        .name("name")
-                        .sourceId("source_id")
-                        .build()
-                )
-                .addEmail(
-                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
-                )
-                .encryptedSsn("encrypted_ssn")
-                .ssn("ssn")
-                .build()
+            Individual.ofUnionMember0(
+                Individual.UnionMember0.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .dob("dob")
+                    .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
+                    .firstName("first_name")
+                    .gender(Individual.UnionMember0.Gender.FEMALE)
+                    .lastName("last_name")
+                    .middleName("middle_name")
+                    .addPhoneNumber(
+                        Individual.UnionMember0.PhoneNumber.builder()
+                            .data("data")
+                            .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
+                            .build()
+                    )
+                    .preferredName("preferred_name")
+                    .residence(
+                        Location.builder()
+                            .city("city")
+                            .country("country")
+                            .line1("line1")
+                            .line2("line2")
+                            .postalCode("postal_code")
+                            .state("state")
+                            .name("name")
+                            .sourceId("source_id")
+                            .build()
+                    )
+                    .addEmail(
+                        Individual.UnionMember0.Email.builder()
+                            .data("data")
+                            .type(Individual.UnionMember0.Email.Type.WORK)
+                            .build()
+                    )
+                    .encryptedSsn("encrypted_ssn")
+                    .ssn("ssn")
+                    .build()
+            )
 
         val roundtrippedIndividual =
             jsonMapper.readValue(
@@ -128,5 +110,60 @@ internal class IndividualTest {
             )
 
         assertThat(roundtrippedIndividual).isEqualTo(individual)
+    }
+
+    @Test
+    fun ofUnionMember1() {
+        val unionMember1 =
+            Individual.UnionMember1.builder()
+                .code(0.0)
+                .message("message")
+                .name("name")
+                .finchCode("finch_code")
+                .build()
+
+        val individual = Individual.ofUnionMember1(unionMember1)
+
+        assertThat(individual.unionMember0()).isEmpty
+        assertThat(individual.unionMember1()).contains(unionMember1)
+    }
+
+    @Test
+    fun ofUnionMember1Roundtrip() {
+        val jsonMapper = jsonMapper()
+        val individual =
+            Individual.ofUnionMember1(
+                Individual.UnionMember1.builder()
+                    .code(0.0)
+                    .message("message")
+                    .name("name")
+                    .finchCode("finch_code")
+                    .build()
+            )
+
+        val roundtrippedIndividual =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(individual),
+                jacksonTypeRef<Individual>(),
+            )
+
+        assertThat(roundtrippedIndividual).isEqualTo(individual)
+    }
+
+    enum class IncompatibleJsonShapeTestCase(val value: JsonValue) {
+        BOOLEAN(JsonValue.from(false)),
+        STRING(JsonValue.from("invalid")),
+        INTEGER(JsonValue.from(-1)),
+        FLOAT(JsonValue.from(3.14)),
+        ARRAY(JsonValue.from(listOf("invalid", "array"))),
+    }
+
+    @ParameterizedTest
+    @EnumSource
+    fun incompatibleJsonShapeDeserializesToUnknown(testCase: IncompatibleJsonShapeTestCase) {
+        val individual = jsonMapper().convertValue(testCase.value, jacksonTypeRef<Individual>())
+
+        val e = assertThrows<FinchInvalidDataException> { individual.validate() }
+        assertThat(e).hasMessageStartingWith("Unknown ")
     }
 }
