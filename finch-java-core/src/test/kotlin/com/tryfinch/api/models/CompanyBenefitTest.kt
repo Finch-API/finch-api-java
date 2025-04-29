@@ -18,8 +18,8 @@ internal class CompanyBenefitTest {
                     CompanyBenefit.BenefitCompanyMatchContribution.builder()
                         .addTier(
                             CompanyBenefit.BenefitCompanyMatchContribution.Tier.builder()
-                                .match(1.0)
-                                .threshold(1.0)
+                                .match(1L)
+                                .threshold(1L)
                                 .build()
                         )
                         .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
@@ -36,8 +36,8 @@ internal class CompanyBenefitTest {
                 CompanyBenefit.BenefitCompanyMatchContribution.builder()
                     .addTier(
                         CompanyBenefit.BenefitCompanyMatchContribution.Tier.builder()
-                            .match(1.0)
-                            .threshold(1.0)
+                            .match(1L)
+                            .threshold(1L)
                             .build()
                     )
                     .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
@@ -58,8 +58,8 @@ internal class CompanyBenefitTest {
                     CompanyBenefit.BenefitCompanyMatchContribution.builder()
                         .addTier(
                             CompanyBenefit.BenefitCompanyMatchContribution.Tier.builder()
-                                .match(1.0)
-                                .threshold(1.0)
+                                .match(1L)
+                                .threshold(1L)
                                 .build()
                         )
                         .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
