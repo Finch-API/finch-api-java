@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -17,43 +16,33 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                 .addResponse(
                     EmploymentDataResponse.builder()
                         .body(
-                            EmploymentData.builder()
+                            EmploymentData.UnionMember0.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .classCode("class_code")
                                 .addCustomField(
-                                    EmploymentData.CustomField.builder()
+                                    EmploymentData.UnionMember0.CustomField.builder()
                                         .name("name")
-                                        .value(JsonValue.from(mapOf<String, Any>()))
+                                        .value("string")
                                         .build()
                                 )
                                 .department(
-                                    EmploymentData.Department.builder().name("name").build()
+                                    EmploymentData.UnionMember0.Department.builder()
+                                        .name("name")
+                                        .build()
                                 )
                                 .employment(
-                                    EmploymentData.Employment.builder()
-                                        .subtype(EmploymentData.Employment.Subtype.FULL_TIME)
-                                        .type(EmploymentData.Employment.Type.EMPLOYEE)
+                                    EmploymentData.UnionMember0.Employment.builder()
+                                        .subtype(
+                                            EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME
+                                        )
+                                        .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
                                         .build()
                                 )
-                                .employmentStatus(EmploymentData.EmploymentStatus.ACTIVE)
+                                .employmentStatus(
+                                    EmploymentData.UnionMember0.EmploymentStatus.ACTIVE
+                                )
                                 .endDate("end_date")
                                 .firstName("first_name")
-                                .income(
-                                    Income.builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .effectiveDate("effective_date")
-                                        .unit(Income.Unit.YEARLY)
-                                        .build()
-                                )
-                                .addIncomeHistory(
-                                    Income.builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .effectiveDate("effective_date")
-                                        .unit(Income.Unit.YEARLY)
-                                        .build()
-                                )
                                 .isActive(true)
                                 .lastName("last_name")
                                 .latestRehireDate("latest_rehire_date")
@@ -70,7 +59,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                         .build()
                                 )
                                 .manager(
-                                    EmploymentData.Manager.builder()
+                                    EmploymentData.UnionMember0.Manager.builder()
                                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                         .build()
                                 )
@@ -79,6 +68,22 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                 .startDate("start_date")
                                 .title("title")
                                 .workId("work_id")
+                                .income(
+                                    Income.builder()
+                                        .amount(0L)
+                                        .currency("currency")
+                                        .effectiveDate("effective_date")
+                                        .unit(Income.Unit.YEARLY)
+                                        .build()
+                                )
+                                .addIncomeHistory(
+                                    Income.builder()
+                                        .amount(0L)
+                                        .currency("currency")
+                                        .effectiveDate("effective_date")
+                                        .unit(Income.Unit.YEARLY)
+                                        .build()
+                                )
                                 .build()
                         )
                         .code(0L)
@@ -91,41 +96,31 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
             .containsExactly(
                 EmploymentDataResponse.builder()
                     .body(
-                        EmploymentData.builder()
+                        EmploymentData.UnionMember0.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .classCode("class_code")
                             .addCustomField(
-                                EmploymentData.CustomField.builder()
+                                EmploymentData.UnionMember0.CustomField.builder()
                                     .name("name")
-                                    .value(JsonValue.from(mapOf<String, Any>()))
+                                    .value("string")
                                     .build()
                             )
-                            .department(EmploymentData.Department.builder().name("name").build())
+                            .department(
+                                EmploymentData.UnionMember0.Department.builder()
+                                    .name("name")
+                                    .build()
+                            )
                             .employment(
-                                EmploymentData.Employment.builder()
-                                    .subtype(EmploymentData.Employment.Subtype.FULL_TIME)
-                                    .type(EmploymentData.Employment.Type.EMPLOYEE)
+                                EmploymentData.UnionMember0.Employment.builder()
+                                    .subtype(
+                                        EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME
+                                    )
+                                    .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
                                     .build()
                             )
-                            .employmentStatus(EmploymentData.EmploymentStatus.ACTIVE)
+                            .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
                             .endDate("end_date")
                             .firstName("first_name")
-                            .income(
-                                Income.builder()
-                                    .amount(0L)
-                                    .currency("currency")
-                                    .effectiveDate("effective_date")
-                                    .unit(Income.Unit.YEARLY)
-                                    .build()
-                            )
-                            .addIncomeHistory(
-                                Income.builder()
-                                    .amount(0L)
-                                    .currency("currency")
-                                    .effectiveDate("effective_date")
-                                    .unit(Income.Unit.YEARLY)
-                                    .build()
-                            )
                             .isActive(true)
                             .lastName("last_name")
                             .latestRehireDate("latest_rehire_date")
@@ -142,7 +137,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                     .build()
                             )
                             .manager(
-                                EmploymentData.Manager.builder()
+                                EmploymentData.UnionMember0.Manager.builder()
                                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                     .build()
                             )
@@ -151,6 +146,22 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                             .startDate("start_date")
                             .title("title")
                             .workId("work_id")
+                            .income(
+                                Income.builder()
+                                    .amount(0L)
+                                    .currency("currency")
+                                    .effectiveDate("effective_date")
+                                    .unit(Income.Unit.YEARLY)
+                                    .build()
+                            )
+                            .addIncomeHistory(
+                                Income.builder()
+                                    .amount(0L)
+                                    .currency("currency")
+                                    .effectiveDate("effective_date")
+                                    .unit(Income.Unit.YEARLY)
+                                    .build()
+                            )
                             .build()
                     )
                     .code(0L)
@@ -167,43 +178,33 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                 .addResponse(
                     EmploymentDataResponse.builder()
                         .body(
-                            EmploymentData.builder()
+                            EmploymentData.UnionMember0.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .classCode("class_code")
                                 .addCustomField(
-                                    EmploymentData.CustomField.builder()
+                                    EmploymentData.UnionMember0.CustomField.builder()
                                         .name("name")
-                                        .value(JsonValue.from(mapOf<String, Any>()))
+                                        .value("string")
                                         .build()
                                 )
                                 .department(
-                                    EmploymentData.Department.builder().name("name").build()
+                                    EmploymentData.UnionMember0.Department.builder()
+                                        .name("name")
+                                        .build()
                                 )
                                 .employment(
-                                    EmploymentData.Employment.builder()
-                                        .subtype(EmploymentData.Employment.Subtype.FULL_TIME)
-                                        .type(EmploymentData.Employment.Type.EMPLOYEE)
+                                    EmploymentData.UnionMember0.Employment.builder()
+                                        .subtype(
+                                            EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME
+                                        )
+                                        .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
                                         .build()
                                 )
-                                .employmentStatus(EmploymentData.EmploymentStatus.ACTIVE)
+                                .employmentStatus(
+                                    EmploymentData.UnionMember0.EmploymentStatus.ACTIVE
+                                )
                                 .endDate("end_date")
                                 .firstName("first_name")
-                                .income(
-                                    Income.builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .effectiveDate("effective_date")
-                                        .unit(Income.Unit.YEARLY)
-                                        .build()
-                                )
-                                .addIncomeHistory(
-                                    Income.builder()
-                                        .amount(0L)
-                                        .currency("currency")
-                                        .effectiveDate("effective_date")
-                                        .unit(Income.Unit.YEARLY)
-                                        .build()
-                                )
                                 .isActive(true)
                                 .lastName("last_name")
                                 .latestRehireDate("latest_rehire_date")
@@ -220,7 +221,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                         .build()
                                 )
                                 .manager(
-                                    EmploymentData.Manager.builder()
+                                    EmploymentData.UnionMember0.Manager.builder()
                                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                         .build()
                                 )
@@ -229,6 +230,22 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                 .startDate("start_date")
                                 .title("title")
                                 .workId("work_id")
+                                .income(
+                                    Income.builder()
+                                        .amount(0L)
+                                        .currency("currency")
+                                        .effectiveDate("effective_date")
+                                        .unit(Income.Unit.YEARLY)
+                                        .build()
+                                )
+                                .addIncomeHistory(
+                                    Income.builder()
+                                        .amount(0L)
+                                        .currency("currency")
+                                        .effectiveDate("effective_date")
+                                        .unit(Income.Unit.YEARLY)
+                                        .build()
+                                )
                                 .build()
                         )
                         .code(0L)
