@@ -67,7 +67,7 @@ internal class PaymentServiceAsyncTest {
                             )
                             .addEmployeeDeduction(
                                 SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
-                                    .amount(2000L)
+                                    .amount(0L)
                                     .attributes(
                                         SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
                                             .Attributes
@@ -95,8 +95,8 @@ internal class PaymentServiceAsyncTest {
                                             )
                                             .build()
                                     )
-                                    .currency("usd")
-                                    .name("401k test")
+                                    .currency("currency")
+                                    .name("name")
                                     .preTax(true)
                                     .type(BenefitType._401K)
                                     .build()
@@ -138,7 +138,7 @@ internal class PaymentServiceAsyncTest {
                                     .build()
                             )
                             .grossPay(Money.builder().amount(0L).currency("currency").build())
-                            .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
+                            .individualId("individual_id")
                             .netPay(Money.builder().amount(0L).currency("currency").build())
                             .paymentMethod(
                                 SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
