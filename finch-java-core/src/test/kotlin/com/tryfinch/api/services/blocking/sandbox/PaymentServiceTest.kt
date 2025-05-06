@@ -49,7 +49,7 @@ internal class PaymentServiceTest {
                                                             .builder()
                                                             .putAdditionalProperty(
                                                                 "foo",
-                                                                JsonValue.from("bar"),
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -67,7 +67,7 @@ internal class PaymentServiceTest {
                             )
                             .addEmployeeDeduction(
                                 SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
-                                    .amount(0L)
+                                    .amount(2000L)
                                     .attributes(
                                         SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
                                             .Attributes
@@ -87,7 +87,7 @@ internal class PaymentServiceTest {
                                                             .builder()
                                                             .putAdditionalProperty(
                                                                 "foo",
-                                                                JsonValue.from("bar"),
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -95,8 +95,8 @@ internal class PaymentServiceTest {
                                             )
                                             .build()
                                     )
-                                    .currency("currency")
-                                    .name("name")
+                                    .currency("usd")
+                                    .name("401k test")
                                     .preTax(true)
                                     .type(BenefitType._401K)
                                     .build()
@@ -124,7 +124,7 @@ internal class PaymentServiceTest {
                                                             .builder()
                                                             .putAdditionalProperty(
                                                                 "foo",
-                                                                JsonValue.from("bar"),
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -138,7 +138,7 @@ internal class PaymentServiceTest {
                                     .build()
                             )
                             .grossPay(Money.builder().amount(0L).currency("currency").build())
-                            .individualId("individual_id")
+                            .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
                             .netPay(Money.builder().amount(0L).currency("currency").build())
                             .paymentMethod(
                                 SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
@@ -162,7 +162,7 @@ internal class PaymentServiceTest {
                                                             .builder()
                                                             .putAdditionalProperty(
                                                                 "foo",
-                                                                JsonValue.from("bar"),
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
