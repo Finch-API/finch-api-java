@@ -31,7 +31,7 @@ internal class PayStatementResponseBodyTest {
                                                         .builder()
                                                         .putAdditionalProperty(
                                                             "foo",
-                                                            JsonValue.from("bar"),
+                                                            JsonValue.from(mapOf<String, Any>()),
                                                         )
                                                         .build()
                                                 )
@@ -60,7 +60,7 @@ internal class PayStatementResponseBodyTest {
                                                         .builder()
                                                         .putAdditionalProperty(
                                                             "foo",
-                                                            JsonValue.from("bar"),
+                                                            JsonValue.from(mapOf<String, Any>()),
                                                         )
                                                         .build()
                                                 )
@@ -89,7 +89,7 @@ internal class PayStatementResponseBodyTest {
                                                         .builder()
                                                         .putAdditionalProperty(
                                                             "foo",
-                                                            JsonValue.from("bar"),
+                                                            JsonValue.from(mapOf<String, Any>()),
                                                         )
                                                         .build()
                                                 )
@@ -119,7 +119,7 @@ internal class PayStatementResponseBodyTest {
                                                         .builder()
                                                         .putAdditionalProperty(
                                                             "foo",
-                                                            JsonValue.from("bar"),
+                                                            JsonValue.from(mapOf<String, Any>()),
                                                         )
                                                         .build()
                                                 )
@@ -157,7 +157,7 @@ internal class PayStatementResponseBodyTest {
                                                     .builder()
                                                     .putAdditionalProperty(
                                                         "foo",
-                                                        JsonValue.from("bar"),
+                                                        JsonValue.from(mapOf<String, Any>()),
                                                     )
                                                     .build()
                                             )
@@ -184,7 +184,7 @@ internal class PayStatementResponseBodyTest {
                                                     .builder()
                                                     .putAdditionalProperty(
                                                         "foo",
-                                                        JsonValue.from("bar"),
+                                                        JsonValue.from(mapOf<String, Any>()),
                                                     )
                                                     .build()
                                             )
@@ -213,7 +213,7 @@ internal class PayStatementResponseBodyTest {
                                                     .builder()
                                                     .putAdditionalProperty(
                                                         "foo",
-                                                        JsonValue.from("bar"),
+                                                        JsonValue.from(mapOf<String, Any>()),
                                                     )
                                                     .build()
                                             )
@@ -242,7 +242,7 @@ internal class PayStatementResponseBodyTest {
                                                     .builder()
                                                     .putAdditionalProperty(
                                                         "foo",
-                                                        JsonValue.from("bar"),
+                                                        JsonValue.from(mapOf<String, Any>()),
                                                     )
                                                     .build()
                                             )
@@ -283,7 +283,7 @@ internal class PayStatementResponseBodyTest {
                                                         .builder()
                                                         .putAdditionalProperty(
                                                             "foo",
-                                                            JsonValue.from("bar"),
+                                                            JsonValue.from(mapOf<String, Any>()),
                                                         )
                                                         .build()
                                                 )
@@ -312,7 +312,7 @@ internal class PayStatementResponseBodyTest {
                                                         .builder()
                                                         .putAdditionalProperty(
                                                             "foo",
-                                                            JsonValue.from("bar"),
+                                                            JsonValue.from(mapOf<String, Any>()),
                                                         )
                                                         .build()
                                                 )
@@ -341,7 +341,7 @@ internal class PayStatementResponseBodyTest {
                                                         .builder()
                                                         .putAdditionalProperty(
                                                             "foo",
-                                                            JsonValue.from("bar"),
+                                                            JsonValue.from(mapOf<String, Any>()),
                                                         )
                                                         .build()
                                                 )
@@ -371,7 +371,7 @@ internal class PayStatementResponseBodyTest {
                                                         .builder()
                                                         .putAdditionalProperty(
                                                             "foo",
-                                                            JsonValue.from("bar"),
+                                                            JsonValue.from(mapOf<String, Any>()),
                                                         )
                                                         .build()
                                                 )
