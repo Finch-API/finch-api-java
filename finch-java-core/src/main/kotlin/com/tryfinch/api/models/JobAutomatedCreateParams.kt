@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.BaseDeserializer
 import com.tryfinch.api.core.BaseSerializer
-import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
@@ -88,8 +87,8 @@ private constructor(
         /** Alias for calling [Builder.body] with `body.orElse(null)`. */
         fun body(body: Optional<Body>) = body(body.getOrNull())
 
-        /** Alias for calling [body] with `Body.ofDataSyncAll(dataSyncAll)`. */
-        fun body(dataSyncAll: Body.DataSyncAll) = body(Body.ofDataSyncAll(dataSyncAll))
+        /** Alias for calling [body] with `Body.ofDataSyncAll()`. */
+        fun bodyDataSyncAll() = body(Body.ofDataSyncAll())
 
         /** Alias for calling [body] with `Body.ofW4FormEmployeeSync(w4FormEmployeeSync)`. */
         fun body(w4FormEmployeeSync: Body.W4FormEmployeeSync) =
@@ -99,20 +98,12 @@ private constructor(
          * Alias for calling [body] with the following:
          * ```java
          * Body.W4FormEmployeeSync.builder()
-         *     .type(JobAutomatedCreateParams.Body.W4FormEmployeeSync.Type.W4_FORM_EMPLOYEE_SYNC)
          *     .params(params)
          *     .build()
          * ```
          */
         fun w4FormEmployeeSyncBody(params: Body.W4FormEmployeeSync.Params) =
-            body(
-                Body.W4FormEmployeeSync.builder()
-                    .type(
-                        JobAutomatedCreateParams.Body.W4FormEmployeeSync.Type.W4_FORM_EMPLOYEE_SYNC
-                    )
-                    .params(params)
-                    .build()
-            )
+            body(Body.W4FormEmployeeSync.builder().params(params).build())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -231,12 +222,12 @@ private constructor(
     @JsonSerialize(using = Body.Serializer::class)
     class Body
     private constructor(
-        private val dataSyncAll: DataSyncAll? = null,
+        private val dataSyncAll: JsonValue? = null,
         private val w4FormEmployeeSync: W4FormEmployeeSync? = null,
         private val _json: JsonValue? = null,
     ) {
 
-        fun dataSyncAll(): Optional<DataSyncAll> = Optional.ofNullable(dataSyncAll)
+        fun dataSyncAll(): Optional<JsonValue> = Optional.ofNullable(dataSyncAll)
 
         fun w4FormEmployeeSync(): Optional<W4FormEmployeeSync> =
             Optional.ofNullable(w4FormEmployeeSync)
@@ -245,7 +236,7 @@ private constructor(
 
         fun isW4FormEmployeeSync(): Boolean = w4FormEmployeeSync != null
 
-        fun asDataSyncAll(): DataSyncAll = dataSyncAll.getOrThrow("dataSyncAll")
+        fun asDataSyncAll(): JsonValue = dataSyncAll.getOrThrow("dataSyncAll")
 
         fun asW4FormEmployeeSync(): W4FormEmployeeSync =
             w4FormEmployeeSync.getOrThrow("w4FormEmployeeSync")
@@ -268,8 +259,14 @@ private constructor(
 
             accept(
                 object : Visitor<Unit> {
-                    override fun visitDataSyncAll(dataSyncAll: DataSyncAll) {
-                        dataSyncAll.validate()
+                    override fun visitDataSyncAll(dataSyncAll: JsonValue) {
+                        dataSyncAll.let {
+                            if (it != JsonValue.from(mapOf("type" to "data_sync_all"))) {
+                                throw FinchInvalidDataException(
+                                    "'dataSyncAll' is invalid, received $it"
+                                )
+                            }
+                        }
                     }
 
                     override fun visitW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync) {
@@ -298,7 +295,10 @@ private constructor(
         internal fun validity(): Int =
             accept(
                 object : Visitor<Int> {
-                    override fun visitDataSyncAll(dataSyncAll: DataSyncAll) = dataSyncAll.validity()
+                    override fun visitDataSyncAll(dataSyncAll: JsonValue) =
+                        dataSyncAll.let {
+                            if (it == JsonValue.from(mapOf("type" to "data_sync_all"))) 1 else 0
+                        }
 
                     override fun visitW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync) =
                         w4FormEmployeeSync.validity()
@@ -327,7 +327,9 @@ private constructor(
 
         companion object {
 
-            @JvmStatic fun ofDataSyncAll(dataSyncAll: DataSyncAll) = Body(dataSyncAll = dataSyncAll)
+            @JvmStatic
+            fun ofDataSyncAll() =
+                Body(dataSyncAll = JsonValue.from(mapOf("type" to "data_sync_all")))
 
             @JvmStatic
             fun ofW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync) =
@@ -337,7 +339,7 @@ private constructor(
         /** An interface that defines how to map each variant of [Body] to a value of type [T]. */
         interface Visitor<out T> {
 
-            fun visitDataSyncAll(dataSyncAll: DataSyncAll): T
+            fun visitDataSyncAll(dataSyncAll: JsonValue): T
 
             fun visitW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync): T
 
@@ -363,9 +365,9 @@ private constructor(
 
                 when (type) {
                     "data_sync_all" -> {
-                        return tryDeserialize(node, jacksonTypeRef<DataSyncAll>())?.let {
-                            Body(dataSyncAll = it, _json = json)
-                        } ?: Body(_json = json)
+                        return tryDeserialize(node, jacksonTypeRef<JsonValue>())
+                            ?.let { Body(dataSyncAll = it, _json = json) }
+                            ?.takeIf { it.isValid() } ?: Body(_json = json)
                     }
                     "w4_form_employee_sync" -> {
                         return tryDeserialize(node, jacksonTypeRef<W4FormEmployeeSync>())?.let {
@@ -395,295 +397,10 @@ private constructor(
             }
         }
 
-        class DataSyncAll
-        private constructor(
-            private val type: JsonField<Type>,
-            private val additionalProperties: MutableMap<String, JsonValue>,
-        ) {
-
-            @JsonCreator
-            private constructor(
-                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of()
-            ) : this(type, mutableMapOf())
-
-            /**
-             * The type of job to start.
-             *
-             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
-             *   value).
-             */
-            fun type(): Type = type.getRequired("type")
-
-            /**
-             * Returns the raw JSON value of [type].
-             *
-             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
-
-            @JsonAnySetter
-            private fun putAdditionalProperty(key: String, value: JsonValue) {
-                additionalProperties.put(key, value)
-            }
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> =
-                Collections.unmodifiableMap(additionalProperties)
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                /**
-                 * Returns a mutable builder for constructing an instance of [DataSyncAll].
-                 *
-                 * The following fields are required:
-                 * ```java
-                 * .type()
-                 * ```
-                 */
-                @JvmStatic fun builder() = Builder()
-            }
-
-            /** A builder for [DataSyncAll]. */
-            class Builder internal constructor() {
-
-                private var type: JsonField<Type>? = null
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(dataSyncAll: DataSyncAll) = apply {
-                    type = dataSyncAll.type
-                    additionalProperties = dataSyncAll.additionalProperties.toMutableMap()
-                }
-
-                /** The type of job to start. */
-                fun type(type: Type) = type(JsonField.of(type))
-
-                /**
-                 * Sets [Builder.type] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
-                 * This method is primarily for setting the field to an undocumented or not yet
-                 * supported value.
-                 */
-                fun type(type: JsonField<Type>) = apply { this.type = type }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                /**
-                 * Returns an immutable instance of [DataSyncAll].
-                 *
-                 * Further updates to this [Builder] will not mutate the returned instance.
-                 *
-                 * The following fields are required:
-                 * ```java
-                 * .type()
-                 * ```
-                 *
-                 * @throws IllegalStateException if any required field is unset.
-                 */
-                fun build(): DataSyncAll =
-                    DataSyncAll(checkRequired("type", type), additionalProperties.toMutableMap())
-            }
-
-            private var validated: Boolean = false
-
-            fun validate(): DataSyncAll = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                type().validate()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: FinchInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic
-            internal fun validity(): Int = (type.asKnown().getOrNull()?.validity() ?: 0)
-
-            /** The type of job to start. */
-            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
-                Enum {
-
-                /**
-                 * Returns this class instance's raw value.
-                 *
-                 * This is usually only useful if this instance was deserialized from data that
-                 * doesn't match any known member, and you want to know that value. For example, if
-                 * the SDK is on an older version than the API, then the API may respond with new
-                 * members that the SDK is unaware of.
-                 */
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                companion object {
-
-                    @JvmField val DATA_SYNC_ALL = of("data_sync_all")
-
-                    @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-                }
-
-                /** An enum containing [Type]'s known values. */
-                enum class Known {
-                    DATA_SYNC_ALL
-                }
-
-                /**
-                 * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
-                 *
-                 * An instance of [Type] can contain an unknown value in a couple of cases:
-                 * - It was deserialized from data that doesn't match any known member. For example,
-                 *   if the SDK is on an older version than the API, then the API may respond with
-                 *   new members that the SDK is unaware of.
-                 * - It was constructed with an arbitrary value using the [of] method.
-                 */
-                enum class Value {
-                    DATA_SYNC_ALL,
-                    /**
-                     * An enum member indicating that [Type] was instantiated with an unknown value.
-                     */
-                    _UNKNOWN,
-                }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value, or
-                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-                 *
-                 * Use the [known] method instead if you're certain the value is always known or if
-                 * you want to throw for the unknown case.
-                 */
-                fun value(): Value =
-                    when (this) {
-                        DATA_SYNC_ALL -> Value.DATA_SYNC_ALL
-                        else -> Value._UNKNOWN
-                    }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value.
-                 *
-                 * Use the [value] method instead if you're uncertain the value is always known and
-                 * don't want to throw for the unknown case.
-                 *
-                 * @throws FinchInvalidDataException if this class instance's value is a not a known
-                 *   member.
-                 */
-                fun known(): Known =
-                    when (this) {
-                        DATA_SYNC_ALL -> Known.DATA_SYNC_ALL
-                        else -> throw FinchInvalidDataException("Unknown Type: $value")
-                    }
-
-                /**
-                 * Returns this class instance's primitive wire representation.
-                 *
-                 * This differs from the [toString] method because that method is primarily for
-                 * debugging and generally doesn't throw.
-                 *
-                 * @throws FinchInvalidDataException if this class instance's value does not have
-                 *   the expected primitive type.
-                 */
-                fun asString(): String =
-                    _value().asString().orElseThrow {
-                        FinchInvalidDataException("Value is not a String")
-                    }
-
-                private var validated: Boolean = false
-
-                fun validate(): Type = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    known()
-                    validated = true
-                }
-
-                fun isValid(): Boolean =
-                    try {
-                        validate()
-                        true
-                    } catch (e: FinchInvalidDataException) {
-                        false
-                    }
-
-                /**
-                 * Returns a score indicating how many valid values are contained in this object
-                 * recursively.
-                 *
-                 * Used for best match union deserialization.
-                 */
-                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is DataSyncAll && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
-            }
-
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(type, additionalProperties) }
-            /* spotless:on */
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() =
-                "DataSyncAll{type=$type, additionalProperties=$additionalProperties}"
-        }
-
         class W4FormEmployeeSync
         private constructor(
             private val params: JsonField<Params>,
-            private val type: JsonField<Type>,
+            private val type: JsonValue,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
@@ -692,7 +409,7 @@ private constructor(
                 @JsonProperty("params")
                 @ExcludeMissing
                 params: JsonField<Params> = JsonMissing.of(),
-                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonValue = JsonMissing.of(),
             ) : this(params, type, mutableMapOf())
 
             /**
@@ -705,11 +422,15 @@ private constructor(
             /**
              * The type of job to start.
              *
-             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
-             *   value).
+             * Expected to always return the following:
+             * ```java
+             * JsonValue.from("w4_form_employee_sync")
+             * ```
+             *
+             * However, this method can be useful for debugging and logging (e.g. if the server
+             * responded with an unexpected value).
              */
-            fun type(): Type = type.getRequired("type")
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonValue = type
 
             /**
              * Returns the raw JSON value of [params].
@@ -717,13 +438,6 @@ private constructor(
              * Unlike [params], this method doesn't throw if the JSON field has an unexpected type.
              */
             @JsonProperty("params") @ExcludeMissing fun _params(): JsonField<Params> = params
-
-            /**
-             * Returns the raw JSON value of [type].
-             *
-             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -745,7 +459,6 @@ private constructor(
                  * The following fields are required:
                  * ```java
                  * .params()
-                 * .type()
                  * ```
                  */
                 @JvmStatic fun builder() = Builder()
@@ -755,7 +468,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var params: JsonField<Params>? = null
-                private var type: JsonField<Type>? = null
+                private var type: JsonValue = JsonValue.from("w4_form_employee_sync")
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -776,17 +489,19 @@ private constructor(
                  */
                 fun params(params: JsonField<Params>) = apply { this.params = params }
 
-                /** The type of job to start. */
-                fun type(type: Type) = type(JsonField.of(type))
-
                 /**
-                 * Sets [Builder.type] to an arbitrary JSON value.
+                 * Sets the field to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * It is usually unnecessary to call this method because the field defaults to the
+                 * following:
+                 * ```java
+                 * JsonValue.from("w4_form_employee_sync")
+                 * ```
+                 *
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun type(type: JsonField<Type>) = apply { this.type = type }
+                fun type(type: JsonValue) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -818,7 +533,6 @@ private constructor(
                  * The following fields are required:
                  * ```java
                  * .params()
-                 * .type()
                  * ```
                  *
                  * @throws IllegalStateException if any required field is unset.
@@ -826,7 +540,7 @@ private constructor(
                 fun build(): W4FormEmployeeSync =
                     W4FormEmployeeSync(
                         checkRequired("params", params),
-                        checkRequired("type", type),
+                        type,
                         additionalProperties.toMutableMap(),
                     )
             }
@@ -839,7 +553,11 @@ private constructor(
                 }
 
                 params().validate()
-                type().validate()
+                _type().let {
+                    if (it != JsonValue.from("w4_form_employee_sync")) {
+                        throw FinchInvalidDataException("'type' is invalid, received $it")
+                    }
+                }
                 validated = true
             }
 
@@ -860,7 +578,7 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int =
                 (params.asKnown().getOrNull()?.validity() ?: 0) +
-                    (type.asKnown().getOrNull()?.validity() ?: 0)
+                    type.let { if (it == JsonValue.from("w4_form_employee_sync")) 1 else 0 }
 
             class Params
             private constructor(
@@ -1031,131 +749,6 @@ private constructor(
 
                 override fun toString() =
                     "Params{individualId=$individualId, additionalProperties=$additionalProperties}"
-            }
-
-            /** The type of job to start. */
-            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
-                Enum {
-
-                /**
-                 * Returns this class instance's raw value.
-                 *
-                 * This is usually only useful if this instance was deserialized from data that
-                 * doesn't match any known member, and you want to know that value. For example, if
-                 * the SDK is on an older version than the API, then the API may respond with new
-                 * members that the SDK is unaware of.
-                 */
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                companion object {
-
-                    @JvmField val W4_FORM_EMPLOYEE_SYNC = of("w4_form_employee_sync")
-
-                    @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-                }
-
-                /** An enum containing [Type]'s known values. */
-                enum class Known {
-                    W4_FORM_EMPLOYEE_SYNC
-                }
-
-                /**
-                 * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
-                 *
-                 * An instance of [Type] can contain an unknown value in a couple of cases:
-                 * - It was deserialized from data that doesn't match any known member. For example,
-                 *   if the SDK is on an older version than the API, then the API may respond with
-                 *   new members that the SDK is unaware of.
-                 * - It was constructed with an arbitrary value using the [of] method.
-                 */
-                enum class Value {
-                    W4_FORM_EMPLOYEE_SYNC,
-                    /**
-                     * An enum member indicating that [Type] was instantiated with an unknown value.
-                     */
-                    _UNKNOWN,
-                }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value, or
-                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-                 *
-                 * Use the [known] method instead if you're certain the value is always known or if
-                 * you want to throw for the unknown case.
-                 */
-                fun value(): Value =
-                    when (this) {
-                        W4_FORM_EMPLOYEE_SYNC -> Value.W4_FORM_EMPLOYEE_SYNC
-                        else -> Value._UNKNOWN
-                    }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value.
-                 *
-                 * Use the [value] method instead if you're uncertain the value is always known and
-                 * don't want to throw for the unknown case.
-                 *
-                 * @throws FinchInvalidDataException if this class instance's value is a not a known
-                 *   member.
-                 */
-                fun known(): Known =
-                    when (this) {
-                        W4_FORM_EMPLOYEE_SYNC -> Known.W4_FORM_EMPLOYEE_SYNC
-                        else -> throw FinchInvalidDataException("Unknown Type: $value")
-                    }
-
-                /**
-                 * Returns this class instance's primitive wire representation.
-                 *
-                 * This differs from the [toString] method because that method is primarily for
-                 * debugging and generally doesn't throw.
-                 *
-                 * @throws FinchInvalidDataException if this class instance's value does not have
-                 *   the expected primitive type.
-                 */
-                fun asString(): String =
-                    _value().asString().orElseThrow {
-                        FinchInvalidDataException("Value is not a String")
-                    }
-
-                private var validated: Boolean = false
-
-                fun validate(): Type = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    known()
-                    validated = true
-                }
-
-                fun isValid(): Boolean =
-                    try {
-                        validate()
-                        true
-                    } catch (e: FinchInvalidDataException) {
-                        false
-                    }
-
-                /**
-                 * Returns a score indicating how many valid values are contained in this object
-                 * recursively.
-                 *
-                 * Used for best match union deserialization.
-                 */
-                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
             }
 
             override fun equals(other: Any?): Boolean {

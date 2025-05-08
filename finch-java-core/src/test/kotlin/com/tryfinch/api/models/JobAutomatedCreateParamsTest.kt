@@ -10,36 +10,16 @@ internal class JobAutomatedCreateParamsTest {
 
     @Test
     fun create() {
-        JobAutomatedCreateParams.builder()
-            .body(
-                JobAutomatedCreateParams.Body.DataSyncAll.builder()
-                    .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
-                    .build()
-            )
-            .build()
+        JobAutomatedCreateParams.builder().bodyDataSyncAll().build()
     }
 
     @Test
     fun body() {
-        val params =
-            JobAutomatedCreateParams.builder()
-                .body(
-                    JobAutomatedCreateParams.Body.DataSyncAll.builder()
-                        .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
-                        .build()
-                )
-                .build()
+        val params = JobAutomatedCreateParams.builder().bodyDataSyncAll().build()
 
         val body = params._body().getOrNull()
 
-        assertThat(body)
-            .isEqualTo(
-                JobAutomatedCreateParams.Body.ofDataSyncAll(
-                    JobAutomatedCreateParams.Body.DataSyncAll.builder()
-                        .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
-                        .build()
-                )
-            )
+        assertThat(body).isEqualTo(JobAutomatedCreateParams.Body.ofDataSyncAll())
     }
 
     @Test
