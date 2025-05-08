@@ -81,6 +81,7 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
                             .let {
                                 HrisCompanyPayStatementItemListPageAsync.builder()
                                     .service(PayStatementItemServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

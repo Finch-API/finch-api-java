@@ -113,6 +113,7 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
                             .let {
                                 PayrollPayGroupListPageAsync.builder()
                                     .service(PayGroupServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .items(it)
                                     .build()

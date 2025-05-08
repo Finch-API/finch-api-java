@@ -126,6 +126,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                             .let {
                                 HrisBenefitIndividualRetrieveManyBenefitsPageAsync.builder()
                                     .service(IndividualServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .items(it)
                                     .build()

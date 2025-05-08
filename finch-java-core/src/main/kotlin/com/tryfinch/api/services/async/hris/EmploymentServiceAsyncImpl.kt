@@ -71,6 +71,7 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
                             .let {
                                 HrisEmploymentRetrieveManyPageAsync.builder()
                                     .service(EmploymentServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

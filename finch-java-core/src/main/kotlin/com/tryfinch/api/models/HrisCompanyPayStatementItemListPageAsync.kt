@@ -2,22 +2,23 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
 import java.util.Objects
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [PayStatementItemServiceAsync.list] */
 class HrisCompanyPayStatementItemListPageAsync
 private constructor(
     private val service: PayStatementItemServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: HrisCompanyPayStatementItemListParams,
     private val response: HrisCompanyPayStatementItemListPageResponse,
-) {
+) : PageAsync<PayStatementItemListResponse> {
 
     /**
      * Delegates to [HrisCompanyPayStatementItemListPageResponse], but gracefully handles missing
@@ -28,16 +29,18 @@ private constructor(
     fun responses(): List<PayStatementItemListResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<PayStatementItemListResponse> = responses()
 
-    fun getNextPageParams(): Optional<HrisCompanyPayStatementItemListParams> = Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPage(): CompletableFuture<Optional<HrisCompanyPayStatementItemListPageAsync>> =
-        getNextPageParams()
-            .map { service.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
+    fun nextPageParams(): HrisCompanyPayStatementItemListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override fun nextPage(): CompletableFuture<HrisCompanyPayStatementItemListPageAsync> =
+        service.list(nextPageParams())
+
+    fun autoPager(): AutoPagerAsync<PayStatementItemListResponse> =
+        AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisCompanyPayStatementItemListParams = params
@@ -56,6 +59,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -67,6 +71,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var service: PayStatementItemServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
         private var params: HrisCompanyPayStatementItemListParams? = null
         private var response: HrisCompanyPayStatementItemListPageResponse? = null
 
@@ -75,11 +80,16 @@ private constructor(
             hrisCompanyPayStatementItemListPageAsync: HrisCompanyPayStatementItemListPageAsync
         ) = apply {
             service = hrisCompanyPayStatementItemListPageAsync.service
+            streamHandlerExecutor = hrisCompanyPayStatementItemListPageAsync.streamHandlerExecutor
             params = hrisCompanyPayStatementItemListPageAsync.params
             response = hrisCompanyPayStatementItemListPageAsync.response
         }
 
         fun service(service: PayStatementItemServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         /** The parameters that were used to request this page. */
         fun params(params: HrisCompanyPayStatementItemListParams) = apply { this.params = params }
@@ -97,6 +107,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -106,38 +117,10 @@ private constructor(
         fun build(): HrisCompanyPayStatementItemListPageAsync =
             HrisCompanyPayStatementItemListPageAsync(
                 checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisCompanyPayStatementItemListPageAsync) {
-
-        fun forEach(
-            action: Predicate<PayStatementItemListResponse>,
-            executor: Executor,
-        ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<HrisCompanyPayStatementItemListPageAsync>>.forEach(
-                action: (PayStatementItemListResponse) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.responses().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<PayStatementItemListResponse>> {
-            val values = mutableListOf<PayStatementItemListResponse>()
-            return forEach(values::add, executor).thenApply { values }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -145,11 +128,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisCompanyPayStatementItemListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisCompanyPayStatementItemListPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, response) /* spotless:on */
 
     override fun toString() =
-        "HrisCompanyPayStatementItemListPageAsync{service=$service, params=$params, response=$response}"
+        "HrisCompanyPayStatementItemListPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, response=$response}"
 }

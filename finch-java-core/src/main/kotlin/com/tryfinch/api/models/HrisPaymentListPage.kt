@@ -2,13 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
-import kotlin.jvm.optionals.getOrNull
 
 /** @see [PaymentService.list] */
 class HrisPaymentListPage
@@ -16,21 +14,22 @@ private constructor(
     private val service: PaymentService,
     private val params: HrisPaymentListParams,
     private val items: List<Payment>,
-) {
+) : Page<Payment> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): Optional<HrisPaymentListParams> = Optional.empty()
+    fun nextPageParams(): HrisPaymentListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun getNextPage(): Optional<HrisPaymentListPage> = getNextPageParams().map { service.list(it) }
+    override fun nextPage(): HrisPaymentListPage = service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<Payment> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisPaymentListParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<Payment> = items
+    override fun items(): List<Payment> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -91,25 +90,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisPaymentListPage) : Iterable<Payment> {
-
-        override fun iterator(): Iterator<Payment> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<Payment> {
-            return StreamSupport.stream(spliterator(), false)
-        }
     }
 
     override fun equals(other: Any?): Boolean {
