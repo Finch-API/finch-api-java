@@ -13,7 +13,6 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkKnown
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -26,13 +25,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Update sandbox individual */
 class SandboxIndividualUpdateParams
 private constructor(
-    private val individualId: String,
+    private val individualId: String?,
     private val body: IndividualWithoutId,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun individualId(): String = individualId
+    fun individualId(): Optional<String> = Optional.ofNullable(individualId)
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -220,14 +219,11 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): SandboxIndividualUpdateParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [SandboxIndividualUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .individualId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -248,7 +244,10 @@ private constructor(
             additionalQueryParams = sandboxIndividualUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun individualId(individualId: String) = apply { this.individualId = individualId }
+        fun individualId(individualId: String?) = apply { this.individualId = individualId }
+
+        /** Alias for calling [Builder.individualId] with `individualId.orElse(null)`. */
+        fun individualId(individualId: Optional<String>) = individualId(individualId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -589,17 +588,10 @@ private constructor(
          * Returns an immutable instance of [SandboxIndividualUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .individualId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SandboxIndividualUpdateParams =
             SandboxIndividualUpdateParams(
-                checkRequired("individualId", individualId),
+                individualId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -610,7 +602,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> individualId
+            0 -> individualId ?: ""
             else -> ""
         }
 

@@ -20,14 +20,36 @@ interface ManualServiceAsync {
      * Get a manual job by `job_id`. Manual jobs are completed by a human and include Assisted
      * Benefits jobs.
      */
-    fun retrieve(params: JobManualRetrieveParams): CompletableFuture<ManualAsyncJob> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(jobId: String): CompletableFuture<ManualAsyncJob> =
+        retrieve(jobId, JobManualRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ManualAsyncJob> =
+        retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+    ): CompletableFuture<ManualAsyncJob> = retrieve(jobId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: JobManualRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ManualAsyncJob>
+
+    /** @see [retrieve] */
+    fun retrieve(params: JobManualRetrieveParams): CompletableFuture<ManualAsyncJob> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(jobId: String, requestOptions: RequestOptions): CompletableFuture<ManualAsyncJob> =
+        retrieve(jobId, JobManualRetrieveParams.none(), requestOptions)
 
     /**
      * A view of [ManualServiceAsync] that provides access to raw HTTP responses for each method.
@@ -39,6 +61,35 @@ interface ManualServiceAsync {
          * [ManualServiceAsync.retrieve].
          */
         @MustBeClosed
+        fun retrieve(jobId: String): CompletableFuture<HttpResponseFor<ManualAsyncJob>> =
+            retrieve(jobId, JobManualRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            jobId: String,
+            params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ManualAsyncJob>> =
+            retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            jobId: String,
+            params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<ManualAsyncJob>> =
+            retrieve(jobId, params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: JobManualRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ManualAsyncJob>>
+
+        /** @see [retrieve] */
+        @MustBeClosed
         fun retrieve(
             params: JobManualRetrieveParams
         ): CompletableFuture<HttpResponseFor<ManualAsyncJob>> =
@@ -47,8 +98,9 @@ interface ManualServiceAsync {
         /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
-            params: JobManualRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ManualAsyncJob>>
+            jobId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ManualAsyncJob>> =
+            retrieve(jobId, JobManualRetrieveParams.none(), requestOptions)
     }
 }

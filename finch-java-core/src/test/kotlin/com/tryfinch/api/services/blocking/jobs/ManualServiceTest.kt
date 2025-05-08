@@ -4,7 +4,6 @@ package com.tryfinch.api.services.blocking.jobs
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.JobManualRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -20,8 +19,7 @@ internal class ManualServiceTest {
                 .build()
         val manualService = client.jobs().manual()
 
-        val manualAsyncJob =
-            manualService.retrieve(JobManualRetrieveParams.builder().jobId("job_id").build())
+        val manualAsyncJob = manualService.retrieve("job_id")
 
         manualAsyncJob.validate()
     }

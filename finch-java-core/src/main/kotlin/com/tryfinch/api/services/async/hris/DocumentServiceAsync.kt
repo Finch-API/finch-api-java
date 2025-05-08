@@ -42,14 +42,40 @@ interface DocumentServiceAsync {
      * **Beta:** This endpoint is in beta and may change. Retrieve details of a specific document by
      * its ID.
      */
-    fun retreive(params: HrisDocumentRetreiveParams): CompletableFuture<DocumentRetreiveResponse> =
-        retreive(params, RequestOptions.none())
+    fun retreive(documentId: String): CompletableFuture<DocumentRetreiveResponse> =
+        retreive(documentId, HrisDocumentRetreiveParams.none())
+
+    /** @see [retreive] */
+    fun retreive(
+        documentId: String,
+        params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<DocumentRetreiveResponse> =
+        retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
+
+    /** @see [retreive] */
+    fun retreive(
+        documentId: String,
+        params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
+    ): CompletableFuture<DocumentRetreiveResponse> =
+        retreive(documentId, params, RequestOptions.none())
 
     /** @see [retreive] */
     fun retreive(
         params: HrisDocumentRetreiveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DocumentRetreiveResponse>
+
+    /** @see [retreive] */
+    fun retreive(params: HrisDocumentRetreiveParams): CompletableFuture<DocumentRetreiveResponse> =
+        retreive(params, RequestOptions.none())
+
+    /** @see [retreive] */
+    fun retreive(
+        documentId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<DocumentRetreiveResponse> =
+        retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
 
     /**
      * A view of [DocumentServiceAsync] that provides access to raw HTTP responses for each method.
@@ -91,9 +117,26 @@ interface DocumentServiceAsync {
          */
         @MustBeClosed
         fun retreive(
-            params: HrisDocumentRetreiveParams
+            documentId: String
         ): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>> =
-            retreive(params, RequestOptions.none())
+            retreive(documentId, HrisDocumentRetreiveParams.none())
+
+        /** @see [retreive] */
+        @MustBeClosed
+        fun retreive(
+            documentId: String,
+            params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>> =
+            retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
+
+        /** @see [retreive] */
+        @MustBeClosed
+        fun retreive(
+            documentId: String,
+            params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
+        ): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>> =
+            retreive(documentId, params, RequestOptions.none())
 
         /** @see [retreive] */
         @MustBeClosed
@@ -101,5 +144,20 @@ interface DocumentServiceAsync {
             params: HrisDocumentRetreiveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>>
+
+        /** @see [retreive] */
+        @MustBeClosed
+        fun retreive(
+            params: HrisDocumentRetreiveParams
+        ): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>> =
+            retreive(params, RequestOptions.none())
+
+        /** @see [retreive] */
+        @MustBeClosed
+        fun retreive(
+            documentId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>> =
+            retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
     }
 }

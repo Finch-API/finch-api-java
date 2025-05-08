@@ -7,7 +7,6 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.BenefitFrequency
 import com.tryfinch.api.models.BenefitType
 import com.tryfinch.api.models.HrisBenefitCreateParams
-import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -59,10 +58,7 @@ internal class BenefitServiceTest {
                 .build()
         val benefitService = client.hris().benefits()
 
-        val companyBenefit =
-            benefitService.retrieve(
-                HrisBenefitRetrieveParams.builder().benefitId("benefit_id").build()
-            )
+        val companyBenefit = benefitService.retrieve("benefit_id")
 
         companyBenefit.validate()
     }

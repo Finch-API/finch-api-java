@@ -10,12 +10,13 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
@@ -23,13 +24,13 @@ import java.util.Objects
  */
 class HrisCompanyPayStatementItemRuleUpdateParams
 private constructor(
-    private val ruleId: String,
+    private val ruleId: String?,
     private val body: UpdateRuleRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun ruleId(): String = ruleId
+    fun ruleId(): Optional<String> = Optional.ofNullable(ruleId)
 
     fun _optionalProperty(): JsonValue = body._optionalProperty()
 
@@ -43,14 +44,11 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): HrisCompanyPayStatementItemRuleUpdateParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisCompanyPayStatementItemRuleUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .ruleId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -75,7 +73,10 @@ private constructor(
                 hrisCompanyPayStatementItemRuleUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun ruleId(ruleId: String) = apply { this.ruleId = ruleId }
+        fun ruleId(ruleId: String?) = apply { this.ruleId = ruleId }
+
+        /** Alias for calling [Builder.ruleId] with `ruleId.orElse(null)`. */
+        fun ruleId(ruleId: Optional<String>) = ruleId(ruleId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -211,17 +212,10 @@ private constructor(
          * Returns an immutable instance of [HrisCompanyPayStatementItemRuleUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .ruleId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisCompanyPayStatementItemRuleUpdateParams =
             HrisCompanyPayStatementItemRuleUpdateParams(
-                checkRequired("ruleId", ruleId),
+                ruleId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -232,7 +226,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> ruleId
+            0 -> ruleId ?: ""
             else -> ""
         }
 
