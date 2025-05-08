@@ -26,7 +26,7 @@ internal class IndividualInDirectoryTest {
                 .middleName("middle_name")
                 .build()
 
-        assertThat(individualInDirectory.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(individualInDirectory.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(individualInDirectory.department())
             .contains(IndividualInDirectory.Department.builder().name("name").build())
         assertThat(individualInDirectory.firstName()).contains("first_name")

@@ -28,7 +28,7 @@ internal class HrisDirectoryListPageResponseTest {
                         .middleName("middle_name")
                         .build()
                 )
-                .paging(Paging.builder().count(0L).offset(0L).build())
+                .paging(Paging.builder().offset(0L).count(0L).build())
                 .build()
 
         assertThat(hrisDirectoryListPageResponse.individuals())
@@ -48,7 +48,7 @@ internal class HrisDirectoryListPageResponseTest {
                     .build()
             )
         assertThat(hrisDirectoryListPageResponse.paging())
-            .isEqualTo(Paging.builder().count(0L).offset(0L).build())
+            .isEqualTo(Paging.builder().offset(0L).count(0L).build())
     }
 
     @Test
@@ -71,7 +71,7 @@ internal class HrisDirectoryListPageResponseTest {
                         .middleName("middle_name")
                         .build()
                 )
-                .paging(Paging.builder().count(0L).offset(0L).build())
+                .paging(Paging.builder().offset(0L).count(0L).build())
                 .build()
 
         val roundtrippedHrisDirectoryListPageResponse =

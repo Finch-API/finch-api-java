@@ -10,6 +10,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -46,10 +47,10 @@ private constructor(
     /**
      * A stable Finch `id` (UUID v4) for an individual in the company.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun id(): Optional<String> = id.getOptional("id")
+    fun id(): String = id.getRequired("id")
 
     /**
      * The department object.
@@ -164,20 +165,33 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [IndividualInDirectory]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [IndividualInDirectory].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .department()
+         * .firstName()
+         * .isActive()
+         * .lastName()
+         * .manager()
+         * .middleName()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [IndividualInDirectory]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var department: JsonField<Department> = JsonMissing.of()
-        private var firstName: JsonField<String> = JsonMissing.of()
-        private var isActive: JsonField<Boolean> = JsonMissing.of()
-        private var lastName: JsonField<String> = JsonMissing.of()
-        private var manager: JsonField<Manager> = JsonMissing.of()
-        private var middleName: JsonField<String> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var department: JsonField<Department>? = null
+        private var firstName: JsonField<String>? = null
+        private var isActive: JsonField<Boolean>? = null
+        private var lastName: JsonField<String>? = null
+        private var manager: JsonField<Manager>? = null
+        private var middleName: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -321,16 +335,29 @@ private constructor(
          * Returns an immutable instance of [IndividualInDirectory].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .department()
+         * .firstName()
+         * .isActive()
+         * .lastName()
+         * .manager()
+         * .middleName()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): IndividualInDirectory =
             IndividualInDirectory(
-                id,
-                department,
-                firstName,
-                isActive,
-                lastName,
-                manager,
-                middleName,
+                checkRequired("id", id),
+                checkRequired("department", department),
+                checkRequired("firstName", firstName),
+                checkRequired("isActive", isActive),
+                checkRequired("lastName", lastName),
+                checkRequired("manager", manager),
+                checkRequired("middleName", middleName),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -534,10 +561,10 @@ private constructor(
         /**
          * A stable Finch `id` (UUID v4) for an individual in the company.
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun id(): Optional<String> = id.getOptional("id")
+        fun id(): String = id.getRequired("id")
 
         /**
          * Returns the raw JSON value of [id].
@@ -560,14 +587,21 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Manager]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Manager].
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Manager]. */
         class Builder internal constructor() {
 
-            private var id: JsonField<String> = JsonMissing.of()
+            private var id: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -611,8 +645,16 @@ private constructor(
              * Returns an immutable instance of [Manager].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): Manager = Manager(id, additionalProperties.toMutableMap())
+            fun build(): Manager =
+                Manager(checkRequired("id", id), additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false

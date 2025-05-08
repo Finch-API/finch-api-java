@@ -11,16 +11,16 @@ internal class PagingTest {
 
     @Test
     fun create() {
-        val paging = Paging.builder().count(0L).offset(0L).build()
+        val paging = Paging.builder().offset(0L).count(0L).build()
 
+        assertThat(paging.offset()).isEqualTo(0L)
         assertThat(paging.count()).contains(0L)
-        assertThat(paging.offset()).contains(0L)
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val paging = Paging.builder().count(0L).offset(0L).build()
+        val paging = Paging.builder().offset(0L).count(0L).build()
 
         val roundtrippedPaging =
             jsonMapper.readValue(jsonMapper.writeValueAsString(paging), jacksonTypeRef<Paging>())

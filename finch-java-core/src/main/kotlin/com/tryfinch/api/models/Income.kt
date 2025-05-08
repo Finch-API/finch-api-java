@@ -11,6 +11,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -118,17 +119,27 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [Income]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [Income].
+         *
+         * The following fields are required:
+         * ```java
+         * .amount()
+         * .currency()
+         * .effectiveDate()
+         * .unit()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [Income]. */
     class Builder internal constructor() {
 
-        private var amount: JsonField<Long> = JsonMissing.of()
-        private var currency: JsonField<String> = JsonMissing.of()
-        private var effectiveDate: JsonField<String> = JsonMissing.of()
-        private var unit: JsonField<Unit> = JsonMissing.of()
+        private var amount: JsonField<Long>? = null
+        private var currency: JsonField<String>? = null
+        private var effectiveDate: JsonField<String>? = null
+        private var unit: JsonField<Unit>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -234,9 +245,25 @@ private constructor(
          * Returns an immutable instance of [Income].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .amount()
+         * .currency()
+         * .effectiveDate()
+         * .unit()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): Income =
-            Income(amount, currency, effectiveDate, unit, additionalProperties.toMutableMap())
+            Income(
+                checkRequired("amount", amount),
+                checkRequired("currency", currency),
+                checkRequired("effectiveDate", effectiveDate),
+                checkRequired("unit", unit),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false

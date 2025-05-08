@@ -27,6 +27,20 @@ internal class BenefitServiceAsyncTest {
         val createCompanyBenefitsResponseFuture =
             benefitServiceAsync.create(
                 HrisBenefitCreateParams.builder()
+                    .companyContribution(
+                        HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
+                            .addTier(
+                                HrisBenefitCreateParams.BenefitCompanyMatchContribution.Tier
+                                    .builder()
+                                    .match(1L)
+                                    .threshold(1L)
+                                    .build()
+                            )
+                            .type(
+                                HrisBenefitCreateParams.BenefitCompanyMatchContribution.Type.MATCH
+                            )
+                            .build()
+                    )
                     .description("description")
                     .frequency(BenefitFrequency.ONE_TIME)
                     .type(BenefitType._401K)

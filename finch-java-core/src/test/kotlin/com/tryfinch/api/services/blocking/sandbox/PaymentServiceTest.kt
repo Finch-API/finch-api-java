@@ -49,7 +49,7 @@ internal class PaymentServiceTest {
                                                             .builder()
                                                             .putAdditionalProperty(
                                                                 "foo",
-                                                                JsonValue.from("bar"),
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -87,7 +87,7 @@ internal class PaymentServiceTest {
                                                             .builder()
                                                             .putAdditionalProperty(
                                                                 "foo",
-                                                                JsonValue.from("bar"),
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -124,7 +124,7 @@ internal class PaymentServiceTest {
                                                             .builder()
                                                             .putAdditionalProperty(
                                                                 "foo",
-                                                                JsonValue.from("bar"),
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -162,7 +162,7 @@ internal class PaymentServiceTest {
                                                             .builder()
                                                             .putAdditionalProperty(
                                                                 "foo",
-                                                                JsonValue.from("bar"),
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )

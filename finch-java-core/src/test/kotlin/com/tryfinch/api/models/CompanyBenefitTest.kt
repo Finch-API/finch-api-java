@@ -14,12 +14,35 @@ internal class CompanyBenefitTest {
         val companyBenefit =
             CompanyBenefit.builder()
                 .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .companyContribution(
+                    CompanyBenefit.BenefitCompanyMatchContribution.builder()
+                        .addTier(
+                            CompanyBenefit.BenefitCompanyMatchContribution.Tier.builder()
+                                .match(1L)
+                                .threshold(1L)
+                                .build()
+                        )
+                        .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
+                        .build()
+                )
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
                 .type(BenefitType._401K)
                 .build()
 
         assertThat(companyBenefit.benefitId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(companyBenefit.companyContribution())
+            .contains(
+                CompanyBenefit.BenefitCompanyMatchContribution.builder()
+                    .addTier(
+                        CompanyBenefit.BenefitCompanyMatchContribution.Tier.builder()
+                            .match(1L)
+                            .threshold(1L)
+                            .build()
+                    )
+                    .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
+                    .build()
+            )
         assertThat(companyBenefit.description()).contains("description")
         assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)
         assertThat(companyBenefit.type()).contains(BenefitType._401K)
@@ -31,6 +54,17 @@ internal class CompanyBenefitTest {
         val companyBenefit =
             CompanyBenefit.builder()
                 .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .companyContribution(
+                    CompanyBenefit.BenefitCompanyMatchContribution.builder()
+                        .addTier(
+                            CompanyBenefit.BenefitCompanyMatchContribution.Tier.builder()
+                                .match(1L)
+                                .threshold(1L)
+                                .build()
+                        )
+                        .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
+                        .build()
+                )
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
                 .type(BenefitType._401K)

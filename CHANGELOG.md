@@ -1,5 +1,41 @@
 # Changelog
 
+## 6.0.0 (2025-05-08)
+
+Full Changelog: [v5.5.0...v6.0.0](https://github.com/Finch-API/finch-api-java/compare/v5.5.0...v6.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** don't require end-users to specify constants
+* **client:** **Migration:** Builder methods that previously accepted a single possible value no longer need to be called.
+
+### Features
+
+* **api:** api update ([59c1d39](https://github.com/Finch-API/finch-api-java/commit/59c1d397d17589eec93f6c1dab760aaa1d548188))
+* **api:** api update ([2aa8003](https://github.com/Finch-API/finch-api-java/commit/2aa8003c7dfeb9be0a15a57d1c46931a7f85ab3e))
+* **api:** api update ([988e834](https://github.com/Finch-API/finch-api-java/commit/988e8348cd1d2e31f5e2aaa91adfc835ae973ba0))
+* **api:** api update ([b98adb3](https://github.com/Finch-API/finch-api-java/commit/b98adb325de5d5b7220bbeac1f1e5fd56f7a0c13))
+* **api:** api update ([f816b28](https://github.com/Finch-API/finch-api-java/commit/f816b281bd01e85660f613f14431a43eb761a221))
+* **api:** api update ([d399e4f](https://github.com/Finch-API/finch-api-java/commit/d399e4f9395f2e84f6a97399ae6f0fdcbc34d7cd))
+* **api:** api update ([cc2b828](https://github.com/Finch-API/finch-api-java/commit/cc2b8288f7c3ce5bc62e7ca074fd53fc6f05e253))
+* **api:** api update ([a9fefbc](https://github.com/Finch-API/finch-api-java/commit/a9fefbc485cfa35d7c34aa409333a7b2e244f26a))
+* **api:** api update ([9e451d0](https://github.com/Finch-API/finch-api-java/commit/9e451d0ea744078d1c4f10c878a950ca3719237b))
+* **api:** api update ([f45fb21](https://github.com/Finch-API/finch-api-java/commit/f45fb2151509dd96e2630b94ed4b3a1f3f711439))
+* **api:** api update ([43c21f7](https://github.com/Finch-API/finch-api-java/commit/43c21f75d63053a888c4ba99dd63847b145bf360))
+* **api:** api update ([35e522b](https://github.com/Finch-API/finch-api-java/commit/35e522ba3ad911b49f41ad4b62f1ddc3257dbcd2))
+* **api:** api update ([70708d7](https://github.com/Finch-API/finch-api-java/commit/70708d78bc704b34f936e835b614e54c87c2db03))
+* **api:** api update ([f8988d7](https://github.com/Finch-API/finch-api-java/commit/f8988d7fc959241b683da19b068c95a8ac023e24))
+* **api:** api update ([53c3147](https://github.com/Finch-API/finch-api-java/commit/53c31470ca6f0cf5985f8ebd60446f8f08e84913))
+* **api:** api update ([30df955](https://github.com/Finch-API/finch-api-java/commit/30df955523928c30ef0e29f1154ff5fee88d80d1))
+* **api:** api update ([79e067e](https://github.com/Finch-API/finch-api-java/commit/79e067e9790c16095a9a81cea65fb500c6f4aea6))
+* **client:** don't require end-users to specify constants ([055d459](https://github.com/Finch-API/finch-api-java/commit/055d4597de3f260537ccfa65a8f094e9df39bebb))
+
+
+### Chores
+
+* **internal:** remove flaky `-Xbackend-threads=0` option ([4271051](https://github.com/Finch-API/finch-api-java/commit/4271051bb2d5b34d55418363f2e8f958a3688dd5))
+* **internal:** update java toolchain ([0242272](https://github.com/Finch-API/finch-api-java/commit/02422720923c2ec5b5348b0c7e90657433015847))
+
 ## 5.5.0 (2025-04-23)
 
 Full Changelog: [v5.4.0...v5.5.0](https://github.com/Finch-API/finch-api-java/compare/v5.4.0...v5.5.0)

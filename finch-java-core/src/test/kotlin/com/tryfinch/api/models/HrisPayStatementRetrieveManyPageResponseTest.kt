@@ -18,7 +18,7 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                     PayStatementResponse.builder()
                         .body(
                             PayStatementResponseBody.builder()
-                                .paging(Paging.builder().count(0L).offset(0L).build())
+                                .paging(Paging.builder().offset(0L).count(0L).build())
                                 .addPayStatement(
                                     PayStatement.builder()
                                         .addEarning(
@@ -36,7 +36,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                         .builder()
                                                                         .putAdditionalProperty(
                                                                             "foo",
-                                                                            JsonValue.from("bar"),
+                                                                            JsonValue.from(
+                                                                                mapOf<String, Any>()
+                                                                            ),
                                                                         )
                                                                         .build()
                                                                 )
@@ -69,7 +71,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                         .builder()
                                                                         .putAdditionalProperty(
                                                                             "foo",
-                                                                            JsonValue.from("bar"),
+                                                                            JsonValue.from(
+                                                                                mapOf<String, Any>()
+                                                                            ),
                                                                         )
                                                                         .build()
                                                                 )
@@ -103,7 +107,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                         .builder()
                                                                         .putAdditionalProperty(
                                                                             "foo",
-                                                                            JsonValue.from("bar"),
+                                                                            JsonValue.from(
+                                                                                mapOf<String, Any>()
+                                                                            ),
                                                                         )
                                                                         .build()
                                                                 )
@@ -139,7 +145,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                         .builder()
                                                                         .putAdditionalProperty(
                                                                             "foo",
-                                                                            JsonValue.from("bar"),
+                                                                            JsonValue.from(
+                                                                                mapOf<String, Any>()
+                                                                            ),
                                                                         )
                                                                         .build()
                                                                 )
@@ -170,7 +178,7 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                 PayStatementResponse.builder()
                     .body(
                         PayStatementResponseBody.builder()
-                            .paging(Paging.builder().count(0L).offset(0L).build())
+                            .paging(Paging.builder().offset(0L).count(0L).build())
                             .addPayStatement(
                                 PayStatement.builder()
                                     .addEarning(
@@ -188,7 +196,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                     .builder()
                                                                     .putAdditionalProperty(
                                                                         "foo",
-                                                                        JsonValue.from("bar"),
+                                                                        JsonValue.from(
+                                                                            mapOf<String, Any>()
+                                                                        ),
                                                                     )
                                                                     .build()
                                                             )
@@ -219,7 +229,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                     .builder()
                                                                     .putAdditionalProperty(
                                                                         "foo",
-                                                                        JsonValue.from("bar"),
+                                                                        JsonValue.from(
+                                                                            mapOf<String, Any>()
+                                                                        ),
                                                                     )
                                                                     .build()
                                                             )
@@ -251,7 +263,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                     .builder()
                                                                     .putAdditionalProperty(
                                                                         "foo",
-                                                                        JsonValue.from("bar"),
+                                                                        JsonValue.from(
+                                                                            mapOf<String, Any>()
+                                                                        ),
                                                                     )
                                                                     .build()
                                                             )
@@ -284,7 +298,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                     .builder()
                                                                     .putAdditionalProperty(
                                                                         "foo",
-                                                                        JsonValue.from("bar"),
+                                                                        JsonValue.from(
+                                                                            mapOf<String, Any>()
+                                                                        ),
                                                                     )
                                                                     .build()
                                                             )
@@ -319,7 +335,7 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                     PayStatementResponse.builder()
                         .body(
                             PayStatementResponseBody.builder()
-                                .paging(Paging.builder().count(0L).offset(0L).build())
+                                .paging(Paging.builder().offset(0L).count(0L).build())
                                 .addPayStatement(
                                     PayStatement.builder()
                                         .addEarning(
@@ -337,7 +353,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                         .builder()
                                                                         .putAdditionalProperty(
                                                                             "foo",
-                                                                            JsonValue.from("bar"),
+                                                                            JsonValue.from(
+                                                                                mapOf<String, Any>()
+                                                                            ),
                                                                         )
                                                                         .build()
                                                                 )
@@ -370,7 +388,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                         .builder()
                                                                         .putAdditionalProperty(
                                                                             "foo",
-                                                                            JsonValue.from("bar"),
+                                                                            JsonValue.from(
+                                                                                mapOf<String, Any>()
+                                                                            ),
                                                                         )
                                                                         .build()
                                                                 )
@@ -404,7 +424,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                         .builder()
                                                                         .putAdditionalProperty(
                                                                             "foo",
-                                                                            JsonValue.from("bar"),
+                                                                            JsonValue.from(
+                                                                                mapOf<String, Any>()
+                                                                            ),
                                                                         )
                                                                         .build()
                                                                 )
@@ -440,7 +462,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                         .builder()
                                                                         .putAdditionalProperty(
                                                                             "foo",
-                                                                            JsonValue.from("bar"),
+                                                                            JsonValue.from(
+                                                                                mapOf<String, Any>()
+                                                                            ),
                                                                         )
                                                                         .build()
                                                                 )
