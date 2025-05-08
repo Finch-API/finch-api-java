@@ -162,6 +162,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                             .let {
                                 HrisCompanyPayStatementItemRuleListPageAsync.builder()
                                     .service(RuleServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

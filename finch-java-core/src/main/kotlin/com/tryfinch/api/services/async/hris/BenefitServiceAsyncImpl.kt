@@ -220,6 +220,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .let {
                                 HrisBenefitListPageAsync.builder()
                                     .service(BenefitServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .items(it)
                                     .build()
@@ -260,6 +261,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .let {
                                 HrisBenefitListSupportedBenefitsPageAsync.builder()
                                     .service(BenefitServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .items(it)
                                     .build()

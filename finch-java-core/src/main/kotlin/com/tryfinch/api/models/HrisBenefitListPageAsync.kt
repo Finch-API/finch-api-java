@@ -2,38 +2,39 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.BenefitServiceAsync
 import java.util.Objects
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 
 /** @see [BenefitServiceAsync.list] */
 class HrisBenefitListPageAsync
 private constructor(
     private val service: BenefitServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: HrisBenefitListParams,
     private val items: List<CompanyBenefit>,
-) {
+) : PageAsync<CompanyBenefit> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): Optional<HrisBenefitListParams> = Optional.empty()
+    fun nextPageParams(): HrisBenefitListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun getNextPage(): CompletableFuture<Optional<HrisBenefitListPageAsync>> =
-        getNextPageParams()
-            .map { service.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
+    override fun nextPage(): CompletableFuture<HrisBenefitListPageAsync> =
+        service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<CompanyBenefit> =
+        AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisBenefitListParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<CompanyBenefit> = items
+    override fun items(): List<CompanyBenefit> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -45,6 +46,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .items()
          * ```
@@ -56,17 +58,23 @@ private constructor(
     class Builder internal constructor() {
 
         private var service: BenefitServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
         private var params: HrisBenefitListParams? = null
         private var items: List<CompanyBenefit>? = null
 
         @JvmSynthetic
         internal fun from(hrisBenefitListPageAsync: HrisBenefitListPageAsync) = apply {
             service = hrisBenefitListPageAsync.service
+            streamHandlerExecutor = hrisBenefitListPageAsync.streamHandlerExecutor
             params = hrisBenefitListPageAsync.params
             items = hrisBenefitListPageAsync.items
         }
 
         fun service(service: BenefitServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         /** The parameters that were used to request this page. */
         fun params(params: HrisBenefitListParams) = apply { this.params = params }
@@ -82,6 +90,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .items()
          * ```
@@ -91,38 +100,10 @@ private constructor(
         fun build(): HrisBenefitListPageAsync =
             HrisBenefitListPageAsync(
                 checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisBenefitListPageAsync) {
-
-        fun forEach(
-            action: Predicate<CompanyBenefit>,
-            executor: Executor,
-        ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<HrisBenefitListPageAsync>>.forEach(
-                action: (CompanyBenefit) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.items().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<CompanyBenefit>> {
-            val values = mutableListOf<CompanyBenefit>()
-            return forEach(values::add, executor).thenApply { values }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -130,11 +111,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisBenefitListPageAsync && service == other.service && params == other.params && items == other.items /* spotless:on */
+        return /* spotless:off */ other is HrisBenefitListPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && items == other.items /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, items) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, items) /* spotless:on */
 
     override fun toString() =
-        "HrisBenefitListPageAsync{service=$service, params=$params, items=$items}"
+        "HrisBenefitListPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, items=$items}"
 }

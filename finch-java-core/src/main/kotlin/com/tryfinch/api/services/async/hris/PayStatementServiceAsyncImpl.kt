@@ -71,6 +71,7 @@ class PayStatementServiceAsyncImpl internal constructor(private val clientOption
                             .let {
                                 HrisPayStatementRetrieveManyPageAsync.builder()
                                     .service(PayStatementServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
