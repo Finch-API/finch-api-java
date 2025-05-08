@@ -54,14 +54,39 @@ interface AutomatedServiceAsync {
         create(JobAutomatedCreateParams.none(), requestOptions)
 
     /** Get an automated job by `job_id`. */
-    fun retrieve(params: JobAutomatedRetrieveParams): CompletableFuture<AutomatedAsyncJob> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(jobId: String): CompletableFuture<AutomatedAsyncJob> =
+        retrieve(jobId, JobAutomatedRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<AutomatedAsyncJob> =
+        retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+    ): CompletableFuture<AutomatedAsyncJob> = retrieve(jobId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: JobAutomatedRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AutomatedAsyncJob>
+
+    /** @see [retrieve] */
+    fun retrieve(params: JobAutomatedRetrieveParams): CompletableFuture<AutomatedAsyncJob> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<AutomatedAsyncJob> =
+        retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
     /**
      * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are
@@ -124,6 +149,35 @@ interface AutomatedServiceAsync {
          * as [AutomatedServiceAsync.retrieve].
          */
         @MustBeClosed
+        fun retrieve(jobId: String): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(jobId, JobAutomatedRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            jobId: String,
+            params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            jobId: String,
+            params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(jobId, params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: JobAutomatedRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>>
+
+        /** @see [retrieve] */
+        @MustBeClosed
         fun retrieve(
             params: JobAutomatedRetrieveParams
         ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
@@ -132,9 +186,10 @@ interface AutomatedServiceAsync {
         /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
-            params: JobAutomatedRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>>
+            jobId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as

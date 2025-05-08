@@ -19,14 +19,34 @@ interface ManualService {
      * Get a manual job by `job_id`. Manual jobs are completed by a human and include Assisted
      * Benefits jobs.
      */
-    fun retrieve(params: JobManualRetrieveParams): ManualAsyncJob =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(jobId: String): ManualAsyncJob = retrieve(jobId, JobManualRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ManualAsyncJob = retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+    ): ManualAsyncJob = retrieve(jobId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: JobManualRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ManualAsyncJob
+
+    /** @see [retrieve] */
+    fun retrieve(params: JobManualRetrieveParams): ManualAsyncJob =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(jobId: String, requestOptions: RequestOptions): ManualAsyncJob =
+        retrieve(jobId, JobManualRetrieveParams.none(), requestOptions)
 
     /** A view of [ManualService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -36,8 +56,24 @@ interface ManualService {
          * [ManualService.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: JobManualRetrieveParams): HttpResponseFor<ManualAsyncJob> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(jobId: String): HttpResponseFor<ManualAsyncJob> =
+            retrieve(jobId, JobManualRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            jobId: String,
+            params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ManualAsyncJob> =
+            retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            jobId: String,
+            params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+        ): HttpResponseFor<ManualAsyncJob> = retrieve(jobId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -45,5 +81,18 @@ interface ManualService {
             params: JobManualRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ManualAsyncJob>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: JobManualRetrieveParams): HttpResponseFor<ManualAsyncJob> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            jobId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ManualAsyncJob> =
+            retrieve(jobId, JobManualRetrieveParams.none(), requestOptions)
     }
 }

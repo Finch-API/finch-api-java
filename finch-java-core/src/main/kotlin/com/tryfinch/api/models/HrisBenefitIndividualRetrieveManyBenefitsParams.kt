@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
@@ -13,13 +12,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsParams
 private constructor(
-    private val benefitId: String,
+    private val benefitId: String?,
     private val individualIds: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun benefitId(): String = benefitId
+    fun benefitId(): Optional<String> = Optional.ofNullable(benefitId)
 
     /**
      * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
@@ -35,14 +34,11 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): HrisBenefitIndividualRetrieveManyBenefitsParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisBenefitIndividualRetrieveManyBenefitsParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .benefitId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -68,7 +64,10 @@ private constructor(
                 hrisBenefitIndividualRetrieveManyBenefitsParams.additionalQueryParams.toBuilder()
         }
 
-        fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
+        fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
+
+        /** Alias for calling [Builder.benefitId] with `benefitId.orElse(null)`. */
+        fun benefitId(benefitId: Optional<String>) = benefitId(benefitId.getOrNull())
 
         /**
          * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
@@ -182,17 +181,10 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitIndividualRetrieveManyBenefitsParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .benefitId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitIndividualRetrieveManyBenefitsParams =
             HrisBenefitIndividualRetrieveManyBenefitsParams(
-                checkRequired("benefitId", benefitId),
+                benefitId,
                 individualIds,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -201,7 +193,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> benefitId
+            0 -> benefitId ?: ""
             else -> ""
         }
 

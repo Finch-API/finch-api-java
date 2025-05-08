@@ -3,20 +3,21 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Lists deductions and contributions information for a given item */
 class HrisBenefitRetrieveParams
 private constructor(
-    private val benefitId: String,
+    private val benefitId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun benefitId(): String = benefitId
+    fun benefitId(): Optional<String> = Optional.ofNullable(benefitId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -26,13 +27,10 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): HrisBenefitRetrieveParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of [HrisBenefitRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .benefitId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -51,7 +49,10 @@ private constructor(
             additionalQueryParams = hrisBenefitRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
+        fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
+
+        /** Alias for calling [Builder.benefitId] with `benefitId.orElse(null)`. */
+        fun benefitId(benefitId: Optional<String>) = benefitId(benefitId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -155,17 +156,10 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .benefitId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitRetrieveParams =
             HrisBenefitRetrieveParams(
-                checkRequired("benefitId", benefitId),
+                benefitId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -173,7 +167,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> benefitId
+            0 -> benefitId ?: ""
             else -> ""
         }
 

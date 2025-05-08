@@ -5,6 +5,7 @@ package com.tryfinch.api.services.async.hris.benefits
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
@@ -23,6 +24,7 @@ import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     IndividualServiceAsync {
@@ -67,6 +69,9 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             params: HrisBenefitIndividualEnrolledIdsParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -97,6 +102,9 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             params: HrisBenefitIndividualRetrieveManyBenefitsParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -134,6 +142,9 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

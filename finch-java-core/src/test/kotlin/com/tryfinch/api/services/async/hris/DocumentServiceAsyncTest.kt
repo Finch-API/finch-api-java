@@ -5,7 +5,6 @@ package com.tryfinch.api.services.async.hris
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.HrisDocumentListParams
-import com.tryfinch.api.models.HrisDocumentRetreiveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -44,10 +43,7 @@ internal class DocumentServiceAsyncTest {
                 .build()
         val documentServiceAsync = client.hris().documents()
 
-        val responseFuture =
-            documentServiceAsync.retreive(
-                HrisDocumentRetreiveParams.builder().documentId("document_id").build()
-            )
+        val responseFuture = documentServiceAsync.retreive("document_id")
 
         val response = responseFuture.get()
         response.validate()

@@ -17,14 +17,40 @@ interface IndividualServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Update sandbox individual */
-    fun update(params: SandboxIndividualUpdateParams): CompletableFuture<IndividualUpdateResponse> =
-        update(params, RequestOptions.none())
+    fun update(individualId: String): CompletableFuture<IndividualUpdateResponse> =
+        update(individualId, SandboxIndividualUpdateParams.none())
+
+    /** @see [update] */
+    fun update(
+        individualId: String,
+        params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<IndividualUpdateResponse> =
+        update(params.toBuilder().individualId(individualId).build(), requestOptions)
+
+    /** @see [update] */
+    fun update(
+        individualId: String,
+        params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
+    ): CompletableFuture<IndividualUpdateResponse> =
+        update(individualId, params, RequestOptions.none())
 
     /** @see [update] */
     fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<IndividualUpdateResponse>
+
+    /** @see [update] */
+    fun update(params: SandboxIndividualUpdateParams): CompletableFuture<IndividualUpdateResponse> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        individualId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<IndividualUpdateResponse> =
+        update(individualId, SandboxIndividualUpdateParams.none(), requestOptions)
 
     /**
      * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
@@ -38,9 +64,26 @@ interface IndividualServiceAsync {
          */
         @MustBeClosed
         fun update(
-            params: SandboxIndividualUpdateParams
+            individualId: String
         ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
-            update(params, RequestOptions.none())
+            update(individualId, SandboxIndividualUpdateParams.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            individualId: String,
+            params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
+            update(params.toBuilder().individualId(individualId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            individualId: String,
+            params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
+        ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
+            update(individualId, params, RequestOptions.none())
 
         /** @see [update] */
         @MustBeClosed
@@ -48,5 +91,20 @@ interface IndividualServiceAsync {
             params: SandboxIndividualUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>>
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: SandboxIndividualUpdateParams
+        ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            individualId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
+            update(individualId, SandboxIndividualUpdateParams.none(), requestOptions)
     }
 }
