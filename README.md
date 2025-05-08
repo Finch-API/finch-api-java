@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/6.0.0)
-[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/6.0.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/6.0.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/7.0.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/7.0.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.0.0)
 
 <!-- x-release-please-end -->
 
@@ -15,7 +15,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/6.0.0).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.0.0).
 
 <!-- x-release-please-end -->
 
@@ -26,7 +26,7 @@ The REST API documentation can be found on [developer.tryfinch.com](https://deve
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:6.0.0")
+implementation("com.tryfinch.api:finch-java:7.0.0")
 ```
 
 ### Maven
@@ -35,7 +35,7 @@ implementation("com.tryfinch.api:finch-java:6.0.0")
 <dependency>
   <groupId>com.tryfinch.api</groupId>
   <artifactId>finch-java</artifactId>
-  <version>6.0.0</version>
+  <version>7.0.0</version>
 </dependency>
 ```
 
@@ -219,53 +219,101 @@ The SDK throws custom unchecked exception types:
 
 ## Pagination
 
-For methods that return a paginated list of results, this library provides convenient ways access the results either one page at a time, or item-by-item across all pages.
+The SDK defines methods that return a paginated lists of results. It provides convenient ways to access the results either one page at a time or item-by-item across all pages.
 
 ### Auto-pagination
 
-To iterate through all results across all pages, you can use `autoPager`, which automatically handles fetching more pages for you:
+To iterate through all results across all pages, use the `autoPager()` method, which automatically fetches more pages as needed.
 
-### Synchronous
+When using the synchronous client, the method returns an [`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)
 
 ```java
 import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.IndividualInDirectory;
 
-// As an Iterable:
-HrisDirectoryListPage page = client.hris().directory().list(params);
+HrisDirectoryListPage page = client.hris().directory().list();
+
+// Process as an Iterable
 for (IndividualInDirectory directory : page.autoPager()) {
     System.out.println(directory);
-};
+}
 
-// As a Stream:
-client.hris().directory().list(params).autoPager().stream()
+// Process as a Stream
+page.autoPager()
+    .stream()
     .limit(50)
     .forEach(directory -> System.out.println(directory));
 ```
 
-### Asynchronous
+When using the asynchronous client, the method returns an [`AsyncStreamResponse`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/http/AsyncStreamResponse.kt):
 
 ```java
-// Using forEach, which returns CompletableFuture<Void>:
-asyncClient.hris().directory().list(params).autoPager()
-    .forEach(directory -> System.out.println(directory), executor);
+import com.tryfinch.api.core.http.AsyncStreamResponse;
+import com.tryfinch.api.models.HrisDirectoryListPageAsync;
+import com.tryfinch.api.models.IndividualInDirectory;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+CompletableFuture<HrisDirectoryListPageAsync> pageFuture = client.async().hris().directory().list();
+
+pageFuture.thenRun(page -> page.autoPager().subscribe(directory -> {
+    System.out.println(directory);
+}));
+
+// If you need to handle errors or completion of the stream
+pageFuture.thenRun(page -> page.autoPager().subscribe(new AsyncStreamResponse.Handler<>() {
+    @Override
+    public void onNext(IndividualInDirectory directory) {
+        System.out.println(directory);
+    }
+
+    @Override
+    public void onComplete(Optional<Throwable> error) {
+        if (error.isPresent()) {
+            System.out.println("Something went wrong!");
+            throw new RuntimeException(error.get());
+        } else {
+            System.out.println("No more!");
+        }
+    }
+}));
+
+// Or use futures
+pageFuture.thenRun(page -> page.autoPager()
+    .subscribe(directory -> {
+        System.out.println(directory);
+    })
+    .onCompleteFuture()
+    .whenComplete((unused, error) -> {
+        if (error != null) {
+            System.out.println("Something went wrong!");
+            throw new RuntimeException(error);
+        } else {
+            System.out.println("No more!");
+        }
+    }));
 ```
 
 ### Manual pagination
 
-If none of the above helpers meet your needs, you can also manually request pages one-by-one. A page of results has a `data()` method to fetch the list of objects, as well as top-level `response` and other methods to fetch top-level data about the page. It also has methods `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
+To access individual page items and manually request the next page, use the `items()`,
+`hasNextPage()`, and `nextPage()` methods:
 
 ```java
 import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.IndividualInDirectory;
 
-HrisDirectoryListPage page = client.hris().directory().list(params);
-while (page != null) {
-    for (IndividualInDirectory directory : page.individuals()) {
+HrisDirectoryListPage page = client.hris().directory().list();
+while (true) {
+    for (IndividualInDirectory directory : page.items()) {
         System.out.println(directory);
     }
 
-    page = page.getNextPage().orElse(null);
+    if (!page.hasNextPage()) {
+        break;
+    }
+
+    page = page.nextPage();
 }
 ```
 
@@ -343,7 +391,6 @@ To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
 import com.tryfinch.api.models.HrisDirectoryListPage;
-import com.tryfinch.api.models.HrisDirectoryListParams;
 
 HrisDirectoryListPage page = client.hris().directory().list(RequestOptions.builder().timeout(Duration.ofSeconds(30)).build());
 ```
@@ -573,7 +620,6 @@ Or configure the method call to validate the response using the `responseValidat
 
 ```java
 import com.tryfinch.api.models.HrisDirectoryListPage;
-import com.tryfinch.api.models.HrisDirectoryListParams;
 
 HrisDirectoryListPage page = client.hris().directory().list(RequestOptions.builder().responseValidation(true).build());
 ```

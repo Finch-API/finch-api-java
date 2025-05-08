@@ -5,7 +5,6 @@ package com.tryfinch.api.services.blocking.hris
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.HrisDocumentListParams
-import com.tryfinch.api.models.HrisDocumentRetreiveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -43,10 +42,7 @@ internal class DocumentServiceTest {
                 .build()
         val documentService = client.hris().documents()
 
-        val response =
-            documentService.retreive(
-                HrisDocumentRetreiveParams.builder().documentId("document_id").build()
-            )
+        val response = documentService.retreive("document_id")
 
         response.validate()
     }

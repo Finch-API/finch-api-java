@@ -2,13 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.BenefitService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
-import kotlin.jvm.optionals.getOrNull
 
 /** @see [BenefitService.list] */
 class HrisBenefitListPage
@@ -16,21 +14,22 @@ private constructor(
     private val service: BenefitService,
     private val params: HrisBenefitListParams,
     private val items: List<CompanyBenefit>,
-) {
+) : Page<CompanyBenefit> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): Optional<HrisBenefitListParams> = Optional.empty()
+    fun nextPageParams(): HrisBenefitListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun getNextPage(): Optional<HrisBenefitListPage> = getNextPageParams().map { service.list(it) }
+    override fun nextPage(): HrisBenefitListPage = service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<CompanyBenefit> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisBenefitListParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<CompanyBenefit> = items
+    override fun items(): List<CompanyBenefit> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -91,25 +90,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisBenefitListPage) : Iterable<CompanyBenefit> {
-
-        override fun iterator(): Iterator<CompanyBenefit> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<CompanyBenefit> {
-            return StreamSupport.stream(spliterator(), false)
-        }
     }
 
     override fun equals(other: Any?): Boolean {

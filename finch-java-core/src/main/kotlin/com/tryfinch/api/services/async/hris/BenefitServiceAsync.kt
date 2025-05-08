@@ -50,8 +50,22 @@ interface BenefitServiceAsync {
         create(HrisBenefitCreateParams.none(), requestOptions)
 
     /** Lists deductions and contributions information for a given item */
-    fun retrieve(params: HrisBenefitRetrieveParams): CompletableFuture<CompanyBenefit> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(benefitId: String): CompletableFuture<CompanyBenefit> =
+        retrieve(benefitId, HrisBenefitRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        benefitId: String,
+        params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<CompanyBenefit> =
+        retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        benefitId: String,
+        params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
+    ): CompletableFuture<CompanyBenefit> = retrieve(benefitId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
@@ -59,15 +73,52 @@ interface BenefitServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CompanyBenefit>
 
+    /** @see [retrieve] */
+    fun retrieve(params: HrisBenefitRetrieveParams): CompletableFuture<CompanyBenefit> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        benefitId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<CompanyBenefit> =
+        retrieve(benefitId, HrisBenefitRetrieveParams.none(), requestOptions)
+
     /** Updates an existing company-wide deduction or contribution */
-    fun update(params: HrisBenefitUpdateParams): CompletableFuture<UpdateCompanyBenefitResponse> =
-        update(params, RequestOptions.none())
+    fun update(benefitId: String): CompletableFuture<UpdateCompanyBenefitResponse> =
+        update(benefitId, HrisBenefitUpdateParams.none())
+
+    /** @see [update] */
+    fun update(
+        benefitId: String,
+        params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<UpdateCompanyBenefitResponse> =
+        update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+    /** @see [update] */
+    fun update(
+        benefitId: String,
+        params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
+    ): CompletableFuture<UpdateCompanyBenefitResponse> =
+        update(benefitId, params, RequestOptions.none())
 
     /** @see [update] */
     fun update(
         params: HrisBenefitUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<UpdateCompanyBenefitResponse>
+
+    /** @see [update] */
+    fun update(params: HrisBenefitUpdateParams): CompletableFuture<UpdateCompanyBenefitResponse> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        benefitId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<UpdateCompanyBenefitResponse> =
+        update(benefitId, HrisBenefitUpdateParams.none(), requestOptions)
 
     /** List all company-wide deductions and contributions. */
     fun list(): CompletableFuture<HrisBenefitListPageAsync> = list(HrisBenefitListParams.none())
@@ -152,10 +203,25 @@ interface BenefitServiceAsync {
          * the same as [BenefitServiceAsync.retrieve].
          */
         @MustBeClosed
+        fun retrieve(benefitId: String): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
+            retrieve(benefitId, HrisBenefitRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
         fun retrieve(
-            params: HrisBenefitRetrieveParams
+            benefitId: String,
+            params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
-            retrieve(params, RequestOptions.none())
+            retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            benefitId: String,
+            params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
+            retrieve(benefitId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -164,10 +230,56 @@ interface BenefitServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>>
 
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: HrisBenefitRetrieveParams
+        ): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            benefitId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
+            retrieve(benefitId, HrisBenefitRetrieveParams.none(), requestOptions)
+
         /**
          * Returns a raw HTTP response for `post /employer/benefits/{benefit_id}`, but is otherwise
          * the same as [BenefitServiceAsync.update].
          */
+        @MustBeClosed
+        fun update(
+            benefitId: String
+        ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
+            update(benefitId, HrisBenefitUpdateParams.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            benefitId: String,
+            params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
+            update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            benefitId: String,
+            params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
+        ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
+            update(benefitId, params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: HrisBenefitUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>>
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: HrisBenefitUpdateParams
@@ -177,9 +289,10 @@ interface BenefitServiceAsync {
         /** @see [update] */
         @MustBeClosed
         fun update(
-            params: HrisBenefitUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>>
+            benefitId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
+            update(benefitId, HrisBenefitUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits`, but is otherwise the same as

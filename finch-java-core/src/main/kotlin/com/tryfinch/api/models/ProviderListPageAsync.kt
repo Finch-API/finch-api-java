@@ -2,38 +2,38 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.ProviderServiceAsync
 import java.util.Objects
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 
 /** @see [ProviderServiceAsync.list] */
 class ProviderListPageAsync
 private constructor(
     private val service: ProviderServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: ProviderListParams,
     private val items: List<Provider>,
-) {
+) : PageAsync<Provider> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): Optional<ProviderListParams> = Optional.empty()
+    fun nextPageParams(): ProviderListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun getNextPage(): CompletableFuture<Optional<ProviderListPageAsync>> =
-        getNextPageParams()
-            .map { service.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
+    override fun nextPage(): CompletableFuture<ProviderListPageAsync> =
+        service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<Provider> = AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): ProviderListParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<Provider> = items
+    override fun items(): List<Provider> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -45,6 +45,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .items()
          * ```
@@ -56,17 +57,23 @@ private constructor(
     class Builder internal constructor() {
 
         private var service: ProviderServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
         private var params: ProviderListParams? = null
         private var items: List<Provider>? = null
 
         @JvmSynthetic
         internal fun from(providerListPageAsync: ProviderListPageAsync) = apply {
             service = providerListPageAsync.service
+            streamHandlerExecutor = providerListPageAsync.streamHandlerExecutor
             params = providerListPageAsync.params
             items = providerListPageAsync.items
         }
 
         fun service(service: ProviderServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         /** The parameters that were used to request this page. */
         fun params(params: ProviderListParams) = apply { this.params = params }
@@ -82,6 +89,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .items()
          * ```
@@ -91,35 +99,10 @@ private constructor(
         fun build(): ProviderListPageAsync =
             ProviderListPageAsync(
                 checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: ProviderListPageAsync) {
-
-        fun forEach(action: Predicate<Provider>, executor: Executor): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<ProviderListPageAsync>>.forEach(
-                action: (Provider) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.items().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<Provider>> {
-            val values = mutableListOf<Provider>()
-            return forEach(values::add, executor).thenApply { values }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -127,11 +110,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProviderListPageAsync && service == other.service && params == other.params && items == other.items /* spotless:on */
+        return /* spotless:off */ other is ProviderListPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && items == other.items /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, items) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, items) /* spotless:on */
 
     override fun toString() =
-        "ProviderListPageAsync{service=$service, params=$params, items=$items}"
+        "ProviderListPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, items=$items}"
 }

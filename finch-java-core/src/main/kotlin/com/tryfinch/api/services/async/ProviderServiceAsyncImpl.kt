@@ -68,6 +68,7 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
                             .let {
                                 ProviderListPageAsync.builder()
                                     .service(ProviderServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .items(it)
                                     .build()

@@ -5,6 +5,7 @@ package com.tryfinch.api.services.async.hris
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
@@ -19,6 +20,7 @@ import com.tryfinch.api.models.DocumentRetreiveResponse
 import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class DocumentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     DocumentServiceAsync {
@@ -86,6 +88,9 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
             params: HrisDocumentRetreiveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<DocumentRetreiveResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("documentId", params.documentId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

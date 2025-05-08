@@ -6,7 +6,6 @@ import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.JobAutomatedCreateParams
 import com.tryfinch.api.models.JobAutomatedListParams
-import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -37,8 +36,7 @@ internal class AutomatedServiceTest {
                 .build()
         val automatedService = client.jobs().automated()
 
-        val automatedAsyncJob =
-            automatedService.retrieve(JobAutomatedRetrieveParams.builder().jobId("job_id").build())
+        val automatedAsyncJob = automatedService.retrieve("job_id")
 
         automatedAsyncJob.validate()
     }

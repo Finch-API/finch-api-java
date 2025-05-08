@@ -3,10 +3,11 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Get a manual job by `job_id`. Manual jobs are completed by a human and include Assisted Benefits
@@ -14,12 +15,12 @@ import java.util.Objects
  */
 class JobManualRetrieveParams
 private constructor(
-    private val jobId: String,
+    private val jobId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun jobId(): String = jobId
+    fun jobId(): Optional<String> = Optional.ofNullable(jobId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -29,14 +30,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [JobManualRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .jobId()
-         * ```
-         */
+        @JvmStatic fun none(): JobManualRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [JobManualRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -54,7 +50,10 @@ private constructor(
             additionalQueryParams = jobManualRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun jobId(jobId: String) = apply { this.jobId = jobId }
+        fun jobId(jobId: String?) = apply { this.jobId = jobId }
+
+        /** Alias for calling [Builder.jobId] with `jobId.orElse(null)`. */
+        fun jobId(jobId: Optional<String>) = jobId(jobId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -158,25 +157,14 @@ private constructor(
          * Returns an immutable instance of [JobManualRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .jobId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): JobManualRetrieveParams =
-            JobManualRetrieveParams(
-                checkRequired("jobId", jobId),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            JobManualRetrieveParams(jobId, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> jobId
+            0 -> jobId ?: ""
             else -> ""
         }
 
