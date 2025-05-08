@@ -1,5 +1,23 @@
 # Changelog
 
+## 7.0.0 (2025-05-08)
+
+Full Changelog: [v6.0.0...v7.0.0](https://github.com/Finch-API/finch-api-java/compare/v6.0.0...v7.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** extract auto pagination to shared classes
+* **client:** **Migration:** - If you were referencing the `AutoPager` class on a specific `*Page` or `*PageAsync` type, then you should instead reference the shared `AutoPager` and `AutoPagerAsync` types, under the `core` package
+    - `AutoPagerAsync` now has different usage. You can call `.subscribe(...)` on the returned object instead to get called back each page item. You can also call `onCompleteFuture()` to get a future that completes when all items have been processed. Finally, you can call `.close()` on the returned object to stop auto-paginating early
+    - If you were referencing `getNextPage` or `getNextPageParams`:
+       - Swap to `nextPage()` and `nextPageParams()`
+       - Note that these both now return non-optional types (use `hasNextPage()` before calling these, since they will throw if it's impossible to get another page)
+
+### Features
+
+* **client:** allow providing some params positionally ([ec6fa40](https://github.com/Finch-API/finch-api-java/commit/ec6fa40e9be337318708f336e853b3f9e551dd47))
+* **client:** extract auto pagination to shared classes ([c4a8874](https://github.com/Finch-API/finch-api-java/commit/c4a8874a3f7799b0d689beaafd00cf1a3727f0ea))
+
 ## 6.0.0 (2025-05-08)
 
 Full Changelog: [v5.5.0...v6.0.0](https://github.com/Finch-API/finch-api-java/compare/v5.5.0...v6.0.0)
