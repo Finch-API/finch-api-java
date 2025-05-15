@@ -16,12 +16,18 @@ internal class PayStatementResponseTest {
             PayStatementResponse.builder()
                 .body(
                     PayStatementResponseBody.builder()
-                        .paging(Paging.builder().offset(0L).count(0L).build())
+                        .paging(
+                            PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build()
+                        )
                         .addPayStatement(
                             PayStatement.builder()
                                 .addEarning(
                                     PayStatement.Earning.builder()
                                         .amount(0L)
+                                        .currency("currency")
+                                        .hours(0.0)
+                                        .name("name")
+                                        .type(PayStatement.Earning.Type.SALARY)
                                         .attributes(
                                             PayStatement.Earning.Attributes.builder()
                                                 .metadata(
@@ -43,15 +49,15 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .hours(0.0)
-                                        .name("name")
-                                        .type(PayStatement.Earning.Type.SALARY)
                                         .build()
                                 )
                                 .addEmployeeDeduction(
                                     PayStatement.EmployeeDeduction.builder()
                                         .amount(0L)
+                                        .currency("currency")
+                                        .name("name")
+                                        .preTax(true)
+                                        .type(BenefitType._457)
                                         .attributes(
                                             PayStatement.EmployeeDeduction.Attributes.builder()
                                                 .metadata(
@@ -76,15 +82,14 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .name("name")
-                                        .preTax(true)
-                                        .type(BenefitType._401K)
                                         .build()
                                 )
                                 .addEmployerContribution(
                                     PayStatement.EmployerContribution.builder()
                                         .amount(0L)
+                                        .currency("currency")
+                                        .name("name")
+                                        .type(BenefitType._457)
                                         .attributes(
                                             PayStatement.EmployerContribution.Attributes.builder()
                                                 .metadata(
@@ -109,9 +114,6 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .name("name")
-                                        .type(BenefitType._401K)
                                         .build()
                                 )
                                 .grossPay(Money.builder().amount(0L).currency("currency").build())
@@ -121,6 +123,10 @@ internal class PayStatementResponseTest {
                                 .addTax(
                                     PayStatement.Tax.builder()
                                         .amount(0L)
+                                        .currency("currency")
+                                        .employer(true)
+                                        .name("name")
+                                        .type(PayStatement.Tax.Type.STATE)
                                         .attributes(
                                             PayStatement.Tax.Attributes.builder()
                                                 .metadata(
@@ -141,10 +147,6 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .employer(true)
-                                        .name("name")
-                                        .type(PayStatement.Tax.Type.STATE)
                                         .build()
                                 )
                                 .totalHours(0.0)
@@ -158,14 +160,18 @@ internal class PayStatementResponseTest {
                 .build()
 
         assertThat(payStatementResponse.body())
-            .contains(
+            .isEqualTo(
                 PayStatementResponseBody.builder()
-                    .paging(Paging.builder().offset(0L).count(0L).build())
+                    .paging(PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build())
                     .addPayStatement(
                         PayStatement.builder()
                             .addEarning(
                                 PayStatement.Earning.builder()
                                     .amount(0L)
+                                    .currency("currency")
+                                    .hours(0.0)
+                                    .name("name")
+                                    .type(PayStatement.Earning.Type.SALARY)
                                     .attributes(
                                         PayStatement.Earning.Attributes.builder()
                                             .metadata(
@@ -184,15 +190,15 @@ internal class PayStatementResponseTest {
                                             )
                                             .build()
                                     )
-                                    .currency("currency")
-                                    .hours(0.0)
-                                    .name("name")
-                                    .type(PayStatement.Earning.Type.SALARY)
                                     .build()
                             )
                             .addEmployeeDeduction(
                                 PayStatement.EmployeeDeduction.builder()
                                     .amount(0L)
+                                    .currency("currency")
+                                    .name("name")
+                                    .preTax(true)
+                                    .type(BenefitType._457)
                                     .attributes(
                                         PayStatement.EmployeeDeduction.Attributes.builder()
                                             .metadata(
@@ -213,15 +219,14 @@ internal class PayStatementResponseTest {
                                             )
                                             .build()
                                     )
-                                    .currency("currency")
-                                    .name("name")
-                                    .preTax(true)
-                                    .type(BenefitType._401K)
                                     .build()
                             )
                             .addEmployerContribution(
                                 PayStatement.EmployerContribution.builder()
                                     .amount(0L)
+                                    .currency("currency")
+                                    .name("name")
+                                    .type(BenefitType._457)
                                     .attributes(
                                         PayStatement.EmployerContribution.Attributes.builder()
                                             .metadata(
@@ -243,9 +248,6 @@ internal class PayStatementResponseTest {
                                             )
                                             .build()
                                     )
-                                    .currency("currency")
-                                    .name("name")
-                                    .type(BenefitType._401K)
                                     .build()
                             )
                             .grossPay(Money.builder().amount(0L).currency("currency").build())
@@ -255,6 +257,10 @@ internal class PayStatementResponseTest {
                             .addTax(
                                 PayStatement.Tax.builder()
                                     .amount(0L)
+                                    .currency("currency")
+                                    .employer(true)
+                                    .name("name")
+                                    .type(PayStatement.Tax.Type.STATE)
                                     .attributes(
                                         PayStatement.Tax.Attributes.builder()
                                             .metadata(
@@ -273,10 +279,6 @@ internal class PayStatementResponseTest {
                                             )
                                             .build()
                                     )
-                                    .currency("currency")
-                                    .employer(true)
-                                    .name("name")
-                                    .type(PayStatement.Tax.Type.STATE)
                                     .build()
                             )
                             .totalHours(0.0)
@@ -285,8 +287,8 @@ internal class PayStatementResponseTest {
                     )
                     .build()
             )
-        assertThat(payStatementResponse.code()).contains(0L)
-        assertThat(payStatementResponse.paymentId()).contains("payment_id")
+        assertThat(payStatementResponse.code()).isEqualTo(0L)
+        assertThat(payStatementResponse.paymentId()).isEqualTo("payment_id")
     }
 
     @Test
@@ -296,12 +298,18 @@ internal class PayStatementResponseTest {
             PayStatementResponse.builder()
                 .body(
                     PayStatementResponseBody.builder()
-                        .paging(Paging.builder().offset(0L).count(0L).build())
+                        .paging(
+                            PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build()
+                        )
                         .addPayStatement(
                             PayStatement.builder()
                                 .addEarning(
                                     PayStatement.Earning.builder()
                                         .amount(0L)
+                                        .currency("currency")
+                                        .hours(0.0)
+                                        .name("name")
+                                        .type(PayStatement.Earning.Type.SALARY)
                                         .attributes(
                                             PayStatement.Earning.Attributes.builder()
                                                 .metadata(
@@ -323,15 +331,15 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .hours(0.0)
-                                        .name("name")
-                                        .type(PayStatement.Earning.Type.SALARY)
                                         .build()
                                 )
                                 .addEmployeeDeduction(
                                     PayStatement.EmployeeDeduction.builder()
                                         .amount(0L)
+                                        .currency("currency")
+                                        .name("name")
+                                        .preTax(true)
+                                        .type(BenefitType._457)
                                         .attributes(
                                             PayStatement.EmployeeDeduction.Attributes.builder()
                                                 .metadata(
@@ -356,15 +364,14 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .name("name")
-                                        .preTax(true)
-                                        .type(BenefitType._401K)
                                         .build()
                                 )
                                 .addEmployerContribution(
                                     PayStatement.EmployerContribution.builder()
                                         .amount(0L)
+                                        .currency("currency")
+                                        .name("name")
+                                        .type(BenefitType._457)
                                         .attributes(
                                             PayStatement.EmployerContribution.Attributes.builder()
                                                 .metadata(
@@ -389,9 +396,6 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .name("name")
-                                        .type(BenefitType._401K)
                                         .build()
                                 )
                                 .grossPay(Money.builder().amount(0L).currency("currency").build())
@@ -401,6 +405,10 @@ internal class PayStatementResponseTest {
                                 .addTax(
                                     PayStatement.Tax.builder()
                                         .amount(0L)
+                                        .currency("currency")
+                                        .employer(true)
+                                        .name("name")
+                                        .type(PayStatement.Tax.Type.STATE)
                                         .attributes(
                                             PayStatement.Tax.Attributes.builder()
                                                 .metadata(
@@ -421,10 +429,6 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .employer(true)
-                                        .name("name")
-                                        .type(PayStatement.Tax.Type.STATE)
                                         .build()
                                 )
                                 .totalHours(0.0)

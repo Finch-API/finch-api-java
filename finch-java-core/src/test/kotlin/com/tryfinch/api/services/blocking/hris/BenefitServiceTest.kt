@@ -42,7 +42,7 @@ internal class BenefitServiceTest {
                     )
                     .description("description")
                     .frequency(BenefitFrequency.ONE_TIME)
-                    .type(BenefitType._401K)
+                    .type(BenefitType._457)
                     .build()
             )
 

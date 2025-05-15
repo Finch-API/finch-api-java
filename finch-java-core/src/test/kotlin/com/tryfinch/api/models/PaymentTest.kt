@@ -30,7 +30,7 @@ internal class PaymentTest {
                 )
                 .build()
 
-        assertThat(payment.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(payment.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(payment.companyDebit())
             .contains(Money.builder().amount(0L).currency("currency").build())
         assertThat(payment.debitDate()).contains("debit_date")

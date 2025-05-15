@@ -32,6 +32,12 @@ internal class PaymentServiceTest {
                             .addEarning(
                                 SandboxPaymentCreateParams.PayStatement.Earning.builder()
                                     .amount(0L)
+                                    .currency("currency")
+                                    .hours(0.0)
+                                    .name("name")
+                                    .type(
+                                        SandboxPaymentCreateParams.PayStatement.Earning.Type.SALARY
+                                    )
                                     .attributes(
                                         SandboxPaymentCreateParams.PayStatement.Earning.Attributes
                                             .builder()
@@ -57,17 +63,15 @@ internal class PaymentServiceTest {
                                             )
                                             .build()
                                     )
-                                    .currency("currency")
-                                    .hours(0.0)
-                                    .name("name")
-                                    .type(
-                                        SandboxPaymentCreateParams.PayStatement.Earning.Type.SALARY
-                                    )
                                     .build()
                             )
                             .addEmployeeDeduction(
                                 SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
-                                    .amount(2000L)
+                                    .amount(0L)
+                                    .currency("currency")
+                                    .name("name")
+                                    .preTax(true)
+                                    .type(BenefitType._457)
                                     .attributes(
                                         SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
                                             .Attributes
@@ -95,16 +99,15 @@ internal class PaymentServiceTest {
                                             )
                                             .build()
                                     )
-                                    .currency("usd")
-                                    .name("401k test")
-                                    .preTax(true)
-                                    .type(BenefitType._401K)
                                     .build()
                             )
                             .addEmployerContribution(
                                 SandboxPaymentCreateParams.PayStatement.EmployerContribution
                                     .builder()
                                     .amount(0L)
+                                    .currency("currency")
+                                    .name("name")
+                                    .type(BenefitType._457)
                                     .attributes(
                                         SandboxPaymentCreateParams.PayStatement.EmployerContribution
                                             .Attributes
@@ -132,13 +135,10 @@ internal class PaymentServiceTest {
                                             )
                                             .build()
                                     )
-                                    .currency("currency")
-                                    .name("name")
-                                    .type(BenefitType._401K)
                                     .build()
                             )
                             .grossPay(Money.builder().amount(0L).currency("currency").build())
-                            .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
+                            .individualId("individual_id")
                             .netPay(Money.builder().amount(0L).currency("currency").build())
                             .paymentMethod(
                                 SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
@@ -146,6 +146,10 @@ internal class PaymentServiceTest {
                             .addTax(
                                 SandboxPaymentCreateParams.PayStatement.Tax.builder()
                                     .amount(0L)
+                                    .currency("currency")
+                                    .employer(true)
+                                    .name("name")
+                                    .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.STATE)
                                     .attributes(
                                         SandboxPaymentCreateParams.PayStatement.Tax.Attributes
                                             .builder()
@@ -170,10 +174,6 @@ internal class PaymentServiceTest {
                                             )
                                             .build()
                                     )
-                                    .currency("currency")
-                                    .employer(true)
-                                    .name("name")
-                                    .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.STATE)
                                     .build()
                             )
                             .totalHours(0.0)
