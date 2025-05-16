@@ -2,12 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.IndividualService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [IndividualService.retrieveMany] */
@@ -16,7 +15,7 @@ private constructor(
     private val service: IndividualService,
     private val params: HrisIndividualRetrieveManyParams,
     private val response: HrisIndividualRetrieveManyPageResponse,
-) {
+) : Page<IndividualResponse> {
 
     /**
      * Delegates to [HrisIndividualRetrieveManyPageResponse], but gracefully handles missing data.
@@ -26,14 +25,16 @@ private constructor(
     fun responses(): List<IndividualResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<IndividualResponse> = responses()
 
-    fun getNextPageParams(): Optional<HrisIndividualRetrieveManyParams> = Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPage(): Optional<HrisIndividualRetrieveManyPage> =
-        getNextPageParams().map { service.retrieveMany(it) }
+    fun nextPageParams(): HrisIndividualRetrieveManyParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override fun nextPage(): HrisIndividualRetrieveManyPage = service.retrieveMany(nextPageParams())
+
+    fun autoPager(): AutoPager<IndividualResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisIndividualRetrieveManyParams = params
@@ -103,26 +104,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisIndividualRetrieveManyPage) :
-        Iterable<IndividualResponse> {
-
-        override fun iterator(): Iterator<IndividualResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.responses().size) {
-                    yield(page.responses()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<IndividualResponse> {
-            return StreamSupport.stream(spliterator(), false)
-        }
     }
 
     override fun equals(other: Any?): Boolean {

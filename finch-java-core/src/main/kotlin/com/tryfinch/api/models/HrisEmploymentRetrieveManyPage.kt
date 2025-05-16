@@ -2,12 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.EmploymentService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [EmploymentService.retrieveMany] */
@@ -16,7 +15,7 @@ private constructor(
     private val service: EmploymentService,
     private val params: HrisEmploymentRetrieveManyParams,
     private val response: HrisEmploymentRetrieveManyPageResponse,
-) {
+) : Page<EmploymentDataResponse> {
 
     /**
      * Delegates to [HrisEmploymentRetrieveManyPageResponse], but gracefully handles missing data.
@@ -26,14 +25,16 @@ private constructor(
     fun responses(): List<EmploymentDataResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<EmploymentDataResponse> = responses()
 
-    fun getNextPageParams(): Optional<HrisEmploymentRetrieveManyParams> = Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPage(): Optional<HrisEmploymentRetrieveManyPage> =
-        getNextPageParams().map { service.retrieveMany(it) }
+    fun nextPageParams(): HrisEmploymentRetrieveManyParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override fun nextPage(): HrisEmploymentRetrieveManyPage = service.retrieveMany(nextPageParams())
+
+    fun autoPager(): AutoPager<EmploymentDataResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisEmploymentRetrieveManyParams = params
@@ -103,26 +104,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisEmploymentRetrieveManyPage) :
-        Iterable<EmploymentDataResponse> {
-
-        override fun iterator(): Iterator<EmploymentDataResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.responses().size) {
-                    yield(page.responses()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<EmploymentDataResponse> {
-            return StreamSupport.stream(spliterator(), false)
-        }
     }
 
     override fun equals(other: Any?): Boolean {

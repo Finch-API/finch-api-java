@@ -2,12 +2,12 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.BenefitService
 import java.util.Objects
 import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [BenefitService.listSupportedBenefits] */
@@ -16,22 +16,23 @@ private constructor(
     private val service: BenefitService,
     private val params: HrisBenefitListSupportedBenefitsParams,
     private val items: List<BenefitListSupportedBenefitsResponse>,
-) {
+) : Page<BenefitListSupportedBenefitsResponse> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): Optional<HrisBenefitListSupportedBenefitsParams> = Optional.empty()
+    fun nextPageParams(): HrisBenefitListSupportedBenefitsParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun getNextPage(): Optional<HrisBenefitListSupportedBenefitsPage> =
-        getNextPageParams().map { service.listSupportedBenefits(it) }
+    override fun nextPage(): HrisBenefitListSupportedBenefitsPage =
+        service.listSupportedBenefits(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<BenefitListSupportedBenefitsResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisBenefitListSupportedBenefitsParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<BenefitListSupportedBenefitsResponse> = items
+    override fun items(): List<BenefitListSupportedBenefitsResponse> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -97,26 +98,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("items", items).getOrNull() ?: emptyList(),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisBenefitListSupportedBenefitsPage) :
-        Iterable<BenefitListSupportedBenefitsResponse> {
-
-        override fun iterator(): Iterator<BenefitListSupportedBenefitsResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<BenefitListSupportedBenefitsResponse> {
-            return StreamSupport.stream(spliterator(), false)
-        }
     }
 
     override fun equals(other: Any?): Boolean {

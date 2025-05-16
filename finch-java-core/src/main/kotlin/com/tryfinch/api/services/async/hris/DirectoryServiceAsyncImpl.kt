@@ -80,6 +80,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
                             .let {
                                 HrisDirectoryListPageAsync.builder()
                                     .service(DirectoryServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()
@@ -118,6 +119,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
                             .let {
                                 HrisDirectoryListIndividualsPageAsync.builder()
                                     .service(DirectoryServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .response(it)
                                     .build()

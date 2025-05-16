@@ -2,13 +2,14 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
 import java.util.Objects
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrDefault
 import kotlin.jvm.optionals.getOrNull
 
@@ -16,9 +17,10 @@ import kotlin.jvm.optionals.getOrNull
 class HrisDirectoryListPageAsync
 private constructor(
     private val service: DirectoryServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: HrisDirectoryListParams,
     private val response: HrisDirectoryListPageResponse,
-) {
+) : PageAsync<IndividualInDirectory> {
 
     /**
      * Delegates to [HrisDirectoryListPageResponse], but gracefully handles missing data.
@@ -35,32 +37,29 @@ private constructor(
      */
     fun paging(): Optional<Paging> = response._paging().getOptional("paging")
 
-    fun hasNextPage(): Boolean {
-        if (individuals().isEmpty()) {
+    override fun items(): List<IndividualInDirectory> = individuals()
+
+    override fun hasNextPage(): Boolean {
+        if (items().isEmpty()) {
             return false
         }
 
         val offset = paging().flatMap { it._offset().getOptional("offset") }.getOrDefault(0)
         val totalCount =
             paging().flatMap { it._count().getOptional("count") }.getOrDefault(Long.MAX_VALUE)
-        return offset + individuals().size < totalCount
+        return offset + items().size < totalCount
     }
 
-    fun getNextPageParams(): Optional<HrisDirectoryListParams> {
-        if (!hasNextPage()) {
-            return Optional.empty()
-        }
-
+    fun nextPageParams(): HrisDirectoryListParams {
         val offset = paging().flatMap { it._offset().getOptional("offset") }.getOrDefault(0)
-        return Optional.of(params.toBuilder().offset(offset + individuals().size).build())
+        return params.toBuilder().offset(offset + items().size).build()
     }
 
-    fun getNextPage(): CompletableFuture<Optional<HrisDirectoryListPageAsync>> =
-        getNextPageParams()
-            .map { service.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
+    override fun nextPage(): CompletableFuture<HrisDirectoryListPageAsync> =
+        service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<IndividualInDirectory> =
+        AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisDirectoryListParams = params
@@ -78,6 +77,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -89,17 +89,23 @@ private constructor(
     class Builder internal constructor() {
 
         private var service: DirectoryServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
         private var params: HrisDirectoryListParams? = null
         private var response: HrisDirectoryListPageResponse? = null
 
         @JvmSynthetic
         internal fun from(hrisDirectoryListPageAsync: HrisDirectoryListPageAsync) = apply {
             service = hrisDirectoryListPageAsync.service
+            streamHandlerExecutor = hrisDirectoryListPageAsync.streamHandlerExecutor
             params = hrisDirectoryListPageAsync.params
             response = hrisDirectoryListPageAsync.response
         }
 
         fun service(service: DirectoryServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         /** The parameters that were used to request this page. */
         fun params(params: HrisDirectoryListParams) = apply { this.params = params }
@@ -115,6 +121,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -124,38 +131,10 @@ private constructor(
         fun build(): HrisDirectoryListPageAsync =
             HrisDirectoryListPageAsync(
                 checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisDirectoryListPageAsync) {
-
-        fun forEach(
-            action: Predicate<IndividualInDirectory>,
-            executor: Executor,
-        ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<HrisDirectoryListPageAsync>>.forEach(
-                action: (IndividualInDirectory) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.individuals().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<IndividualInDirectory>> {
-            val values = mutableListOf<IndividualInDirectory>()
-            return forEach(values::add, executor).thenApply { values }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -163,11 +142,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisDirectoryListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisDirectoryListPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, response) /* spotless:on */
 
     override fun toString() =
-        "HrisDirectoryListPageAsync{service=$service, params=$params, response=$response}"
+        "HrisDirectoryListPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, response=$response}"
 }

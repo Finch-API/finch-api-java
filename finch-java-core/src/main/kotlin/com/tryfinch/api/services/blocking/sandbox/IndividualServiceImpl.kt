@@ -5,6 +5,7 @@ package com.tryfinch.api.services.blocking.sandbox
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
@@ -17,6 +18,7 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.IndividualUpdateResponse
 import com.tryfinch.api.models.SandboxIndividualUpdateParams
+import kotlin.jvm.optionals.getOrNull
 
 class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     IndividualService {
@@ -47,6 +49,9 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
             params: SandboxIndividualUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<IndividualUpdateResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("individualId", params.individualId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)

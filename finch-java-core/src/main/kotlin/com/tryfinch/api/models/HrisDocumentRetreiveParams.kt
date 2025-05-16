@@ -3,10 +3,11 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * **Beta:** This endpoint is in beta and may change. Retrieve details of a specific document by its
@@ -14,12 +15,12 @@ import java.util.Objects
  */
 class HrisDocumentRetreiveParams
 private constructor(
-    private val documentId: String,
+    private val documentId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun documentId(): String = documentId
+    fun documentId(): Optional<String> = Optional.ofNullable(documentId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -29,13 +30,10 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): HrisDocumentRetreiveParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of [HrisDocumentRetreiveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .documentId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -54,7 +52,10 @@ private constructor(
             additionalQueryParams = hrisDocumentRetreiveParams.additionalQueryParams.toBuilder()
         }
 
-        fun documentId(documentId: String) = apply { this.documentId = documentId }
+        fun documentId(documentId: String?) = apply { this.documentId = documentId }
+
+        /** Alias for calling [Builder.documentId] with `documentId.orElse(null)`. */
+        fun documentId(documentId: Optional<String>) = documentId(documentId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -158,17 +159,10 @@ private constructor(
          * Returns an immutable instance of [HrisDocumentRetreiveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .documentId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisDocumentRetreiveParams =
             HrisDocumentRetreiveParams(
-                checkRequired("documentId", documentId),
+                documentId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -176,7 +170,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> documentId
+            0 -> documentId ?: ""
             else -> ""
         }
 

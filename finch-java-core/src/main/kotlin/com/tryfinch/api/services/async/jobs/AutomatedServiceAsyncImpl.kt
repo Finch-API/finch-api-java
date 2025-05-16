@@ -5,6 +5,7 @@ package com.tryfinch.api.services.async.jobs
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
@@ -22,6 +23,7 @@ import com.tryfinch.api.models.JobAutomatedCreateParams
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AutomatedServiceAsync {
@@ -96,6 +98,9 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
             params: JobAutomatedRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("jobId", params.jobId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

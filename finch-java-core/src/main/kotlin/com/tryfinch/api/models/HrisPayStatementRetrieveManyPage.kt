@@ -2,12 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.PayStatementService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [PayStatementService.retrieveMany] */
@@ -16,7 +15,7 @@ private constructor(
     private val service: PayStatementService,
     private val params: HrisPayStatementRetrieveManyParams,
     private val response: HrisPayStatementRetrieveManyPageResponse,
-) {
+) : Page<PayStatementResponse> {
 
     /**
      * Delegates to [HrisPayStatementRetrieveManyPageResponse], but gracefully handles missing data.
@@ -26,14 +25,17 @@ private constructor(
     fun responses(): List<PayStatementResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<PayStatementResponse> = responses()
 
-    fun getNextPageParams(): Optional<HrisPayStatementRetrieveManyParams> = Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPage(): Optional<HrisPayStatementRetrieveManyPage> =
-        getNextPageParams().map { service.retrieveMany(it) }
+    fun nextPageParams(): HrisPayStatementRetrieveManyParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override fun nextPage(): HrisPayStatementRetrieveManyPage =
+        service.retrieveMany(nextPageParams())
+
+    fun autoPager(): AutoPager<PayStatementResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisPayStatementRetrieveManyParams = params
@@ -104,26 +106,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisPayStatementRetrieveManyPage) :
-        Iterable<PayStatementResponse> {
-
-        override fun iterator(): Iterator<PayStatementResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.responses().size) {
-                    yield(page.responses()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<PayStatementResponse> {
-            return StreamSupport.stream(spliterator(), false)
-        }
     }
 
     override fun equals(other: Any?): Boolean {

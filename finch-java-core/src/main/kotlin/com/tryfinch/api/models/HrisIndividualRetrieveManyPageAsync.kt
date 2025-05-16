@@ -2,22 +2,23 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.IndividualServiceAsync
 import java.util.Objects
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [IndividualServiceAsync.retrieveMany] */
 class HrisIndividualRetrieveManyPageAsync
 private constructor(
     private val service: IndividualServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: HrisIndividualRetrieveManyParams,
     private val response: HrisIndividualRetrieveManyPageResponse,
-) {
+) : PageAsync<IndividualResponse> {
 
     /**
      * Delegates to [HrisIndividualRetrieveManyPageResponse], but gracefully handles missing data.
@@ -27,16 +28,18 @@ private constructor(
     fun responses(): List<IndividualResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<IndividualResponse> = responses()
 
-    fun getNextPageParams(): Optional<HrisIndividualRetrieveManyParams> = Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPage(): CompletableFuture<Optional<HrisIndividualRetrieveManyPageAsync>> =
-        getNextPageParams()
-            .map { service.retrieveMany(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
+    fun nextPageParams(): HrisIndividualRetrieveManyParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override fun nextPage(): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
+        service.retrieveMany(nextPageParams())
+
+    fun autoPager(): AutoPagerAsync<IndividualResponse> =
+        AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisIndividualRetrieveManyParams = params
@@ -55,6 +58,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -66,6 +70,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var service: IndividualServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
         private var params: HrisIndividualRetrieveManyParams? = null
         private var response: HrisIndividualRetrieveManyPageResponse? = null
 
@@ -74,11 +79,16 @@ private constructor(
             hrisIndividualRetrieveManyPageAsync: HrisIndividualRetrieveManyPageAsync
         ) = apply {
             service = hrisIndividualRetrieveManyPageAsync.service
+            streamHandlerExecutor = hrisIndividualRetrieveManyPageAsync.streamHandlerExecutor
             params = hrisIndividualRetrieveManyPageAsync.params
             response = hrisIndividualRetrieveManyPageAsync.response
         }
 
         fun service(service: IndividualServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         /** The parameters that were used to request this page. */
         fun params(params: HrisIndividualRetrieveManyParams) = apply { this.params = params }
@@ -96,6 +106,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .service()
+         * .streamHandlerExecutor()
          * .params()
          * .response()
          * ```
@@ -105,38 +116,10 @@ private constructor(
         fun build(): HrisIndividualRetrieveManyPageAsync =
             HrisIndividualRetrieveManyPageAsync(
                 checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisIndividualRetrieveManyPageAsync) {
-
-        fun forEach(
-            action: Predicate<IndividualResponse>,
-            executor: Executor,
-        ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<HrisIndividualRetrieveManyPageAsync>>.forEach(
-                action: (IndividualResponse) -> Boolean,
-                executor: Executor,
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.responses().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor,
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<IndividualResponse>> {
-            val values = mutableListOf<IndividualResponse>()
-            return forEach(values::add, executor).thenApply { values }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -144,11 +127,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisIndividualRetrieveManyPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisIndividualRetrieveManyPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && response == other.response /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, response) /* spotless:on */
 
     override fun toString() =
-        "HrisIndividualRetrieveManyPageAsync{service=$service, params=$params, response=$response}"
+        "HrisIndividualRetrieveManyPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, response=$response}"
 }

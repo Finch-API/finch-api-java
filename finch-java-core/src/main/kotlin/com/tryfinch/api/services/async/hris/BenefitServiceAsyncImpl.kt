@@ -5,6 +5,7 @@ package com.tryfinch.api.services.async.hris
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
@@ -30,6 +31,7 @@ import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsyncImpl
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class BenefitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     BenefitServiceAsync {
@@ -130,6 +132,9 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: HrisBenefitRetrieveParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -160,6 +165,9 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: HrisBenefitUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -212,6 +220,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .let {
                                 HrisBenefitListPageAsync.builder()
                                     .service(BenefitServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .items(it)
                                     .build()
@@ -252,6 +261,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                             .let {
                                 HrisBenefitListSupportedBenefitsPageAsync.builder()
                                     .service(BenefitServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
                                     .params(params)
                                     .items(it)
                                     .build()

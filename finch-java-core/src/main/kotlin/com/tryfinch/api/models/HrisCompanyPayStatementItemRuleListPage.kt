@@ -2,12 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.company.payStatementItem.RuleService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 import kotlin.jvm.optionals.getOrNull
 
 /** @see [RuleService.list] */
@@ -16,7 +15,7 @@ private constructor(
     private val service: RuleService,
     private val params: HrisCompanyPayStatementItemRuleListParams,
     private val response: HrisCompanyPayStatementItemRuleListPageResponse,
-) {
+) : Page<RuleListResponse> {
 
     /**
      * Delegates to [HrisCompanyPayStatementItemRuleListPageResponse], but gracefully handles
@@ -27,14 +26,17 @@ private constructor(
     fun responses(): List<RuleListResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<RuleListResponse> = responses()
 
-    fun getNextPageParams(): Optional<HrisCompanyPayStatementItemRuleListParams> = Optional.empty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPage(): Optional<HrisCompanyPayStatementItemRuleListPage> =
-        getNextPageParams().map { service.list(it) }
+    fun nextPageParams(): HrisCompanyPayStatementItemRuleListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override fun nextPage(): HrisCompanyPayStatementItemRuleListPage =
+        service.list(nextPageParams())
+
+    fun autoPager(): AutoPager<RuleListResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisCompanyPayStatementItemRuleListParams = params
@@ -108,26 +110,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisCompanyPayStatementItemRuleListPage) :
-        Iterable<RuleListResponse> {
-
-        override fun iterator(): Iterator<RuleListResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.responses().size) {
-                    yield(page.responses()[index++])
-                }
-                page = page.getNextPage().getOrNull() ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<RuleListResponse> {
-            return StreamSupport.stream(spliterator(), false)
-        }
     }
 
     override fun equals(other: Any?): Boolean {

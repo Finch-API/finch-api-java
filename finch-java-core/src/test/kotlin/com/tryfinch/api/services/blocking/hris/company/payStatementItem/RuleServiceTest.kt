@@ -6,7 +6,6 @@ import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleCreateParams
-import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleDeleteParams
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -100,10 +99,7 @@ internal class RuleServiceTest {
                 .build()
         val ruleService = client.hris().company().payStatementItem().rules()
 
-        val rule =
-            ruleService.delete(
-                HrisCompanyPayStatementItemRuleDeleteParams.builder().ruleId("rule_id").build()
-            )
+        val rule = ruleService.delete("rule_id")
 
         rule.validate()
     }
