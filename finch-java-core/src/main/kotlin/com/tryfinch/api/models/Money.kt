@@ -10,7 +10,6 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -39,10 +38,10 @@ private constructor(
     fun amount(): Optional<Long> = amount.getOptional("amount")
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
-     *   missing or null (e.g. if the server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun currency(): String = currency.getRequired("currency")
+    fun currency(): Optional<String> = currency.getOptional("currency")
 
     /**
      * Returns the raw JSON value of [amount].
@@ -72,23 +71,15 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [Money].
-         *
-         * The following fields are required:
-         * ```java
-         * .amount()
-         * .currency()
-         * ```
-         */
+        /** Returns a mutable builder for constructing an instance of [Money]. */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [Money]. */
     class Builder internal constructor() {
 
-        private var amount: JsonField<Long>? = null
-        private var currency: JsonField<String>? = null
+        private var amount: JsonField<Long> = JsonMissing.of()
+        private var currency: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -152,21 +143,8 @@ private constructor(
          * Returns an immutable instance of [Money].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .amount()
-         * .currency()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): Money =
-            Money(
-                checkRequired("amount", amount),
-                checkRequired("currency", currency),
-                additionalProperties.toMutableMap(),
-            )
+        fun build(): Money = Money(amount, currency, additionalProperties.toMutableMap())
     }
 
     private var validated: Boolean = false

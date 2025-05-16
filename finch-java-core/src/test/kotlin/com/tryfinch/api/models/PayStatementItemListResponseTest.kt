@@ -16,12 +16,12 @@ internal class PayStatementItemListResponseTest {
             PayStatementItemListResponse.builder()
                 .attributes(
                     PayStatementItemListResponse.Attributes.builder()
+                        .employer(true)
                         .metadata(
                             PayStatementItemListResponse.Attributes.Metadata.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .employer(true)
                         .preTax(true)
                         .type("type")
                         .build()
@@ -31,21 +31,21 @@ internal class PayStatementItemListResponseTest {
                 .build()
 
         assertThat(payStatementItemListResponse.attributes())
-            .isEqualTo(
+            .contains(
                 PayStatementItemListResponse.Attributes.builder()
+                    .employer(true)
                     .metadata(
                         PayStatementItemListResponse.Attributes.Metadata.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
-                    .employer(true)
                     .preTax(true)
                     .type("type")
                     .build()
             )
         assertThat(payStatementItemListResponse.category())
-            .isEqualTo(PayStatementItemListResponse.Category.EARNINGS)
-        assertThat(payStatementItemListResponse.name()).isEqualTo("name")
+            .contains(PayStatementItemListResponse.Category.EARNINGS)
+        assertThat(payStatementItemListResponse.name()).contains("name")
     }
 
     @Test
@@ -55,12 +55,12 @@ internal class PayStatementItemListResponseTest {
             PayStatementItemListResponse.builder()
                 .attributes(
                     PayStatementItemListResponse.Attributes.builder()
+                        .employer(true)
                         .metadata(
                             PayStatementItemListResponse.Attributes.Metadata.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .employer(true)
                         .preTax(true)
                         .type("type")
                         .build()
