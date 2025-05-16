@@ -67,7 +67,8 @@ private constructor(
     fun employment(): Optional<Employment> = body.employment()
 
     /**
-     * The detailed employment status of the individual.
+     * The detailed employment status of the individual. Available options: `active`, `deceased`,
+     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -373,9 +374,13 @@ private constructor(
          * Custom fields for the individual. These are fields which are defined by the employer in
          * the system. Custom fields are not currently supported for assisted connections.
          */
-        fun customFields(customFields: List<CustomField>) = apply {
+        fun customFields(customFields: List<CustomField>?) = apply {
             body.customFields(customFields)
         }
+
+        /** Alias for calling [Builder.customFields] with `customFields.orElse(null)`. */
+        fun customFields(customFields: Optional<List<CustomField>>) =
+            customFields(customFields.getOrNull())
 
         /**
          * Sets [Builder.customFields] to an arbitrary JSON value.
@@ -425,7 +430,10 @@ private constructor(
          */
         fun employment(employment: JsonField<Employment>) = apply { body.employment(employment) }
 
-        /** The detailed employment status of the individual. */
+        /**
+         * The detailed employment status of the individual. Available options: `active`,
+         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+         */
         fun employmentStatus(employmentStatus: EmploymentStatus?) = apply {
             body.employmentStatus(employmentStatus)
         }
@@ -617,7 +625,10 @@ private constructor(
         fun middleName(middleName: JsonField<String>) = apply { body.middleName(middleName) }
 
         /** The source system's unique employment identifier for this individual */
-        fun sourceId(sourceId: String) = apply { body.sourceId(sourceId) }
+        fun sourceId(sourceId: String?) = apply { body.sourceId(sourceId) }
+
+        /** Alias for calling [Builder.sourceId] with `sourceId.orElse(null)`. */
+        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.getOrNull())
 
         /**
          * Sets [Builder.sourceId] to an arbitrary JSON value.
@@ -925,7 +936,8 @@ private constructor(
         fun employment(): Optional<Employment> = employment.getOptional("employment")
 
         /**
-         * The detailed employment status of the individual.
+         * The detailed employment status of the individual. Available options: `active`,
+         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1259,8 +1271,12 @@ private constructor(
              * Custom fields for the individual. These are fields which are defined by the employer
              * in the system. Custom fields are not currently supported for assisted connections.
              */
-            fun customFields(customFields: List<CustomField>) =
-                customFields(JsonField.of(customFields))
+            fun customFields(customFields: List<CustomField>?) =
+                customFields(JsonField.ofNullable(customFields))
+
+            /** Alias for calling [Builder.customFields] with `customFields.orElse(null)`. */
+            fun customFields(customFields: Optional<List<CustomField>>) =
+                customFields(customFields.getOrNull())
 
             /**
              * Sets [Builder.customFields] to an arbitrary JSON value.
@@ -1319,7 +1335,10 @@ private constructor(
                 this.employment = employment
             }
 
-            /** The detailed employment status of the individual. */
+            /**
+             * The detailed employment status of the individual. Available options: `active`,
+             * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+             */
             fun employmentStatus(employmentStatus: EmploymentStatus?) =
                 employmentStatus(JsonField.ofNullable(employmentStatus))
 
@@ -1521,7 +1540,10 @@ private constructor(
             fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
             /** The source system's unique employment identifier for this individual */
-            fun sourceId(sourceId: String) = sourceId(JsonField.of(sourceId))
+            fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
+
+            /** Alias for calling [Builder.sourceId] with `sourceId.orElse(null)`. */
+            fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.getOrNull())
 
             /**
              * Sets [Builder.sourceId] to an arbitrary JSON value.
@@ -2455,7 +2477,10 @@ private constructor(
             "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    /** The detailed employment status of the individual. */
+    /**
+     * The detailed employment status of the individual. Available options: `active`, `deceased`,
+     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+     */
     class EmploymentStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
