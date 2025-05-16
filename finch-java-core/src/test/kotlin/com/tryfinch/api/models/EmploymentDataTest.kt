@@ -57,7 +57,6 @@ internal class EmploymentDataTest {
                         .build()
                 )
                 .middleName("middle_name")
-                .sourceId("source_id")
                 .startDate("start_date")
                 .title("title")
                 .workId("work_id")
@@ -77,6 +76,7 @@ internal class EmploymentDataTest {
                         .unit(Income.Unit.YEARLY)
                         .build()
                 )
+                .sourceId("source_id")
                 .build()
 
         val employmentData = EmploymentData.ofUnionMember0(unionMember0)
@@ -132,7 +132,6 @@ internal class EmploymentDataTest {
                             .build()
                     )
                     .middleName("middle_name")
-                    .sourceId("source_id")
                     .startDate("start_date")
                     .title("title")
                     .workId("work_id")
@@ -152,6 +151,7 @@ internal class EmploymentDataTest {
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
+                    .sourceId("source_id")
                     .build()
             )
 
