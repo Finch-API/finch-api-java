@@ -17,12 +17,6 @@ internal class EmploymentDataResponseTest {
                     EmploymentData.UnionMember0.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .classCode("class_code")
-                        .addCustomField(
-                            EmploymentData.UnionMember0.CustomField.builder()
-                                .name("name")
-                                .value("string")
-                                .build()
-                        )
                         .department(
                             EmploymentData.UnionMember0.Department.builder().name("name").build()
                         )
@@ -58,7 +52,12 @@ internal class EmploymentDataResponseTest {
                         .middleName("middle_name")
                         .startDate("start_date")
                         .title("title")
-                        .workId("work_id")
+                        .addCustomField(
+                            EmploymentData.UnionMember0.CustomField.builder()
+                                .name("name")
+                                .value("string")
+                                .build()
+                        )
                         .income(
                             Income.builder()
                                 .amount(0L)
@@ -76,6 +75,7 @@ internal class EmploymentDataResponseTest {
                                 .build()
                         )
                         .sourceId("source_id")
+                        .workId("work_id")
                         .build()
                 )
                 .code(0L)
@@ -88,12 +88,6 @@ internal class EmploymentDataResponseTest {
                     EmploymentData.UnionMember0.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .classCode("class_code")
-                        .addCustomField(
-                            EmploymentData.UnionMember0.CustomField.builder()
-                                .name("name")
-                                .value("string")
-                                .build()
-                        )
                         .department(
                             EmploymentData.UnionMember0.Department.builder().name("name").build()
                         )
@@ -129,7 +123,12 @@ internal class EmploymentDataResponseTest {
                         .middleName("middle_name")
                         .startDate("start_date")
                         .title("title")
-                        .workId("work_id")
+                        .addCustomField(
+                            EmploymentData.UnionMember0.CustomField.builder()
+                                .name("name")
+                                .value("string")
+                                .build()
+                        )
                         .income(
                             Income.builder()
                                 .amount(0L)
@@ -147,6 +146,7 @@ internal class EmploymentDataResponseTest {
                                 .build()
                         )
                         .sourceId("source_id")
+                        .workId("work_id")
                         .build()
                 )
             )
@@ -164,12 +164,6 @@ internal class EmploymentDataResponseTest {
                     EmploymentData.UnionMember0.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .classCode("class_code")
-                        .addCustomField(
-                            EmploymentData.UnionMember0.CustomField.builder()
-                                .name("name")
-                                .value("string")
-                                .build()
-                        )
                         .department(
                             EmploymentData.UnionMember0.Department.builder().name("name").build()
                         )
@@ -205,7 +199,12 @@ internal class EmploymentDataResponseTest {
                         .middleName("middle_name")
                         .startDate("start_date")
                         .title("title")
-                        .workId("work_id")
+                        .addCustomField(
+                            EmploymentData.UnionMember0.CustomField.builder()
+                                .name("name")
+                                .value("string")
+                                .build()
+                        )
                         .income(
                             Income.builder()
                                 .amount(0L)
@@ -223,6 +222,7 @@ internal class EmploymentDataResponseTest {
                                 .build()
                         )
                         .sourceId("source_id")
+                        .workId("work_id")
                         .build()
                 )
                 .code(0L)

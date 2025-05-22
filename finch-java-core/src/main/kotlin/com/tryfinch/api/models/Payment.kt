@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
@@ -83,10 +84,10 @@ private constructor(
     /**
      * The unique id for the payment.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun id(): Optional<String> = id.getOptional("id")
+    fun id(): String = id.getRequired("id")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -273,25 +274,43 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [Payment]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [Payment].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .companyDebit()
+         * .debitDate()
+         * .employeeTaxes()
+         * .employerTaxes()
+         * .grossPay()
+         * .individualIds()
+         * .netPay()
+         * .payDate()
+         * .payFrequencies()
+         * .payGroupIds()
+         * .payPeriod()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [Payment]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var companyDebit: JsonField<Money> = JsonMissing.of()
-        private var debitDate: JsonField<String> = JsonMissing.of()
-        private var employeeTaxes: JsonField<Money> = JsonMissing.of()
-        private var employerTaxes: JsonField<Money> = JsonMissing.of()
-        private var grossPay: JsonField<Money> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var companyDebit: JsonField<Money>? = null
+        private var debitDate: JsonField<String>? = null
+        private var employeeTaxes: JsonField<Money>? = null
+        private var employerTaxes: JsonField<Money>? = null
+        private var grossPay: JsonField<Money>? = null
         private var individualIds: JsonField<MutableList<String>>? = null
-        private var netPay: JsonField<Money> = JsonMissing.of()
-        private var payDate: JsonField<String> = JsonMissing.of()
+        private var netPay: JsonField<Money>? = null
+        private var payDate: JsonField<String>? = null
         private var payFrequencies: JsonField<MutableList<PayFrequency>>? = null
         private var payGroupIds: JsonField<MutableList<String>>? = null
-        private var payPeriod: JsonField<PayPeriod> = JsonMissing.of()
+        private var payPeriod: JsonField<PayPeriod>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -554,21 +573,39 @@ private constructor(
          * Returns an immutable instance of [Payment].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .companyDebit()
+         * .debitDate()
+         * .employeeTaxes()
+         * .employerTaxes()
+         * .grossPay()
+         * .individualIds()
+         * .netPay()
+         * .payDate()
+         * .payFrequencies()
+         * .payGroupIds()
+         * .payPeriod()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): Payment =
             Payment(
-                id,
-                companyDebit,
-                debitDate,
-                employeeTaxes,
-                employerTaxes,
-                grossPay,
-                (individualIds ?: JsonMissing.of()).map { it.toImmutable() },
-                netPay,
-                payDate,
-                (payFrequencies ?: JsonMissing.of()).map { it.toImmutable() },
-                (payGroupIds ?: JsonMissing.of()).map { it.toImmutable() },
-                payPeriod,
+                checkRequired("id", id),
+                checkRequired("companyDebit", companyDebit),
+                checkRequired("debitDate", debitDate),
+                checkRequired("employeeTaxes", employeeTaxes),
+                checkRequired("employerTaxes", employerTaxes),
+                checkRequired("grossPay", grossPay),
+                checkRequired("individualIds", individualIds).map { it.toImmutable() },
+                checkRequired("netPay", netPay),
+                checkRequired("payDate", payDate),
+                checkRequired("payFrequencies", payFrequencies).map { it.toImmutable() },
+                checkRequired("payGroupIds", payGroupIds).map { it.toImmutable() },
+                checkRequired("payPeriod", payPeriod),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -640,21 +677,21 @@ private constructor(
 
             @JvmField val ANNUALLY = of("annually")
 
-            @JvmField val SEMI_ANNUALLY = of("semi_annually")
-
-            @JvmField val QUARTERLY = of("quarterly")
-
-            @JvmField val MONTHLY = of("monthly")
-
-            @JvmField val SEMI_MONTHLY = of("semi_monthly")
-
             @JvmField val BI_WEEKLY = of("bi_weekly")
-
-            @JvmField val WEEKLY = of("weekly")
 
             @JvmField val DAILY = of("daily")
 
+            @JvmField val MONTHLY = of("monthly")
+
             @JvmField val OTHER = of("other")
+
+            @JvmField val QUARTERLY = of("quarterly")
+
+            @JvmField val SEMI_ANNUALLY = of("semi_annually")
+
+            @JvmField val SEMI_MONTHLY = of("semi_monthly")
+
+            @JvmField val WEEKLY = of("weekly")
 
             @JvmStatic fun of(value: String) = PayFrequency(JsonField.of(value))
         }
@@ -662,14 +699,14 @@ private constructor(
         /** An enum containing [PayFrequency]'s known values. */
         enum class Known {
             ANNUALLY,
-            SEMI_ANNUALLY,
-            QUARTERLY,
-            MONTHLY,
-            SEMI_MONTHLY,
             BI_WEEKLY,
-            WEEKLY,
             DAILY,
+            MONTHLY,
             OTHER,
+            QUARTERLY,
+            SEMI_ANNUALLY,
+            SEMI_MONTHLY,
+            WEEKLY,
         }
 
         /**
@@ -683,14 +720,14 @@ private constructor(
          */
         enum class Value {
             ANNUALLY,
-            SEMI_ANNUALLY,
-            QUARTERLY,
-            MONTHLY,
-            SEMI_MONTHLY,
             BI_WEEKLY,
-            WEEKLY,
             DAILY,
+            MONTHLY,
             OTHER,
+            QUARTERLY,
+            SEMI_ANNUALLY,
+            SEMI_MONTHLY,
+            WEEKLY,
             /**
              * An enum member indicating that [PayFrequency] was instantiated with an unknown value.
              */
@@ -707,14 +744,14 @@ private constructor(
         fun value(): Value =
             when (this) {
                 ANNUALLY -> Value.ANNUALLY
-                SEMI_ANNUALLY -> Value.SEMI_ANNUALLY
-                QUARTERLY -> Value.QUARTERLY
-                MONTHLY -> Value.MONTHLY
-                SEMI_MONTHLY -> Value.SEMI_MONTHLY
                 BI_WEEKLY -> Value.BI_WEEKLY
-                WEEKLY -> Value.WEEKLY
                 DAILY -> Value.DAILY
+                MONTHLY -> Value.MONTHLY
                 OTHER -> Value.OTHER
+                QUARTERLY -> Value.QUARTERLY
+                SEMI_ANNUALLY -> Value.SEMI_ANNUALLY
+                SEMI_MONTHLY -> Value.SEMI_MONTHLY
+                WEEKLY -> Value.WEEKLY
                 else -> Value._UNKNOWN
             }
 
@@ -729,14 +766,14 @@ private constructor(
         fun known(): Known =
             when (this) {
                 ANNUALLY -> Known.ANNUALLY
-                SEMI_ANNUALLY -> Known.SEMI_ANNUALLY
-                QUARTERLY -> Known.QUARTERLY
-                MONTHLY -> Known.MONTHLY
-                SEMI_MONTHLY -> Known.SEMI_MONTHLY
                 BI_WEEKLY -> Known.BI_WEEKLY
-                WEEKLY -> Known.WEEKLY
                 DAILY -> Known.DAILY
+                MONTHLY -> Known.MONTHLY
                 OTHER -> Known.OTHER
+                QUARTERLY -> Known.QUARTERLY
+                SEMI_ANNUALLY -> Known.SEMI_ANNUALLY
+                SEMI_MONTHLY -> Known.SEMI_MONTHLY
+                WEEKLY -> Known.WEEKLY
                 else -> throw FinchInvalidDataException("Unknown PayFrequency: $value")
             }
 
@@ -848,15 +885,23 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [PayPeriod]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [PayPeriod].
+             *
+             * The following fields are required:
+             * ```java
+             * .endDate()
+             * .startDate()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [PayPeriod]. */
         class Builder internal constructor() {
 
-            private var endDate: JsonField<String> = JsonMissing.of()
-            private var startDate: JsonField<String> = JsonMissing.of()
+            private var endDate: JsonField<String>? = null
+            private var startDate: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -917,9 +962,21 @@ private constructor(
              * Returns an immutable instance of [PayPeriod].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .endDate()
+             * .startDate()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): PayPeriod =
-                PayPeriod(endDate, startDate, additionalProperties.toMutableMap())
+                PayPeriod(
+                    checkRequired("endDate", endDate),
+                    checkRequired("startDate", startDate),
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
