@@ -207,7 +207,6 @@ private constructor(
     private constructor(
         private val id: JsonField<String>,
         private val classCode: JsonField<String>,
-        private val customFields: JsonField<List<CustomField>>,
         private val department: JsonField<Department>,
         private val employment: JsonField<Employment>,
         private val employmentStatus: JsonField<EmploymentStatus>,
@@ -221,10 +220,11 @@ private constructor(
         private val middleName: JsonField<String>,
         private val startDate: JsonField<String>,
         private val title: JsonField<String>,
-        private val workId: JsonField<String>,
+        private val customFields: JsonField<List<CustomField>>,
         private val income: JsonField<Income>,
         private val incomeHistory: JsonField<List<Income?>>,
         private val sourceId: JsonField<String>,
+        private val workId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -234,9 +234,6 @@ private constructor(
             @JsonProperty("class_code")
             @ExcludeMissing
             classCode: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("custom_fields")
-            @ExcludeMissing
-            customFields: JsonField<List<CustomField>> = JsonMissing.of(),
             @JsonProperty("department")
             @ExcludeMissing
             department: JsonField<Department> = JsonMissing.of(),
@@ -270,7 +267,9 @@ private constructor(
             @ExcludeMissing
             startDate: JsonField<String> = JsonMissing.of(),
             @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("work_id") @ExcludeMissing workId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("custom_fields")
+            @ExcludeMissing
+            customFields: JsonField<List<CustomField>> = JsonMissing.of(),
             @JsonProperty("income") @ExcludeMissing income: JsonField<Income> = JsonMissing.of(),
             @JsonProperty("income_history")
             @ExcludeMissing
@@ -278,10 +277,10 @@ private constructor(
             @JsonProperty("source_id")
             @ExcludeMissing
             sourceId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("work_id") @ExcludeMissing workId: JsonField<String> = JsonMissing.of(),
         ) : this(
             id,
             classCode,
-            customFields,
             department,
             employment,
             employmentStatus,
@@ -295,10 +294,11 @@ private constructor(
             middleName,
             startDate,
             title,
-            workId,
+            customFields,
             income,
             incomeHistory,
             sourceId,
+            workId,
             mutableMapOf(),
         )
 
@@ -317,15 +317,6 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun classCode(): Optional<String> = classCode.getOptional("class_code")
-
-        /**
-         * Custom fields for the individual. These are fields which are defined by the employer in
-         * the system. Custom fields are not currently supported for assisted connections.
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun customFields(): Optional<List<CustomField>> = customFields.getOptional("custom_fields")
 
         /**
          * The department object.
@@ -427,12 +418,13 @@ private constructor(
         fun title(): Optional<String> = title.getOptional("title")
 
         /**
-         * This field is deprecated in favour of `source_id`
+         * Custom fields for the individual. These are fields which are defined by the employer in
+         * the system. Custom fields are not currently supported for assisted connections.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        @Deprecated("deprecated") fun workId(): Optional<String> = workId.getOptional("work_id")
+        fun customFields(): Optional<List<CustomField>> = customFields.getOptional("custom_fields")
 
         /**
          * The employee's income as reported by the provider. This may not always be annualized
@@ -461,6 +453,14 @@ private constructor(
         fun sourceId(): Optional<String> = sourceId.getOptional("source_id")
 
         /**
+         * This field is deprecated in favour of `source_id`
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        @Deprecated("deprecated") fun workId(): Optional<String> = workId.getOptional("work_id")
+
+        /**
          * Returns the raw JSON value of [id].
          *
          * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
@@ -473,16 +473,6 @@ private constructor(
          * Unlike [classCode], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("class_code") @ExcludeMissing fun _classCode(): JsonField<String> = classCode
-
-        /**
-         * Returns the raw JSON value of [customFields].
-         *
-         * Unlike [customFields], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("custom_fields")
-        @ExcludeMissing
-        fun _customFields(): JsonField<List<CustomField>> = customFields
 
         /**
          * Returns the raw JSON value of [department].
@@ -588,14 +578,14 @@ private constructor(
         @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
         /**
-         * Returns the raw JSON value of [workId].
+         * Returns the raw JSON value of [customFields].
          *
-         * Unlike [workId], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [customFields], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
-        @Deprecated("deprecated")
-        @JsonProperty("work_id")
+        @JsonProperty("custom_fields")
         @ExcludeMissing
-        fun _workId(): JsonField<String> = workId
+        fun _customFields(): JsonField<List<CustomField>> = customFields
 
         /**
          * Returns the raw JSON value of [income].
@@ -621,6 +611,16 @@ private constructor(
          */
         @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
 
+        /**
+         * Returns the raw JSON value of [workId].
+         *
+         * Unlike [workId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @Deprecated("deprecated")
+        @JsonProperty("work_id")
+        @ExcludeMissing
+        fun _workId(): JsonField<String> = workId
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -642,7 +642,6 @@ private constructor(
              * ```java
              * .id()
              * .classCode()
-             * .customFields()
              * .department()
              * .employment()
              * .employmentStatus()
@@ -656,7 +655,6 @@ private constructor(
              * .middleName()
              * .startDate()
              * .title()
-             * .workId()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -667,7 +665,6 @@ private constructor(
 
             private var id: JsonField<String>? = null
             private var classCode: JsonField<String>? = null
-            private var customFields: JsonField<MutableList<CustomField>>? = null
             private var department: JsonField<Department>? = null
             private var employment: JsonField<Employment>? = null
             private var employmentStatus: JsonField<EmploymentStatus>? = null
@@ -681,17 +678,17 @@ private constructor(
             private var middleName: JsonField<String>? = null
             private var startDate: JsonField<String>? = null
             private var title: JsonField<String>? = null
-            private var workId: JsonField<String>? = null
+            private var customFields: JsonField<MutableList<CustomField>>? = null
             private var income: JsonField<Income> = JsonMissing.of()
             private var incomeHistory: JsonField<MutableList<Income?>>? = null
             private var sourceId: JsonField<String> = JsonMissing.of()
+            private var workId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(unionMember0: UnionMember0) = apply {
                 id = unionMember0.id
                 classCode = unionMember0.classCode
-                customFields = unionMember0.customFields.map { it.toMutableList() }
                 department = unionMember0.department
                 employment = unionMember0.employment
                 employmentStatus = unionMember0.employmentStatus
@@ -705,10 +702,11 @@ private constructor(
                 middleName = unionMember0.middleName
                 startDate = unionMember0.startDate
                 title = unionMember0.title
-                workId = unionMember0.workId
+                customFields = unionMember0.customFields.map { it.toMutableList() }
                 income = unionMember0.income
                 incomeHistory = unionMember0.incomeHistory.map { it.toMutableList() }
                 sourceId = unionMember0.sourceId
+                workId = unionMember0.workId
                 additionalProperties = unionMember0.additionalProperties.toMutableMap()
             }
 
@@ -738,40 +736,6 @@ private constructor(
              * supported value.
              */
             fun classCode(classCode: JsonField<String>) = apply { this.classCode = classCode }
-
-            /**
-             * Custom fields for the individual. These are fields which are defined by the employer
-             * in the system. Custom fields are not currently supported for assisted connections.
-             */
-            fun customFields(customFields: List<CustomField>?) =
-                customFields(JsonField.ofNullable(customFields))
-
-            /** Alias for calling [Builder.customFields] with `customFields.orElse(null)`. */
-            fun customFields(customFields: Optional<List<CustomField>>) =
-                customFields(customFields.getOrNull())
-
-            /**
-             * Sets [Builder.customFields] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.customFields] with a well-typed `List<CustomField>`
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun customFields(customFields: JsonField<List<CustomField>>) = apply {
-                this.customFields = customFields.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [CustomField] to [customFields].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addCustomField(customField: CustomField) = apply {
-                customFields =
-                    (customFields ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("customFields", it).add(customField)
-                    }
-            }
 
             /** The department object. */
             fun department(department: Department?) = department(JsonField.ofNullable(department))
@@ -990,23 +954,39 @@ private constructor(
              */
             fun title(title: JsonField<String>) = apply { this.title = title }
 
-            /** This field is deprecated in favour of `source_id` */
-            @Deprecated("deprecated")
-            fun workId(workId: String?) = workId(JsonField.ofNullable(workId))
+            /**
+             * Custom fields for the individual. These are fields which are defined by the employer
+             * in the system. Custom fields are not currently supported for assisted connections.
+             */
+            fun customFields(customFields: List<CustomField>?) =
+                customFields(JsonField.ofNullable(customFields))
 
-            /** Alias for calling [Builder.workId] with `workId.orElse(null)`. */
-            @Deprecated("deprecated")
-            fun workId(workId: Optional<String>) = workId(workId.getOrNull())
+            /** Alias for calling [Builder.customFields] with `customFields.orElse(null)`. */
+            fun customFields(customFields: Optional<List<CustomField>>) =
+                customFields(customFields.getOrNull())
 
             /**
-             * Sets [Builder.workId] to an arbitrary JSON value.
+             * Sets [Builder.customFields] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.workId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
+             * You should usually call [Builder.customFields] with a well-typed `List<CustomField>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
              */
-            @Deprecated("deprecated")
-            fun workId(workId: JsonField<String>) = apply { this.workId = workId }
+            fun customFields(customFields: JsonField<List<CustomField>>) = apply {
+                this.customFields = customFields.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [CustomField] to [customFields].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addCustomField(customField: CustomField) = apply {
+                customFields =
+                    (customFields ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("customFields", it).add(customField)
+                    }
+            }
 
             /**
              * The employee's income as reported by the provider. This may not always be annualized
@@ -1073,6 +1053,24 @@ private constructor(
              */
             fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
+            /** This field is deprecated in favour of `source_id` */
+            @Deprecated("deprecated")
+            fun workId(workId: String?) = workId(JsonField.ofNullable(workId))
+
+            /** Alias for calling [Builder.workId] with `workId.orElse(null)`. */
+            @Deprecated("deprecated")
+            fun workId(workId: Optional<String>) = workId(workId.getOrNull())
+
+            /**
+             * Sets [Builder.workId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.workId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            @Deprecated("deprecated")
+            fun workId(workId: JsonField<String>) = apply { this.workId = workId }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -1101,7 +1099,6 @@ private constructor(
              * ```java
              * .id()
              * .classCode()
-             * .customFields()
              * .department()
              * .employment()
              * .employmentStatus()
@@ -1115,7 +1112,6 @@ private constructor(
              * .middleName()
              * .startDate()
              * .title()
-             * .workId()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
@@ -1124,7 +1120,6 @@ private constructor(
                 UnionMember0(
                     checkRequired("id", id),
                     checkRequired("classCode", classCode),
-                    checkRequired("customFields", customFields).map { it.toImmutable() },
                     checkRequired("department", department),
                     checkRequired("employment", employment),
                     checkRequired("employmentStatus", employmentStatus),
@@ -1138,10 +1133,11 @@ private constructor(
                     checkRequired("middleName", middleName),
                     checkRequired("startDate", startDate),
                     checkRequired("title", title),
-                    checkRequired("workId", workId),
+                    (customFields ?: JsonMissing.of()).map { it.toImmutable() },
                     income,
                     (incomeHistory ?: JsonMissing.of()).map { it.toImmutable() },
                     sourceId,
+                    workId,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -1155,7 +1151,6 @@ private constructor(
 
             id()
             classCode()
-            customFields().ifPresent { it.forEach { it.validate() } }
             department().ifPresent { it.validate() }
             employment().ifPresent { it.validate() }
             employmentStatus().ifPresent { it.validate() }
@@ -1169,10 +1164,11 @@ private constructor(
             middleName()
             startDate()
             title()
-            workId()
+            customFields().ifPresent { it.forEach { it.validate() } }
             income().ifPresent { it.validate() }
             incomeHistory().ifPresent { it.forEach { it?.validate() } }
             sourceId()
+            workId()
             validated = true
         }
 
@@ -1194,7 +1190,6 @@ private constructor(
         internal fun validity(): Int =
             (if (id.asKnown().isPresent) 1 else 0) +
                 (if (classCode.asKnown().isPresent) 1 else 0) +
-                (customFields.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (department.asKnown().getOrNull()?.validity() ?: 0) +
                 (employment.asKnown().getOrNull()?.validity() ?: 0) +
                 (employmentStatus.asKnown().getOrNull()?.validity() ?: 0) +
@@ -1208,441 +1203,12 @@ private constructor(
                 (if (middleName.asKnown().isPresent) 1 else 0) +
                 (if (startDate.asKnown().isPresent) 1 else 0) +
                 (if (title.asKnown().isPresent) 1 else 0) +
-                (if (workId.asKnown().isPresent) 1 else 0) +
+                (customFields.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (income.asKnown().getOrNull()?.validity() ?: 0) +
                 (incomeHistory.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
                     ?: 0) +
-                (if (sourceId.asKnown().isPresent) 1 else 0)
-
-        class CustomField
-        private constructor(
-            private val name: JsonField<String>,
-            private val value: JsonField<Value>,
-            private val additionalProperties: MutableMap<String, JsonValue>,
-        ) {
-
-            @JsonCreator
-            private constructor(
-                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("value") @ExcludeMissing value: JsonField<Value> = JsonMissing.of(),
-            ) : this(name, value, mutableMapOf())
-
-            /**
-             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
-             *   the server responded with an unexpected value).
-             */
-            fun name(): Optional<String> = name.getOptional("name")
-
-            /**
-             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
-             *   the server responded with an unexpected value).
-             */
-            fun value(): Optional<Value> = value.getOptional("value")
-
-            /**
-             * Returns the raw JSON value of [name].
-             *
-             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
-
-            /**
-             * Returns the raw JSON value of [value].
-             *
-             * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Value> = value
-
-            @JsonAnySetter
-            private fun putAdditionalProperty(key: String, value: JsonValue) {
-                additionalProperties.put(key, value)
-            }
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> =
-                Collections.unmodifiableMap(additionalProperties)
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                /** Returns a mutable builder for constructing an instance of [CustomField]. */
-                @JvmStatic fun builder() = Builder()
-            }
-
-            /** A builder for [CustomField]. */
-            class Builder internal constructor() {
-
-                private var name: JsonField<String> = JsonMissing.of()
-                private var value: JsonField<Value> = JsonMissing.of()
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(customField: CustomField) = apply {
-                    name = customField.name
-                    value = customField.value
-                    additionalProperties = customField.additionalProperties.toMutableMap()
-                }
-
-                fun name(name: String?) = name(JsonField.ofNullable(name))
-
-                /** Alias for calling [Builder.name] with `name.orElse(null)`. */
-                fun name(name: Optional<String>) = name(name.getOrNull())
-
-                /**
-                 * Sets [Builder.name] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.name] with a well-typed [String] value instead.
-                 * This method is primarily for setting the field to an undocumented or not yet
-                 * supported value.
-                 */
-                fun name(name: JsonField<String>) = apply { this.name = name }
-
-                fun value(value: Value?) = value(JsonField.ofNullable(value))
-
-                /** Alias for calling [Builder.value] with `value.orElse(null)`. */
-                fun value(value: Optional<Value>) = value(value.getOrNull())
-
-                /**
-                 * Sets [Builder.value] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.value] with a well-typed [Value] value instead.
-                 * This method is primarily for setting the field to an undocumented or not yet
-                 * supported value.
-                 */
-                fun value(value: JsonField<Value>) = apply { this.value = value }
-
-                /** Alias for calling [value] with `Value.ofString(string)`. */
-                fun value(string: String) = value(Value.ofString(string))
-
-                /** Alias for calling [value] with `Value.ofJsonValues(jsonValues)`. */
-                fun valueOfJsonValues(jsonValues: List<JsonValue>) =
-                    value(Value.ofJsonValues(jsonValues))
-
-                /** Alias for calling [value] with `Value.ofJson(json)`. */
-                fun value(json: JsonValue) = value(Value.ofJson(json))
-
-                /** Alias for calling [value] with `Value.ofNumber(number)`. */
-                fun value(number: Double) = value(Value.ofNumber(number))
-
-                /** Alias for calling [value] with `Value.ofBool(bool)`. */
-                fun value(bool: Boolean) = value(Value.ofBool(bool))
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                /**
-                 * Returns an immutable instance of [CustomField].
-                 *
-                 * Further updates to this [Builder] will not mutate the returned instance.
-                 */
-                fun build(): CustomField =
-                    CustomField(name, value, additionalProperties.toMutableMap())
-            }
-
-            private var validated: Boolean = false
-
-            fun validate(): CustomField = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                name()
-                value().ifPresent { it.validate() }
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: FinchInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic
-            internal fun validity(): Int =
-                (if (name.asKnown().isPresent) 1 else 0) +
-                    (value.asKnown().getOrNull()?.validity() ?: 0)
-
-            @JsonDeserialize(using = Value.Deserializer::class)
-            @JsonSerialize(using = Value.Serializer::class)
-            class Value
-            private constructor(
-                private val string: String? = null,
-                private val jsonValues: List<JsonValue>? = null,
-                private val json: JsonValue? = null,
-                private val number: Double? = null,
-                private val bool: Boolean? = null,
-                private val _json: JsonValue? = null,
-            ) {
-
-                fun string(): Optional<String> = Optional.ofNullable(string)
-
-                fun jsonValues(): Optional<List<JsonValue>> = Optional.ofNullable(jsonValues)
-
-                fun json(): Optional<JsonValue> = Optional.ofNullable(json)
-
-                fun number(): Optional<Double> = Optional.ofNullable(number)
-
-                fun bool(): Optional<Boolean> = Optional.ofNullable(bool)
-
-                fun isString(): Boolean = string != null
-
-                fun isJsonValues(): Boolean = jsonValues != null
-
-                fun isJson(): Boolean = json != null
-
-                fun isNumber(): Boolean = number != null
-
-                fun isBool(): Boolean = bool != null
-
-                fun asString(): String = string.getOrThrow("string")
-
-                fun asJsonValues(): List<JsonValue> = jsonValues.getOrThrow("jsonValues")
-
-                fun asJson(): JsonValue = json.getOrThrow("json")
-
-                fun asNumber(): Double = number.getOrThrow("number")
-
-                fun asBool(): Boolean = bool.getOrThrow("bool")
-
-                fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
-
-                fun <T> accept(visitor: Visitor<T>): T =
-                    when {
-                        string != null -> visitor.visitString(string)
-                        jsonValues != null -> visitor.visitJsonValues(jsonValues)
-                        json != null -> visitor.visitJson(json)
-                        number != null -> visitor.visitNumber(number)
-                        bool != null -> visitor.visitBool(bool)
-                        else -> visitor.unknown(_json)
-                    }
-
-                private var validated: Boolean = false
-
-                fun validate(): Value = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    accept(
-                        object : Visitor<Unit> {
-                            override fun visitString(string: String) {}
-
-                            override fun visitJsonValues(jsonValues: List<JsonValue>) {}
-
-                            override fun visitJson(json: JsonValue) {}
-
-                            override fun visitNumber(number: Double) {}
-
-                            override fun visitBool(bool: Boolean) {}
-                        }
-                    )
-                    validated = true
-                }
-
-                fun isValid(): Boolean =
-                    try {
-                        validate()
-                        true
-                    } catch (e: FinchInvalidDataException) {
-                        false
-                    }
-
-                /**
-                 * Returns a score indicating how many valid values are contained in this object
-                 * recursively.
-                 *
-                 * Used for best match union deserialization.
-                 */
-                @JvmSynthetic
-                internal fun validity(): Int =
-                    accept(
-                        object : Visitor<Int> {
-                            override fun visitString(string: String) = 1
-
-                            override fun visitJsonValues(jsonValues: List<JsonValue>) =
-                                jsonValues.size
-
-                            override fun visitJson(json: JsonValue) = 1
-
-                            override fun visitNumber(number: Double) = 1
-
-                            override fun visitBool(bool: Boolean) = 1
-
-                            override fun unknown(json: JsonValue?) = 0
-                        }
-                    )
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Value && string == other.string && jsonValues == other.jsonValues && json == other.json && number == other.number && bool == other.bool /* spotless:on */
-                }
-
-                override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, jsonValues, json, number, bool) /* spotless:on */
-
-                override fun toString(): String =
-                    when {
-                        string != null -> "Value{string=$string}"
-                        jsonValues != null -> "Value{jsonValues=$jsonValues}"
-                        json != null -> "Value{json=$json}"
-                        number != null -> "Value{number=$number}"
-                        bool != null -> "Value{bool=$bool}"
-                        _json != null -> "Value{_unknown=$_json}"
-                        else -> throw IllegalStateException("Invalid Value")
-                    }
-
-                companion object {
-
-                    @JvmStatic fun ofString(string: String) = Value(string = string)
-
-                    @JvmStatic
-                    fun ofJsonValues(jsonValues: List<JsonValue>) = Value(jsonValues = jsonValues)
-
-                    @JvmStatic fun ofJson(json: JsonValue) = Value(json = json)
-
-                    @JvmStatic fun ofNumber(number: Double) = Value(number = number)
-
-                    @JvmStatic fun ofBool(bool: Boolean) = Value(bool = bool)
-                }
-
-                /**
-                 * An interface that defines how to map each variant of [Value] to a value of type
-                 * [T].
-                 */
-                interface Visitor<out T> {
-
-                    fun visitString(string: String): T
-
-                    fun visitJsonValues(jsonValues: List<JsonValue>): T
-
-                    fun visitJson(json: JsonValue): T
-
-                    fun visitNumber(number: Double): T
-
-                    fun visitBool(bool: Boolean): T
-
-                    /**
-                     * Maps an unknown variant of [Value] to a value of type [T].
-                     *
-                     * An instance of [Value] can contain an unknown variant if it was deserialized
-                     * from data that doesn't match any known variant. For example, if the SDK is on
-                     * an older version than the API, then the API may respond with new variants
-                     * that the SDK is unaware of.
-                     *
-                     * @throws FinchInvalidDataException in the default implementation.
-                     */
-                    fun unknown(json: JsonValue?): T {
-                        throw FinchInvalidDataException("Unknown Value: $json")
-                    }
-                }
-
-                internal class Deserializer : BaseDeserializer<Value>(Value::class) {
-
-                    override fun ObjectCodec.deserialize(node: JsonNode): Value {
-                        val json = JsonValue.fromJsonNode(node)
-
-                        val bestMatches =
-                            sequenceOf(
-                                    tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                                        Value(string = it, _json = json)
-                                    },
-                                    tryDeserialize(node, jacksonTypeRef<List<JsonValue>>())?.let {
-                                        Value(jsonValues = it, _json = json)
-                                    },
-                                    tryDeserialize(node, jacksonTypeRef<Double>())?.let {
-                                        Value(number = it, _json = json)
-                                    },
-                                    tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
-                                        Value(bool = it, _json = json)
-                                    },
-                                    tryDeserialize(node, jacksonTypeRef<JsonValue>())?.let {
-                                        Value(json = it, _json = json)
-                                    },
-                                )
-                                .filterNotNull()
-                                .allMaxBy { it.validity() }
-                                .toList()
-                        return when (bestMatches.size) {
-                            // This can happen if what we're deserializing is completely
-                            // incompatible with all the possible variants.
-                            0 -> Value(_json = json)
-                            1 -> bestMatches.single()
-                            // If there's more than one match with the highest validity, then use
-                            // the first completely valid match, or simply the first match if none
-                            // are completely valid.
-                            else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
-                        }
-                    }
-                }
-
-                internal class Serializer : BaseSerializer<Value>(Value::class) {
-
-                    override fun serialize(
-                        value: Value,
-                        generator: JsonGenerator,
-                        provider: SerializerProvider,
-                    ) {
-                        when {
-                            value.string != null -> generator.writeObject(value.string)
-                            value.jsonValues != null -> generator.writeObject(value.jsonValues)
-                            value.json != null -> generator.writeObject(value.json)
-                            value.number != null -> generator.writeObject(value.number)
-                            value.bool != null -> generator.writeObject(value.bool)
-                            value._json != null -> generator.writeObject(value._json)
-                            else -> throw IllegalStateException("Invalid Value")
-                        }
-                    }
-                }
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is CustomField && name == other.name && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
-            }
-
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(name, value, additionalProperties) }
-            /* spotless:on */
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() =
-                "CustomField{name=$name, value=$value, additionalProperties=$additionalProperties}"
-        }
+                (if (sourceId.asKnown().isPresent) 1 else 0) +
+                (if (workId.asKnown().isPresent) 1 else 0)
 
         /** The department object. */
         class Department
@@ -2634,22 +2200,452 @@ private constructor(
             override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
         }
 
+        class CustomField
+        private constructor(
+            private val name: JsonField<String>,
+            private val value: JsonField<Value>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("value") @ExcludeMissing value: JsonField<Value> = JsonMissing.of(),
+            ) : this(name, value, mutableMapOf())
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun name(): Optional<String> = name.getOptional("name")
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun value(): Optional<Value> = value.getOptional("value")
+
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /**
+             * Returns the raw JSON value of [value].
+             *
+             * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Value> = value
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /** Returns a mutable builder for constructing an instance of [CustomField]. */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [CustomField]. */
+            class Builder internal constructor() {
+
+                private var name: JsonField<String> = JsonMissing.of()
+                private var value: JsonField<Value> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(customField: CustomField) = apply {
+                    name = customField.name
+                    value = customField.value
+                    additionalProperties = customField.additionalProperties.toMutableMap()
+                }
+
+                fun name(name: String?) = name(JsonField.ofNullable(name))
+
+                /** Alias for calling [Builder.name] with `name.orElse(null)`. */
+                fun name(name: Optional<String>) = name(name.getOrNull())
+
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                fun value(value: Value?) = value(JsonField.ofNullable(value))
+
+                /** Alias for calling [Builder.value] with `value.orElse(null)`. */
+                fun value(value: Optional<Value>) = value(value.getOrNull())
+
+                /**
+                 * Sets [Builder.value] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.value] with a well-typed [Value] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun value(value: JsonField<Value>) = apply { this.value = value }
+
+                /** Alias for calling [value] with `Value.ofString(string)`. */
+                fun value(string: String) = value(Value.ofString(string))
+
+                /** Alias for calling [value] with `Value.ofJsonValues(jsonValues)`. */
+                fun valueOfJsonValues(jsonValues: List<JsonValue>) =
+                    value(Value.ofJsonValues(jsonValues))
+
+                /** Alias for calling [value] with `Value.ofJson(json)`. */
+                fun value(json: JsonValue) = value(Value.ofJson(json))
+
+                /** Alias for calling [value] with `Value.ofNumber(number)`. */
+                fun value(number: Double) = value(Value.ofNumber(number))
+
+                /** Alias for calling [value] with `Value.ofBool(bool)`. */
+                fun value(bool: Boolean) = value(Value.ofBool(bool))
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [CustomField].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
+                fun build(): CustomField =
+                    CustomField(name, value, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): CustomField = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                name()
+                value().ifPresent { it.validate() }
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (name.asKnown().isPresent) 1 else 0) +
+                    (value.asKnown().getOrNull()?.validity() ?: 0)
+
+            @JsonDeserialize(using = Value.Deserializer::class)
+            @JsonSerialize(using = Value.Serializer::class)
+            class Value
+            private constructor(
+                private val string: String? = null,
+                private val jsonValues: List<JsonValue>? = null,
+                private val json: JsonValue? = null,
+                private val number: Double? = null,
+                private val bool: Boolean? = null,
+                private val _json: JsonValue? = null,
+            ) {
+
+                fun string(): Optional<String> = Optional.ofNullable(string)
+
+                fun jsonValues(): Optional<List<JsonValue>> = Optional.ofNullable(jsonValues)
+
+                fun json(): Optional<JsonValue> = Optional.ofNullable(json)
+
+                fun number(): Optional<Double> = Optional.ofNullable(number)
+
+                fun bool(): Optional<Boolean> = Optional.ofNullable(bool)
+
+                fun isString(): Boolean = string != null
+
+                fun isJsonValues(): Boolean = jsonValues != null
+
+                fun isJson(): Boolean = json != null
+
+                fun isNumber(): Boolean = number != null
+
+                fun isBool(): Boolean = bool != null
+
+                fun asString(): String = string.getOrThrow("string")
+
+                fun asJsonValues(): List<JsonValue> = jsonValues.getOrThrow("jsonValues")
+
+                fun asJson(): JsonValue = json.getOrThrow("json")
+
+                fun asNumber(): Double = number.getOrThrow("number")
+
+                fun asBool(): Boolean = bool.getOrThrow("bool")
+
+                fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+                fun <T> accept(visitor: Visitor<T>): T =
+                    when {
+                        string != null -> visitor.visitString(string)
+                        jsonValues != null -> visitor.visitJsonValues(jsonValues)
+                        json != null -> visitor.visitJson(json)
+                        number != null -> visitor.visitNumber(number)
+                        bool != null -> visitor.visitBool(bool)
+                        else -> visitor.unknown(_json)
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): Value = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    accept(
+                        object : Visitor<Unit> {
+                            override fun visitString(string: String) {}
+
+                            override fun visitJsonValues(jsonValues: List<JsonValue>) {}
+
+                            override fun visitJson(json: JsonValue) {}
+
+                            override fun visitNumber(number: Double) {}
+
+                            override fun visitBool(bool: Boolean) {}
+                        }
+                    )
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    accept(
+                        object : Visitor<Int> {
+                            override fun visitString(string: String) = 1
+
+                            override fun visitJsonValues(jsonValues: List<JsonValue>) =
+                                jsonValues.size
+
+                            override fun visitJson(json: JsonValue) = 1
+
+                            override fun visitNumber(number: Double) = 1
+
+                            override fun visitBool(bool: Boolean) = 1
+
+                            override fun unknown(json: JsonValue?) = 0
+                        }
+                    )
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is Value && string == other.string && jsonValues == other.jsonValues && json == other.json && number == other.number && bool == other.bool /* spotless:on */
+                }
+
+                override fun hashCode(): Int = /* spotless:off */ Objects.hash(string, jsonValues, json, number, bool) /* spotless:on */
+
+                override fun toString(): String =
+                    when {
+                        string != null -> "Value{string=$string}"
+                        jsonValues != null -> "Value{jsonValues=$jsonValues}"
+                        json != null -> "Value{json=$json}"
+                        number != null -> "Value{number=$number}"
+                        bool != null -> "Value{bool=$bool}"
+                        _json != null -> "Value{_unknown=$_json}"
+                        else -> throw IllegalStateException("Invalid Value")
+                    }
+
+                companion object {
+
+                    @JvmStatic fun ofString(string: String) = Value(string = string)
+
+                    @JvmStatic
+                    fun ofJsonValues(jsonValues: List<JsonValue>) = Value(jsonValues = jsonValues)
+
+                    @JvmStatic fun ofJson(json: JsonValue) = Value(json = json)
+
+                    @JvmStatic fun ofNumber(number: Double) = Value(number = number)
+
+                    @JvmStatic fun ofBool(bool: Boolean) = Value(bool = bool)
+                }
+
+                /**
+                 * An interface that defines how to map each variant of [Value] to a value of type
+                 * [T].
+                 */
+                interface Visitor<out T> {
+
+                    fun visitString(string: String): T
+
+                    fun visitJsonValues(jsonValues: List<JsonValue>): T
+
+                    fun visitJson(json: JsonValue): T
+
+                    fun visitNumber(number: Double): T
+
+                    fun visitBool(bool: Boolean): T
+
+                    /**
+                     * Maps an unknown variant of [Value] to a value of type [T].
+                     *
+                     * An instance of [Value] can contain an unknown variant if it was deserialized
+                     * from data that doesn't match any known variant. For example, if the SDK is on
+                     * an older version than the API, then the API may respond with new variants
+                     * that the SDK is unaware of.
+                     *
+                     * @throws FinchInvalidDataException in the default implementation.
+                     */
+                    fun unknown(json: JsonValue?): T {
+                        throw FinchInvalidDataException("Unknown Value: $json")
+                    }
+                }
+
+                internal class Deserializer : BaseDeserializer<Value>(Value::class) {
+
+                    override fun ObjectCodec.deserialize(node: JsonNode): Value {
+                        val json = JsonValue.fromJsonNode(node)
+
+                        val bestMatches =
+                            sequenceOf(
+                                    tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                        Value(string = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<List<JsonValue>>())?.let {
+                                        Value(jsonValues = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<Double>())?.let {
+                                        Value(number = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
+                                        Value(bool = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<JsonValue>())?.let {
+                                        Value(json = it, _json = json)
+                                    },
+                                )
+                                .filterNotNull()
+                                .allMaxBy { it.validity() }
+                                .toList()
+                        return when (bestMatches.size) {
+                            // This can happen if what we're deserializing is completely
+                            // incompatible with all the possible variants.
+                            0 -> Value(_json = json)
+                            1 -> bestMatches.single()
+                            // If there's more than one match with the highest validity, then use
+                            // the first completely valid match, or simply the first match if none
+                            // are completely valid.
+                            else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+                        }
+                    }
+                }
+
+                internal class Serializer : BaseSerializer<Value>(Value::class) {
+
+                    override fun serialize(
+                        value: Value,
+                        generator: JsonGenerator,
+                        provider: SerializerProvider,
+                    ) {
+                        when {
+                            value.string != null -> generator.writeObject(value.string)
+                            value.jsonValues != null -> generator.writeObject(value.jsonValues)
+                            value.json != null -> generator.writeObject(value.json)
+                            value.number != null -> generator.writeObject(value.number)
+                            value.bool != null -> generator.writeObject(value.bool)
+                            value._json != null -> generator.writeObject(value._json)
+                            else -> throw IllegalStateException("Invalid Value")
+                        }
+                    }
+                }
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is CustomField && name == other.name && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(name, value, additionalProperties) }
+            /* spotless:on */
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "CustomField{name=$name, value=$value, additionalProperties=$additionalProperties}"
+        }
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is UnionMember0 && id == other.id && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && startDate == other.startDate && title == other.title && workId == other.workId && income == other.income && incomeHistory == other.incomeHistory && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is UnionMember0 && id == other.id && classCode == other.classCode && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && startDate == other.startDate && title == other.title && customFields == other.customFields && income == other.income && incomeHistory == other.incomeHistory && sourceId == other.sourceId && workId == other.workId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, classCode, customFields, department, employment, employmentStatus, endDate, firstName, isActive, lastName, latestRehireDate, location, manager, middleName, startDate, title, workId, income, incomeHistory, sourceId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, classCode, department, employment, employmentStatus, endDate, firstName, isActive, lastName, latestRehireDate, location, manager, middleName, startDate, title, customFields, income, incomeHistory, sourceId, workId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "UnionMember0{id=$id, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, workId=$workId, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, additionalProperties=$additionalProperties}"
+            "UnionMember0{id=$id, classCode=$classCode, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, customFields=$customFields, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
     }
 
     class BatchError
