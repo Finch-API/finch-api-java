@@ -18,12 +18,12 @@ internal class HrisCompanyPayStatementItemListPageResponseTest {
                     PayStatementItemListResponse.builder()
                         .attributes(
                             PayStatementItemListResponse.Attributes.builder()
-                                .employer(true)
                                 .metadata(
                                     PayStatementItemListResponse.Attributes.Metadata.builder()
                                         .putAdditionalProperty("foo", JsonValue.from("bar"))
                                         .build()
                                 )
+                                .employer(true)
                                 .preTax(true)
                                 .type("type")
                                 .build()
@@ -39,12 +39,12 @@ internal class HrisCompanyPayStatementItemListPageResponseTest {
                 PayStatementItemListResponse.builder()
                     .attributes(
                         PayStatementItemListResponse.Attributes.builder()
-                            .employer(true)
                             .metadata(
                                 PayStatementItemListResponse.Attributes.Metadata.builder()
                                     .putAdditionalProperty("foo", JsonValue.from("bar"))
                                     .build()
                             )
+                            .employer(true)
                             .preTax(true)
                             .type("type")
                             .build()
@@ -64,12 +64,12 @@ internal class HrisCompanyPayStatementItemListPageResponseTest {
                     PayStatementItemListResponse.builder()
                         .attributes(
                             PayStatementItemListResponse.Attributes.builder()
-                                .employer(true)
                                 .metadata(
                                     PayStatementItemListResponse.Attributes.Metadata.builder()
                                         .putAdditionalProperty("foo", JsonValue.from("bar"))
                                         .build()
                                 )
+                                .employer(true)
                                 .preTax(true)
                                 .type("type")
                                 .build()

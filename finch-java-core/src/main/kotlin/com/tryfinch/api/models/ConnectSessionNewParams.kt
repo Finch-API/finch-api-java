@@ -68,7 +68,7 @@ private constructor(
     fun manual(): Optional<Boolean> = body.manual()
 
     /**
-     * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+     * The number of minutes until the session expires (defaults to 129,600, which is 90 days)
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -297,7 +297,7 @@ private constructor(
         fun manual(manual: JsonField<Boolean>) = apply { body.manual(manual) }
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * The number of minutes until the session expires (defaults to 129,600, which is 90 days)
          */
         fun minutesToExpire(minutesToExpire: Double?) = apply {
             body.minutesToExpire(minutesToExpire)
@@ -586,7 +586,7 @@ private constructor(
         fun manual(): Optional<Boolean> = manual.getOptional("manual")
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * The number of minutes until the session expires (defaults to 129,600, which is 90 days)
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -847,7 +847,7 @@ private constructor(
             fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
             /**
-             * The number of minutes until the session expires (defaults to 43,200, which is 30
+             * The number of minutes until the session expires (defaults to 129,600, which is 90
              * days)
              */
             fun minutesToExpire(minutesToExpire: Double?) =

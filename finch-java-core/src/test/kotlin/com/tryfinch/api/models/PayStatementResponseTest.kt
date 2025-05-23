@@ -15,84 +15,87 @@ internal class PayStatementResponseTest {
         val payStatementResponse =
             PayStatementResponse.builder()
                 .body(
-                    PayStatementResponseBody.builder()
-                        .paging(Paging.builder().offset(0L).count(0L).build())
+                    PayStatementResponseBody.UnionMember0.builder()
+                        .paging(
+                            PayStatementResponseBody.UnionMember0.Paging.builder()
+                                .offset(0L)
+                                .count(0L)
+                                .build()
+                        )
                         .addPayStatement(
-                            PayStatement.builder()
+                            PayStatementResponseBody.UnionMember0.PayStatement.builder()
                                 .addEarning(
-                                    PayStatement.Earning.builder()
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Earning
+                                        .builder()
                                         .amount(0L)
-                                        .attributes(
-                                            PayStatement.Earning.Attributes.builder()
-                                                .metadata(
-                                                    PayStatement.Earning.Attributes.Metadata
-                                                        .builder()
-                                                        .metadata(
-                                                            PayStatement.Earning.Attributes.Metadata
-                                                                .InnerMetadata
-                                                                .builder()
-                                                                .putAdditionalProperty(
-                                                                    "foo",
-                                                                    JsonValue.from(
-                                                                        mapOf<String, Any>()
-                                                                    ),
-                                                                )
-                                                                .build()
-                                                        )
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
                                         .currency("currency")
                                         .hours(0.0)
                                         .name("name")
-                                        .type(PayStatement.Earning.Type.SALARY)
+                                        .type(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .Earning
+                                                .Type
+                                                .SALARY
+                                        )
+                                        .attributes(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .Earning
+                                                .Attributes
+                                                .builder()
+                                                .metadata(
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .Earning
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
+                                                        .metadata(
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .Earning
+                                                                .Attributes
+                                                                .Metadata
+                                                                .InnerMetadata
+                                                                .builder()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .build()
                                 )
                                 .addEmployeeDeduction(
-                                    PayStatement.EmployeeDeduction.builder()
+                                    PayStatementResponseBody.UnionMember0.PayStatement
+                                        .EmployeeDeduction
+                                        .builder()
                                         .amount(0L)
-                                        .attributes(
-                                            PayStatement.EmployeeDeduction.Attributes.builder()
-                                                .metadata(
-                                                    PayStatement.EmployeeDeduction.Attributes
-                                                        .Metadata
-                                                        .builder()
-                                                        .metadata(
-                                                            PayStatement.EmployeeDeduction
-                                                                .Attributes
-                                                                .Metadata
-                                                                .InnerMetadata
-                                                                .builder()
-                                                                .putAdditionalProperty(
-                                                                    "foo",
-                                                                    JsonValue.from(
-                                                                        mapOf<String, Any>()
-                                                                    ),
-                                                                )
-                                                                .build()
-                                                        )
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
                                         .currency("currency")
                                         .name("name")
                                         .preTax(true)
-                                        .type(BenefitType._401K)
-                                        .build()
-                                )
-                                .addEmployerContribution(
-                                    PayStatement.EmployerContribution.builder()
-                                        .amount(0L)
+                                        .type(BenefitType._457)
                                         .attributes(
-                                            PayStatement.EmployerContribution.Attributes.builder()
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .EmployeeDeduction
+                                                .Attributes
+                                                .builder()
                                                 .metadata(
-                                                    PayStatement.EmployerContribution.Attributes
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .EmployeeDeduction
+                                                        .Attributes
                                                         .Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatement.EmployerContribution
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .EmployeeDeduction
                                                                 .Attributes
                                                                 .Metadata
                                                                 .InnerMetadata
@@ -109,24 +112,85 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
+                                        .build()
+                                )
+                                .addEmployerContribution(
+                                    PayStatementResponseBody.UnionMember0.PayStatement
+                                        .EmployerContribution
+                                        .builder()
                                         .currency("currency")
                                         .name("name")
-                                        .type(BenefitType._401K)
+                                        .type(BenefitType._457)
+                                        .amount(0L)
+                                        .attributes(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .EmployerContribution
+                                                .Attributes
+                                                .builder()
+                                                .metadata(
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .EmployerContribution
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
+                                                        .metadata(
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .EmployerContribution
+                                                                .Attributes
+                                                                .Metadata
+                                                                .InnerMetadata
+                                                                .builder()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .build()
                                 )
                                 .grossPay(Money.builder().amount(0L).currency("currency").build())
                                 .individualId("individual_id")
                                 .netPay(Money.builder().amount(0L).currency("currency").build())
-                                .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                                .paymentMethod(
+                                    PayStatementResponseBody.UnionMember0.PayStatement.PaymentMethod
+                                        .CHECK
+                                )
                                 .addTax(
-                                    PayStatement.Tax.builder()
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Tax.builder()
+                                        .currency("currency")
+                                        .employer(true)
+                                        .name("name")
+                                        .type(
+                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
+                                                .Type
+                                                .STATE
+                                        )
                                         .amount(0L)
                                         .attributes(
-                                            PayStatement.Tax.Attributes.builder()
+                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
+                                                .Attributes
+                                                .builder()
                                                 .metadata(
-                                                    PayStatement.Tax.Attributes.Metadata.builder()
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .Tax
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
                                                         .metadata(
-                                                            PayStatement.Tax.Attributes.Metadata
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .Tax
+                                                                .Attributes
+                                                                .Metadata
                                                                 .InnerMetadata
                                                                 .builder()
                                                                 .putAdditionalProperty(
@@ -141,14 +205,13 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .employer(true)
-                                        .name("name")
-                                        .type(PayStatement.Tax.Type.STATE)
                                         .build()
                                 )
                                 .totalHours(0.0)
-                                .type(PayStatement.Type.REGULAR_PAYROLL)
+                                .type(
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Type
+                                        .OFF_CYCLE_PAYROLL
+                                )
                                 .build()
                         )
                         .build()
@@ -158,135 +221,212 @@ internal class PayStatementResponseTest {
                 .build()
 
         assertThat(payStatementResponse.body())
-            .contains(
-                PayStatementResponseBody.builder()
-                    .paging(Paging.builder().offset(0L).count(0L).build())
-                    .addPayStatement(
-                        PayStatement.builder()
-                            .addEarning(
-                                PayStatement.Earning.builder()
-                                    .amount(0L)
-                                    .attributes(
-                                        PayStatement.Earning.Attributes.builder()
-                                            .metadata(
-                                                PayStatement.Earning.Attributes.Metadata.builder()
-                                                    .metadata(
-                                                        PayStatement.Earning.Attributes.Metadata
-                                                            .InnerMetadata
-                                                            .builder()
-                                                            .putAdditionalProperty(
-                                                                "foo",
-                                                                JsonValue.from(mapOf<String, Any>()),
-                                                            )
-                                                            .build()
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .currency("currency")
-                                    .hours(0.0)
-                                    .name("name")
-                                    .type(PayStatement.Earning.Type.SALARY)
-                                    .build()
-                            )
-                            .addEmployeeDeduction(
-                                PayStatement.EmployeeDeduction.builder()
-                                    .amount(0L)
-                                    .attributes(
-                                        PayStatement.EmployeeDeduction.Attributes.builder()
-                                            .metadata(
-                                                PayStatement.EmployeeDeduction.Attributes.Metadata
-                                                    .builder()
-                                                    .metadata(
-                                                        PayStatement.EmployeeDeduction.Attributes
-                                                            .Metadata
-                                                            .InnerMetadata
-                                                            .builder()
-                                                            .putAdditionalProperty(
-                                                                "foo",
-                                                                JsonValue.from(mapOf<String, Any>()),
-                                                            )
-                                                            .build()
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .currency("currency")
-                                    .name("name")
-                                    .preTax(true)
-                                    .type(BenefitType._401K)
-                                    .build()
-                            )
-                            .addEmployerContribution(
-                                PayStatement.EmployerContribution.builder()
-                                    .amount(0L)
-                                    .attributes(
-                                        PayStatement.EmployerContribution.Attributes.builder()
-                                            .metadata(
-                                                PayStatement.EmployerContribution.Attributes
-                                                    .Metadata
-                                                    .builder()
-                                                    .metadata(
-                                                        PayStatement.EmployerContribution.Attributes
-                                                            .Metadata
-                                                            .InnerMetadata
-                                                            .builder()
-                                                            .putAdditionalProperty(
-                                                                "foo",
-                                                                JsonValue.from(mapOf<String, Any>()),
-                                                            )
-                                                            .build()
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .currency("currency")
-                                    .name("name")
-                                    .type(BenefitType._401K)
-                                    .build()
-                            )
-                            .grossPay(Money.builder().amount(0L).currency("currency").build())
-                            .individualId("individual_id")
-                            .netPay(Money.builder().amount(0L).currency("currency").build())
-                            .paymentMethod(PayStatement.PaymentMethod.CHECK)
-                            .addTax(
-                                PayStatement.Tax.builder()
-                                    .amount(0L)
-                                    .attributes(
-                                        PayStatement.Tax.Attributes.builder()
-                                            .metadata(
-                                                PayStatement.Tax.Attributes.Metadata.builder()
-                                                    .metadata(
-                                                        PayStatement.Tax.Attributes.Metadata
-                                                            .InnerMetadata
-                                                            .builder()
-                                                            .putAdditionalProperty(
-                                                                "foo",
-                                                                JsonValue.from(mapOf<String, Any>()),
-                                                            )
-                                                            .build()
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .currency("currency")
-                                    .employer(true)
-                                    .name("name")
-                                    .type(PayStatement.Tax.Type.STATE)
-                                    .build()
-                            )
-                            .totalHours(0.0)
-                            .type(PayStatement.Type.REGULAR_PAYROLL)
-                            .build()
-                    )
-                    .build()
+            .isEqualTo(
+                PayStatementResponseBody.ofUnionMember0(
+                    PayStatementResponseBody.UnionMember0.builder()
+                        .paging(
+                            PayStatementResponseBody.UnionMember0.Paging.builder()
+                                .offset(0L)
+                                .count(0L)
+                                .build()
+                        )
+                        .addPayStatement(
+                            PayStatementResponseBody.UnionMember0.PayStatement.builder()
+                                .addEarning(
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Earning
+                                        .builder()
+                                        .amount(0L)
+                                        .currency("currency")
+                                        .hours(0.0)
+                                        .name("name")
+                                        .type(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .Earning
+                                                .Type
+                                                .SALARY
+                                        )
+                                        .attributes(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .Earning
+                                                .Attributes
+                                                .builder()
+                                                .metadata(
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .Earning
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
+                                                        .metadata(
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .Earning
+                                                                .Attributes
+                                                                .Metadata
+                                                                .InnerMetadata
+                                                                .builder()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .addEmployeeDeduction(
+                                    PayStatementResponseBody.UnionMember0.PayStatement
+                                        .EmployeeDeduction
+                                        .builder()
+                                        .amount(0L)
+                                        .currency("currency")
+                                        .name("name")
+                                        .preTax(true)
+                                        .type(BenefitType._457)
+                                        .attributes(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .EmployeeDeduction
+                                                .Attributes
+                                                .builder()
+                                                .metadata(
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .EmployeeDeduction
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
+                                                        .metadata(
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .EmployeeDeduction
+                                                                .Attributes
+                                                                .Metadata
+                                                                .InnerMetadata
+                                                                .builder()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .addEmployerContribution(
+                                    PayStatementResponseBody.UnionMember0.PayStatement
+                                        .EmployerContribution
+                                        .builder()
+                                        .currency("currency")
+                                        .name("name")
+                                        .type(BenefitType._457)
+                                        .amount(0L)
+                                        .attributes(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .EmployerContribution
+                                                .Attributes
+                                                .builder()
+                                                .metadata(
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .EmployerContribution
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
+                                                        .metadata(
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .EmployerContribution
+                                                                .Attributes
+                                                                .Metadata
+                                                                .InnerMetadata
+                                                                .builder()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .grossPay(Money.builder().amount(0L).currency("currency").build())
+                                .individualId("individual_id")
+                                .netPay(Money.builder().amount(0L).currency("currency").build())
+                                .paymentMethod(
+                                    PayStatementResponseBody.UnionMember0.PayStatement.PaymentMethod
+                                        .CHECK
+                                )
+                                .addTax(
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Tax.builder()
+                                        .currency("currency")
+                                        .employer(true)
+                                        .name("name")
+                                        .type(
+                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
+                                                .Type
+                                                .STATE
+                                        )
+                                        .amount(0L)
+                                        .attributes(
+                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
+                                                .Attributes
+                                                .builder()
+                                                .metadata(
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .Tax
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
+                                                        .metadata(
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .Tax
+                                                                .Attributes
+                                                                .Metadata
+                                                                .InnerMetadata
+                                                                .builder()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .totalHours(0.0)
+                                .type(
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Type
+                                        .OFF_CYCLE_PAYROLL
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             )
-        assertThat(payStatementResponse.code()).contains(0L)
-        assertThat(payStatementResponse.paymentId()).contains("payment_id")
+        assertThat(payStatementResponse.code()).isEqualTo(0L)
+        assertThat(payStatementResponse.paymentId()).isEqualTo("payment_id")
     }
 
     @Test
@@ -295,84 +435,87 @@ internal class PayStatementResponseTest {
         val payStatementResponse =
             PayStatementResponse.builder()
                 .body(
-                    PayStatementResponseBody.builder()
-                        .paging(Paging.builder().offset(0L).count(0L).build())
+                    PayStatementResponseBody.UnionMember0.builder()
+                        .paging(
+                            PayStatementResponseBody.UnionMember0.Paging.builder()
+                                .offset(0L)
+                                .count(0L)
+                                .build()
+                        )
                         .addPayStatement(
-                            PayStatement.builder()
+                            PayStatementResponseBody.UnionMember0.PayStatement.builder()
                                 .addEarning(
-                                    PayStatement.Earning.builder()
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Earning
+                                        .builder()
                                         .amount(0L)
-                                        .attributes(
-                                            PayStatement.Earning.Attributes.builder()
-                                                .metadata(
-                                                    PayStatement.Earning.Attributes.Metadata
-                                                        .builder()
-                                                        .metadata(
-                                                            PayStatement.Earning.Attributes.Metadata
-                                                                .InnerMetadata
-                                                                .builder()
-                                                                .putAdditionalProperty(
-                                                                    "foo",
-                                                                    JsonValue.from(
-                                                                        mapOf<String, Any>()
-                                                                    ),
-                                                                )
-                                                                .build()
-                                                        )
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
                                         .currency("currency")
                                         .hours(0.0)
                                         .name("name")
-                                        .type(PayStatement.Earning.Type.SALARY)
+                                        .type(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .Earning
+                                                .Type
+                                                .SALARY
+                                        )
+                                        .attributes(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .Earning
+                                                .Attributes
+                                                .builder()
+                                                .metadata(
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .Earning
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
+                                                        .metadata(
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .Earning
+                                                                .Attributes
+                                                                .Metadata
+                                                                .InnerMetadata
+                                                                .builder()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .build()
                                 )
                                 .addEmployeeDeduction(
-                                    PayStatement.EmployeeDeduction.builder()
+                                    PayStatementResponseBody.UnionMember0.PayStatement
+                                        .EmployeeDeduction
+                                        .builder()
                                         .amount(0L)
-                                        .attributes(
-                                            PayStatement.EmployeeDeduction.Attributes.builder()
-                                                .metadata(
-                                                    PayStatement.EmployeeDeduction.Attributes
-                                                        .Metadata
-                                                        .builder()
-                                                        .metadata(
-                                                            PayStatement.EmployeeDeduction
-                                                                .Attributes
-                                                                .Metadata
-                                                                .InnerMetadata
-                                                                .builder()
-                                                                .putAdditionalProperty(
-                                                                    "foo",
-                                                                    JsonValue.from(
-                                                                        mapOf<String, Any>()
-                                                                    ),
-                                                                )
-                                                                .build()
-                                                        )
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
                                         .currency("currency")
                                         .name("name")
                                         .preTax(true)
-                                        .type(BenefitType._401K)
-                                        .build()
-                                )
-                                .addEmployerContribution(
-                                    PayStatement.EmployerContribution.builder()
-                                        .amount(0L)
+                                        .type(BenefitType._457)
                                         .attributes(
-                                            PayStatement.EmployerContribution.Attributes.builder()
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .EmployeeDeduction
+                                                .Attributes
+                                                .builder()
                                                 .metadata(
-                                                    PayStatement.EmployerContribution.Attributes
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .EmployeeDeduction
+                                                        .Attributes
                                                         .Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatement.EmployerContribution
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .EmployeeDeduction
                                                                 .Attributes
                                                                 .Metadata
                                                                 .InnerMetadata
@@ -389,24 +532,85 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
+                                        .build()
+                                )
+                                .addEmployerContribution(
+                                    PayStatementResponseBody.UnionMember0.PayStatement
+                                        .EmployerContribution
+                                        .builder()
                                         .currency("currency")
                                         .name("name")
-                                        .type(BenefitType._401K)
+                                        .type(BenefitType._457)
+                                        .amount(0L)
+                                        .attributes(
+                                            PayStatementResponseBody.UnionMember0.PayStatement
+                                                .EmployerContribution
+                                                .Attributes
+                                                .builder()
+                                                .metadata(
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .EmployerContribution
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
+                                                        .metadata(
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .EmployerContribution
+                                                                .Attributes
+                                                                .Metadata
+                                                                .InnerMetadata
+                                                                .builder()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .build()
                                 )
                                 .grossPay(Money.builder().amount(0L).currency("currency").build())
                                 .individualId("individual_id")
                                 .netPay(Money.builder().amount(0L).currency("currency").build())
-                                .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                                .paymentMethod(
+                                    PayStatementResponseBody.UnionMember0.PayStatement.PaymentMethod
+                                        .CHECK
+                                )
                                 .addTax(
-                                    PayStatement.Tax.builder()
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Tax.builder()
+                                        .currency("currency")
+                                        .employer(true)
+                                        .name("name")
+                                        .type(
+                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
+                                                .Type
+                                                .STATE
+                                        )
                                         .amount(0L)
                                         .attributes(
-                                            PayStatement.Tax.Attributes.builder()
+                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
+                                                .Attributes
+                                                .builder()
                                                 .metadata(
-                                                    PayStatement.Tax.Attributes.Metadata.builder()
+                                                    PayStatementResponseBody.UnionMember0
+                                                        .PayStatement
+                                                        .Tax
+                                                        .Attributes
+                                                        .Metadata
+                                                        .builder()
                                                         .metadata(
-                                                            PayStatement.Tax.Attributes.Metadata
+                                                            PayStatementResponseBody.UnionMember0
+                                                                .PayStatement
+                                                                .Tax
+                                                                .Attributes
+                                                                .Metadata
                                                                 .InnerMetadata
                                                                 .builder()
                                                                 .putAdditionalProperty(
@@ -421,14 +625,13 @@ internal class PayStatementResponseTest {
                                                 )
                                                 .build()
                                         )
-                                        .currency("currency")
-                                        .employer(true)
-                                        .name("name")
-                                        .type(PayStatement.Tax.Type.STATE)
                                         .build()
                                 )
                                 .totalHours(0.0)
-                                .type(PayStatement.Type.REGULAR_PAYROLL)
+                                .type(
+                                    PayStatementResponseBody.UnionMember0.PayStatement.Type
+                                        .OFF_CYCLE_PAYROLL
+                                )
                                 .build()
                         )
                         .build()

@@ -23,7 +23,7 @@ internal class HrisBenefitCreateParamsTest {
             )
             .description("description")
             .frequency(BenefitFrequency.ONE_TIME)
-            .type(BenefitType._401K)
+            .type(BenefitType._457)
             .build()
     }
 
@@ -44,7 +44,7 @@ internal class HrisBenefitCreateParamsTest {
                 )
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
-                .type(BenefitType._401K)
+                .type(BenefitType._457)
                 .build()
 
         val body = params._body()
@@ -63,7 +63,7 @@ internal class HrisBenefitCreateParamsTest {
             )
         assertThat(body.description()).contains("description")
         assertThat(body.frequency()).contains(BenefitFrequency.ONE_TIME)
-        assertThat(body.type()).contains(BenefitType._401K)
+        assertThat(body.type()).contains(BenefitType._457)
     }
 
     @Test
