@@ -1,5 +1,19 @@
 # Changelog
 
+## 7.3.0 (2025-05-23)
+
+Full Changelog: [v7.2.0...v7.3.0](https://github.com/Finch-API/finch-api-java/compare/v7.2.0...v7.3.0)
+
+### Features
+
+* **api:** api update ([d06d641](https://github.com/Finch-API/finch-api-java/commit/d06d641383d5b756ed558ce9dc23382995855b97))
+* **api:** api update ([ad3d78f](https://github.com/Finch-API/finch-api-java/commit/ad3d78f6515a72e9bc485e5eb9a5dfd98e8cd3d9))
+
+
+### Chores
+
+* **docs:** grammar improvements ([ec2fe8b](https://github.com/Finch-API/finch-api-java/commit/ec2fe8b45c5898aee580617acbce9364802647be))
+
 ## 7.2.0 (2025-05-16)
 
 Full Changelog: [v7.1.0...v7.2.0](https://github.com/Finch-API/finch-api-java/compare/v7.1.0...v7.2.0)
