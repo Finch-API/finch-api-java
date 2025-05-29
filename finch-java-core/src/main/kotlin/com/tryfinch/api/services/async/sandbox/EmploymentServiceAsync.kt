@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.sandbox
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.EmploymentUpdateResponse
@@ -62,14 +61,12 @@ interface EmploymentServiceAsync {
          * Returns a raw HTTP response for `put /sandbox/employment/{individual_id}`, but is
          * otherwise the same as [EmploymentServiceAsync.update].
          */
-        @MustBeClosed
         fun update(
             individualId: String
         ): CompletableFuture<HttpResponseFor<EmploymentUpdateResponse>> =
             update(individualId, SandboxEmploymentUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             individualId: String,
             params: SandboxEmploymentUpdateParams = SandboxEmploymentUpdateParams.none(),
@@ -78,7 +75,6 @@ interface EmploymentServiceAsync {
             update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             individualId: String,
             params: SandboxEmploymentUpdateParams = SandboxEmploymentUpdateParams.none(),
@@ -86,21 +82,18 @@ interface EmploymentServiceAsync {
             update(individualId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxEmploymentUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<EmploymentUpdateResponse>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxEmploymentUpdateParams
         ): CompletableFuture<HttpResponseFor<EmploymentUpdateResponse>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             individualId: String,
             requestOptions: RequestOptions,

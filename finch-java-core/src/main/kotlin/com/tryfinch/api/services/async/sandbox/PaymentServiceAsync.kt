@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.sandbox
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.PaymentCreateResponse
@@ -44,26 +43,22 @@ interface PaymentServiceAsync {
          * Returns a raw HTTP response for `post /sandbox/payment`, but is otherwise the same as
          * [PaymentServiceAsync.create].
          */
-        @MustBeClosed
         fun create(): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> =
             create(SandboxPaymentCreateParams.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>>
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
         ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> =

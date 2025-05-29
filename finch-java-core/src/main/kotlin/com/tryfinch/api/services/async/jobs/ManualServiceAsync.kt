@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.jobs
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.JobManualRetrieveParams
@@ -60,12 +59,10 @@ interface ManualServiceAsync {
          * Returns a raw HTTP response for `get /jobs/manual/{job_id}`, but is otherwise the same as
          * [ManualServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(jobId: String): CompletableFuture<HttpResponseFor<ManualAsyncJob>> =
             retrieve(jobId, JobManualRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             jobId: String,
             params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
@@ -74,7 +71,6 @@ interface ManualServiceAsync {
             retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             jobId: String,
             params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
@@ -82,21 +78,18 @@ interface ManualServiceAsync {
             retrieve(jobId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: JobManualRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ManualAsyncJob>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: JobManualRetrieveParams
         ): CompletableFuture<HttpResponseFor<ManualAsyncJob>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             jobId: String,
             requestOptions: RequestOptions,

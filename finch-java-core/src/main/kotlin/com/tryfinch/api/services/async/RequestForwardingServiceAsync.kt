@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.RequestForwardingForwardParams
@@ -41,14 +40,12 @@ interface RequestForwardingServiceAsync {
          * Returns a raw HTTP response for `post /forward`, but is otherwise the same as
          * [RequestForwardingServiceAsync.forward].
          */
-        @MustBeClosed
         fun forward(
             params: RequestForwardingForwardParams
         ): CompletableFuture<HttpResponseFor<RequestForwardingForwardResponse>> =
             forward(params, RequestOptions.none())
 
         /** @see [forward] */
-        @MustBeClosed
         fun forward(
             params: RequestForwardingForwardParams,
             requestOptions: RequestOptions = RequestOptions.none(),

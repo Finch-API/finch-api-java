@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.sandbox
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.CompanyUpdateResponse
@@ -35,14 +34,12 @@ interface CompanyServiceAsync {
          * Returns a raw HTTP response for `put /sandbox/company`, but is otherwise the same as
          * [CompanyServiceAsync.update].
          */
-        @MustBeClosed
         fun update(
             params: SandboxCompanyUpdateParams
         ): CompletableFuture<HttpResponseFor<CompanyUpdateResponse>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxCompanyUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.sandbox.jobs
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.SandboxJobConfiguration
@@ -58,12 +57,10 @@ interface ConfigurationServiceAsync {
          * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is otherwise the
          * same as [ConfigurationServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> =
             retrieve(SandboxJobConfigurationRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: SandboxJobConfigurationRetrieveParams =
                 SandboxJobConfigurationRetrieveParams.none(),
@@ -71,7 +68,6 @@ interface ConfigurationServiceAsync {
         ): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: SandboxJobConfigurationRetrieveParams =
                 SandboxJobConfigurationRetrieveParams.none()
@@ -79,7 +75,6 @@ interface ConfigurationServiceAsync {
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> =
@@ -89,14 +84,12 @@ interface ConfigurationServiceAsync {
          * Returns a raw HTTP response for `put /sandbox/jobs/configuration`, but is otherwise the
          * same as [ConfigurationServiceAsync.update].
          */
-        @MustBeClosed
         fun update(
             params: SandboxJobConfigurationUpdateParams
         ): CompletableFuture<HttpResponseFor<SandboxJobConfiguration>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxJobConfigurationUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.hris.company
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListPageAsync
@@ -58,12 +57,10 @@ interface PayStatementItemServiceAsync {
          * Returns a raw HTTP response for `get /employer/pay-statement-item`, but is otherwise the
          * same as [PayStatementItemServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>> =
             list(HrisCompanyPayStatementItemListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: HrisCompanyPayStatementItemListParams =
                 HrisCompanyPayStatementItemListParams.none(),
@@ -71,7 +68,6 @@ interface PayStatementItemServiceAsync {
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: HrisCompanyPayStatementItemListParams =
                 HrisCompanyPayStatementItemListParams.none()
@@ -79,7 +75,6 @@ interface PayStatementItemServiceAsync {
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>> =

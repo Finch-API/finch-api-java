@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AccessTokenCreateParams
@@ -36,14 +35,12 @@ interface AccessTokenServiceAsync {
          * Returns a raw HTTP response for `post /auth/token`, but is otherwise the same as
          * [AccessTokenServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: AccessTokenCreateParams
         ): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: AccessTokenCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

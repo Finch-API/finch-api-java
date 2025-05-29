@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.hris
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
@@ -38,14 +37,12 @@ interface EmploymentServiceAsync {
          * Returns a raw HTTP response for `post /employer/employment`, but is otherwise the same as
          * [EmploymentServiceAsync.retrieveMany].
          */
-        @MustBeClosed
         fun retrieveMany(
             params: HrisEmploymentRetrieveManyParams
         ): CompletableFuture<HttpResponseFor<HrisEmploymentRetrieveManyPageAsync>> =
             retrieveMany(params, RequestOptions.none())
 
         /** @see [retrieveMany] */
-        @MustBeClosed
         fun retrieveMany(
             params: HrisEmploymentRetrieveManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),

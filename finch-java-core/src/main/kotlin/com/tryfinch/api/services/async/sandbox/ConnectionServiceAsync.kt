@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.sandbox
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.ConnectionCreateResponse
@@ -41,14 +40,12 @@ interface ConnectionServiceAsync {
          * Returns a raw HTTP response for `post /sandbox/connections`, but is otherwise the same as
          * [ConnectionServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: SandboxConnectionCreateParams
         ): CompletableFuture<HttpResponseFor<ConnectionCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: SandboxConnectionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

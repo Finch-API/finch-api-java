@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.hris
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.CompanyBenefit
@@ -173,26 +172,22 @@ interface BenefitServiceAsync {
          * Returns a raw HTTP response for `post /employer/benefits`, but is otherwise the same as
          * [BenefitServiceAsync.create].
          */
-        @MustBeClosed
         fun create(): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>> =
             create(HrisBenefitCreateParams.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>>
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: HrisBenefitCreateParams = HrisBenefitCreateParams.none()
         ): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>> =
@@ -202,12 +197,10 @@ interface BenefitServiceAsync {
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}`, but is otherwise
          * the same as [BenefitServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(benefitId: String): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
             retrieve(benefitId, HrisBenefitRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             benefitId: String,
             params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
@@ -216,7 +209,6 @@ interface BenefitServiceAsync {
             retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             benefitId: String,
             params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
@@ -224,21 +216,18 @@ interface BenefitServiceAsync {
             retrieve(benefitId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: HrisBenefitRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: HrisBenefitRetrieveParams
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             benefitId: String,
             requestOptions: RequestOptions,
@@ -249,14 +238,12 @@ interface BenefitServiceAsync {
          * Returns a raw HTTP response for `post /employer/benefits/{benefit_id}`, but is otherwise
          * the same as [BenefitServiceAsync.update].
          */
-        @MustBeClosed
         fun update(
             benefitId: String
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
             update(benefitId, HrisBenefitUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             benefitId: String,
             params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
@@ -265,7 +252,6 @@ interface BenefitServiceAsync {
             update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             benefitId: String,
             params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
@@ -273,21 +259,18 @@ interface BenefitServiceAsync {
             update(benefitId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: HrisBenefitUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: HrisBenefitUpdateParams
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             benefitId: String,
             requestOptions: RequestOptions,
@@ -298,26 +281,22 @@ interface BenefitServiceAsync {
          * Returns a raw HTTP response for `get /employer/benefits`, but is otherwise the same as
          * [BenefitServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>> =
             list(HrisBenefitListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: HrisBenefitListParams = HrisBenefitListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: HrisBenefitListParams = HrisBenefitListParams.none()
         ): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>> =
@@ -327,13 +306,11 @@ interface BenefitServiceAsync {
          * Returns a raw HTTP response for `get /employer/benefits/meta`, but is otherwise the same
          * as [BenefitServiceAsync.listSupportedBenefits].
          */
-        @MustBeClosed
         fun listSupportedBenefits():
             CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>> =
             listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none())
 
         /** @see [listSupportedBenefits] */
-        @MustBeClosed
         fun listSupportedBenefits(
             params: HrisBenefitListSupportedBenefitsParams =
                 HrisBenefitListSupportedBenefitsParams.none(),
@@ -341,7 +318,6 @@ interface BenefitServiceAsync {
         ): CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>>
 
         /** @see [listSupportedBenefits] */
-        @MustBeClosed
         fun listSupportedBenefits(
             params: HrisBenefitListSupportedBenefitsParams =
                 HrisBenefitListSupportedBenefitsParams.none()
@@ -349,7 +325,6 @@ interface BenefitServiceAsync {
             listSupportedBenefits(params, RequestOptions.none())
 
         /** @see [listSupportedBenefits] */
-        @MustBeClosed
         fun listSupportedBenefits(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>> =

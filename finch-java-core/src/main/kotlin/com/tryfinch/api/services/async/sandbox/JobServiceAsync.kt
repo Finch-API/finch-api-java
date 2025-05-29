@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.sandbox
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.JobCreateResponse
@@ -38,14 +37,12 @@ interface JobServiceAsync {
          * Returns a raw HTTP response for `post /sandbox/jobs`, but is otherwise the same as
          * [JobServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: SandboxJobCreateParams
         ): CompletableFuture<HttpResponseFor<JobCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: SandboxJobCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

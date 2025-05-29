@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.services.async.sandbox.connections
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AccountCreateResponse
@@ -60,14 +59,12 @@ interface AccountServiceAsync {
          * Returns a raw HTTP response for `post /sandbox/connections/accounts`, but is otherwise
          * the same as [AccountServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: SandboxConnectionAccountCreateParams
         ): CompletableFuture<HttpResponseFor<AccountCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: SandboxConnectionAccountCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -77,12 +74,10 @@ interface AccountServiceAsync {
          * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is otherwise the
          * same as [AccountServiceAsync.update].
          */
-        @MustBeClosed
         fun update(): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =
             update(SandboxConnectionAccountUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxConnectionAccountUpdateParams =
                 SandboxConnectionAccountUpdateParams.none(),
@@ -90,7 +85,6 @@ interface AccountServiceAsync {
         ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxConnectionAccountUpdateParams =
                 SandboxConnectionAccountUpdateParams.none()
@@ -98,7 +92,6 @@ interface AccountServiceAsync {
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =
