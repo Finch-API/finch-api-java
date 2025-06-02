@@ -18,7 +18,7 @@ private constructor(
     private val items: List<BenefitListSupportedBenefitsResponse>,
 ) : Page<BenefitListSupportedBenefitsResponse> {
 
-    override fun hasNextPage(): Boolean = items().isNotEmpty()
+    override fun hasNextPage(): Boolean = false
 
     fun nextPageParams(): HrisBenefitListSupportedBenefitsParams =
         throw IllegalStateException("Cannot construct next page params")

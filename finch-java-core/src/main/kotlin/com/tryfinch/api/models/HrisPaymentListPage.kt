@@ -16,7 +16,7 @@ private constructor(
     private val items: List<Payment>,
 ) : Page<Payment> {
 
-    override fun hasNextPage(): Boolean = items().isNotEmpty()
+    override fun hasNextPage(): Boolean = false
 
     fun nextPageParams(): HrisPaymentListParams =
         throw IllegalStateException("Cannot construct next page params")

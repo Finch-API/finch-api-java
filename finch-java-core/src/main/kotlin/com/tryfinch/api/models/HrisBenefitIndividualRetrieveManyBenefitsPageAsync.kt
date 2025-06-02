@@ -19,7 +19,7 @@ private constructor(
     private val items: List<IndividualBenefit>,
 ) : PageAsync<IndividualBenefit> {
 
-    override fun hasNextPage(): Boolean = items().isNotEmpty()
+    override fun hasNextPage(): Boolean = false
 
     fun nextPageParams(): HrisBenefitIndividualRetrieveManyBenefitsParams =
         throw IllegalStateException("Cannot construct next page params")
