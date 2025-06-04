@@ -16,7 +16,6 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
-import com.tryfinch.api.models.BenefitListSupportedBenefitsResponse
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
 import com.tryfinch.api.models.HrisBenefitCreateParams
@@ -26,6 +25,7 @@ import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPage
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
+import com.tryfinch.api.models.SupportedBenefit
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualServiceImpl
@@ -213,11 +213,8 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
             }
         }
 
-        private val listSupportedBenefitsHandler:
-            Handler<Optional<List<BenefitListSupportedBenefitsResponse>>> =
-            jsonHandler<Optional<List<BenefitListSupportedBenefitsResponse>>>(
-                    clientOptions.jsonMapper
-                )
+        private val listSupportedBenefitsHandler: Handler<Optional<List<SupportedBenefit>>> =
+            jsonHandler<Optional<List<SupportedBenefit>>>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun listSupportedBenefits(
