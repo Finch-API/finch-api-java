@@ -15,46 +15,26 @@ internal class PayStatementResponseTest {
         val payStatementResponse =
             PayStatementResponse.builder()
                 .body(
-                    PayStatementResponseBody.UnionMember0.builder()
+                    PayStatementResponseBody.builder()
                         .paging(
-                            PayStatementResponseBody.UnionMember0.Paging.builder()
-                                .offset(0L)
-                                .count(0L)
-                                .build()
+                            PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build()
                         )
                         .addPayStatement(
-                            PayStatementResponseBody.UnionMember0.PayStatement.builder()
+                            PayStatement.builder()
                                 .addEarning(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Earning
-                                        .builder()
+                                    PayStatement.Earning.builder()
                                         .amount(0L)
                                         .currency("currency")
                                         .hours(0.0)
                                         .name("name")
-                                        .type(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .Earning
-                                                .Type
-                                                .SALARY
-                                        )
+                                        .type(PayStatement.Earning.Type.SALARY)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .Earning
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.Earning.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .Earning
-                                                        .Attributes
-                                                        .Metadata
+                                                    PayStatement.Earning.Attributes.Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .Earning
-                                                                .Attributes
-                                                                .Metadata
+                                                            PayStatement.Earning.Attributes.Metadata
                                                                 .InnerMetadata
                                                                 .builder()
                                                                 .putAdditionalProperty(
@@ -72,30 +52,20 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .addEmployeeDeduction(
-                                    PayStatementResponseBody.UnionMember0.PayStatement
-                                        .EmployeeDeduction
-                                        .builder()
+                                    PayStatement.EmployeeDeduction.builder()
                                         .amount(0L)
                                         .currency("currency")
                                         .name("name")
                                         .preTax(true)
                                         .type(BenefitType._457)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .EmployeeDeduction
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.EmployeeDeduction.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .EmployeeDeduction
-                                                        .Attributes
+                                                    PayStatement.EmployeeDeduction.Attributes
                                                         .Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .EmployeeDeduction
+                                                            PayStatement.EmployeeDeduction
                                                                 .Attributes
                                                                 .Metadata
                                                                 .InnerMetadata
@@ -115,29 +85,19 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .addEmployerContribution(
-                                    PayStatementResponseBody.UnionMember0.PayStatement
-                                        .EmployerContribution
-                                        .builder()
+                                    PayStatement.EmployerContribution.builder()
                                         .currency("currency")
                                         .name("name")
                                         .type(BenefitType._457)
                                         .amount(0L)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .EmployerContribution
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.EmployerContribution.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .EmployerContribution
-                                                        .Attributes
+                                                    PayStatement.EmployerContribution.Attributes
                                                         .Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .EmployerContribution
+                                                            PayStatement.EmployerContribution
                                                                 .Attributes
                                                                 .Metadata
                                                                 .InnerMetadata
@@ -159,38 +119,20 @@ internal class PayStatementResponseTest {
                                 .grossPay(Money.builder().amount(0L).currency("currency").build())
                                 .individualId("individual_id")
                                 .netPay(Money.builder().amount(0L).currency("currency").build())
-                                .paymentMethod(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.PaymentMethod
-                                        .CHECK
-                                )
+                                .paymentMethod(PayStatement.PaymentMethod.CHECK)
                                 .addTax(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Tax.builder()
+                                    PayStatement.Tax.builder()
                                         .currency("currency")
                                         .employer(true)
                                         .name("name")
-                                        .type(
-                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
-                                                .Type
-                                                .STATE
-                                        )
+                                        .type(PayStatement.Tax.Type.STATE)
                                         .amount(0L)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.Tax.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .Tax
-                                                        .Attributes
-                                                        .Metadata
-                                                        .builder()
+                                                    PayStatement.Tax.Attributes.Metadata.builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .Tax
-                                                                .Attributes
-                                                                .Metadata
+                                                            PayStatement.Tax.Attributes.Metadata
                                                                 .InnerMetadata
                                                                 .builder()
                                                                 .putAdditionalProperty(
@@ -208,10 +150,7 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .totalHours(0.0)
-                                .type(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Type
-                                        .OFF_CYCLE_PAYROLL
-                                )
+                                .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
                                 .build()
                         )
                         .build()
@@ -222,47 +161,27 @@ internal class PayStatementResponseTest {
 
         assertThat(payStatementResponse.body())
             .isEqualTo(
-                PayStatementResponseBody.ofUnionMember0(
-                    PayStatementResponseBody.UnionMember0.builder()
+                PayStatementResponse.Body.ofPayStatementResponse(
+                    PayStatementResponseBody.builder()
                         .paging(
-                            PayStatementResponseBody.UnionMember0.Paging.builder()
-                                .offset(0L)
-                                .count(0L)
-                                .build()
+                            PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build()
                         )
                         .addPayStatement(
-                            PayStatementResponseBody.UnionMember0.PayStatement.builder()
+                            PayStatement.builder()
                                 .addEarning(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Earning
-                                        .builder()
+                                    PayStatement.Earning.builder()
                                         .amount(0L)
                                         .currency("currency")
                                         .hours(0.0)
                                         .name("name")
-                                        .type(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .Earning
-                                                .Type
-                                                .SALARY
-                                        )
+                                        .type(PayStatement.Earning.Type.SALARY)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .Earning
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.Earning.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .Earning
-                                                        .Attributes
-                                                        .Metadata
+                                                    PayStatement.Earning.Attributes.Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .Earning
-                                                                .Attributes
-                                                                .Metadata
+                                                            PayStatement.Earning.Attributes.Metadata
                                                                 .InnerMetadata
                                                                 .builder()
                                                                 .putAdditionalProperty(
@@ -280,30 +199,20 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .addEmployeeDeduction(
-                                    PayStatementResponseBody.UnionMember0.PayStatement
-                                        .EmployeeDeduction
-                                        .builder()
+                                    PayStatement.EmployeeDeduction.builder()
                                         .amount(0L)
                                         .currency("currency")
                                         .name("name")
                                         .preTax(true)
                                         .type(BenefitType._457)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .EmployeeDeduction
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.EmployeeDeduction.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .EmployeeDeduction
-                                                        .Attributes
+                                                    PayStatement.EmployeeDeduction.Attributes
                                                         .Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .EmployeeDeduction
+                                                            PayStatement.EmployeeDeduction
                                                                 .Attributes
                                                                 .Metadata
                                                                 .InnerMetadata
@@ -323,29 +232,19 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .addEmployerContribution(
-                                    PayStatementResponseBody.UnionMember0.PayStatement
-                                        .EmployerContribution
-                                        .builder()
+                                    PayStatement.EmployerContribution.builder()
                                         .currency("currency")
                                         .name("name")
                                         .type(BenefitType._457)
                                         .amount(0L)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .EmployerContribution
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.EmployerContribution.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .EmployerContribution
-                                                        .Attributes
+                                                    PayStatement.EmployerContribution.Attributes
                                                         .Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .EmployerContribution
+                                                            PayStatement.EmployerContribution
                                                                 .Attributes
                                                                 .Metadata
                                                                 .InnerMetadata
@@ -367,38 +266,20 @@ internal class PayStatementResponseTest {
                                 .grossPay(Money.builder().amount(0L).currency("currency").build())
                                 .individualId("individual_id")
                                 .netPay(Money.builder().amount(0L).currency("currency").build())
-                                .paymentMethod(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.PaymentMethod
-                                        .CHECK
-                                )
+                                .paymentMethod(PayStatement.PaymentMethod.CHECK)
                                 .addTax(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Tax.builder()
+                                    PayStatement.Tax.builder()
                                         .currency("currency")
                                         .employer(true)
                                         .name("name")
-                                        .type(
-                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
-                                                .Type
-                                                .STATE
-                                        )
+                                        .type(PayStatement.Tax.Type.STATE)
                                         .amount(0L)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.Tax.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .Tax
-                                                        .Attributes
-                                                        .Metadata
-                                                        .builder()
+                                                    PayStatement.Tax.Attributes.Metadata.builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .Tax
-                                                                .Attributes
-                                                                .Metadata
+                                                            PayStatement.Tax.Attributes.Metadata
                                                                 .InnerMetadata
                                                                 .builder()
                                                                 .putAdditionalProperty(
@@ -416,10 +297,7 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .totalHours(0.0)
-                                .type(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Type
-                                        .OFF_CYCLE_PAYROLL
-                                )
+                                .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
                                 .build()
                         )
                         .build()
@@ -435,46 +313,26 @@ internal class PayStatementResponseTest {
         val payStatementResponse =
             PayStatementResponse.builder()
                 .body(
-                    PayStatementResponseBody.UnionMember0.builder()
+                    PayStatementResponseBody.builder()
                         .paging(
-                            PayStatementResponseBody.UnionMember0.Paging.builder()
-                                .offset(0L)
-                                .count(0L)
-                                .build()
+                            PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build()
                         )
                         .addPayStatement(
-                            PayStatementResponseBody.UnionMember0.PayStatement.builder()
+                            PayStatement.builder()
                                 .addEarning(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Earning
-                                        .builder()
+                                    PayStatement.Earning.builder()
                                         .amount(0L)
                                         .currency("currency")
                                         .hours(0.0)
                                         .name("name")
-                                        .type(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .Earning
-                                                .Type
-                                                .SALARY
-                                        )
+                                        .type(PayStatement.Earning.Type.SALARY)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .Earning
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.Earning.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .Earning
-                                                        .Attributes
-                                                        .Metadata
+                                                    PayStatement.Earning.Attributes.Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .Earning
-                                                                .Attributes
-                                                                .Metadata
+                                                            PayStatement.Earning.Attributes.Metadata
                                                                 .InnerMetadata
                                                                 .builder()
                                                                 .putAdditionalProperty(
@@ -492,30 +350,20 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .addEmployeeDeduction(
-                                    PayStatementResponseBody.UnionMember0.PayStatement
-                                        .EmployeeDeduction
-                                        .builder()
+                                    PayStatement.EmployeeDeduction.builder()
                                         .amount(0L)
                                         .currency("currency")
                                         .name("name")
                                         .preTax(true)
                                         .type(BenefitType._457)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .EmployeeDeduction
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.EmployeeDeduction.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .EmployeeDeduction
-                                                        .Attributes
+                                                    PayStatement.EmployeeDeduction.Attributes
                                                         .Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .EmployeeDeduction
+                                                            PayStatement.EmployeeDeduction
                                                                 .Attributes
                                                                 .Metadata
                                                                 .InnerMetadata
@@ -535,29 +383,19 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .addEmployerContribution(
-                                    PayStatementResponseBody.UnionMember0.PayStatement
-                                        .EmployerContribution
-                                        .builder()
+                                    PayStatement.EmployerContribution.builder()
                                         .currency("currency")
                                         .name("name")
                                         .type(BenefitType._457)
                                         .amount(0L)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement
-                                                .EmployerContribution
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.EmployerContribution.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .EmployerContribution
-                                                        .Attributes
+                                                    PayStatement.EmployerContribution.Attributes
                                                         .Metadata
                                                         .builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .EmployerContribution
+                                                            PayStatement.EmployerContribution
                                                                 .Attributes
                                                                 .Metadata
                                                                 .InnerMetadata
@@ -579,38 +417,20 @@ internal class PayStatementResponseTest {
                                 .grossPay(Money.builder().amount(0L).currency("currency").build())
                                 .individualId("individual_id")
                                 .netPay(Money.builder().amount(0L).currency("currency").build())
-                                .paymentMethod(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.PaymentMethod
-                                        .CHECK
-                                )
+                                .paymentMethod(PayStatement.PaymentMethod.CHECK)
                                 .addTax(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Tax.builder()
+                                    PayStatement.Tax.builder()
                                         .currency("currency")
                                         .employer(true)
                                         .name("name")
-                                        .type(
-                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
-                                                .Type
-                                                .STATE
-                                        )
+                                        .type(PayStatement.Tax.Type.STATE)
                                         .amount(0L)
                                         .attributes(
-                                            PayStatementResponseBody.UnionMember0.PayStatement.Tax
-                                                .Attributes
-                                                .builder()
+                                            PayStatement.Tax.Attributes.builder()
                                                 .metadata(
-                                                    PayStatementResponseBody.UnionMember0
-                                                        .PayStatement
-                                                        .Tax
-                                                        .Attributes
-                                                        .Metadata
-                                                        .builder()
+                                                    PayStatement.Tax.Attributes.Metadata.builder()
                                                         .metadata(
-                                                            PayStatementResponseBody.UnionMember0
-                                                                .PayStatement
-                                                                .Tax
-                                                                .Attributes
-                                                                .Metadata
+                                                            PayStatement.Tax.Attributes.Metadata
                                                                 .InnerMetadata
                                                                 .builder()
                                                                 .putAdditionalProperty(
@@ -628,10 +448,7 @@ internal class PayStatementResponseTest {
                                         .build()
                                 )
                                 .totalHours(0.0)
-                                .type(
-                                    PayStatementResponseBody.UnionMember0.PayStatement.Type
-                                        .OFF_CYCLE_PAYROLL
-                                )
+                                .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
                                 .build()
                         )
                         .build()
