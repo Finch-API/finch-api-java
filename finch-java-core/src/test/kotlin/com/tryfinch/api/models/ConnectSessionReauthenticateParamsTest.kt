@@ -2,46 +2,48 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ConnectSessionReauthenticateParamsTest {
+internal class ConnectSessionReauthenticateParamsTest {
 
     @Test
-    fun createConnectSessionReauthenticateParams() {
+    fun create() {
         ConnectSessionReauthenticateParams.builder()
             .connectionId("connection_id")
-            .minutesToExpire(123L)
-            .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+            .minutesToExpire(0L)
+            .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
             .redirectUri("https://example.com")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ConnectSessionReauthenticateParams.builder()
                 .connectionId("connection_id")
-                .minutesToExpire(123L)
-                .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+                .minutesToExpire(0L)
+                .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
                 .redirectUri("https://example.com")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.connectionId()).isEqualTo("connection_id")
-        assertThat(body.minutesToExpire()).isEqualTo(123L)
-        assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
-        assertThat(body.redirectUri()).isEqualTo("https://example.com")
+        assertThat(body.minutesToExpire()).contains(0L)
+        assertThat(body.products().getOrNull())
+            .containsExactly(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
+        assertThat(body.redirectUri()).contains("https://example.com")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ConnectSessionReauthenticateParams.builder().connectionId("connection_id").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.connectionId()).isEqualTo("connection_id")
     }
 }

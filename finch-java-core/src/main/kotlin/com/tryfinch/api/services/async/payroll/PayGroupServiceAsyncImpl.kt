@@ -3,87 +3,123 @@
 package com.tryfinch.api.services.async.payroll
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
+import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.PayGroupListResponse
 import com.tryfinch.api.models.PayGroupRetrieveResponse
 import com.tryfinch.api.models.PayrollPayGroupListPageAsync
 import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
-class PayGroupServiceAsyncImpl
-constructor(
-    private val clientOptions: ClientOptions,
-) : PayGroupServiceAsync {
+class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    PayGroupServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: PayGroupServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
-        jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): PayGroupServiceAsync.WithRawResponse = withRawResponse
 
-    /** Read information from a single pay group */
     override fun retrieve(
         params: PayrollPayGroupRetrieveParams,
-        requestOptions: RequestOptions
-    ): CompletableFuture<PayGroupRetrieveResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "pay-groups", params.getPathParam(0))
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { retrieveHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+        requestOptions: RequestOptions,
+    ): CompletableFuture<PayGroupRetrieveResponse> =
+        // get /employer/pay-groups/{pay_group_id}
+        withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
+
+    override fun list(
+        params: PayrollPayGroupListParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<PayrollPayGroupListPageAsync> =
+        // get /employer/pay-groups
+        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PayGroupServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
+            jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun retrieve(
+            params: PayrollPayGroupRetrieveParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<PayGroupRetrieveResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("payGroupId", params.payGroupId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "pay-groups", params._pathParam(0))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { retrieveHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
                     }
                 }
         }
-    }
 
-    private val listHandler: Handler<List<PayGroupListResponse>> =
-        jsonHandler<List<PayGroupListResponse>>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+        private val listHandler: Handler<List<PayGroupListResponse>> =
+            jsonHandler<List<PayGroupListResponse>>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-    /** Read company pay groups and frequencies */
-    override fun list(
-        params: PayrollPayGroupListParams,
-        requestOptions: RequestOptions
-    ): CompletableFuture<PayrollPayGroupListPageAsync> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "pay-groups")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        forEach { it.validate() }
+        override fun list(
+            params: PayrollPayGroupListParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "pay-groups")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { listHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.forEach { it.validate() }
+                                }
+                            }
+                            .let {
+                                PayrollPayGroupListPageAsync.builder()
+                                    .service(PayGroupServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
+                                    .params(params)
+                                    .items(it)
+                                    .build()
+                            }
                     }
                 }
-                .let { PayrollPayGroupListPageAsync.Response.Builder().items(it).build() }
-                .let { PayrollPayGroupListPageAsync.of(this, params, it) }
         }
     }
 }

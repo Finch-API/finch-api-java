@@ -2,17 +2,34 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class BenefitContributionTest {
+internal class BenefitContributionTest {
 
     @Test
-    fun createBenefitContribution() {
+    fun create() {
         val benefitContribution =
-            BenefitContribution.builder().amount(123L).type(BenefitContribution.Type.FIXED).build()
-        assertThat(benefitContribution).isNotNull
-        assertThat(benefitContribution.amount()).contains(123L)
+            BenefitContribution.builder().amount(0L).type(BenefitContribution.Type.FIXED).build()
+
+        assertThat(benefitContribution.amount()).contains(0L)
         assertThat(benefitContribution.type()).contains(BenefitContribution.Type.FIXED)
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val benefitContribution =
+            BenefitContribution.builder().amount(0L).type(BenefitContribution.Type.FIXED).build()
+
+        val roundtrippedBenefitContribution =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(benefitContribution),
+                jacksonTypeRef<BenefitContribution>(),
+            )
+
+        assertThat(roundtrippedBenefitContribution).isEqualTo(benefitContribution)
     }
 }

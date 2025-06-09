@@ -1,6 +1,5 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import java.util.Locale
 
 plugins {
     `java-library`
@@ -9,11 +8,6 @@ plugins {
 
 repositories {
     mavenCentral()
-}
-
-configure<JavaPluginExtension> {
-    withJavadocJar()
-    withSourcesJar()
 }
 
 configure<SpotlessExtension> {
@@ -27,17 +21,16 @@ configure<SpotlessExtension> {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.add("-Werror")
     options.release.set(8)
-}
-
-tasks.named<Jar>("javadocJar") {
-    setZip64(true)
 }
 
 tasks.named<Jar>("jar") {
@@ -49,8 +42,12 @@ tasks.named<Jar>("jar") {
     }
 }
 
-tasks.named<Test>("test") {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+
+    // Run tests in parallel to some degree.
+    maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
+    forkEvery = 100
 
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL

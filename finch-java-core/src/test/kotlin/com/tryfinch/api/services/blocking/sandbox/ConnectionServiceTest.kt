@@ -4,31 +4,34 @@ package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.SandboxConnectionCreateParams
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class ConnectionServiceTest {
+internal class ConnectionServiceTest {
 
+    @Disabled("prism tests are broken")
     @Test
-    fun callCreate() {
+    fun create() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val connectionService = client.sandbox().connections()
-        val connectionCreateResponse =
+
+        val connection =
             connectionService.create(
                 SandboxConnectionCreateParams.builder()
                     .providerId("provider_id")
                     .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
-                    .employeeSize(123L)
-                    .products(listOf("string"))
+                    .employeeSize(0L)
+                    .addProduct("string")
                     .build()
             )
-        println(connectionCreateResponse)
-        connectionCreateResponse.validate()
+
+        connection.validate()
     }
 }

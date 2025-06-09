@@ -2,68 +2,49 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
+/** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsParams
-constructor(
-    private val benefitId: String,
+private constructor(
+    private val benefitId: String?,
     private val individualIds: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
-    fun benefitId(): String = benefitId
+    fun benefitId(): Optional<String> = Optional.ofNullable(benefitId)
 
+    /**
+     * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
+     * individuals
+     */
     fun individualIds(): Optional<String> = Optional.ofNullable(individualIds)
-
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.individualIds?.let { queryParams.put("individual_ids", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
-
-    fun getPathParam(index: Int): String {
-        return when (index) {
-            0 -> benefitId
-            else -> ""
-        }
-    }
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsParams && benefitId == other.benefitId && individualIds == other.individualIds && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "HrisBenefitIndividualRetrieveManyBenefitsParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        @JvmStatic fun none(): HrisBenefitIndividualRetrieveManyBenefitsParams = builder().build()
+
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisBenefitIndividualRetrieveManyBenefitsParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [HrisBenefitIndividualRetrieveManyBenefitsParams]. */
+    class Builder internal constructor() {
 
         private var benefitId: String? = null
         private var individualIds: String? = null
@@ -75,21 +56,28 @@ constructor(
             hrisBenefitIndividualRetrieveManyBenefitsParams:
                 HrisBenefitIndividualRetrieveManyBenefitsParams
         ) = apply {
-            this.benefitId = hrisBenefitIndividualRetrieveManyBenefitsParams.benefitId
-            this.individualIds = hrisBenefitIndividualRetrieveManyBenefitsParams.individualIds
-            additionalHeaders(hrisBenefitIndividualRetrieveManyBenefitsParams.additionalHeaders)
-            additionalQueryParams(
-                hrisBenefitIndividualRetrieveManyBenefitsParams.additionalQueryParams
-            )
+            benefitId = hrisBenefitIndividualRetrieveManyBenefitsParams.benefitId
+            individualIds = hrisBenefitIndividualRetrieveManyBenefitsParams.individualIds
+            additionalHeaders =
+                hrisBenefitIndividualRetrieveManyBenefitsParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                hrisBenefitIndividualRetrieveManyBenefitsParams.additionalQueryParams.toBuilder()
         }
 
-        fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
+        fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
+
+        /** Alias for calling [Builder.benefitId] with `benefitId.orElse(null)`. */
+        fun benefitId(benefitId: Optional<String>) = benefitId(benefitId.getOrNull())
 
         /**
          * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
          * individuals
          */
-        fun individualIds(individualIds: String) = apply { this.individualIds = individualIds }
+        fun individualIds(individualIds: String?) = apply { this.individualIds = individualIds }
+
+        /** Alias for calling [Builder.individualIds] with `individualIds.orElse(null)`. */
+        fun individualIds(individualIds: Optional<String>) =
+            individualIds(individualIds.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -189,12 +177,46 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisBenefitIndividualRetrieveManyBenefitsParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): HrisBenefitIndividualRetrieveManyBenefitsParams =
             HrisBenefitIndividualRetrieveManyBenefitsParams(
-                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
+                benefitId,
                 individualIds,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> benefitId ?: ""
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                individualIds?.let { put("individual_ids", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsParams && benefitId == other.benefitId && individualIds == other.individualIds && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "HrisBenefitIndividualRetrieveManyBenefitsParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

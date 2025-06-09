@@ -2,50 +2,53 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.JsonNull
-import com.tryfinch.api.models.*
+import com.tryfinch.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class RequestForwardingForwardParamsTest {
+internal class RequestForwardingForwardParamsTest {
 
     @Test
-    fun createRequestForwardingForwardParams() {
+    fun create() {
         RequestForwardingForwardParams.builder()
-            .method("method")
-            .route("route")
-            .data("data")
-            .headers(JsonNull.of())
-            .params(JsonNull.of())
+            .method("POST")
+            .route("/people/search")
+            .data(null)
+            .headers(JsonValue.from(mapOf("content-type" to "application/json")))
+            .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             RequestForwardingForwardParams.builder()
-                .method("method")
-                .route("route")
-                .data("data")
-                .headers(JsonNull.of())
-                .params(JsonNull.of())
+                .method("POST")
+                .route("/people/search")
+                .data(null)
+                .headers(JsonValue.from(mapOf("content-type" to "application/json")))
+                .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.method()).isEqualTo("method")
-        assertThat(body.route()).isEqualTo("route")
-        assertThat(body.data()).isEqualTo("data")
-        assertThat(body.headers()).isEqualTo(JsonNull.of())
-        assertThat(body.params()).isEqualTo(JsonNull.of())
+
+        val body = params._body()
+
+        assertThat(body.method()).isEqualTo("POST")
+        assertThat(body.route()).isEqualTo("/people/search")
+        assertThat(body.data()).isEmpty
+        assertThat(body._headers_())
+            .isEqualTo(JsonValue.from(mapOf("content-type" to "application/json")))
+        assertThat(body._params())
+            .isEqualTo(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
-            RequestForwardingForwardParams.builder().method("method").route("route").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.method()).isEqualTo("method")
-        assertThat(body.route()).isEqualTo("route")
+            RequestForwardingForwardParams.builder().method("POST").route("/people/search").build()
+
+        val body = params._body()
+
+        assertThat(body.method()).isEqualTo("POST")
+        assertThat(body.route()).isEqualTo("/people/search")
     }
 }

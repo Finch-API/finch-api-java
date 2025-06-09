@@ -1,20 +1,23 @@
 plugins {
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("org.jetbrains.dokka") version "2.0.0"
+}
+
+repositories {
+    mavenCentral()
 }
 
 allprojects {
     group = "com.tryfinch.api"
-    version = "1.11.1" // x-release-please-version
+    version = "7.2.0" // x-release-please-version
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+subprojects {
+    apply(plugin = "org.jetbrains.dokka")
+}
 
-            username.set(System.getenv("SONATYPE_USERNAME"))
-            password.set(System.getenv("SONATYPE_PASSWORD"))
-        }
-    }
+// Avoid race conditions between `dokkaJavadocCollector` and `dokkaJavadocJar` tasks
+tasks.named("dokkaJavadocCollector").configure {
+    subprojects.flatMap { it.tasks }
+        .filter { it.project.name != "finch-java" && it.name == "dokkaJavadocJar" }
+        .forEach { mustRunAfter(it) }
 }

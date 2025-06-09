@@ -2,85 +2,80 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
-import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
+/** Read company pay groups and frequencies */
 class PayrollPayGroupListParams
-constructor(
+private constructor(
     private val individualId: String?,
     private val payFrequencies: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun individualId(): Optional<String> = Optional.ofNullable(individualId)
 
     fun payFrequencies(): Optional<List<String>> = Optional.ofNullable(payFrequencies)
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.individualId?.let { queryParams.put("individual_id", listOf(it.toString())) }
-        this.payFrequencies?.let { queryParams.put("pay_frequencies[]", it.map(Any::toString)) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
-
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is PayrollPayGroupListParams && individualId == other.individualId && payFrequencies == other.payFrequencies && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, payFrequencies, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "PayrollPayGroupListParams{individualId=$individualId, payFrequencies=$payFrequencies, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        @JvmStatic fun none(): PayrollPayGroupListParams = builder().build()
+
+        /**
+         * Returns a mutable builder for constructing an instance of [PayrollPayGroupListParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [PayrollPayGroupListParams]. */
+    class Builder internal constructor() {
 
         private var individualId: String? = null
-        private var payFrequencies: MutableList<String> = mutableListOf()
+        private var payFrequencies: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(payrollPayGroupListParams: PayrollPayGroupListParams) = apply {
-            this.individualId = payrollPayGroupListParams.individualId
-            this.payFrequencies(payrollPayGroupListParams.payFrequencies ?: listOf())
-            additionalHeaders(payrollPayGroupListParams.additionalHeaders)
-            additionalQueryParams(payrollPayGroupListParams.additionalQueryParams)
+            individualId = payrollPayGroupListParams.individualId
+            payFrequencies = payrollPayGroupListParams.payFrequencies?.toMutableList()
+            additionalHeaders = payrollPayGroupListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = payrollPayGroupListParams.additionalQueryParams.toBuilder()
         }
 
-        fun individualId(individualId: String) = apply { this.individualId = individualId }
+        fun individualId(individualId: String?) = apply { this.individualId = individualId }
 
-        fun payFrequencies(payFrequencies: List<String>) = apply {
-            this.payFrequencies.clear()
-            this.payFrequencies.addAll(payFrequencies)
+        /** Alias for calling [Builder.individualId] with `individualId.orElse(null)`. */
+        fun individualId(individualId: Optional<String>) = individualId(individualId.getOrNull())
+
+        fun payFrequencies(payFrequencies: List<String>?) = apply {
+            this.payFrequencies = payFrequencies?.toMutableList()
         }
 
-        fun addPayFrequency(payFrequency: String) = apply { this.payFrequencies.add(payFrequency) }
+        /** Alias for calling [Builder.payFrequencies] with `payFrequencies.orElse(null)`. */
+        fun payFrequencies(payFrequencies: Optional<List<String>>) =
+            payFrequencies(payFrequencies.getOrNull())
+
+        /**
+         * Adds a single [String] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addPayFrequency(payFrequency: String) = apply {
+            payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -180,12 +175,41 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [PayrollPayGroupListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): PayrollPayGroupListParams =
             PayrollPayGroupListParams(
                 individualId,
-                if (payFrequencies.size == 0) null else payFrequencies.toImmutable(),
+                payFrequencies?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                individualId?.let { put("individual_id", it) }
+                payFrequencies?.forEach { put("pay_frequencies[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is PayrollPayGroupListParams && individualId == other.individualId && payFrequencies == other.payFrequencies && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, payFrequencies, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "PayrollPayGroupListParams{individualId=$individualId, payFrequencies=$payFrequencies, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

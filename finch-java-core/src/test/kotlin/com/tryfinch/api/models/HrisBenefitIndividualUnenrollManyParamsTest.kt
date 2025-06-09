@@ -2,48 +2,48 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisBenefitIndividualUnenrollManyParamsTest {
+internal class HrisBenefitIndividualUnenrollManyParamsTest {
 
     @Test
-    fun createHrisBenefitIndividualUnenrollManyParams() {
+    fun create() {
         HrisBenefitIndividualUnenrollManyParams.builder()
             .benefitId("benefit_id")
-            .individualIds(listOf("string"))
+            .addIndividualId("string")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun pathParams() {
+        val params =
+            HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+
+        assertThat(params._pathParam(0)).isEqualTo("benefit_id")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
+    fun body() {
         val params =
             HrisBenefitIndividualUnenrollManyParams.builder()
                 .benefitId("benefit_id")
-                .individualIds(listOf("string"))
+                .addIndividualId("string")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.individualIds()).isEqualTo(listOf("string"))
+
+        val body = params._body()
+
+        assertThat(body.individualIds().getOrNull()).containsExactly("string")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-    }
 
-    @Test
-    fun getPathParam() {
-        val params =
-            HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
-        assertThat(params).isNotNull
-        // path param "benefitId"
-        assertThat(params.getPathParam(0)).isEqualTo("benefit_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
+        val body = params._body()
     }
 }

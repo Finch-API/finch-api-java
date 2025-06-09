@@ -2,43 +2,42 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisBenefitUpdateParamsTest {
+internal class HrisBenefitUpdateParamsTest {
 
     @Test
-    fun createHrisBenefitUpdateParams() {
+    fun create() {
         HrisBenefitUpdateParams.builder().benefitId("benefit_id").description("description").build()
     }
 
     @Test
-    fun getBody() {
+    fun pathParams() {
+        val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
+
+        assertThat(params._pathParam(0)).isEqualTo("benefit_id")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
+    fun body() {
         val params =
             HrisBenefitUpdateParams.builder()
                 .benefitId("benefit_id")
                 .description("description")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.description()).isEqualTo("description")
+
+        val body = params._body()
+
+        assertThat(body.description()).contains("description")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-    }
 
-    @Test
-    fun getPathParam() {
-        val params = HrisBenefitUpdateParams.builder().benefitId("benefit_id").build()
-        assertThat(params).isNotNull
-        // path param "benefitId"
-        assertThat(params.getPathParam(0)).isEqualTo("benefit_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
+        val body = params._body()
     }
 }

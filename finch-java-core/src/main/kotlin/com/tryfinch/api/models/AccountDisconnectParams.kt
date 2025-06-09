@@ -3,58 +3,39 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
-import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
 
+/** Disconnect one or more `access_token`s from your application. */
 class AccountDisconnectParams
-constructor(
+private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
-    @JvmSynthetic
-    internal fun getBody(): Optional<Map<String, JsonValue>> {
-        return Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
-    }
-
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AccountDisconnectParams && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "AccountDisconnectParams{additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        @JvmStatic fun none(): AccountDisconnectParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [AccountDisconnectParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [AccountDisconnectParams]. */
+    class Builder internal constructor() {
 
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -62,9 +43,10 @@ constructor(
 
         @JvmSynthetic
         internal fun from(accountDisconnectParams: AccountDisconnectParams) = apply {
-            additionalHeaders(accountDisconnectParams.additionalHeaders)
-            additionalQueryParams(accountDisconnectParams.additionalQueryParams)
-            additionalBodyProperties(accountDisconnectParams.additionalBodyProperties)
+            additionalHeaders = accountDisconnectParams.additionalHeaders.toBuilder()
+            additionalQueryParams = accountDisconnectParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                accountDisconnectParams.additionalBodyProperties.toMutableMap()
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -187,6 +169,11 @@ constructor(
             keys.forEach(::removeAdditionalBodyProperty)
         }
 
+        /**
+         * Returns an immutable instance of [AccountDisconnectParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): AccountDisconnectParams =
             AccountDisconnectParams(
                 additionalHeaders.build(),
@@ -194,4 +181,24 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    fun _body(): Optional<Map<String, JsonValue>> =
+        Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AccountDisconnectParams && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "AccountDisconnectParams{additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

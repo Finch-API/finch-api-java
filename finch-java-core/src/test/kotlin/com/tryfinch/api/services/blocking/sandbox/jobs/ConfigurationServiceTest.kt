@@ -4,45 +4,49 @@ package com.tryfinch.api.services.blocking.sandbox.jobs
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.SandboxJobConfiguration
+import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class ConfigurationServiceTest {
+internal class ConfigurationServiceTest {
 
     @Test
-    fun callRetrieve() {
+    fun retrieve() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val configurationService = client.sandbox().jobs().configuration()
-        val configurationRetrieveResponse =
-            configurationService.retrieve(SandboxJobConfigurationRetrieveParams.builder().build())
-        println(configurationRetrieveResponse)
-        for (sandboxJobConfiguration: SandboxJobConfiguration in configurationRetrieveResponse) {
-            sandboxJobConfiguration.validate()
-        }
+
+        val sandboxJobConfigurations = configurationService.retrieve()
+
+        sandboxJobConfigurations.forEach { it.validate() }
     }
 
     @Test
-    fun callUpdate() {
+    fun update() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val configurationService = client.sandbox().jobs().configuration()
+
         val sandboxJobConfiguration =
             configurationService.update(
                 SandboxJobConfigurationUpdateParams.builder()
-                    .completionStatus(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
-                    .type(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
+                    .sandboxJobConfiguration(
+                        SandboxJobConfiguration.builder()
+                            .completionStatus(SandboxJobConfiguration.CompletionStatus.COMPLETE)
+                            .type(SandboxJobConfiguration.Type.DATA_SYNC_ALL)
+                            .build()
+                    )
                     .build()
             )
-        println(sandboxJobConfiguration)
+
         sandboxJobConfiguration.validate()
     }
 }

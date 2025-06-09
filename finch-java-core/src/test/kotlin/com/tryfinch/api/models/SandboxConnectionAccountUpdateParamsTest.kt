@@ -2,34 +2,34 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxConnectionAccountUpdateParamsTest {
+internal class SandboxConnectionAccountUpdateParamsTest {
 
     @Test
-    fun createSandboxConnectionAccountUpdateParams() {
+    fun create() {
         SandboxConnectionAccountUpdateParams.builder()
-            .connectionStatus(ConnectionStatusType.PENDING)
+            .connectionStatus(ConnectionStatusType.REAUTH)
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxConnectionAccountUpdateParams.builder()
-                .connectionStatus(ConnectionStatusType.PENDING)
+                .connectionStatus(ConnectionStatusType.REAUTH)
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.connectionStatus()).isEqualTo(ConnectionStatusType.PENDING)
+
+        val body = params._body()
+
+        assertThat(body.connectionStatus()).contains(ConnectionStatusType.REAUTH)
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxConnectionAccountUpdateParams.builder().build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
     }
 }

@@ -3,24 +3,22 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.models.*
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxEmploymentUpdateParamsTest {
+internal class SandboxEmploymentUpdateParamsTest {
 
     @Test
-    fun createSandboxEmploymentUpdateParams() {
+    fun create() {
         SandboxEmploymentUpdateParams.builder()
             .individualId("individual_id")
             .classCode("class_code")
-            .customFields(
-                listOf(
-                    SandboxEmploymentUpdateParams.CustomField.builder()
-                        .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
-                        .build()
-                )
+            .addCustomField(
+                SandboxEmploymentUpdateParams.CustomField.builder()
+                    .name("name")
+                    .value(JsonValue.from(mapOf<String, Any>()))
+                    .build()
             )
             .department(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
             .employment(
@@ -29,25 +27,24 @@ class SandboxEmploymentUpdateParamsTest {
                     .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                     .build()
             )
+            .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
             .endDate("end_date")
             .firstName("first_name")
             .income(
                 Income.builder()
-                    .amount(123L)
+                    .amount(0L)
                     .currency("currency")
                     .effectiveDate("effective_date")
                     .unit(Income.Unit.YEARLY)
                     .build()
             )
-            .incomeHistory(
-                listOf(
-                    Income.builder()
-                        .amount(123L)
-                        .currency("currency")
-                        .effectiveDate("effective_date")
-                        .unit(Income.Unit.YEARLY)
-                        .build()
-                )
+            .addIncomeHistory(
+                Income.builder()
+                    .amount(0L)
+                    .currency("currency")
+                    .effectiveDate("effective_date")
+                    .unit(Income.Unit.YEARLY)
+                    .build()
             )
             .isActive(true)
             .lastName("last_name")
@@ -58,13 +55,17 @@ class SandboxEmploymentUpdateParamsTest {
                     .country("country")
                     .line1("line1")
                     .line2("line2")
-                    .name("name")
                     .postalCode("postal_code")
-                    .sourceId("source_id")
                     .state("state")
+                    .name("name")
+                    .sourceId("source_id")
                     .build()
             )
-            .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
+            .manager(
+                SandboxEmploymentUpdateParams.Manager.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
             .middleName("middle_name")
             .sourceId("source_id")
             .startDate("start_date")
@@ -73,18 +74,25 @@ class SandboxEmploymentUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun pathParams() {
+        val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
+
+        assertThat(params._pathParam(0)).isEqualTo("individual_id")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
+    fun body() {
         val params =
             SandboxEmploymentUpdateParams.builder()
                 .individualId("individual_id")
                 .classCode("class_code")
-                .customFields(
-                    listOf(
-                        SandboxEmploymentUpdateParams.CustomField.builder()
-                            .name("name")
-                            .value(JsonValue.from(mapOf<String, Any>()))
-                            .build()
-                    )
+                .addCustomField(
+                    SandboxEmploymentUpdateParams.CustomField.builder()
+                        .name("name")
+                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .build()
                 )
                 .department(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
                 .employment(
@@ -93,25 +101,24 @@ class SandboxEmploymentUpdateParamsTest {
                         .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                         .build()
                 )
+                .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
                 .income(
                     Income.builder()
-                        .amount(123L)
+                        .amount(0L)
                         .currency("currency")
                         .effectiveDate("effective_date")
                         .unit(Income.Unit.YEARLY)
                         .build()
                 )
-                .incomeHistory(
-                    listOf(
-                        Income.builder()
-                            .amount(123L)
-                            .currency("currency")
-                            .effectiveDate("effective_date")
-                            .unit(Income.Unit.YEARLY)
-                            .build()
-                    )
+                .addIncomeHistory(
+                    Income.builder()
+                        .amount(0L)
+                        .currency("currency")
+                        .effectiveDate("effective_date")
+                        .unit(Income.Unit.YEARLY)
+                        .build()
                 )
                 .isActive(true)
                 .lastName("last_name")
@@ -122,99 +129,96 @@ class SandboxEmploymentUpdateParamsTest {
                         .country("country")
                         .line1("line1")
                         .line2("line2")
-                        .name("name")
                         .postalCode("postal_code")
-                        .sourceId("source_id")
                         .state("state")
+                        .name("name")
+                        .sourceId("source_id")
                         .build()
                 )
-                .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
+                .manager(
+                    SandboxEmploymentUpdateParams.Manager.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
                 .middleName("middle_name")
                 .sourceId("source_id")
                 .startDate("start_date")
                 .title("title")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.classCode()).isEqualTo("class_code")
-        assertThat(body.customFields())
-            .isEqualTo(
-                listOf(
-                    SandboxEmploymentUpdateParams.CustomField.builder()
-                        .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
-                        .build()
-                )
+
+        val body = params._body()
+
+        assertThat(body.classCode()).contains("class_code")
+        assertThat(body.customFields().getOrNull())
+            .containsExactly(
+                SandboxEmploymentUpdateParams.CustomField.builder()
+                    .name("name")
+                    .value(JsonValue.from(mapOf<String, Any>()))
+                    .build()
             )
         assertThat(body.department())
-            .isEqualTo(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
+            .contains(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
         assertThat(body.employment())
-            .isEqualTo(
+            .contains(
                 SandboxEmploymentUpdateParams.Employment.builder()
                     .subtype(SandboxEmploymentUpdateParams.Employment.Subtype.FULL_TIME)
                     .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                     .build()
             )
-        assertThat(body.endDate()).isEqualTo("end_date")
-        assertThat(body.firstName()).isEqualTo("first_name")
+        assertThat(body.employmentStatus())
+            .contains(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
+        assertThat(body.endDate()).contains("end_date")
+        assertThat(body.firstName()).contains("first_name")
         assertThat(body.income())
-            .isEqualTo(
+            .contains(
                 Income.builder()
-                    .amount(123L)
+                    .amount(0L)
                     .currency("currency")
                     .effectiveDate("effective_date")
                     .unit(Income.Unit.YEARLY)
                     .build()
             )
-        assertThat(body.incomeHistory())
-            .isEqualTo(
-                listOf(
-                    Income.builder()
-                        .amount(123L)
-                        .currency("currency")
-                        .effectiveDate("effective_date")
-                        .unit(Income.Unit.YEARLY)
-                        .build()
-                )
+        assertThat(body.incomeHistory().getOrNull())
+            .containsExactly(
+                Income.builder()
+                    .amount(0L)
+                    .currency("currency")
+                    .effectiveDate("effective_date")
+                    .unit(Income.Unit.YEARLY)
+                    .build()
             )
-        assertThat(body.isActive()).isEqualTo(true)
-        assertThat(body.lastName()).isEqualTo("last_name")
-        assertThat(body.latestRehireDate()).isEqualTo("latest_rehire_date")
+        assertThat(body.isActive()).contains(true)
+        assertThat(body.lastName()).contains("last_name")
+        assertThat(body.latestRehireDate()).contains("latest_rehire_date")
         assertThat(body.location())
-            .isEqualTo(
+            .contains(
                 Location.builder()
                     .city("city")
                     .country("country")
                     .line1("line1")
                     .line2("line2")
-                    .name("name")
                     .postalCode("postal_code")
-                    .sourceId("source_id")
                     .state("state")
+                    .name("name")
+                    .sourceId("source_id")
                     .build()
             )
         assertThat(body.manager())
-            .isEqualTo(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
-        assertThat(body.middleName()).isEqualTo("middle_name")
-        assertThat(body.sourceId()).isEqualTo("source_id")
-        assertThat(body.startDate()).isEqualTo("start_date")
-        assertThat(body.title()).isEqualTo("title")
+            .contains(
+                SandboxEmploymentUpdateParams.Manager.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
+        assertThat(body.middleName()).contains("middle_name")
+        assertThat(body.sourceId()).contains("source_id")
+        assertThat(body.startDate()).contains("start_date")
+        assertThat(body.title()).contains("title")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-    }
 
-    @Test
-    fun getPathParam() {
-        val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
-        assertThat(params).isNotNull
-        // path param "individualId"
-        assertThat(params.getPathParam(0)).isEqualTo("individual_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
+        val body = params._body()
     }
 }

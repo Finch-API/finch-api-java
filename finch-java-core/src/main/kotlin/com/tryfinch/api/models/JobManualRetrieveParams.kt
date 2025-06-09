@@ -2,58 +2,42 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.models.*
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
+/**
+ * Get a manual job by `job_id`. Manual jobs are completed by a human and include Assisted Benefits
+ * jobs.
+ */
 class JobManualRetrieveParams
-constructor(
-    private val jobId: String,
+private constructor(
+    private val jobId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
-    fun jobId(): String = jobId
-
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    fun getPathParam(index: Int): String {
-        return when (index) {
-            0 -> jobId
-            else -> ""
-        }
-    }
+    fun jobId(): Optional<String> = Optional.ofNullable(jobId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is JobManualRetrieveParams && jobId == other.jobId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(jobId, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "JobManualRetrieveParams{jobId=$jobId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        @JvmStatic fun none(): JobManualRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [JobManualRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [JobManualRetrieveParams]. */
+    class Builder internal constructor() {
 
         private var jobId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -61,12 +45,15 @@ constructor(
 
         @JvmSynthetic
         internal fun from(jobManualRetrieveParams: JobManualRetrieveParams) = apply {
-            this.jobId = jobManualRetrieveParams.jobId
-            additionalHeaders(jobManualRetrieveParams.additionalHeaders)
-            additionalQueryParams(jobManualRetrieveParams.additionalQueryParams)
+            jobId = jobManualRetrieveParams.jobId
+            additionalHeaders = jobManualRetrieveParams.additionalHeaders.toBuilder()
+            additionalQueryParams = jobManualRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun jobId(jobId: String) = apply { this.jobId = jobId }
+        fun jobId(jobId: String?) = apply { this.jobId = jobId }
+
+        /** Alias for calling [Builder.jobId] with `jobId.orElse(null)`. */
+        fun jobId(jobId: Optional<String>) = jobId(jobId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -166,11 +153,35 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [JobManualRetrieveParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): JobManualRetrieveParams =
-            JobManualRetrieveParams(
-                checkNotNull(jobId) { "`jobId` is required but was not set" },
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            JobManualRetrieveParams(jobId, additionalHeaders.build(), additionalQueryParams.build())
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> jobId ?: ""
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is JobManualRetrieveParams && jobId == other.jobId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(jobId, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "JobManualRetrieveParams{jobId=$jobId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

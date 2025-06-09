@@ -2,40 +2,74 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisBenefitCreateParamsTest {
+internal class HrisBenefitCreateParamsTest {
 
     @Test
-    fun createHrisBenefitCreateParams() {
+    fun create() {
         HrisBenefitCreateParams.builder()
+            .companyContribution(
+                HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
+                    .addTier(
+                        HrisBenefitCreateParams.BenefitCompanyMatchContribution.Tier.builder()
+                            .match(1L)
+                            .threshold(1L)
+                            .build()
+                    )
+                    .type(HrisBenefitCreateParams.BenefitCompanyMatchContribution.Type.MATCH)
+                    .build()
+            )
             .description("description")
             .frequency(BenefitFrequency.ONE_TIME)
-            .type(BenefitType._401K)
+            .type(BenefitType._457)
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisBenefitCreateParams.builder()
+                .companyContribution(
+                    HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
+                        .addTier(
+                            HrisBenefitCreateParams.BenefitCompanyMatchContribution.Tier.builder()
+                                .match(1L)
+                                .threshold(1L)
+                                .build()
+                        )
+                        .type(HrisBenefitCreateParams.BenefitCompanyMatchContribution.Type.MATCH)
+                        .build()
+                )
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
-                .type(BenefitType._401K)
+                .type(BenefitType._457)
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.description()).isEqualTo("description")
-        assertThat(body.frequency()).isEqualTo(BenefitFrequency.ONE_TIME)
-        assertThat(body.type()).isEqualTo(BenefitType._401K)
+
+        val body = params._body()
+
+        assertThat(body.companyContribution())
+            .contains(
+                HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
+                    .addTier(
+                        HrisBenefitCreateParams.BenefitCompanyMatchContribution.Tier.builder()
+                            .match(1L)
+                            .threshold(1L)
+                            .build()
+                    )
+                    .type(HrisBenefitCreateParams.BenefitCompanyMatchContribution.Type.MATCH)
+                    .build()
+            )
+        assertThat(body.description()).contains("description")
+        assertThat(body.frequency()).contains(BenefitFrequency.ONE_TIME)
+        assertThat(body.type()).contains(BenefitType._457)
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = HrisBenefitCreateParams.builder().build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
     }
 }

@@ -2,70 +2,40 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisEmploymentRetrieveManyParamsTest {
+internal class HrisEmploymentRetrieveManyParamsTest {
 
     @Test
-    fun createHrisEmploymentRetrieveManyParams() {
+    fun create() {
         HrisEmploymentRetrieveManyParams.builder()
-            .requests(
-                listOf(
-                    HrisEmploymentRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+            .addRequest(
+                HrisEmploymentRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisEmploymentRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisEmploymentRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
-                )
-                .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.requests())
-            .isEqualTo(
-                listOf(
+                .addRequest(
                     HrisEmploymentRetrieveManyParams.Request.builder()
                         .individualId("individual_id")
                         .build()
                 )
-            )
-    }
+                .build()
 
-    @Test
-    fun getBodyWithoutOptionalFields() {
-        val params =
-            HrisEmploymentRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisEmploymentRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
-                )
-                .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+        val body = params._body()
+
         assertThat(body.requests())
-            .isEqualTo(
-                listOf(
-                    HrisEmploymentRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+            .containsExactly(
+                HrisEmploymentRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
     }
 }

@@ -2,45 +2,43 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxJobConfigurationUpdateParamsTest {
+internal class SandboxJobConfigurationUpdateParamsTest {
 
     @Test
-    fun createSandboxJobConfigurationUpdateParams() {
+    fun create() {
         SandboxJobConfigurationUpdateParams.builder()
-            .completionStatus(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
-            .type(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
+            .sandboxJobConfiguration(
+                SandboxJobConfiguration.builder()
+                    .completionStatus(SandboxJobConfiguration.CompletionStatus.COMPLETE)
+                    .type(SandboxJobConfiguration.Type.DATA_SYNC_ALL)
+                    .build()
+            )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxJobConfigurationUpdateParams.builder()
-                .completionStatus(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
-                .type(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
+                .sandboxJobConfiguration(
+                    SandboxJobConfiguration.builder()
+                        .completionStatus(SandboxJobConfiguration.CompletionStatus.COMPLETE)
+                        .type(SandboxJobConfiguration.Type.DATA_SYNC_ALL)
+                        .build()
+                )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.completionStatus())
-            .isEqualTo(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
-        assertThat(body.type()).isEqualTo(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
-    }
 
-    @Test
-    fun getBodyWithoutOptionalFields() {
-        val params =
-            SandboxJobConfigurationUpdateParams.builder()
-                .completionStatus(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
-                .type(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
-                .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.completionStatus())
-            .isEqualTo(SandboxJobConfigurationUpdateParams.CompletionStatus.COMPLETE)
-        assertThat(body.type()).isEqualTo(SandboxJobConfigurationUpdateParams.Type.DATA_SYNC_ALL)
+        val body = params._body()
+
+        assertThat(body)
+            .isEqualTo(
+                SandboxJobConfiguration.builder()
+                    .completionStatus(SandboxJobConfiguration.CompletionStatus.COMPLETE)
+                    .type(SandboxJobConfiguration.Type.DATA_SYNC_ALL)
+                    .build()
+            )
     }
 }

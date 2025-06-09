@@ -2,14 +2,13 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class AccessTokenCreateParamsTest {
+internal class AccessTokenCreateParamsTest {
 
     @Test
-    fun createAccessTokenCreateParams() {
+    fun create() {
         AccessTokenCreateParams.builder()
             .code("<your_authorization_code>")
             .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
@@ -19,7 +18,7 @@ class AccessTokenCreateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             AccessTokenCreateParams.builder()
                 .code("<your_authorization_code>")
@@ -27,19 +26,21 @@ class AccessTokenCreateParamsTest {
                 .clientSecret("<your_client_secret>")
                 .redirectUri("https://example.com")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
-        assertThat(body.clientId()).isEqualTo("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
-        assertThat(body.clientSecret()).isEqualTo("<your_client_secret>")
-        assertThat(body.redirectUri()).isEqualTo("https://example.com")
+        assertThat(body.clientId()).contains("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
+        assertThat(body.clientSecret()).contains("<your_client_secret>")
+        assertThat(body.redirectUri()).contains("https://example.com")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = AccessTokenCreateParams.builder().code("<your_authorization_code>").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.code()).isEqualTo("<your_authorization_code>")
     }
 }

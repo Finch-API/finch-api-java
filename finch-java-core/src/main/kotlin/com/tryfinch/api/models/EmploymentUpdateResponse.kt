@@ -6,473 +6,952 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@JsonDeserialize(builder = EmploymentUpdateResponse.Builder::class)
-@NoAutoDetect
 class EmploymentUpdateResponse
 private constructor(
-    private val firstName: JsonField<String>,
-    private val middleName: JsonField<String>,
-    private val lastName: JsonField<String>,
-    private val title: JsonField<String>,
-    private val manager: JsonField<Manager>,
+    private val id: JsonField<String>,
+    private val classCode: JsonField<String>,
+    private val customFields: JsonField<List<CustomField>>,
     private val department: JsonField<Department>,
     private val employment: JsonField<Employment>,
-    private val startDate: JsonField<String>,
+    private val employmentStatus: JsonField<EmploymentStatus>,
     private val endDate: JsonField<String>,
-    private val latestRehireDate: JsonField<String>,
-    private val isActive: JsonField<Boolean>,
-    private val classCode: JsonField<String>,
-    private val location: JsonField<Location>,
+    private val firstName: JsonField<String>,
     private val income: JsonField<Income>,
     private val incomeHistory: JsonField<List<Income?>>,
-    private val customFields: JsonField<List<CustomField>>,
+    private val isActive: JsonField<Boolean>,
+    private val lastName: JsonField<String>,
+    private val latestRehireDate: JsonField<String>,
+    private val location: JsonField<Location>,
+    private val manager: JsonField<Manager>,
+    private val middleName: JsonField<String>,
     private val sourceId: JsonField<String>,
-    private val id: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    private val startDate: JsonField<String>,
+    private val title: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("class_code") @ExcludeMissing classCode: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("custom_fields")
+        @ExcludeMissing
+        customFields: JsonField<List<CustomField>> = JsonMissing.of(),
+        @JsonProperty("department")
+        @ExcludeMissing
+        department: JsonField<Department> = JsonMissing.of(),
+        @JsonProperty("employment")
+        @ExcludeMissing
+        employment: JsonField<Employment> = JsonMissing.of(),
+        @JsonProperty("employment_status")
+        @ExcludeMissing
+        employmentStatus: JsonField<EmploymentStatus> = JsonMissing.of(),
+        @JsonProperty("end_date") @ExcludeMissing endDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("first_name") @ExcludeMissing firstName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("income") @ExcludeMissing income: JsonField<Income> = JsonMissing.of(),
+        @JsonProperty("income_history")
+        @ExcludeMissing
+        incomeHistory: JsonField<List<Income?>> = JsonMissing.of(),
+        @JsonProperty("is_active") @ExcludeMissing isActive: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("last_name") @ExcludeMissing lastName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("latest_rehire_date")
+        @ExcludeMissing
+        latestRehireDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("location") @ExcludeMissing location: JsonField<Location> = JsonMissing.of(),
+        @JsonProperty("manager") @ExcludeMissing manager: JsonField<Manager> = JsonMissing.of(),
+        @JsonProperty("middle_name")
+        @ExcludeMissing
+        middleName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("source_id") @ExcludeMissing sourceId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("start_date") @ExcludeMissing startDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        id,
+        classCode,
+        customFields,
+        department,
+        employment,
+        employmentStatus,
+        endDate,
+        firstName,
+        income,
+        incomeHistory,
+        isActive,
+        lastName,
+        latestRehireDate,
+        location,
+        manager,
+        middleName,
+        sourceId,
+        startDate,
+        title,
+        mutableMapOf(),
+    )
 
-    /** The legal first name of the individual. */
-    fun firstName(): Optional<String> = Optional.ofNullable(firstName.getNullable("first_name"))
+    /**
+     * A stable Finch `id` (UUID v4) for an individual in the company.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun id(): Optional<String> = id.getOptional("id")
 
-    /** The legal middle name of the individual. */
-    fun middleName(): Optional<String> = Optional.ofNullable(middleName.getNullable("middle_name"))
+    /**
+     * Worker's compensation classification code for this employee
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun classCode(): Optional<String> = classCode.getOptional("class_code")
 
-    /** The legal last name of the individual. */
-    fun lastName(): Optional<String> = Optional.ofNullable(lastName.getNullable("last_name"))
+    /**
+     * Custom fields for the individual. These are fields which are defined by the employer in the
+     * system. Custom fields are not currently supported for assisted connections.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun customFields(): Optional<List<CustomField>> = customFields.getOptional("custom_fields")
 
-    /** The current title of the individual. */
-    fun title(): Optional<String> = Optional.ofNullable(title.getNullable("title"))
+    /**
+     * The department object.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun department(): Optional<Department> = department.getOptional("department")
 
-    /** The manager object representing the manager of the individual within the org. */
-    fun manager(): Optional<Manager> = Optional.ofNullable(manager.getNullable("manager"))
+    /**
+     * The employment object.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun employment(): Optional<Employment> = employment.getOptional("employment")
 
-    /** The department object. */
-    fun department(): Optional<Department> =
-        Optional.ofNullable(department.getNullable("department"))
+    /**
+     * The detailed employment status of the individual. Available options: `active`, `deceased`,
+     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun employmentStatus(): Optional<EmploymentStatus> =
+        employmentStatus.getOptional("employment_status")
 
-    /** The employment object. */
-    fun employment(): Optional<Employment> =
-        Optional.ofNullable(employment.getNullable("employment"))
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun endDate(): Optional<String> = endDate.getOptional("end_date")
 
-    fun startDate(): Optional<String> = Optional.ofNullable(startDate.getNullable("start_date"))
-
-    fun endDate(): Optional<String> = Optional.ofNullable(endDate.getNullable("end_date"))
-
-    fun latestRehireDate(): Optional<String> =
-        Optional.ofNullable(latestRehireDate.getNullable("latest_rehire_date"))
-
-    /** `true` if the individual an an active employee or contractor at the company. */
-    fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive.getNullable("is_active"))
-
-    /** Worker's compensation classification code for this employee */
-    fun classCode(): Optional<String> = Optional.ofNullable(classCode.getNullable("class_code"))
-
-    fun location(): Optional<Location> = Optional.ofNullable(location.getNullable("location"))
+    /**
+     * The legal first name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun firstName(): Optional<String> = firstName.getOptional("first_name")
 
     /**
      * The employee's income as reported by the provider. This may not always be annualized income,
      * but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
      * provider returns.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun income(): Optional<Income> = Optional.ofNullable(income.getNullable("income"))
-
-    /** The array of income history. */
-    fun incomeHistory(): Optional<List<Income?>> =
-        Optional.ofNullable(incomeHistory.getNullable("income_history"))
+    fun income(): Optional<Income> = income.getOptional("income")
 
     /**
-     * Custom fields for the individual. These are fields which are defined by the employer in the
-     * system. Custom fields are not currently supported for assisted connections.
+     * The array of income history.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun customFields(): Optional<List<CustomField>> =
-        Optional.ofNullable(customFields.getNullable("custom_fields"))
-
-    /** The source system's unique employment identifier for this individual */
-    fun sourceId(): Optional<String> = Optional.ofNullable(sourceId.getNullable("source_id"))
-
-    /** A stable Finch `id` (UUID v4) for an individual in the company. */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
-
-    /** The legal first name of the individual. */
-    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
-
-    /** The legal middle name of the individual. */
-    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
-
-    /** The legal last name of the individual. */
-    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
-
-    /** The current title of the individual. */
-    @JsonProperty("title") @ExcludeMissing fun _title() = title
-
-    /** The manager object representing the manager of the individual within the org. */
-    @JsonProperty("manager") @ExcludeMissing fun _manager() = manager
-
-    /** The department object. */
-    @JsonProperty("department") @ExcludeMissing fun _department() = department
-
-    /** The employment object. */
-    @JsonProperty("employment") @ExcludeMissing fun _employment() = employment
-
-    @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
-
-    @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
-
-    @JsonProperty("latest_rehire_date") @ExcludeMissing fun _latestRehireDate() = latestRehireDate
-
-    /** `true` if the individual an an active employee or contractor at the company. */
-    @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
-
-    /** Worker's compensation classification code for this employee */
-    @JsonProperty("class_code") @ExcludeMissing fun _classCode() = classCode
-
-    @JsonProperty("location") @ExcludeMissing fun _location() = location
+    fun incomeHistory(): Optional<List<Income?>> = incomeHistory.getOptional("income_history")
 
     /**
-     * The employee's income as reported by the provider. This may not always be annualized income,
-     * but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
-     * provider returns.
+     * `true` if the individual an an active employee or contractor at the company.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    @JsonProperty("income") @ExcludeMissing fun _income() = income
-
-    /** The array of income history. */
-    @JsonProperty("income_history") @ExcludeMissing fun _incomeHistory() = incomeHistory
+    fun isActive(): Optional<Boolean> = isActive.getOptional("is_active")
 
     /**
-     * Custom fields for the individual. These are fields which are defined by the employer in the
-     * system. Custom fields are not currently supported for assisted connections.
+     * The legal last name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    @JsonProperty("custom_fields") @ExcludeMissing fun _customFields() = customFields
+    fun lastName(): Optional<String> = lastName.getOptional("last_name")
 
-    /** The source system's unique employment identifier for this individual */
-    @JsonProperty("source_id") @ExcludeMissing fun _sourceId() = sourceId
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun latestRehireDate(): Optional<String> = latestRehireDate.getOptional("latest_rehire_date")
 
-    /** A stable Finch `id` (UUID v4) for an individual in the company. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun location(): Optional<Location> = location.getOptional("location")
+
+    /**
+     * The manager object representing the manager of the individual within the org.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun manager(): Optional<Manager> = manager.getOptional("manager")
+
+    /**
+     * The legal middle name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun middleName(): Optional<String> = middleName.getOptional("middle_name")
+
+    /**
+     * The source system's unique employment identifier for this individual
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun sourceId(): Optional<String> = sourceId.getOptional("source_id")
+
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun startDate(): Optional<String> = startDate.getOptional("start_date")
+
+    /**
+     * The current title of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun title(): Optional<String> = title.getOptional("title")
+
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+    /**
+     * Returns the raw JSON value of [classCode].
+     *
+     * Unlike [classCode], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("class_code") @ExcludeMissing fun _classCode(): JsonField<String> = classCode
+
+    /**
+     * Returns the raw JSON value of [customFields].
+     *
+     * Unlike [customFields], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("custom_fields")
+    @ExcludeMissing
+    fun _customFields(): JsonField<List<CustomField>> = customFields
+
+    /**
+     * Returns the raw JSON value of [department].
+     *
+     * Unlike [department], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("department")
+    @ExcludeMissing
+    fun _department(): JsonField<Department> = department
+
+    /**
+     * Returns the raw JSON value of [employment].
+     *
+     * Unlike [employment], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("employment")
+    @ExcludeMissing
+    fun _employment(): JsonField<Employment> = employment
+
+    /**
+     * Returns the raw JSON value of [employmentStatus].
+     *
+     * Unlike [employmentStatus], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("employment_status")
+    @ExcludeMissing
+    fun _employmentStatus(): JsonField<EmploymentStatus> = employmentStatus
+
+    /**
+     * Returns the raw JSON value of [endDate].
+     *
+     * Unlike [endDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("end_date") @ExcludeMissing fun _endDate(): JsonField<String> = endDate
+
+    /**
+     * Returns the raw JSON value of [firstName].
+     *
+     * Unlike [firstName], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("first_name") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
+
+    /**
+     * Returns the raw JSON value of [income].
+     *
+     * Unlike [income], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("income") @ExcludeMissing fun _income(): JsonField<Income> = income
+
+    /**
+     * Returns the raw JSON value of [incomeHistory].
+     *
+     * Unlike [incomeHistory], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("income_history")
+    @ExcludeMissing
+    fun _incomeHistory(): JsonField<List<Income?>> = incomeHistory
+
+    /**
+     * Returns the raw JSON value of [isActive].
+     *
+     * Unlike [isActive], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("is_active") @ExcludeMissing fun _isActive(): JsonField<Boolean> = isActive
+
+    /**
+     * Returns the raw JSON value of [lastName].
+     *
+     * Unlike [lastName], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("last_name") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
+
+    /**
+     * Returns the raw JSON value of [latestRehireDate].
+     *
+     * Unlike [latestRehireDate], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("latest_rehire_date")
+    @ExcludeMissing
+    fun _latestRehireDate(): JsonField<String> = latestRehireDate
+
+    /**
+     * Returns the raw JSON value of [location].
+     *
+     * Unlike [location], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("location") @ExcludeMissing fun _location(): JsonField<Location> = location
+
+    /**
+     * Returns the raw JSON value of [manager].
+     *
+     * Unlike [manager], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("manager") @ExcludeMissing fun _manager(): JsonField<Manager> = manager
+
+    /**
+     * Returns the raw JSON value of [middleName].
+     *
+     * Unlike [middleName], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("middle_name") @ExcludeMissing fun _middleName(): JsonField<String> = middleName
+
+    /**
+     * Returns the raw JSON value of [sourceId].
+     *
+     * Unlike [sourceId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
+
+    /**
+     * Returns the raw JSON value of [startDate].
+     *
+     * Unlike [startDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("start_date") @ExcludeMissing fun _startDate(): JsonField<String> = startDate
+
+    /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    fun validate(): EmploymentUpdateResponse = apply {
-        if (!validated) {
-            firstName()
-            middleName()
-            lastName()
-            title()
-            manager().map { it.validate() }
-            department().map { it.validate() }
-            employment().map { it.validate() }
-            startDate()
-            endDate()
-            latestRehireDate()
-            isActive()
-            classCode()
-            location().map { it.validate() }
-            income().map { it.validate() }
-            incomeHistory().map { it.forEach { it?.validate() } }
-            customFields().map { it.forEach { it.validate() } }
-            sourceId()
-            id()
-            validated = true
-        }
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [EmploymentUpdateResponse]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [EmploymentUpdateResponse]. */
+    class Builder internal constructor() {
 
-        private var firstName: JsonField<String> = JsonMissing.of()
-        private var middleName: JsonField<String> = JsonMissing.of()
-        private var lastName: JsonField<String> = JsonMissing.of()
-        private var title: JsonField<String> = JsonMissing.of()
-        private var manager: JsonField<Manager> = JsonMissing.of()
+        private var id: JsonField<String> = JsonMissing.of()
+        private var classCode: JsonField<String> = JsonMissing.of()
+        private var customFields: JsonField<MutableList<CustomField>>? = null
         private var department: JsonField<Department> = JsonMissing.of()
         private var employment: JsonField<Employment> = JsonMissing.of()
-        private var startDate: JsonField<String> = JsonMissing.of()
+        private var employmentStatus: JsonField<EmploymentStatus> = JsonMissing.of()
         private var endDate: JsonField<String> = JsonMissing.of()
-        private var latestRehireDate: JsonField<String> = JsonMissing.of()
-        private var isActive: JsonField<Boolean> = JsonMissing.of()
-        private var classCode: JsonField<String> = JsonMissing.of()
-        private var location: JsonField<Location> = JsonMissing.of()
+        private var firstName: JsonField<String> = JsonMissing.of()
         private var income: JsonField<Income> = JsonMissing.of()
-        private var incomeHistory: JsonField<List<Income?>> = JsonMissing.of()
-        private var customFields: JsonField<List<CustomField>> = JsonMissing.of()
+        private var incomeHistory: JsonField<MutableList<Income?>>? = null
+        private var isActive: JsonField<Boolean> = JsonMissing.of()
+        private var lastName: JsonField<String> = JsonMissing.of()
+        private var latestRehireDate: JsonField<String> = JsonMissing.of()
+        private var location: JsonField<Location> = JsonMissing.of()
+        private var manager: JsonField<Manager> = JsonMissing.of()
+        private var middleName: JsonField<String> = JsonMissing.of()
         private var sourceId: JsonField<String> = JsonMissing.of()
-        private var id: JsonField<String> = JsonMissing.of()
+        private var startDate: JsonField<String> = JsonMissing.of()
+        private var title: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(employmentUpdateResponse: EmploymentUpdateResponse) = apply {
-            this.firstName = employmentUpdateResponse.firstName
-            this.middleName = employmentUpdateResponse.middleName
-            this.lastName = employmentUpdateResponse.lastName
-            this.title = employmentUpdateResponse.title
-            this.manager = employmentUpdateResponse.manager
-            this.department = employmentUpdateResponse.department
-            this.employment = employmentUpdateResponse.employment
-            this.startDate = employmentUpdateResponse.startDate
-            this.endDate = employmentUpdateResponse.endDate
-            this.latestRehireDate = employmentUpdateResponse.latestRehireDate
-            this.isActive = employmentUpdateResponse.isActive
-            this.classCode = employmentUpdateResponse.classCode
-            this.location = employmentUpdateResponse.location
-            this.income = employmentUpdateResponse.income
-            this.incomeHistory = employmentUpdateResponse.incomeHistory
-            this.customFields = employmentUpdateResponse.customFields
-            this.sourceId = employmentUpdateResponse.sourceId
-            this.id = employmentUpdateResponse.id
-            additionalProperties(employmentUpdateResponse.additionalProperties)
+            id = employmentUpdateResponse.id
+            classCode = employmentUpdateResponse.classCode
+            customFields = employmentUpdateResponse.customFields.map { it.toMutableList() }
+            department = employmentUpdateResponse.department
+            employment = employmentUpdateResponse.employment
+            employmentStatus = employmentUpdateResponse.employmentStatus
+            endDate = employmentUpdateResponse.endDate
+            firstName = employmentUpdateResponse.firstName
+            income = employmentUpdateResponse.income
+            incomeHistory = employmentUpdateResponse.incomeHistory.map { it.toMutableList() }
+            isActive = employmentUpdateResponse.isActive
+            lastName = employmentUpdateResponse.lastName
+            latestRehireDate = employmentUpdateResponse.latestRehireDate
+            location = employmentUpdateResponse.location
+            manager = employmentUpdateResponse.manager
+            middleName = employmentUpdateResponse.middleName
+            sourceId = employmentUpdateResponse.sourceId
+            startDate = employmentUpdateResponse.startDate
+            title = employmentUpdateResponse.title
+            additionalProperties = employmentUpdateResponse.additionalProperties.toMutableMap()
         }
-
-        /** The legal first name of the individual. */
-        fun firstName(firstName: String) = firstName(JsonField.of(firstName))
-
-        /** The legal first name of the individual. */
-        @JsonProperty("first_name")
-        @ExcludeMissing
-        fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
-
-        /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = middleName(JsonField.of(middleName))
-
-        /** The legal middle name of the individual. */
-        @JsonProperty("middle_name")
-        @ExcludeMissing
-        fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
-
-        /** The legal last name of the individual. */
-        fun lastName(lastName: String) = lastName(JsonField.of(lastName))
-
-        /** The legal last name of the individual. */
-        @JsonProperty("last_name")
-        @ExcludeMissing
-        fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
-
-        /** The current title of the individual. */
-        fun title(title: String) = title(JsonField.of(title))
-
-        /** The current title of the individual. */
-        @JsonProperty("title")
-        @ExcludeMissing
-        fun title(title: JsonField<String>) = apply { this.title = title }
-
-        /** The manager object representing the manager of the individual within the org. */
-        fun manager(manager: Manager) = manager(JsonField.of(manager))
-
-        /** The manager object representing the manager of the individual within the org. */
-        @JsonProperty("manager")
-        @ExcludeMissing
-        fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
-
-        /** The department object. */
-        fun department(department: Department) = department(JsonField.of(department))
-
-        /** The department object. */
-        @JsonProperty("department")
-        @ExcludeMissing
-        fun department(department: JsonField<Department>) = apply { this.department = department }
-
-        /** The employment object. */
-        fun employment(employment: Employment) = employment(JsonField.of(employment))
-
-        /** The employment object. */
-        @JsonProperty("employment")
-        @ExcludeMissing
-        fun employment(employment: JsonField<Employment>) = apply { this.employment = employment }
-
-        fun startDate(startDate: String) = startDate(JsonField.of(startDate))
-
-        @JsonProperty("start_date")
-        @ExcludeMissing
-        fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
-
-        fun endDate(endDate: String) = endDate(JsonField.of(endDate))
-
-        @JsonProperty("end_date")
-        @ExcludeMissing
-        fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
-
-        fun latestRehireDate(latestRehireDate: String) =
-            latestRehireDate(JsonField.of(latestRehireDate))
-
-        @JsonProperty("latest_rehire_date")
-        @ExcludeMissing
-        fun latestRehireDate(latestRehireDate: JsonField<String>) = apply {
-            this.latestRehireDate = latestRehireDate
-        }
-
-        /** `true` if the individual an an active employee or contractor at the company. */
-        fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
-
-        /** `true` if the individual an an active employee or contractor at the company. */
-        @JsonProperty("is_active")
-        @ExcludeMissing
-        fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
-
-        /** Worker's compensation classification code for this employee */
-        fun classCode(classCode: String) = classCode(JsonField.of(classCode))
-
-        /** Worker's compensation classification code for this employee */
-        @JsonProperty("class_code")
-        @ExcludeMissing
-        fun classCode(classCode: JsonField<String>) = apply { this.classCode = classCode }
-
-        fun location(location: Location) = location(JsonField.of(location))
-
-        @JsonProperty("location")
-        @ExcludeMissing
-        fun location(location: JsonField<Location>) = apply { this.location = location }
-
-        /**
-         * The employee's income as reported by the provider. This may not always be annualized
-         * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
-         * information the provider returns.
-         */
-        fun income(income: Income) = income(JsonField.of(income))
-
-        /**
-         * The employee's income as reported by the provider. This may not always be annualized
-         * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
-         * information the provider returns.
-         */
-        @JsonProperty("income")
-        @ExcludeMissing
-        fun income(income: JsonField<Income>) = apply { this.income = income }
-
-        /** The array of income history. */
-        fun incomeHistory(incomeHistory: List<Income?>) = incomeHistory(JsonField.of(incomeHistory))
-
-        /** The array of income history. */
-        @JsonProperty("income_history")
-        @ExcludeMissing
-        fun incomeHistory(incomeHistory: JsonField<List<Income?>>) = apply {
-            this.incomeHistory = incomeHistory
-        }
-
-        /**
-         * Custom fields for the individual. These are fields which are defined by the employer in
-         * the system. Custom fields are not currently supported for assisted connections.
-         */
-        fun customFields(customFields: List<CustomField>) = customFields(JsonField.of(customFields))
-
-        /**
-         * Custom fields for the individual. These are fields which are defined by the employer in
-         * the system. Custom fields are not currently supported for assisted connections.
-         */
-        @JsonProperty("custom_fields")
-        @ExcludeMissing
-        fun customFields(customFields: JsonField<List<CustomField>>) = apply {
-            this.customFields = customFields
-        }
-
-        /** The source system's unique employment identifier for this individual */
-        fun sourceId(sourceId: String) = sourceId(JsonField.of(sourceId))
-
-        /** The source system's unique employment identifier for this individual */
-        @JsonProperty("source_id")
-        @ExcludeMissing
-        fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** A stable Finch `id` (UUID v4) for an individual in the company. */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun id(id: JsonField<String>) = apply { this.id = id }
+
+        /** Worker's compensation classification code for this employee */
+        fun classCode(classCode: String?) = classCode(JsonField.ofNullable(classCode))
+
+        /** Alias for calling [Builder.classCode] with `classCode.orElse(null)`. */
+        fun classCode(classCode: Optional<String>) = classCode(classCode.getOrNull())
+
+        /**
+         * Sets [Builder.classCode] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.classCode] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun classCode(classCode: JsonField<String>) = apply { this.classCode = classCode }
+
+        /**
+         * Custom fields for the individual. These are fields which are defined by the employer in
+         * the system. Custom fields are not currently supported for assisted connections.
+         */
+        fun customFields(customFields: List<CustomField>?) =
+            customFields(JsonField.ofNullable(customFields))
+
+        /** Alias for calling [Builder.customFields] with `customFields.orElse(null)`. */
+        fun customFields(customFields: Optional<List<CustomField>>) =
+            customFields(customFields.getOrNull())
+
+        /**
+         * Sets [Builder.customFields] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customFields] with a well-typed `List<CustomField>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun customFields(customFields: JsonField<List<CustomField>>) = apply {
+            this.customFields = customFields.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [CustomField] to [customFields].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addCustomField(customField: CustomField) = apply {
+            customFields =
+                (customFields ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("customFields", it).add(customField)
+                }
+        }
+
+        /** The department object. */
+        fun department(department: Department?) = department(JsonField.ofNullable(department))
+
+        /** Alias for calling [Builder.department] with `department.orElse(null)`. */
+        fun department(department: Optional<Department>) = department(department.getOrNull())
+
+        /**
+         * Sets [Builder.department] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.department] with a well-typed [Department] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun department(department: JsonField<Department>) = apply { this.department = department }
+
+        /** The employment object. */
+        fun employment(employment: Employment?) = employment(JsonField.ofNullable(employment))
+
+        /** Alias for calling [Builder.employment] with `employment.orElse(null)`. */
+        fun employment(employment: Optional<Employment>) = employment(employment.getOrNull())
+
+        /**
+         * Sets [Builder.employment] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.employment] with a well-typed [Employment] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun employment(employment: JsonField<Employment>) = apply { this.employment = employment }
+
+        /**
+         * The detailed employment status of the individual. Available options: `active`,
+         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+         */
+        fun employmentStatus(employmentStatus: EmploymentStatus?) =
+            employmentStatus(JsonField.ofNullable(employmentStatus))
+
+        /** Alias for calling [Builder.employmentStatus] with `employmentStatus.orElse(null)`. */
+        fun employmentStatus(employmentStatus: Optional<EmploymentStatus>) =
+            employmentStatus(employmentStatus.getOrNull())
+
+        /**
+         * Sets [Builder.employmentStatus] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.employmentStatus] with a well-typed [EmploymentStatus]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun employmentStatus(employmentStatus: JsonField<EmploymentStatus>) = apply {
+            this.employmentStatus = employmentStatus
+        }
+
+        fun endDate(endDate: String?) = endDate(JsonField.ofNullable(endDate))
+
+        /** Alias for calling [Builder.endDate] with `endDate.orElse(null)`. */
+        fun endDate(endDate: Optional<String>) = endDate(endDate.getOrNull())
+
+        /**
+         * Sets [Builder.endDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.endDate] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
+
+        /** The legal first name of the individual. */
+        fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
+
+        /** Alias for calling [Builder.firstName] with `firstName.orElse(null)`. */
+        fun firstName(firstName: Optional<String>) = firstName(firstName.getOrNull())
+
+        /**
+         * Sets [Builder.firstName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.firstName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
+
+        /**
+         * The employee's income as reported by the provider. This may not always be annualized
+         * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
+         * information the provider returns.
+         */
+        fun income(income: Income?) = income(JsonField.ofNullable(income))
+
+        /** Alias for calling [Builder.income] with `income.orElse(null)`. */
+        fun income(income: Optional<Income>) = income(income.getOrNull())
+
+        /**
+         * Sets [Builder.income] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.income] with a well-typed [Income] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun income(income: JsonField<Income>) = apply { this.income = income }
+
+        /** The array of income history. */
+        fun incomeHistory(incomeHistory: List<Income?>?) =
+            incomeHistory(JsonField.ofNullable(incomeHistory))
+
+        /** Alias for calling [Builder.incomeHistory] with `incomeHistory.orElse(null)`. */
+        fun incomeHistory(incomeHistory: Optional<List<Income?>>) =
+            incomeHistory(incomeHistory.getOrNull())
+
+        /**
+         * Sets [Builder.incomeHistory] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.incomeHistory] with a well-typed `List<Income?>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun incomeHistory(incomeHistory: JsonField<List<Income?>>) = apply {
+            this.incomeHistory = incomeHistory.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [Income] to [Builder.incomeHistory].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addIncomeHistory(incomeHistory: Income) = apply {
+            this.incomeHistory =
+                (this.incomeHistory ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("incomeHistory", it).add(incomeHistory)
+                }
+        }
+
+        /** `true` if the individual an an active employee or contractor at the company. */
+        fun isActive(isActive: Boolean?) = isActive(JsonField.ofNullable(isActive))
+
+        /**
+         * Alias for [Builder.isActive].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
+
+        /** Alias for calling [Builder.isActive] with `isActive.orElse(null)`. */
+        fun isActive(isActive: Optional<Boolean>) = isActive(isActive.getOrNull())
+
+        /**
+         * Sets [Builder.isActive] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isActive] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
+
+        /** The legal last name of the individual. */
+        fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
+
+        /** Alias for calling [Builder.lastName] with `lastName.orElse(null)`. */
+        fun lastName(lastName: Optional<String>) = lastName(lastName.getOrNull())
+
+        /**
+         * Sets [Builder.lastName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.lastName] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
+
+        fun latestRehireDate(latestRehireDate: String?) =
+            latestRehireDate(JsonField.ofNullable(latestRehireDate))
+
+        /** Alias for calling [Builder.latestRehireDate] with `latestRehireDate.orElse(null)`. */
+        fun latestRehireDate(latestRehireDate: Optional<String>) =
+            latestRehireDate(latestRehireDate.getOrNull())
+
+        /**
+         * Sets [Builder.latestRehireDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.latestRehireDate] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun latestRehireDate(latestRehireDate: JsonField<String>) = apply {
+            this.latestRehireDate = latestRehireDate
+        }
+
+        fun location(location: Location?) = location(JsonField.ofNullable(location))
+
+        /** Alias for calling [Builder.location] with `location.orElse(null)`. */
+        fun location(location: Optional<Location>) = location(location.getOrNull())
+
+        /**
+         * Sets [Builder.location] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.location] with a well-typed [Location] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun location(location: JsonField<Location>) = apply { this.location = location }
+
+        /** The manager object representing the manager of the individual within the org. */
+        fun manager(manager: Manager?) = manager(JsonField.ofNullable(manager))
+
+        /** Alias for calling [Builder.manager] with `manager.orElse(null)`. */
+        fun manager(manager: Optional<Manager>) = manager(manager.getOrNull())
+
+        /**
+         * Sets [Builder.manager] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.manager] with a well-typed [Manager] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
+
+        /** The legal middle name of the individual. */
+        fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
+
+        /** Alias for calling [Builder.middleName] with `middleName.orElse(null)`. */
+        fun middleName(middleName: Optional<String>) = middleName(middleName.getOrNull())
+
+        /**
+         * Sets [Builder.middleName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.middleName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
+
+        /** The source system's unique employment identifier for this individual */
+        fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
+
+        /** Alias for calling [Builder.sourceId] with `sourceId.orElse(null)`. */
+        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.getOrNull())
+
+        /**
+         * Sets [Builder.sourceId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.sourceId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
+
+        fun startDate(startDate: String?) = startDate(JsonField.ofNullable(startDate))
+
+        /** Alias for calling [Builder.startDate] with `startDate.orElse(null)`. */
+        fun startDate(startDate: Optional<String>) = startDate(startDate.getOrNull())
+
+        /**
+         * Sets [Builder.startDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.startDate] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
+
+        /** The current title of the individual. */
+        fun title(title: String?) = title(JsonField.ofNullable(title))
+
+        /** Alias for calling [Builder.title] with `title.orElse(null)`. */
+        fun title(title: Optional<String>) = title(title.getOrNull())
+
+        /**
+         * Sets [Builder.title] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.title] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun title(title: JsonField<String>) = apply { this.title = title }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
+        /**
+         * Returns an immutable instance of [EmploymentUpdateResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): EmploymentUpdateResponse =
             EmploymentUpdateResponse(
-                firstName,
-                middleName,
-                lastName,
-                title,
-                manager,
+                id,
+                classCode,
+                (customFields ?: JsonMissing.of()).map { it.toImmutable() },
                 department,
                 employment,
-                startDate,
+                employmentStatus,
                 endDate,
-                latestRehireDate,
-                isActive,
-                classCode,
-                location,
+                firstName,
                 income,
-                incomeHistory.map { it.toImmutable() },
-                customFields.map { it.toImmutable() },
+                (incomeHistory ?: JsonMissing.of()).map { it.toImmutable() },
+                isActive,
+                lastName,
+                latestRehireDate,
+                location,
+                manager,
+                middleName,
                 sourceId,
-                id,
-                additionalProperties.toImmutable(),
+                startDate,
+                title,
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @JsonDeserialize(builder = CustomField.Builder::class)
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): EmploymentUpdateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        classCode()
+        customFields().ifPresent { it.forEach { it.validate() } }
+        department().ifPresent { it.validate() }
+        employment().ifPresent { it.validate() }
+        employmentStatus().ifPresent { it.validate() }
+        endDate()
+        firstName()
+        income().ifPresent { it.validate() }
+        incomeHistory().ifPresent { it.forEach { it?.validate() } }
+        isActive()
+        lastName()
+        latestRehireDate()
+        location().ifPresent { it.validate() }
+        manager().ifPresent { it.validate() }
+        middleName()
+        sourceId()
+        startDate()
+        title()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (if (classCode.asKnown().isPresent) 1 else 0) +
+            (customFields.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (department.asKnown().getOrNull()?.validity() ?: 0) +
+            (employment.asKnown().getOrNull()?.validity() ?: 0) +
+            (employmentStatus.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (endDate.asKnown().isPresent) 1 else 0) +
+            (if (firstName.asKnown().isPresent) 1 else 0) +
+            (income.asKnown().getOrNull()?.validity() ?: 0) +
+            (incomeHistory.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+            (if (isActive.asKnown().isPresent) 1 else 0) +
+            (if (lastName.asKnown().isPresent) 1 else 0) +
+            (if (latestRehireDate.asKnown().isPresent) 1 else 0) +
+            (location.asKnown().getOrNull()?.validity() ?: 0) +
+            (manager.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (middleName.asKnown().isPresent) 1 else 0) +
+            (if (sourceId.asKnown().isPresent) 1 else 0) +
+            (if (startDate.asKnown().isPresent) 1 else 0) +
+            (if (title.asKnown().isPresent) 1 else 0)
+
     class CustomField
     private constructor(
         private val name: JsonField<String>,
         private val value: JsonValue,
-        private val additionalProperties: Map<String, JsonValue>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
+        @JsonCreator
+        private constructor(
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("value") @ExcludeMissing value: JsonValue = JsonMissing.of(),
+        ) : this(name, value, mutableMapOf())
 
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun name(): Optional<String> = name.getOptional("name")
 
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
 
-        @JsonProperty("value") @ExcludeMissing fun _value() = value
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): CustomField = apply {
-            if (!validated) {
-                name()
-                validated = true
-            }
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [CustomField]. */
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [CustomField]. */
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var value: JsonValue = JsonMissing.of()
@@ -480,42 +959,80 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(customField: CustomField) = apply {
-                this.name = customField.name
-                this.value = customField.value
-                additionalProperties(customField.additionalProperties)
+                name = customField.name
+                value = customField.value
+                additionalProperties = customField.additionalProperties.toMutableMap()
             }
 
-            fun name(name: String) = name(JsonField.of(name))
+            fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            @JsonProperty("name")
-            @ExcludeMissing
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
+            fun name(name: Optional<String>) = name(name.getOrNull())
+
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
-            @JsonProperty("value")
-            @ExcludeMissing
             fun value(value: JsonValue) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): CustomField =
-                CustomField(
-                    name,
-                    value,
-                    additionalProperties.toImmutable(),
-                )
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [CustomField].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): CustomField = CustomField(name, value, additionalProperties.toMutableMap())
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): CustomField = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -536,75 +1053,130 @@ private constructor(
     }
 
     /** The department object. */
-    @JsonDeserialize(builder = Department.Builder::class)
-    @NoAutoDetect
     class Department
     private constructor(
         private val name: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
+        @JsonCreator
+        private constructor(
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of()
+        ) : this(name, mutableMapOf())
 
-        /** The name of the department associated with the individual. */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        /**
+         * The name of the department associated with the individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun name(): Optional<String> = name.getOptional("name")
 
-        /** The name of the department associated with the individual. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Department = apply {
-            if (!validated) {
-                name()
-                validated = true
-            }
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Department]. */
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(department: Department) = apply {
-                this.name = department.name
-                additionalProperties(department.additionalProperties)
+                name = department.name
+                additionalProperties = department.additionalProperties.toMutableMap()
             }
 
             /** The name of the department associated with the individual. */
-            fun name(name: String) = name(JsonField.of(name))
+            fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** The name of the department associated with the individual. */
-            @JsonProperty("name")
-            @ExcludeMissing
+            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
+            fun name(name: Optional<String>) = name(name.getOrNull())
+
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Department = Department(name, additionalProperties.toImmutable())
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Department].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Department = Department(name, additionalProperties.toMutableMap())
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): Department = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -625,118 +1197,317 @@ private constructor(
     }
 
     /** The employment object. */
-    @JsonDeserialize(builder = Employment.Builder::class)
-    @NoAutoDetect
     class Employment
     private constructor(
-        private val type: JsonField<Type>,
         private val subtype: JsonField<Subtype>,
-        private val additionalProperties: Map<String, JsonValue>,
+        private val type: JsonField<Type>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
-        /** The main employment type of the individual. */
-        fun type(): Optional<Type> = Optional.ofNullable(type.getNullable("type"))
-
-        /**
-         * The secondary employment type of the individual. Options: `full_time`, `part_time`,
-         * `intern`, `temp`, `seasonal` and `individual_contractor`.
-         */
-        fun subtype(): Optional<Subtype> = Optional.ofNullable(subtype.getNullable("subtype"))
-
-        /** The main employment type of the individual. */
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
+        @JsonCreator
+        private constructor(
+            @JsonProperty("subtype") @ExcludeMissing subtype: JsonField<Subtype> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        ) : this(subtype, type, mutableMapOf())
 
         /**
          * The secondary employment type of the individual. Options: `full_time`, `part_time`,
          * `intern`, `temp`, `seasonal` and `individual_contractor`.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+        fun subtype(): Optional<Subtype> = subtype.getOptional("subtype")
+
+        /**
+         * The main employment type of the individual.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun type(): Optional<Type> = type.getOptional("type")
+
+        /**
+         * Returns the raw JSON value of [subtype].
+         *
+         * Unlike [subtype], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<Subtype> = subtype
+
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Employment = apply {
-            if (!validated) {
-                type()
-                subtype()
-                validated = true
-            }
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Employment]. */
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Employment]. */
+        class Builder internal constructor() {
 
-            private var type: JsonField<Type> = JsonMissing.of()
             private var subtype: JsonField<Subtype> = JsonMissing.of()
+            private var type: JsonField<Type> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(employment: Employment) = apply {
-                this.type = employment.type
-                this.subtype = employment.subtype
-                additionalProperties(employment.additionalProperties)
+                subtype = employment.subtype
+                type = employment.type
+                additionalProperties = employment.additionalProperties.toMutableMap()
             }
 
-            /** The main employment type of the individual. */
-            fun type(type: Type) = type(JsonField.of(type))
-
-            /** The main employment type of the individual. */
-            @JsonProperty("type")
-            @ExcludeMissing
-            fun type(type: JsonField<Type>) = apply { this.type = type }
-
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            fun subtype(subtype: Subtype) = subtype(JsonField.of(subtype))
+            fun subtype(subtype: Subtype?) = subtype(JsonField.ofNullable(subtype))
+
+            /** Alias for calling [Builder.subtype] with `subtype.orElse(null)`. */
+            fun subtype(subtype: Optional<Subtype>) = subtype(subtype.getOrNull())
 
             /**
-             * The secondary employment type of the individual. Options: `full_time`, `part_time`,
-             * `intern`, `temp`, `seasonal` and `individual_contractor`.
+             * Sets [Builder.subtype] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.subtype] with a well-typed [Subtype] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            @JsonProperty("subtype")
-            @ExcludeMissing
             fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
+
+            /** The main employment type of the individual. */
+            fun type(type: Type?) = type(JsonField.ofNullable(type))
+
+            /** Alias for calling [Builder.type] with `type.orElse(null)`. */
+            fun type(type: Optional<Type>) = type(type.getOrNull())
+
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Employment =
-                Employment(
-                    type,
-                    subtype,
-                    additionalProperties.toImmutable(),
-                )
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Employment].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Employment = Employment(subtype, type, additionalProperties.toMutableMap())
         }
 
-        class Subtype
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        private var validated: Boolean = false
 
+        fun validate(): Employment = apply {
+            if (validated) {
+                return@apply
+            }
+
+            subtype().ifPresent { it.validate() }
+            type().ifPresent { it.validate() }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (subtype.asKnown().getOrNull()?.validity() ?: 0) +
+                (type.asKnown().getOrNull()?.validity() ?: 0)
+
+        /**
+         * The secondary employment type of the individual. Options: `full_time`, `part_time`,
+         * `intern`, `temp`, `seasonal` and `individual_contractor`.
+         */
+        class Subtype @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val FULL_TIME = of("full_time")
+
+                @JvmField val INTERN = of("intern")
+
+                @JvmField val PART_TIME = of("part_time")
+
+                @JvmField val TEMP = of("temp")
+
+                @JvmField val SEASONAL = of("seasonal")
+
+                @JvmField val INDIVIDUAL_CONTRACTOR = of("individual_contractor")
+
+                @JvmStatic fun of(value: String) = Subtype(JsonField.of(value))
+            }
+
+            /** An enum containing [Subtype]'s known values. */
+            enum class Known {
+                FULL_TIME,
+                INTERN,
+                PART_TIME,
+                TEMP,
+                SEASONAL,
+                INDIVIDUAL_CONTRACTOR,
+            }
+
+            /**
+             * An enum containing [Subtype]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Subtype] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                FULL_TIME,
+                INTERN,
+                PART_TIME,
+                TEMP,
+                SEASONAL,
+                INDIVIDUAL_CONTRACTOR,
+                /**
+                 * An enum member indicating that [Subtype] was instantiated with an unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    FULL_TIME -> Value.FULL_TIME
+                    INTERN -> Value.INTERN
+                    PART_TIME -> Value.PART_TIME
+                    TEMP -> Value.TEMP
+                    SEASONAL -> Value.SEASONAL
+                    INDIVIDUAL_CONTRACTOR -> Value.INDIVIDUAL_CONTRACTOR
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    FULL_TIME -> Known.FULL_TIME
+                    INTERN -> Known.INTERN
+                    PART_TIME -> Known.PART_TIME
+                    TEMP -> Known.TEMP
+                    SEASONAL -> Known.SEASONAL
+                    INDIVIDUAL_CONTRACTOR -> Known.INDIVIDUAL_CONTRACTOR
+                    else -> throw FinchInvalidDataException("Unknown Subtype: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): Subtype = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -749,75 +1520,122 @@ private constructor(
             override fun hashCode() = value.hashCode()
 
             override fun toString() = value.toString()
+        }
+
+        /** The main employment type of the individual. */
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
 
-                @JvmField val FULL_TIME = Subtype(JsonField.of("full_time"))
+                @JvmField val EMPLOYEE = of("employee")
 
-                @JvmField val INTERN = Subtype(JsonField.of("intern"))
+                @JvmField val CONTRACTOR = of("contractor")
 
-                @JvmField val PART_TIME = Subtype(JsonField.of("part_time"))
-
-                @JvmField val TEMP = Subtype(JsonField.of("temp"))
-
-                @JvmField val SEASONAL = Subtype(JsonField.of("seasonal"))
-
-                @JvmField val INDIVIDUAL_CONTRACTOR = Subtype(JsonField.of("individual_contractor"))
-
-                @JvmStatic fun of(value: String) = Subtype(JsonField.of(value))
+                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
 
+            /** An enum containing [Type]'s known values. */
             enum class Known {
-                FULL_TIME,
-                INTERN,
-                PART_TIME,
-                TEMP,
-                SEASONAL,
-                INDIVIDUAL_CONTRACTOR,
+                EMPLOYEE,
+                CONTRACTOR,
             }
 
+            /**
+             * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Type] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
             enum class Value {
-                FULL_TIME,
-                INTERN,
-                PART_TIME,
-                TEMP,
-                SEASONAL,
-                INDIVIDUAL_CONTRACTOR,
+                EMPLOYEE,
+                CONTRACTOR,
+                /** An enum member indicating that [Type] was instantiated with an unknown value. */
                 _UNKNOWN,
             }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
             fun value(): Value =
                 when (this) {
-                    FULL_TIME -> Value.FULL_TIME
-                    INTERN -> Value.INTERN
-                    PART_TIME -> Value.PART_TIME
-                    TEMP -> Value.TEMP
-                    SEASONAL -> Value.SEASONAL
-                    INDIVIDUAL_CONTRACTOR -> Value.INDIVIDUAL_CONTRACTOR
+                    EMPLOYEE -> Value.EMPLOYEE
+                    CONTRACTOR -> Value.CONTRACTOR
                     else -> Value._UNKNOWN
                 }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
             fun known(): Known =
                 when (this) {
-                    FULL_TIME -> Known.FULL_TIME
-                    INTERN -> Known.INTERN
-                    PART_TIME -> Known.PART_TIME
-                    TEMP -> Known.TEMP
-                    SEASONAL -> Known.SEASONAL
-                    INDIVIDUAL_CONTRACTOR -> Known.INDIVIDUAL_CONTRACTOR
-                    else -> throw FinchInvalidDataException("Unknown Subtype: $value")
+                    EMPLOYEE -> Known.EMPLOYEE
+                    CONTRACTOR -> Known.CONTRACTOR
+                    else -> throw FinchInvalidDataException("Unknown Type: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
-        }
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
 
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+            private var validated: Boolean = false
 
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -830,42 +1648,6 @@ private constructor(
             override fun hashCode() = value.hashCode()
 
             override fun toString() = value.toString()
-
-            companion object {
-
-                @JvmField val EMPLOYEE = Type(JsonField.of("employee"))
-
-                @JvmField val CONTRACTOR = Type(JsonField.of("contractor"))
-
-                @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-            }
-
-            enum class Known {
-                EMPLOYEE,
-                CONTRACTOR,
-            }
-
-            enum class Value {
-                EMPLOYEE,
-                CONTRACTOR,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    EMPLOYEE -> Value.EMPLOYEE
-                    CONTRACTOR -> Value.CONTRACTOR
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    EMPLOYEE -> Known.EMPLOYEE
-                    CONTRACTOR -> Known.CONTRACTOR
-                    else -> throw FinchInvalidDataException("Unknown Type: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
         }
 
         override fun equals(other: Any?): Boolean {
@@ -873,89 +1655,303 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Employment && type == other.type && subtype == other.subtype && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Employment && subtype == other.subtype && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(type, subtype, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(subtype, type, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
+            "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    /** The manager object representing the manager of the individual within the org. */
-    @JsonDeserialize(builder = Manager.Builder::class)
-    @NoAutoDetect
-    class Manager
-    private constructor(
-        private val id: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
+    /**
+     * The detailed employment status of the individual. Available options: `active`, `deceased`,
+     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+     */
+    class EmploymentStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val ACTIVE = of("active")
+
+            @JvmField val DECEASED = of("deceased")
+
+            @JvmField val LEAVE = of("leave")
+
+            @JvmField val ONBOARDING = of("onboarding")
+
+            @JvmField val PREHIRE = of("prehire")
+
+            @JvmField val RETIRED = of("retired")
+
+            @JvmField val TERMINATED = of("terminated")
+
+            @JvmStatic fun of(value: String) = EmploymentStatus(JsonField.of(value))
+        }
+
+        /** An enum containing [EmploymentStatus]'s known values. */
+        enum class Known {
+            ACTIVE,
+            DECEASED,
+            LEAVE,
+            ONBOARDING,
+            PREHIRE,
+            RETIRED,
+            TERMINATED,
+        }
+
+        /**
+         * An enum containing [EmploymentStatus]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [EmploymentStatus] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            ACTIVE,
+            DECEASED,
+            LEAVE,
+            ONBOARDING,
+            PREHIRE,
+            RETIRED,
+            TERMINATED,
+            /**
+             * An enum member indicating that [EmploymentStatus] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                ACTIVE -> Value.ACTIVE
+                DECEASED -> Value.DECEASED
+                LEAVE -> Value.LEAVE
+                ONBOARDING -> Value.ONBOARDING
+                PREHIRE -> Value.PREHIRE
+                RETIRED -> Value.RETIRED
+                TERMINATED -> Value.TERMINATED
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
+        fun known(): Known =
+            when (this) {
+                ACTIVE -> Known.ACTIVE
+                DECEASED -> Known.DECEASED
+                LEAVE -> Known.LEAVE
+                ONBOARDING -> Known.ONBOARDING
+                PREHIRE -> Known.PREHIRE
+                RETIRED -> Known.RETIRED
+                TERMINATED -> Known.TERMINATED
+                else -> throw FinchInvalidDataException("Unknown EmploymentStatus: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
 
         private var validated: Boolean = false
 
-        /** A stable Finch `id` (UUID v4) for an individual in the company. */
-        fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+        fun validate(): EmploymentStatus = apply {
+            if (validated) {
+                return@apply
+            }
 
-        /** A stable Finch `id` (UUID v4) for an individual in the company. */
-        @JsonProperty("id") @ExcludeMissing fun _id() = id
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is EmploymentStatus && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
+    /** The manager object representing the manager of the individual within the org. */
+    class Manager
+    private constructor(
+        private val id: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of()
+        ) : this(id, mutableMapOf())
+
+        /**
+         * A stable Finch `id` (UUID v4) for an individual in the company.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun id(): Optional<String> = id.getOptional("id")
+
+        /**
+         * Returns the raw JSON value of [id].
+         *
+         * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Manager = apply {
-            if (!validated) {
-                id()
-                validated = true
-            }
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Manager]. */
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Manager]. */
+        class Builder internal constructor() {
 
             private var id: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(manager: Manager) = apply {
-                this.id = manager.id
-                additionalProperties(manager.additionalProperties)
+                id = manager.id
+                additionalProperties = manager.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
             fun id(id: String) = id(JsonField.of(id))
 
-            /** A stable Finch `id` (UUID v4) for an individual in the company. */
-            @JsonProperty("id")
-            @ExcludeMissing
+            /**
+             * Sets [Builder.id] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.id] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun id(id: JsonField<String>) = apply { this.id = id }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Manager = Manager(id, additionalProperties.toImmutable())
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Manager].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Manager = Manager(id, additionalProperties.toMutableMap())
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): Manager = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = (if (id.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -979,15 +1975,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EmploymentUpdateResponse && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && title == other.title && manager == other.manager && department == other.department && employment == other.employment && startDate == other.startDate && endDate == other.endDate && latestRehireDate == other.latestRehireDate && isActive == other.isActive && classCode == other.classCode && location == other.location && income == other.income && incomeHistory == other.incomeHistory && customFields == other.customFields && sourceId == other.sourceId && id == other.id && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is EmploymentUpdateResponse && id == other.id && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(firstName, middleName, lastName, title, manager, department, employment, startDate, endDate, latestRehireDate, isActive, classCode, location, income, incomeHistory, customFields, sourceId, id, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, classCode, customFields, department, employment, employmentStatus, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "EmploymentUpdateResponse{firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, id=$id, additionalProperties=$additionalProperties}"
+        "EmploymentUpdateResponse{id=$id, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
 }

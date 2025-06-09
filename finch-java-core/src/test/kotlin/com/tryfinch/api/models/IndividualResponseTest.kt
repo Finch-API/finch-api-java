@@ -2,40 +2,31 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class IndividualResponseTest {
+internal class IndividualResponseTest {
 
     @Test
-    fun createIndividualResponse() {
+    fun create() {
         val individualResponse =
             IndividualResponse.builder()
                 .body(
-                    Individual.builder()
-                        .id("id")
+                    Individual.UnionMember0.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .dob("dob")
-                        .emails(
-                            listOf(
-                                Individual.Email.builder()
-                                    .data("data")
-                                    .type(Individual.Email.Type.WORK)
-                                    .build()
-                            )
-                        )
-                        .encryptedSsn("encrypted_ssn")
-                        .ethnicity(Individual.Ethnicity.ASIAN)
+                        .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
                         .firstName("first_name")
-                        .gender(Individual.Gender.FEMALE)
+                        .gender(Individual.UnionMember0.Gender.FEMALE)
                         .lastName("last_name")
                         .middleName("middle_name")
-                        .phoneNumbers(
-                            listOf(
-                                Individual.PhoneNumber.builder()
-                                    .data("data")
-                                    .type(Individual.PhoneNumber.Type.WORK)
-                                    .build()
-                            )
+                        .addPhoneNumber(
+                            Individual.UnionMember0.PhoneNumber.builder()
+                                .data("data")
+                                .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
+                                .build()
                         )
                         .preferredName("preferred_name")
                         .residence(
@@ -44,63 +35,124 @@ class IndividualResponseTest {
                                 .country("country")
                                 .line1("line1")
                                 .line2("line2")
-                                .name("name")
                                 .postalCode("postal_code")
-                                .sourceId("source_id")
                                 .state("state")
+                                .name("name")
+                                .sourceId("source_id")
                                 .build()
                         )
+                        .addEmail(
+                            Individual.UnionMember0.Email.builder()
+                                .data("data")
+                                .type(Individual.UnionMember0.Email.Type.WORK)
+                                .build()
+                        )
+                        .encryptedSsn("encrypted_ssn")
                         .ssn("ssn")
                         .build()
                 )
-                .code(123L)
+                .code(0L)
                 .individualId("individual_id")
                 .build()
-        assertThat(individualResponse).isNotNull
+
         assertThat(individualResponse.body())
-            .contains(
-                Individual.builder()
-                    .id("id")
-                    .dob("dob")
-                    .emails(
-                        listOf(
-                            Individual.Email.builder()
+            .isEqualTo(
+                Individual.ofUnionMember0(
+                    Individual.UnionMember0.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dob("dob")
+                        .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
+                        .firstName("first_name")
+                        .gender(Individual.UnionMember0.Gender.FEMALE)
+                        .lastName("last_name")
+                        .middleName("middle_name")
+                        .addPhoneNumber(
+                            Individual.UnionMember0.PhoneNumber.builder()
                                 .data("data")
-                                .type(Individual.Email.Type.WORK)
+                                .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
                                 .build()
                         )
-                    )
-                    .encryptedSsn("encrypted_ssn")
-                    .ethnicity(Individual.Ethnicity.ASIAN)
-                    .firstName("first_name")
-                    .gender(Individual.Gender.FEMALE)
-                    .lastName("last_name")
-                    .middleName("middle_name")
-                    .phoneNumbers(
-                        listOf(
-                            Individual.PhoneNumber.builder()
-                                .data("data")
-                                .type(Individual.PhoneNumber.Type.WORK)
+                        .preferredName("preferred_name")
+                        .residence(
+                            Location.builder()
+                                .city("city")
+                                .country("country")
+                                .line1("line1")
+                                .line2("line2")
+                                .postalCode("postal_code")
+                                .state("state")
+                                .name("name")
+                                .sourceId("source_id")
                                 .build()
                         )
-                    )
-                    .preferredName("preferred_name")
-                    .residence(
-                        Location.builder()
-                            .city("city")
-                            .country("country")
-                            .line1("line1")
-                            .line2("line2")
-                            .name("name")
-                            .postalCode("postal_code")
-                            .sourceId("source_id")
-                            .state("state")
-                            .build()
-                    )
-                    .ssn("ssn")
-                    .build()
+                        .addEmail(
+                            Individual.UnionMember0.Email.builder()
+                                .data("data")
+                                .type(Individual.UnionMember0.Email.Type.WORK)
+                                .build()
+                        )
+                        .encryptedSsn("encrypted_ssn")
+                        .ssn("ssn")
+                        .build()
+                )
             )
-        assertThat(individualResponse.code()).contains(123L)
-        assertThat(individualResponse.individualId()).contains("individual_id")
+        assertThat(individualResponse.code()).isEqualTo(0L)
+        assertThat(individualResponse.individualId()).isEqualTo("individual_id")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val individualResponse =
+            IndividualResponse.builder()
+                .body(
+                    Individual.UnionMember0.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dob("dob")
+                        .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
+                        .firstName("first_name")
+                        .gender(Individual.UnionMember0.Gender.FEMALE)
+                        .lastName("last_name")
+                        .middleName("middle_name")
+                        .addPhoneNumber(
+                            Individual.UnionMember0.PhoneNumber.builder()
+                                .data("data")
+                                .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
+                                .build()
+                        )
+                        .preferredName("preferred_name")
+                        .residence(
+                            Location.builder()
+                                .city("city")
+                                .country("country")
+                                .line1("line1")
+                                .line2("line2")
+                                .postalCode("postal_code")
+                                .state("state")
+                                .name("name")
+                                .sourceId("source_id")
+                                .build()
+                        )
+                        .addEmail(
+                            Individual.UnionMember0.Email.builder()
+                                .data("data")
+                                .type(Individual.UnionMember0.Email.Type.WORK)
+                                .build()
+                        )
+                        .encryptedSsn("encrypted_ssn")
+                        .ssn("ssn")
+                        .build()
+                )
+                .code(0L)
+                .individualId("individual_id")
+                .build()
+
+        val roundtrippedIndividualResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(individualResponse),
+                jacksonTypeRef<IndividualResponse>(),
+            )
+
+        assertThat(roundtrippedIndividualResponse).isEqualTo(individualResponse)
     }
 }

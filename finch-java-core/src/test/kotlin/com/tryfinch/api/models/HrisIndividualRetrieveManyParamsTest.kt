@@ -2,65 +2,58 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisIndividualRetrieveManyParamsTest {
+internal class HrisIndividualRetrieveManyParamsTest {
 
     @Test
-    fun createHrisIndividualRetrieveManyParams() {
+    fun create() {
         HrisIndividualRetrieveManyParams.builder()
             .options(
-                HrisIndividualRetrieveManyParams.Options.builder().include(listOf("string")).build()
+                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
-            .requests(
-                listOf(
-                    HrisIndividualRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+            .addRequest(
+                HrisIndividualRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisIndividualRetrieveManyParams.builder()
                 .options(
-                    HrisIndividualRetrieveManyParams.Options.builder()
-                        .include(listOf("string"))
-                        .build()
+                    HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
                 )
-                .requests(
-                    listOf(
-                        HrisIndividualRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
-                )
-                .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.options())
-            .isEqualTo(
-                HrisIndividualRetrieveManyParams.Options.builder().include(listOf("string")).build()
-            )
-        assertThat(body.requests())
-            .isEqualTo(
-                listOf(
+                .addRequest(
                     HrisIndividualRetrieveManyParams.Request.builder()
                         .individualId("individual_id")
                         .build()
                 )
+                .build()
+
+        val body = params._body()
+
+        assertThat(body.options())
+            .contains(
+                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
+            )
+        assertThat(body.requests().getOrNull())
+            .containsExactly(
+                HrisIndividualRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = HrisIndividualRetrieveManyParams.builder().build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
     }
 }

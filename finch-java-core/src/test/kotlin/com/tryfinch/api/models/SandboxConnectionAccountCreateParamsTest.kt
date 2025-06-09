@@ -2,24 +2,24 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxConnectionAccountCreateParamsTest {
+internal class SandboxConnectionAccountCreateParamsTest {
 
     @Test
-    fun createSandboxConnectionAccountCreateParams() {
+    fun create() {
         SandboxConnectionAccountCreateParams.builder()
             .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .providerId("provider_id")
             .authenticationType(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
-            .products(listOf("string"))
+            .addProduct("string")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxConnectionAccountCreateParams.builder()
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -27,26 +27,28 @@ class SandboxConnectionAccountCreateParamsTest {
                 .authenticationType(
                     SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL
                 )
-                .products(listOf("string"))
+                .addProduct("string")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.companyId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
-            .isEqualTo(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
-        assertThat(body.products()).isEqualTo(listOf("string"))
+            .contains(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
+        assertThat(body.products().getOrNull()).containsExactly("string")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             SandboxConnectionAccountCreateParams.builder()
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .providerId("provider_id")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.companyId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.providerId()).isEqualTo("provider_id")
     }

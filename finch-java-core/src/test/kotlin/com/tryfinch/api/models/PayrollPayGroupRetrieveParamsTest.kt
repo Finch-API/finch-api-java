@@ -2,24 +2,22 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class PayrollPayGroupRetrieveParamsTest {
+internal class PayrollPayGroupRetrieveParamsTest {
 
     @Test
-    fun createPayrollPayGroupRetrieveParams() {
+    fun create() {
         PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
     }
 
     @Test
-    fun getPathParam() {
+    fun pathParams() {
         val params = PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
-        assertThat(params).isNotNull
-        // path param "payGroupId"
-        assertThat(params.getPathParam(0)).isEqualTo("pay_group_id")
+
+        assertThat(params._pathParam(0)).isEqualTo("pay_group_id")
         // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
+        assertThat(params._pathParam(1)).isEqualTo("")
     }
 }

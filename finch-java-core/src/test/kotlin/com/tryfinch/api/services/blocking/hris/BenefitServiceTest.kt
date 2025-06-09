@@ -4,59 +4,74 @@ package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HrisBenefitListParams
-import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.BenefitFrequency
+import com.tryfinch.api.models.BenefitType
+import com.tryfinch.api.models.HrisBenefitCreateParams
+import com.tryfinch.api.models.HrisBenefitUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class BenefitServiceTest {
+internal class BenefitServiceTest {
 
     @Test
-    fun callCreate() {
+    fun create() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
+
         val createCompanyBenefitsResponse =
             benefitService.create(
                 HrisBenefitCreateParams.builder()
+                    .companyContribution(
+                        HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
+                            .addTier(
+                                HrisBenefitCreateParams.BenefitCompanyMatchContribution.Tier
+                                    .builder()
+                                    .match(1L)
+                                    .threshold(1L)
+                                    .build()
+                            )
+                            .type(
+                                HrisBenefitCreateParams.BenefitCompanyMatchContribution.Type.MATCH
+                            )
+                            .build()
+                    )
                     .description("description")
                     .frequency(BenefitFrequency.ONE_TIME)
-                    .type(BenefitType._401K)
+                    .type(BenefitType._457)
                     .build()
             )
-        println(createCompanyBenefitsResponse)
+
         createCompanyBenefitsResponse.validate()
     }
 
     @Test
-    fun callRetrieve() {
+    fun retrieve() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
-        val companyBenefit =
-            benefitService.retrieve(
-                HrisBenefitRetrieveParams.builder().benefitId("benefit_id").build()
-            )
-        println(companyBenefit)
+
+        val companyBenefit = benefitService.retrieve("benefit_id")
+
         companyBenefit.validate()
     }
 
     @Test
-    fun callUpdate() {
+    fun update() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
+
         val updateCompanyBenefitResponse =
             benefitService.update(
                 HrisBenefitUpdateParams.builder()
@@ -64,37 +79,35 @@ class BenefitServiceTest {
                     .description("description")
                     .build()
             )
-        println(updateCompanyBenefitResponse)
+
         updateCompanyBenefitResponse.validate()
     }
 
     @Test
-    fun callList() {
+    fun list() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
-        val getCompanyBenefitsResponse =
-            benefitService.list(HrisBenefitListParams.builder().build())
-        println(getCompanyBenefitsResponse)
-        getCompanyBenefitsResponse.items().forEach { it.validate() }
+
+        val page = benefitService.list()
+
+        page.items().forEach { it.validate() }
     }
 
     @Test
-    fun callListSupportedBenefits() {
+    fun listSupportedBenefits() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val benefitService = client.hris().benefits()
-        val getCompanyBenefitsMetadataResponse =
-            benefitService.listSupportedBenefits(
-                HrisBenefitListSupportedBenefitsParams.builder().build()
-            )
-        println(getCompanyBenefitsMetadataResponse)
-        getCompanyBenefitsMetadataResponse.items().forEach { it.validate() }
+
+        val page = benefitService.listSupportedBenefits()
+
+        page.items().forEach { it.validate() }
     }
 }

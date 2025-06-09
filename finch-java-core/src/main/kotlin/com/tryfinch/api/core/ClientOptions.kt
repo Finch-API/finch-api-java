@@ -10,23 +10,46 @@ import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.http.RetryingHttpClient
 import java.time.Clock
 import java.util.Base64
+import java.util.Optional
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.atomic.AtomicLong
+import kotlin.jvm.optionals.getOrNull
 
 class ClientOptions
 private constructor(
     private val originalHttpClient: HttpClient,
     @get:JvmName("httpClient") val httpClient: HttpClient,
+    @get:JvmName("checkJacksonVersionCompatibility") val checkJacksonVersionCompatibility: Boolean,
     @get:JvmName("jsonMapper") val jsonMapper: JsonMapper,
+    @get:JvmName("streamHandlerExecutor") val streamHandlerExecutor: Executor,
     @get:JvmName("clock") val clock: Clock,
     @get:JvmName("baseUrl") val baseUrl: String,
     @get:JvmName("headers") val headers: Headers,
     @get:JvmName("queryParams") val queryParams: QueryParams,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
+    @get:JvmName("timeout") val timeout: Timeout,
     @get:JvmName("maxRetries") val maxRetries: Int,
-    @get:JvmName("accessToken") val accessToken: String?,
-    @get:JvmName("clientId") val clientId: String?,
-    @get:JvmName("clientSecret") val clientSecret: String?,
-    @get:JvmName("webhookSecret") val webhookSecret: String?,
+    private val accessToken: String?,
+    private val clientId: String?,
+    private val clientSecret: String?,
+    private val webhookSecret: String?,
 ) {
+
+    init {
+        if (checkJacksonVersionCompatibility) {
+            checkJacksonVersionCompatibility()
+        }
+    }
+
+    fun accessToken(): Optional<String> = Optional.ofNullable(accessToken)
+
+    fun clientId(): Optional<String> = Optional.ofNullable(clientId)
+
+    fun clientSecret(): Optional<String> = Optional.ofNullable(clientSecret)
+
+    fun webhookSecret(): Optional<String> = Optional.ofNullable(webhookSecret)
 
     fun toBuilder() = Builder().from(this)
 
@@ -34,20 +57,32 @@ private constructor(
 
         const val PRODUCTION_URL = "https://api.tryfinch.com"
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ClientOptions].
+         *
+         * The following fields are required:
+         * ```java
+         * .httpClient()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
 
         @JvmStatic fun fromEnv(): ClientOptions = builder().fromEnv().build()
     }
 
-    class Builder {
+    /** A builder for [ClientOptions]. */
+    class Builder internal constructor() {
 
         private var httpClient: HttpClient? = null
+        private var checkJacksonVersionCompatibility: Boolean = true
         private var jsonMapper: JsonMapper = jsonMapper()
+        private var streamHandlerExecutor: Executor? = null
         private var clock: Clock = Clock.systemUTC()
         private var baseUrl: String = PRODUCTION_URL
         private var headers: Headers.Builder = Headers.builder()
         private var queryParams: QueryParams.Builder = QueryParams.builder()
         private var responseValidation: Boolean = false
+        private var timeout: Timeout = Timeout.default()
         private var maxRetries: Int = 2
         private var accessToken: String? = null
         private var clientId: String? = null
@@ -57,12 +92,15 @@ private constructor(
         @JvmSynthetic
         internal fun from(clientOptions: ClientOptions) = apply {
             httpClient = clientOptions.originalHttpClient
+            checkJacksonVersionCompatibility = clientOptions.checkJacksonVersionCompatibility
             jsonMapper = clientOptions.jsonMapper
+            streamHandlerExecutor = clientOptions.streamHandlerExecutor
             clock = clientOptions.clock
             baseUrl = clientOptions.baseUrl
             headers = clientOptions.headers.toBuilder()
             queryParams = clientOptions.queryParams.toBuilder()
             responseValidation = clientOptions.responseValidation
+            timeout = clientOptions.timeout
             maxRetries = clientOptions.maxRetries
             accessToken = clientOptions.accessToken
             clientId = clientOptions.clientId
@@ -72,11 +110,48 @@ private constructor(
 
         fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
 
+        fun checkJacksonVersionCompatibility(checkJacksonVersionCompatibility: Boolean) = apply {
+            this.checkJacksonVersionCompatibility = checkJacksonVersionCompatibility
+        }
+
         fun jsonMapper(jsonMapper: JsonMapper) = apply { this.jsonMapper = jsonMapper }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
 
         fun clock(clock: Clock) = apply { this.clock = clock }
 
         fun baseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
+
+        fun responseValidation(responseValidation: Boolean) = apply {
+            this.responseValidation = responseValidation
+        }
+
+        fun timeout(timeout: Timeout) = apply { this.timeout = timeout }
+
+        fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
+
+        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
+
+        /** Alias for calling [Builder.accessToken] with `accessToken.orElse(null)`. */
+        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.getOrNull())
+
+        fun clientId(clientId: String?) = apply { this.clientId = clientId }
+
+        /** Alias for calling [Builder.clientId] with `clientId.orElse(null)`. */
+        fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
+
+        fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
+
+        /** Alias for calling [Builder.clientSecret] with `clientSecret.orElse(null)`. */
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
+
+        fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
+
+        /** Alias for calling [Builder.webhookSecret] with `webhookSecret.orElse(null)`. */
+        fun webhookSecret(webhookSecret: Optional<String>) =
+            webhookSecret(webhookSecret.getOrNull())
 
         fun headers(headers: Headers) = apply {
             this.headers.clear()
@@ -158,28 +233,29 @@ private constructor(
 
         fun removeAllQueryParams(keys: Set<String>) = apply { queryParams.removeAll(keys) }
 
-        fun responseValidation(responseValidation: Boolean) = apply {
-            this.responseValidation = responseValidation
-        }
-
-        fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
-
-        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
-
-        fun clientId(clientId: String?) = apply { this.clientId = clientId }
-
-        fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
-
-        fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
+        fun baseUrl(): String = baseUrl
 
         fun fromEnv() = apply {
+            System.getenv("FINCH_BASE_URL")?.let { baseUrl(it) }
             System.getenv("FINCH_CLIENT_ID")?.let { clientId(it) }
             System.getenv("FINCH_CLIENT_SECRET")?.let { clientSecret(it) }
             System.getenv("FINCH_WEBHOOK_SECRET")?.let { webhookSecret(it) }
         }
 
+        /**
+         * Returns an immutable instance of [ClientOptions].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .httpClient()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): ClientOptions {
-            checkNotNull(httpClient) { "`httpClient` is required but was not set" }
+            val httpClient = checkRequired("httpClient", httpClient)
 
             val headers = Headers.builder()
             val queryParams = QueryParams.builder()
@@ -201,7 +277,7 @@ private constructor(
                     if (!username.isEmpty() && !password.isEmpty()) {
                         headers.put(
                             "Authorization",
-                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}"
+                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
                         )
                     }
                 }
@@ -210,20 +286,37 @@ private constructor(
             queryParams.replaceAll(this.queryParams.build())
 
             return ClientOptions(
-                httpClient!!,
+                httpClient,
                 PhantomReachableClosingHttpClient(
                     RetryingHttpClient.builder()
-                        .httpClient(httpClient!!)
+                        .httpClient(httpClient)
                         .clock(clock)
                         .maxRetries(maxRetries)
                         .build()
                 ),
+                checkJacksonVersionCompatibility,
                 jsonMapper,
+                streamHandlerExecutor
+                    ?: Executors.newCachedThreadPool(
+                        object : ThreadFactory {
+
+                            private val threadFactory: ThreadFactory =
+                                Executors.defaultThreadFactory()
+                            private val count = AtomicLong(0)
+
+                            override fun newThread(runnable: Runnable): Thread =
+                                threadFactory.newThread(runnable).also {
+                                    it.name =
+                                        "finch-stream-handler-thread-${count.getAndIncrement()}"
+                                }
+                        }
+                    ),
                 clock,
                 baseUrl,
                 headers.build(),
                 queryParams.build(),
                 responseValidation,
+                timeout,
                 maxRetries,
                 accessToken,
                 clientId,

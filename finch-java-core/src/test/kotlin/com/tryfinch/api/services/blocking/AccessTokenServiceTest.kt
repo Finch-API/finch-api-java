@@ -4,21 +4,22 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.AccessTokenCreateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class AccessTokenServiceTest {
+internal class AccessTokenServiceTest {
 
     @Test
-    fun callCreate() {
+    fun create() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val accessTokenService = client.accessTokens()
+
         val createAccessTokenResponse =
             accessTokenService.create(
                 AccessTokenCreateParams.builder()
@@ -28,7 +29,7 @@ class AccessTokenServiceTest {
                     .redirectUri("https://example.com")
                     .build()
             )
-        println(createAccessTokenResponse)
+
         createAccessTokenResponse.validate()
     }
 }

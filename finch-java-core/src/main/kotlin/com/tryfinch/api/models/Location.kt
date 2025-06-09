@@ -4,230 +4,435 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@JsonDeserialize(builder = Location.Builder::class)
-@NoAutoDetect
 class Location
 private constructor(
+    private val city: JsonField<String>,
+    private val country: JsonField<String>,
     private val line1: JsonField<String>,
     private val line2: JsonField<String>,
-    private val city: JsonField<String>,
-    private val state: JsonField<String>,
     private val postalCode: JsonField<String>,
-    private val country: JsonField<String>,
+    private val state: JsonField<String>,
     private val name: JsonField<String>,
     private val sourceId: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
+    @JsonCreator
+    private constructor(
+        @JsonProperty("city") @ExcludeMissing city: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("country") @ExcludeMissing country: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("line1") @ExcludeMissing line1: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("line2") @ExcludeMissing line2: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("postal_code")
+        @ExcludeMissing
+        postalCode: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("state") @ExcludeMissing state: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("source_id") @ExcludeMissing sourceId: JsonField<String> = JsonMissing.of(),
+    ) : this(city, country, line1, line2, postalCode, state, name, sourceId, mutableMapOf())
 
-    /** Street address or PO box. */
-    fun line1(): Optional<String> = Optional.ofNullable(line1.getNullable("line1"))
+    /**
+     * City, district, suburb, town, or village.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun city(): Optional<String> = city.getOptional("city")
 
-    /** Apartment, suite, unit, or building. */
-    fun line2(): Optional<String> = Optional.ofNullable(line2.getNullable("line2"))
+    /**
+     * The 2-letter ISO 3166 country code.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun country(): Optional<String> = country.getOptional("country")
 
-    /** City, district, suburb, town, or village. */
-    fun city(): Optional<String> = Optional.ofNullable(city.getNullable("city"))
+    /**
+     * Street address or PO box.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun line1(): Optional<String> = line1.getOptional("line1")
 
-    /** The state code. */
-    fun state(): Optional<String> = Optional.ofNullable(state.getNullable("state"))
+    /**
+     * Apartment, suite, unit, or building.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun line2(): Optional<String> = line2.getOptional("line2")
 
-    /** The postal code or zip code. */
-    fun postalCode(): Optional<String> = Optional.ofNullable(postalCode.getNullable("postal_code"))
+    /**
+     * The postal code or zip code.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun postalCode(): Optional<String> = postalCode.getOptional("postal_code")
 
-    /** The 2-letter ISO 3166 country code. */
-    fun country(): Optional<String> = Optional.ofNullable(country.getNullable("country"))
+    /**
+     * The state code.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun state(): Optional<String> = state.getOptional("state")
 
-    fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun name(): Optional<String> = name.getOptional("name")
 
-    fun sourceId(): Optional<String> = Optional.ofNullable(sourceId.getNullable("source_id"))
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun sourceId(): Optional<String> = sourceId.getOptional("source_id")
 
-    /** Street address or PO box. */
-    @JsonProperty("line1") @ExcludeMissing fun _line1() = line1
+    /**
+     * Returns the raw JSON value of [city].
+     *
+     * Unlike [city], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<String> = city
 
-    /** Apartment, suite, unit, or building. */
-    @JsonProperty("line2") @ExcludeMissing fun _line2() = line2
+    /**
+     * Returns the raw JSON value of [country].
+     *
+     * Unlike [country], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("country") @ExcludeMissing fun _country(): JsonField<String> = country
 
-    /** City, district, suburb, town, or village. */
-    @JsonProperty("city") @ExcludeMissing fun _city() = city
+    /**
+     * Returns the raw JSON value of [line1].
+     *
+     * Unlike [line1], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("line1") @ExcludeMissing fun _line1(): JsonField<String> = line1
 
-    /** The state code. */
-    @JsonProperty("state") @ExcludeMissing fun _state() = state
+    /**
+     * Returns the raw JSON value of [line2].
+     *
+     * Unlike [line2], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("line2") @ExcludeMissing fun _line2(): JsonField<String> = line2
 
-    /** The postal code or zip code. */
-    @JsonProperty("postal_code") @ExcludeMissing fun _postalCode() = postalCode
+    /**
+     * Returns the raw JSON value of [postalCode].
+     *
+     * Unlike [postalCode], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("postal_code") @ExcludeMissing fun _postalCode(): JsonField<String> = postalCode
 
-    /** The 2-letter ISO 3166 country code. */
-    @JsonProperty("country") @ExcludeMissing fun _country() = country
+    /**
+     * Returns the raw JSON value of [state].
+     *
+     * Unlike [state], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("state") @ExcludeMissing fun _state(): JsonField<String> = state
 
-    @JsonProperty("name") @ExcludeMissing fun _name() = name
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    @JsonProperty("source_id") @ExcludeMissing fun _sourceId() = sourceId
+    /**
+     * Returns the raw JSON value of [sourceId].
+     *
+     * Unlike [sourceId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    fun validate(): Location = apply {
-        if (!validated) {
-            line1()
-            line2()
-            city()
-            state()
-            postalCode()
-            country()
-            name()
-            sourceId()
-            validated = true
-        }
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Location].
+         *
+         * The following fields are required:
+         * ```java
+         * .city()
+         * .country()
+         * .line1()
+         * .line2()
+         * .postalCode()
+         * .state()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [Location]. */
+    class Builder internal constructor() {
 
-        private var line1: JsonField<String> = JsonMissing.of()
-        private var line2: JsonField<String> = JsonMissing.of()
-        private var city: JsonField<String> = JsonMissing.of()
-        private var state: JsonField<String> = JsonMissing.of()
-        private var postalCode: JsonField<String> = JsonMissing.of()
-        private var country: JsonField<String> = JsonMissing.of()
+        private var city: JsonField<String>? = null
+        private var country: JsonField<String>? = null
+        private var line1: JsonField<String>? = null
+        private var line2: JsonField<String>? = null
+        private var postalCode: JsonField<String>? = null
+        private var state: JsonField<String>? = null
         private var name: JsonField<String> = JsonMissing.of()
         private var sourceId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(location: Location) = apply {
-            this.line1 = location.line1
-            this.line2 = location.line2
-            this.city = location.city
-            this.state = location.state
-            this.postalCode = location.postalCode
-            this.country = location.country
-            this.name = location.name
-            this.sourceId = location.sourceId
-            additionalProperties(location.additionalProperties)
+            city = location.city
+            country = location.country
+            line1 = location.line1
+            line2 = location.line2
+            postalCode = location.postalCode
+            state = location.state
+            name = location.name
+            sourceId = location.sourceId
+            additionalProperties = location.additionalProperties.toMutableMap()
         }
 
-        /** Street address or PO box. */
-        fun line1(line1: String) = line1(JsonField.of(line1))
+        /** City, district, suburb, town, or village. */
+        fun city(city: String?) = city(JsonField.ofNullable(city))
+
+        /** Alias for calling [Builder.city] with `city.orElse(null)`. */
+        fun city(city: Optional<String>) = city(city.getOrNull())
+
+        /**
+         * Sets [Builder.city] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.city] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun city(city: JsonField<String>) = apply { this.city = city }
+
+        /** The 2-letter ISO 3166 country code. */
+        fun country(country: String?) = country(JsonField.ofNullable(country))
+
+        /** Alias for calling [Builder.country] with `country.orElse(null)`. */
+        fun country(country: Optional<String>) = country(country.getOrNull())
+
+        /**
+         * Sets [Builder.country] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.country] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun country(country: JsonField<String>) = apply { this.country = country }
 
         /** Street address or PO box. */
-        @JsonProperty("line1")
-        @ExcludeMissing
+        fun line1(line1: String?) = line1(JsonField.ofNullable(line1))
+
+        /** Alias for calling [Builder.line1] with `line1.orElse(null)`. */
+        fun line1(line1: Optional<String>) = line1(line1.getOrNull())
+
+        /**
+         * Sets [Builder.line1] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.line1] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun line1(line1: JsonField<String>) = apply { this.line1 = line1 }
 
         /** Apartment, suite, unit, or building. */
-        fun line2(line2: String) = line2(JsonField.of(line2))
+        fun line2(line2: String?) = line2(JsonField.ofNullable(line2))
 
-        /** Apartment, suite, unit, or building. */
-        @JsonProperty("line2")
-        @ExcludeMissing
+        /** Alias for calling [Builder.line2] with `line2.orElse(null)`. */
+        fun line2(line2: Optional<String>) = line2(line2.getOrNull())
+
+        /**
+         * Sets [Builder.line2] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.line2] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun line2(line2: JsonField<String>) = apply { this.line2 = line2 }
 
-        /** City, district, suburb, town, or village. */
-        fun city(city: String) = city(JsonField.of(city))
-
-        /** City, district, suburb, town, or village. */
-        @JsonProperty("city")
-        @ExcludeMissing
-        fun city(city: JsonField<String>) = apply { this.city = city }
-
-        /** The state code. */
-        fun state(state: String) = state(JsonField.of(state))
-
-        /** The state code. */
-        @JsonProperty("state")
-        @ExcludeMissing
-        fun state(state: JsonField<String>) = apply { this.state = state }
-
         /** The postal code or zip code. */
-        fun postalCode(postalCode: String) = postalCode(JsonField.of(postalCode))
+        fun postalCode(postalCode: String?) = postalCode(JsonField.ofNullable(postalCode))
 
-        /** The postal code or zip code. */
-        @JsonProperty("postal_code")
-        @ExcludeMissing
+        /** Alias for calling [Builder.postalCode] with `postalCode.orElse(null)`. */
+        fun postalCode(postalCode: Optional<String>) = postalCode(postalCode.getOrNull())
+
+        /**
+         * Sets [Builder.postalCode] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.postalCode] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun postalCode(postalCode: JsonField<String>) = apply { this.postalCode = postalCode }
 
-        /** The 2-letter ISO 3166 country code. */
-        fun country(country: String) = country(JsonField.of(country))
+        /** The state code. */
+        fun state(state: String?) = state(JsonField.ofNullable(state))
 
-        /** The 2-letter ISO 3166 country code. */
-        @JsonProperty("country")
-        @ExcludeMissing
-        fun country(country: JsonField<String>) = apply { this.country = country }
+        /** Alias for calling [Builder.state] with `state.orElse(null)`. */
+        fun state(state: Optional<String>) = state(state.getOrNull())
 
-        fun name(name: String) = name(JsonField.of(name))
+        /**
+         * Sets [Builder.state] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.state] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun state(state: JsonField<String>) = apply { this.state = state }
 
-        @JsonProperty("name")
-        @ExcludeMissing
+        fun name(name: String?) = name(JsonField.ofNullable(name))
+
+        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
+        fun name(name: Optional<String>) = name(name.getOrNull())
+
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
-        fun sourceId(sourceId: String) = sourceId(JsonField.of(sourceId))
+        fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
 
-        @JsonProperty("source_id")
-        @ExcludeMissing
+        /** Alias for calling [Builder.sourceId] with `sourceId.orElse(null)`. */
+        fun sourceId(sourceId: Optional<String>) = sourceId(sourceId.getOrNull())
+
+        /**
+         * Sets [Builder.sourceId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.sourceId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
+        /**
+         * Returns an immutable instance of [Location].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .city()
+         * .country()
+         * .line1()
+         * .line2()
+         * .postalCode()
+         * .state()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): Location =
             Location(
-                line1,
-                line2,
-                city,
-                state,
-                postalCode,
-                country,
+                checkRequired("city", city),
+                checkRequired("country", country),
+                checkRequired("line1", line1),
+                checkRequired("line2", line2),
+                checkRequired("postalCode", postalCode),
+                checkRequired("state", state),
                 name,
                 sourceId,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): Location = apply {
+        if (validated) {
+            return@apply
+        }
+
+        city()
+        country()
+        line1()
+        line2()
+        postalCode()
+        state()
+        name()
+        sourceId()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (city.asKnown().isPresent) 1 else 0) +
+            (if (country.asKnown().isPresent) 1 else 0) +
+            (if (line1.asKnown().isPresent) 1 else 0) +
+            (if (line2.asKnown().isPresent) 1 else 0) +
+            (if (postalCode.asKnown().isPresent) 1 else 0) +
+            (if (state.asKnown().isPresent) 1 else 0) +
+            (if (name.asKnown().isPresent) 1 else 0) +
+            (if (sourceId.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is Location && line1 == other.line1 && line2 == other.line2 && city == other.city && state == other.state && postalCode == other.postalCode && country == other.country && name == other.name && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Location && city == other.city && country == other.country && line1 == other.line1 && line2 == other.line2 && postalCode == other.postalCode && state == other.state && name == other.name && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(line1, line2, city, state, postalCode, country, name, sourceId, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(city, country, line1, line2, postalCode, state, name, sourceId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Location{line1=$line1, line2=$line2, city=$city, state=$state, postalCode=$postalCode, country=$country, name=$name, sourceId=$sourceId, additionalProperties=$additionalProperties}"
+        "Location{city=$city, country=$country, line1=$line1, line2=$line2, postalCode=$postalCode, state=$state, name=$name, sourceId=$sourceId, additionalProperties=$additionalProperties}"
 }

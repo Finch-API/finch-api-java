@@ -4,7 +4,15 @@ package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
 
-class WebhookServiceAsyncImpl
-constructor(
-    private val clientOptions: ClientOptions,
-) : WebhookServiceAsync
+class WebhookServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    WebhookServiceAsync {
+
+    private val withRawResponse: WebhookServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
+    override fun withRawResponse(): WebhookServiceAsync.WithRawResponse = withRawResponse
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        WebhookServiceAsync.WithRawResponse
+}

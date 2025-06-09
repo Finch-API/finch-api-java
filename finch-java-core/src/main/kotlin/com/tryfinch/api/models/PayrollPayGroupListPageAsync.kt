@@ -2,178 +2,120 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.payroll.PayGroupServiceAsync
 import java.util.Objects
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
-import java.util.function.Predicate
 
+/** @see [PayGroupServiceAsync.list] */
 class PayrollPayGroupListPageAsync
 private constructor(
-    private val payGroupsService: PayGroupServiceAsync,
+    private val service: PayGroupServiceAsync,
+    private val streamHandlerExecutor: Executor,
     private val params: PayrollPayGroupListParams,
-    private val response: Response,
-) {
+    private val items: List<PayGroupListResponse>,
+) : PageAsync<PayGroupListResponse> {
 
-    fun response(): Response = response
+    override fun hasNextPage(): Boolean = false
 
-    fun items(): List<PayGroupListResponse> = response().items()
+    fun nextPageParams(): PayrollPayGroupListParams =
+        throw IllegalStateException("Cannot construct next page params")
+
+    override fun nextPage(): CompletableFuture<PayrollPayGroupListPageAsync> =
+        service.list(nextPageParams())
+
+    fun autoPager(): AutoPagerAsync<PayGroupListResponse> =
+        AutoPagerAsync.from(this, streamHandlerExecutor)
+
+    /** The parameters that were used to request this page. */
+    fun params(): PayrollPayGroupListParams = params
+
+    /** The response that this page was parsed from. */
+    override fun items(): List<PayGroupListResponse> = items
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        /**
+         * Returns a mutable builder for constructing an instance of [PayrollPayGroupListPageAsync].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .streamHandlerExecutor()
+         * .params()
+         * .items()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [PayrollPayGroupListPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: PayGroupServiceAsync? = null
+        private var streamHandlerExecutor: Executor? = null
+        private var params: PayrollPayGroupListParams? = null
+        private var items: List<PayGroupListResponse>? = null
+
+        @JvmSynthetic
+        internal fun from(payrollPayGroupListPageAsync: PayrollPayGroupListPageAsync) = apply {
+            service = payrollPayGroupListPageAsync.service
+            streamHandlerExecutor = payrollPayGroupListPageAsync.streamHandlerExecutor
+            params = payrollPayGroupListPageAsync.params
+            items = payrollPayGroupListPageAsync.items
+        }
+
+        fun service(service: PayGroupServiceAsync) = apply { this.service = service }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            this.streamHandlerExecutor = streamHandlerExecutor
+        }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: PayrollPayGroupListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun items(items: List<PayGroupListResponse>) = apply { this.items = items }
+
+        /**
+         * Returns an immutable instance of [PayrollPayGroupListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .streamHandlerExecutor()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): PayrollPayGroupListPageAsync =
+            PayrollPayGroupListPageAsync(
+                checkRequired("service", service),
+                checkRequired("streamHandlerExecutor", streamHandlerExecutor),
+                checkRequired("params", params),
+                checkRequired("items", items),
+            )
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is PayrollPayGroupListPageAsync && payGroupsService == other.payGroupsService && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is PayrollPayGroupListPageAsync && service == other.service && streamHandlerExecutor == other.streamHandlerExecutor && params == other.params && items == other.items /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payGroupsService, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, streamHandlerExecutor, params, items) /* spotless:on */
 
     override fun toString() =
-        "PayrollPayGroupListPageAsync{payGroupsService=$payGroupsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !items().isEmpty()
-    }
-
-    fun getNextPageParams(): Optional<PayrollPayGroupListParams> {
-        return Optional.empty()
-    }
-
-    fun getNextPage(): CompletableFuture<Optional<PayrollPayGroupListPageAsync>> {
-        return getNextPageParams()
-            .map { payGroupsService.list(it).thenApply { Optional.of(it) } }
-            .orElseGet { CompletableFuture.completedFuture(Optional.empty()) }
-    }
-
-    fun autoPager(): AutoPager = AutoPager(this)
-
-    companion object {
-
-        @JvmStatic
-        fun of(
-            payGroupsService: PayGroupServiceAsync,
-            params: PayrollPayGroupListParams,
-            response: Response
-        ) =
-            PayrollPayGroupListPageAsync(
-                payGroupsService,
-                params,
-                response,
-            )
-    }
-
-    @JsonDeserialize(builder = Response.Builder::class)
-    @NoAutoDetect
-    class Response
-    constructor(
-        private val items: JsonField<List<PayGroupListResponse>>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        fun items(): List<PayGroupListResponse> = items.getNullable("items") ?: listOf()
-
-        @JsonProperty("items")
-        fun _items(): Optional<JsonField<List<PayGroupListResponse>>> = Optional.ofNullable(items)
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Response = apply {
-            if (!validated) {
-                items().map { it.validate() }
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var items: JsonField<List<PayGroupListResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun items(items: List<PayGroupListResponse>) = items(JsonField.of(items))
-
-            @JsonProperty("items")
-            fun items(items: JsonField<List<PayGroupListResponse>>) = apply { this.items = items }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun build() = Response(items, additionalProperties.toImmutable())
-        }
-    }
-
-    class AutoPager
-    constructor(
-        private val firstPage: PayrollPayGroupListPageAsync,
-    ) {
-
-        fun forEach(
-            action: Predicate<PayGroupListResponse>,
-            executor: Executor
-        ): CompletableFuture<Void> {
-            fun CompletableFuture<Optional<PayrollPayGroupListPageAsync>>.forEach(
-                action: (PayGroupListResponse) -> Boolean,
-                executor: Executor
-            ): CompletableFuture<Void> =
-                thenComposeAsync(
-                    { page ->
-                        page
-                            .filter { it.items().all(action) }
-                            .map { it.getNextPage().forEach(action, executor) }
-                            .orElseGet { CompletableFuture.completedFuture(null) }
-                    },
-                    executor
-                )
-            return CompletableFuture.completedFuture(Optional.of(firstPage))
-                .forEach(action::test, executor)
-        }
-
-        fun toList(executor: Executor): CompletableFuture<List<PayGroupListResponse>> {
-            val values = mutableListOf<PayGroupListResponse>()
-            return forEach(values::add, executor).thenApply { values }
-        }
-    }
+        "PayrollPayGroupListPageAsync{service=$service, streamHandlerExecutor=$streamHandlerExecutor, params=$params, items=$items}"
 }

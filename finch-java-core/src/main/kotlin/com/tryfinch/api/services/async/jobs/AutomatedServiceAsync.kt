@@ -1,19 +1,23 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package com.tryfinch.api.services.async.jobs
 
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AutomatedAsyncJob
 import com.tryfinch.api.models.AutomatedCreateResponse
+import com.tryfinch.api.models.AutomatedListResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
-import com.tryfinch.api.models.JobAutomatedListPageAsync
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import java.util.concurrent.CompletableFuture
 
 interface AutomatedServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Enqueue an automated job.
@@ -24,33 +28,181 @@ interface AutomatedServiceAsync {
      * of the job that is currently in progress. Finch allows a fixed window rate limit of 1 forced
      * refresh per hour per connection.
      *
-     * `w4_data_sync`: Enqueues a job for sync W-4 data for a particular individual, identified by
-     * `individual_id`. This feature is currently in beta.
+     * `w4_form_employee_sync`: Enqueues a job for sync W-4 data for a particular individual,
+     * identified by `individual_id`. This feature is currently in beta.
      *
      * This endpoint is available for _Scale_ tier customers as an add-on. To request access to this
      * endpoint, please contact your Finch account manager.
      */
-    @JvmOverloads
+    fun create(): CompletableFuture<AutomatedCreateResponse> =
+        create(JobAutomatedCreateParams.none())
+
+    /** @see [create] */
     fun create(
-        params: JobAutomatedCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AutomatedCreateResponse>
 
+    /** @see [create] */
+    fun create(
+        params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
+    ): CompletableFuture<AutomatedCreateResponse> = create(params, RequestOptions.none())
+
+    /** @see [create] */
+    fun create(requestOptions: RequestOptions): CompletableFuture<AutomatedCreateResponse> =
+        create(JobAutomatedCreateParams.none(), requestOptions)
+
     /** Get an automated job by `job_id`. */
-    @JvmOverloads
+    fun retrieve(jobId: String): CompletableFuture<AutomatedAsyncJob> =
+        retrieve(jobId, JobAutomatedRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<AutomatedAsyncJob> =
+        retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+    ): CompletableFuture<AutomatedAsyncJob> = retrieve(jobId, params, RequestOptions.none())
+
+    /** @see [retrieve] */
     fun retrieve(
         params: JobAutomatedRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AutomatedAsyncJob>
+
+    /** @see [retrieve] */
+    fun retrieve(params: JobAutomatedRetrieveParams): CompletableFuture<AutomatedAsyncJob> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        jobId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<AutomatedAsyncJob> =
+        retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
     /**
      * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are
      * sorted in descending order by submission time. For scheduled jobs such as data syncs, only
      * the next scheduled job is shown.
      */
-    @JvmOverloads
+    fun list(): CompletableFuture<AutomatedListResponse> = list(JobAutomatedListParams.none())
+
+    /** @see [list] */
     fun list(
-        params: JobAutomatedListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<JobAutomatedListPageAsync>
+        params: JobAutomatedListParams = JobAutomatedListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<AutomatedListResponse>
+
+    /** @see [list] */
+    fun list(
+        params: JobAutomatedListParams = JobAutomatedListParams.none()
+    ): CompletableFuture<AutomatedListResponse> = list(params, RequestOptions.none())
+
+    /** @see [list] */
+    fun list(requestOptions: RequestOptions): CompletableFuture<AutomatedListResponse> =
+        list(JobAutomatedListParams.none(), requestOptions)
+
+    /**
+     * A view of [AutomatedServiceAsync] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.create].
+         */
+        fun create(): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
+            create(JobAutomatedCreateParams.none())
+
+        /** @see [create] */
+        fun create(
+            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>>
+
+        /** @see [create] */
+        fun create(
+            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
+        fun create(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
+            create(JobAutomatedCreateParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated/{job_id}`, but is otherwise the same
+         * as [AutomatedServiceAsync.retrieve].
+         */
+        fun retrieve(jobId: String): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(jobId, JobAutomatedRetrieveParams.none())
+
+        /** @see [retrieve] */
+        fun retrieve(
+            jobId: String,
+            params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        fun retrieve(
+            jobId: String,
+            params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(jobId, params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        fun retrieve(
+            params: JobAutomatedRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>>
+
+        /** @see [retrieve] */
+        fun retrieve(
+            params: JobAutomatedRetrieveParams
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        fun retrieve(
+            jobId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
+            retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.list].
+         */
+        fun list(): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
+            list(JobAutomatedListParams.none())
+
+        /** @see [list] */
+        fun list(
+            params: JobAutomatedListParams = JobAutomatedListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedListResponse>>
+
+        /** @see [list] */
+        fun list(
+            params: JobAutomatedListParams = JobAutomatedListParams.none()
+        ): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
+            list(JobAutomatedListParams.none(), requestOptions)
+    }
 }

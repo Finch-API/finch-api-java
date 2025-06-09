@@ -4,123 +4,211 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@JsonDeserialize(builder = SessionReauthenticateResponse.Builder::class)
-@NoAutoDetect
 class SessionReauthenticateResponse
 private constructor(
-    private val sessionId: JsonField<String>,
     private val connectUrl: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    private val sessionId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
+    @JsonCreator
+    private constructor(
+        @JsonProperty("connect_url")
+        @ExcludeMissing
+        connectUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("session_id") @ExcludeMissing sessionId: JsonField<String> = JsonMissing.of(),
+    ) : this(connectUrl, sessionId, mutableMapOf())
 
-    /** The unique identifier for the created connect session */
-    fun sessionId(): String = sessionId.getRequired("session_id")
-
-    /** The Connect URL to redirect the user to for reauthentication */
+    /**
+     * The Connect URL to redirect the user to for reauthentication
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun connectUrl(): String = connectUrl.getRequired("connect_url")
 
-    /** The unique identifier for the created connect session */
-    @JsonProperty("session_id") @ExcludeMissing fun _sessionId() = sessionId
+    /**
+     * The unique identifier for the created connect session
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun sessionId(): String = sessionId.getRequired("session_id")
 
-    /** The Connect URL to redirect the user to for reauthentication */
-    @JsonProperty("connect_url") @ExcludeMissing fun _connectUrl() = connectUrl
+    /**
+     * Returns the raw JSON value of [connectUrl].
+     *
+     * Unlike [connectUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("connect_url") @ExcludeMissing fun _connectUrl(): JsonField<String> = connectUrl
+
+    /**
+     * Returns the raw JSON value of [sessionId].
+     *
+     * Unlike [sessionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("session_id") @ExcludeMissing fun _sessionId(): JsonField<String> = sessionId
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    fun validate(): SessionReauthenticateResponse = apply {
-        if (!validated) {
-            sessionId()
-            connectUrl()
-            validated = true
-        }
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SessionReauthenticateResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .connectUrl()
+         * .sessionId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [SessionReauthenticateResponse]. */
+    class Builder internal constructor() {
 
-        private var sessionId: JsonField<String> = JsonMissing.of()
-        private var connectUrl: JsonField<String> = JsonMissing.of()
+        private var connectUrl: JsonField<String>? = null
+        private var sessionId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sessionReauthenticateResponse: SessionReauthenticateResponse) = apply {
-            this.sessionId = sessionReauthenticateResponse.sessionId
-            this.connectUrl = sessionReauthenticateResponse.connectUrl
-            additionalProperties(sessionReauthenticateResponse.additionalProperties)
+            connectUrl = sessionReauthenticateResponse.connectUrl
+            sessionId = sessionReauthenticateResponse.sessionId
+            additionalProperties = sessionReauthenticateResponse.additionalProperties.toMutableMap()
         }
-
-        /** The unique identifier for the created connect session */
-        fun sessionId(sessionId: String) = sessionId(JsonField.of(sessionId))
-
-        /** The unique identifier for the created connect session */
-        @JsonProperty("session_id")
-        @ExcludeMissing
-        fun sessionId(sessionId: JsonField<String>) = apply { this.sessionId = sessionId }
 
         /** The Connect URL to redirect the user to for reauthentication */
         fun connectUrl(connectUrl: String) = connectUrl(JsonField.of(connectUrl))
 
-        /** The Connect URL to redirect the user to for reauthentication */
-        @JsonProperty("connect_url")
-        @ExcludeMissing
+        /**
+         * Sets [Builder.connectUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectUrl] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectUrl(connectUrl: JsonField<String>) = apply { this.connectUrl = connectUrl }
+
+        /** The unique identifier for the created connect session */
+        fun sessionId(sessionId: String) = sessionId(JsonField.of(sessionId))
+
+        /**
+         * Sets [Builder.sessionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.sessionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun sessionId(sessionId: JsonField<String>) = apply { this.sessionId = sessionId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
+        /**
+         * Returns an immutable instance of [SessionReauthenticateResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .connectUrl()
+         * .sessionId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): SessionReauthenticateResponse =
             SessionReauthenticateResponse(
-                sessionId,
-                connectUrl,
-                additionalProperties.toImmutable(),
+                checkRequired("connectUrl", connectUrl),
+                checkRequired("sessionId", sessionId),
+                additionalProperties.toMutableMap(),
             )
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): SessionReauthenticateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        connectUrl()
+        sessionId()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (connectUrl.asKnown().isPresent) 1 else 0) +
+            (if (sessionId.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is SessionReauthenticateResponse && sessionId == other.sessionId && connectUrl == other.connectUrl && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SessionReauthenticateResponse && connectUrl == other.connectUrl && sessionId == other.sessionId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(sessionId, connectUrl, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(connectUrl, sessionId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SessionReauthenticateResponse{sessionId=$sessionId, connectUrl=$connectUrl, additionalProperties=$additionalProperties}"
+        "SessionReauthenticateResponse{connectUrl=$connectUrl, sessionId=$sessionId, additionalProperties=$additionalProperties}"
 }

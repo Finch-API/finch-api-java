@@ -4,28 +4,32 @@ package com.tryfinch.api.services.blocking.connect
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.ConnectSessionNewParams
+import com.tryfinch.api.models.ConnectSessionReauthenticateParams
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class SessionServiceTest {
+internal class SessionServiceTest {
 
+    @Disabled("prism tests are broken")
     @Test
-    fun callNew() {
+    fun new_() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val sessionService = client.connect().sessions()
-        val sessionNewResponse =
+
+        val response =
             sessionService.new_(
                 ConnectSessionNewParams.builder()
                     .customerId("x")
                     .customerName("x")
-                    .products(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
-                    .customerEmail("dev@stainlessapi.com")
+                    .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
+                    .customerEmail("dev@stainless.com")
                     .integration(
                         ConnectSessionNewParams.Integration.builder()
                             .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
@@ -33,33 +37,35 @@ class SessionServiceTest {
                             .build()
                     )
                     .manual(true)
-                    .minutesToExpire(42.23)
+                    .minutesToExpire(1.0)
                     .redirectUri("redirect_uri")
                     .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                     .build()
             )
-        println(sessionNewResponse)
-        sessionNewResponse.validate()
+
+        response.validate()
     }
 
+    @Disabled("prism tests are broken")
     @Test
-    fun callReauthenticate() {
+    fun reauthenticate() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val sessionService = client.connect().sessions()
-        val sessionReauthenticateResponse =
+
+        val response =
             sessionService.reauthenticate(
                 ConnectSessionReauthenticateParams.builder()
                     .connectionId("connection_id")
-                    .minutesToExpire(123L)
-                    .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+                    .minutesToExpire(0L)
+                    .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
                     .redirectUri("https://example.com")
                     .build()
             )
-        println(sessionReauthenticateResponse)
-        sessionReauthenticateResponse.validate()
+
+        response.validate()
     }
 }

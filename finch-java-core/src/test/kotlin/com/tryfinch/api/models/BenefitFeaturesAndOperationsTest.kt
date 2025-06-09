@@ -2,38 +2,26 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class BenefitFeaturesAndOperationsTest {
+internal class BenefitFeaturesAndOperationsTest {
 
     @Test
-    fun createBenefitFeaturesAndOperations() {
+    fun create() {
         val benefitFeaturesAndOperations =
             BenefitFeaturesAndOperations.builder()
                 .supportedFeatures(
-                    BenefitFeaturesAndOperations.BenefitFeature.builder()
+                    SupportedBenefit.builder()
                         .annualMaximum(true)
                         .catchUp(true)
-                        .companyContribution(
-                            listOf(
-                                BenefitFeaturesAndOperations.BenefitFeature.CompanyContribution
-                                    .FIXED
-                            )
-                        )
+                        .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                         .description("description")
-                        .employeeDeduction(
-                            listOf(
-                                BenefitFeaturesAndOperations.BenefitFeature.EmployeeDeduction.FIXED
-                            )
-                        )
-                        .frequencies(listOf(BenefitFrequency.ONE_TIME))
-                        .hsaContributionLimit(
-                            listOf(
-                                BenefitFeaturesAndOperations.BenefitFeature.HsaContributionLimit
-                                    .INDIVIDUAL
-                            )
-                        )
+                        .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
+                        .addFrequency(BenefitFrequency.ONE_TIME)
+                        .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
                         .build()
                 )
                 .supportedOperations(
@@ -57,28 +45,17 @@ class BenefitFeaturesAndOperationsTest {
                         .build()
                 )
                 .build()
-        assertThat(benefitFeaturesAndOperations).isNotNull
+
         assertThat(benefitFeaturesAndOperations.supportedFeatures())
             .contains(
-                BenefitFeaturesAndOperations.BenefitFeature.builder()
+                SupportedBenefit.builder()
                     .annualMaximum(true)
                     .catchUp(true)
-                    .companyContribution(
-                        listOf(
-                            BenefitFeaturesAndOperations.BenefitFeature.CompanyContribution.FIXED
-                        )
-                    )
+                    .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                     .description("description")
-                    .employeeDeduction(
-                        listOf(BenefitFeaturesAndOperations.BenefitFeature.EmployeeDeduction.FIXED)
-                    )
-                    .frequencies(listOf(BenefitFrequency.ONE_TIME))
-                    .hsaContributionLimit(
-                        listOf(
-                            BenefitFeaturesAndOperations.BenefitFeature.HsaContributionLimit
-                                .INDIVIDUAL
-                        )
-                    )
+                    .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
+                    .addFrequency(BenefitFrequency.ONE_TIME)
+                    .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
                     .build()
             )
         assertThat(benefitFeaturesAndOperations.supportedOperations())
@@ -102,5 +79,52 @@ class BenefitFeaturesAndOperationsTest {
                     )
                     .build()
             )
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val benefitFeaturesAndOperations =
+            BenefitFeaturesAndOperations.builder()
+                .supportedFeatures(
+                    SupportedBenefit.builder()
+                        .annualMaximum(true)
+                        .catchUp(true)
+                        .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
+                        .description("description")
+                        .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
+                        .addFrequency(BenefitFrequency.ONE_TIME)
+                        .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
+                        .build()
+                )
+                .supportedOperations(
+                    SupportPerBenefitType.builder()
+                        .companyBenefits(
+                            OperationSupportMatrix.builder()
+                                .create(OperationSupport.SUPPORTED)
+                                .delete(OperationSupport.SUPPORTED)
+                                .read(OperationSupport.SUPPORTED)
+                                .update(OperationSupport.SUPPORTED)
+                                .build()
+                        )
+                        .individualBenefits(
+                            OperationSupportMatrix.builder()
+                                .create(OperationSupport.SUPPORTED)
+                                .delete(OperationSupport.SUPPORTED)
+                                .read(OperationSupport.SUPPORTED)
+                                .update(OperationSupport.SUPPORTED)
+                                .build()
+                        )
+                        .build()
+                )
+                .build()
+
+        val roundtrippedBenefitFeaturesAndOperations =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(benefitFeaturesAndOperations),
+                jacksonTypeRef<BenefitFeaturesAndOperations>(),
+            )
+
+        assertThat(roundtrippedBenefitFeaturesAndOperations).isEqualTo(benefitFeaturesAndOperations)
     }
 }

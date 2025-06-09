@@ -2,189 +2,66 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.tryfinch.api.core.Enum
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.toImmutable
-import com.tryfinch.api.errors.FinchInvalidDataException
-import com.tryfinch.api.models.*
 import java.util.Objects
 
+/** Update configurations for sandbox jobs */
 class SandboxJobConfigurationUpdateParams
-constructor(
-    private val completionStatus: CompletionStatus,
-    private val type: Type,
+private constructor(
+    private val sandboxJobConfiguration: SandboxJobConfiguration,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
-    fun completionStatus(): CompletionStatus = completionStatus
+    fun sandboxJobConfiguration(): SandboxJobConfiguration = sandboxJobConfiguration
 
-    fun type(): Type = type
-
-    @JvmSynthetic
-    internal fun getBody(): SandboxJobConfigurationUpdateBody {
-        return SandboxJobConfigurationUpdateBody(
-            completionStatus,
-            type,
-            additionalBodyProperties,
-        )
-    }
-
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    @JsonDeserialize(builder = SandboxJobConfigurationUpdateBody.Builder::class)
-    @NoAutoDetect
-    class SandboxJobConfigurationUpdateBody
-    internal constructor(
-        private val completionStatus: CompletionStatus?,
-        private val type: Type?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        @JsonProperty("completion_status")
-        fun completionStatus(): CompletionStatus? = completionStatus
-
-        @JsonProperty("type") fun type(): Type? = type
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var completionStatus: CompletionStatus? = null
-            private var type: Type? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(
-                sandboxJobConfigurationUpdateBody: SandboxJobConfigurationUpdateBody
-            ) = apply {
-                this.completionStatus = sandboxJobConfigurationUpdateBody.completionStatus
-                this.type = sandboxJobConfigurationUpdateBody.type
-                additionalProperties(sandboxJobConfigurationUpdateBody.additionalProperties)
-            }
-
-            @JsonProperty("completion_status")
-            fun completionStatus(completionStatus: CompletionStatus) = apply {
-                this.completionStatus = completionStatus
-            }
-
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): SandboxJobConfigurationUpdateBody =
-                SandboxJobConfigurationUpdateBody(
-                    checkNotNull(completionStatus) {
-                        "`completionStatus` is required but was not set"
-                    },
-                    checkNotNull(type) { "`type` is required but was not set" },
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is SandboxJobConfigurationUpdateBody && completionStatus == other.completionStatus && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(completionStatus, type, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "SandboxJobConfigurationUpdateBody{completionStatus=$completionStatus, type=$type, additionalProperties=$additionalProperties}"
-    }
+    fun _additionalBodyProperties(): Map<String, JsonValue> =
+        sandboxJobConfiguration._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxJobConfigurationUpdateParams && completionStatus == other.completionStatus && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(completionStatus, type, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxJobConfigurationUpdateParams{completionStatus=$completionStatus, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SandboxJobConfigurationUpdateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .sandboxJobConfiguration()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [SandboxJobConfigurationUpdateParams]. */
+    class Builder internal constructor() {
 
-        private var completionStatus: CompletionStatus? = null
-        private var type: Type? = null
+        private var sandboxJobConfiguration: SandboxJobConfiguration? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(
             sandboxJobConfigurationUpdateParams: SandboxJobConfigurationUpdateParams
         ) = apply {
-            this.completionStatus = sandboxJobConfigurationUpdateParams.completionStatus
-            this.type = sandboxJobConfigurationUpdateParams.type
-            additionalHeaders(sandboxJobConfigurationUpdateParams.additionalHeaders)
-            additionalQueryParams(sandboxJobConfigurationUpdateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxJobConfigurationUpdateParams.additionalBodyProperties)
+            sandboxJobConfiguration = sandboxJobConfigurationUpdateParams.sandboxJobConfiguration
+            additionalHeaders = sandboxJobConfigurationUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                sandboxJobConfigurationUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun completionStatus(completionStatus: CompletionStatus) = apply {
-            this.completionStatus = completionStatus
+        fun sandboxJobConfiguration(sandboxJobConfiguration: SandboxJobConfiguration) = apply {
+            this.sandboxJobConfiguration = sandboxJobConfiguration
         }
-
-        fun type(type: Type) = apply { this.type = type }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -284,155 +161,42 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
+        /**
+         * Returns an immutable instance of [SandboxJobConfigurationUpdateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .sandboxJobConfiguration()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): SandboxJobConfigurationUpdateParams =
             SandboxJobConfigurationUpdateParams(
-                checkNotNull(completionStatus) { "`completionStatus` is required but was not set" },
-                checkNotNull(type) { "`type` is required but was not set" },
+                checkRequired("sandboxJobConfiguration", sandboxJobConfiguration),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
-    class CompletionStatus
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    fun _body(): SandboxJobConfiguration = sandboxJobConfiguration
 
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+    override fun _headers(): Headers = additionalHeaders
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
-            return /* spotless:off */ other is CompletionStatus && value == other.value /* spotless:on */
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
         }
 
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val COMPLETE = CompletionStatus(JsonField.of("complete"))
-
-            @JvmField val REAUTH_ERROR = CompletionStatus(JsonField.of("reauth_error"))
-
-            @JvmField val PERMISSIONS_ERROR = CompletionStatus(JsonField.of("permissions_error"))
-
-            @JvmField val ERROR = CompletionStatus(JsonField.of("error"))
-
-            @JvmStatic fun of(value: String) = CompletionStatus(JsonField.of(value))
-        }
-
-        enum class Known {
-            COMPLETE,
-            REAUTH_ERROR,
-            PERMISSIONS_ERROR,
-            ERROR,
-        }
-
-        enum class Value {
-            COMPLETE,
-            REAUTH_ERROR,
-            PERMISSIONS_ERROR,
-            ERROR,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                COMPLETE -> Value.COMPLETE
-                REAUTH_ERROR -> Value.REAUTH_ERROR
-                PERMISSIONS_ERROR -> Value.PERMISSIONS_ERROR
-                ERROR -> Value.ERROR
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                COMPLETE -> Known.COMPLETE
-                REAUTH_ERROR -> Known.REAUTH_ERROR
-                PERMISSIONS_ERROR -> Known.PERMISSIONS_ERROR
-                ERROR -> Known.ERROR
-                else -> throw FinchInvalidDataException("Unknown CompletionStatus: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
+        return /* spotless:off */ other is SandboxJobConfigurationUpdateParams && sandboxJobConfiguration == other.sandboxJobConfiguration && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sandboxJobConfiguration, additionalHeaders, additionalQueryParams) /* spotless:on */
 
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val DATA_SYNC_ALL = Type(JsonField.of("data_sync_all"))
-
-            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
-        }
-
-        enum class Known {
-            DATA_SYNC_ALL,
-        }
-
-        enum class Value {
-            DATA_SYNC_ALL,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                DATA_SYNC_ALL -> Value.DATA_SYNC_ALL
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                DATA_SYNC_ALL -> Known.DATA_SYNC_ALL
-                else -> throw FinchInvalidDataException("Unknown Type: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
-    }
+    override fun toString() =
+        "SandboxJobConfigurationUpdateParams{sandboxJobConfiguration=$sandboxJobConfiguration, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

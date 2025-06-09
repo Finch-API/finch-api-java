@@ -4,166 +4,130 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
-import com.tryfinch.api.models.*
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
+import kotlin.jvm.optionals.getOrNull
 
+/** Read individual employment and income data */
 class HrisEmploymentRetrieveManyParams
-constructor(
-    private val requests: List<Request>,
+private constructor(
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
-    fun requests(): List<Request> = requests
+    /**
+     * The array of batch requests.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun requests(): List<Request> = body.requests()
 
-    @JvmSynthetic
-    internal fun getBody(): HrisEmploymentRetrieveManyBody {
-        return HrisEmploymentRetrieveManyBody(requests, additionalBodyProperties)
-    }
+    /**
+     * Returns the raw JSON value of [requests].
+     *
+     * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _requests(): JsonField<List<Request>> = body._requests()
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    /** Individual Ids Request Body */
-    @JsonDeserialize(builder = HrisEmploymentRetrieveManyBody.Builder::class)
-    @NoAutoDetect
-    class HrisEmploymentRetrieveManyBody
-    internal constructor(
-        private val requests: List<Request>?,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        /** The array of batch requests. */
-        @JsonProperty("requests") fun requests(): List<Request>? = requests
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var requests: List<Request>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(hrisEmploymentRetrieveManyBody: HrisEmploymentRetrieveManyBody) =
-                apply {
-                    this.requests = hrisEmploymentRetrieveManyBody.requests
-                    additionalProperties(hrisEmploymentRetrieveManyBody.additionalProperties)
-                }
-
-            /** The array of batch requests. */
-            @JsonProperty("requests")
-            fun requests(requests: List<Request>) = apply { this.requests = requests }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): HrisEmploymentRetrieveManyBody =
-                HrisEmploymentRetrieveManyBody(
-                    checkNotNull(requests) { "`requests` is required but was not set" }
-                        .toImmutable(),
-                    additionalProperties.toImmutable()
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is HrisEmploymentRetrieveManyBody && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(requests, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "HrisEmploymentRetrieveManyBody{requests=$requests, additionalProperties=$additionalProperties}"
-    }
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisEmploymentRetrieveManyParams && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "HrisEmploymentRetrieveManyParams{requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisEmploymentRetrieveManyParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .requests()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [HrisEmploymentRetrieveManyParams]. */
+    class Builder internal constructor() {
 
-        private var requests: MutableList<Request> = mutableListOf()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(hrisEmploymentRetrieveManyParams: HrisEmploymentRetrieveManyParams) =
             apply {
-                this.requests(hrisEmploymentRetrieveManyParams.requests)
-                additionalHeaders(hrisEmploymentRetrieveManyParams.additionalHeaders)
-                additionalQueryParams(hrisEmploymentRetrieveManyParams.additionalQueryParams)
-                additionalBodyProperties(hrisEmploymentRetrieveManyParams.additionalBodyProperties)
+                body = hrisEmploymentRetrieveManyParams.body.toBuilder()
+                additionalHeaders = hrisEmploymentRetrieveManyParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    hrisEmploymentRetrieveManyParams.additionalQueryParams.toBuilder()
             }
 
-        /** The array of batch requests. */
-        fun requests(requests: List<Request>) = apply {
-            this.requests.clear()
-            this.requests.addAll(requests)
-        }
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [requests]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
 
         /** The array of batch requests. */
-        fun addRequest(request: Request) = apply { this.requests.add(request) }
+        fun requests(requests: List<Request>) = apply { body.requests(requests) }
+
+        /**
+         * Sets [Builder.requests] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.requests] with a well-typed `List<Request>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun requests(requests: JsonField<List<Request>>) = apply { body.requests(requests) }
+
+        /**
+         * Adds a single [Request] to [requests].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addRequest(request: Request) = apply { body.addRequest(request) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -263,72 +227,279 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
+        /**
+         * Returns an immutable instance of [HrisEmploymentRetrieveManyParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .requests()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): HrisEmploymentRetrieveManyParams =
             HrisEmploymentRetrieveManyParams(
-                checkNotNull(requests) { "`requests` is required but was not set" }.toImmutable(),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
-    @JsonDeserialize(builder = Request.Builder::class)
-    @NoAutoDetect
-    class Request
+    fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    /** Individual Ids Request Body */
+    class Body
     private constructor(
-        private val individualId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        private val requests: JsonField<List<Request>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
+        @JsonCreator
+        private constructor(
+            @JsonProperty("requests")
+            @ExcludeMissing
+            requests: JsonField<List<Request>> = JsonMissing.of()
+        ) : this(requests, mutableMapOf())
+
         /**
-         * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to the
-         * number of `individual_id` to send per request. It is preferantial to send all ids in a
-         * single request for Finch to optimize provider rate-limits.
+         * The array of batch requests.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        @JsonProperty("individual_id") fun individualId(): String? = individualId
+        fun requests(): List<Request> = requests.getRequired("requests")
+
+        /**
+         * Returns the raw JSON value of [requests].
+         *
+         * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("requests")
+        @ExcludeMissing
+        fun _requests(): JsonField<List<Request>> = requests
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .requests()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
 
-            private var individualId: String? = null
+            private var requests: JsonField<MutableList<Request>>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                requests = body.requests.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The array of batch requests. */
+            fun requests(requests: List<Request>) = requests(JsonField.of(requests))
+
+            /**
+             * Sets [Builder.requests] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.requests] with a well-typed `List<Request>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun requests(requests: JsonField<List<Request>>) = apply {
+                this.requests = requests.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [Request] to [requests].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addRequest(request: Request) = apply {
+                requests =
+                    (requests ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("requests", it).add(request)
+                    }
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .requests()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("requests", requests).map { it.toImmutable() },
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            requests().forEach { it.validate() }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (requests.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(requests, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{requests=$requests, additionalProperties=$additionalProperties}"
+    }
+
+    class Request
+    private constructor(
+        private val individualId: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            individualId: JsonField<String> = JsonMissing.of()
+        ) : this(individualId, mutableMapOf())
+
+        /**
+         * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to the
+         * number of `individual_id` to send per request. It is preferantial to send all ids in a
+         * single request for Finch to optimize provider rate-limits.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun individualId(): String = individualId.getRequired("individual_id")
+
+        /**
+         * Returns the raw JSON value of [individualId].
+         *
+         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Request].
+             *
+             * The following fields are required:
+             * ```java
+             * .individualId()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Request]. */
+        class Builder internal constructor() {
+
+            private var individualId: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(request: Request) = apply {
-                this.individualId = request.individualId
-                additionalProperties(request.additionalProperties)
+                individualId = request.individualId
+                additionalProperties = request.additionalProperties.toMutableMap()
             }
 
             /**
@@ -336,29 +507,84 @@ constructor(
              * the number of `individual_id` to send per request. It is preferantial to send all ids
              * in a single request for Finch to optimize provider rate-limits.
              */
-            @JsonProperty("individual_id")
-            fun individualId(individualId: String) = apply { this.individualId = individualId }
+            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+
+            /**
+             * Sets [Builder.individualId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Request].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .individualId()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Request =
                 Request(
-                    checkNotNull(individualId) { "`individualId` is required but was not set" },
-                    additionalProperties.toImmutable()
+                    checkRequired("individualId", individualId),
+                    additionalProperties.toMutableMap(),
                 )
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): Request = apply {
+            if (validated) {
+                return@apply
+            }
+
+            individualId()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int = (if (individualId.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -377,4 +603,17 @@ constructor(
         override fun toString() =
             "Request{individualId=$individualId, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisEmploymentRetrieveManyParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "HrisEmploymentRetrieveManyParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

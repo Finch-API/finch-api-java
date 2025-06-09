@@ -6,35 +6,51 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.FinchClientImpl
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.Timeout
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.net.Proxy
 import java.time.Clock
 import java.time.Duration
+import java.util.Optional
+import java.util.concurrent.Executor
+import kotlin.jvm.optionals.getOrNull
 
 class FinchOkHttpClient private constructor() {
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [FinchOkHttpClient]. */
         @JvmStatic fun builder() = Builder()
 
         @JvmStatic fun fromEnv(): FinchClient = builder().fromEnv().build()
     }
 
-    class Builder {
+    /** A builder for [FinchOkHttpClient]. */
+    class Builder internal constructor() {
 
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()
-        private var baseUrl: String = ClientOptions.PRODUCTION_URL
-        // The default timeout for the client is 1 minute.
-        private var timeout: Duration = Duration.ofSeconds(60)
+        private var timeout: Timeout = Timeout.default()
         private var proxy: Proxy? = null
 
-        fun baseUrl(baseUrl: String) = apply {
-            clientOptions.baseUrl(baseUrl)
-            this.baseUrl = baseUrl
+        fun baseUrl(baseUrl: String) = apply { clientOptions.baseUrl(baseUrl) }
+
+        /**
+         * Whether to throw an exception if any of the Jackson versions detected at runtime are
+         * incompatible with the SDK's minimum supported Jackson version (2.13.4).
+         *
+         * Defaults to true. Use extreme caution when disabling this option. There is no guarantee
+         * that the SDK will work correctly when using an incompatible Jackson version.
+         */
+        fun checkJacksonVersionCompatibility(checkJacksonVersionCompatibility: Boolean) = apply {
+            clientOptions.checkJacksonVersionCompatibility(checkJacksonVersionCompatibility)
         }
 
         fun jsonMapper(jsonMapper: JsonMapper) = apply { clientOptions.jsonMapper(jsonMapper) }
+
+        fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
+            clientOptions.streamHandlerExecutor(streamHandlerExecutor)
+        }
 
         fun clock(clock: Clock) = apply { clientOptions.clock(clock) }
 
@@ -118,7 +134,19 @@ class FinchOkHttpClient private constructor() {
             clientOptions.removeAllQueryParams(keys)
         }
 
-        fun timeout(timeout: Duration) = apply { this.timeout = timeout }
+        fun timeout(timeout: Timeout) = apply {
+            clientOptions.timeout(timeout)
+            this.timeout = timeout
+        }
+
+        /**
+         * Sets the maximum time allowed for a complete HTTP call, not including retries.
+         *
+         * See [Timeout.request] for more details.
+         *
+         * For fine-grained control, pass a [Timeout] object.
+         */
+        fun timeout(timeout: Duration) = timeout(Timeout.builder().request(timeout).build())
 
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
 
@@ -130,22 +158,40 @@ class FinchOkHttpClient private constructor() {
 
         fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
 
+        /** Alias for calling [Builder.accessToken] with `accessToken.orElse(null)`. */
+        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.getOrNull())
+
         fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
 
+        /** Alias for calling [Builder.clientId] with `clientId.orElse(null)`. */
+        fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
+
         fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
+
+        /** Alias for calling [Builder.clientSecret] with `clientSecret.orElse(null)`. */
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
 
         fun webhookSecret(webhookSecret: String?) = apply {
             clientOptions.webhookSecret(webhookSecret)
         }
 
+        /** Alias for calling [Builder.webhookSecret] with `webhookSecret.orElse(null)`. */
+        fun webhookSecret(webhookSecret: Optional<String>) =
+            webhookSecret(webhookSecret.getOrNull())
+
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
+        /**
+         * Returns an immutable instance of [FinchClient].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): FinchClient =
             FinchClientImpl(
                 clientOptions
                     .httpClient(
                         OkHttpClient.builder()
-                            .baseUrl(baseUrl)
+                            .baseUrl(clientOptions.baseUrl())
                             .timeout(timeout)
                             .proxy(proxy)
                             .build()

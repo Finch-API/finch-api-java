@@ -3,30 +3,32 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisDirectoryListParamsTest {
+internal class HrisDirectoryListParamsTest {
 
     @Test
-    fun createHrisDirectoryListParams() {
-        HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
+    fun create() {
+        HrisDirectoryListParams.builder().limit(0L).offset(0L).build()
     }
 
     @Test
-    fun getQueryParams() {
-        val params = HrisDirectoryListParams.builder().limit(123L).offset(123L).build()
-        val expected = QueryParams.builder()
-        expected.put("limit", "123")
-        expected.put("offset", "123")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+    fun queryParams() {
+        val params = HrisDirectoryListParams.builder().limit(0L).offset(0L).build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(QueryParams.builder().put("limit", "0").put("offset", "0").build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params = HrisDirectoryListParams.builder().build()
-        val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

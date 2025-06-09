@@ -2,45 +2,47 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxConnectionCreateParamsTest {
+internal class SandboxConnectionCreateParamsTest {
 
     @Test
-    fun createSandboxConnectionCreateParams() {
+    fun create() {
         SandboxConnectionCreateParams.builder()
             .providerId("provider_id")
             .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
-            .employeeSize(123L)
-            .products(listOf("string"))
+            .employeeSize(0L)
+            .addProduct("string")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxConnectionCreateParams.builder()
                 .providerId("provider_id")
                 .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
-                .employeeSize(123L)
-                .products(listOf("string"))
+                .employeeSize(0L)
+                .addProduct("string")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
-            .isEqualTo(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
-        assertThat(body.employeeSize()).isEqualTo(123L)
-        assertThat(body.products()).isEqualTo(listOf("string"))
+            .contains(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
+        assertThat(body.employeeSize()).contains(0L)
+        assertThat(body.products().getOrNull()).containsExactly("string")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxConnectionCreateParams.builder().providerId("provider_id").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.providerId()).isEqualTo("provider_id")
     }
 }

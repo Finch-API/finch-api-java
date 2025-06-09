@@ -2,62 +2,48 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.models.*
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
+/** Read company directory and organization structure */
+@Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsParams
-constructor(
+private constructor(
     private val limit: Long?,
     private val offset: Long?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** Number of employees to return (defaults to all) */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
+    /** Index to start from (defaults to 0) */
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
-
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.offset?.let { queryParams.put("offset", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisDirectoryListIndividualsParams && limit == other.limit && offset == other.offset && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(limit, offset, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "HrisDirectoryListIndividualsParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        @JvmStatic fun none(): HrisDirectoryListIndividualsParams = builder().build()
+
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisDirectoryListIndividualsParams].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [HrisDirectoryListIndividualsParams]. */
+    class Builder internal constructor() {
 
         private var limit: Long? = null
         private var offset: Long? = null
@@ -67,17 +53,38 @@ constructor(
         @JvmSynthetic
         internal fun from(hrisDirectoryListIndividualsParams: HrisDirectoryListIndividualsParams) =
             apply {
-                this.limit = hrisDirectoryListIndividualsParams.limit
-                this.offset = hrisDirectoryListIndividualsParams.offset
-                additionalHeaders(hrisDirectoryListIndividualsParams.additionalHeaders)
-                additionalQueryParams(hrisDirectoryListIndividualsParams.additionalQueryParams)
+                limit = hrisDirectoryListIndividualsParams.limit
+                offset = hrisDirectoryListIndividualsParams.offset
+                additionalHeaders = hrisDirectoryListIndividualsParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    hrisDirectoryListIndividualsParams.additionalQueryParams.toBuilder()
             }
 
         /** Number of employees to return (defaults to all) */
-        fun limit(limit: Long) = apply { this.limit = limit }
+        fun limit(limit: Long?) = apply { this.limit = limit }
+
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun limit(limit: Long) = limit(limit as Long?)
+
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
+        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
 
         /** Index to start from (defaults to 0) */
-        fun offset(offset: Long) = apply { this.offset = offset }
+        fun offset(offset: Long?) = apply { this.offset = offset }
+
+        /**
+         * Alias for [Builder.offset].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun offset(offset: Long) = offset(offset as Long?)
+
+        /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
+        fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -177,6 +184,11 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisDirectoryListIndividualsParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): HrisDirectoryListIndividualsParams =
             HrisDirectoryListIndividualsParams(
                 limit,
@@ -185,4 +197,28 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                limit?.let { put("limit", it.toString()) }
+                offset?.let { put("offset", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisDirectoryListIndividualsParams && limit == other.limit && offset == other.offset && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(limit, offset, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "HrisDirectoryListIndividualsParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

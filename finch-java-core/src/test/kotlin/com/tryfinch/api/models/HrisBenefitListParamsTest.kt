@@ -2,13 +2,12 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.models.*
 import org.junit.jupiter.api.Test
 
-class HrisBenefitListParamsTest {
+internal class HrisBenefitListParamsTest {
 
     @Test
-    fun createHrisBenefitListParams() {
+    fun create() {
         HrisBenefitListParams.builder().build()
     }
 }

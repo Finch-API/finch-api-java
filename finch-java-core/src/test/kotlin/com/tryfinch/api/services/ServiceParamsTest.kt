@@ -2,30 +2,25 @@
 
 package com.tryfinch.api.services
 
-import com.fasterxml.jackson.databind.json.JsonMapper
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.ok
-import com.github.tomakehurst.wiremock.client.WireMock.put
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.verify
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.core.jsonMapper
-import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.parallel.ResourceLock
 
 @WireMockTest
-class ServiceParamsTest {
-
-    private val JSON_MAPPER: JsonMapper = jsonMapper()
+@ResourceLock("https://github.com/wiremock/wiremock/issues/169")
+internal class ServiceParamsTest {
 
     private lateinit var client: FinchClient
 
@@ -33,61 +28,27 @@ class ServiceParamsTest {
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
         client =
             FinchOkHttpClient.builder()
+                .baseUrl(wmRuntimeInfo.httpBaseUrl)
                 .accessToken("My Access Token")
-                .clientId("4ab15e51-11ad-49f4-acae-f343b7794375")
-                .clientSecret("My Client Secret")
-                .webhookSecret("My Webhook Secret")
-                .baseUrl(wmRuntimeInfo.getHttpBaseUrl())
                 .build()
     }
 
     @Test
-    fun directoriesListWithAdditionalParams() {
-        val additionalHeaders = mutableMapOf<String, List<String>>()
+    fun list() {
+        val directoryService = client.hris().directory()
+        stubFor(get(anyUrl()).willReturn(ok("{}")))
 
-        additionalHeaders.put("x-test-header", listOf("abc1234"))
-
-        val additionalQueryParams = mutableMapOf<String, List<String>>()
-
-        additionalQueryParams.put("test_query_param", listOf("def567"))
-
-        val params =
+        directoryService.list(
             HrisDirectoryListParams.builder()
-                .limit(123L)
-                .offset(123L)
-                .additionalHeaders(additionalHeaders)
-                .additionalQueryParams(additionalQueryParams)
+                .putAdditionalHeader("Secret-Header", "42")
+                .putAdditionalQueryParam("secret_query_param", "42")
                 .build()
-
-        val apiResponse =
-            HrisDirectoryListPage.Response.builder()
-                .individuals(
-                    listOf(
-                        IndividualInDirectory.builder()
-                            .id("id")
-                            .department(
-                                IndividualInDirectory.Department.builder().name("name").build()
-                            )
-                            .firstName("first_name")
-                            .isActive(true)
-                            .lastName("last_name")
-                            .manager(IndividualInDirectory.Manager.builder().id("id").build())
-                            .middleName("middle_name")
-                            .build()
-                    )
-                )
-                .paging(Paging.builder().count(123L).offset(123L).build())
-                .build()
-
-        stubFor(
-            get(anyUrl())
-                .withHeader("x-test-header", equalTo("abc1234"))
-                .withQueryParam("test_query_param", equalTo("def567"))
-                .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.hris().directory().list(params)
-
-        verify(getRequestedFor(anyUrl()))
+        verify(
+            getRequestedFor(anyUrl())
+                .withHeader("Secret-Header", equalTo("42"))
+                .withQueryParam("secret_query_param", equalTo("42"))
+        )
     }
 }

@@ -2,62 +2,50 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.models.*
 import java.time.LocalDate
 import java.util.Objects
 
+/** Read payroll and contractor related payments by the company. */
 class HrisPaymentListParams
-constructor(
+private constructor(
     private val endDate: LocalDate,
     private val startDate: LocalDate,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
+    /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
     fun endDate(): LocalDate = endDate
 
+    /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
     fun startDate(): LocalDate = startDate
-
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
-
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.endDate.let { queryParams.put("end_date", listOf(it.toString())) }
-        this.startDate.let { queryParams.put("start_date", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisPaymentListParams && endDate == other.endDate && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, startDate, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "HrisPaymentListParams{endDate=$endDate, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisPaymentListParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .endDate()
+         * .startDate()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [HrisPaymentListParams]. */
+    class Builder internal constructor() {
 
         private var endDate: LocalDate? = null
         private var startDate: LocalDate? = null
@@ -66,10 +54,10 @@ constructor(
 
         @JvmSynthetic
         internal fun from(hrisPaymentListParams: HrisPaymentListParams) = apply {
-            this.endDate = hrisPaymentListParams.endDate
-            this.startDate = hrisPaymentListParams.startDate
-            additionalHeaders(hrisPaymentListParams.additionalHeaders)
-            additionalQueryParams(hrisPaymentListParams.additionalQueryParams)
+            endDate = hrisPaymentListParams.endDate
+            startDate = hrisPaymentListParams.startDate
+            additionalHeaders = hrisPaymentListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = hrisPaymentListParams.additionalQueryParams.toBuilder()
         }
 
         /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
@@ -176,12 +164,49 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisPaymentListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .endDate()
+         * .startDate()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): HrisPaymentListParams =
             HrisPaymentListParams(
-                checkNotNull(endDate) { "`endDate` is required but was not set" },
-                checkNotNull(startDate) { "`startDate` is required but was not set" },
+                checkRequired("endDate", endDate),
+                checkRequired("startDate", startDate),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                put("end_date", endDate.toString())
+                put("start_date", startDate.toString())
+                putAll(additionalQueryParams)
+            }
+            .build()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisPaymentListParams && endDate == other.endDate && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, startDate, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "HrisPaymentListParams{endDate=$endDate, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -2,25 +2,47 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class AutomatedCreateResponseTest {
+internal class AutomatedCreateResponseTest {
 
     @Test
-    fun createAutomatedCreateResponse() {
+    fun create() {
         val automatedCreateResponse =
             AutomatedCreateResponse.builder()
-                .allowedRefreshes(123L)
+                .allowedRefreshes(0L)
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .jobUrl("job_url")
-                .remainingRefreshes(123L)
+                .remainingRefreshes(0L)
                 .build()
-        assertThat(automatedCreateResponse).isNotNull
-        assertThat(automatedCreateResponse.allowedRefreshes()).isEqualTo(123L)
+
+        assertThat(automatedCreateResponse.allowedRefreshes()).isEqualTo(0L)
         assertThat(automatedCreateResponse.jobId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(automatedCreateResponse.jobUrl()).isEqualTo("job_url")
-        assertThat(automatedCreateResponse.remainingRefreshes()).isEqualTo(123L)
+        assertThat(automatedCreateResponse.remainingRefreshes()).isEqualTo(0L)
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val automatedCreateResponse =
+            AutomatedCreateResponse.builder()
+                .allowedRefreshes(0L)
+                .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .jobUrl("job_url")
+                .remainingRefreshes(0L)
+                .build()
+
+        val roundtrippedAutomatedCreateResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(automatedCreateResponse),
+                jacksonTypeRef<AutomatedCreateResponse>(),
+            )
+
+        assertThat(roundtrippedAutomatedCreateResponse).isEqualTo(automatedCreateResponse)
     }
 }

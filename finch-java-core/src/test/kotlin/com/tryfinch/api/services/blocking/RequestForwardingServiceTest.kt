@@ -4,33 +4,34 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.core.JsonNull
-import com.tryfinch.api.models.*
+import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.models.RequestForwardingForwardParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class RequestForwardingServiceTest {
+internal class RequestForwardingServiceTest {
 
     @Test
-    fun callForward() {
+    fun forward() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val requestForwardingService = client.requestForwarding()
-        val requestForwardingForwardResponse =
+
+        val response =
             requestForwardingService.forward(
                 RequestForwardingForwardParams.builder()
-                    .method("method")
-                    .route("route")
-                    .data("data")
-                    .headers(JsonNull.of())
-                    .params(JsonNull.of())
+                    .method("POST")
+                    .route("/people/search")
+                    .data(null)
+                    .headers(JsonValue.from(mapOf("content-type" to "application/json")))
+                    .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
                     .build()
             )
-        println(requestForwardingForwardResponse)
-        requestForwardingForwardResponse.validate()
+
+        response.validate()
     }
 }

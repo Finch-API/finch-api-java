@@ -2,165 +2,113 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import java.util.Objects
-import java.util.Optional
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
 
+/** @see [IndividualService.retrieveManyBenefits] */
 class HrisBenefitIndividualRetrieveManyBenefitsPage
 private constructor(
-    private val individualsService: IndividualService,
+    private val service: IndividualService,
     private val params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-    private val response: Response,
-) {
+    private val items: List<IndividualBenefit>,
+) : Page<IndividualBenefit> {
 
-    fun response(): Response = response
+    override fun hasNextPage(): Boolean = false
 
-    fun items(): List<IndividualBenefit> = response().items()
+    fun nextPageParams(): HrisBenefitIndividualRetrieveManyBenefitsParams =
+        throw IllegalStateException("Cannot construct next page params")
+
+    override fun nextPage(): HrisBenefitIndividualRetrieveManyBenefitsPage =
+        service.retrieveManyBenefits(nextPageParams())
+
+    fun autoPager(): AutoPager<IndividualBenefit> = AutoPager.from(this)
+
+    /** The parameters that were used to request this page. */
+    fun params(): HrisBenefitIndividualRetrieveManyBenefitsParams = params
+
+    /** The response that this page was parsed from. */
+    override fun items(): List<IndividualBenefit> = items
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisBenefitIndividualRetrieveManyBenefitsPage].
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [HrisBenefitIndividualRetrieveManyBenefitsPage]. */
+    class Builder internal constructor() {
+
+        private var service: IndividualService? = null
+        private var params: HrisBenefitIndividualRetrieveManyBenefitsParams? = null
+        private var items: List<IndividualBenefit>? = null
+
+        @JvmSynthetic
+        internal fun from(
+            hrisBenefitIndividualRetrieveManyBenefitsPage:
+                HrisBenefitIndividualRetrieveManyBenefitsPage
+        ) = apply {
+            service = hrisBenefitIndividualRetrieveManyBenefitsPage.service
+            params = hrisBenefitIndividualRetrieveManyBenefitsPage.params
+            items = hrisBenefitIndividualRetrieveManyBenefitsPage.items
+        }
+
+        fun service(service: IndividualService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisBenefitIndividualRetrieveManyBenefitsParams) = apply {
+            this.params = params
+        }
+
+        /** The response that this page was parsed from. */
+        fun items(items: List<IndividualBenefit>) = apply { this.items = items }
+
+        /**
+         * Returns an immutable instance of [HrisBenefitIndividualRetrieveManyBenefitsPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisBenefitIndividualRetrieveManyBenefitsPage =
+            HrisBenefitIndividualRetrieveManyBenefitsPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
+            )
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsPage && individualsService == other.individualsService && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsPage && service == other.service && params == other.params && items == other.items /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualsService, params, response) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, items) /* spotless:on */
 
     override fun toString() =
-        "HrisBenefitIndividualRetrieveManyBenefitsPage{individualsService=$individualsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !items().isEmpty()
-    }
-
-    fun getNextPageParams(): Optional<HrisBenefitIndividualRetrieveManyBenefitsParams> {
-        return Optional.empty()
-    }
-
-    fun getNextPage(): Optional<HrisBenefitIndividualRetrieveManyBenefitsPage> {
-        return getNextPageParams().map { individualsService.retrieveManyBenefits(it) }
-    }
-
-    fun autoPager(): AutoPager = AutoPager(this)
-
-    companion object {
-
-        @JvmStatic
-        fun of(
-            individualsService: IndividualService,
-            params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-            response: Response
-        ) =
-            HrisBenefitIndividualRetrieveManyBenefitsPage(
-                individualsService,
-                params,
-                response,
-            )
-    }
-
-    @JsonDeserialize(builder = Response.Builder::class)
-    @NoAutoDetect
-    class Response
-    constructor(
-        private val items: JsonField<List<IndividualBenefit>>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        fun items(): List<IndividualBenefit> = items.getNullable("items") ?: listOf()
-
-        @JsonProperty("items")
-        fun _items(): Optional<JsonField<List<IndividualBenefit>>> = Optional.ofNullable(items)
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Response = apply {
-            if (!validated) {
-                items().map { it.validate() }
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var items: JsonField<List<IndividualBenefit>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun items(items: List<IndividualBenefit>) = items(JsonField.of(items))
-
-            @JsonProperty("items")
-            fun items(items: JsonField<List<IndividualBenefit>>) = apply { this.items = items }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun build() = Response(items, additionalProperties.toImmutable())
-        }
-    }
-
-    class AutoPager
-    constructor(
-        private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPage,
-    ) : Iterable<IndividualBenefit> {
-
-        override fun iterator(): Iterator<IndividualBenefit> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage().orElse(null) ?: break
-                index = 0
-            }
-        }
-
-        fun stream(): Stream<IndividualBenefit> {
-            return StreamSupport.stream(spliterator(), false)
-        }
-    }
+        "HrisBenefitIndividualRetrieveManyBenefitsPage{service=$service, params=$params, items=$items}"
 }
