@@ -73,8 +73,5 @@
     "minupalaniappan"
   ],
   "release-type": "simple",
-  "extra-files": [
-    "README.md",
-    "build.gradle.kts"
-  ]
+  "extra-files": ["README.md", "build.gradle.kts"]
 }
