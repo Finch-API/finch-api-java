@@ -70,6 +70,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated")
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -100,6 +101,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -127,6 +129,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated")
                     .build()
                     .prepare(clientOptions, params)

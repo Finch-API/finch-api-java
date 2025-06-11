@@ -75,6 +75,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0), "enrolled")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -108,6 +109,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0), "individuals")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -149,6 +151,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0), "individuals")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

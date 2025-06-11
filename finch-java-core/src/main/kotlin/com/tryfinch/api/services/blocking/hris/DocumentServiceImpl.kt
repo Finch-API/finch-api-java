@@ -60,6 +60,7 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "documents")
                     .build()
                     .prepare(clientOptions, params)
@@ -90,6 +91,7 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "documents", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)

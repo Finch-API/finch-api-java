@@ -51,6 +51,7 @@ class PayStatementServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

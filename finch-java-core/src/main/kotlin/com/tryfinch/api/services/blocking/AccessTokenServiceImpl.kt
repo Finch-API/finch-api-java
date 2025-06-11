@@ -50,6 +50,7 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("auth", "token")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

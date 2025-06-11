@@ -53,6 +53,7 @@ class ManualServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "manual", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)

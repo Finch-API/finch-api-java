@@ -50,6 +50,7 @@ class PaymentServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "payment")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
