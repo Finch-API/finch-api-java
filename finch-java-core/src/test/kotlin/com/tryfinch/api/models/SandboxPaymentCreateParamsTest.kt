@@ -2,7 +2,7 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.JsonValue
+import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -12,126 +12,54 @@ internal class SandboxPaymentCreateParamsTest {
     @Test
     fun create() {
         SandboxPaymentCreateParams.builder()
-            .endDate("end_date")
+            .endDate(LocalDate.parse("2019-12-27"))
             .addPayStatement(
-                PayStatement.builder()
+                SandboxPaymentCreateParams.PayStatement.builder()
+                    .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addEarning(
-                        PayStatement.Earning.builder()
+                        SandboxPaymentCreateParams.PayStatement.Earning.builder()
                             .amount(0L)
-                            .currency("currency")
                             .hours(0.0)
-                            .name("name")
-                            .type(PayStatement.Earning.Type.SALARY)
-                            .attributes(
-                                PayStatement.Earning.Attributes.builder()
-                                    .metadata(
-                                        PayStatement.Earning.Attributes.Metadata.builder()
-                                            .metadata(
-                                                PayStatement.Earning.Attributes.Metadata
-                                                    .InnerMetadata
-                                                    .builder()
-                                                    .putAdditionalProperty(
-                                                        "foo",
-                                                        JsonValue.from(mapOf<String, Any>()),
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .build()
-                            )
+                            .name("x")
+                            .type(SandboxPaymentCreateParams.PayStatement.Earning.Type.BONUS)
                             .build()
                     )
                     .addEmployeeDeduction(
-                        PayStatement.EmployeeDeduction.builder()
+                        SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
                             .amount(0L)
-                            .currency("currency")
-                            .name("name")
+                            .name("x")
                             .preTax(true)
-                            .type(BenefitType._457)
-                            .attributes(
-                                PayStatement.EmployeeDeduction.Attributes.builder()
-                                    .metadata(
-                                        PayStatement.EmployeeDeduction.Attributes.Metadata.builder()
-                                            .metadata(
-                                                PayStatement.EmployeeDeduction.Attributes.Metadata
-                                                    .InnerMetadata
-                                                    .builder()
-                                                    .putAdditionalProperty(
-                                                        "foo",
-                                                        JsonValue.from(mapOf<String, Any>()),
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .build()
+                            .type(
+                                SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.Type._457
                             )
                             .build()
                     )
                     .addEmployerContribution(
-                        PayStatement.EmployerContribution.builder()
-                            .currency("currency")
-                            .name("name")
-                            .type(BenefitType._457)
+                        SandboxPaymentCreateParams.PayStatement.EmployerContribution.builder()
                             .amount(0L)
-                            .attributes(
-                                PayStatement.EmployerContribution.Attributes.builder()
-                                    .metadata(
-                                        PayStatement.EmployerContribution.Attributes.Metadata
-                                            .builder()
-                                            .metadata(
-                                                PayStatement.EmployerContribution.Attributes
-                                                    .Metadata
-                                                    .InnerMetadata
-                                                    .builder()
-                                                    .putAdditionalProperty(
-                                                        "foo",
-                                                        JsonValue.from(mapOf<String, Any>()),
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .build()
+                            .name("x")
+                            .type(
+                                SandboxPaymentCreateParams.PayStatement.EmployerContribution.Type
+                                    ._457
                             )
                             .build()
                     )
-                    .grossPay(Money.builder().amount(0L).currency("currency").build())
-                    .individualId("individual_id")
-                    .netPay(Money.builder().amount(0L).currency("currency").build())
-                    .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                    .grossPay(1L)
+                    .netPay(9007199254740991L)
+                    .paymentMethod(SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK)
                     .addTax(
-                        PayStatement.Tax.builder()
-                            .currency("currency")
-                            .employer(true)
-                            .name("name")
-                            .type(PayStatement.Tax.Type.STATE)
+                        SandboxPaymentCreateParams.PayStatement.Tax.builder()
                             .amount(0L)
-                            .attributes(
-                                PayStatement.Tax.Attributes.builder()
-                                    .metadata(
-                                        PayStatement.Tax.Attributes.Metadata.builder()
-                                            .metadata(
-                                                PayStatement.Tax.Attributes.Metadata.InnerMetadata
-                                                    .builder()
-                                                    .putAdditionalProperty(
-                                                        "foo",
-                                                        JsonValue.from(mapOf<String, Any>()),
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .build()
-                            )
+                            .employer(true)
+                            .name("x")
+                            .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.FEDERAL)
                             .build()
                     )
-                    .totalHours(0.0)
-                    .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
+                    .totalHours(1.0)
+                    .type(SandboxPaymentCreateParams.PayStatement.Type.OFF_CYCLE_PAYROLL)
                     .build()
             )
-            .startDate("start_date")
+            .startDate(LocalDate.parse("2019-12-27"))
             .build()
     }
 
@@ -139,254 +67,109 @@ internal class SandboxPaymentCreateParamsTest {
     fun body() {
         val params =
             SandboxPaymentCreateParams.builder()
-                .endDate("end_date")
+                .endDate(LocalDate.parse("2019-12-27"))
                 .addPayStatement(
-                    PayStatement.builder()
+                    SandboxPaymentCreateParams.PayStatement.builder()
+                        .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .addEarning(
-                            PayStatement.Earning.builder()
+                            SandboxPaymentCreateParams.PayStatement.Earning.builder()
                                 .amount(0L)
-                                .currency("currency")
                                 .hours(0.0)
-                                .name("name")
-                                .type(PayStatement.Earning.Type.SALARY)
-                                .attributes(
-                                    PayStatement.Earning.Attributes.builder()
-                                        .metadata(
-                                            PayStatement.Earning.Attributes.Metadata.builder()
-                                                .metadata(
-                                                    PayStatement.Earning.Attributes.Metadata
-                                                        .InnerMetadata
-                                                        .builder()
-                                                        .putAdditionalProperty(
-                                                            "foo",
-                                                            JsonValue.from(mapOf<String, Any>()),
-                                                        )
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
-                                        .build()
-                                )
+                                .name("x")
+                                .type(SandboxPaymentCreateParams.PayStatement.Earning.Type.BONUS)
                                 .build()
                         )
                         .addEmployeeDeduction(
-                            PayStatement.EmployeeDeduction.builder()
+                            SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
                                 .amount(0L)
-                                .currency("currency")
-                                .name("name")
+                                .name("x")
                                 .preTax(true)
-                                .type(BenefitType._457)
-                                .attributes(
-                                    PayStatement.EmployeeDeduction.Attributes.builder()
-                                        .metadata(
-                                            PayStatement.EmployeeDeduction.Attributes.Metadata
-                                                .builder()
-                                                .metadata(
-                                                    PayStatement.EmployeeDeduction.Attributes
-                                                        .Metadata
-                                                        .InnerMetadata
-                                                        .builder()
-                                                        .putAdditionalProperty(
-                                                            "foo",
-                                                            JsonValue.from(mapOf<String, Any>()),
-                                                        )
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
-                                        .build()
+                                .type(
+                                    SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.Type
+                                        ._457
                                 )
                                 .build()
                         )
                         .addEmployerContribution(
-                            PayStatement.EmployerContribution.builder()
-                                .currency("currency")
-                                .name("name")
-                                .type(BenefitType._457)
+                            SandboxPaymentCreateParams.PayStatement.EmployerContribution.builder()
                                 .amount(0L)
-                                .attributes(
-                                    PayStatement.EmployerContribution.Attributes.builder()
-                                        .metadata(
-                                            PayStatement.EmployerContribution.Attributes.Metadata
-                                                .builder()
-                                                .metadata(
-                                                    PayStatement.EmployerContribution.Attributes
-                                                        .Metadata
-                                                        .InnerMetadata
-                                                        .builder()
-                                                        .putAdditionalProperty(
-                                                            "foo",
-                                                            JsonValue.from(mapOf<String, Any>()),
-                                                        )
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
-                                        .build()
+                                .name("x")
+                                .type(
+                                    SandboxPaymentCreateParams.PayStatement.EmployerContribution
+                                        .Type
+                                        ._457
                                 )
                                 .build()
                         )
-                        .grossPay(Money.builder().amount(0L).currency("currency").build())
-                        .individualId("individual_id")
-                        .netPay(Money.builder().amount(0L).currency("currency").build())
-                        .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                        .grossPay(1L)
+                        .netPay(9007199254740991L)
+                        .paymentMethod(SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK)
                         .addTax(
-                            PayStatement.Tax.builder()
-                                .currency("currency")
-                                .employer(true)
-                                .name("name")
-                                .type(PayStatement.Tax.Type.STATE)
+                            SandboxPaymentCreateParams.PayStatement.Tax.builder()
                                 .amount(0L)
-                                .attributes(
-                                    PayStatement.Tax.Attributes.builder()
-                                        .metadata(
-                                            PayStatement.Tax.Attributes.Metadata.builder()
-                                                .metadata(
-                                                    PayStatement.Tax.Attributes.Metadata
-                                                        .InnerMetadata
-                                                        .builder()
-                                                        .putAdditionalProperty(
-                                                            "foo",
-                                                            JsonValue.from(mapOf<String, Any>()),
-                                                        )
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
-                                        .build()
-                                )
+                                .employer(true)
+                                .name("x")
+                                .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.FEDERAL)
                                 .build()
                         )
-                        .totalHours(0.0)
-                        .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
+                        .totalHours(1.0)
+                        .type(SandboxPaymentCreateParams.PayStatement.Type.OFF_CYCLE_PAYROLL)
                         .build()
                 )
-                .startDate("start_date")
+                .startDate(LocalDate.parse("2019-12-27"))
                 .build()
 
         val body = params._body()
 
-        assertThat(body.endDate()).contains("end_date")
+        assertThat(body.endDate()).contains(LocalDate.parse("2019-12-27"))
         assertThat(body.payStatements().getOrNull())
             .containsExactly(
-                PayStatement.builder()
+                SandboxPaymentCreateParams.PayStatement.builder()
+                    .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addEarning(
-                        PayStatement.Earning.builder()
+                        SandboxPaymentCreateParams.PayStatement.Earning.builder()
                             .amount(0L)
-                            .currency("currency")
                             .hours(0.0)
-                            .name("name")
-                            .type(PayStatement.Earning.Type.SALARY)
-                            .attributes(
-                                PayStatement.Earning.Attributes.builder()
-                                    .metadata(
-                                        PayStatement.Earning.Attributes.Metadata.builder()
-                                            .metadata(
-                                                PayStatement.Earning.Attributes.Metadata
-                                                    .InnerMetadata
-                                                    .builder()
-                                                    .putAdditionalProperty(
-                                                        "foo",
-                                                        JsonValue.from(mapOf<String, Any>()),
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .build()
-                            )
+                            .name("x")
+                            .type(SandboxPaymentCreateParams.PayStatement.Earning.Type.BONUS)
                             .build()
                     )
                     .addEmployeeDeduction(
-                        PayStatement.EmployeeDeduction.builder()
+                        SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
                             .amount(0L)
-                            .currency("currency")
-                            .name("name")
+                            .name("x")
                             .preTax(true)
-                            .type(BenefitType._457)
-                            .attributes(
-                                PayStatement.EmployeeDeduction.Attributes.builder()
-                                    .metadata(
-                                        PayStatement.EmployeeDeduction.Attributes.Metadata.builder()
-                                            .metadata(
-                                                PayStatement.EmployeeDeduction.Attributes.Metadata
-                                                    .InnerMetadata
-                                                    .builder()
-                                                    .putAdditionalProperty(
-                                                        "foo",
-                                                        JsonValue.from(mapOf<String, Any>()),
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .build()
+                            .type(
+                                SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.Type._457
                             )
                             .build()
                     )
                     .addEmployerContribution(
-                        PayStatement.EmployerContribution.builder()
-                            .currency("currency")
-                            .name("name")
-                            .type(BenefitType._457)
+                        SandboxPaymentCreateParams.PayStatement.EmployerContribution.builder()
                             .amount(0L)
-                            .attributes(
-                                PayStatement.EmployerContribution.Attributes.builder()
-                                    .metadata(
-                                        PayStatement.EmployerContribution.Attributes.Metadata
-                                            .builder()
-                                            .metadata(
-                                                PayStatement.EmployerContribution.Attributes
-                                                    .Metadata
-                                                    .InnerMetadata
-                                                    .builder()
-                                                    .putAdditionalProperty(
-                                                        "foo",
-                                                        JsonValue.from(mapOf<String, Any>()),
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .build()
+                            .name("x")
+                            .type(
+                                SandboxPaymentCreateParams.PayStatement.EmployerContribution.Type
+                                    ._457
                             )
                             .build()
                     )
-                    .grossPay(Money.builder().amount(0L).currency("currency").build())
-                    .individualId("individual_id")
-                    .netPay(Money.builder().amount(0L).currency("currency").build())
-                    .paymentMethod(PayStatement.PaymentMethod.CHECK)
+                    .grossPay(1L)
+                    .netPay(9007199254740991L)
+                    .paymentMethod(SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK)
                     .addTax(
-                        PayStatement.Tax.builder()
-                            .currency("currency")
-                            .employer(true)
-                            .name("name")
-                            .type(PayStatement.Tax.Type.STATE)
+                        SandboxPaymentCreateParams.PayStatement.Tax.builder()
                             .amount(0L)
-                            .attributes(
-                                PayStatement.Tax.Attributes.builder()
-                                    .metadata(
-                                        PayStatement.Tax.Attributes.Metadata.builder()
-                                            .metadata(
-                                                PayStatement.Tax.Attributes.Metadata.InnerMetadata
-                                                    .builder()
-                                                    .putAdditionalProperty(
-                                                        "foo",
-                                                        JsonValue.from(mapOf<String, Any>()),
-                                                    )
-                                                    .build()
-                                            )
-                                            .build()
-                                    )
-                                    .build()
-                            )
+                            .employer(true)
+                            .name("x")
+                            .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.FEDERAL)
                             .build()
                     )
-                    .totalHours(0.0)
-                    .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
+                    .totalHours(1.0)
+                    .type(SandboxPaymentCreateParams.PayStatement.Type.OFF_CYCLE_PAYROLL)
                     .build()
             )
-        assertThat(body.startDate()).contains("start_date")
+        assertThat(body.startDate()).contains(LocalDate.parse("2019-12-27"))
     }
 
     @Test
