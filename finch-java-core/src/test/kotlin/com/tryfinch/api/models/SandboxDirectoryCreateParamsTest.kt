@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -60,7 +61,7 @@ internal class SandboxDirectoryCreateParamsTest {
                         Income.builder()
                             .amount(0L)
                             .currency("currency")
-                            .effectiveDate("effective_date")
+                            .effectiveDate(LocalDate.parse("2019-12-27"))
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
@@ -68,7 +69,7 @@ internal class SandboxDirectoryCreateParamsTest {
                         Income.builder()
                             .amount(0L)
                             .currency("currency")
-                            .effectiveDate("effective_date")
+                            .effectiveDate(LocalDate.parse("2019-12-27"))
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
@@ -182,7 +183,7 @@ internal class SandboxDirectoryCreateParamsTest {
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
@@ -190,7 +191,7 @@ internal class SandboxDirectoryCreateParamsTest {
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
@@ -298,7 +299,7 @@ internal class SandboxDirectoryCreateParamsTest {
                         Income.builder()
                             .amount(0L)
                             .currency("currency")
-                            .effectiveDate("effective_date")
+                            .effectiveDate(LocalDate.parse("2019-12-27"))
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
@@ -306,7 +307,7 @@ internal class SandboxDirectoryCreateParamsTest {
                         Income.builder()
                             .amount(0L)
                             .currency("currency")
-                            .effectiveDate("effective_date")
+                            .effectiveDate(LocalDate.parse("2019-12-27"))
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
