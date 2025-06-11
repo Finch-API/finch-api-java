@@ -62,6 +62,7 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "jobs")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

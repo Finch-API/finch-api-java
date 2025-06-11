@@ -58,6 +58,7 @@ class SessionServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("connect", "sessions")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -86,6 +87,7 @@ class SessionServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("connect", "sessions", "reauthenticate")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

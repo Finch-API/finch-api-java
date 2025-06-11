@@ -105,6 +105,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -138,6 +139,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -171,6 +173,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -202,6 +205,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -240,6 +244,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", "meta")
                     .build()
                     .prepareAsync(clientOptions, params)

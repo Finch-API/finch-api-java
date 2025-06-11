@@ -77,6 +77,7 @@ class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("auth", "token")
                     .putAllQueryParams(clientOptions.queryParams)
                     .replaceAllQueryParams(modifiedParams._queryParams())

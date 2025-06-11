@@ -50,6 +50,7 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "company")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

@@ -102,6 +102,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -132,6 +133,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -162,6 +164,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -190,6 +193,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits")
                     .build()
                     .prepare(clientOptions, params)
@@ -224,6 +228,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", "meta")
                     .build()
                     .prepare(clientOptions, params)

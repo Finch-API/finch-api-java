@@ -49,6 +49,7 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
                     .prepare(clientOptions, params)

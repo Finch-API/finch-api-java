@@ -55,6 +55,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "individual", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

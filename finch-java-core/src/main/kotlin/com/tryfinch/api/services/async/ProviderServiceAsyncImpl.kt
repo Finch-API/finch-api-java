@@ -50,6 +50,7 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
                     .prepareAsync(clientOptions, params)

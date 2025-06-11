@@ -52,6 +52,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "individual")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

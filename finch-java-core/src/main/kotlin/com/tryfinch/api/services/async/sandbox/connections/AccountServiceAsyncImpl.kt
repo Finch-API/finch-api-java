@@ -60,6 +60,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections", "accounts")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -91,6 +92,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections", "accounts")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

@@ -63,6 +63,7 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item")
                     .build()
                     .prepareAsync(clientOptions, params)

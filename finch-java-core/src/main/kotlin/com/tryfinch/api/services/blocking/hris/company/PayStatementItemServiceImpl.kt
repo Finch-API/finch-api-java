@@ -62,6 +62,7 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item")
                     .build()
                     .prepare(clientOptions, params)

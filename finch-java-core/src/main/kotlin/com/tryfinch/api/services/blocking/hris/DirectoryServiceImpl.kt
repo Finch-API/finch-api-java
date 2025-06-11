@@ -61,6 +61,7 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "directory")
                     .build()
                     .prepare(clientOptions, params)
@@ -96,6 +97,7 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "directory")
                     .build()
                     .prepare(clientOptions, params)

@@ -50,6 +50,7 @@ class RequestForwardingServiceImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("forward")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

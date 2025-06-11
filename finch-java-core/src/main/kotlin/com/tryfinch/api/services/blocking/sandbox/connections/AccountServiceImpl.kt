@@ -59,6 +59,7 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections", "accounts")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -87,6 +88,7 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections", "accounts")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
