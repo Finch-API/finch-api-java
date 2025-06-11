@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -63,7 +64,7 @@ internal class EmploymentDataTest {
                     Income.builder()
                         .amount(0L)
                         .currency("currency")
-                        .effectiveDate("effective_date")
+                        .effectiveDate(LocalDate.parse("2019-12-27"))
                         .unit(Income.Unit.YEARLY)
                         .build()
                 )
@@ -71,7 +72,7 @@ internal class EmploymentDataTest {
                     Income.builder()
                         .amount(0L)
                         .currency("currency")
-                        .effectiveDate("effective_date")
+                        .effectiveDate(LocalDate.parse("2019-12-27"))
                         .unit(Income.Unit.YEARLY)
                         .build()
                 )
@@ -138,7 +139,7 @@ internal class EmploymentDataTest {
                         Income.builder()
                             .amount(0L)
                             .currency("currency")
-                            .effectiveDate("effective_date")
+                            .effectiveDate(LocalDate.parse("2019-12-27"))
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
@@ -146,7 +147,7 @@ internal class EmploymentDataTest {
                         Income.builder()
                             .amount(0L)
                             .currency("currency")
-                            .effectiveDate("effective_date")
+                            .effectiveDate(LocalDate.parse("2019-12-27"))
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )

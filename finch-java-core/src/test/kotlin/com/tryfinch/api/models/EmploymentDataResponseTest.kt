@@ -4,6 +4,7 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.jsonMapper
+import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -62,7 +63,7 @@ internal class EmploymentDataResponseTest {
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
@@ -70,7 +71,7 @@ internal class EmploymentDataResponseTest {
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
@@ -133,7 +134,7 @@ internal class EmploymentDataResponseTest {
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
@@ -141,7 +142,7 @@ internal class EmploymentDataResponseTest {
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
@@ -209,7 +210,7 @@ internal class EmploymentDataResponseTest {
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
@@ -217,7 +218,7 @@ internal class EmploymentDataResponseTest {
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
