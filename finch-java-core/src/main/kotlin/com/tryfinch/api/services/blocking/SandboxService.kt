@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.services.blocking
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.blocking.sandbox.CompanyService
 import com.tryfinch.api.services.blocking.sandbox.ConnectionService
 import com.tryfinch.api.services.blocking.sandbox.DirectoryService
@@ -9,6 +10,7 @@ import com.tryfinch.api.services.blocking.sandbox.EmploymentService
 import com.tryfinch.api.services.blocking.sandbox.IndividualService
 import com.tryfinch.api.services.blocking.sandbox.JobService
 import com.tryfinch.api.services.blocking.sandbox.PaymentService
+import java.util.function.Consumer
 
 interface SandboxService {
 
@@ -16,6 +18,13 @@ interface SandboxService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): SandboxService
 
     fun connections(): ConnectionService
 
@@ -33,6 +42,13 @@ interface SandboxService {
 
     /** A view of [SandboxService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): SandboxService.WithRawResponse
 
         fun connections(): ConnectionService.WithRawResponse
 

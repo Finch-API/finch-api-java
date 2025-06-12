@@ -19,6 +19,7 @@ import com.tryfinch.api.models.DocumentListResponse
 import com.tryfinch.api.models.DocumentRetreiveResponse
 import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class DocumentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -29,6 +30,9 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): DocumentService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DocumentService =
+        DocumentServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: HrisDocumentListParams,
@@ -48,6 +52,13 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
         DocumentService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): DocumentService.WithRawResponse =
+            DocumentServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val listHandler: Handler<DocumentListResponse> =
             jsonHandler<DocumentListResponse>(clientOptions.jsonMapper)

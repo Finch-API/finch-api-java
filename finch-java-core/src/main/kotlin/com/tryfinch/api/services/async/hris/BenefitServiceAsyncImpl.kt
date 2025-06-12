@@ -31,6 +31,7 @@ import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsyncImpl
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class BenefitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -45,6 +46,9 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): BenefitServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): BenefitServiceAsync =
+        BenefitServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun individuals(): IndividualServiceAsync = individuals
 
@@ -91,6 +95,13 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val individuals: IndividualServiceAsync.WithRawResponse by lazy {
             IndividualServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): BenefitServiceAsync.WithRawResponse =
+            BenefitServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun individuals(): IndividualServiceAsync.WithRawResponse = individuals
 

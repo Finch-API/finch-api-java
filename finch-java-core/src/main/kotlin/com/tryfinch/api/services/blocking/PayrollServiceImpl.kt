@@ -5,6 +5,7 @@ package com.tryfinch.api.services.blocking
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.blocking.payroll.PayGroupService
 import com.tryfinch.api.services.blocking.payroll.PayGroupServiceImpl
+import java.util.function.Consumer
 
 class PayrollServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     PayrollService {
@@ -17,6 +18,9 @@ class PayrollServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): PayrollService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayrollService =
+        PayrollServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun payGroups(): PayGroupService = payGroups
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -25,6 +29,13 @@ class PayrollServiceImpl internal constructor(private val clientOptions: ClientO
         private val payGroups: PayGroupService.WithRawResponse by lazy {
             PayGroupServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayrollService.WithRawResponse =
+            PayrollServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun payGroups(): PayGroupService.WithRawResponse = payGroups
     }

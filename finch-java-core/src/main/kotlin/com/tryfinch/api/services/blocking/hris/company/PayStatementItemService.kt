@@ -3,11 +3,13 @@
 package com.tryfinch.api.services.blocking.hris.company
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListPage
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListParams
 import com.tryfinch.api.services.blocking.hris.company.payStatementItem.RuleService
+import java.util.function.Consumer
 
 interface PayStatementItemService {
 
@@ -15,6 +17,13 @@ interface PayStatementItemService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayStatementItemService
 
     fun rules(): RuleService
 
@@ -47,6 +56,15 @@ interface PayStatementItemService {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayStatementItemService.WithRawResponse
 
         fun rules(): RuleService.WithRawResponse
 

@@ -26,6 +26,7 @@ import com.tryfinch.api.models.RuleCreateResponse
 import com.tryfinch.api.models.RuleDeleteResponse
 import com.tryfinch.api.models.RuleUpdateResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class RuleServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -36,6 +37,9 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
     }
 
     override fun withRawResponse(): RuleServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuleServiceAsync =
+        RuleServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: HrisCompanyPayStatementItemRuleCreateParams,
@@ -69,6 +73,13 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
         RuleServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): RuleServiceAsync.WithRawResponse =
+            RuleServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<RuleCreateResponse> =
             jsonHandler<RuleCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

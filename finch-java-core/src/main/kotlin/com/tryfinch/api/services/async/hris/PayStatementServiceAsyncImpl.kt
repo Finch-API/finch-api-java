@@ -19,6 +19,7 @@ import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class PayStatementServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     PayStatementServiceAsync {
@@ -28,6 +29,9 @@ class PayStatementServiceAsyncImpl internal constructor(private val clientOption
     }
 
     override fun withRawResponse(): PayStatementServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayStatementServiceAsync =
+        PayStatementServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
@@ -40,6 +44,13 @@ class PayStatementServiceAsyncImpl internal constructor(private val clientOption
         PayStatementServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayStatementServiceAsync.WithRawResponse =
+            PayStatementServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPageResponse> =
             jsonHandler<HrisPayStatementRetrieveManyPageResponse>(clientOptions.jsonMapper)

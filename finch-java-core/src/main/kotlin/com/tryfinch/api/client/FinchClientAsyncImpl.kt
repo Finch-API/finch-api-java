@@ -24,6 +24,7 @@ import com.tryfinch.api.services.async.SandboxServiceAsync
 import com.tryfinch.api.services.async.SandboxServiceAsyncImpl
 import com.tryfinch.api.services.async.WebhookServiceAsync
 import com.tryfinch.api.services.async.WebhookServiceAsyncImpl
+import java.util.function.Consumer
 
 class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClientAsync {
 
@@ -81,6 +82,9 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
     override fun sync(): FinchClient = sync
 
     override fun withRawResponse(): FinchClientAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): FinchClientAsync =
+        FinchClientAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun accessTokens(): AccessTokenServiceAsync = accessTokens
 
@@ -146,6 +150,13 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
         private val connect: ConnectServiceAsync.WithRawResponse by lazy {
             ConnectServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): FinchClientAsync.WithRawResponse =
+            FinchClientAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun accessTokens(): AccessTokenServiceAsync.WithRawResponse = accessTokens
 

@@ -22,6 +22,7 @@ import com.tryfinch.api.models.AutomatedListResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class AutomatedServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -32,6 +33,9 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
     }
 
     override fun withRawResponse(): AutomatedService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AutomatedService =
+        AutomatedServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: JobAutomatedCreateParams,
@@ -58,6 +62,13 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
         AutomatedService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AutomatedService.WithRawResponse =
+            AutomatedServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<AutomatedCreateResponse> =
             jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)

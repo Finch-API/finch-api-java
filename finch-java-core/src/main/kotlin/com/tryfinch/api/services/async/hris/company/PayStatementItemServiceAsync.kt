@@ -2,12 +2,14 @@
 
 package com.tryfinch.api.services.async.hris.company
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListPageAsync
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListParams
 import com.tryfinch.api.services.async.hris.company.payStatementItem.RuleServiceAsync
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface PayStatementItemServiceAsync {
 
@@ -15,6 +17,13 @@ interface PayStatementItemServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayStatementItemServiceAsync
 
     fun rules(): RuleServiceAsync
 
@@ -50,6 +59,15 @@ interface PayStatementItemServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayStatementItemServiceAsync.WithRawResponse
 
         fun rules(): RuleServiceAsync.WithRawResponse
 

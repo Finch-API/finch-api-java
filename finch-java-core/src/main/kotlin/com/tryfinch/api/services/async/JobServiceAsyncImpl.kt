@@ -7,6 +7,7 @@ import com.tryfinch.api.services.async.jobs.AutomatedServiceAsync
 import com.tryfinch.api.services.async.jobs.AutomatedServiceAsyncImpl
 import com.tryfinch.api.services.async.jobs.ManualServiceAsync
 import com.tryfinch.api.services.async.jobs.ManualServiceAsyncImpl
+import java.util.function.Consumer
 
 class JobServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     JobServiceAsync {
@@ -23,6 +24,9 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
 
     override fun withRawResponse(): JobServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync =
+        JobServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun automated(): AutomatedServiceAsync = automated
 
     override fun manual(): ManualServiceAsync = manual
@@ -37,6 +41,13 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
         private val manual: ManualServiceAsync.WithRawResponse by lazy {
             ManualServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): JobServiceAsync.WithRawResponse =
+            JobServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun automated(): AutomatedServiceAsync.WithRawResponse = automated
 

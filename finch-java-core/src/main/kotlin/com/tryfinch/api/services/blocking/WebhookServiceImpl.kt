@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.core.ClientOptions
+import java.util.function.Consumer
 
 class WebhookServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     WebhookService {
@@ -13,6 +14,17 @@ class WebhookServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): WebhookService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): WebhookService =
+        WebhookServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        WebhookService.WithRawResponse
+        WebhookService.WithRawResponse {
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): WebhookService.WithRawResponse =
+            WebhookServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+    }
 }

@@ -19,6 +19,7 @@ import com.tryfinch.api.models.ConnectSessionNewParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
 import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
+import java.util.function.Consumer
 
 class SessionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     SessionService {
@@ -28,6 +29,9 @@ class SessionServiceImpl internal constructor(private val clientOptions: ClientO
     }
 
     override fun withRawResponse(): SessionService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SessionService =
+        SessionServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun new_(
         params: ConnectSessionNewParams,
@@ -47,6 +51,13 @@ class SessionServiceImpl internal constructor(private val clientOptions: ClientO
         SessionService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): SessionService.WithRawResponse =
+            SessionServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val newHandler: Handler<SessionNewResponse> =
             jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

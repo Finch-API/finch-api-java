@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.services.async
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AccountDisconnectParams
@@ -9,6 +10,7 @@ import com.tryfinch.api.models.AccountIntrospectParams
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface AccountServiceAsync {
 
@@ -16,6 +18,13 @@ interface AccountServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountServiceAsync
 
     /** Disconnect one or more `access_token`s from your application. */
     fun disconnect(): CompletableFuture<DisconnectResponse> =
@@ -58,6 +67,15 @@ interface AccountServiceAsync {
      * A view of [AccountServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccountServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /disconnect`, but is otherwise the same as

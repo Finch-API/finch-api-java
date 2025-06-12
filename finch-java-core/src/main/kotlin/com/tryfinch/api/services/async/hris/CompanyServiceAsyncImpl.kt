@@ -19,6 +19,7 @@ import com.tryfinch.api.models.HrisCompanyRetrieveParams
 import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
 import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class CompanyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     CompanyServiceAsync {
@@ -32,6 +33,9 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CompanyServiceAsync =
+        CompanyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun payStatementItem(): PayStatementItemServiceAsync = payStatementItem
 
@@ -50,6 +54,13 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val payStatementItem: PayStatementItemServiceAsync.WithRawResponse by lazy {
             PayStatementItemServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CompanyServiceAsync.WithRawResponse =
+            CompanyServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse =
             payStatementItem

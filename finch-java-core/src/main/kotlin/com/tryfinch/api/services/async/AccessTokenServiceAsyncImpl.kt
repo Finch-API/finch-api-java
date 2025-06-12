@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AccessTokenServiceAsync {
@@ -27,6 +28,9 @@ class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions
     }
 
     override fun withRawResponse(): AccessTokenServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccessTokenServiceAsync =
+        AccessTokenServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: AccessTokenCreateParams,
@@ -39,6 +43,13 @@ class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions
         AccessTokenServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccessTokenServiceAsync.WithRawResponse =
+            AccessTokenServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<CreateAccessTokenResponse> =
             jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper)

@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.DirectoryCreateResponse
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     DirectoryServiceAsync {
@@ -27,6 +28,9 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
     }
 
     override fun withRawResponse(): DirectoryServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DirectoryServiceAsync =
+        DirectoryServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: SandboxDirectoryCreateParams,
@@ -39,6 +43,13 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
         DirectoryServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): DirectoryServiceAsync.WithRawResponse =
+            DirectoryServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<List<DirectoryCreateResponse>> =
             jsonHandler<List<DirectoryCreateResponse>>(clientOptions.jsonMapper)

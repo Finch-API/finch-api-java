@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisIndividualRetrieveManyPage
 import com.tryfinch.api.models.HrisIndividualRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
+import java.util.function.Consumer
 
 class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     IndividualService {
@@ -27,6 +28,9 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): IndividualService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualService =
+        IndividualServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieveMany(
         params: HrisIndividualRetrieveManyParams,
@@ -39,6 +43,13 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
         IndividualService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): IndividualService.WithRawResponse =
+            IndividualServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageResponse> =
             jsonHandler<HrisIndividualRetrieveManyPageResponse>(clientOptions.jsonMapper)
