@@ -30,6 +30,7 @@ import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualServiceImpl
 import java.util.Optional
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class BenefitServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -42,6 +43,9 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
     private val individuals: IndividualService by lazy { IndividualServiceImpl(clientOptions) }
 
     override fun withRawResponse(): BenefitService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): BenefitService =
+        BenefitServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun individuals(): IndividualService = individuals
 
@@ -88,6 +92,13 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
         private val individuals: IndividualService.WithRawResponse by lazy {
             IndividualServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): BenefitService.WithRawResponse =
+            BenefitServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun individuals(): IndividualService.WithRawResponse = individuals
 

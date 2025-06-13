@@ -19,6 +19,7 @@ import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class EmploymentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     EmploymentServiceAsync {
@@ -28,6 +29,9 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
     }
 
     override fun withRawResponse(): EmploymentServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): EmploymentServiceAsync =
+        EmploymentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
@@ -40,6 +44,13 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
         EmploymentServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EmploymentServiceAsync.WithRawResponse =
+            EmploymentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageResponse> =
             jsonHandler<HrisEmploymentRetrieveManyPageResponse>(clientOptions.jsonMapper)

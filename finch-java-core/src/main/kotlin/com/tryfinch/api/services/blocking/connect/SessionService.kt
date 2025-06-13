@@ -3,12 +3,14 @@
 package com.tryfinch.api.services.blocking.connect
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.ConnectSessionNewParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
 import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
+import java.util.function.Consumer
 
 interface SessionService {
 
@@ -16,6 +18,13 @@ interface SessionService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): SessionService
 
     /** Create a new connect session for an employer */
     fun new_(params: ConnectSessionNewParams): SessionNewResponse =
@@ -39,6 +48,13 @@ interface SessionService {
 
     /** A view of [SessionService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): SessionService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the same as

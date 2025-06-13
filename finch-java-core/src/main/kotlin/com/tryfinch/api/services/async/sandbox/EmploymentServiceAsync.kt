@@ -2,11 +2,13 @@
 
 package com.tryfinch.api.services.async.sandbox
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.EmploymentUpdateResponse
 import com.tryfinch.api.models.SandboxEmploymentUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface EmploymentServiceAsync {
 
@@ -14,6 +16,13 @@ interface EmploymentServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): EmploymentServiceAsync
 
     /** Update sandbox employment */
     fun update(individualId: String): CompletableFuture<EmploymentUpdateResponse> =
@@ -56,6 +65,15 @@ interface EmploymentServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EmploymentServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `put /sandbox/employment/{individual_id}`, but is

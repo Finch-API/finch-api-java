@@ -7,6 +7,7 @@ import com.tryfinch.api.services.blocking.jobs.AutomatedService
 import com.tryfinch.api.services.blocking.jobs.AutomatedServiceImpl
 import com.tryfinch.api.services.blocking.jobs.ManualService
 import com.tryfinch.api.services.blocking.jobs.ManualServiceImpl
+import java.util.function.Consumer
 
 class JobServiceImpl internal constructor(private val clientOptions: ClientOptions) : JobService {
 
@@ -19,6 +20,9 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
     private val manual: ManualService by lazy { ManualServiceImpl(clientOptions) }
 
     override fun withRawResponse(): JobService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService =
+        JobServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun automated(): AutomatedService = automated
 
@@ -34,6 +38,13 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
         private val manual: ManualService.WithRawResponse by lazy {
             ManualServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): JobService.WithRawResponse =
+            JobServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun automated(): AutomatedService.WithRawResponse = automated
 

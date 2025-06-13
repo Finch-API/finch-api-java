@@ -3,12 +3,14 @@
 package com.tryfinch.api.services.blocking.sandbox.connections
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AccountCreateResponse
 import com.tryfinch.api.models.AccountUpdateResponse
 import com.tryfinch.api.models.SandboxConnectionAccountCreateParams
 import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
+import java.util.function.Consumer
 
 interface AccountService {
 
@@ -16,6 +18,13 @@ interface AccountService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountService
 
     /** Create a new account for an existing connection (company/provider pair) */
     fun create(params: SandboxConnectionAccountCreateParams): AccountCreateResponse =
@@ -50,6 +59,13 @@ interface AccountService {
 
     /** A view of [AccountService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /sandbox/connections/accounts`, but is otherwise

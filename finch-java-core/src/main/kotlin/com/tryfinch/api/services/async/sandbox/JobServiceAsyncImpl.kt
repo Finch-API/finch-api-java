@@ -20,6 +20,7 @@ import com.tryfinch.api.models.SandboxJobCreateParams
 import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsync
 import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class JobServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     JobServiceAsync {
@@ -33,6 +34,9 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): JobServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync =
+        JobServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun configuration(): ConfigurationServiceAsync = configuration
 
@@ -51,6 +55,13 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
         private val configuration: ConfigurationServiceAsync.WithRawResponse by lazy {
             ConfigurationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): JobServiceAsync.WithRawResponse =
+            JobServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun configuration(): ConfigurationServiceAsync.WithRawResponse = configuration
 

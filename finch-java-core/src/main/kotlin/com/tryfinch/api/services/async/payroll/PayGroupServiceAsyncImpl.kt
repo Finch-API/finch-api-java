@@ -21,6 +21,7 @@ import com.tryfinch.api.models.PayrollPayGroupListPageAsync
 import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -31,6 +32,9 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): PayGroupServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayGroupServiceAsync =
+        PayGroupServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieve(
         params: PayrollPayGroupRetrieveParams,
@@ -50,6 +54,13 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
         PayGroupServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayGroupServiceAsync.WithRawResponse =
+            PayGroupServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
             jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)

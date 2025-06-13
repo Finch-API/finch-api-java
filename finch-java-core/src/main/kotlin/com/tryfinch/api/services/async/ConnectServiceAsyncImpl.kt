@@ -5,6 +5,7 @@ package com.tryfinch.api.services.async
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.async.connect.SessionServiceAsync
 import com.tryfinch.api.services.async.connect.SessionServiceAsyncImpl
+import java.util.function.Consumer
 
 class ConnectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ConnectServiceAsync {
@@ -17,6 +18,9 @@ class ConnectServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): ConnectServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ConnectServiceAsync =
+        ConnectServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun sessions(): SessionServiceAsync = sessions
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -25,6 +29,13 @@ class ConnectServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val sessions: SessionServiceAsync.WithRawResponse by lazy {
             SessionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ConnectServiceAsync.WithRawResponse =
+            ConnectServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun sessions(): SessionServiceAsync.WithRawResponse = sessions
     }

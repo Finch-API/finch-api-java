@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.services.async.hris.benefits
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
@@ -11,6 +12,7 @@ import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface IndividualServiceAsync {
 
@@ -18,6 +20,13 @@ interface IndividualServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualServiceAsync
 
     /** Lists individuals currently enrolled in a given deduction. */
     fun enrolledIds(benefitId: String): CompletableFuture<IndividualEnrolledIdsResponse> =
@@ -149,6 +158,15 @@ interface IndividualServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): IndividualServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/enrolled`, but is

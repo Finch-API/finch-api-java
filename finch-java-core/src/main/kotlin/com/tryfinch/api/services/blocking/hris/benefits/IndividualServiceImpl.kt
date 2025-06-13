@@ -23,6 +23,7 @@ import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -33,6 +34,9 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): IndividualService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualService =
+        IndividualServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
@@ -59,6 +63,13 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
         IndividualService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): IndividualService.WithRawResponse =
+            IndividualServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> =
             jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)

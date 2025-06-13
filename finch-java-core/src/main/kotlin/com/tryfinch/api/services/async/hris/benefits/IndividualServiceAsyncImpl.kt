@@ -24,6 +24,7 @@ import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -34,6 +35,9 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
     }
 
     override fun withRawResponse(): IndividualServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualServiceAsync =
+        IndividualServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
@@ -60,6 +64,13 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
         IndividualServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): IndividualServiceAsync.WithRawResponse =
+            IndividualServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> =
             jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)

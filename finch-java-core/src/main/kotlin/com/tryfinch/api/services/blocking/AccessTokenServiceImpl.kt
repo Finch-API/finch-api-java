@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class AccessTokenServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -28,6 +29,9 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
     }
 
     override fun withRawResponse(): AccessTokenService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccessTokenService =
+        AccessTokenServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: AccessTokenCreateParams,
@@ -40,6 +44,13 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
         AccessTokenService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccessTokenService.WithRawResponse =
+            AccessTokenServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<CreateAccessTokenResponse> =
             jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper)

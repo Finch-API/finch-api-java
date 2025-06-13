@@ -23,6 +23,7 @@ import com.tryfinch.api.models.JobAutomatedCreateParams
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -33,6 +34,9 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
     }
 
     override fun withRawResponse(): AutomatedServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AutomatedServiceAsync =
+        AutomatedServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: JobAutomatedCreateParams,
@@ -59,6 +63,13 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
         AutomatedServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AutomatedServiceAsync.WithRawResponse =
+            AutomatedServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<AutomatedCreateResponse> =
             jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)

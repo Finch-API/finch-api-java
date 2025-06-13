@@ -17,6 +17,7 @@ import com.tryfinch.api.services.blocking.sandbox.JobService
 import com.tryfinch.api.services.blocking.sandbox.JobServiceImpl
 import com.tryfinch.api.services.blocking.sandbox.PaymentService
 import com.tryfinch.api.services.blocking.sandbox.PaymentServiceImpl
+import java.util.function.Consumer
 
 class SandboxServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     SandboxService {
@@ -40,6 +41,9 @@ class SandboxServiceImpl internal constructor(private val clientOptions: ClientO
     private val jobs: JobService by lazy { JobServiceImpl(clientOptions) }
 
     override fun withRawResponse(): SandboxService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SandboxService =
+        SandboxServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun connections(): ConnectionService = connections
 
@@ -85,6 +89,13 @@ class SandboxServiceImpl internal constructor(private val clientOptions: ClientO
         private val jobs: JobService.WithRawResponse by lazy {
             JobServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): SandboxService.WithRawResponse =
+            SandboxServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun connections(): ConnectionService.WithRawResponse = connections
 

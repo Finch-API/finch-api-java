@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.services.async.hris
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.CompanyBenefit
@@ -16,6 +17,7 @@ import com.tryfinch.api.models.HrisBenefitUpdateParams
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface BenefitServiceAsync {
 
@@ -23,6 +25,13 @@ interface BenefitServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): BenefitServiceAsync
 
     fun individuals(): IndividualServiceAsync
 
@@ -165,6 +174,15 @@ interface BenefitServiceAsync {
      * A view of [BenefitServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): BenefitServiceAsync.WithRawResponse
 
         fun individuals(): IndividualServiceAsync.WithRawResponse
 

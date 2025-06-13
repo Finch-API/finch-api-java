@@ -3,12 +3,14 @@
 package com.tryfinch.api.services.blocking.hris
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.DocumentListResponse
 import com.tryfinch.api.models.DocumentRetreiveResponse
 import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
+import java.util.function.Consumer
 
 interface DocumentService {
 
@@ -16,6 +18,13 @@ interface DocumentService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): DocumentService
 
     /**
      * **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents.
@@ -73,6 +82,13 @@ interface DocumentService {
 
     /** A view of [DocumentService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): DocumentService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /employer/documents`, but is otherwise the same as

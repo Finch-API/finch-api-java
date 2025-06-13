@@ -36,6 +36,7 @@ import com.tryfinch.api.services.blocking.SandboxServiceImpl
 import com.tryfinch.api.services.blocking.WebhookService
 import com.tryfinch.api.services.blocking.WebhookServiceImpl
 import java.net.URLEncoder
+import java.util.function.Consumer
 
 class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
 
@@ -87,6 +88,9 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
     override fun async(): FinchClientAsync = async
 
     override fun withRawResponse(): FinchClient.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): FinchClient =
+        FinchClientImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun accessTokens(): AccessTokenService = accessTokens
 
@@ -155,7 +159,7 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
                 .httpClient(clientOptions.httpClient)
                 .jsonMapper(clientOptions.jsonMapper)
                 .clock(clientOptions.clock)
-                .baseUrl(clientOptions.baseUrl)
+                .baseUrl(clientOptions.baseUrl())
                 .accessToken(accessToken)
                 .clientId(clientOptions.clientId())
                 .clientSecret(clientOptions.clientSecret())
@@ -223,6 +227,13 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
         private val connect: ConnectService.WithRawResponse by lazy {
             ConnectServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): FinchClient.WithRawResponse =
+            FinchClientImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun accessTokens(): AccessTokenService.WithRawResponse = accessTokens
 

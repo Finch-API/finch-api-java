@@ -18,6 +18,7 @@ import com.tryfinch.api.models.Provider
 import com.tryfinch.api.models.ProviderListPageAsync
 import com.tryfinch.api.models.ProviderListParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class ProviderServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ProviderServiceAsync {
@@ -27,6 +28,9 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): ProviderServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProviderServiceAsync =
+        ProviderServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: ProviderListParams,
@@ -39,6 +43,13 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
         ProviderServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProviderServiceAsync.WithRawResponse =
+            ProviderServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val listHandler: Handler<List<Provider>> =
             jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

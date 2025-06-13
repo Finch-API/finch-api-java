@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.CompanyUpdateResponse
 import com.tryfinch.api.models.SandboxCompanyUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class CompanyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     CompanyServiceAsync {
@@ -27,6 +28,9 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CompanyServiceAsync =
+        CompanyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun update(
         params: SandboxCompanyUpdateParams,
@@ -39,6 +43,13 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         CompanyServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CompanyServiceAsync.WithRawResponse =
+            CompanyServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val updateHandler: Handler<CompanyUpdateResponse> =
             jsonHandler<CompanyUpdateResponse>(clientOptions.jsonMapper)

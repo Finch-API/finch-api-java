@@ -20,6 +20,7 @@ import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListPageResponse
 import com.tryfinch.api.models.HrisDirectoryListParams
+import java.util.function.Consumer
 
 class DirectoryServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     DirectoryService {
@@ -29,6 +30,9 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
     }
 
     override fun withRawResponse(): DirectoryService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DirectoryService =
+        DirectoryServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: HrisDirectoryListParams,
@@ -49,6 +53,13 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
         DirectoryService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): DirectoryService.WithRawResponse =
+            DirectoryServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val listHandler: Handler<HrisDirectoryListPageResponse> =
             jsonHandler<HrisDirectoryListPageResponse>(clientOptions.jsonMapper)

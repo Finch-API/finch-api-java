@@ -12,12 +12,16 @@ import java.security.MessageDigest
 import java.time.Duration
 import java.time.Instant
 import java.util.Base64
+import java.util.function.Consumer
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import kotlin.jvm.optionals.getOrNull
 
 class WebhookServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     WebhookService {
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): WebhookService =
+        WebhookServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun unwrap(payload: String, headers: Headers, secret: String?): WebhookEvent {
         verifySignature(payload, headers, secret)

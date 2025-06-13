@@ -19,6 +19,7 @@ import com.tryfinch.api.services.blocking.hris.PayStatementService
 import com.tryfinch.api.services.blocking.hris.PayStatementServiceImpl
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import com.tryfinch.api.services.blocking.hris.PaymentServiceImpl
+import java.util.function.Consumer
 
 class HrisServiceImpl internal constructor(private val clientOptions: ClientOptions) : HrisService {
 
@@ -45,6 +46,9 @@ class HrisServiceImpl internal constructor(private val clientOptions: ClientOpti
     private val benefits: BenefitService by lazy { BenefitServiceImpl(clientOptions) }
 
     override fun withRawResponse(): HrisService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): HrisService =
+        HrisServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun company(): CompanyService = company
 
@@ -96,6 +100,13 @@ class HrisServiceImpl internal constructor(private val clientOptions: ClientOpti
         private val benefits: BenefitService.WithRawResponse by lazy {
             BenefitServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): HrisService.WithRawResponse =
+            HrisServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun company(): CompanyService.WithRawResponse = company
 
