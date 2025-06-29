@@ -110,7 +110,9 @@ private constructor(
             webhookSecret = clientOptions.webhookSecret
         }
 
-        fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
+        fun httpClient(httpClient: HttpClient) = apply {
+            this.httpClient = PhantomReachableClosingHttpClient(httpClient)
+        }
 
         fun checkJacksonVersionCompatibility(checkJacksonVersionCompatibility: Boolean) = apply {
             this.checkJacksonVersionCompatibility = checkJacksonVersionCompatibility
@@ -290,13 +292,11 @@ private constructor(
 
             return ClientOptions(
                 httpClient,
-                PhantomReachableClosingHttpClient(
-                    RetryingHttpClient.builder()
-                        .httpClient(httpClient)
-                        .clock(clock)
-                        .maxRetries(maxRetries)
-                        .build()
-                ),
+                RetryingHttpClient.builder()
+                    .httpClient(httpClient)
+                    .clock(clock)
+                    .maxRetries(maxRetries)
+                    .build(),
                 checkJacksonVersionCompatibility,
                 jsonMapper,
                 streamHandlerExecutor
