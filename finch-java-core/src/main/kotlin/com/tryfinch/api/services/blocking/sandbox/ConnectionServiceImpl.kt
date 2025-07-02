@@ -19,6 +19,7 @@ import com.tryfinch.api.models.ConnectionCreateResponse
 import com.tryfinch.api.models.SandboxConnectionCreateParams
 import com.tryfinch.api.services.blocking.sandbox.connections.AccountService
 import com.tryfinch.api.services.blocking.sandbox.connections.AccountServiceImpl
+import java.util.function.Consumer
 
 class ConnectionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ConnectionService {
@@ -30,6 +31,9 @@ class ConnectionServiceImpl internal constructor(private val clientOptions: Clie
     private val accounts: AccountService by lazy { AccountServiceImpl(clientOptions) }
 
     override fun withRawResponse(): ConnectionService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ConnectionService =
+        ConnectionServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun accounts(): AccountService = accounts
 
@@ -49,6 +53,13 @@ class ConnectionServiceImpl internal constructor(private val clientOptions: Clie
             AccountServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ConnectionService.WithRawResponse =
+            ConnectionServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun accounts(): AccountService.WithRawResponse = accounts
 
         private val createHandler: Handler<ConnectionCreateResponse> =
@@ -62,6 +73,7 @@ class ConnectionServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

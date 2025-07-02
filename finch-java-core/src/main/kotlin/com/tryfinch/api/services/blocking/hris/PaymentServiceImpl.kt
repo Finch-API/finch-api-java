@@ -17,6 +17,7 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisPaymentListPage
 import com.tryfinch.api.models.HrisPaymentListParams
 import com.tryfinch.api.models.Payment
+import java.util.function.Consumer
 
 class PaymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     PaymentService {
@@ -26,6 +27,9 @@ class PaymentServiceImpl internal constructor(private val clientOptions: ClientO
     }
 
     override fun withRawResponse(): PaymentService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PaymentService =
+        PaymentServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: HrisPaymentListParams,
@@ -39,6 +43,13 @@ class PaymentServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PaymentService.WithRawResponse =
+            PaymentServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val listHandler: Handler<List<Payment>> =
             jsonHandler<List<Payment>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -49,6 +60,7 @@ class PaymentServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "payment")
                     .build()
                     .prepare(clientOptions, params)

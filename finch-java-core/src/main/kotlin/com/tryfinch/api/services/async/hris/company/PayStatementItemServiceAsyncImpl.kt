@@ -20,6 +20,7 @@ import com.tryfinch.api.models.HrisCompanyPayStatementItemListParams
 import com.tryfinch.api.services.async.hris.company.payStatementItem.RuleServiceAsync
 import com.tryfinch.api.services.async.hris.company.payStatementItem.RuleServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class PayStatementItemServiceAsyncImpl
 internal constructor(private val clientOptions: ClientOptions) : PayStatementItemServiceAsync {
@@ -31,6 +32,11 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
     private val rules: RuleServiceAsync by lazy { RuleServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): PayStatementItemServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(
+        modifier: Consumer<ClientOptions.Builder>
+    ): PayStatementItemServiceAsync =
+        PayStatementItemServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun rules(): RuleServiceAsync = rules
 
@@ -50,6 +56,13 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
             RuleServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayStatementItemServiceAsync.WithRawResponse =
+            PayStatementItemServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun rules(): RuleServiceAsync.WithRawResponse = rules
 
         private val listHandler: Handler<HrisCompanyPayStatementItemListPageResponse> =
@@ -63,6 +76,7 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item")
                     .build()
                     .prepareAsync(clientOptions, params)

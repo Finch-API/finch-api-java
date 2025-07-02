@@ -17,6 +17,7 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.DirectoryCreateResponse
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
+import java.util.function.Consumer
 
 class DirectoryServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     DirectoryService {
@@ -26,6 +27,9 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
     }
 
     override fun withRawResponse(): DirectoryService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DirectoryService =
+        DirectoryServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: SandboxDirectoryCreateParams,
@@ -39,6 +43,13 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): DirectoryService.WithRawResponse =
+            DirectoryServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val createHandler: Handler<List<DirectoryCreateResponse>> =
             jsonHandler<List<DirectoryCreateResponse>>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -50,6 +61,7 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "directory")
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()

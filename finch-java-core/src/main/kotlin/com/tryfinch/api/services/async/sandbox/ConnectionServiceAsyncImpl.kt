@@ -20,6 +20,7 @@ import com.tryfinch.api.models.SandboxConnectionCreateParams
 import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsync
 import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class ConnectionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ConnectionServiceAsync {
@@ -31,6 +32,9 @@ class ConnectionServiceAsyncImpl internal constructor(private val clientOptions:
     private val accounts: AccountServiceAsync by lazy { AccountServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): ConnectionServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ConnectionServiceAsync =
+        ConnectionServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun accounts(): AccountServiceAsync = accounts
 
@@ -50,6 +54,13 @@ class ConnectionServiceAsyncImpl internal constructor(private val clientOptions:
             AccountServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ConnectionServiceAsync.WithRawResponse =
+            ConnectionServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun accounts(): AccountServiceAsync.WithRawResponse = accounts
 
         private val createHandler: Handler<ConnectionCreateResponse> =
@@ -63,6 +74,7 @@ class ConnectionServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

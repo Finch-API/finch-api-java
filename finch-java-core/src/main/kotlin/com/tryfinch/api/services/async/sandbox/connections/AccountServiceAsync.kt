@@ -2,7 +2,7 @@
 
 package com.tryfinch.api.services.async.sandbox.connections
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AccountCreateResponse
@@ -10,6 +10,7 @@ import com.tryfinch.api.models.AccountUpdateResponse
 import com.tryfinch.api.models.SandboxConnectionAccountCreateParams
 import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface AccountServiceAsync {
 
@@ -17,6 +18,13 @@ interface AccountServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountServiceAsync
 
     /** Create a new account for an existing connection (company/provider pair) */
     fun create(
@@ -57,17 +65,24 @@ interface AccountServiceAsync {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccountServiceAsync.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `post /sandbox/connections/accounts`, but is otherwise
          * the same as [AccountServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: SandboxConnectionAccountCreateParams
         ): CompletableFuture<HttpResponseFor<AccountCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: SandboxConnectionAccountCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -77,12 +92,10 @@ interface AccountServiceAsync {
          * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is otherwise the
          * same as [AccountServiceAsync.update].
          */
-        @MustBeClosed
         fun update(): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =
             update(SandboxConnectionAccountUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxConnectionAccountUpdateParams =
                 SandboxConnectionAccountUpdateParams.none(),
@@ -90,7 +103,6 @@ interface AccountServiceAsync {
         ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxConnectionAccountUpdateParams =
                 SandboxConnectionAccountUpdateParams.none()
@@ -98,7 +110,6 @@ interface AccountServiceAsync {
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =

@@ -19,6 +19,7 @@ import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.EmploymentUpdateResponse
 import com.tryfinch.api.models.SandboxEmploymentUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class EmploymentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -29,6 +30,9 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
     }
 
     override fun withRawResponse(): EmploymentServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): EmploymentServiceAsync =
+        EmploymentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun update(
         params: SandboxEmploymentUpdateParams,
@@ -41,6 +45,13 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
         EmploymentServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EmploymentServiceAsync.WithRawResponse =
+            EmploymentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val updateHandler: Handler<EmploymentUpdateResponse> =
             jsonHandler<EmploymentUpdateResponse>(clientOptions.jsonMapper)
@@ -56,6 +67,7 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "employment", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

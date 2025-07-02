@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -20,12 +21,6 @@ internal class EmploymentDataTest {
             EmploymentData.UnionMember0.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .classCode("class_code")
-                .addCustomField(
-                    EmploymentData.UnionMember0.CustomField.builder()
-                        .name("name")
-                        .value("string")
-                        .build()
-                )
                 .department(EmploymentData.UnionMember0.Department.builder().name("name").build())
                 .employment(
                     EmploymentData.UnionMember0.Employment.builder()
@@ -59,12 +54,17 @@ internal class EmploymentDataTest {
                 .middleName("middle_name")
                 .startDate("start_date")
                 .title("title")
-                .workId("work_id")
+                .addCustomField(
+                    EmploymentData.UnionMember0.CustomField.builder()
+                        .name("name")
+                        .value("string")
+                        .build()
+                )
                 .income(
                     Income.builder()
                         .amount(0L)
                         .currency("currency")
-                        .effectiveDate("effective_date")
+                        .effectiveDate(LocalDate.parse("2019-12-27"))
                         .unit(Income.Unit.YEARLY)
                         .build()
                 )
@@ -72,11 +72,12 @@ internal class EmploymentDataTest {
                     Income.builder()
                         .amount(0L)
                         .currency("currency")
-                        .effectiveDate("effective_date")
+                        .effectiveDate(LocalDate.parse("2019-12-27"))
                         .unit(Income.Unit.YEARLY)
                         .build()
                 )
                 .sourceId("source_id")
+                .workId("work_id")
                 .build()
 
         val employmentData = EmploymentData.ofUnionMember0(unionMember0)
@@ -93,12 +94,6 @@ internal class EmploymentDataTest {
                 EmploymentData.UnionMember0.builder()
                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .classCode("class_code")
-                    .addCustomField(
-                        EmploymentData.UnionMember0.CustomField.builder()
-                            .name("name")
-                            .value("string")
-                            .build()
-                    )
                     .department(
                         EmploymentData.UnionMember0.Department.builder().name("name").build()
                     )
@@ -134,12 +129,17 @@ internal class EmploymentDataTest {
                     .middleName("middle_name")
                     .startDate("start_date")
                     .title("title")
-                    .workId("work_id")
+                    .addCustomField(
+                        EmploymentData.UnionMember0.CustomField.builder()
+                            .name("name")
+                            .value("string")
+                            .build()
+                    )
                     .income(
                         Income.builder()
                             .amount(0L)
                             .currency("currency")
-                            .effectiveDate("effective_date")
+                            .effectiveDate(LocalDate.parse("2019-12-27"))
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
@@ -147,11 +147,12 @@ internal class EmploymentDataTest {
                         Income.builder()
                             .amount(0L)
                             .currency("currency")
-                            .effectiveDate("effective_date")
+                            .effectiveDate(LocalDate.parse("2019-12-27"))
                             .unit(Income.Unit.YEARLY)
                             .build()
                     )
                     .sourceId("source_id")
+                    .workId("work_id")
                     .build()
             )
 

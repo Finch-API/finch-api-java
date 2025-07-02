@@ -18,6 +18,7 @@ import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
 import com.tryfinch.api.services.blocking.hris.company.PayStatementItemService
 import com.tryfinch.api.services.blocking.hris.company.PayStatementItemServiceImpl
+import java.util.function.Consumer
 
 class CompanyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     CompanyService {
@@ -31,6 +32,9 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
     }
 
     override fun withRawResponse(): CompanyService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CompanyService =
+        CompanyServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun payStatementItem(): PayStatementItemService = payStatementItem
 
@@ -50,6 +54,13 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
             PayStatementItemServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CompanyService.WithRawResponse =
+            CompanyServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun payStatementItem(): PayStatementItemService.WithRawResponse = payStatementItem
 
         private val retrieveHandler: Handler<Company> =
@@ -62,6 +73,7 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "company")
                     .build()
                     .prepare(clientOptions, params)

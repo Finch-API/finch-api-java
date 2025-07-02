@@ -18,6 +18,7 @@ import com.tryfinch.api.models.HrisPaymentListPageAsync
 import com.tryfinch.api.models.HrisPaymentListParams
 import com.tryfinch.api.models.Payment
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class PaymentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     PaymentServiceAsync {
@@ -27,6 +28,9 @@ class PaymentServiceAsyncImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): PaymentServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PaymentServiceAsync =
+        PaymentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: HrisPaymentListParams,
@@ -40,6 +44,13 @@ class PaymentServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PaymentServiceAsync.WithRawResponse =
+            PaymentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val listHandler: Handler<List<Payment>> =
             jsonHandler<List<Payment>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -50,6 +61,7 @@ class PaymentServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "payment")
                     .build()
                     .prepareAsync(clientOptions, params)

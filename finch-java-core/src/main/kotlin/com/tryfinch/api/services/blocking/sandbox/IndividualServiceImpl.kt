@@ -18,6 +18,7 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.IndividualUpdateResponse
 import com.tryfinch.api.models.SandboxIndividualUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class IndividualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -28,6 +29,9 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): IndividualService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualService =
+        IndividualServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun update(
         params: SandboxIndividualUpdateParams,
@@ -40,6 +44,13 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
         IndividualService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): IndividualService.WithRawResponse =
+            IndividualServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val updateHandler: Handler<IndividualUpdateResponse> =
             jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper)
@@ -55,6 +66,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "individual", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

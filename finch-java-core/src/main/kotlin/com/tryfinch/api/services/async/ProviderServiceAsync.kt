@@ -2,12 +2,13 @@
 
 package com.tryfinch.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.ProviderListPageAsync
 import com.tryfinch.api.models.ProviderListParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface ProviderServiceAsync {
 
@@ -15,6 +16,13 @@ interface ProviderServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProviderServiceAsync
 
     /** Return details on all available payroll and HR systems. */
     fun list(): CompletableFuture<ProviderListPageAsync> = list(ProviderListParams.none())
@@ -40,29 +48,34 @@ interface ProviderServiceAsync {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProviderServiceAsync.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `get /providers`, but is otherwise the same as
          * [ProviderServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
             list(ProviderListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ProviderListParams = ProviderListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ProviderListParams = ProviderListParams.none()
         ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =

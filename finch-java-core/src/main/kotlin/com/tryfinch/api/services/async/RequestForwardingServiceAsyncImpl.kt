@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class RequestForwardingServiceAsyncImpl
 internal constructor(private val clientOptions: ClientOptions) : RequestForwardingServiceAsync {
@@ -27,6 +28,11 @@ internal constructor(private val clientOptions: ClientOptions) : RequestForwardi
     }
 
     override fun withRawResponse(): RequestForwardingServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(
+        modifier: Consumer<ClientOptions.Builder>
+    ): RequestForwardingServiceAsync =
+        RequestForwardingServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun forward(
         params: RequestForwardingForwardParams,
@@ -40,6 +46,13 @@ internal constructor(private val clientOptions: ClientOptions) : RequestForwardi
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): RequestForwardingServiceAsync.WithRawResponse =
+            RequestForwardingServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val forwardHandler: Handler<RequestForwardingForwardResponse> =
             jsonHandler<RequestForwardingForwardResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +64,7 @@ internal constructor(private val clientOptions: ClientOptions) : RequestForwardi
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("forward")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

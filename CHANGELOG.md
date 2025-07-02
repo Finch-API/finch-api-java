@@ -1,5 +1,44 @@
 # Changelog
 
+## 7.3.0 (2025-07-02)
+
+Full Changelog: [v7.2.0...v7.3.0](https://github.com/Finch-API/finch-api-java/compare/v7.2.0...v7.3.0)
+
+### Features
+
+* **api:** api update ([ba2711a](https://github.com/Finch-API/finch-api-java/commit/ba2711a7466433c91cafd023ab09a29dda400322))
+* **api:** api update ([85f964f](https://github.com/Finch-API/finch-api-java/commit/85f964f88bf80872817b2eff4e8a1017a9fabb4e))
+* **api:** api update ([d06d641](https://github.com/Finch-API/finch-api-java/commit/d06d641383d5b756ed558ce9dc23382995855b97))
+* **api:** api update ([ad3d78f](https://github.com/Finch-API/finch-api-java/commit/ad3d78f6515a72e9bc485e5eb9a5dfd98e8cd3d9))
+* **client:** add a `withOptions` method ([a6d2027](https://github.com/Finch-API/finch-api-java/commit/a6d2027c37a9dcf2582041bfa003b3d52a2699f4))
+* **client:** implement per-endpoint base URL support ([9b313e8](https://github.com/Finch-API/finch-api-java/commit/9b313e857a753068e492ffc9fd8a2a9022664ac9))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([9ec953f](https://github.com/Finch-API/finch-api-java/commit/9ec953ffd3bc6c481f8b426db00fdee0364f737f))
+* **client:** `hasNextPage` impl for some classes ([1d74258](https://github.com/Finch-API/finch-api-java/commit/1d74258cd7af29bab12fa98e22201fdd736ff70e))
+* **client:** bump max requests per host to max requests (5 -&gt; 64) ([c2130c2](https://github.com/Finch-API/finch-api-java/commit/c2130c25fe4053c6d85800dbf4e00935b85ff293))
+* **client:** don't close client on `withOptions` usage when original is gc'd ([f16754f](https://github.com/Finch-API/finch-api-java/commit/f16754fba73202a310517fafa12da662f70030e2))
+* **client:** fix PayStatementResponse body ([6e3128c](https://github.com/Finch-API/finch-api-java/commit/6e3128c15c5554728a0a1ab30f52458031d52f6c))
+* **client:** remove `@MustBeClosed` for future returning methods ([17cef16](https://github.com/Finch-API/finch-api-java/commit/17cef164e3b1da2ee49ed2c8e134bc3b2ff22e18))
+* **client:** update pagination ([d6b79ed](https://github.com/Finch-API/finch-api-java/commit/d6b79edb8319349a9b1141eb686f1e72b45929aa))
+* missing baseUrl call ([2040de9](https://github.com/Finch-API/finch-api-java/commit/2040de9e68d7b36faf74855e99b3e6d2d960cf7b))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([d88d4b3](https://github.com/Finch-API/finch-api-java/commit/d88d4b39718a89f914aa89ad944d67eabb833f7a))
+* **ci:** only run for pushes and fork pull requests ([65d0eb9](https://github.com/Finch-API/finch-api-java/commit/65d0eb99b3b44fca36f3b1598911b242f1405ef0))
+* **docs:** grammar improvements ([ec2fe8b](https://github.com/Finch-API/finch-api-java/commit/ec2fe8b45c5898aee580617acbce9364802647be))
+* **internal:** codegen related update ([ec234c1](https://github.com/Finch-API/finch-api-java/commit/ec234c1c781c1453c7cea59e897420e0b820a15b))
+* **tests:** skip endpoints with basic auth ([6c2f07f](https://github.com/Finch-API/finch-api-java/commit/6c2f07f7ce293abdf78dd6584111eb1fcb6b7b52))
+
+
+### Refactors
+
+* **internal:** minor `ClientOptionsTest` change ([459de5c](https://github.com/Finch-API/finch-api-java/commit/459de5c5529c89b73febf0d0b30c12d46d314460))
+
 ## 7.2.0 (2025-05-16)
 
 Full Changelog: [v7.1.0...v7.2.0](https://github.com/Finch-API/finch-api-java/compare/v7.1.0...v7.2.0)

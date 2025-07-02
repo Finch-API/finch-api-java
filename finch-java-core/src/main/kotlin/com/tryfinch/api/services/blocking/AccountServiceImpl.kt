@@ -19,6 +19,7 @@ import com.tryfinch.api.models.AccountDisconnectParams
 import com.tryfinch.api.models.AccountIntrospectParams
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
+import java.util.function.Consumer
 
 class AccountServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     AccountService {
@@ -28,6 +29,9 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
     }
 
     override fun withRawResponse(): AccountService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountService =
+        AccountServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun disconnect(
         params: AccountDisconnectParams,
@@ -48,6 +52,13 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccountService.WithRawResponse =
+            AccountServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val disconnectHandler: Handler<DisconnectResponse> =
             jsonHandler<DisconnectResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -58,6 +69,7 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("disconnect")
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -85,6 +97,7 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("introspect")
                     .build()
                     .prepare(clientOptions, params)

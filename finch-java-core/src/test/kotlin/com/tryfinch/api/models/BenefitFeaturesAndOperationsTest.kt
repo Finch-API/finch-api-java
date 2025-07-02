@@ -14,21 +14,14 @@ internal class BenefitFeaturesAndOperationsTest {
         val benefitFeaturesAndOperations =
             BenefitFeaturesAndOperations.builder()
                 .supportedFeatures(
-                    BenefitFeaturesAndOperations.BenefitFeature.builder()
+                    SupportedBenefit.builder()
                         .annualMaximum(true)
                         .catchUp(true)
-                        .addCompanyContribution(
-                            BenefitFeaturesAndOperations.BenefitFeature.CompanyContribution.FIXED
-                        )
+                        .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                         .description("description")
-                        .addEmployeeDeduction(
-                            BenefitFeaturesAndOperations.BenefitFeature.EmployeeDeduction.FIXED
-                        )
+                        .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
                         .addFrequency(BenefitFrequency.ONE_TIME)
-                        .addHsaContributionLimit(
-                            BenefitFeaturesAndOperations.BenefitFeature.HsaContributionLimit
-                                .INDIVIDUAL
-                        )
+                        .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
                         .build()
                 )
                 .supportedOperations(
@@ -55,20 +48,14 @@ internal class BenefitFeaturesAndOperationsTest {
 
         assertThat(benefitFeaturesAndOperations.supportedFeatures())
             .contains(
-                BenefitFeaturesAndOperations.BenefitFeature.builder()
+                SupportedBenefit.builder()
                     .annualMaximum(true)
                     .catchUp(true)
-                    .addCompanyContribution(
-                        BenefitFeaturesAndOperations.BenefitFeature.CompanyContribution.FIXED
-                    )
+                    .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                     .description("description")
-                    .addEmployeeDeduction(
-                        BenefitFeaturesAndOperations.BenefitFeature.EmployeeDeduction.FIXED
-                    )
+                    .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
                     .addFrequency(BenefitFrequency.ONE_TIME)
-                    .addHsaContributionLimit(
-                        BenefitFeaturesAndOperations.BenefitFeature.HsaContributionLimit.INDIVIDUAL
-                    )
+                    .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
                     .build()
             )
         assertThat(benefitFeaturesAndOperations.supportedOperations())
@@ -100,21 +87,14 @@ internal class BenefitFeaturesAndOperationsTest {
         val benefitFeaturesAndOperations =
             BenefitFeaturesAndOperations.builder()
                 .supportedFeatures(
-                    BenefitFeaturesAndOperations.BenefitFeature.builder()
+                    SupportedBenefit.builder()
                         .annualMaximum(true)
                         .catchUp(true)
-                        .addCompanyContribution(
-                            BenefitFeaturesAndOperations.BenefitFeature.CompanyContribution.FIXED
-                        )
+                        .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                         .description("description")
-                        .addEmployeeDeduction(
-                            BenefitFeaturesAndOperations.BenefitFeature.EmployeeDeduction.FIXED
-                        )
+                        .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
                         .addFrequency(BenefitFrequency.ONE_TIME)
-                        .addHsaContributionLimit(
-                            BenefitFeaturesAndOperations.BenefitFeature.HsaContributionLimit
-                                .INDIVIDUAL
-                        )
+                        .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
                         .build()
                 )
                 .supportedOperations(

@@ -20,6 +20,7 @@ import com.tryfinch.api.models.DocumentRetreiveResponse
 import com.tryfinch.api.models.HrisDocumentListParams
 import com.tryfinch.api.models.HrisDocumentRetreiveParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class DocumentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -30,6 +31,9 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): DocumentServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DocumentServiceAsync =
+        DocumentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: HrisDocumentListParams,
@@ -50,6 +54,13 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): DocumentServiceAsync.WithRawResponse =
+            DocumentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val listHandler: Handler<DocumentListResponse> =
             jsonHandler<DocumentListResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -61,6 +72,7 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "documents")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -94,6 +106,7 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "documents", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)

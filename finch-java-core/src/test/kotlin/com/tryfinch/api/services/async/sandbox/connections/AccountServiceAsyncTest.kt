@@ -7,12 +7,14 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.ConnectionStatusType
 import com.tryfinch.api.models.SandboxConnectionAccountCreateParams
 import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
 internal class AccountServiceAsyncTest {
 
+    @Disabled("prism tests are broken")
     @Test
     fun create() {
         val client =

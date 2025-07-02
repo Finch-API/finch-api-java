@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.SandboxJobConfiguration
 import com.tryfinch.api.models.SandboxJobConfigurationRetrieveParams
 import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
+import java.util.function.Consumer
 
 class ConfigurationServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ConfigurationService {
@@ -27,6 +28,9 @@ class ConfigurationServiceImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): ConfigurationService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ConfigurationService =
+        ConfigurationServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieve(
         params: SandboxJobConfigurationRetrieveParams,
@@ -47,6 +51,13 @@ class ConfigurationServiceImpl internal constructor(private val clientOptions: C
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ConfigurationService.WithRawResponse =
+            ConfigurationServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val retrieveHandler: Handler<List<SandboxJobConfiguration>> =
             jsonHandler<List<SandboxJobConfiguration>>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -58,6 +69,7 @@ class ConfigurationServiceImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "jobs", "configuration")
                     .build()
                     .prepare(clientOptions, params)
@@ -85,6 +97,7 @@ class ConfigurationServiceImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "jobs", "configuration")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

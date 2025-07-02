@@ -27,7 +27,7 @@ private constructor(
 
     override fun items(): List<IndividualResponse> = responses()
 
-    override fun hasNextPage(): Boolean = items().isNotEmpty()
+    override fun hasNextPage(): Boolean = false
 
     fun nextPageParams(): HrisIndividualRetrieveManyParams =
         throw IllegalStateException("Cannot construct next page params")

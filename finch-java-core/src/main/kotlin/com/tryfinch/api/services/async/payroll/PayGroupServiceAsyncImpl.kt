@@ -21,6 +21,7 @@ import com.tryfinch.api.models.PayrollPayGroupListPageAsync
 import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -31,6 +32,9 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
     }
 
     override fun withRawResponse(): PayGroupServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayGroupServiceAsync =
+        PayGroupServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieve(
         params: PayrollPayGroupRetrieveParams,
@@ -51,6 +55,13 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayGroupServiceAsync.WithRawResponse =
+            PayGroupServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
             jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -65,6 +76,7 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -95,6 +107,7 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups")
                     .build()
                     .prepareAsync(clientOptions, params)

@@ -20,6 +20,7 @@ import com.tryfinch.api.models.PayGroupRetrieveResponse
 import com.tryfinch.api.models.PayrollPayGroupListPage
 import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class PayGroupServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -30,6 +31,9 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): PayGroupService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayGroupService =
+        PayGroupServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieve(
         params: PayrollPayGroupRetrieveParams,
@@ -50,6 +54,13 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayGroupService.WithRawResponse =
+            PayGroupServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
             jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -64,6 +75,7 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -91,6 +103,7 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups")
                     .build()
                     .prepare(clientOptions, params)

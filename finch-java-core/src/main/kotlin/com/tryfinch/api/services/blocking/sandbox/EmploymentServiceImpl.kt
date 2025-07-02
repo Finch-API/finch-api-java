@@ -18,6 +18,7 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.EmploymentUpdateResponse
 import com.tryfinch.api.models.SandboxEmploymentUpdateParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class EmploymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -28,6 +29,9 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): EmploymentService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): EmploymentService =
+        EmploymentServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun update(
         params: SandboxEmploymentUpdateParams,
@@ -40,6 +44,13 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
         EmploymentService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EmploymentService.WithRawResponse =
+            EmploymentServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val updateHandler: Handler<EmploymentUpdateResponse> =
             jsonHandler<EmploymentUpdateResponse>(clientOptions.jsonMapper)
@@ -55,6 +66,7 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "employment", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

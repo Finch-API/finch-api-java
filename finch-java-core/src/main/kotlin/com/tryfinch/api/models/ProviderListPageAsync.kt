@@ -19,7 +19,7 @@ private constructor(
     private val items: List<Provider>,
 ) : PageAsync<Provider> {
 
-    override fun hasNextPage(): Boolean = items().isNotEmpty()
+    override fun hasNextPage(): Boolean = false
 
     fun nextPageParams(): ProviderListParams =
         throw IllegalStateException("Cannot construct next page params")

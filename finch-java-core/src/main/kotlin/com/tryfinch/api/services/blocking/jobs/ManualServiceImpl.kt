@@ -17,6 +17,7 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.JobManualRetrieveParams
 import com.tryfinch.api.models.ManualAsyncJob
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ManualServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -27,6 +28,9 @@ class ManualServiceImpl internal constructor(private val clientOptions: ClientOp
     }
 
     override fun withRawResponse(): ManualService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ManualService =
+        ManualServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieve(
         params: JobManualRetrieveParams,
@@ -39,6 +43,13 @@ class ManualServiceImpl internal constructor(private val clientOptions: ClientOp
         ManualService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ManualService.WithRawResponse =
+            ManualServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val retrieveHandler: Handler<ManualAsyncJob> =
             jsonHandler<ManualAsyncJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
@@ -53,6 +64,7 @@ class ManualServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "manual", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)

@@ -3,6 +3,7 @@
 package com.tryfinch.api.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.blocking.AccessTokenService
 import com.tryfinch.api.services.blocking.AccountService
 import com.tryfinch.api.services.blocking.ConnectService
@@ -13,6 +14,7 @@ import com.tryfinch.api.services.blocking.ProviderService
 import com.tryfinch.api.services.blocking.RequestForwardingService
 import com.tryfinch.api.services.blocking.SandboxService
 import com.tryfinch.api.services.blocking.WebhookService
+import java.util.function.Consumer
 
 /**
  * A client for interacting with the Finch REST API synchronously. You can also switch to
@@ -42,6 +44,13 @@ interface FinchClient {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): FinchClient
 
     fun accessTokens(): AccessTokenService
 
@@ -108,6 +117,13 @@ interface FinchClient {
 
     /** A view of [FinchClient] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): FinchClient.WithRawResponse
 
         fun accessTokens(): AccessTokenService.WithRawResponse
 

@@ -27,7 +27,7 @@ internal class CompanyBenefitTest {
                 )
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
-                .type(BenefitType._401K)
+                .type(BenefitType._457)
                 .build()
 
         assertThat(companyBenefit.benefitId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -45,7 +45,7 @@ internal class CompanyBenefitTest {
             )
         assertThat(companyBenefit.description()).contains("description")
         assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)
-        assertThat(companyBenefit.type()).contains(BenefitType._401K)
+        assertThat(companyBenefit.type()).contains(BenefitType._457)
     }
 
     @Test
@@ -67,7 +67,7 @@ internal class CompanyBenefitTest {
                 )
                 .description("description")
                 .frequency(BenefitFrequency.ONE_TIME)
-                .type(BenefitType._401K)
+                .type(BenefitType._457)
                 .build()
 
         val roundtrippedCompanyBenefit =

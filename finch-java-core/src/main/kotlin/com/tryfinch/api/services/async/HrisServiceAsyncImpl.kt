@@ -19,6 +19,7 @@ import com.tryfinch.api.services.async.hris.PayStatementServiceAsync
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.PaymentServiceAsync
 import com.tryfinch.api.services.async.hris.PaymentServiceAsyncImpl
+import java.util.function.Consumer
 
 class HrisServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     HrisServiceAsync {
@@ -52,6 +53,9 @@ class HrisServiceAsyncImpl internal constructor(private val clientOptions: Clien
     private val benefits: BenefitServiceAsync by lazy { BenefitServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): HrisServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): HrisServiceAsync =
+        HrisServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun company(): CompanyServiceAsync = company
 
@@ -103,6 +107,13 @@ class HrisServiceAsyncImpl internal constructor(private val clientOptions: Clien
         private val benefits: BenefitServiceAsync.WithRawResponse by lazy {
             BenefitServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): HrisServiceAsync.WithRawResponse =
+            HrisServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun company(): CompanyServiceAsync.WithRawResponse = company
 

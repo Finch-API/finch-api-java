@@ -6,12 +6,14 @@ import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.ConnectSessionNewParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
 internal class SessionServiceTest {
 
+    @Disabled("prism tests are broken")
     @Test
     fun new_() {
         val client =
@@ -44,6 +46,7 @@ internal class SessionServiceTest {
         response.validate()
     }
 
+    @Disabled("prism tests are broken")
     @Test
     fun reauthenticate() {
         val client =

@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.blocking.hris.benefits
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
@@ -11,6 +12,7 @@ import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
+import java.util.function.Consumer
 
 interface IndividualService {
 
@@ -18,6 +20,13 @@ interface IndividualService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualService
 
     /** Lists individuals currently enrolled in a given deduction. */
     fun enrolledIds(benefitId: String): IndividualEnrolledIdsResponse =
@@ -140,6 +149,15 @@ interface IndividualService {
 
     /** A view of [IndividualService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): IndividualService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/enrolled`, but is

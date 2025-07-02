@@ -37,6 +37,7 @@ import com.tryfinch.api.services.async.WebhookServiceAsync
 import com.tryfinch.api.services.async.WebhookServiceAsyncImpl
 import java.net.URLEncoder
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClientAsync {
 
@@ -99,6 +100,9 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
 
     override fun withRawResponse(): FinchClientAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): FinchClientAsync =
+        FinchClientAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun accessTokens(): AccessTokenServiceAsync = accessTokens
 
     override fun hris(): HrisServiceAsync = hris
@@ -136,6 +140,7 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
+                .baseUrl(clientOptions.baseUrl())
                 .addPathSegments("auth", "token")
                 .body(
                     json(
@@ -166,7 +171,7 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
                 .httpClient(clientOptions.httpClient)
                 .jsonMapper(clientOptions.jsonMapper)
                 .clock(clientOptions.clock)
-                .baseUrl(clientOptions.baseUrl)
+                .baseUrl(clientOptions.baseUrl())
                 .accessToken(accessToken)
                 .clientId(clientOptions.clientId())
                 .clientSecret(clientOptions.clientSecret())
@@ -234,6 +239,13 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
         private val connect: ConnectServiceAsync.WithRawResponse by lazy {
             ConnectServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): FinchClientAsync.WithRawResponse =
+            FinchClientAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun accessTokens(): AccessTokenServiceAsync.WithRawResponse = accessTokens
 

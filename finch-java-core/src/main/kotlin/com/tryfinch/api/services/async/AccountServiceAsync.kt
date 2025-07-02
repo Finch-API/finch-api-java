@@ -2,7 +2,7 @@
 
 package com.tryfinch.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AccountDisconnectParams
@@ -10,6 +10,7 @@ import com.tryfinch.api.models.AccountIntrospectParams
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface AccountServiceAsync {
 
@@ -17,6 +18,13 @@ interface AccountServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountServiceAsync
 
     /** Disconnect one or more `access_token`s from your application. */
     fun disconnect(): CompletableFuture<DisconnectResponse> =
@@ -61,29 +69,34 @@ interface AccountServiceAsync {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccountServiceAsync.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `post /disconnect`, but is otherwise the same as
          * [AccountServiceAsync.disconnect].
          */
-        @MustBeClosed
         fun disconnect(): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
             disconnect(AccountDisconnectParams.none())
 
         /** @see [disconnect] */
-        @MustBeClosed
         fun disconnect(
             params: AccountDisconnectParams = AccountDisconnectParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<DisconnectResponse>>
 
         /** @see [disconnect] */
-        @MustBeClosed
         fun disconnect(
             params: AccountDisconnectParams = AccountDisconnectParams.none()
         ): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
             disconnect(params, RequestOptions.none())
 
         /** @see [disconnect] */
-        @MustBeClosed
         fun disconnect(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
@@ -93,26 +106,22 @@ interface AccountServiceAsync {
          * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as
          * [AccountServiceAsync.introspect].
          */
-        @MustBeClosed
         fun introspect(): CompletableFuture<HttpResponseFor<Introspection>> =
             introspect(AccountIntrospectParams.none())
 
         /** @see [introspect] */
-        @MustBeClosed
         fun introspect(
             params: AccountIntrospectParams = AccountIntrospectParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Introspection>>
 
         /** @see [introspect] */
-        @MustBeClosed
         fun introspect(
             params: AccountIntrospectParams = AccountIntrospectParams.none()
         ): CompletableFuture<HttpResponseFor<Introspection>> =
             introspect(params, RequestOptions.none())
 
         /** @see [introspect] */
-        @MustBeClosed
         fun introspect(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<Introspection>> =

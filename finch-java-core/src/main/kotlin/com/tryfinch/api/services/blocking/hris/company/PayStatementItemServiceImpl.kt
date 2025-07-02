@@ -19,6 +19,7 @@ import com.tryfinch.api.models.HrisCompanyPayStatementItemListPageResponse
 import com.tryfinch.api.models.HrisCompanyPayStatementItemListParams
 import com.tryfinch.api.services.blocking.hris.company.payStatementItem.RuleService
 import com.tryfinch.api.services.blocking.hris.company.payStatementItem.RuleServiceImpl
+import java.util.function.Consumer
 
 class PayStatementItemServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     PayStatementItemService {
@@ -30,6 +31,9 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
     private val rules: RuleService by lazy { RuleServiceImpl(clientOptions) }
 
     override fun withRawResponse(): PayStatementItemService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayStatementItemService =
+        PayStatementItemServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun rules(): RuleService = rules
 
@@ -49,6 +53,13 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
             RuleServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PayStatementItemService.WithRawResponse =
+            PayStatementItemServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun rules(): RuleService.WithRawResponse = rules
 
         private val listHandler: Handler<HrisCompanyPayStatementItemListPageResponse> =
@@ -62,6 +73,7 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item")
                     .build()
                     .prepare(clientOptions, params)

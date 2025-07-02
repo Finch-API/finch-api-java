@@ -20,6 +20,7 @@ import com.tryfinch.api.models.AccountIntrospectParams
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class AccountServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AccountServiceAsync {
@@ -29,6 +30,9 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): AccountServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountServiceAsync =
+        AccountServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun disconnect(
         params: AccountDisconnectParams,
@@ -49,6 +53,13 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccountServiceAsync.WithRawResponse =
+            AccountServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val disconnectHandler: Handler<DisconnectResponse> =
             jsonHandler<DisconnectResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -59,6 +70,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("disconnect")
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -89,6 +101,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("introspect")
                     .build()
                     .prepareAsync(clientOptions, params)

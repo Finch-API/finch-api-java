@@ -31,7 +31,7 @@ private constructor(
 
     override fun items(): List<RuleListResponse> = responses()
 
-    override fun hasNextPage(): Boolean = items().isNotEmpty()
+    override fun hasNextPage(): Boolean = false
 
     fun nextPageParams(): HrisCompanyPayStatementItemRuleListParams =
         throw IllegalStateException("Cannot construct next page params")

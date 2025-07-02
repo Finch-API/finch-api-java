@@ -2,7 +2,7 @@
 
 package com.tryfinch.api.services.async.hris.company.payStatementItem
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleCreateParams
@@ -14,6 +14,7 @@ import com.tryfinch.api.models.RuleCreateResponse
 import com.tryfinch.api.models.RuleDeleteResponse
 import com.tryfinch.api.models.RuleUpdateResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface RuleServiceAsync {
 
@@ -21,6 +22,13 @@ interface RuleServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuleServiceAsync
 
     /**
      * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
@@ -162,15 +170,20 @@ interface RuleServiceAsync {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuleServiceAsync.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `post /employer/pay-statement-item/rule`, but is
          * otherwise the same as [RuleServiceAsync.create].
          */
-        @MustBeClosed
         fun create(): CompletableFuture<HttpResponseFor<RuleCreateResponse>> =
             create(HrisCompanyPayStatementItemRuleCreateParams.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: HrisCompanyPayStatementItemRuleCreateParams =
                 HrisCompanyPayStatementItemRuleCreateParams.none(),
@@ -178,7 +191,6 @@ interface RuleServiceAsync {
         ): CompletableFuture<HttpResponseFor<RuleCreateResponse>>
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: HrisCompanyPayStatementItemRuleCreateParams =
                 HrisCompanyPayStatementItemRuleCreateParams.none()
@@ -186,7 +198,6 @@ interface RuleServiceAsync {
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<RuleCreateResponse>> =
@@ -196,12 +207,10 @@ interface RuleServiceAsync {
          * Returns a raw HTTP response for `put /employer/pay-statement-item/rule/{rule_id}`, but is
          * otherwise the same as [RuleServiceAsync.update].
          */
-        @MustBeClosed
         fun update(ruleId: String): CompletableFuture<HttpResponseFor<RuleUpdateResponse>> =
             update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             ruleId: String,
             params: HrisCompanyPayStatementItemRuleUpdateParams =
@@ -211,7 +220,6 @@ interface RuleServiceAsync {
             update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             ruleId: String,
             params: HrisCompanyPayStatementItemRuleUpdateParams =
@@ -220,21 +228,18 @@ interface RuleServiceAsync {
             update(ruleId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuleUpdateResponse>>
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams
         ): CompletableFuture<HttpResponseFor<RuleUpdateResponse>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             ruleId: String,
             requestOptions: RequestOptions,
@@ -245,13 +250,11 @@ interface RuleServiceAsync {
          * Returns a raw HTTP response for `get /employer/pay-statement-item/rule`, but is otherwise
          * the same as [RuleServiceAsync.list].
          */
-        @MustBeClosed
         fun list():
             CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>> =
             list(HrisCompanyPayStatementItemRuleListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: HrisCompanyPayStatementItemRuleListParams =
                 HrisCompanyPayStatementItemRuleListParams.none(),
@@ -259,7 +262,6 @@ interface RuleServiceAsync {
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: HrisCompanyPayStatementItemRuleListParams =
                 HrisCompanyPayStatementItemRuleListParams.none()
@@ -267,7 +269,6 @@ interface RuleServiceAsync {
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>> =
@@ -277,12 +278,10 @@ interface RuleServiceAsync {
          * Returns a raw HTTP response for `delete /employer/pay-statement-item/rule/{rule_id}`, but
          * is otherwise the same as [RuleServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(ruleId: String): CompletableFuture<HttpResponseFor<RuleDeleteResponse>> =
             delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             ruleId: String,
             params: HrisCompanyPayStatementItemRuleDeleteParams =
@@ -292,7 +291,6 @@ interface RuleServiceAsync {
             delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             ruleId: String,
             params: HrisCompanyPayStatementItemRuleDeleteParams =
@@ -301,21 +299,18 @@ interface RuleServiceAsync {
             delete(ruleId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuleDeleteResponse>>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams
         ): CompletableFuture<HttpResponseFor<RuleDeleteResponse>> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             ruleId: String,
             requestOptions: RequestOptions,

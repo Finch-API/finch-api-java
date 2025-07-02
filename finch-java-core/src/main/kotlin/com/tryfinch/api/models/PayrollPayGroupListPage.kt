@@ -16,7 +16,7 @@ private constructor(
     private val items: List<PayGroupListResponse>,
 ) : Page<PayGroupListResponse> {
 
-    override fun hasNextPage(): Boolean = items().isNotEmpty()
+    override fun hasNextPage(): Boolean = false
 
     fun nextPageParams(): PayrollPayGroupListParams =
         throw IllegalStateException("Cannot construct next page params")

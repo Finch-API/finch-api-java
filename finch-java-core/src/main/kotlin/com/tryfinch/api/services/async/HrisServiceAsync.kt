@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.services.async
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.async.hris.BenefitServiceAsync
 import com.tryfinch.api.services.async.hris.CompanyServiceAsync
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
@@ -10,6 +11,7 @@ import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
 import com.tryfinch.api.services.async.hris.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsync
 import com.tryfinch.api.services.async.hris.PaymentServiceAsync
+import java.util.function.Consumer
 
 interface HrisServiceAsync {
 
@@ -17,6 +19,13 @@ interface HrisServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): HrisServiceAsync
 
     fun company(): CompanyServiceAsync
 
@@ -36,6 +45,13 @@ interface HrisServiceAsync {
 
     /** A view of [HrisServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): HrisServiceAsync.WithRawResponse
 
         fun company(): CompanyServiceAsync.WithRawResponse
 

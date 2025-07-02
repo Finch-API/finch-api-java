@@ -5,6 +5,7 @@ package com.tryfinch.api.services.blocking
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.blocking.connect.SessionService
 import com.tryfinch.api.services.blocking.connect.SessionServiceImpl
+import java.util.function.Consumer
 
 class ConnectServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ConnectService {
@@ -17,6 +18,9 @@ class ConnectServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): ConnectService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ConnectService =
+        ConnectServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun sessions(): SessionService = sessions
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -25,6 +29,13 @@ class ConnectServiceImpl internal constructor(private val clientOptions: ClientO
         private val sessions: SessionService.WithRawResponse by lazy {
             SessionServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ConnectService.WithRawResponse =
+            ConnectServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun sessions(): SessionService.WithRawResponse = sessions
     }

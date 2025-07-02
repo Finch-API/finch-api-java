@@ -2,12 +2,13 @@
 
 package com.tryfinch.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface RequestForwardingServiceAsync {
 
@@ -15,6 +16,13 @@ interface RequestForwardingServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): RequestForwardingServiceAsync
 
     /**
      * The Forward API allows you to make direct requests to an employment system. If Finch’s
@@ -38,17 +46,24 @@ interface RequestForwardingServiceAsync {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): RequestForwardingServiceAsync.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `post /forward`, but is otherwise the same as
          * [RequestForwardingServiceAsync.forward].
          */
-        @MustBeClosed
         fun forward(
             params: RequestForwardingForwardParams
         ): CompletableFuture<HttpResponseFor<RequestForwardingForwardResponse>> =
             forward(params, RequestOptions.none())
 
         /** @see [forward] */
-        @MustBeClosed
         fun forward(
             params: RequestForwardingForwardParams,
             requestOptions: RequestOptions = RequestOptions.none(),

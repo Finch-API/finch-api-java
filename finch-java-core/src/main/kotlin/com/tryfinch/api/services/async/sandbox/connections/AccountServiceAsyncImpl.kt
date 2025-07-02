@@ -20,6 +20,7 @@ import com.tryfinch.api.models.AccountUpdateResponse
 import com.tryfinch.api.models.SandboxConnectionAccountCreateParams
 import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class AccountServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AccountServiceAsync {
@@ -29,6 +30,9 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): AccountServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountServiceAsync =
+        AccountServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: SandboxConnectionAccountCreateParams,
@@ -49,6 +53,13 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccountServiceAsync.WithRawResponse =
+            AccountServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val createHandler: Handler<AccountCreateResponse> =
             jsonHandler<AccountCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -60,6 +71,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections", "accounts")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -91,6 +103,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections", "accounts")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

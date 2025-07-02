@@ -30,7 +30,7 @@ private constructor(
 
     override fun items(): List<PayStatementResponse> = responses()
 
-    override fun hasNextPage(): Boolean = items().isNotEmpty()
+    override fun hasNextPage(): Boolean = false
 
     fun nextPageParams(): HrisPayStatementRetrieveManyParams =
         throw IllegalStateException("Cannot construct next page params")

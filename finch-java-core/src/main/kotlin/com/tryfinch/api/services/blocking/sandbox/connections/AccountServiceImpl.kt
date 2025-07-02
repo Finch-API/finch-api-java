@@ -19,6 +19,7 @@ import com.tryfinch.api.models.AccountCreateResponse
 import com.tryfinch.api.models.AccountUpdateResponse
 import com.tryfinch.api.models.SandboxConnectionAccountCreateParams
 import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
+import java.util.function.Consumer
 
 class AccountServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     AccountService {
@@ -28,6 +29,9 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
     }
 
     override fun withRawResponse(): AccountService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AccountService =
+        AccountServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: SandboxConnectionAccountCreateParams,
@@ -48,6 +52,13 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AccountService.WithRawResponse =
+            AccountServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val createHandler: Handler<AccountCreateResponse> =
             jsonHandler<AccountCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -59,6 +70,7 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections", "accounts")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -87,6 +99,7 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections", "accounts")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

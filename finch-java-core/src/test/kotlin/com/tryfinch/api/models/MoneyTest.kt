@@ -14,7 +14,7 @@ internal class MoneyTest {
         val money = Money.builder().amount(0L).currency("currency").build()
 
         assertThat(money.amount()).contains(0L)
-        assertThat(money.currency()).contains("currency")
+        assertThat(money.currency()).isEqualTo("currency")
     }
 
     @Test

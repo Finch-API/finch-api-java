@@ -8,6 +8,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.Income
 import com.tryfinch.api.models.Location
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
+import java.time.LocalDate
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -87,7 +88,7 @@ internal class DirectoryServiceTest {
                                 Income.builder()
                                     .amount(0L)
                                     .currency("currency")
-                                    .effectiveDate("effective_date")
+                                    .effectiveDate(LocalDate.parse("2019-12-27"))
                                     .unit(Income.Unit.YEARLY)
                                     .build()
                             )
@@ -95,7 +96,7 @@ internal class DirectoryServiceTest {
                                 Income.builder()
                                     .amount(0L)
                                     .currency("currency")
-                                    .effectiveDate("effective_date")
+                                    .effectiveDate(LocalDate.parse("2019-12-27"))
                                     .unit(Income.Unit.YEARLY)
                                     .build()
                             )

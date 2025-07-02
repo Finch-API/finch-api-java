@@ -17,6 +17,7 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.Provider
 import com.tryfinch.api.models.ProviderListPage
 import com.tryfinch.api.models.ProviderListParams
+import java.util.function.Consumer
 
 class ProviderServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ProviderService {
@@ -26,6 +27,9 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): ProviderService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProviderService =
+        ProviderServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: ProviderListParams,
@@ -39,6 +43,13 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProviderService.WithRawResponse =
+            ProviderServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val listHandler: Handler<List<Provider>> =
             jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -49,6 +60,7 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
                     .prepare(clientOptions, params)

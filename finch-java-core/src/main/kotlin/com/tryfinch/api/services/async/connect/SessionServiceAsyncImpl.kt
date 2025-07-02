@@ -20,6 +20,7 @@ import com.tryfinch.api.models.ConnectSessionReauthenticateParams
 import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class SessionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     SessionServiceAsync {
@@ -29,6 +30,9 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): SessionServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SessionServiceAsync =
+        SessionServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun new_(
         params: ConnectSessionNewParams,
@@ -49,6 +53,13 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): SessionServiceAsync.WithRawResponse =
+            SessionServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val newHandler: Handler<SessionNewResponse> =
             jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -59,6 +70,7 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("connect", "sessions")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -90,6 +102,7 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("connect", "sessions", "reauthenticate")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

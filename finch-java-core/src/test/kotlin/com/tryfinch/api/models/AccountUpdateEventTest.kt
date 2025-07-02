@@ -25,28 +25,20 @@ internal class AccountUpdateEventTest {
                                         .commuter(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -76,28 +68,20 @@ internal class AccountUpdateEventTest {
                                         .customPostTax(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -127,28 +111,20 @@ internal class AccountUpdateEventTest {
                                         .customPreTax(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -178,28 +154,20 @@ internal class AccountUpdateEventTest {
                                         .fsaDependentCare(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -229,28 +197,20 @@ internal class AccountUpdateEventTest {
                                         .fsaMedical(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -280,28 +240,20 @@ internal class AccountUpdateEventTest {
                                         .hsaPost(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -331,28 +283,20 @@ internal class AccountUpdateEventTest {
                                         .hsaPre(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -382,28 +326,20 @@ internal class AccountUpdateEventTest {
                                         .s125Dental(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -433,28 +369,20 @@ internal class AccountUpdateEventTest {
                                         .s125Medical(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -484,28 +412,20 @@ internal class AccountUpdateEventTest {
                                         .s125Vision(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -535,28 +455,20 @@ internal class AccountUpdateEventTest {
                                         .simple(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -586,28 +498,20 @@ internal class AccountUpdateEventTest {
                                         .simpleIra(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -1024,25 +928,19 @@ internal class AccountUpdateEventTest {
                                     .commuter(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1072,25 +970,19 @@ internal class AccountUpdateEventTest {
                                     .customPostTax(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1120,25 +1012,19 @@ internal class AccountUpdateEventTest {
                                     .customPreTax(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1168,25 +1054,19 @@ internal class AccountUpdateEventTest {
                                     .fsaDependentCare(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1216,25 +1096,19 @@ internal class AccountUpdateEventTest {
                                     .fsaMedical(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1264,25 +1138,19 @@ internal class AccountUpdateEventTest {
                                     .hsaPost(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1312,25 +1180,19 @@ internal class AccountUpdateEventTest {
                                     .hsaPre(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1360,25 +1222,19 @@ internal class AccountUpdateEventTest {
                                     .s125Dental(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1408,25 +1264,19 @@ internal class AccountUpdateEventTest {
                                     .s125Medical(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1456,25 +1306,19 @@ internal class AccountUpdateEventTest {
                                     .s125Vision(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1504,25 +1348,19 @@ internal class AccountUpdateEventTest {
                                     .simple(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1552,25 +1390,19 @@ internal class AccountUpdateEventTest {
                                     .simpleIra(
                                         BenefitFeaturesAndOperations.builder()
                                             .supportedFeatures(
-                                                BenefitFeaturesAndOperations.BenefitFeature
-                                                    .builder()
+                                                SupportedBenefit.builder()
                                                     .annualMaximum(true)
                                                     .catchUp(true)
                                                     .addCompanyContribution(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .CompanyContribution
-                                                            .FIXED
+                                                        SupportedBenefit.CompanyContribution.FIXED
                                                     )
                                                     .description("description")
                                                     .addEmployeeDeduction(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .EmployeeDeduction
-                                                            .FIXED
+                                                        SupportedBenefit.EmployeeDeduction.FIXED
                                                     )
                                                     .addFrequency(BenefitFrequency.ONE_TIME)
                                                     .addHsaContributionLimit(
-                                                        BenefitFeaturesAndOperations.BenefitFeature
-                                                            .HsaContributionLimit
+                                                        SupportedBenefit.HsaContributionLimit
                                                             .INDIVIDUAL
                                                     )
                                                     .build()
@@ -1979,28 +1811,20 @@ internal class AccountUpdateEventTest {
                                         .commuter(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2030,28 +1854,20 @@ internal class AccountUpdateEventTest {
                                         .customPostTax(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2081,28 +1897,20 @@ internal class AccountUpdateEventTest {
                                         .customPreTax(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2132,28 +1940,20 @@ internal class AccountUpdateEventTest {
                                         .fsaDependentCare(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2183,28 +1983,20 @@ internal class AccountUpdateEventTest {
                                         .fsaMedical(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2234,28 +2026,20 @@ internal class AccountUpdateEventTest {
                                         .hsaPost(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2285,28 +2069,20 @@ internal class AccountUpdateEventTest {
                                         .hsaPre(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2336,28 +2112,20 @@ internal class AccountUpdateEventTest {
                                         .s125Dental(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2387,28 +2155,20 @@ internal class AccountUpdateEventTest {
                                         .s125Medical(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2438,28 +2198,20 @@ internal class AccountUpdateEventTest {
                                         .s125Vision(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2489,28 +2241,20 @@ internal class AccountUpdateEventTest {
                                         .simple(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()
@@ -2540,28 +2284,20 @@ internal class AccountUpdateEventTest {
                                         .simpleIra(
                                             BenefitFeaturesAndOperations.builder()
                                                 .supportedFeatures(
-                                                    BenefitFeaturesAndOperations.BenefitFeature
-                                                        .builder()
+                                                    SupportedBenefit.builder()
                                                         .annualMaximum(true)
                                                         .catchUp(true)
                                                         .addCompanyContribution(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .CompanyContribution
+                                                            SupportedBenefit.CompanyContribution
                                                                 .FIXED
                                                         )
                                                         .description("description")
                                                         .addEmployeeDeduction(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .EmployeeDeduction
-                                                                .FIXED
+                                                            SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
                                                         .addFrequency(BenefitFrequency.ONE_TIME)
                                                         .addHsaContributionLimit(
-                                                            BenefitFeaturesAndOperations
-                                                                .BenefitFeature
-                                                                .HsaContributionLimit
+                                                            SupportedBenefit.HsaContributionLimit
                                                                 .INDIVIDUAL
                                                         )
                                                         .build()

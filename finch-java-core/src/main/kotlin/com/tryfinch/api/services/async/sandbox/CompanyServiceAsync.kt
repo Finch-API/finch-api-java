@@ -2,12 +2,13 @@
 
 package com.tryfinch.api.services.async.sandbox
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.CompanyUpdateResponse
 import com.tryfinch.api.models.SandboxCompanyUpdateParams
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface CompanyServiceAsync {
 
@@ -15,6 +16,13 @@ interface CompanyServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): CompanyServiceAsync
 
     /** Update a sandbox company's data */
     fun update(params: SandboxCompanyUpdateParams): CompletableFuture<CompanyUpdateResponse> =
@@ -32,17 +40,24 @@ interface CompanyServiceAsync {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CompanyServiceAsync.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `put /sandbox/company`, but is otherwise the same as
          * [CompanyServiceAsync.update].
          */
-        @MustBeClosed
         fun update(
             params: SandboxCompanyUpdateParams
         ): CompletableFuture<HttpResponseFor<CompanyUpdateResponse>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: SandboxCompanyUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

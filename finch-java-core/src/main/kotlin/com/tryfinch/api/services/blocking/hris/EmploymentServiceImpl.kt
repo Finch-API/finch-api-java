@@ -18,6 +18,7 @@ import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPage
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
+import java.util.function.Consumer
 
 class EmploymentServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     EmploymentService {
@@ -27,6 +28,9 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): EmploymentService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): EmploymentService =
+        EmploymentServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
@@ -40,6 +44,13 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): EmploymentService.WithRawResponse =
+            EmploymentServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageResponse> =
             jsonHandler<HrisEmploymentRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +62,7 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "employment")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

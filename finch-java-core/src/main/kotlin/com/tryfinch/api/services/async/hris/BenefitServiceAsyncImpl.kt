@@ -16,7 +16,6 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.models.BenefitListSupportedBenefitsResponse
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
 import com.tryfinch.api.models.HrisBenefitCreateParams
@@ -26,11 +25,13 @@ import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
+import com.tryfinch.api.models.SupportedBenefit
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsyncImpl
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class BenefitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -45,6 +46,9 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): BenefitServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): BenefitServiceAsync =
+        BenefitServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun individuals(): IndividualServiceAsync = individuals
 
@@ -92,6 +96,13 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             IndividualServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): BenefitServiceAsync.WithRawResponse =
+            BenefitServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun individuals(): IndividualServiceAsync.WithRawResponse = individuals
 
         private val createHandler: Handler<CreateCompanyBenefitsResponse> =
@@ -105,6 +116,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -138,6 +150,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -171,6 +184,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -202,6 +216,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -229,11 +244,8 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 }
         }
 
-        private val listSupportedBenefitsHandler:
-            Handler<Optional<List<BenefitListSupportedBenefitsResponse>>> =
-            jsonHandler<Optional<List<BenefitListSupportedBenefitsResponse>>>(
-                    clientOptions.jsonMapper
-                )
+        private val listSupportedBenefitsHandler: Handler<Optional<List<SupportedBenefit>>> =
+            jsonHandler<Optional<List<SupportedBenefit>>>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun listSupportedBenefits(
@@ -243,6 +255,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "benefits", "meta")
                     .build()
                     .prepareAsync(clientOptions, params)

@@ -17,6 +17,7 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.CompanyUpdateResponse
 import com.tryfinch.api.models.SandboxCompanyUpdateParams
+import java.util.function.Consumer
 
 class CompanyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     CompanyService {
@@ -26,6 +27,9 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
     }
 
     override fun withRawResponse(): CompanyService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CompanyService =
+        CompanyServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun update(
         params: SandboxCompanyUpdateParams,
@@ -39,6 +43,13 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CompanyService.WithRawResponse =
+            CompanyServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val updateHandler: Handler<CompanyUpdateResponse> =
             jsonHandler<CompanyUpdateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -50,6 +61,7 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "company")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
