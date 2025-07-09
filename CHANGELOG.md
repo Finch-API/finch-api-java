@@ -1,5 +1,13 @@
 # Changelog
 
+## 7.3.1 (2025-07-08)
+
+Full Changelog: [v7.3.0...v7.3.1](https://github.com/Finch-API/finch-api-java/compare/v7.3.0...v7.3.1)
+
+### Chores
+
+* **ci:** ensure docs generation always succeeds ([0da4805](https://github.com/Finch-API/finch-api-java/commit/0da480548ffd12fdff25f9174958098cafe17d67))
+
 ## 7.3.0 (2025-07-02)
 
 Full Changelog: [v7.2.0...v7.3.0](https://github.com/Finch-API/finch-api-java/compare/v7.2.0...v7.3.0)
