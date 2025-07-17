@@ -3,14 +3,14 @@
 package com.tryfinch.api.services.async.hris.company.payStatementItem
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
@@ -72,7 +72,8 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RuleServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -82,7 +83,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
             )
 
         private val createHandler: Handler<RuleCreateResponse> =
-            jsonHandler<RuleCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<RuleCreateResponse>(clientOptions.jsonMapper)
 
         override fun create(
             params: HrisCompanyPayStatementItemRuleCreateParams,
@@ -100,7 +101,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -113,7 +114,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
         }
 
         private val updateHandler: Handler<RuleUpdateResponse> =
-            jsonHandler<RuleUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<RuleUpdateResponse>(clientOptions.jsonMapper)
 
         override fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams,
@@ -134,7 +135,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -148,7 +149,6 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
 
         private val listHandler: Handler<HrisCompanyPayStatementItemRuleListPageResponse> =
             jsonHandler<HrisCompanyPayStatementItemRuleListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: HrisCompanyPayStatementItemRuleListParams,
@@ -165,7 +165,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -186,7 +186,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
         }
 
         private val deleteHandler: Handler<RuleDeleteResponse> =
-            jsonHandler<RuleDeleteResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<RuleDeleteResponse>(clientOptions.jsonMapper)
 
         override fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams,
@@ -207,7 +207,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { deleteHandler.handle(it) }
                             .also {
