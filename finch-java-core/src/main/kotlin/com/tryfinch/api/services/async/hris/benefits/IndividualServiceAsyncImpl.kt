@@ -3,14 +3,14 @@
 package com.tryfinch.api.services.async.hris.benefits
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
@@ -63,7 +63,8 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         IndividualServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -74,7 +75,6 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> =
             jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun enrolledIds(
             params: HrisBenefitIndividualEnrolledIdsParams,
@@ -94,7 +94,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { enrolledIdsHandler.handle(it) }
                             .also {
@@ -108,7 +108,6 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val retrieveManyBenefitsHandler: Handler<List<IndividualBenefit>> =
             jsonHandler<List<IndividualBenefit>>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun retrieveManyBenefits(
             params: HrisBenefitIndividualRetrieveManyBenefitsParams,
@@ -128,7 +127,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveManyBenefitsHandler.handle(it) }
                             .also {
@@ -150,7 +149,6 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val unenrollManyHandler: Handler<UnenrolledIndividualBenefitResponse> =
             jsonHandler<UnenrolledIndividualBenefitResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams,
@@ -171,7 +169,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { unenrollManyHandler.handle(it) }
                             .also {
