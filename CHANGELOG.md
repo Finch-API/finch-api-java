@@ -1,5 +1,26 @@
 # Changelog
 
+## 7.4.0 (2025-07-18)
+
+Full Changelog: [v7.3.1...v7.4.0](https://github.com/Finch-API/finch-api-java/compare/v7.3.1...v7.4.0)
+
+### Features
+
+* **api:** api update ([21939b3](https://github.com/Finch-API/finch-api-java/commit/21939b3e793ae932cfe333a50e4996388900464f))
+* **client:** add https config options ([4ae1b1a](https://github.com/Finch-API/finch-api-java/commit/4ae1b1ad7b9ba3f76f027ae32e5bee6525706dd5))
+
+
+### Bug Fixes
+
+* **client:** ensure error handling always occurs ([98e72bc](https://github.com/Finch-API/finch-api-java/commit/98e72bc3ee2085f94175a8326f2bc75c11dca281))
+
+
+### Chores
+
+* **ci:** bump `actions/setup-java` to v4 ([a15c7b6](https://github.com/Finch-API/finch-api-java/commit/a15c7b62eedd8278ea6f4cc65dc1211b3d2c92da))
+* **internal:** allow running specific example from cli ([c1eebc5](https://github.com/Finch-API/finch-api-java/commit/c1eebc5989312477b4c60d26e21e7b59e43a6c1d))
+* **internal:** refactor delegating from client to options ([e9e1c40](https://github.com/Finch-API/finch-api-java/commit/e9e1c400440734ec210fc759149de5b014102d11))
+
 ## 7.3.1 (2025-07-08)
 
 Full Changelog: [v7.3.0...v7.3.1](https://github.com/Finch-API/finch-api-java/compare/v7.3.0...v7.3.1)

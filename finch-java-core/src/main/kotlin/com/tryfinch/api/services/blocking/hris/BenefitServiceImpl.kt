@@ -3,14 +3,14 @@
 package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
@@ -87,7 +87,8 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         BenefitService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val individuals: IndividualService.WithRawResponse by lazy {
             IndividualServiceImpl.WithRawResponseImpl(clientOptions)
@@ -104,7 +105,6 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val createHandler: Handler<CreateCompanyBenefitsResponse> =
             jsonHandler<CreateCompanyBenefitsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun create(
             params: HrisBenefitCreateParams,
@@ -120,7 +120,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
                     .also {
@@ -132,7 +132,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
         }
 
         private val retrieveHandler: Handler<CompanyBenefit> =
-            jsonHandler<CompanyBenefit>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<CompanyBenefit>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: HrisBenefitRetrieveParams,
@@ -150,7 +150,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { retrieveHandler.handle(it) }
                     .also {
@@ -163,7 +163,6 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val updateHandler: Handler<UpdateCompanyBenefitResponse> =
             jsonHandler<UpdateCompanyBenefitResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun update(
             params: HrisBenefitUpdateParams,
@@ -182,7 +181,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { updateHandler.handle(it) }
                     .also {
@@ -195,7 +194,6 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val listHandler: Handler<List<CompanyBenefit>> =
             jsonHandler<List<CompanyBenefit>>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: HrisBenefitListParams,
@@ -210,7 +208,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { listHandler.handle(it) }
                     .also {
@@ -230,7 +228,6 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val listSupportedBenefitsHandler: Handler<Optional<List<SupportedBenefit>>> =
             jsonHandler<Optional<List<SupportedBenefit>>>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun listSupportedBenefits(
             params: HrisBenefitListSupportedBenefitsParams,
@@ -245,7 +242,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { listSupportedBenefitsHandler.handle(it) }
                     .also {

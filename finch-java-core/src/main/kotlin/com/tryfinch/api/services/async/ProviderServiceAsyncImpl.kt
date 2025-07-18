@@ -3,13 +3,13 @@
 package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
@@ -42,7 +42,8 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ProviderServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -52,7 +53,7 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
             )
 
         private val listHandler: Handler<List<Provider>> =
-            jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<List<Provider>>(clientOptions.jsonMapper)
 
         override fun list(
             params: ProviderListParams,
@@ -69,7 +70,7 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {

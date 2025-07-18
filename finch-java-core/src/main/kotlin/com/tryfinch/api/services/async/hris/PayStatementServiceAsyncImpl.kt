@@ -3,13 +3,13 @@
 package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
@@ -43,7 +43,8 @@ class PayStatementServiceAsyncImpl internal constructor(private val clientOption
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PayStatementServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -54,7 +55,6 @@ class PayStatementServiceAsyncImpl internal constructor(private val clientOption
 
         private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPageResponse> =
             jsonHandler<HrisPayStatementRetrieveManyPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun retrieveMany(
             params: HrisPayStatementRetrieveManyParams,
@@ -72,7 +72,7 @@ class PayStatementServiceAsyncImpl internal constructor(private val clientOption
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveManyHandler.handle(it) }
                             .also {

@@ -3,13 +3,13 @@
 package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
@@ -51,7 +51,8 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         AccountServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -61,7 +62,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             )
 
         private val disconnectHandler: Handler<DisconnectResponse> =
-            jsonHandler<DisconnectResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<DisconnectResponse>(clientOptions.jsonMapper)
 
         override fun disconnect(
             params: AccountDisconnectParams,
@@ -79,7 +80,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { disconnectHandler.handle(it) }
                             .also {
@@ -92,7 +93,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
         }
 
         private val introspectHandler: Handler<Introspection> =
-            jsonHandler<Introspection>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Introspection>(clientOptions.jsonMapper)
 
         override fun introspect(
             params: AccountIntrospectParams,
@@ -109,7 +110,7 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { introspectHandler.handle(it) }
                             .also {

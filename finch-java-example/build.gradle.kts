@@ -17,5 +17,12 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 application {
-    mainClass = "com.tryfinch.api.example.Main"
+    // Use `./gradlew :finch-java-example:run` to run `Main`
+    // Use `./gradlew :finch-java-example:run -Dexample=Something` to run `SomethingExample`
+    mainClass = "com.tryfinch.api.example.${
+        if (project.hasProperty("example"))
+            "${project.property("example")}Example"
+        else
+            "Main"
+    }"
 }

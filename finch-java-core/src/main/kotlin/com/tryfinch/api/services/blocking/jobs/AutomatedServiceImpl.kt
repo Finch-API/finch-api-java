@@ -3,14 +3,14 @@
 package com.tryfinch.api.services.blocking.jobs
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
@@ -61,7 +61,8 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         AutomatedService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -72,7 +73,6 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
 
         private val createHandler: Handler<AutomatedCreateResponse> =
             jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun create(
             params: JobAutomatedCreateParams,
@@ -88,7 +88,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
                     .also {
@@ -100,7 +100,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
         }
 
         private val retrieveHandler: Handler<AutomatedAsyncJob> =
-            jsonHandler<AutomatedAsyncJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<AutomatedAsyncJob>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: JobAutomatedRetrieveParams,
@@ -118,7 +118,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { retrieveHandler.handle(it) }
                     .also {
@@ -131,7 +131,6 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
 
         private val listHandler: Handler<AutomatedListResponse> =
             jsonHandler<AutomatedListResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: JobAutomatedListParams,
@@ -146,7 +145,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { listHandler.handle(it) }
                     .also {
