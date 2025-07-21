@@ -267,10 +267,16 @@ private constructor(
         fun timeout(): Timeout = timeout
 
         fun fromEnv() = apply {
-            System.getenv("FINCH_BASE_URL")?.let { baseUrl(it) }
-            System.getenv("FINCH_CLIENT_ID")?.let { clientId(it) }
-            System.getenv("FINCH_CLIENT_SECRET")?.let { clientSecret(it) }
-            System.getenv("FINCH_WEBHOOK_SECRET")?.let { webhookSecret(it) }
+            (System.getProperty("finch.baseUrl") ?: System.getenv("FINCH_BASE_URL"))?.let {
+                baseUrl(it)
+            }
+            (System.getProperty("finch.clientId") ?: System.getenv("FINCH_CLIENT_ID"))?.let {
+                clientId(it)
+            }
+            (System.getProperty("finch.clientSecret") ?: System.getenv("FINCH_CLIENT_SECRET"))
+                ?.let { clientSecret(it) }
+            (System.getProperty("finch.webhookSecret") ?: System.getenv("FINCH_WEBHOOK_SECRET"))
+                ?.let { webhookSecret(it) }
         }
 
         /**
