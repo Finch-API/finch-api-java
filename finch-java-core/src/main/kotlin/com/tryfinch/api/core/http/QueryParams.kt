@@ -2,6 +2,14 @@
 
 package com.tryfinch.api.core.http
 
+import com.tryfinch.api.core.JsonArray
+import com.tryfinch.api.core.JsonBoolean
+import com.tryfinch.api.core.JsonMissing
+import com.tryfinch.api.core.JsonNull
+import com.tryfinch.api.core.JsonNumber
+import com.tryfinch.api.core.JsonObject
+import com.tryfinch.api.core.JsonString
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.toImmutable
 
 class QueryParams
@@ -27,6 +35,19 @@ private constructor(
 
         private val map: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var size: Int = 0
+
+        fun put(key: String, value: JsonValue): Builder = apply {
+            when (value) {
+                is JsonMissing,
+                is JsonNull -> {}
+                is JsonBoolean -> put(key, value.value.toString())
+                is JsonNumber -> put(key, value.value.toString())
+                is JsonString -> put(key, value.value)
+                is JsonArray -> value.values.forEach { put("$key[]", it) }
+                is JsonObject ->
+                    value.values.forEach { (nestedKey, value) -> put("$key[$nestedKey]", value) }
+            }
+        }
 
         fun put(key: String, value: String) = apply {
             map.getOrPut(key) { mutableListOf() }.add(value)
