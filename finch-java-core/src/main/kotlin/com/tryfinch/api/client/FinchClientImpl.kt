@@ -140,7 +140,7 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
                 )
                 .build()
         return clientOptions.httpClient.execute(request).let {
-            getAccessTokenHandler.handle(it).accessToken
+            getAccessTokenHandler.handle(errorHandler.handle(it)).accessToken
         }
     }
 

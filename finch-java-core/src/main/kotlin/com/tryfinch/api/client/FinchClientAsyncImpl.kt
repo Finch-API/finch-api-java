@@ -151,7 +151,7 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
                 )
                 .build()
         return clientOptions.httpClient.executeAsync(request).thenApply {
-            getAccessTokenHandler.handle(it).accessToken
+            getAccessTokenHandler.handle(errorHandler.handle(it)).accessToken
         }
     }
 
