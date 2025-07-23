@@ -41,7 +41,7 @@ internal class BenefitServiceAsyncTest {
                             .build()
                     )
                     .description("description")
-                    .frequency(BenefitFrequency.ONE_TIME)
+                    .frequency(BenefitFrequency.EVERY_PAYCHECK)
                     .type(BenefitType._457)
                     .build()
             )

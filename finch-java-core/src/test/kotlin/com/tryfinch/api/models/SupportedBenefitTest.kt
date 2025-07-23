@@ -15,25 +15,24 @@ internal class SupportedBenefitTest {
         val supportedBenefit =
             SupportedBenefit.builder()
                 .annualMaximum(true)
-                .catchUp(true)
                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                 .description("description")
                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                .addFrequency(BenefitFrequency.ONE_TIME)
-                .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
+                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                .catchUp(true)
+                .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                 .build()
 
         assertThat(supportedBenefit.annualMaximum()).contains(true)
-        assertThat(supportedBenefit.catchUp()).contains(true)
         assertThat(supportedBenefit.companyContribution().getOrNull())
             .containsExactly(SupportedBenefit.CompanyContribution.FIXED)
         assertThat(supportedBenefit.description()).contains("description")
         assertThat(supportedBenefit.employeeDeduction().getOrNull())
             .containsExactly(SupportedBenefit.EmployeeDeduction.FIXED)
-        assertThat(supportedBenefit.frequencies().getOrNull())
-            .containsExactly(BenefitFrequency.ONE_TIME)
+        assertThat(supportedBenefit.frequencies()).containsExactly(BenefitFrequency.EVERY_PAYCHECK)
+        assertThat(supportedBenefit.catchUp()).contains(true)
         assertThat(supportedBenefit.hsaContributionLimit().getOrNull())
-            .containsExactly(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
+            .containsExactly(SupportedBenefit.HsaContributionLimit.FAMILY)
     }
 
     @Test
@@ -42,12 +41,12 @@ internal class SupportedBenefitTest {
         val supportedBenefit =
             SupportedBenefit.builder()
                 .annualMaximum(true)
-                .catchUp(true)
                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                 .description("description")
                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                .addFrequency(BenefitFrequency.ONE_TIME)
-                .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
+                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                .catchUp(true)
+                .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                 .build()
 
         val roundtrippedSupportedBenefit =

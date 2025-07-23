@@ -18,13 +18,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -55,13 +55,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -92,13 +92,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -129,13 +129,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -166,13 +166,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -203,13 +203,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -240,13 +240,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -277,13 +277,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -314,13 +314,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -351,13 +351,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -388,13 +388,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -425,13 +425,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -465,14 +465,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -503,14 +501,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -541,14 +537,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -579,14 +573,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -617,14 +609,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -655,14 +645,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -693,14 +681,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -731,14 +717,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -769,14 +753,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -807,14 +789,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -845,14 +825,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -883,14 +861,12 @@ internal class BenefitsSupportTest {
                     .supportedFeatures(
                         SupportedBenefit.builder()
                             .annualMaximum(true)
-                            .catchUp(true)
                             .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                             .description("description")
                             .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                            .addFrequency(BenefitFrequency.ONE_TIME)
-                            .addHsaContributionLimit(
-                                SupportedBenefit.HsaContributionLimit.INDIVIDUAL
-                            )
+                            .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                            .catchUp(true)
+                            .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.FAMILY)
                             .build()
                     )
                     .supportedOperations(
@@ -927,13 +903,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -964,13 +940,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1001,13 +977,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1038,13 +1014,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1075,13 +1051,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1112,13 +1088,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1149,13 +1125,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1186,13 +1162,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1223,13 +1199,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1260,13 +1236,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1297,13 +1273,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
@@ -1334,13 +1310,13 @@ internal class BenefitsSupportTest {
                         .supportedFeatures(
                             SupportedBenefit.builder()
                                 .annualMaximum(true)
-                                .catchUp(true)
                                 .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
                                 .description("description")
                                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
-                                .addFrequency(BenefitFrequency.ONE_TIME)
+                                .addFrequency(BenefitFrequency.EVERY_PAYCHECK)
+                                .catchUp(true)
                                 .addHsaContributionLimit(
-                                    SupportedBenefit.HsaContributionLimit.INDIVIDUAL
+                                    SupportedBenefit.HsaContributionLimit.FAMILY
                                 )
                                 .build()
                         )
