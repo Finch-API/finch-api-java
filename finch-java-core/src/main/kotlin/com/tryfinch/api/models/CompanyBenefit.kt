@@ -23,19 +23,16 @@ import kotlin.jvm.optionals.getOrNull
 class CompanyBenefit
 private constructor(
     private val benefitId: JsonField<String>,
-    private val companyContribution: JsonField<BenefitCompanyMatchContribution>,
     private val description: JsonField<String>,
     private val frequency: JsonField<BenefitFrequency>,
     private val type: JsonField<BenefitType>,
+    private val companyContribution: JsonField<BenefitCompanyMatchContribution>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
         @JsonProperty("benefit_id") @ExcludeMissing benefitId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("company_contribution")
-        @ExcludeMissing
-        companyContribution: JsonField<BenefitCompanyMatchContribution> = JsonMissing.of(),
         @JsonProperty("description")
         @ExcludeMissing
         description: JsonField<String> = JsonMissing.of(),
@@ -43,7 +40,10 @@ private constructor(
         @ExcludeMissing
         frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
         @JsonProperty("type") @ExcludeMissing type: JsonField<BenefitType> = JsonMissing.of(),
-    ) : this(benefitId, companyContribution, description, frequency, type, mutableMapOf())
+        @JsonProperty("company_contribution")
+        @ExcludeMissing
+        companyContribution: JsonField<BenefitCompanyMatchContribution> = JsonMissing.of(),
+    ) : this(benefitId, description, frequency, type, companyContribution, mutableMapOf())
 
     /**
      * The id of the benefit.
@@ -52,15 +52,6 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun benefitId(): String = benefitId.getRequired("benefit_id")
-
-    /**
-     * The company match for this benefit.
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun companyContribution(): Optional<BenefitCompanyMatchContribution> =
-        companyContribution.getOptional("company_contribution")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -85,21 +76,20 @@ private constructor(
     fun type(): Optional<BenefitType> = type.getOptional("type")
 
     /**
+     * The company match for this benefit.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun companyContribution(): Optional<BenefitCompanyMatchContribution> =
+        companyContribution.getOptional("company_contribution")
+
+    /**
      * Returns the raw JSON value of [benefitId].
      *
      * Unlike [benefitId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
-
-    /**
-     * Returns the raw JSON value of [companyContribution].
-     *
-     * Unlike [companyContribution], this method doesn't throw if the JSON field has an unexpected
-     * type.
-     */
-    @JsonProperty("company_contribution")
-    @ExcludeMissing
-    fun _companyContribution(): JsonField<BenefitCompanyMatchContribution> = companyContribution
 
     /**
      * Returns the raw JSON value of [description].
@@ -124,6 +114,16 @@ private constructor(
      */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
+    /**
+     * Returns the raw JSON value of [companyContribution].
+     *
+     * Unlike [companyContribution], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("company_contribution")
+    @ExcludeMissing
+    fun _companyContribution(): JsonField<BenefitCompanyMatchContribution> = companyContribution
+
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
         additionalProperties.put(key, value)
@@ -144,7 +144,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .benefitId()
-         * .companyContribution()
          * .description()
          * .frequency()
          * .type()
@@ -157,19 +156,20 @@ private constructor(
     class Builder internal constructor() {
 
         private var benefitId: JsonField<String>? = null
-        private var companyContribution: JsonField<BenefitCompanyMatchContribution>? = null
         private var description: JsonField<String>? = null
         private var frequency: JsonField<BenefitFrequency>? = null
         private var type: JsonField<BenefitType>? = null
+        private var companyContribution: JsonField<BenefitCompanyMatchContribution> =
+            JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(companyBenefit: CompanyBenefit) = apply {
             benefitId = companyBenefit.benefitId
-            companyContribution = companyBenefit.companyContribution
             description = companyBenefit.description
             frequency = companyBenefit.frequency
             type = companyBenefit.type
+            companyContribution = companyBenefit.companyContribution
             additionalProperties = companyBenefit.additionalProperties.toMutableMap()
         }
 
@@ -184,28 +184,6 @@ private constructor(
          * value.
          */
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
-
-        /** The company match for this benefit. */
-        fun companyContribution(companyContribution: BenefitCompanyMatchContribution?) =
-            companyContribution(JsonField.ofNullable(companyContribution))
-
-        /**
-         * Alias for calling [Builder.companyContribution] with `companyContribution.orElse(null)`.
-         */
-        fun companyContribution(companyContribution: Optional<BenefitCompanyMatchContribution>) =
-            companyContribution(companyContribution.getOrNull())
-
-        /**
-         * Sets [Builder.companyContribution] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.companyContribution] with a well-typed
-         * [BenefitCompanyMatchContribution] value instead. This method is primarily for setting the
-         * field to an undocumented or not yet supported value.
-         */
-        fun companyContribution(companyContribution: JsonField<BenefitCompanyMatchContribution>) =
-            apply {
-                this.companyContribution = companyContribution
-            }
 
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
@@ -251,6 +229,28 @@ private constructor(
          */
         fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
+        /** The company match for this benefit. */
+        fun companyContribution(companyContribution: BenefitCompanyMatchContribution?) =
+            companyContribution(JsonField.ofNullable(companyContribution))
+
+        /**
+         * Alias for calling [Builder.companyContribution] with `companyContribution.orElse(null)`.
+         */
+        fun companyContribution(companyContribution: Optional<BenefitCompanyMatchContribution>) =
+            companyContribution(companyContribution.getOrNull())
+
+        /**
+         * Sets [Builder.companyContribution] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyContribution] with a well-typed
+         * [BenefitCompanyMatchContribution] value instead. This method is primarily for setting the
+         * field to an undocumented or not yet supported value.
+         */
+        fun companyContribution(companyContribution: JsonField<BenefitCompanyMatchContribution>) =
+            apply {
+                this.companyContribution = companyContribution
+            }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -278,7 +278,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .benefitId()
-         * .companyContribution()
          * .description()
          * .frequency()
          * .type()
@@ -289,10 +288,10 @@ private constructor(
         fun build(): CompanyBenefit =
             CompanyBenefit(
                 checkRequired("benefitId", benefitId),
-                checkRequired("companyContribution", companyContribution),
                 checkRequired("description", description),
                 checkRequired("frequency", frequency),
                 checkRequired("type", type),
+                companyContribution,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -305,10 +304,10 @@ private constructor(
         }
 
         benefitId()
-        companyContribution().ifPresent { it.validate() }
         description()
         frequency().ifPresent { it.validate() }
         type().ifPresent { it.validate() }
+        companyContribution().ifPresent { it.validate() }
         validated = true
     }
 
@@ -328,10 +327,10 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (if (benefitId.asKnown().isPresent) 1 else 0) +
-            (companyContribution.asKnown().getOrNull()?.validity() ?: 0) +
             (if (description.asKnown().isPresent) 1 else 0) +
             (frequency.asKnown().getOrNull()?.validity() ?: 0) +
-            (type.asKnown().getOrNull()?.validity() ?: 0)
+            (type.asKnown().getOrNull()?.validity() ?: 0) +
+            (companyContribution.asKnown().getOrNull()?.validity() ?: 0)
 
     /** The company match for this benefit. */
     class BenefitCompanyMatchContribution
@@ -348,16 +347,16 @@ private constructor(
         ) : this(tiers, type, mutableMapOf())
 
         /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun tiers(): Optional<List<Tier>> = tiers.getOptional("tiers")
+        fun tiers(): List<Tier> = tiers.getRequired("tiers")
 
         /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun type(): Optional<Type> = type.getOptional("type")
+        fun type(): Type = type.getRequired("type")
 
         /**
          * Returns the raw JSON value of [tiers].
@@ -390,6 +389,12 @@ private constructor(
             /**
              * Returns a mutable builder for constructing an instance of
              * [BenefitCompanyMatchContribution].
+             *
+             * The following fields are required:
+             * ```java
+             * .tiers()
+             * .type()
+             * ```
              */
             @JvmStatic fun builder() = Builder()
         }
@@ -398,7 +403,7 @@ private constructor(
         class Builder internal constructor() {
 
             private var tiers: JsonField<MutableList<Tier>>? = null
-            private var type: JsonField<Type> = JsonMissing.of()
+            private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -469,11 +474,19 @@ private constructor(
              * Returns an immutable instance of [BenefitCompanyMatchContribution].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .tiers()
+             * .type()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): BenefitCompanyMatchContribution =
                 BenefitCompanyMatchContribution(
-                    (tiers ?: JsonMissing.of()).map { it.toImmutable() },
-                    type,
+                    checkRequired("tiers", tiers).map { it.toImmutable() },
+                    checkRequired("type", type),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -485,8 +498,8 @@ private constructor(
                 return@apply
             }
 
-            tiers().ifPresent { it.forEach { it.validate() } }
-            type().ifPresent { it.validate() }
+            tiers().forEach { it.validate() }
+            type().validate()
             validated = true
         }
 
@@ -525,16 +538,18 @@ private constructor(
             ) : this(match, threshold, mutableMapOf())
 
             /**
-             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
-             *   the server responded with an unexpected value).
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
              */
-            fun match(): Optional<Long> = match.getOptional("match")
+            fun match(): Long = match.getRequired("match")
 
             /**
-             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
-             *   the server responded with an unexpected value).
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
              */
-            fun threshold(): Optional<Long> = threshold.getOptional("threshold")
+            fun threshold(): Long = threshold.getRequired("threshold")
 
             /**
              * Returns the raw JSON value of [match].
@@ -565,15 +580,23 @@ private constructor(
 
             companion object {
 
-                /** Returns a mutable builder for constructing an instance of [Tier]. */
+                /**
+                 * Returns a mutable builder for constructing an instance of [Tier].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .match()
+                 * .threshold()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
             /** A builder for [Tier]. */
             class Builder internal constructor() {
 
-                private var match: JsonField<Long> = JsonMissing.of()
-                private var threshold: JsonField<Long> = JsonMissing.of()
+                private var match: JsonField<Long>? = null
+                private var threshold: JsonField<Long>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -631,8 +654,21 @@ private constructor(
                  * Returns an immutable instance of [Tier].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .match()
+                 * .threshold()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): Tier = Tier(match, threshold, additionalProperties.toMutableMap())
+                fun build(): Tier =
+                    Tier(
+                        checkRequired("match", match),
+                        checkRequired("threshold", threshold),
+                        additionalProperties.toMutableMap(),
+                    )
             }
 
             private var validated: Boolean = false
@@ -828,15 +864,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CompanyBenefit && benefitId == other.benefitId && companyContribution == other.companyContribution && description == other.description && frequency == other.frequency && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is CompanyBenefit && benefitId == other.benefitId && description == other.description && frequency == other.frequency && type == other.type && companyContribution == other.companyContribution && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(benefitId, companyContribution, description, frequency, type, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(benefitId, description, frequency, type, companyContribution, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CompanyBenefit{benefitId=$benefitId, companyContribution=$companyContribution, description=$description, frequency=$frequency, type=$type, additionalProperties=$additionalProperties}"
+        "CompanyBenefit{benefitId=$benefitId, description=$description, frequency=$frequency, type=$type, companyContribution=$companyContribution, additionalProperties=$additionalProperties}"
 }

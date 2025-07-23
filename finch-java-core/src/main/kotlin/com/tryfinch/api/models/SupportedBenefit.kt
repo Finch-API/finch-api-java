@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
@@ -22,11 +23,11 @@ import kotlin.jvm.optionals.getOrNull
 class SupportedBenefit
 private constructor(
     private val annualMaximum: JsonField<Boolean>,
-    private val catchUp: JsonField<Boolean>,
     private val companyContribution: JsonField<List<CompanyContribution?>>,
     private val description: JsonField<String>,
     private val employeeDeduction: JsonField<List<EmployeeDeduction?>>,
     private val frequencies: JsonField<List<BenefitFrequency?>>,
+    private val catchUp: JsonField<Boolean>,
     private val hsaContributionLimit: JsonField<List<HsaContributionLimit?>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -36,7 +37,6 @@ private constructor(
         @JsonProperty("annual_maximum")
         @ExcludeMissing
         annualMaximum: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("catch_up") @ExcludeMissing catchUp: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("company_contribution")
         @ExcludeMissing
         companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of(),
@@ -49,16 +49,17 @@ private constructor(
         @JsonProperty("frequencies")
         @ExcludeMissing
         frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of(),
+        @JsonProperty("catch_up") @ExcludeMissing catchUp: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("hsa_contribution_limit")
         @ExcludeMissing
         hsaContributionLimit: JsonField<List<HsaContributionLimit?>> = JsonMissing.of(),
     ) : this(
         annualMaximum,
-        catchUp,
         companyContribution,
         description,
         employeeDeduction,
         frequencies,
+        catchUp,
         hsaContributionLimit,
         mutableMapOf(),
     )
@@ -70,15 +71,6 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun annualMaximum(): Optional<Boolean> = annualMaximum.getOptional("annual_maximum")
-
-    /**
-     * Whether the provider supports catch up for this benefit. This field will only be true for
-     * retirement benefits.
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun catchUp(): Optional<Boolean> = catchUp.getOptional("catch_up")
 
     /**
      * Supported contribution types. An empty array indicates contributions are not supported.
@@ -107,10 +99,19 @@ private constructor(
     /**
      * The list of frequencies supported by the provider for this benefit
      *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun frequencies(): List<BenefitFrequency?> = frequencies.getRequired("frequencies")
+
+    /**
+     * Whether the provider supports catch up for this benefit. This field will only be true for
+     * retirement benefits.
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun frequencies(): Optional<List<BenefitFrequency?>> = frequencies.getOptional("frequencies")
+    fun catchUp(): Optional<Boolean> = catchUp.getOptional("catch_up")
 
     /**
      * Whether the provider supports HSA contribution limits. Empty if this feature is not supported
@@ -130,13 +131,6 @@ private constructor(
     @JsonProperty("annual_maximum")
     @ExcludeMissing
     fun _annualMaximum(): JsonField<Boolean> = annualMaximum
-
-    /**
-     * Returns the raw JSON value of [catchUp].
-     *
-     * Unlike [catchUp], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("catch_up") @ExcludeMissing fun _catchUp(): JsonField<Boolean> = catchUp
 
     /**
      * Returns the raw JSON value of [companyContribution].
@@ -175,6 +169,13 @@ private constructor(
     fun _frequencies(): JsonField<List<BenefitFrequency?>> = frequencies
 
     /**
+     * Returns the raw JSON value of [catchUp].
+     *
+     * Unlike [catchUp], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("catch_up") @ExcludeMissing fun _catchUp(): JsonField<Boolean> = catchUp
+
+    /**
      * Returns the raw JSON value of [hsaContributionLimit].
      *
      * Unlike [hsaContributionLimit], this method doesn't throw if the JSON field has an unexpected
@@ -198,30 +199,41 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [SupportedBenefit]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [SupportedBenefit].
+         *
+         * The following fields are required:
+         * ```java
+         * .annualMaximum()
+         * .companyContribution()
+         * .description()
+         * .employeeDeduction()
+         * .frequencies()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [SupportedBenefit]. */
     class Builder internal constructor() {
 
-        private var annualMaximum: JsonField<Boolean> = JsonMissing.of()
-        private var catchUp: JsonField<Boolean> = JsonMissing.of()
+        private var annualMaximum: JsonField<Boolean>? = null
         private var companyContribution: JsonField<MutableList<CompanyContribution?>>? = null
-        private var description: JsonField<String> = JsonMissing.of()
+        private var description: JsonField<String>? = null
         private var employeeDeduction: JsonField<MutableList<EmployeeDeduction?>>? = null
         private var frequencies: JsonField<MutableList<BenefitFrequency?>>? = null
+        private var catchUp: JsonField<Boolean> = JsonMissing.of()
         private var hsaContributionLimit: JsonField<MutableList<HsaContributionLimit?>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(supportedBenefit: SupportedBenefit) = apply {
             annualMaximum = supportedBenefit.annualMaximum
-            catchUp = supportedBenefit.catchUp
             companyContribution = supportedBenefit.companyContribution.map { it.toMutableList() }
             description = supportedBenefit.description
             employeeDeduction = supportedBenefit.employeeDeduction.map { it.toMutableList() }
             frequencies = supportedBenefit.frequencies.map { it.toMutableList() }
+            catchUp = supportedBenefit.catchUp
             hsaContributionLimit = supportedBenefit.hsaContributionLimit.map { it.toMutableList() }
             additionalProperties = supportedBenefit.additionalProperties.toMutableMap()
         }
@@ -251,30 +263,6 @@ private constructor(
         fun annualMaximum(annualMaximum: JsonField<Boolean>) = apply {
             this.annualMaximum = annualMaximum
         }
-
-        /**
-         * Whether the provider supports catch up for this benefit. This field will only be true for
-         * retirement benefits.
-         */
-        fun catchUp(catchUp: Boolean?) = catchUp(JsonField.ofNullable(catchUp))
-
-        /**
-         * Alias for [Builder.catchUp].
-         *
-         * This unboxed primitive overload exists for backwards compatibility.
-         */
-        fun catchUp(catchUp: Boolean) = catchUp(catchUp as Boolean?)
-
-        /** Alias for calling [Builder.catchUp] with `catchUp.orElse(null)`. */
-        fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.getOrNull())
-
-        /**
-         * Sets [Builder.catchUp] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.catchUp] with a well-typed [Boolean] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
 
         /**
          * Supported contribution types. An empty array indicates contributions are not supported.
@@ -385,6 +373,30 @@ private constructor(
         }
 
         /**
+         * Whether the provider supports catch up for this benefit. This field will only be true for
+         * retirement benefits.
+         */
+        fun catchUp(catchUp: Boolean?) = catchUp(JsonField.ofNullable(catchUp))
+
+        /**
+         * Alias for [Builder.catchUp].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun catchUp(catchUp: Boolean) = catchUp(catchUp as Boolean?)
+
+        /** Alias for calling [Builder.catchUp] with `catchUp.orElse(null)`. */
+        fun catchUp(catchUp: Optional<Boolean>) = catchUp(catchUp.getOrNull())
+
+        /**
+         * Sets [Builder.catchUp] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.catchUp] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
+
+        /**
          * Whether the provider supports HSA contribution limits. Empty if this feature is not
          * supported for the benefit. This array only has values for HSA benefits.
          */
@@ -445,15 +457,26 @@ private constructor(
          * Returns an immutable instance of [SupportedBenefit].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .annualMaximum()
+         * .companyContribution()
+         * .description()
+         * .employeeDeduction()
+         * .frequencies()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SupportedBenefit =
             SupportedBenefit(
-                annualMaximum,
+                checkRequired("annualMaximum", annualMaximum),
+                checkRequired("companyContribution", companyContribution).map { it.toImmutable() },
+                checkRequired("description", description),
+                checkRequired("employeeDeduction", employeeDeduction).map { it.toImmutable() },
+                checkRequired("frequencies", frequencies).map { it.toImmutable() },
                 catchUp,
-                (companyContribution ?: JsonMissing.of()).map { it.toImmutable() },
-                description,
-                (employeeDeduction ?: JsonMissing.of()).map { it.toImmutable() },
-                (frequencies ?: JsonMissing.of()).map { it.toImmutable() },
                 (hsaContributionLimit ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
@@ -467,11 +490,11 @@ private constructor(
         }
 
         annualMaximum()
-        catchUp()
         companyContribution().ifPresent { it.forEach { it?.validate() } }
         description()
         employeeDeduction().ifPresent { it.forEach { it?.validate() } }
-        frequencies().ifPresent { it.forEach { it?.validate() } }
+        frequencies().forEach { it?.validate() }
+        catchUp()
         hsaContributionLimit().ifPresent { it.forEach { it?.validate() } }
         validated = true
     }
@@ -492,13 +515,13 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (if (annualMaximum.asKnown().isPresent) 1 else 0) +
-            (if (catchUp.asKnown().isPresent) 1 else 0) +
             (companyContribution.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
                 ?: 0) +
             (if (description.asKnown().isPresent) 1 else 0) +
             (employeeDeduction.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
                 ?: 0) +
             (frequencies.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+            (if (catchUp.asKnown().isPresent) 1 else 0) +
             (hsaContributionLimit.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
                 ?: 0)
 
@@ -775,17 +798,17 @@ private constructor(
 
         companion object {
 
-            @JvmField val INDIVIDUAL = of("individual")
-
             @JvmField val FAMILY = of("family")
+
+            @JvmField val INDIVIDUAL = of("individual")
 
             @JvmStatic fun of(value: String) = HsaContributionLimit(JsonField.of(value))
         }
 
         /** An enum containing [HsaContributionLimit]'s known values. */
         enum class Known {
-            INDIVIDUAL,
             FAMILY,
+            INDIVIDUAL,
         }
 
         /**
@@ -799,8 +822,8 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            INDIVIDUAL,
             FAMILY,
+            INDIVIDUAL,
             /**
              * An enum member indicating that [HsaContributionLimit] was instantiated with an
              * unknown value.
@@ -817,8 +840,8 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
-                INDIVIDUAL -> Value.INDIVIDUAL
                 FAMILY -> Value.FAMILY
+                INDIVIDUAL -> Value.INDIVIDUAL
                 else -> Value._UNKNOWN
             }
 
@@ -832,8 +855,8 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                INDIVIDUAL -> Known.INDIVIDUAL
                 FAMILY -> Known.FAMILY
+                INDIVIDUAL -> Known.INDIVIDUAL
                 else -> throw FinchInvalidDataException("Unknown HsaContributionLimit: $value")
             }
 
@@ -894,15 +917,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SupportedBenefit && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SupportedBenefit && annualMaximum == other.annualMaximum && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && catchUp == other.catchUp && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(annualMaximum, catchUp, companyContribution, description, employeeDeduction, frequencies, hsaContributionLimit, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(annualMaximum, companyContribution, description, employeeDeduction, frequencies, catchUp, hsaContributionLimit, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SupportedBenefit{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
+        "SupportedBenefit{annualMaximum=$annualMaximum, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, catchUp=$catchUp, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
 }

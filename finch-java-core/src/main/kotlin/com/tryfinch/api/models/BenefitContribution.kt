@@ -11,6 +11,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -74,15 +75,23 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [BenefitContribution]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [BenefitContribution].
+         *
+         * The following fields are required:
+         * ```java
+         * .amount()
+         * .type()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [BenefitContribution]. */
     class Builder internal constructor() {
 
-        private var amount: JsonField<Long> = JsonMissing.of()
-        private var type: JsonField<Type> = JsonMissing.of()
+        private var amount: JsonField<Long>? = null
+        private var type: JsonField<Type>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -150,9 +159,21 @@ private constructor(
          * Returns an immutable instance of [BenefitContribution].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .amount()
+         * .type()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): BenefitContribution =
-            BenefitContribution(amount, type, additionalProperties.toMutableMap())
+            BenefitContribution(
+                checkRequired("amount", amount),
+                checkRequired("type", type),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false

@@ -14,6 +14,9 @@ internal class CompanyBenefitTest {
         val companyBenefit =
             CompanyBenefit.builder()
                 .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .description("description")
+                .frequency(BenefitFrequency.EVERY_PAYCHECK)
+                .type(BenefitType._457)
                 .companyContribution(
                     CompanyBenefit.BenefitCompanyMatchContribution.builder()
                         .addTier(
@@ -25,12 +28,12 @@ internal class CompanyBenefitTest {
                         .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
                         .build()
                 )
-                .description("description")
-                .frequency(BenefitFrequency.ONE_TIME)
-                .type(BenefitType._457)
                 .build()
 
         assertThat(companyBenefit.benefitId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(companyBenefit.description()).contains("description")
+        assertThat(companyBenefit.frequency()).contains(BenefitFrequency.EVERY_PAYCHECK)
+        assertThat(companyBenefit.type()).contains(BenefitType._457)
         assertThat(companyBenefit.companyContribution())
             .contains(
                 CompanyBenefit.BenefitCompanyMatchContribution.builder()
@@ -43,9 +46,6 @@ internal class CompanyBenefitTest {
                     .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
                     .build()
             )
-        assertThat(companyBenefit.description()).contains("description")
-        assertThat(companyBenefit.frequency()).contains(BenefitFrequency.ONE_TIME)
-        assertThat(companyBenefit.type()).contains(BenefitType._457)
     }
 
     @Test
@@ -54,6 +54,9 @@ internal class CompanyBenefitTest {
         val companyBenefit =
             CompanyBenefit.builder()
                 .benefitId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .description("description")
+                .frequency(BenefitFrequency.EVERY_PAYCHECK)
+                .type(BenefitType._457)
                 .companyContribution(
                     CompanyBenefit.BenefitCompanyMatchContribution.builder()
                         .addTier(
@@ -65,9 +68,6 @@ internal class CompanyBenefitTest {
                         .type(CompanyBenefit.BenefitCompanyMatchContribution.Type.MATCH)
                         .build()
                 )
-                .description("description")
-                .frequency(BenefitFrequency.ONE_TIME)
-                .type(BenefitType._457)
                 .build()
 
         val roundtrippedCompanyBenefit =
