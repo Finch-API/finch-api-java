@@ -55,7 +55,7 @@ import com.tryfinch.api.models.HrisDirectoryListParams;
 
 FinchClient client = FinchOkHttpClient.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -73,7 +73,7 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -98,7 +98,7 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -161,7 +161,7 @@ import java.util.concurrent.CompletableFuture;
 
 FinchClient client = FinchOkHttpClient.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -180,7 +180,7 @@ import java.util.concurrent.CompletableFuture;
 
 FinchClientAsync client = FinchOkHttpClientAsync.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
