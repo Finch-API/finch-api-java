@@ -1,5 +1,39 @@
 # Changelog
 
+## 7.4.0 (2025-07-24)
+
+Full Changelog: [v7.3.1...v7.4.0](https://github.com/Finch-API/finch-api-java/compare/v7.3.1...v7.4.0)
+
+### Features
+
+* **api:** api update ([f1f21d9](https://github.com/Finch-API/finch-api-java/commit/f1f21d90ad56582d33c0e1f8b7248cba3ccf381a))
+* **api:** api update ([21939b3](https://github.com/Finch-API/finch-api-java/commit/21939b3e793ae932cfe333a50e4996388900464f))
+* **client:** add `{QueryParams,Headers}#put(String, JsonValue)` methods ([c85d73a](https://github.com/Finch-API/finch-api-java/commit/c85d73ace557d4a52fadccbfca80ebf81a63c15d))
+* **client:** add https config options ([4ae1b1a](https://github.com/Finch-API/finch-api-java/commit/4ae1b1ad7b9ba3f76f027ae32e5bee6525706dd5))
+* **client:** allow configuring env via system properties ([acdb059](https://github.com/Finch-API/finch-api-java/commit/acdb059e62754399064125ff41c1d5a2ac1305ab))
+
+
+### Bug Fixes
+
+* **client:** accidental mutability of some classes ([f1e80c0](https://github.com/Finch-API/finch-api-java/commit/f1e80c04aca7aa069e3a653252705e1e32d3d018))
+* **client:** ensure error handling always occurs ([98e72bc](https://github.com/Finch-API/finch-api-java/commit/98e72bc3ee2085f94175a8326f2bc75c11dca281))
+* **internal:** fix error handlers on ClientImpl ([8cfda8e](https://github.com/Finch-API/finch-api-java/commit/8cfda8eb135f79e051f882b23eeb61e18367da5b))
+* use errorHandler ([f1f1119](https://github.com/Finch-API/finch-api-java/commit/f1f11199de44aa3277553ffdfa35715e966bc13c))
+
+
+### Chores
+
+* **ci:** bump `actions/setup-java` to v4 ([a15c7b6](https://github.com/Finch-API/finch-api-java/commit/a15c7b62eedd8278ea6f4cc65dc1211b3d2c92da))
+* **internal:** allow running specific example from cli ([c1eebc5](https://github.com/Finch-API/finch-api-java/commit/c1eebc5989312477b4c60d26e21e7b59e43a6c1d))
+* **internal:** refactor delegating from client to options ([e9e1c40](https://github.com/Finch-API/finch-api-java/commit/e9e1c400440734ec210fc759149de5b014102d11))
+* **internal:** remove unnecessary `[...]` in `[@see](https://github.com/see)` ([8b2df3c](https://github.com/Finch-API/finch-api-java/commit/8b2df3cab95afc11b9275bbce043a7ba061a1c26))
+
+
+### Documentation
+
+* fix missing readme comment ([32795c6](https://github.com/Finch-API/finch-api-java/commit/32795c657795d4855a237d88ef8509cd6c420aee))
+* more code comments ([7e48fcf](https://github.com/Finch-API/finch-api-java/commit/7e48fcff3d3c3a80fae1585250d7ae9767a8cea7))
+
 ## 7.3.1 (2025-07-08)
 
 Full Changelog: [v7.3.0...v7.3.1](https://github.com/Finch-API/finch-api-java/compare/v7.3.0...v7.3.1)
