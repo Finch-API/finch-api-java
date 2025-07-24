@@ -55,8 +55,10 @@ private constructor(
     /** String search by pay statement item type. */
     fun type(): Optional<String> = Optional.ofNullable(type)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)

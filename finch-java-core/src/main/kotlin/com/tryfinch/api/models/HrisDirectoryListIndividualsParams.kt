@@ -25,8 +25,10 @@ private constructor(
     /** Index to start from (defaults to 0) */
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
