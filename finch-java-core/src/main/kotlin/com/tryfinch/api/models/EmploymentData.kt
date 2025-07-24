@@ -2513,7 +2513,8 @@ private constructor(
                     @JvmStatic fun ofString(string: String) = Value(string = string)
 
                     @JvmStatic
-                    fun ofJsonValues(jsonValues: List<JsonValue>) = Value(jsonValues = jsonValues)
+                    fun ofJsonValues(jsonValues: List<JsonValue>) =
+                        Value(jsonValues = jsonValues.toImmutable())
 
                     @JvmStatic fun ofJson(json: JsonValue) = Value(json = json)
 
