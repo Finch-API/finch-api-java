@@ -7,7 +7,9 @@ import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.FinchClientImpl
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.Timeout
+import com.tryfinch.api.core.http.AsyncStreamResponse
 import com.tryfinch.api.core.http.Headers
+import com.tryfinch.api.core.http.HttpClient
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.jsonMapper
 import java.net.Proxy
@@ -20,13 +22,22 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * A class that allows building an instance of [FinchClient] with [OkHttpClient] as the underlying
+ * [HttpClient].
+ */
 class FinchOkHttpClient private constructor() {
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [FinchOkHttpClient]. */
+        /** Returns a mutable builder for constructing an instance of [FinchClient]. */
         @JvmStatic fun builder() = Builder()
 
+        /**
+         * Returns a client configured using system properties and environment variables.
+         *
+         * @see ClientOptions.Builder.fromEnv
+         */
         @JvmStatic fun fromEnv(): FinchClient = builder().fromEnv().build()
     }
 
@@ -103,23 +114,58 @@ class FinchOkHttpClient private constructor() {
             clientOptions.checkJacksonVersionCompatibility(checkJacksonVersionCompatibility)
         }
 
+        /**
+         * The Jackson JSON mapper to use for serializing and deserializing JSON.
+         *
+         * Defaults to [com.tryfinch.api.core.jsonMapper]. The default is usually sufficient and
+         * rarely needs to be overridden.
+         */
         fun jsonMapper(jsonMapper: JsonMapper) = apply { clientOptions.jsonMapper(jsonMapper) }
 
+        /**
+         * The executor to use for running [AsyncStreamResponse.Handler] callbacks.
+         *
+         * Defaults to a dedicated cached thread pool.
+         */
         fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
             clientOptions.streamHandlerExecutor(streamHandlerExecutor)
         }
 
+        /**
+         * The clock to use for operations that require timing, like retries.
+         *
+         * This is primarily useful for using a fake clock in tests.
+         *
+         * Defaults to [Clock.systemUTC].
+         */
         fun clock(clock: Clock) = apply { clientOptions.clock(clock) }
 
+        /**
+         * The base URL to use for every request.
+         *
+         * Defaults to the production environment: `https://api.tryfinch.com`.
+         */
         fun baseUrl(baseUrl: String?) = apply { clientOptions.baseUrl(baseUrl) }
 
         /** Alias for calling [Builder.baseUrl] with `baseUrl.orElse(null)`. */
         fun baseUrl(baseUrl: Optional<String>) = baseUrl(baseUrl.getOrNull())
 
+        /**
+         * Whether to call `validate` on every response before returning it.
+         *
+         * Defaults to false, which means the shape of the response will not be validated upfront.
+         * Instead, validation will only occur for the parts of the response that are accessed.
+         */
         fun responseValidation(responseValidation: Boolean) = apply {
             clientOptions.responseValidation(responseValidation)
         }
 
+        /**
+         * Sets the maximum time allowed for various parts of an HTTP call's lifecycle, excluding
+         * retries.
+         *
+         * Defaults to [Timeout.default].
+         */
         fun timeout(timeout: Timeout) = apply { clientOptions.timeout(timeout) }
 
         /**
@@ -131,6 +177,21 @@ class FinchOkHttpClient private constructor() {
          */
         fun timeout(timeout: Duration) = apply { clientOptions.timeout(timeout) }
 
+        /**
+         * The maximum number of times to retry failed requests, with a short exponential backoff
+         * between requests.
+         *
+         * Only the following error types are retried:
+         * - Connection errors (for example, due to a network connectivity problem)
+         * - 408 Request Timeout
+         * - 409 Conflict
+         * - 429 Rate Limit
+         * - 5xx Internal
+         *
+         * The API may also explicitly instruct the SDK to retry or not retry a request.
+         *
+         * Defaults to 2.
+         */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
 
         fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
@@ -236,6 +297,11 @@ class FinchOkHttpClient private constructor() {
             clientOptions.removeAllQueryParams(keys)
         }
 
+        /**
+         * Updates configuration using system properties and environment variables.
+         *
+         * @see ClientOptions.Builder.fromEnv
+         */
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
         /**
