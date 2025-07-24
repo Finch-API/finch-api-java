@@ -29,18 +29,18 @@ interface DirectoryServiceAsync {
     /** Read company directory and organization structure */
     fun list(): CompletableFuture<HrisDirectoryListPageAsync> = list(HrisDirectoryListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisDirectoryListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisDirectoryListParams = HrisDirectoryListParams.none()
     ): CompletableFuture<HrisDirectoryListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<HrisDirectoryListPageAsync> =
         list(HrisDirectoryListParams.none(), requestOptions)
 
@@ -49,21 +49,21 @@ interface DirectoryServiceAsync {
     fun listIndividuals(): CompletableFuture<HrisDirectoryListIndividualsPageAsync> =
         listIndividuals(HrisDirectoryListIndividualsParams.none())
 
-    /** @see [listIndividuals] */
+    /** @see listIndividuals */
     @Deprecated("use `list` instead")
     fun listIndividuals(
         params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisDirectoryListIndividualsPageAsync>
 
-    /** @see [listIndividuals] */
+    /** @see listIndividuals */
     @Deprecated("use `list` instead")
     fun listIndividuals(
         params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none()
     ): CompletableFuture<HrisDirectoryListIndividualsPageAsync> =
         listIndividuals(params, RequestOptions.none())
 
-    /** @see [listIndividuals] */
+    /** @see listIndividuals */
     @Deprecated("use `list` instead")
     fun listIndividuals(
         requestOptions: RequestOptions
@@ -91,19 +91,19 @@ interface DirectoryServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>> =
             list(HrisDirectoryListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisDirectoryListParams = HrisDirectoryListParams.none()
         ): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>> =
@@ -118,21 +118,21 @@ interface DirectoryServiceAsync {
             CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>> =
             listIndividuals(HrisDirectoryListIndividualsParams.none())
 
-        /** @see [listIndividuals] */
+        /** @see listIndividuals */
         @Deprecated("use `list` instead")
         fun listIndividuals(
             params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>>
 
-        /** @see [listIndividuals] */
+        /** @see listIndividuals */
         @Deprecated("use `list` instead")
         fun listIndividuals(
             params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none()
         ): CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>> =
             listIndividuals(params, RequestOptions.none())
 
-        /** @see [listIndividuals] */
+        /** @see listIndividuals */
         @Deprecated("use `list` instead")
         fun listIndividuals(
             requestOptions: RequestOptions

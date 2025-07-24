@@ -29,19 +29,19 @@ interface ConfigurationServiceAsync {
     fun retrieve(): CompletableFuture<List<SandboxJobConfiguration>> =
         retrieve(SandboxJobConfigurationRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: SandboxJobConfigurationRetrieveParams =
             SandboxJobConfigurationRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<SandboxJobConfiguration>>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: SandboxJobConfigurationRetrieveParams = SandboxJobConfigurationRetrieveParams.none()
     ): CompletableFuture<List<SandboxJobConfiguration>> = retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(requestOptions: RequestOptions): CompletableFuture<List<SandboxJobConfiguration>> =
         retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
@@ -50,7 +50,7 @@ interface ConfigurationServiceAsync {
         params: SandboxJobConfigurationUpdateParams
     ): CompletableFuture<SandboxJobConfiguration> = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxJobConfigurationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -78,21 +78,21 @@ interface ConfigurationServiceAsync {
         fun retrieve(): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> =
             retrieve(SandboxJobConfigurationRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: SandboxJobConfigurationRetrieveParams =
                 SandboxJobConfigurationRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: SandboxJobConfigurationRetrieveParams =
                 SandboxJobConfigurationRetrieveParams.none()
         ): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<List<SandboxJobConfiguration>>> =
@@ -107,7 +107,7 @@ interface ConfigurationServiceAsync {
         ): CompletableFuture<HttpResponseFor<SandboxJobConfiguration>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: SandboxJobConfigurationUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

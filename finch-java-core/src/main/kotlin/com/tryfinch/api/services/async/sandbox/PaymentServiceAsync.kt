@@ -28,18 +28,18 @@ interface PaymentServiceAsync {
     fun create(): CompletableFuture<PaymentCreateResponse> =
         create(SandboxPaymentCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PaymentCreateResponse>
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
     ): CompletableFuture<PaymentCreateResponse> = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): CompletableFuture<PaymentCreateResponse> =
         create(SandboxPaymentCreateParams.none(), requestOptions)
 
@@ -64,19 +64,19 @@ interface PaymentServiceAsync {
         fun create(): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> =
             create(SandboxPaymentCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>>
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
         ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<PaymentCreateResponse>> =

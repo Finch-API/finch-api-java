@@ -30,36 +30,36 @@ interface AccountServiceAsync {
     fun disconnect(): CompletableFuture<DisconnectResponse> =
         disconnect(AccountDisconnectParams.none())
 
-    /** @see [disconnect] */
+    /** @see disconnect */
     fun disconnect(
         params: AccountDisconnectParams = AccountDisconnectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DisconnectResponse>
 
-    /** @see [disconnect] */
+    /** @see disconnect */
     fun disconnect(
         params: AccountDisconnectParams = AccountDisconnectParams.none()
     ): CompletableFuture<DisconnectResponse> = disconnect(params, RequestOptions.none())
 
-    /** @see [disconnect] */
+    /** @see disconnect */
     fun disconnect(requestOptions: RequestOptions): CompletableFuture<DisconnectResponse> =
         disconnect(AccountDisconnectParams.none(), requestOptions)
 
     /** Read account information associated with an `access_token` */
     fun introspect(): CompletableFuture<Introspection> = introspect(AccountIntrospectParams.none())
 
-    /** @see [introspect] */
+    /** @see introspect */
     fun introspect(
         params: AccountIntrospectParams = AccountIntrospectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Introspection>
 
-    /** @see [introspect] */
+    /** @see introspect */
     fun introspect(
         params: AccountIntrospectParams = AccountIntrospectParams.none()
     ): CompletableFuture<Introspection> = introspect(params, RequestOptions.none())
 
-    /** @see [introspect] */
+    /** @see introspect */
     fun introspect(requestOptions: RequestOptions): CompletableFuture<Introspection> =
         introspect(AccountIntrospectParams.none(), requestOptions)
 
@@ -84,19 +84,19 @@ interface AccountServiceAsync {
         fun disconnect(): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
             disconnect(AccountDisconnectParams.none())
 
-        /** @see [disconnect] */
+        /** @see disconnect */
         fun disconnect(
             params: AccountDisconnectParams = AccountDisconnectParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<DisconnectResponse>>
 
-        /** @see [disconnect] */
+        /** @see disconnect */
         fun disconnect(
             params: AccountDisconnectParams = AccountDisconnectParams.none()
         ): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
             disconnect(params, RequestOptions.none())
 
-        /** @see [disconnect] */
+        /** @see disconnect */
         fun disconnect(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
@@ -109,19 +109,19 @@ interface AccountServiceAsync {
         fun introspect(): CompletableFuture<HttpResponseFor<Introspection>> =
             introspect(AccountIntrospectParams.none())
 
-        /** @see [introspect] */
+        /** @see introspect */
         fun introspect(
             params: AccountIntrospectParams = AccountIntrospectParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Introspection>>
 
-        /** @see [introspect] */
+        /** @see introspect */
         fun introspect(
             params: AccountIntrospectParams = AccountIntrospectParams.none()
         ): CompletableFuture<HttpResponseFor<Introspection>> =
             introspect(params, RequestOptions.none())
 
-        /** @see [introspect] */
+        /** @see introspect */
         fun introspect(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<Introspection>> =

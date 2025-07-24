@@ -31,7 +31,7 @@ interface AccountServiceAsync {
         params: SandboxConnectionAccountCreateParams
     ): CompletableFuture<AccountCreateResponse> = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxConnectionAccountCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -44,18 +44,18 @@ interface AccountServiceAsync {
     fun update(): CompletableFuture<AccountUpdateResponse> =
         update(SandboxConnectionAccountUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AccountUpdateResponse>
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none()
     ): CompletableFuture<AccountUpdateResponse> = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(requestOptions: RequestOptions): CompletableFuture<AccountUpdateResponse> =
         update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
@@ -82,7 +82,7 @@ interface AccountServiceAsync {
         ): CompletableFuture<HttpResponseFor<AccountCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: SandboxConnectionAccountCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -95,21 +95,21 @@ interface AccountServiceAsync {
         fun update(): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =
             update(SandboxConnectionAccountUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: SandboxConnectionAccountUpdateParams =
                 SandboxConnectionAccountUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: SandboxConnectionAccountUpdateParams =
                 SandboxConnectionAccountUpdateParams.none()
         ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<AccountUpdateResponse>> =

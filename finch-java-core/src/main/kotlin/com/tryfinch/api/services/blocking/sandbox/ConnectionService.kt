@@ -31,7 +31,7 @@ interface ConnectionService {
     fun create(params: SandboxConnectionCreateParams): ConnectionCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxConnectionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -60,7 +60,7 @@ interface ConnectionService {
             params: SandboxConnectionCreateParams
         ): HttpResponseFor<ConnectionCreateResponse> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: SandboxConnectionCreateParams,

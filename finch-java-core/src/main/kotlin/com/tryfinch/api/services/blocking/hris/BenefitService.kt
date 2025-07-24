@@ -41,18 +41,18 @@ interface BenefitService {
      */
     fun create(): CreateCompanyBenefitsResponse = create(HrisBenefitCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateCompanyBenefitsResponse
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: HrisBenefitCreateParams = HrisBenefitCreateParams.none()
     ): CreateCompanyBenefitsResponse = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): CreateCompanyBenefitsResponse =
         create(HrisBenefitCreateParams.none(), requestOptions)
 
@@ -60,30 +60,30 @@ interface BenefitService {
     fun retrieve(benefitId: String): CompanyBenefit =
         retrieve(benefitId, HrisBenefitRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         benefitId: String,
         params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyBenefit = retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         benefitId: String,
         params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
     ): CompanyBenefit = retrieve(benefitId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: HrisBenefitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyBenefit
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: HrisBenefitRetrieveParams): CompanyBenefit =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(benefitId: String, requestOptions: RequestOptions): CompanyBenefit =
         retrieve(benefitId, HrisBenefitRetrieveParams.none(), requestOptions)
 
@@ -91,7 +91,7 @@ interface BenefitService {
     fun update(benefitId: String): UpdateCompanyBenefitResponse =
         update(benefitId, HrisBenefitUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         benefitId: String,
         params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
@@ -99,40 +99,40 @@ interface BenefitService {
     ): UpdateCompanyBenefitResponse =
         update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         benefitId: String,
         params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
     ): UpdateCompanyBenefitResponse = update(benefitId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: HrisBenefitUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UpdateCompanyBenefitResponse
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: HrisBenefitUpdateParams): UpdateCompanyBenefitResponse =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(benefitId: String, requestOptions: RequestOptions): UpdateCompanyBenefitResponse =
         update(benefitId, HrisBenefitUpdateParams.none(), requestOptions)
 
     /** List all company-wide deductions and contributions. */
     fun list(): HrisBenefitListPage = list(HrisBenefitListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisBenefitListParams = HrisBenefitListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: HrisBenefitListParams = HrisBenefitListParams.none()): HrisBenefitListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): HrisBenefitListPage =
         list(HrisBenefitListParams.none(), requestOptions)
 
@@ -140,20 +140,20 @@ interface BenefitService {
     fun listSupportedBenefits(): HrisBenefitListSupportedBenefitsPage =
         listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none())
 
-    /** @see [listSupportedBenefits] */
+    /** @see listSupportedBenefits */
     fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams =
             HrisBenefitListSupportedBenefitsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListSupportedBenefitsPage
 
-    /** @see [listSupportedBenefits] */
+    /** @see listSupportedBenefits */
     fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams =
             HrisBenefitListSupportedBenefitsParams.none()
     ): HrisBenefitListSupportedBenefitsPage = listSupportedBenefits(params, RequestOptions.none())
 
-    /** @see [listSupportedBenefits] */
+    /** @see listSupportedBenefits */
     fun listSupportedBenefits(
         requestOptions: RequestOptions
     ): HrisBenefitListSupportedBenefitsPage =
@@ -179,20 +179,20 @@ interface BenefitService {
         fun create(): HttpResponseFor<CreateCompanyBenefitsResponse> =
             create(HrisBenefitCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CreateCompanyBenefitsResponse>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: HrisBenefitCreateParams = HrisBenefitCreateParams.none()
         ): HttpResponseFor<CreateCompanyBenefitsResponse> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<CreateCompanyBenefitsResponse> =
             create(HrisBenefitCreateParams.none(), requestOptions)
@@ -205,7 +205,7 @@ interface BenefitService {
         fun retrieve(benefitId: String): HttpResponseFor<CompanyBenefit> =
             retrieve(benefitId, HrisBenefitRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             benefitId: String,
@@ -214,26 +214,26 @@ interface BenefitService {
         ): HttpResponseFor<CompanyBenefit> =
             retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             benefitId: String,
             params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
         ): HttpResponseFor<CompanyBenefit> = retrieve(benefitId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: HrisBenefitRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CompanyBenefit>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: HrisBenefitRetrieveParams): HttpResponseFor<CompanyBenefit> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             benefitId: String,
@@ -249,7 +249,7 @@ interface BenefitService {
         fun update(benefitId: String): HttpResponseFor<UpdateCompanyBenefitResponse> =
             update(benefitId, HrisBenefitUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             benefitId: String,
@@ -258,7 +258,7 @@ interface BenefitService {
         ): HttpResponseFor<UpdateCompanyBenefitResponse> =
             update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             benefitId: String,
@@ -266,19 +266,19 @@ interface BenefitService {
         ): HttpResponseFor<UpdateCompanyBenefitResponse> =
             update(benefitId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: HrisBenefitUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UpdateCompanyBenefitResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(params: HrisBenefitUpdateParams): HttpResponseFor<UpdateCompanyBenefitResponse> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             benefitId: String,
@@ -293,20 +293,20 @@ interface BenefitService {
         @MustBeClosed
         fun list(): HttpResponseFor<HrisBenefitListPage> = list(HrisBenefitListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisBenefitListParams = HrisBenefitListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisBenefitListParams = HrisBenefitListParams.none()
         ): HttpResponseFor<HrisBenefitListPage> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<HrisBenefitListPage> =
             list(HrisBenefitListParams.none(), requestOptions)
@@ -319,7 +319,7 @@ interface BenefitService {
         fun listSupportedBenefits(): HttpResponseFor<HrisBenefitListSupportedBenefitsPage> =
             listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none())
 
-        /** @see [listSupportedBenefits] */
+        /** @see listSupportedBenefits */
         @MustBeClosed
         fun listSupportedBenefits(
             params: HrisBenefitListSupportedBenefitsParams =
@@ -327,7 +327,7 @@ interface BenefitService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitListSupportedBenefitsPage>
 
-        /** @see [listSupportedBenefits] */
+        /** @see listSupportedBenefits */
         @MustBeClosed
         fun listSupportedBenefits(
             params: HrisBenefitListSupportedBenefitsParams =
@@ -335,7 +335,7 @@ interface BenefitService {
         ): HttpResponseFor<HrisBenefitListSupportedBenefitsPage> =
             listSupportedBenefits(params, RequestOptions.none())
 
-        /** @see [listSupportedBenefits] */
+        /** @see listSupportedBenefits */
         @MustBeClosed
         fun listSupportedBenefits(
             requestOptions: RequestOptions

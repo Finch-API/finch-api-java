@@ -9,7 +9,7 @@ import com.tryfinch.api.services.blocking.hris.company.PayStatementItemService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [PayStatementItemService.list] */
+/** @see PayStatementItemService.list */
 class HrisCompanyPayStatementItemListPage
 private constructor(
     private val service: PayStatementItemService,
@@ -21,7 +21,7 @@ private constructor(
      * Delegates to [HrisCompanyPayStatementItemListPageResponse], but gracefully handles missing
      * data.
      *
-     * @see [HrisCompanyPayStatementItemListPageResponse.responses]
+     * @see HrisCompanyPayStatementItemListPageResponse.responses
      */
     fun responses(): List<PayStatementItemListResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()

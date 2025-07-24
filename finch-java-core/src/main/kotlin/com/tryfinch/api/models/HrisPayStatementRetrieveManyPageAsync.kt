@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [PayStatementServiceAsync.retrieveMany] */
+/** @see PayStatementServiceAsync.retrieveMany */
 class HrisPayStatementRetrieveManyPageAsync
 private constructor(
     private val service: PayStatementServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [HrisPayStatementRetrieveManyPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisPayStatementRetrieveManyPageResponse.responses]
+     * @see HrisPayStatementRetrieveManyPageResponse.responses
      */
     fun responses(): List<PayStatementResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()

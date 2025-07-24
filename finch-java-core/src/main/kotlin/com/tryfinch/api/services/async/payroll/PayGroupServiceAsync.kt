@@ -30,7 +30,7 @@ interface PayGroupServiceAsync {
     fun retrieve(payGroupId: String): CompletableFuture<PayGroupRetrieveResponse> =
         retrieve(payGroupId, PayrollPayGroupRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         payGroupId: String,
         params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
@@ -38,25 +38,25 @@ interface PayGroupServiceAsync {
     ): CompletableFuture<PayGroupRetrieveResponse> =
         retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         payGroupId: String,
         params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
     ): CompletableFuture<PayGroupRetrieveResponse> =
         retrieve(payGroupId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PayGroupRetrieveResponse>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: PayrollPayGroupRetrieveParams
     ): CompletableFuture<PayGroupRetrieveResponse> = retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         payGroupId: String,
         requestOptions: RequestOptions,
@@ -67,18 +67,18 @@ interface PayGroupServiceAsync {
     fun list(): CompletableFuture<PayrollPayGroupListPageAsync> =
         list(PayrollPayGroupListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PayrollPayGroupListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: PayrollPayGroupListParams = PayrollPayGroupListParams.none()
     ): CompletableFuture<PayrollPayGroupListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<PayrollPayGroupListPageAsync> =
         list(PayrollPayGroupListParams.none(), requestOptions)
 
@@ -105,7 +105,7 @@ interface PayGroupServiceAsync {
         ): CompletableFuture<HttpResponseFor<PayGroupRetrieveResponse>> =
             retrieve(payGroupId, PayrollPayGroupRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             payGroupId: String,
             params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
@@ -113,26 +113,26 @@ interface PayGroupServiceAsync {
         ): CompletableFuture<HttpResponseFor<PayGroupRetrieveResponse>> =
             retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             payGroupId: String,
             params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<PayGroupRetrieveResponse>> =
             retrieve(payGroupId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: PayrollPayGroupRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PayGroupRetrieveResponse>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: PayrollPayGroupRetrieveParams
         ): CompletableFuture<HttpResponseFor<PayGroupRetrieveResponse>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             payGroupId: String,
             requestOptions: RequestOptions,
@@ -146,19 +146,19 @@ interface PayGroupServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>> =
             list(PayrollPayGroupListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: PayrollPayGroupListParams = PayrollPayGroupListParams.none()
         ): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<PayrollPayGroupListPageAsync>> =

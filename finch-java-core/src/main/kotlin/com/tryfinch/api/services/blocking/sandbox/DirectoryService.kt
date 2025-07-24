@@ -27,18 +27,18 @@ interface DirectoryService {
     /** Add new individuals to a sandbox company */
     fun create(): List<DirectoryCreateResponse> = create(SandboxDirectoryCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<DirectoryCreateResponse>
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
     ): List<DirectoryCreateResponse> = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): List<DirectoryCreateResponse> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -60,20 +60,20 @@ interface DirectoryService {
         fun create(): HttpResponseFor<List<DirectoryCreateResponse>> =
             create(SandboxDirectoryCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<DirectoryCreateResponse>>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
         ): HttpResponseFor<List<DirectoryCreateResponse>> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<List<DirectoryCreateResponse>> =
             create(SandboxDirectoryCreateParams.none(), requestOptions)

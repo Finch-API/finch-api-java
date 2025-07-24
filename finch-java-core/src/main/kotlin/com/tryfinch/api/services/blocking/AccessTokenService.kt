@@ -28,7 +28,7 @@ interface AccessTokenService {
     fun create(params: AccessTokenCreateParams): CreateAccessTokenResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: AccessTokenCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,7 +56,7 @@ interface AccessTokenService {
         fun create(params: AccessTokenCreateParams): HttpResponseFor<CreateAccessTokenResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: AccessTokenCreateParams,

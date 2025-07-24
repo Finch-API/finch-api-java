@@ -30,7 +30,7 @@ interface SessionServiceAsync {
     fun new_(params: ConnectSessionNewParams): CompletableFuture<SessionNewResponse> =
         new_(params, RequestOptions.none())
 
-    /** @see [new_] */
+    /** @see new\_ */
     fun new_(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -42,7 +42,7 @@ interface SessionServiceAsync {
     ): CompletableFuture<SessionReauthenticateResponse> =
         reauthenticate(params, RequestOptions.none())
 
-    /** @see [reauthenticate] */
+    /** @see reauthenticate */
     fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -71,7 +71,7 @@ interface SessionServiceAsync {
         ): CompletableFuture<HttpResponseFor<SessionNewResponse>> =
             new_(params, RequestOptions.none())
 
-        /** @see [new_] */
+        /** @see new\_ */
         fun new_(
             params: ConnectSessionNewParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -86,7 +86,7 @@ interface SessionServiceAsync {
         ): CompletableFuture<HttpResponseFor<SessionReauthenticateResponse>> =
             reauthenticate(params, RequestOptions.none())
 
-        /** @see [reauthenticate] */
+        /** @see reauthenticate */
         fun reauthenticate(
             params: ConnectSessionReauthenticateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

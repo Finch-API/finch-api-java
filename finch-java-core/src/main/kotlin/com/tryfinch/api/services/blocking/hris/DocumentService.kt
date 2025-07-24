@@ -31,17 +31,17 @@ interface DocumentService {
      */
     fun list(): DocumentListResponse = list(HrisDocumentListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisDocumentListParams = HrisDocumentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: HrisDocumentListParams = HrisDocumentListParams.none()): DocumentListResponse =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): DocumentListResponse =
         list(HrisDocumentListParams.none(), requestOptions)
 
@@ -52,7 +52,7 @@ interface DocumentService {
     fun retreive(documentId: String): DocumentRetreiveResponse =
         retreive(documentId, HrisDocumentRetreiveParams.none())
 
-    /** @see [retreive] */
+    /** @see retreive */
     fun retreive(
         documentId: String,
         params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
@@ -60,23 +60,23 @@ interface DocumentService {
     ): DocumentRetreiveResponse =
         retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
 
-    /** @see [retreive] */
+    /** @see retreive */
     fun retreive(
         documentId: String,
         params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
     ): DocumentRetreiveResponse = retreive(documentId, params, RequestOptions.none())
 
-    /** @see [retreive] */
+    /** @see retreive */
     fun retreive(
         params: HrisDocumentRetreiveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse
 
-    /** @see [retreive] */
+    /** @see retreive */
     fun retreive(params: HrisDocumentRetreiveParams): DocumentRetreiveResponse =
         retreive(params, RequestOptions.none())
 
-    /** @see [retreive] */
+    /** @see retreive */
     fun retreive(documentId: String, requestOptions: RequestOptions): DocumentRetreiveResponse =
         retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
 
@@ -97,20 +97,20 @@ interface DocumentService {
         @MustBeClosed
         fun list(): HttpResponseFor<DocumentListResponse> = list(HrisDocumentListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisDocumentListParams = HrisDocumentListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisDocumentListParams = HrisDocumentListParams.none()
         ): HttpResponseFor<DocumentListResponse> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<DocumentListResponse> =
             list(HrisDocumentListParams.none(), requestOptions)
@@ -123,7 +123,7 @@ interface DocumentService {
         fun retreive(documentId: String): HttpResponseFor<DocumentRetreiveResponse> =
             retreive(documentId, HrisDocumentRetreiveParams.none())
 
-        /** @see [retreive] */
+        /** @see retreive */
         @MustBeClosed
         fun retreive(
             documentId: String,
@@ -132,7 +132,7 @@ interface DocumentService {
         ): HttpResponseFor<DocumentRetreiveResponse> =
             retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
 
-        /** @see [retreive] */
+        /** @see retreive */
         @MustBeClosed
         fun retreive(
             documentId: String,
@@ -140,20 +140,20 @@ interface DocumentService {
         ): HttpResponseFor<DocumentRetreiveResponse> =
             retreive(documentId, params, RequestOptions.none())
 
-        /** @see [retreive] */
+        /** @see retreive */
         @MustBeClosed
         fun retreive(
             params: HrisDocumentRetreiveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentRetreiveResponse>
 
-        /** @see [retreive] */
+        /** @see retreive */
         @MustBeClosed
         fun retreive(
             params: HrisDocumentRetreiveParams
         ): HttpResponseFor<DocumentRetreiveResponse> = retreive(params, RequestOptions.none())
 
-        /** @see [retreive] */
+        /** @see retreive */
         @MustBeClosed
         fun retreive(
             documentId: String,

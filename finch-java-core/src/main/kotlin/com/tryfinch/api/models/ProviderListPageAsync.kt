@@ -10,7 +10,7 @@ import java.util.Objects
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 
-/** @see [ProviderServiceAsync.list] */
+/** @see ProviderServiceAsync.list */
 class ProviderListPageAsync
 private constructor(
     private val service: ProviderServiceAsync,

@@ -10,7 +10,7 @@ import java.util.Objects
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 
-/** @see [IndividualServiceAsync.retrieveManyBenefits] */
+/** @see IndividualServiceAsync.retrieveManyBenefits */
 class HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 private constructor(
     private val service: IndividualServiceAsync,

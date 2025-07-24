@@ -10,7 +10,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [BenefitService.listSupportedBenefits] */
+/** @see BenefitService.listSupportedBenefits */
 class HrisBenefitListSupportedBenefitsPage
 private constructor(
     private val service: BenefitService,

@@ -30,30 +30,30 @@ interface ManualService {
      */
     fun retrieve(jobId: String): ManualAsyncJob = retrieve(jobId, JobManualRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         jobId: String,
         params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ManualAsyncJob = retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         jobId: String,
         params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
     ): ManualAsyncJob = retrieve(jobId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: JobManualRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ManualAsyncJob
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: JobManualRetrieveParams): ManualAsyncJob =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(jobId: String, requestOptions: RequestOptions): ManualAsyncJob =
         retrieve(jobId, JobManualRetrieveParams.none(), requestOptions)
 
@@ -75,7 +75,7 @@ interface ManualService {
         fun retrieve(jobId: String): HttpResponseFor<ManualAsyncJob> =
             retrieve(jobId, JobManualRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             jobId: String,
@@ -84,26 +84,26 @@ interface ManualService {
         ): HttpResponseFor<ManualAsyncJob> =
             retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             jobId: String,
             params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
         ): HttpResponseFor<ManualAsyncJob> = retrieve(jobId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: JobManualRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ManualAsyncJob>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: JobManualRetrieveParams): HttpResponseFor<ManualAsyncJob> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             jobId: String,

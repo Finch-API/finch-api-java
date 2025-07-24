@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import java.util.Objects
 
-/** @see [IndividualService.retrieveManyBenefits] */
+/** @see IndividualService.retrieveManyBenefits */
 class HrisBenefitIndividualRetrieveManyBenefitsPage
 private constructor(
     private val service: IndividualService,

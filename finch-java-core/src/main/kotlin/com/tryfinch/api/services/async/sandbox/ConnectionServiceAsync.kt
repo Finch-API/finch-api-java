@@ -31,7 +31,7 @@ interface ConnectionServiceAsync {
     fun create(params: SandboxConnectionCreateParams): CompletableFuture<ConnectionCreateResponse> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxConnectionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -63,7 +63,7 @@ interface ConnectionServiceAsync {
         ): CompletableFuture<HttpResponseFor<ConnectionCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: SandboxConnectionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

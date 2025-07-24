@@ -28,7 +28,7 @@ interface PaymentService {
     fun list(params: HrisPaymentListParams): HrisPaymentListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisPaymentListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -52,7 +52,7 @@ interface PaymentService {
         fun list(params: HrisPaymentListParams): HttpResponseFor<HrisPaymentListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisPaymentListParams,

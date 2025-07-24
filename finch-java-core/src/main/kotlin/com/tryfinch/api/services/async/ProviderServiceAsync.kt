@@ -27,18 +27,18 @@ interface ProviderServiceAsync {
     /** Return details on all available payroll and HR systems. */
     fun list(): CompletableFuture<ProviderListPageAsync> = list(ProviderListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProviderListParams = ProviderListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProviderListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProviderListParams = ProviderListParams.none()
     ): CompletableFuture<ProviderListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<ProviderListPageAsync> =
         list(ProviderListParams.none(), requestOptions)
 
@@ -63,19 +63,19 @@ interface ProviderServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
             list(ProviderListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ProviderListParams = ProviderListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ProviderListParams = ProviderListParams.none()
         ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProviderListPageAsync>> =

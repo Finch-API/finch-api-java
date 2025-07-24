@@ -30,17 +30,17 @@ interface CompanyService {
     /** Read basic company data */
     fun retrieve(): Company = retrieve(HrisCompanyRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Company
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()): Company =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(requestOptions: RequestOptions): Company =
         retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 
@@ -63,20 +63,20 @@ interface CompanyService {
         @MustBeClosed
         fun retrieve(): HttpResponseFor<Company> = retrieve(HrisCompanyRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Company>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
         ): HttpResponseFor<Company> = retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
             retrieve(HrisCompanyRetrieveParams.none(), requestOptions)

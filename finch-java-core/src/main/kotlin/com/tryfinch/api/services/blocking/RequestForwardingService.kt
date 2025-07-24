@@ -32,7 +32,7 @@ interface RequestForwardingService {
     fun forward(params: RequestForwardingForwardParams): RequestForwardingForwardResponse =
         forward(params, RequestOptions.none())
 
-    /** @see [forward] */
+    /** @see forward */
     fun forward(
         params: RequestForwardingForwardParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -63,7 +63,7 @@ interface RequestForwardingService {
         ): HttpResponseFor<RequestForwardingForwardResponse> =
             forward(params, RequestOptions.none())
 
-        /** @see [forward] */
+        /** @see forward */
         @MustBeClosed
         fun forward(
             params: RequestForwardingForwardParams,

@@ -9,7 +9,7 @@ import com.tryfinch.api.services.blocking.hris.IndividualService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [IndividualService.retrieveMany] */
+/** @see IndividualService.retrieveMany */
 class HrisIndividualRetrieveManyPage
 private constructor(
     private val service: IndividualService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [HrisIndividualRetrieveManyPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisIndividualRetrieveManyPageResponse.responses]
+     * @see HrisIndividualRetrieveManyPageResponse.responses
      */
     fun responses(): List<IndividualResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()

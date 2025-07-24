@@ -32,7 +32,7 @@ interface PayStatementService {
     fun retrieveMany(params: HrisPayStatementRetrieveManyParams): HrisPayStatementRetrieveManyPage =
         retrieveMany(params, RequestOptions.none())
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -62,7 +62,7 @@ interface PayStatementService {
         ): HttpResponseFor<HrisPayStatementRetrieveManyPage> =
             retrieveMany(params, RequestOptions.none())
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         @MustBeClosed
         fun retrieveMany(
             params: HrisPayStatementRetrieveManyParams,
