@@ -10,7 +10,7 @@ import java.util.Objects
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 
-/** @see [BenefitServiceAsync.list] */
+/** @see BenefitServiceAsync.list */
 class HrisBenefitListPageAsync
 private constructor(
     private val service: BenefitServiceAsync,

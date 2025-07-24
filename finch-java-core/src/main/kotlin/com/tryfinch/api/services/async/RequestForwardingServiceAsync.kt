@@ -33,7 +33,7 @@ interface RequestForwardingServiceAsync {
         params: RequestForwardingForwardParams
     ): CompletableFuture<RequestForwardingForwardResponse> = forward(params, RequestOptions.none())
 
-    /** @see [forward] */
+    /** @see forward */
     fun forward(
         params: RequestForwardingForwardParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -63,7 +63,7 @@ interface RequestForwardingServiceAsync {
         ): CompletableFuture<HttpResponseFor<RequestForwardingForwardResponse>> =
             forward(params, RequestOptions.none())
 
-        /** @see [forward] */
+        /** @see forward */
         fun forward(
             params: RequestForwardingForwardParams,
             requestOptions: RequestOptions = RequestOptions.none(),

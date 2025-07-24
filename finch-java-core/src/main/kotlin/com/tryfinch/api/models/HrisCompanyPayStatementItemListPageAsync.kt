@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [PayStatementItemServiceAsync.list] */
+/** @see PayStatementItemServiceAsync.list */
 class HrisCompanyPayStatementItemListPageAsync
 private constructor(
     private val service: PayStatementItemServiceAsync,
@@ -24,7 +24,7 @@ private constructor(
      * Delegates to [HrisCompanyPayStatementItemListPageResponse], but gracefully handles missing
      * data.
      *
-     * @see [HrisCompanyPayStatementItemListPageResponse.responses]
+     * @see HrisCompanyPayStatementItemListPageResponse.responses
      */
     fun responses(): List<PayStatementItemListResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()

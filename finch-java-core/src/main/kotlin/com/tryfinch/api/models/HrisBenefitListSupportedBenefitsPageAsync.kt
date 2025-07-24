@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [BenefitServiceAsync.listSupportedBenefits] */
+/** @see BenefitServiceAsync.listSupportedBenefits */
 class HrisBenefitListSupportedBenefitsPageAsync
 private constructor(
     private val service: BenefitServiceAsync,

@@ -45,18 +45,18 @@ interface AutomatedService {
      */
     fun create(): AutomatedCreateResponse = create(JobAutomatedCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedCreateResponse
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
     ): AutomatedCreateResponse = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): AutomatedCreateResponse =
         create(JobAutomatedCreateParams.none(), requestOptions)
 
@@ -64,30 +64,30 @@ interface AutomatedService {
     fun retrieve(jobId: String): AutomatedAsyncJob =
         retrieve(jobId, JobAutomatedRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         jobId: String,
         params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedAsyncJob = retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         jobId: String,
         params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
     ): AutomatedAsyncJob = retrieve(jobId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: JobAutomatedRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedAsyncJob
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: JobAutomatedRetrieveParams): AutomatedAsyncJob =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(jobId: String, requestOptions: RequestOptions): AutomatedAsyncJob =
         retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
@@ -98,18 +98,18 @@ interface AutomatedService {
      */
     fun list(): AutomatedListResponse = list(JobAutomatedListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: JobAutomatedListParams = JobAutomatedListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: JobAutomatedListParams = JobAutomatedListParams.none()
     ): AutomatedListResponse = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): AutomatedListResponse =
         list(JobAutomatedListParams.none(), requestOptions)
 
@@ -131,20 +131,20 @@ interface AutomatedService {
         fun create(): HttpResponseFor<AutomatedCreateResponse> =
             create(JobAutomatedCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedCreateResponse>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
         ): HttpResponseFor<AutomatedCreateResponse> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<AutomatedCreateResponse> =
             create(JobAutomatedCreateParams.none(), requestOptions)
@@ -157,7 +157,7 @@ interface AutomatedService {
         fun retrieve(jobId: String): HttpResponseFor<AutomatedAsyncJob> =
             retrieve(jobId, JobAutomatedRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             jobId: String,
@@ -166,26 +166,26 @@ interface AutomatedService {
         ): HttpResponseFor<AutomatedAsyncJob> =
             retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             jobId: String,
             params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
         ): HttpResponseFor<AutomatedAsyncJob> = retrieve(jobId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: JobAutomatedRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedAsyncJob>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: JobAutomatedRetrieveParams): HttpResponseFor<AutomatedAsyncJob> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             jobId: String,
@@ -200,20 +200,20 @@ interface AutomatedService {
         @MustBeClosed
         fun list(): HttpResponseFor<AutomatedListResponse> = list(JobAutomatedListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: JobAutomatedListParams = JobAutomatedListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: JobAutomatedListParams = JobAutomatedListParams.none()
         ): HttpResponseFor<AutomatedListResponse> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<AutomatedListResponse> =
             list(JobAutomatedListParams.none(), requestOptions)

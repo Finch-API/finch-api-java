@@ -27,18 +27,18 @@ interface PaymentService {
     /** Add a new sandbox payment */
     fun create(): PaymentCreateResponse = create(SandboxPaymentCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PaymentCreateResponse
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
     ): PaymentCreateResponse = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): PaymentCreateResponse =
         create(SandboxPaymentCreateParams.none(), requestOptions)
 
@@ -60,20 +60,20 @@ interface PaymentService {
         fun create(): HttpResponseFor<PaymentCreateResponse> =
             create(SandboxPaymentCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PaymentCreateResponse>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none()
         ): HttpResponseFor<PaymentCreateResponse> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<PaymentCreateResponse> =
             create(SandboxPaymentCreateParams.none(), requestOptions)

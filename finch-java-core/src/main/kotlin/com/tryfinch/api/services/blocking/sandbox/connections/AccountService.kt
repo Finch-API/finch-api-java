@@ -30,7 +30,7 @@ interface AccountService {
     fun create(params: SandboxConnectionAccountCreateParams): AccountCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxConnectionAccountCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -42,18 +42,18 @@ interface AccountService {
      */
     fun update(): AccountUpdateResponse = update(SandboxConnectionAccountUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountUpdateResponse
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none()
     ): AccountUpdateResponse = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(requestOptions: RequestOptions): AccountUpdateResponse =
         update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
@@ -76,7 +76,7 @@ interface AccountService {
             params: SandboxConnectionAccountCreateParams
         ): HttpResponseFor<AccountCreateResponse> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: SandboxConnectionAccountCreateParams,
@@ -91,7 +91,7 @@ interface AccountService {
         fun update(): HttpResponseFor<AccountUpdateResponse> =
             update(SandboxConnectionAccountUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: SandboxConnectionAccountUpdateParams =
@@ -99,14 +99,14 @@ interface AccountService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AccountUpdateResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: SandboxConnectionAccountUpdateParams =
                 SandboxConnectionAccountUpdateParams.none()
         ): HttpResponseFor<AccountUpdateResponse> = update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> =
             update(SandboxConnectionAccountUpdateParams.none(), requestOptions)

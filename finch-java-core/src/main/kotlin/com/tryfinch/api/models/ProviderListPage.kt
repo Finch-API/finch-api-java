@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.ProviderService
 import java.util.Objects
 
-/** @see [ProviderService.list] */
+/** @see ProviderService.list */
 class ProviderListPage
 private constructor(
     private val service: ProviderService,

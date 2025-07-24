@@ -34,7 +34,7 @@ interface PayStatementServiceAsync {
     ): CompletableFuture<HrisPayStatementRetrieveManyPageAsync> =
         retrieveMany(params, RequestOptions.none())
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -64,7 +64,7 @@ interface PayStatementServiceAsync {
         ): CompletableFuture<HttpResponseFor<HrisPayStatementRetrieveManyPageAsync>> =
             retrieveMany(params, RequestOptions.none())
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         fun retrieveMany(
             params: HrisPayStatementRetrieveManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),

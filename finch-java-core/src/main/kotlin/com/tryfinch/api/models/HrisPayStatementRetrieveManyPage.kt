@@ -9,7 +9,7 @@ import com.tryfinch.api.services.blocking.hris.PayStatementService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [PayStatementService.retrieveMany] */
+/** @see PayStatementService.retrieveMany */
 class HrisPayStatementRetrieveManyPage
 private constructor(
     private val service: PayStatementService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [HrisPayStatementRetrieveManyPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisPayStatementRetrieveManyPageResponse.responses]
+     * @see HrisPayStatementRetrieveManyPageResponse.responses
      */
     fun responses(): List<PayStatementResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()

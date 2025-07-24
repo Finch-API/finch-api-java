@@ -9,7 +9,7 @@ import com.tryfinch.api.services.blocking.hris.company.payStatementItem.RuleServ
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [RuleService.list] */
+/** @see RuleService.list */
 class HrisCompanyPayStatementItemRuleListPage
 private constructor(
     private val service: RuleService,
@@ -21,7 +21,7 @@ private constructor(
      * Delegates to [HrisCompanyPayStatementItemRuleListPageResponse], but gracefully handles
      * missing data.
      *
-     * @see [HrisCompanyPayStatementItemRuleListPageResponse.responses]
+     * @see HrisCompanyPayStatementItemRuleListPageResponse.responses
      */
     fun responses(): List<RuleListResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()

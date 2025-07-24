@@ -31,7 +31,7 @@ interface JobService {
     fun create(params: SandboxJobCreateParams): JobCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxJobCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -57,7 +57,7 @@ interface JobService {
         fun create(params: SandboxJobCreateParams): HttpResponseFor<JobCreateResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: SandboxJobCreateParams,

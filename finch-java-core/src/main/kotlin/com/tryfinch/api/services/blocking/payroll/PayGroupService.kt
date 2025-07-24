@@ -30,7 +30,7 @@ interface PayGroupService {
     fun retrieve(payGroupId: String): PayGroupRetrieveResponse =
         retrieve(payGroupId, PayrollPayGroupRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         payGroupId: String,
         params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
@@ -38,41 +38,41 @@ interface PayGroupService {
     ): PayGroupRetrieveResponse =
         retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         payGroupId: String,
         params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
     ): PayGroupRetrieveResponse = retrieve(payGroupId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayGroupRetrieveResponse
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: PayrollPayGroupRetrieveParams): PayGroupRetrieveResponse =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(payGroupId: String, requestOptions: RequestOptions): PayGroupRetrieveResponse =
         retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
     /** Read company pay groups and frequencies */
     fun list(): PayrollPayGroupListPage = list(PayrollPayGroupListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayrollPayGroupListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: PayrollPayGroupListParams = PayrollPayGroupListParams.none()
     ): PayrollPayGroupListPage = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): PayrollPayGroupListPage =
         list(PayrollPayGroupListParams.none(), requestOptions)
 
@@ -94,7 +94,7 @@ interface PayGroupService {
         fun retrieve(payGroupId: String): HttpResponseFor<PayGroupRetrieveResponse> =
             retrieve(payGroupId, PayrollPayGroupRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             payGroupId: String,
@@ -103,7 +103,7 @@ interface PayGroupService {
         ): HttpResponseFor<PayGroupRetrieveResponse> =
             retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             payGroupId: String,
@@ -111,20 +111,20 @@ interface PayGroupService {
         ): HttpResponseFor<PayGroupRetrieveResponse> =
             retrieve(payGroupId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: PayrollPayGroupRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayGroupRetrieveResponse>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: PayrollPayGroupRetrieveParams
         ): HttpResponseFor<PayGroupRetrieveResponse> = retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             payGroupId: String,
@@ -140,20 +140,20 @@ interface PayGroupService {
         fun list(): HttpResponseFor<PayrollPayGroupListPage> =
             list(PayrollPayGroupListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayrollPayGroupListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: PayrollPayGroupListParams = PayrollPayGroupListParams.none()
         ): HttpResponseFor<PayrollPayGroupListPage> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<PayrollPayGroupListPage> =
             list(PayrollPayGroupListParams.none(), requestOptions)

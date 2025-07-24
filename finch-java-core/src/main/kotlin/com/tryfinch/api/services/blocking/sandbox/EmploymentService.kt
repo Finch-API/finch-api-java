@@ -28,7 +28,7 @@ interface EmploymentService {
     fun update(individualId: String): EmploymentUpdateResponse =
         update(individualId, SandboxEmploymentUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         individualId: String,
         params: SandboxEmploymentUpdateParams = SandboxEmploymentUpdateParams.none(),
@@ -36,23 +36,23 @@ interface EmploymentService {
     ): EmploymentUpdateResponse =
         update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         individualId: String,
         params: SandboxEmploymentUpdateParams = SandboxEmploymentUpdateParams.none(),
     ): EmploymentUpdateResponse = update(individualId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxEmploymentUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): EmploymentUpdateResponse
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: SandboxEmploymentUpdateParams): EmploymentUpdateResponse =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(individualId: String, requestOptions: RequestOptions): EmploymentUpdateResponse =
         update(individualId, SandboxEmploymentUpdateParams.none(), requestOptions)
 
@@ -76,7 +76,7 @@ interface EmploymentService {
         fun update(individualId: String): HttpResponseFor<EmploymentUpdateResponse> =
             update(individualId, SandboxEmploymentUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             individualId: String,
@@ -85,7 +85,7 @@ interface EmploymentService {
         ): HttpResponseFor<EmploymentUpdateResponse> =
             update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             individualId: String,
@@ -93,20 +93,20 @@ interface EmploymentService {
         ): HttpResponseFor<EmploymentUpdateResponse> =
             update(individualId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: SandboxEmploymentUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<EmploymentUpdateResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: SandboxEmploymentUpdateParams
         ): HttpResponseFor<EmploymentUpdateResponse> = update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             individualId: String,

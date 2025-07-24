@@ -27,17 +27,17 @@ interface ProviderService {
     /** Return details on all available payroll and HR systems. */
     fun list(): ProviderListPage = list(ProviderListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProviderListParams = ProviderListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProviderListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: ProviderListParams = ProviderListParams.none()): ProviderListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): ProviderListPage =
         list(ProviderListParams.none(), requestOptions)
 
@@ -58,20 +58,20 @@ interface ProviderService {
         @MustBeClosed
         fun list(): HttpResponseFor<ProviderListPage> = list(ProviderListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: ProviderListParams = ProviderListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProviderListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: ProviderListParams = ProviderListParams.none()
         ): HttpResponseFor<ProviderListPage> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> =
             list(ProviderListParams.none(), requestOptions)

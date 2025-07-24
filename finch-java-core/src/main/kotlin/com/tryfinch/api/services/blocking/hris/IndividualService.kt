@@ -28,18 +28,18 @@ interface IndividualService {
     fun retrieveMany(): HrisIndividualRetrieveManyPage =
         retrieveMany(HrisIndividualRetrieveManyParams.none())
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPage
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
     ): HrisIndividualRetrieveManyPage = retrieveMany(params, RequestOptions.none())
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPage =
         retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
@@ -63,21 +63,21 @@ interface IndividualService {
         fun retrieveMany(): HttpResponseFor<HrisIndividualRetrieveManyPage> =
             retrieveMany(HrisIndividualRetrieveManyParams.none())
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         @MustBeClosed
         fun retrieveMany(
             params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisIndividualRetrieveManyPage>
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         @MustBeClosed
         fun retrieveMany(
             params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
         ): HttpResponseFor<HrisIndividualRetrieveManyPage> =
             retrieveMany(params, RequestOptions.none())
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         @MustBeClosed
         fun retrieveMany(
             requestOptions: RequestOptions

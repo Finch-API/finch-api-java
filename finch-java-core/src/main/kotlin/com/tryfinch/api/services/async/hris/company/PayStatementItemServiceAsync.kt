@@ -35,20 +35,20 @@ interface PayStatementItemServiceAsync {
     fun list(): CompletableFuture<HrisCompanyPayStatementItemListPageAsync> =
         list(HrisCompanyPayStatementItemListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisCompanyPayStatementItemListParams =
             HrisCompanyPayStatementItemListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisCompanyPayStatementItemListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisCompanyPayStatementItemListParams = HrisCompanyPayStatementItemListParams.none()
     ): CompletableFuture<HrisCompanyPayStatementItemListPageAsync> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         requestOptions: RequestOptions
     ): CompletableFuture<HrisCompanyPayStatementItemListPageAsync> =
@@ -78,21 +78,21 @@ interface PayStatementItemServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>> =
             list(HrisCompanyPayStatementItemListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisCompanyPayStatementItemListParams =
                 HrisCompanyPayStatementItemListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisCompanyPayStatementItemListParams =
                 HrisCompanyPayStatementItemListParams.none()
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>> =

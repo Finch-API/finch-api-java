@@ -42,18 +42,18 @@ interface BenefitServiceAsync {
     fun create(): CompletableFuture<CreateCompanyBenefitsResponse> =
         create(HrisBenefitCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CreateCompanyBenefitsResponse>
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: HrisBenefitCreateParams = HrisBenefitCreateParams.none()
     ): CompletableFuture<CreateCompanyBenefitsResponse> = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): CompletableFuture<CreateCompanyBenefitsResponse> =
         create(HrisBenefitCreateParams.none(), requestOptions)
 
@@ -61,7 +61,7 @@ interface BenefitServiceAsync {
     fun retrieve(benefitId: String): CompletableFuture<CompanyBenefit> =
         retrieve(benefitId, HrisBenefitRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         benefitId: String,
         params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
@@ -69,23 +69,23 @@ interface BenefitServiceAsync {
     ): CompletableFuture<CompanyBenefit> =
         retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         benefitId: String,
         params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
     ): CompletableFuture<CompanyBenefit> = retrieve(benefitId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: HrisBenefitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CompanyBenefit>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: HrisBenefitRetrieveParams): CompletableFuture<CompanyBenefit> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         benefitId: String,
         requestOptions: RequestOptions,
@@ -96,7 +96,7 @@ interface BenefitServiceAsync {
     fun update(benefitId: String): CompletableFuture<UpdateCompanyBenefitResponse> =
         update(benefitId, HrisBenefitUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         benefitId: String,
         params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
@@ -104,24 +104,24 @@ interface BenefitServiceAsync {
     ): CompletableFuture<UpdateCompanyBenefitResponse> =
         update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         benefitId: String,
         params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
     ): CompletableFuture<UpdateCompanyBenefitResponse> =
         update(benefitId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: HrisBenefitUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<UpdateCompanyBenefitResponse>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: HrisBenefitUpdateParams): CompletableFuture<UpdateCompanyBenefitResponse> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         benefitId: String,
         requestOptions: RequestOptions,
@@ -131,18 +131,18 @@ interface BenefitServiceAsync {
     /** List all company-wide deductions and contributions. */
     fun list(): CompletableFuture<HrisBenefitListPageAsync> = list(HrisBenefitListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisBenefitListParams = HrisBenefitListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisBenefitListParams = HrisBenefitListParams.none()
     ): CompletableFuture<HrisBenefitListPageAsync> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<HrisBenefitListPageAsync> =
         list(HrisBenefitListParams.none(), requestOptions)
 
@@ -150,21 +150,21 @@ interface BenefitServiceAsync {
     fun listSupportedBenefits(): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync> =
         listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none())
 
-    /** @see [listSupportedBenefits] */
+    /** @see listSupportedBenefits */
     fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams =
             HrisBenefitListSupportedBenefitsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync>
 
-    /** @see [listSupportedBenefits] */
+    /** @see listSupportedBenefits */
     fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams =
             HrisBenefitListSupportedBenefitsParams.none()
     ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync> =
         listSupportedBenefits(params, RequestOptions.none())
 
-    /** @see [listSupportedBenefits] */
+    /** @see listSupportedBenefits */
     fun listSupportedBenefits(
         requestOptions: RequestOptions
     ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync> =
@@ -193,19 +193,19 @@ interface BenefitServiceAsync {
         fun create(): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>> =
             create(HrisBenefitCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>>
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: HrisBenefitCreateParams = HrisBenefitCreateParams.none()
         ): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<CreateCompanyBenefitsResponse>> =
@@ -218,7 +218,7 @@ interface BenefitServiceAsync {
         fun retrieve(benefitId: String): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
             retrieve(benefitId, HrisBenefitRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             benefitId: String,
             params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
@@ -226,26 +226,26 @@ interface BenefitServiceAsync {
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
             retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             benefitId: String,
             params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
             retrieve(benefitId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: HrisBenefitRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: HrisBenefitRetrieveParams
         ): CompletableFuture<HttpResponseFor<CompanyBenefit>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             benefitId: String,
             requestOptions: RequestOptions,
@@ -261,7 +261,7 @@ interface BenefitServiceAsync {
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
             update(benefitId, HrisBenefitUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             benefitId: String,
             params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
@@ -269,26 +269,26 @@ interface BenefitServiceAsync {
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
             update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             benefitId: String,
             params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
             update(benefitId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: HrisBenefitUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: HrisBenefitUpdateParams
         ): CompletableFuture<HttpResponseFor<UpdateCompanyBenefitResponse>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             benefitId: String,
             requestOptions: RequestOptions,
@@ -302,19 +302,19 @@ interface BenefitServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>> =
             list(HrisBenefitListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisBenefitListParams = HrisBenefitListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisBenefitListParams = HrisBenefitListParams.none()
         ): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisBenefitListPageAsync>> =
@@ -328,21 +328,21 @@ interface BenefitServiceAsync {
             CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>> =
             listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none())
 
-        /** @see [listSupportedBenefits] */
+        /** @see listSupportedBenefits */
         fun listSupportedBenefits(
             params: HrisBenefitListSupportedBenefitsParams =
                 HrisBenefitListSupportedBenefitsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>>
 
-        /** @see [listSupportedBenefits] */
+        /** @see listSupportedBenefits */
         fun listSupportedBenefits(
             params: HrisBenefitListSupportedBenefitsParams =
                 HrisBenefitListSupportedBenefitsParams.none()
         ): CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>> =
             listSupportedBenefits(params, RequestOptions.none())
 
-        /** @see [listSupportedBenefits] */
+        /** @see listSupportedBenefits */
         fun listSupportedBenefits(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>> =

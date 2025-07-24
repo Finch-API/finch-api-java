@@ -28,7 +28,7 @@ interface AccessTokenServiceAsync {
     fun create(params: AccessTokenCreateParams): CompletableFuture<CreateAccessTokenResponse> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: AccessTokenCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -58,7 +58,7 @@ interface AccessTokenServiceAsync {
         ): CompletableFuture<HttpResponseFor<CreateAccessTokenResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: AccessTokenCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

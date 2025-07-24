@@ -35,19 +35,19 @@ interface PayStatementItemService {
     fun list(): HrisCompanyPayStatementItemListPage =
         list(HrisCompanyPayStatementItemListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisCompanyPayStatementItemListParams =
             HrisCompanyPayStatementItemListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisCompanyPayStatementItemListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisCompanyPayStatementItemListParams = HrisCompanyPayStatementItemListParams.none()
     ): HrisCompanyPayStatementItemListPage = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): HrisCompanyPayStatementItemListPage =
         list(HrisCompanyPayStatementItemListParams.none(), requestOptions)
 
@@ -76,7 +76,7 @@ interface PayStatementItemService {
         fun list(): HttpResponseFor<HrisCompanyPayStatementItemListPage> =
             list(HrisCompanyPayStatementItemListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisCompanyPayStatementItemListParams =
@@ -84,7 +84,7 @@ interface PayStatementItemService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisCompanyPayStatementItemListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisCompanyPayStatementItemListParams =
@@ -92,7 +92,7 @@ interface PayStatementItemService {
         ): HttpResponseFor<HrisCompanyPayStatementItemListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions

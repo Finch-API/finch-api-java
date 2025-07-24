@@ -46,18 +46,18 @@ interface AutomatedServiceAsync {
     fun create(): CompletableFuture<AutomatedCreateResponse> =
         create(JobAutomatedCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AutomatedCreateResponse>
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
     ): CompletableFuture<AutomatedCreateResponse> = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): CompletableFuture<AutomatedCreateResponse> =
         create(JobAutomatedCreateParams.none(), requestOptions)
 
@@ -65,7 +65,7 @@ interface AutomatedServiceAsync {
     fun retrieve(jobId: String): CompletableFuture<AutomatedAsyncJob> =
         retrieve(jobId, JobAutomatedRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         jobId: String,
         params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
@@ -73,23 +73,23 @@ interface AutomatedServiceAsync {
     ): CompletableFuture<AutomatedAsyncJob> =
         retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         jobId: String,
         params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
     ): CompletableFuture<AutomatedAsyncJob> = retrieve(jobId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: JobAutomatedRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AutomatedAsyncJob>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: JobAutomatedRetrieveParams): CompletableFuture<AutomatedAsyncJob> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         jobId: String,
         requestOptions: RequestOptions,
@@ -103,18 +103,18 @@ interface AutomatedServiceAsync {
      */
     fun list(): CompletableFuture<AutomatedListResponse> = list(JobAutomatedListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: JobAutomatedListParams = JobAutomatedListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AutomatedListResponse>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: JobAutomatedListParams = JobAutomatedListParams.none()
     ): CompletableFuture<AutomatedListResponse> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<AutomatedListResponse> =
         list(JobAutomatedListParams.none(), requestOptions)
 
@@ -139,19 +139,19 @@ interface AutomatedServiceAsync {
         fun create(): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
             create(JobAutomatedCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>>
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
         ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
@@ -164,7 +164,7 @@ interface AutomatedServiceAsync {
         fun retrieve(jobId: String): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
             retrieve(jobId, JobAutomatedRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             jobId: String,
             params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
@@ -172,26 +172,26 @@ interface AutomatedServiceAsync {
         ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
             retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             jobId: String,
             params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
             retrieve(jobId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: JobAutomatedRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: JobAutomatedRetrieveParams
         ): CompletableFuture<HttpResponseFor<AutomatedAsyncJob>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             jobId: String,
             requestOptions: RequestOptions,
@@ -205,19 +205,19 @@ interface AutomatedServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
             list(JobAutomatedListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: JobAutomatedListParams = JobAutomatedListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AutomatedListResponse>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: JobAutomatedListParams = JobAutomatedListParams.none()
         ): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<AutomatedListResponse>> =
