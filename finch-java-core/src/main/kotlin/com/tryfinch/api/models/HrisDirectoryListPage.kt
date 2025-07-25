@@ -11,7 +11,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrDefault
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [DirectoryService.list] */
+/** @see DirectoryService.list */
 class HrisDirectoryListPage
 private constructor(
     private val service: DirectoryService,
@@ -22,7 +22,7 @@ private constructor(
     /**
      * Delegates to [HrisDirectoryListPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisDirectoryListPageResponse.individuals]
+     * @see HrisDirectoryListPageResponse.individuals
      */
     fun individuals(): List<IndividualInDirectory> =
         response._individuals().getOptional("individuals").getOrNull() ?: emptyList()
@@ -30,7 +30,7 @@ private constructor(
     /**
      * Delegates to [HrisDirectoryListPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisDirectoryListPageResponse.paging]
+     * @see HrisDirectoryListPageResponse.paging
      */
     fun paging(): Optional<Paging> = response._paging().getOptional("paging")
 

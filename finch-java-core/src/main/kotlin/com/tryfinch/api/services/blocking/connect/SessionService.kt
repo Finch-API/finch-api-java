@@ -30,7 +30,7 @@ interface SessionService {
     fun new_(params: ConnectSessionNewParams): SessionNewResponse =
         new_(params, RequestOptions.none())
 
-    /** @see [new_] */
+    /** @see new\_ */
     fun new_(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -40,7 +40,7 @@ interface SessionService {
     fun reauthenticate(params: ConnectSessionReauthenticateParams): SessionReauthenticateResponse =
         reauthenticate(params, RequestOptions.none())
 
-    /** @see [reauthenticate] */
+    /** @see reauthenticate */
     fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -64,7 +64,7 @@ interface SessionService {
         fun new_(params: ConnectSessionNewParams): HttpResponseFor<SessionNewResponse> =
             new_(params, RequestOptions.none())
 
-        /** @see [new_] */
+        /** @see new\_ */
         @MustBeClosed
         fun new_(
             params: ConnectSessionNewParams,
@@ -81,7 +81,7 @@ interface SessionService {
         ): HttpResponseFor<SessionReauthenticateResponse> =
             reauthenticate(params, RequestOptions.none())
 
-        /** @see [reauthenticate] */
+        /** @see reauthenticate */
         @MustBeClosed
         fun reauthenticate(
             params: ConnectSessionReauthenticateParams,

@@ -28,7 +28,7 @@ interface CompanyServiceAsync {
     fun update(params: SandboxCompanyUpdateParams): CompletableFuture<CompanyUpdateResponse> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxCompanyUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -57,7 +57,7 @@ interface CompanyServiceAsync {
         ): CompletableFuture<HttpResponseFor<CompanyUpdateResponse>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: SandboxCompanyUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

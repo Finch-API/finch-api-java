@@ -31,7 +31,7 @@ interface JobServiceAsync {
     fun create(params: SandboxJobCreateParams): CompletableFuture<JobCreateResponse> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: SandboxJobCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -58,7 +58,7 @@ interface JobServiceAsync {
         ): CompletableFuture<HttpResponseFor<JobCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: SandboxJobCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

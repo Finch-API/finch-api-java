@@ -30,18 +30,18 @@ interface CompanyServiceAsync {
     /** Read basic company data */
     fun retrieve(): CompletableFuture<Company> = retrieve(HrisCompanyRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Company>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
     ): CompletableFuture<Company> = retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(requestOptions: RequestOptions): CompletableFuture<Company> =
         retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 
@@ -68,18 +68,18 @@ interface CompanyServiceAsync {
         fun retrieve(): CompletableFuture<HttpResponseFor<Company>> =
             retrieve(HrisCompanyRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Company>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
         ): CompletableFuture<HttpResponseFor<Company>> = retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<Company>> =
             retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
     }

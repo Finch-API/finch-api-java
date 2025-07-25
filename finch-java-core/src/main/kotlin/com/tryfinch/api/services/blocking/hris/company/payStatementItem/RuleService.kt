@@ -39,20 +39,20 @@ interface RuleService {
      */
     fun create(): RuleCreateResponse = create(HrisCompanyPayStatementItemRuleCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: HrisCompanyPayStatementItemRuleCreateParams =
             HrisCompanyPayStatementItemRuleCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleCreateResponse
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: HrisCompanyPayStatementItemRuleCreateParams =
             HrisCompanyPayStatementItemRuleCreateParams.none()
     ): RuleCreateResponse = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): RuleCreateResponse =
         create(HrisCompanyPayStatementItemRuleCreateParams.none(), requestOptions)
 
@@ -63,7 +63,7 @@ interface RuleService {
     fun update(ruleId: String): RuleUpdateResponse =
         update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         ruleId: String,
         params: HrisCompanyPayStatementItemRuleUpdateParams =
@@ -71,24 +71,24 @@ interface RuleService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleUpdateResponse = update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         ruleId: String,
         params: HrisCompanyPayStatementItemRuleUpdateParams =
             HrisCompanyPayStatementItemRuleUpdateParams.none(),
     ): RuleUpdateResponse = update(ruleId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: HrisCompanyPayStatementItemRuleUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleUpdateResponse
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: HrisCompanyPayStatementItemRuleUpdateParams): RuleUpdateResponse =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(ruleId: String, requestOptions: RequestOptions): RuleUpdateResponse =
         update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none(), requestOptions)
 
@@ -99,20 +99,20 @@ interface RuleService {
     fun list(): HrisCompanyPayStatementItemRuleListPage =
         list(HrisCompanyPayStatementItemRuleListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisCompanyPayStatementItemRuleListParams =
             HrisCompanyPayStatementItemRuleListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisCompanyPayStatementItemRuleListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisCompanyPayStatementItemRuleListParams =
             HrisCompanyPayStatementItemRuleListParams.none()
     ): HrisCompanyPayStatementItemRuleListPage = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): HrisCompanyPayStatementItemRuleListPage =
         list(HrisCompanyPayStatementItemRuleListParams.none(), requestOptions)
 
@@ -123,7 +123,7 @@ interface RuleService {
     fun delete(ruleId: String): RuleDeleteResponse =
         delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         ruleId: String,
         params: HrisCompanyPayStatementItemRuleDeleteParams =
@@ -131,24 +131,24 @@ interface RuleService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleDeleteResponse = delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         ruleId: String,
         params: HrisCompanyPayStatementItemRuleDeleteParams =
             HrisCompanyPayStatementItemRuleDeleteParams.none(),
     ): RuleDeleteResponse = delete(ruleId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: HrisCompanyPayStatementItemRuleDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleDeleteResponse
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: HrisCompanyPayStatementItemRuleDeleteParams): RuleDeleteResponse =
         delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(ruleId: String, requestOptions: RequestOptions): RuleDeleteResponse =
         delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none(), requestOptions)
 
@@ -170,7 +170,7 @@ interface RuleService {
         fun create(): HttpResponseFor<RuleCreateResponse> =
             create(HrisCompanyPayStatementItemRuleCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: HrisCompanyPayStatementItemRuleCreateParams =
@@ -178,14 +178,14 @@ interface RuleService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleCreateResponse>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: HrisCompanyPayStatementItemRuleCreateParams =
                 HrisCompanyPayStatementItemRuleCreateParams.none()
         ): HttpResponseFor<RuleCreateResponse> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<RuleCreateResponse> =
             create(HrisCompanyPayStatementItemRuleCreateParams.none(), requestOptions)
@@ -198,7 +198,7 @@ interface RuleService {
         fun update(ruleId: String): HttpResponseFor<RuleUpdateResponse> =
             update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             ruleId: String,
@@ -208,7 +208,7 @@ interface RuleService {
         ): HttpResponseFor<RuleUpdateResponse> =
             update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             ruleId: String,
@@ -216,20 +216,20 @@ interface RuleService {
                 HrisCompanyPayStatementItemRuleUpdateParams.none(),
         ): HttpResponseFor<RuleUpdateResponse> = update(ruleId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleUpdateResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams
         ): HttpResponseFor<RuleUpdateResponse> = update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             ruleId: String,
@@ -245,7 +245,7 @@ interface RuleService {
         fun list(): HttpResponseFor<HrisCompanyPayStatementItemRuleListPage> =
             list(HrisCompanyPayStatementItemRuleListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisCompanyPayStatementItemRuleListParams =
@@ -253,7 +253,7 @@ interface RuleService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisCompanyPayStatementItemRuleListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: HrisCompanyPayStatementItemRuleListParams =
@@ -261,7 +261,7 @@ interface RuleService {
         ): HttpResponseFor<HrisCompanyPayStatementItemRuleListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions
@@ -276,7 +276,7 @@ interface RuleService {
         fun delete(ruleId: String): HttpResponseFor<RuleDeleteResponse> =
             delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             ruleId: String,
@@ -286,7 +286,7 @@ interface RuleService {
         ): HttpResponseFor<RuleDeleteResponse> =
             delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             ruleId: String,
@@ -294,20 +294,20 @@ interface RuleService {
                 HrisCompanyPayStatementItemRuleDeleteParams.none(),
         ): HttpResponseFor<RuleDeleteResponse> = delete(ruleId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleDeleteResponse>
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams
         ): HttpResponseFor<RuleDeleteResponse> = delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             ruleId: String,

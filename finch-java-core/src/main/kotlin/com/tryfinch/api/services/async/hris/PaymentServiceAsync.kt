@@ -28,7 +28,7 @@ interface PaymentServiceAsync {
     fun list(params: HrisPaymentListParams): CompletableFuture<HrisPaymentListPageAsync> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisPaymentListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -57,7 +57,7 @@ interface PaymentServiceAsync {
         ): CompletableFuture<HttpResponseFor<HrisPaymentListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisPaymentListParams,
             requestOptions: RequestOptions = RequestOptions.none(),

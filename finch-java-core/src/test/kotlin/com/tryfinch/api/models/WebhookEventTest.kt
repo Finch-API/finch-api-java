@@ -32,7 +32,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -41,10 +40,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -75,7 +77,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -84,10 +85,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -118,7 +122,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -127,10 +130,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -161,7 +167,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -170,10 +175,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -204,7 +212,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -213,10 +220,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -247,7 +257,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -256,10 +265,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -290,7 +302,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -299,10 +310,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -333,7 +347,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -342,10 +355,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -376,7 +392,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -385,10 +400,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -419,7 +437,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -428,10 +445,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -462,7 +482,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -471,10 +490,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -505,7 +527,6 @@ internal class WebhookEventTest {
                                                 .supportedFeatures(
                                                     SupportedBenefit.builder()
                                                         .annualMaximum(true)
-                                                        .catchUp(true)
                                                         .addCompanyContribution(
                                                             SupportedBenefit.CompanyContribution
                                                                 .FIXED
@@ -514,10 +535,13 @@ internal class WebhookEventTest {
                                                         .addEmployeeDeduction(
                                                             SupportedBenefit.EmployeeDeduction.FIXED
                                                         )
-                                                        .addFrequency(BenefitFrequency.ONE_TIME)
+                                                        .addFrequency(
+                                                            BenefitFrequency.EVERY_PAYCHECK
+                                                        )
+                                                        .catchUp(true)
                                                         .addHsaContributionLimit(
                                                             SupportedBenefit.HsaContributionLimit
-                                                                .INDIVIDUAL
+                                                                .FAMILY
                                                         )
                                                         .build()
                                                 )
@@ -952,7 +976,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -962,11 +985,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1013,7 +1039,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1023,11 +1048,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1074,7 +1102,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1084,11 +1111,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1135,7 +1165,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1145,11 +1174,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1196,7 +1228,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1206,11 +1237,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1257,7 +1291,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1267,11 +1300,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1318,7 +1354,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1328,11 +1363,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1379,7 +1417,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1389,11 +1426,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1440,7 +1480,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1450,11 +1489,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1501,7 +1543,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1511,11 +1552,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1562,7 +1606,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1572,11 +1615,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )
@@ -1623,7 +1669,6 @@ internal class WebhookEventTest {
                                                     .supportedFeatures(
                                                         SupportedBenefit.builder()
                                                             .annualMaximum(true)
-                                                            .catchUp(true)
                                                             .addCompanyContribution(
                                                                 SupportedBenefit.CompanyContribution
                                                                     .FIXED
@@ -1633,11 +1678,14 @@ internal class WebhookEventTest {
                                                                 SupportedBenefit.EmployeeDeduction
                                                                     .FIXED
                                                             )
-                                                            .addFrequency(BenefitFrequency.ONE_TIME)
+                                                            .addFrequency(
+                                                                BenefitFrequency.EVERY_PAYCHECK
+                                                            )
+                                                            .catchUp(true)
                                                             .addHsaContributionLimit(
                                                                 SupportedBenefit
                                                                     .HsaContributionLimit
-                                                                    .INDIVIDUAL
+                                                                    .FAMILY
                                                             )
                                                             .build()
                                                     )

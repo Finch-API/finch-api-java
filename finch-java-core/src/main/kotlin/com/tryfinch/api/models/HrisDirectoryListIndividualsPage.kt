@@ -11,7 +11,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrDefault
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [DirectoryService.listIndividuals] */
+/** @see DirectoryService.listIndividuals */
 @Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPage
 private constructor(
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [HrisDirectoryListIndividualsPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisDirectoryListIndividualsPageResponse.individuals]
+     * @see HrisDirectoryListIndividualsPageResponse.individuals
      */
     fun individuals(): List<IndividualInDirectory> =
         response._individuals().getOptional("individuals").getOrNull() ?: emptyList()
@@ -31,7 +31,7 @@ private constructor(
     /**
      * Delegates to [HrisDirectoryListIndividualsPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisDirectoryListIndividualsPageResponse.paging]
+     * @see HrisDirectoryListIndividualsPageResponse.paging
      */
     fun paging(): Optional<Paging> = response._paging().getOptional("paging")
 

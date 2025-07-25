@@ -28,7 +28,7 @@ interface IndividualServiceAsync {
     fun update(individualId: String): CompletableFuture<IndividualUpdateResponse> =
         update(individualId, SandboxIndividualUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         individualId: String,
         params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
@@ -36,24 +36,24 @@ interface IndividualServiceAsync {
     ): CompletableFuture<IndividualUpdateResponse> =
         update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         individualId: String,
         params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
     ): CompletableFuture<IndividualUpdateResponse> =
         update(individualId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<IndividualUpdateResponse>
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: SandboxIndividualUpdateParams): CompletableFuture<IndividualUpdateResponse> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         individualId: String,
         requestOptions: RequestOptions,
@@ -84,7 +84,7 @@ interface IndividualServiceAsync {
         ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
             update(individualId, SandboxIndividualUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             individualId: String,
             params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
@@ -92,26 +92,26 @@ interface IndividualServiceAsync {
         ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
             update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             individualId: String,
             params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
             update(individualId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: SandboxIndividualUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: SandboxIndividualUpdateParams
         ): CompletableFuture<HttpResponseFor<IndividualUpdateResponse>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             individualId: String,
             requestOptions: RequestOptions,

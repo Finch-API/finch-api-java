@@ -24,8 +24,10 @@ private constructor(
     /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
     fun startDate(): LocalDate = startDate
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)

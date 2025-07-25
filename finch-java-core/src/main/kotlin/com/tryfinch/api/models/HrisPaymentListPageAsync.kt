@@ -10,7 +10,7 @@ import java.util.Objects
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 
-/** @see [PaymentServiceAsync.list] */
+/** @see PaymentServiceAsync.list */
 class HrisPaymentListPageAsync
 private constructor(
     private val service: PaymentServiceAsync,

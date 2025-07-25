@@ -28,19 +28,19 @@ interface IndividualServiceAsync {
     fun retrieveMany(): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
         retrieveMany(HrisIndividualRetrieveManyParams.none())
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisIndividualRetrieveManyPageAsync>
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
     ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
         retrieveMany(params, RequestOptions.none())
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         requestOptions: RequestOptions
     ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
@@ -69,19 +69,19 @@ interface IndividualServiceAsync {
             CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
             retrieveMany(HrisIndividualRetrieveManyParams.none())
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         fun retrieveMany(
             params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>>
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         fun retrieveMany(
             params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
         ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
             retrieveMany(params, RequestOptions.none())
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         fun retrieveMany(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =

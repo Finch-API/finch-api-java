@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import java.util.Objects
 
-/** @see [PaymentService.list] */
+/** @see PaymentService.list */
 class HrisPaymentListPage
 private constructor(
     private val service: PaymentService,

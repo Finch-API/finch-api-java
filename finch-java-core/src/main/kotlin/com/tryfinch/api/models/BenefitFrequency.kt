@@ -22,20 +22,20 @@ class BenefitFrequency @JsonCreator private constructor(private val value: JsonF
 
     companion object {
 
-        @JvmField val ONE_TIME = of("one_time")
-
         @JvmField val EVERY_PAYCHECK = of("every_paycheck")
 
         @JvmField val MONTHLY = of("monthly")
+
+        @JvmField val ONE_TIME = of("one_time")
 
         @JvmStatic fun of(value: String) = BenefitFrequency(JsonField.of(value))
     }
 
     /** An enum containing [BenefitFrequency]'s known values. */
     enum class Known {
-        ONE_TIME,
         EVERY_PAYCHECK,
         MONTHLY,
+        ONE_TIME,
     }
 
     /**
@@ -48,9 +48,9 @@ class BenefitFrequency @JsonCreator private constructor(private val value: JsonF
      * - It was constructed with an arbitrary value using the [of] method.
      */
     enum class Value {
-        ONE_TIME,
         EVERY_PAYCHECK,
         MONTHLY,
+        ONE_TIME,
         /**
          * An enum member indicating that [BenefitFrequency] was instantiated with an unknown value.
          */
@@ -66,9 +66,9 @@ class BenefitFrequency @JsonCreator private constructor(private val value: JsonF
      */
     fun value(): Value =
         when (this) {
-            ONE_TIME -> Value.ONE_TIME
             EVERY_PAYCHECK -> Value.EVERY_PAYCHECK
             MONTHLY -> Value.MONTHLY
+            ONE_TIME -> Value.ONE_TIME
             else -> Value._UNKNOWN
         }
 
@@ -82,9 +82,9 @@ class BenefitFrequency @JsonCreator private constructor(private val value: JsonF
      */
     fun known(): Known =
         when (this) {
-            ONE_TIME -> Known.ONE_TIME
             EVERY_PAYCHECK -> Known.EVERY_PAYCHECK
             MONTHLY -> Known.MONTHLY
+            ONE_TIME -> Known.ONE_TIME
             else -> throw FinchInvalidDataException("Unknown BenefitFrequency: $value")
         }
 

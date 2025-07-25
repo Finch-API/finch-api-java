@@ -10,7 +10,7 @@ import java.util.Objects
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 
-/** @see [PayGroupServiceAsync.list] */
+/** @see PayGroupServiceAsync.list */
 class PayrollPayGroupListPageAsync
 private constructor(
     private val service: PayGroupServiceAsync,

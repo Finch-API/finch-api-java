@@ -9,7 +9,7 @@ import com.tryfinch.api.services.blocking.hris.EmploymentService
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [EmploymentService.retrieveMany] */
+/** @see EmploymentService.retrieveMany */
 class HrisEmploymentRetrieveManyPage
 private constructor(
     private val service: EmploymentService,
@@ -20,7 +20,7 @@ private constructor(
     /**
      * Delegates to [HrisEmploymentRetrieveManyPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisEmploymentRetrieveManyPageResponse.responses]
+     * @see HrisEmploymentRetrieveManyPageResponse.responses
      */
     fun responses(): List<EmploymentDataResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()

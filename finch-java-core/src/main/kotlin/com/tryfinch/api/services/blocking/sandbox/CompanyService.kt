@@ -28,7 +28,7 @@ interface CompanyService {
     fun update(params: SandboxCompanyUpdateParams): CompanyUpdateResponse =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxCompanyUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -52,7 +52,7 @@ interface CompanyService {
         fun update(params: SandboxCompanyUpdateParams): HttpResponseFor<CompanyUpdateResponse> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: SandboxCompanyUpdateParams,

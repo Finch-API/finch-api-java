@@ -28,7 +28,7 @@ interface EmploymentService {
     fun retrieveMany(params: HrisEmploymentRetrieveManyParams): HrisEmploymentRetrieveManyPage =
         retrieveMany(params, RequestOptions.none())
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,7 +56,7 @@ interface EmploymentService {
         ): HttpResponseFor<HrisEmploymentRetrieveManyPage> =
             retrieveMany(params, RequestOptions.none())
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         @MustBeClosed
         fun retrieveMany(
             params: HrisEmploymentRetrieveManyParams,

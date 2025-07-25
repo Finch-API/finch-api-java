@@ -29,19 +29,19 @@ interface ConfigurationService {
     fun retrieve(): List<SandboxJobConfiguration> =
         retrieve(SandboxJobConfigurationRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: SandboxJobConfigurationRetrieveParams =
             SandboxJobConfigurationRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<SandboxJobConfiguration>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: SandboxJobConfigurationRetrieveParams = SandboxJobConfigurationRetrieveParams.none()
     ): List<SandboxJobConfiguration> = retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(requestOptions: RequestOptions): List<SandboxJobConfiguration> =
         retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
@@ -49,7 +49,7 @@ interface ConfigurationService {
     fun update(params: SandboxJobConfigurationUpdateParams): SandboxJobConfiguration =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxJobConfigurationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -77,7 +77,7 @@ interface ConfigurationService {
         fun retrieve(): HttpResponseFor<List<SandboxJobConfiguration>> =
             retrieve(SandboxJobConfigurationRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: SandboxJobConfigurationRetrieveParams =
@@ -85,14 +85,14 @@ interface ConfigurationService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<SandboxJobConfiguration>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: SandboxJobConfigurationRetrieveParams =
                 SandboxJobConfigurationRetrieveParams.none()
         ): HttpResponseFor<List<SandboxJobConfiguration>> = retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             requestOptions: RequestOptions
@@ -108,7 +108,7 @@ interface ConfigurationService {
             params: SandboxJobConfigurationUpdateParams
         ): HttpResponseFor<SandboxJobConfiguration> = update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: SandboxJobConfigurationUpdateParams,

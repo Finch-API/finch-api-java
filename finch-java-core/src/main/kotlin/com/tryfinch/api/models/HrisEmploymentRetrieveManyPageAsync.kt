@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [EmploymentServiceAsync.retrieveMany] */
+/** @see EmploymentServiceAsync.retrieveMany */
 class HrisEmploymentRetrieveManyPageAsync
 private constructor(
     private val service: EmploymentServiceAsync,
@@ -23,7 +23,7 @@ private constructor(
     /**
      * Delegates to [HrisEmploymentRetrieveManyPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisEmploymentRetrieveManyPageResponse.responses]
+     * @see HrisEmploymentRetrieveManyPageResponse.responses
      */
     fun responses(): List<EmploymentDataResponse> =
         response._responses().getOptional("responses").getOrNull() ?: emptyList()

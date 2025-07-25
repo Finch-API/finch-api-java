@@ -3,13 +3,13 @@
 package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
@@ -48,7 +48,8 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         CompanyService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val payStatementItem: PayStatementItemService.WithRawResponse by lazy {
             PayStatementItemServiceImpl.WithRawResponseImpl(clientOptions)
@@ -64,7 +65,7 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
         override fun payStatementItem(): PayStatementItemService.WithRawResponse = payStatementItem
 
         private val retrieveHandler: Handler<Company> =
-            jsonHandler<Company>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<Company>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: HrisCompanyRetrieveParams,
@@ -79,7 +80,7 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { retrieveHandler.handle(it) }
                     .also {

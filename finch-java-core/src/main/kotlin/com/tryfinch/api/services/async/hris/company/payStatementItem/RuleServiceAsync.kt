@@ -40,20 +40,20 @@ interface RuleServiceAsync {
     fun create(): CompletableFuture<RuleCreateResponse> =
         create(HrisCompanyPayStatementItemRuleCreateParams.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: HrisCompanyPayStatementItemRuleCreateParams =
             HrisCompanyPayStatementItemRuleCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RuleCreateResponse>
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: HrisCompanyPayStatementItemRuleCreateParams =
             HrisCompanyPayStatementItemRuleCreateParams.none()
     ): CompletableFuture<RuleCreateResponse> = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): CompletableFuture<RuleCreateResponse> =
         create(HrisCompanyPayStatementItemRuleCreateParams.none(), requestOptions)
 
@@ -64,7 +64,7 @@ interface RuleServiceAsync {
     fun update(ruleId: String): CompletableFuture<RuleUpdateResponse> =
         update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         ruleId: String,
         params: HrisCompanyPayStatementItemRuleUpdateParams =
@@ -73,25 +73,25 @@ interface RuleServiceAsync {
     ): CompletableFuture<RuleUpdateResponse> =
         update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         ruleId: String,
         params: HrisCompanyPayStatementItemRuleUpdateParams =
             HrisCompanyPayStatementItemRuleUpdateParams.none(),
     ): CompletableFuture<RuleUpdateResponse> = update(ruleId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: HrisCompanyPayStatementItemRuleUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RuleUpdateResponse>
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: HrisCompanyPayStatementItemRuleUpdateParams
     ): CompletableFuture<RuleUpdateResponse> = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         ruleId: String,
         requestOptions: RequestOptions,
@@ -105,21 +105,21 @@ interface RuleServiceAsync {
     fun list(): CompletableFuture<HrisCompanyPayStatementItemRuleListPageAsync> =
         list(HrisCompanyPayStatementItemRuleListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisCompanyPayStatementItemRuleListParams =
             HrisCompanyPayStatementItemRuleListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisCompanyPayStatementItemRuleListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: HrisCompanyPayStatementItemRuleListParams =
             HrisCompanyPayStatementItemRuleListParams.none()
     ): CompletableFuture<HrisCompanyPayStatementItemRuleListPageAsync> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         requestOptions: RequestOptions
     ): CompletableFuture<HrisCompanyPayStatementItemRuleListPageAsync> =
@@ -132,7 +132,7 @@ interface RuleServiceAsync {
     fun delete(ruleId: String): CompletableFuture<RuleDeleteResponse> =
         delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         ruleId: String,
         params: HrisCompanyPayStatementItemRuleDeleteParams =
@@ -141,25 +141,25 @@ interface RuleServiceAsync {
     ): CompletableFuture<RuleDeleteResponse> =
         delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         ruleId: String,
         params: HrisCompanyPayStatementItemRuleDeleteParams =
             HrisCompanyPayStatementItemRuleDeleteParams.none(),
     ): CompletableFuture<RuleDeleteResponse> = delete(ruleId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: HrisCompanyPayStatementItemRuleDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RuleDeleteResponse>
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: HrisCompanyPayStatementItemRuleDeleteParams
     ): CompletableFuture<RuleDeleteResponse> = delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         ruleId: String,
         requestOptions: RequestOptions,
@@ -183,21 +183,21 @@ interface RuleServiceAsync {
         fun create(): CompletableFuture<HttpResponseFor<RuleCreateResponse>> =
             create(HrisCompanyPayStatementItemRuleCreateParams.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: HrisCompanyPayStatementItemRuleCreateParams =
                 HrisCompanyPayStatementItemRuleCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuleCreateResponse>>
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: HrisCompanyPayStatementItemRuleCreateParams =
                 HrisCompanyPayStatementItemRuleCreateParams.none()
         ): CompletableFuture<HttpResponseFor<RuleCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<RuleCreateResponse>> =
@@ -210,7 +210,7 @@ interface RuleServiceAsync {
         fun update(ruleId: String): CompletableFuture<HttpResponseFor<RuleUpdateResponse>> =
             update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             ruleId: String,
             params: HrisCompanyPayStatementItemRuleUpdateParams =
@@ -219,7 +219,7 @@ interface RuleServiceAsync {
         ): CompletableFuture<HttpResponseFor<RuleUpdateResponse>> =
             update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             ruleId: String,
             params: HrisCompanyPayStatementItemRuleUpdateParams =
@@ -227,19 +227,19 @@ interface RuleServiceAsync {
         ): CompletableFuture<HttpResponseFor<RuleUpdateResponse>> =
             update(ruleId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuleUpdateResponse>>
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams
         ): CompletableFuture<HttpResponseFor<RuleUpdateResponse>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             ruleId: String,
             requestOptions: RequestOptions,
@@ -254,21 +254,21 @@ interface RuleServiceAsync {
             CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>> =
             list(HrisCompanyPayStatementItemRuleListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisCompanyPayStatementItemRuleListParams =
                 HrisCompanyPayStatementItemRuleListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: HrisCompanyPayStatementItemRuleListParams =
                 HrisCompanyPayStatementItemRuleListParams.none()
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>> =
@@ -281,7 +281,7 @@ interface RuleServiceAsync {
         fun delete(ruleId: String): CompletableFuture<HttpResponseFor<RuleDeleteResponse>> =
             delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             ruleId: String,
             params: HrisCompanyPayStatementItemRuleDeleteParams =
@@ -290,7 +290,7 @@ interface RuleServiceAsync {
         ): CompletableFuture<HttpResponseFor<RuleDeleteResponse>> =
             delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             ruleId: String,
             params: HrisCompanyPayStatementItemRuleDeleteParams =
@@ -298,19 +298,19 @@ interface RuleServiceAsync {
         ): CompletableFuture<HttpResponseFor<RuleDeleteResponse>> =
             delete(ruleId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuleDeleteResponse>>
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams
         ): CompletableFuture<HttpResponseFor<RuleDeleteResponse>> =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         fun delete(
             ruleId: String,
             requestOptions: RequestOptions,

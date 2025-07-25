@@ -30,7 +30,7 @@ interface EmploymentServiceAsync {
     ): CompletableFuture<HrisEmploymentRetrieveManyPageAsync> =
         retrieveMany(params, RequestOptions.none())
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -60,7 +60,7 @@ interface EmploymentServiceAsync {
         ): CompletableFuture<HttpResponseFor<HrisEmploymentRetrieveManyPageAsync>> =
             retrieveMany(params, RequestOptions.none())
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         fun retrieveMany(
             params: HrisEmploymentRetrieveManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),

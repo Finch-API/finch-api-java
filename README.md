@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/7.3.1)
-[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/7.3.1/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.3.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/7.4.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/7.4.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.4.0)
 
 <!-- x-release-please-end -->
 
@@ -15,7 +15,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.3.1).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.4.0).
 
 <!-- x-release-please-end -->
 
@@ -26,7 +26,7 @@ The REST API documentation can be found on [developer.tryfinch.com](https://deve
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:7.3.1")
+implementation("com.tryfinch.api:finch-java:7.4.0")
 ```
 
 ### Maven
@@ -35,7 +35,7 @@ implementation("com.tryfinch.api:finch-java:7.3.1")
 <dependency>
   <groupId>com.tryfinch.api</groupId>
   <artifactId>finch-java</artifactId>
-  <version>7.3.1</version>
+  <version>7.4.0</version>
 </dependency>
 ```
 
@@ -54,7 +54,8 @@ import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
 FinchClient client = FinchOkHttpClient.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -64,14 +65,15 @@ HrisDirectoryListPage page = client.hris().directory().list();
 
 ## Client configuration
 
-Configure the client using environment variables:
+Configure the client using system properties or environment variables:
 
 ```java
 import com.tryfinch.api.client.FinchClient;
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -95,7 +97,8 @@ import com.tryfinch.api.client.FinchClient;
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
 
 FinchClient client = FinchOkHttpClient.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -103,12 +106,14 @@ FinchClient client = FinchOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter          | Environment variable   | Required | Default value                |
-| --------------- | ---------------------- | -------- | ---------------------------- |
-| `clientId`      | `FINCH_CLIENT_ID`      | false    | -                            |
-| `clientSecret`  | `FINCH_CLIENT_SECRET`  | false    | -                            |
-| `webhookSecret` | `FINCH_WEBHOOK_SECRET` | false    | -                            |
-| `baseUrl`       | `FINCH_BASE_URL`       | true     | `"https://api.tryfinch.com"` |
+| Setter          | System property       | Environment variable   | Required | Default value                |
+| --------------- | --------------------- | ---------------------- | -------- | ---------------------------- |
+| `clientId`      | `finch.clientId`      | `FINCH_CLIENT_ID`      | false    | -                            |
+| `clientSecret`  | `finch.clientSecret`  | `FINCH_CLIENT_SECRET`  | false    | -                            |
+| `webhookSecret` | `finch.webhookSecret` | `FINCH_WEBHOOK_SECRET` | false    | -                            |
+| `baseUrl`       | `finch.baseUrl`       | `FINCH_BASE_URL`       | true     | `"https://api.tryfinch.com"` |
+
+System properties take precedence over environment variables.
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -155,7 +160,8 @@ import com.tryfinch.api.models.HrisDirectoryListParams;
 import java.util.concurrent.CompletableFuture;
 
 FinchClient client = FinchOkHttpClient.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -173,7 +179,8 @@ import com.tryfinch.api.models.HrisDirectoryListParams;
 import java.util.concurrent.CompletableFuture;
 
 FinchClientAsync client = FinchOkHttpClientAsync.builder()
-    // Configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build();
@@ -373,7 +380,7 @@ If the SDK threw an exception, but you're _certain_ the version is compatible, t
 
 ### Retries
 
-The SDK automatically retries 2 times by default, with a short exponential backoff.
+The SDK automatically retries 2 times by default, with a short exponential backoff between requests.
 
 Only the following error types are retried:
 
@@ -383,7 +390,7 @@ Only the following error types are retried:
 - 429 Rate Limit
 - 5xx Internal
 
-The API may also explicitly instruct the SDK to retry or not retry a response.
+The API may also explicitly instruct the SDK to retry or not retry a request.
 
 To set a custom number of retries, configure the client using the `maxRetries` method:
 
@@ -441,6 +448,28 @@ FinchClient client = FinchOkHttpClient.builder()
         "https://example.com", 8080
       )
     ))
+    .accessToken("My Access Token")
+    .build();
+```
+
+### HTTPS
+
+> [!NOTE]
+> Most applications should not call these methods, and instead use the system defaults. The defaults include
+> special optimizations that can be lost if the implementations are modified.
+
+To configure how HTTPS connections are secured, configure the client using the `sslSocketFactory`, `trustManager`, and `hostnameVerifier` methods:
+
+```java
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
+
+FinchClient client = FinchOkHttpClient.builder()
+    .fromEnv()
+    // If `sslSocketFactory` is set, then `trustManager` must be set, and vice versa.
+    .sslSocketFactory(yourSSLSocketFactory)
+    .trustManager(yourTrustManager)
+    .hostnameVerifier(yourHostnameVerifier)
     .accessToken("My Access Token")
     .build();
 ```

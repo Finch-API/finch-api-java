@@ -4,13 +4,13 @@ package com.tryfinch.api.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.getPackageVersion
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.errors.FinchException
@@ -41,7 +41,8 @@ import java.util.function.Consumer
 
 class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClientAsync {
 
-    private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+    private val errorHandler: Handler<HttpResponse> =
+        errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions
@@ -94,7 +95,7 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
     }
 
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
-        jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper)
 
     override fun sync(): FinchClient = sync
 
@@ -150,7 +151,7 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
                 )
                 .build()
         return clientOptions.httpClient.executeAsync(request).thenApply {
-            getAccessTokenHandler.handle(it).accessToken
+            getAccessTokenHandler.handle(errorHandler.handle(it)).accessToken
         }
     }
 
