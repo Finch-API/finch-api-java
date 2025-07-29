@@ -235,6 +235,8 @@ The SDK throws custom unchecked exception types:
 
 - [`FinchIoException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/FinchIoException.kt): I/O networking errors.
 
+- [`FinchRetryableException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/FinchRetryableException.kt): Generic error indicating a failure that could be retried by the client.
+
 - [`FinchInvalidDataException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/FinchInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
 - [`FinchException`](finch-java-core/src/main/kotlin/com/tryfinch/api/errors/FinchException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
