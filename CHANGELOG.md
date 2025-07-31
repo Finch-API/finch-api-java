@@ -1,5 +1,25 @@
 # Changelog
 
+## 7.5.0 (2025-07-31)
+
+Full Changelog: [v7.4.0...v7.5.0](https://github.com/Finch-API/finch-api-java/compare/v7.4.0...v7.5.0)
+
+### Features
+
+* add retryable exception ([451adb3](https://github.com/Finch-API/finch-api-java/commit/451adb3fea351e5e905f4f947b96ffb0692fc381))
+* **client:** ensure compat with proguard ([56c3b0b](https://github.com/Finch-API/finch-api-java/commit/56c3b0bcad2cff10e9b412efe55230544214dfcd))
+
+
+### Bug Fixes
+
+* **client:** r8 support ([700fb08](https://github.com/Finch-API/finch-api-java/commit/700fb080718f1b339860b9e384f3f359a0e6290f))
+
+
+### Chores
+
+* **internal:** bump ci test timeout ([9e577c2](https://github.com/Finch-API/finch-api-java/commit/9e577c2f9c082d753abca9d7b2157f5dbc1d3536))
+* **internal:** reduce proguard ci logging ([97228cc](https://github.com/Finch-API/finch-api-java/commit/97228cca761aa1e433639279102a592877e87dca))
+
 ## 7.4.0 (2025-07-24)
 
 Full Changelog: [v7.3.1...v7.4.0](https://github.com/Finch-API/finch-api-java/compare/v7.3.1...v7.4.0)

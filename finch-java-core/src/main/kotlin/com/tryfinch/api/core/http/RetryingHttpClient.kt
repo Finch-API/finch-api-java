@@ -3,6 +3,7 @@ package com.tryfinch.api.core.http
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchIoException
+import com.tryfinch.api.errors.FinchRetryableException
 import java.io.IOException
 import java.time.Clock
 import java.time.Duration
@@ -176,9 +177,10 @@ private constructor(
     }
 
     private fun shouldRetry(throwable: Throwable): Boolean =
-        // Only retry IOException and FinchIoException, other exceptions are not intended to be
-        // retried.
-        throwable is IOException || throwable is FinchIoException
+        // Only retry known retryable exceptions, other exceptions are not intended to be retried.
+        throwable is IOException ||
+            throwable is FinchIoException ||
+            throwable is FinchRetryableException
 
     private fun getRetryBackoffDuration(retries: Int, response: HttpResponse?): Duration {
         // About the Retry-After header:
