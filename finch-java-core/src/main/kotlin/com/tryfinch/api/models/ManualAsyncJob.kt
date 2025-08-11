@@ -22,7 +22,7 @@ import kotlin.jvm.optionals.getOrNull
 
 class ManualAsyncJob
 private constructor(
-    private val body: JsonField<List<JsonValue>>,
+    private val body: JsonField<List<JsonValue?>>,
     private val jobId: JsonField<String>,
     private val status: JsonField<Status>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -30,7 +30,7 @@ private constructor(
 
     @JsonCreator
     private constructor(
-        @JsonProperty("body") @ExcludeMissing body: JsonField<List<JsonValue>> = JsonMissing.of(),
+        @JsonProperty("body") @ExcludeMissing body: JsonField<List<JsonValue?>> = JsonMissing.of(),
         @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
     ) : this(body, jobId, status, mutableMapOf())
@@ -41,7 +41,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun body(): Optional<List<JsonValue>> = body.getOptional("body")
+    fun body(): Optional<List<JsonValue?>> = body.getOptional("body")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -60,7 +60,7 @@ private constructor(
      *
      * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<List<JsonValue>> = body
+    @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<List<JsonValue?>> = body
 
     /**
      * Returns the raw JSON value of [jobId].
@@ -106,7 +106,7 @@ private constructor(
     /** A builder for [ManualAsyncJob]. */
     class Builder internal constructor() {
 
-        private var body: JsonField<MutableList<JsonValue>>? = null
+        private var body: JsonField<MutableList<JsonValue?>>? = null
         private var jobId: JsonField<String>? = null
         private var status: JsonField<Status>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -120,19 +120,19 @@ private constructor(
         }
 
         /** Specific information about the job, such as individual statuses for batch jobs. */
-        fun body(body: List<JsonValue>?) = body(JsonField.ofNullable(body))
+        fun body(body: List<JsonValue?>?) = body(JsonField.ofNullable(body))
 
         /** Alias for calling [Builder.body] with `body.orElse(null)`. */
-        fun body(body: Optional<List<JsonValue>>) = body(body.getOrNull())
+        fun body(body: Optional<List<JsonValue?>>) = body(body.getOrNull())
 
         /**
          * Sets [Builder.body] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.body] with a well-typed `List<JsonValue>` value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.body] with a well-typed `List<JsonValue?>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun body(body: JsonField<List<JsonValue>>) = apply {
+        fun body(body: JsonField<List<JsonValue?>>) = apply {
             this.body = body.map { it.toMutableList() }
         }
 
@@ -238,7 +238,7 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (body.asKnown().getOrNull()?.size ?: 0) +
+        (body.asKnown().getOrNull()?.sumOf { (if (it == null) 0 else 1).toInt() } ?: 0) +
             (if (jobId.asKnown().isPresent) 1 else 0) +
             (status.asKnown().getOrNull()?.validity() ?: 0)
 
