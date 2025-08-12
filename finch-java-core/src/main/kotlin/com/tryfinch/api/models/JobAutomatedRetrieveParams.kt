@@ -13,11 +13,19 @@ import kotlin.jvm.optionals.getOrNull
 class JobAutomatedRetrieveParams
 private constructor(
     private val jobId: String?,
+    private val entityId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun jobId(): Optional<String> = Optional.ofNullable(jobId)
+
+    /**
+     * The entity ID to use when authenticating with a multi-account token. Required when using a
+     * multi-account token to specify which entity's data to access. Example:
+     * `123e4567-e89b-12d3-a456-426614174000`
+     */
+    fun entityId(): Optional<String> = Optional.ofNullable(entityId)
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -41,12 +49,14 @@ private constructor(
     class Builder internal constructor() {
 
         private var jobId: String? = null
+        private var entityId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(jobAutomatedRetrieveParams: JobAutomatedRetrieveParams) = apply {
             jobId = jobAutomatedRetrieveParams.jobId
+            entityId = jobAutomatedRetrieveParams.entityId
             additionalHeaders = jobAutomatedRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobAutomatedRetrieveParams.additionalQueryParams.toBuilder()
         }
@@ -55,6 +65,16 @@ private constructor(
 
         /** Alias for calling [Builder.jobId] with `jobId.orElse(null)`. */
         fun jobId(jobId: Optional<String>) = jobId(jobId.getOrNull())
+
+        /**
+         * The entity ID to use when authenticating with a multi-account token. Required when using
+         * a multi-account token to specify which entity's data to access. Example:
+         * `123e4567-e89b-12d3-a456-426614174000`
+         */
+        fun entityId(entityId: String?) = apply { this.entityId = entityId }
+
+        /** Alias for calling [Builder.entityId] with `entityId.orElse(null)`. */
+        fun entityId(entityId: Optional<String>) = entityId(entityId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -162,6 +182,7 @@ private constructor(
         fun build(): JobAutomatedRetrieveParams =
             JobAutomatedRetrieveParams(
                 jobId,
+                entityId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -175,18 +196,24 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityId?.let { put("entity_id", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedRetrieveParams && jobId == other.jobId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is JobAutomatedRetrieveParams && jobId == other.jobId && entityId == other.entityId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(jobId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(jobId, entityId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "JobAutomatedRetrieveParams{jobId=$jobId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobAutomatedRetrieveParams{jobId=$jobId, entityId=$entityId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
