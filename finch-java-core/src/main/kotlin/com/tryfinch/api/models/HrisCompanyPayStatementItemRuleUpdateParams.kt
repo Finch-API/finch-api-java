@@ -346,12 +346,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is UpdateRuleRequest && optionalProperty == other.optionalProperty && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is UpdateRuleRequest &&
+                optionalProperty == other.optionalProperty &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(optionalProperty, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -364,10 +364,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisCompanyPayStatementItemRuleUpdateParams && ruleId == other.ruleId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is HrisCompanyPayStatementItemRuleUpdateParams &&
+            ruleId == other.ruleId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(ruleId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(ruleId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "HrisCompanyPayStatementItemRuleUpdateParams{ruleId=$ruleId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -1280,12 +1280,15 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ConnectionStatus && message == other.message && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is ConnectionStatus &&
+                    message == other.message &&
+                    status == other.status &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(message, status, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(message, status, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -1431,7 +1434,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                return other is Type && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1444,12 +1447,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AuthenticationMethod && connectionStatus == other.connectionStatus && products == other.products && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is AuthenticationMethod &&
+                connectionStatus == other.connectionStatus &&
+                products == other.products &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(connectionStatus, products, type, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(connectionStatus, products, type, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1582,7 +1589,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ClientType && value == other.value /* spotless:on */
+            return other is ClientType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1798,12 +1805,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionStatus && lastSuccessfulSync == other.lastSuccessfulSync && message == other.message && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is ConnectionStatus &&
+                lastSuccessfulSync == other.lastSuccessfulSync &&
+                message == other.message &&
+                status == other.status &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(lastSuccessfulSync, message, status, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(lastSuccessfulSync, message, status, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1936,7 +1947,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionType && value == other.value /* spotless:on */
+            return other is ConnectionType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1949,12 +1960,49 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Introspection && id == other.id && accountId == other.accountId && authenticationMethods == other.authenticationMethods && clientId == other.clientId && clientType == other.clientType && companyId == other.companyId && connectionId == other.connectionId && connectionStatus == other.connectionStatus && connectionType == other.connectionType && customerEmail == other.customerEmail && customerId == other.customerId && customerName == other.customerName && manual == other.manual && payrollProviderId == other.payrollProviderId && products == other.products && providerId == other.providerId && username == other.username && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Introspection &&
+            id == other.id &&
+            accountId == other.accountId &&
+            authenticationMethods == other.authenticationMethods &&
+            clientId == other.clientId &&
+            clientType == other.clientType &&
+            companyId == other.companyId &&
+            connectionId == other.connectionId &&
+            connectionStatus == other.connectionStatus &&
+            connectionType == other.connectionType &&
+            customerEmail == other.customerEmail &&
+            customerId == other.customerId &&
+            customerName == other.customerName &&
+            manual == other.manual &&
+            payrollProviderId == other.payrollProviderId &&
+            products == other.products &&
+            providerId == other.providerId &&
+            username == other.username &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, accountId, authenticationMethods, clientId, clientType, companyId, connectionId, connectionStatus, connectionType, customerEmail, customerId, customerName, manual, payrollProviderId, products, providerId, username, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            accountId,
+            authenticationMethods,
+            clientId,
+            clientType,
+            companyId,
+            connectionId,
+            connectionStatus,
+            connectionType,
+            customerEmail,
+            customerId,
+            customerName,
+            manual,
+            payrollProviderId,
+            products,
+            providerId,
+            username,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

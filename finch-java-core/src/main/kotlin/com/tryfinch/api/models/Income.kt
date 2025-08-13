@@ -463,7 +463,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Unit && value == other.value /* spotless:on */
+            return other is Unit && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -476,12 +476,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Income && amount == other.amount && currency == other.currency && effectiveDate == other.effectiveDate && unit == other.unit && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Income &&
+            amount == other.amount &&
+            currency == other.currency &&
+            effectiveDate == other.effectiveDate &&
+            unit == other.unit &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(amount, currency, effectiveDate, unit, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(amount, currency, effectiveDate, unit, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

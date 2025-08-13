@@ -256,12 +256,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is BaseWebhookEvent && accountId == other.accountId && companyId == other.companyId && connectionId == other.connectionId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is BaseWebhookEvent &&
+            accountId == other.accountId &&
+            companyId == other.companyId &&
+            connectionId == other.connectionId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(accountId, companyId, connectionId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(accountId, companyId, connectionId, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

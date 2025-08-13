@@ -312,12 +312,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is OperationSupportMatrix && create == other.create && delete == other.delete && read == other.read && update == other.update && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is OperationSupportMatrix &&
+            create == other.create &&
+            delete == other.delete &&
+            read == other.read &&
+            update == other.update &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(create, delete, read, update, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(create, delete, read, update, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

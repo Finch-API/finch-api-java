@@ -149,7 +149,7 @@ class ConnectionStatusType @JsonCreator private constructor(private val value: J
             return true
         }
 
-        return /* spotless:off */ other is ConnectionStatusType && value == other.value /* spotless:on */
+        return other is ConnectionStatusType && value == other.value
     }
 
     override fun hashCode() = value.hashCode()

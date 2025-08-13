@@ -707,12 +707,15 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Tier && match == other.match && threshold == other.threshold && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Tier &&
+                    match == other.match &&
+                    threshold == other.threshold &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(match, threshold, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(match, threshold, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -833,7 +836,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                return other is Type && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -846,12 +849,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is BenefitCompanyMatchContribution && tiers == other.tiers && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is BenefitCompanyMatchContribution &&
+                tiers == other.tiers &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(tiers, type, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -864,12 +868,25 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CompanyBenefit && benefitId == other.benefitId && description == other.description && frequency == other.frequency && type == other.type && companyContribution == other.companyContribution && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is CompanyBenefit &&
+            benefitId == other.benefitId &&
+            description == other.description &&
+            frequency == other.frequency &&
+            type == other.type &&
+            companyContribution == other.companyContribution &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(benefitId, description, frequency, type, companyContribution, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            benefitId,
+            description,
+            frequency,
+            type,
+            companyContribution,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

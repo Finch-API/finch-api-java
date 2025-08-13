@@ -751,12 +751,10 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Metadata && additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -768,12 +766,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Attributes && metadata == other.metadata && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Attributes &&
+                metadata == other.metadata &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1091,7 +1089,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Operator && value == other.value /* spotless:on */
+                return other is Operator && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1104,12 +1102,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Condition && field == other.field && operator == other.operator && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Condition &&
+                field == other.field &&
+                operator == other.operator &&
+                value == other.value &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(field, operator, value, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(field, operator, value, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1230,7 +1232,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is EntityType && value == other.value /* spotless:on */
+            return other is EntityType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1243,12 +1245,35 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RuleDeleteResponse && id == other.id && attributes == other.attributes && conditions == other.conditions && createdAt == other.createdAt && deletedAt == other.deletedAt && effectiveEndDate == other.effectiveEndDate && effectiveStartDate == other.effectiveStartDate && entityType == other.entityType && priority == other.priority && updatedAt == other.updatedAt && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is RuleDeleteResponse &&
+            id == other.id &&
+            attributes == other.attributes &&
+            conditions == other.conditions &&
+            createdAt == other.createdAt &&
+            deletedAt == other.deletedAt &&
+            effectiveEndDate == other.effectiveEndDate &&
+            effectiveStartDate == other.effectiveStartDate &&
+            entityType == other.entityType &&
+            priority == other.priority &&
+            updatedAt == other.updatedAt &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, attributes, conditions, createdAt, deletedAt, effectiveEndDate, effectiveStartDate, entityType, priority, updatedAt, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            attributes,
+            conditions,
+            createdAt,
+            deletedAt,
+            effectiveEndDate,
+            effectiveStartDate,
+            entityType,
+            priority,
+            updatedAt,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

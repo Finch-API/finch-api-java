@@ -207,10 +207,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PayrollPayGroupListParams && individualId == other.individualId && payFrequencies == other.payFrequencies && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is PayrollPayGroupListParams &&
+            individualId == other.individualId &&
+            payFrequencies == other.payFrequencies &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, payFrequencies, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(individualId, payFrequencies, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "PayrollPayGroupListParams{individualId=$individualId, payFrequencies=$payFrequencies, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

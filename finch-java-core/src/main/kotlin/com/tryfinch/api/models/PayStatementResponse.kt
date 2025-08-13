@@ -354,10 +354,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && payStatementResponse == other.payStatementResponse && batchError == other.batchError && payStatementDataSyncInProgress == other.payStatementDataSyncInProgress /* spotless:on */
+            return other is Body &&
+                payStatementResponse == other.payStatementResponse &&
+                batchError == other.batchError &&
+                payStatementDataSyncInProgress == other.payStatementDataSyncInProgress
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(payStatementResponse, batchError, payStatementDataSyncInProgress) /* spotless:on */
+        override fun hashCode(): Int =
+            Objects.hash(payStatementResponse, batchError, payStatementDataSyncInProgress)
 
         override fun toString(): String =
             when {
@@ -713,12 +717,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is BatchError && code == other.code && message == other.message && name == other.name && finchCode == other.finchCode && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is BatchError &&
+                    code == other.code &&
+                    message == other.message &&
+                    name == other.name &&
+                    finchCode == other.finchCode &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(code, message, name, finchCode, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(code, message, name, finchCode, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -732,12 +741,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PayStatementResponse && body == other.body && code == other.code && paymentId == other.paymentId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is PayStatementResponse &&
+            body == other.body &&
+            code == other.code &&
+            paymentId == other.paymentId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(body, code, paymentId, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

@@ -314,10 +314,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && dataSyncAll == other.dataSyncAll && w4FormEmployeeSync == other.w4FormEmployeeSync /* spotless:on */
+            return other is Body &&
+                dataSyncAll == other.dataSyncAll &&
+                w4FormEmployeeSync == other.w4FormEmployeeSync
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4FormEmployeeSync) /* spotless:on */
+        override fun hashCode(): Int = Objects.hash(dataSyncAll, w4FormEmployeeSync)
 
         override fun toString(): String =
             when {
@@ -740,12 +742,14 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Params && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
+                    return other is Params &&
+                        individualId == other.individualId &&
+                        additionalProperties == other.additionalProperties
                 }
 
-                /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
-                /* spotless:on */
+                private val hashCode: Int by lazy {
+                    Objects.hash(individualId, additionalProperties)
+                }
 
                 override fun hashCode(): Int = hashCode
 
@@ -758,12 +762,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is W4FormEmployeeSync && params == other.params && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is W4FormEmployeeSync &&
+                    params == other.params &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(params, type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -777,10 +782,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is JobAutomatedCreateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "JobAutomatedCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

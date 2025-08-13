@@ -370,7 +370,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -383,12 +383,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ManualAsyncJob && body == other.body && jobId == other.jobId && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ManualAsyncJob &&
+            body == other.body &&
+            jobId == other.jobId &&
+            status == other.status &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(body, jobId, status, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

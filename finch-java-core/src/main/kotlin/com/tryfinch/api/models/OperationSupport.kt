@@ -145,7 +145,7 @@ class OperationSupport @JsonCreator private constructor(private val value: JsonF
             return true
         }
 
-        return /* spotless:off */ other is OperationSupport && value == other.value /* spotless:on */
+        return other is OperationSupport && value == other.value
     }
 
     override fun hashCode() = value.hashCode()
