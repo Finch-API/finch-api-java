@@ -424,12 +424,31 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Location && city == other.city && country == other.country && line1 == other.line1 && line2 == other.line2 && postalCode == other.postalCode && state == other.state && name == other.name && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Location &&
+            city == other.city &&
+            country == other.country &&
+            line1 == other.line1 &&
+            line2 == other.line2 &&
+            postalCode == other.postalCode &&
+            state == other.state &&
+            name == other.name &&
+            sourceId == other.sourceId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(city, country, line1, line2, postalCode, state, name, sourceId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            city,
+            country,
+            line1,
+            line2,
+            postalCode,
+            state,
+            name,
+            sourceId,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

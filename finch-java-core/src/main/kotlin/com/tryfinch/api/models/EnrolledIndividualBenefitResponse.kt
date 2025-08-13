@@ -158,12 +158,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EnrolledIndividualBenefitResponse && jobId == other.jobId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is EnrolledIndividualBenefitResponse &&
+            jobId == other.jobId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(jobId, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

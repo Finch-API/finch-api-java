@@ -220,12 +220,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisDirectoryListIndividualsPageResponse && individuals == other.individuals && paging == other.paging && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is HrisDirectoryListIndividualsPageResponse &&
+            individuals == other.individuals &&
+            paging == other.paging &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(individuals, paging, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

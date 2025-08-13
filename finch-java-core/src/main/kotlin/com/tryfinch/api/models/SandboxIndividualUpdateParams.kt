@@ -1238,12 +1238,39 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is IndividualWithoutId && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is IndividualWithoutId &&
+                dob == other.dob &&
+                emails == other.emails &&
+                encryptedSsn == other.encryptedSsn &&
+                ethnicity == other.ethnicity &&
+                firstName == other.firstName &&
+                gender == other.gender &&
+                lastName == other.lastName &&
+                middleName == other.middleName &&
+                phoneNumbers == other.phoneNumbers &&
+                preferredName == other.preferredName &&
+                residence == other.residence &&
+                ssn == other.ssn &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                dob,
+                emails,
+                encryptedSsn,
+                ethnicity,
+                firstName,
+                gender,
+                lastName,
+                middleName,
+                phoneNumbers,
+                preferredName,
+                residence,
+                ssn,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1523,7 +1550,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                return other is Type && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1536,12 +1563,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Email && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Email &&
+                data == other.data &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1705,7 +1733,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Ethnicity && value == other.value /* spotless:on */
+            return other is Ethnicity && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1842,7 +1870,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Gender && value == other.value /* spotless:on */
+            return other is Gender && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -2125,7 +2153,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                return other is Type && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2138,12 +2166,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PhoneNumber && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is PhoneNumber &&
+                data == other.data &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -2156,10 +2185,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxIndividualUpdateParams && individualId == other.individualId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SandboxIndividualUpdateParams &&
+            individualId == other.individualId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(individualId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SandboxIndividualUpdateParams{individualId=$individualId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

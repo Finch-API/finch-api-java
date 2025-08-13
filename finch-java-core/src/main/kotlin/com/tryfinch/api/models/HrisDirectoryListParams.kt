@@ -210,10 +210,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisDirectoryListParams && limit == other.limit && offset == other.offset && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is HrisDirectoryListParams &&
+            limit == other.limit &&
+            offset == other.offset &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(limit, offset, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(limit, offset, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "HrisDirectoryListParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

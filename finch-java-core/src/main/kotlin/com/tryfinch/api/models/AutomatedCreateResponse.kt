@@ -313,12 +313,25 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AutomatedCreateResponse && allowedRefreshes == other.allowedRefreshes && remainingRefreshes == other.remainingRefreshes && jobId == other.jobId && jobUrl == other.jobUrl && retryAt == other.retryAt && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is AutomatedCreateResponse &&
+            allowedRefreshes == other.allowedRefreshes &&
+            remainingRefreshes == other.remainingRefreshes &&
+            jobId == other.jobId &&
+            jobUrl == other.jobUrl &&
+            retryAt == other.retryAt &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(allowedRefreshes, remainingRefreshes, jobId, jobUrl, retryAt, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            allowedRefreshes,
+            remainingRefreshes,
+            jobId,
+            jobUrl,
+            retryAt,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

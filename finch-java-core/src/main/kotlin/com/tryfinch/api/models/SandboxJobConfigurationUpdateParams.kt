@@ -194,10 +194,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxJobConfigurationUpdateParams && sandboxJobConfiguration == other.sandboxJobConfiguration && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SandboxJobConfigurationUpdateParams &&
+            sandboxJobConfiguration == other.sandboxJobConfiguration &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sandboxJobConfiguration, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(sandboxJobConfiguration, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SandboxJobConfigurationUpdateParams{sandboxJobConfiguration=$sandboxJobConfiguration, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

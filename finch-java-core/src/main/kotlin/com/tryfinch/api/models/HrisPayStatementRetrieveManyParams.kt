@@ -425,12 +425,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && requests == other.requests && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                requests == other.requests &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(requests, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -655,12 +655,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Request && paymentId == other.paymentId && limit == other.limit && offset == other.offset && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Request &&
+                paymentId == other.paymentId &&
+                limit == other.limit &&
+                offset == other.offset &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(paymentId, limit, offset, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(paymentId, limit, offset, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -673,10 +677,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisPayStatementRetrieveManyParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is HrisPayStatementRetrieveManyParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "HrisPayStatementRetrieveManyParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

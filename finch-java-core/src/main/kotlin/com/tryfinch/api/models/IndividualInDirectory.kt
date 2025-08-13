@@ -533,12 +533,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Department && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Department &&
+                name == other.name &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(name, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -689,12 +689,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Manager && id == other.id && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Manager &&
+                id == other.id &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(id, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -706,12 +706,29 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is IndividualInDirectory && id == other.id && department == other.department && firstName == other.firstName && isActive == other.isActive && lastName == other.lastName && manager == other.manager && middleName == other.middleName && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is IndividualInDirectory &&
+            id == other.id &&
+            department == other.department &&
+            firstName == other.firstName &&
+            isActive == other.isActive &&
+            lastName == other.lastName &&
+            manager == other.manager &&
+            middleName == other.middleName &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, department, firstName, isActive, lastName, manager, middleName, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            department,
+            firstName,
+            isActive,
+            lastName,
+            manager,
+            middleName,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 
