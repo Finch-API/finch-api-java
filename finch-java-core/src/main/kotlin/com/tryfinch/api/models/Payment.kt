@@ -821,7 +821,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PayFrequency && value == other.value /* spotless:on */
+            return other is PayFrequency && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1015,12 +1015,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PayPeriod && endDate == other.endDate && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is PayPeriod &&
+                endDate == other.endDate &&
+                startDate == other.startDate &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(endDate, startDate, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1033,12 +1034,39 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Payment && id == other.id && companyDebit == other.companyDebit && debitDate == other.debitDate && employeeTaxes == other.employeeTaxes && employerTaxes == other.employerTaxes && grossPay == other.grossPay && individualIds == other.individualIds && netPay == other.netPay && payDate == other.payDate && payFrequencies == other.payFrequencies && payGroupIds == other.payGroupIds && payPeriod == other.payPeriod && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Payment &&
+            id == other.id &&
+            companyDebit == other.companyDebit &&
+            debitDate == other.debitDate &&
+            employeeTaxes == other.employeeTaxes &&
+            employerTaxes == other.employerTaxes &&
+            grossPay == other.grossPay &&
+            individualIds == other.individualIds &&
+            netPay == other.netPay &&
+            payDate == other.payDate &&
+            payFrequencies == other.payFrequencies &&
+            payGroupIds == other.payGroupIds &&
+            payPeriod == other.payPeriod &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, companyDebit, debitDate, employeeTaxes, employerTaxes, grossPay, individualIds, netPay, payDate, payFrequencies, payGroupIds, payPeriod, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            companyDebit,
+            debitDate,
+            employeeTaxes,
+            employerTaxes,
+            grossPay,
+            individualIds,
+            netPay,
+            payDate,
+            payFrequencies,
+            payGroupIds,
+            payPeriod,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

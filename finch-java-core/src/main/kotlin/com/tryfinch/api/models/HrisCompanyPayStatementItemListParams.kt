@@ -406,7 +406,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Category && value == other.value /* spotless:on */
+            return other is Category && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -419,10 +419,26 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisCompanyPayStatementItemListParams && categories == other.categories && endDate == other.endDate && name == other.name && startDate == other.startDate && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is HrisCompanyPayStatementItemListParams &&
+            categories == other.categories &&
+            endDate == other.endDate &&
+            name == other.name &&
+            startDate == other.startDate &&
+            type == other.type &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(categories, endDate, name, startDate, type, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            categories,
+            endDate,
+            name,
+            startDate,
+            type,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "HrisCompanyPayStatementItemListParams{categories=$categories, endDate=$endDate, name=$name, startDate=$startDate, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

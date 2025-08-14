@@ -363,7 +363,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Code && value == other.value /* spotless:on */
+            return other is Code && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -483,7 +483,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is FinchCode && value == other.value /* spotless:on */
+            return other is FinchCode && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -609,7 +609,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Message && value == other.value /* spotless:on */
+            return other is Message && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -727,7 +727,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Name && value == other.value /* spotless:on */
+            return other is Name && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -740,12 +740,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PayStatementDataSyncInProgress && code == other.code && finchCode == other.finchCode && message == other.message && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is PayStatementDataSyncInProgress &&
+            code == other.code &&
+            finchCode == other.finchCode &&
+            message == other.message &&
+            name == other.name &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(code, finchCode, message, name, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(code, finchCode, message, name, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

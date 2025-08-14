@@ -21,9 +21,9 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * The Forward API allows you to make direct requests to an employment system. If Finch’s unified
- * API doesn’t have a data model that cleanly fits your needs, then Forward allows you to push or
- * pull data models directly against an integration’s API.
+ * The Forward API allows you to make direct requests to an employment system. If Finch's unified
+ * API doesn't have a data model that cleanly fits your needs, then Forward allows you to push or
+ * pull data models directly against an integration's API.
  */
 class RequestForwardingForwardParams
 private constructor(
@@ -618,12 +618,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && method == other.method && route == other.route && data == other.data && headers == other.headers && params == other.params && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                method == other.method &&
+                route == other.route &&
+                data == other.data &&
+                headers == other.headers &&
+                params == other.params &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(method, route, data, headers, params, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(method, route, data, headers, params, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -636,10 +642,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RequestForwardingForwardParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is RequestForwardingForwardParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "RequestForwardingForwardParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

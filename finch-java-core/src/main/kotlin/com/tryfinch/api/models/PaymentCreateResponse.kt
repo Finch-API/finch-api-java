@@ -195,12 +195,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PaymentCreateResponse && payDate == other.payDate && paymentId == other.paymentId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is PaymentCreateResponse &&
+            payDate == other.payDate &&
+            paymentId == other.paymentId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(payDate, paymentId, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

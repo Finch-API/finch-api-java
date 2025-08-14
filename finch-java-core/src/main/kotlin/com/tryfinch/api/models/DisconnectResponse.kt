@@ -27,7 +27,7 @@ private constructor(
     ) : this(status, mutableMapOf())
 
     /**
-     * If the request is successful, Finch will return “success” (HTTP 200 status).
+     * If the request is successful, Finch will return "success" (HTTP 200 status).
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -78,7 +78,7 @@ private constructor(
             additionalProperties = disconnectResponse.additionalProperties.toMutableMap()
         }
 
-        /** If the request is successful, Finch will return “success” (HTTP 200 status). */
+        /** If the request is successful, Finch will return "success" (HTTP 200 status). */
         fun status(status: String) = status(JsonField.of(status))
 
         /**
@@ -155,12 +155,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DisconnectResponse && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is DisconnectResponse &&
+            status == other.status &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(status, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

@@ -225,10 +225,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisCompanyPayStatementItemRuleDeleteParams && ruleId == other.ruleId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is HrisCompanyPayStatementItemRuleDeleteParams &&
+            ruleId == other.ruleId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(ruleId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(ruleId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "HrisCompanyPayStatementItemRuleDeleteParams{ruleId=$ruleId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

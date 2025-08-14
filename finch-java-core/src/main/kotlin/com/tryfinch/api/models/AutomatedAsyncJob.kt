@@ -108,7 +108,7 @@ private constructor(
 
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
-     * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
+     * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -342,8 +342,8 @@ private constructor(
 
         /**
          * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
-         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
-         * be null.
+         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will be
+         * null.
          */
         fun scheduledAt(scheduledAt: OffsetDateTime?) =
             scheduledAt(JsonField.ofNullable(scheduledAt))
@@ -633,12 +633,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Params && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Params &&
+                individualId == other.individualId &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -786,7 +786,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -911,7 +911,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -924,12 +924,33 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AutomatedAsyncJob && completedAt == other.completedAt && createdAt == other.createdAt && jobId == other.jobId && jobUrl == other.jobUrl && params == other.params && scheduledAt == other.scheduledAt && startedAt == other.startedAt && status == other.status && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is AutomatedAsyncJob &&
+            completedAt == other.completedAt &&
+            createdAt == other.createdAt &&
+            jobId == other.jobId &&
+            jobUrl == other.jobUrl &&
+            params == other.params &&
+            scheduledAt == other.scheduledAt &&
+            startedAt == other.startedAt &&
+            status == other.status &&
+            type == other.type &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(completedAt, createdAt, jobId, jobUrl, params, scheduledAt, startedAt, status, type, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            completedAt,
+            createdAt,
+            jobId,
+            jobUrl,
+            params,
+            scheduledAt,
+            startedAt,
+            status,
+            type,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

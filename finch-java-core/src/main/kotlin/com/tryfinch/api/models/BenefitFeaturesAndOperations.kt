@@ -196,12 +196,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is BenefitFeaturesAndOperations && supportedFeatures == other.supportedFeatures && supportedOperations == other.supportedOperations && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is BenefitFeaturesAndOperations &&
+            supportedFeatures == other.supportedFeatures &&
+            supportedOperations == other.supportedOperations &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(supportedFeatures, supportedOperations, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(supportedFeatures, supportedOperations, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

@@ -589,7 +589,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AuthenticationType && value == other.value /* spotless:on */
+            return other is AuthenticationType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -602,12 +602,31 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ConnectionCreateResponse && accessToken == other.accessToken && accountId == other.accountId && authenticationType == other.authenticationType && companyId == other.companyId && connectionId == other.connectionId && products == other.products && providerId == other.providerId && tokenType == other.tokenType && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ConnectionCreateResponse &&
+            accessToken == other.accessToken &&
+            accountId == other.accountId &&
+            authenticationType == other.authenticationType &&
+            companyId == other.companyId &&
+            connectionId == other.connectionId &&
+            products == other.products &&
+            providerId == other.providerId &&
+            tokenType == other.tokenType &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(accessToken, accountId, authenticationType, companyId, connectionId, products, providerId, tokenType, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            accessToken,
+            accountId,
+            authenticationType,
+            companyId,
+            connectionId,
+            products,
+            providerId,
+            tokenType,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

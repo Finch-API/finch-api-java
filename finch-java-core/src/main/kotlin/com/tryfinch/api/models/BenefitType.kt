@@ -224,7 +224,7 @@ class BenefitType @JsonCreator private constructor(private val value: JsonField<
             return true
         }
 
-        return /* spotless:off */ other is BenefitType && value == other.value /* spotless:on */
+        return other is BenefitType && value == other.value
     }
 
     override fun hashCode() = value.hashCode()

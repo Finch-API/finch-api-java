@@ -532,12 +532,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is CreateSandboxPaymentRequest && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is CreateSandboxPaymentRequest &&
+                endDate == other.endDate &&
+                payStatements == other.payStatements &&
+                startDate == other.startDate &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(endDate, payStatements, startDate, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(endDate, payStatements, startDate, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1482,7 +1486,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1495,12 +1499,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Earning && amount == other.amount && hours == other.hours && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Earning &&
+                    amount == other.amount &&
+                    hours == other.hours &&
+                    name == other.name &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(amount, hours, name, type, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(amount, hours, name, type, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -1957,7 +1966,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1970,12 +1979,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is EmployeeDeduction && amount == other.amount && name == other.name && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is EmployeeDeduction &&
+                    amount == other.amount &&
+                    name == other.name &&
+                    preTax == other.preTax &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(amount, name, preTax, type, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(amount, name, preTax, type, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -2394,7 +2408,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -2407,12 +2421,16 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is EmployerContribution && amount == other.amount && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is EmployerContribution &&
+                    amount == other.amount &&
+                    name == other.name &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(amount, name, type, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(amount, name, type, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -2549,7 +2567,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is PaymentMethod && value == other.value /* spotless:on */
+                return other is PaymentMethod && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2909,7 +2927,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -2922,12 +2940,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Tax && amount == other.amount && employer == other.employer && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Tax &&
+                    amount == other.amount &&
+                    employer == other.employer &&
+                    name == other.name &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(amount, employer, name, type, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(amount, employer, name, type, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -3060,7 +3083,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                return other is Type && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -3073,12 +3096,35 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PayStatement && individualId == other.individualId && earnings == other.earnings && employeeDeductions == other.employeeDeductions && employerContributions == other.employerContributions && grossPay == other.grossPay && netPay == other.netPay && paymentMethod == other.paymentMethod && taxes == other.taxes && totalHours == other.totalHours && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is PayStatement &&
+                individualId == other.individualId &&
+                earnings == other.earnings &&
+                employeeDeductions == other.employeeDeductions &&
+                employerContributions == other.employerContributions &&
+                grossPay == other.grossPay &&
+                netPay == other.netPay &&
+                paymentMethod == other.paymentMethod &&
+                taxes == other.taxes &&
+                totalHours == other.totalHours &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(individualId, earnings, employeeDeductions, employerContributions, grossPay, netPay, paymentMethod, taxes, totalHours, type, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                individualId,
+                earnings,
+                employeeDeductions,
+                employerContributions,
+                grossPay,
+                netPay,
+                paymentMethod,
+                taxes,
+                totalHours,
+                type,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -3091,10 +3137,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxPaymentCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SandboxPaymentCreateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SandboxPaymentCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

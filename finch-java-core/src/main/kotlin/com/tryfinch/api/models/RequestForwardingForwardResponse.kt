@@ -35,9 +35,9 @@ private constructor(
     ) : this(data, headers, request, statusCode, mutableMapOf())
 
     /**
-     * A string representation of the HTTP response body of the forwarded request’s response
-     * received from the underlying integration’s API. This field may be null in the case where the
-     * upstream system’s response is empty.
+     * A string representation of the HTTP response body of the forwarded request's response
+     * received from the underlying integration's API. This field may be null in the case where the
+     * upstream system's response is empty.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -45,8 +45,8 @@ private constructor(
     fun data(): Optional<String> = data.getOptional("data")
 
     /**
-     * The HTTP headers of the forwarded request’s response, exactly as received from the underlying
-     * integration’s API.
+     * The HTTP headers of the forwarded request's response, exactly as received from the underlying
+     * integration's API.
      */
     @JsonProperty("headers") @ExcludeMissing fun _headers(): JsonValue = headers
 
@@ -59,8 +59,8 @@ private constructor(
     fun request(): Request = request.getRequired("request")
 
     /**
-     * The HTTP status code of the forwarded request’s response, exactly received from the
-     * underlying integration’s API. This value will be returned as an integer.
+     * The HTTP status code of the forwarded request's response, exactly received from the
+     * underlying integration's API. This value will be returned as an integer.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -138,9 +138,9 @@ private constructor(
             }
 
         /**
-         * A string representation of the HTTP response body of the forwarded request’s response
-         * received from the underlying integration’s API. This field may be null in the case where
-         * the upstream system’s response is empty.
+         * A string representation of the HTTP response body of the forwarded request's response
+         * received from the underlying integration's API. This field may be null in the case where
+         * the upstream system's response is empty.
          */
         fun data(data: String?) = data(JsonField.ofNullable(data))
 
@@ -156,8 +156,8 @@ private constructor(
         fun data(data: JsonField<String>) = apply { this.data = data }
 
         /**
-         * The HTTP headers of the forwarded request’s response, exactly as received from the
-         * underlying integration’s API.
+         * The HTTP headers of the forwarded request's response, exactly as received from the
+         * underlying integration's API.
          */
         fun headers(headers: JsonValue) = apply { this.headers = headers }
 
@@ -176,8 +176,8 @@ private constructor(
         fun request(request: JsonField<Request>) = apply { this.request = request }
 
         /**
-         * The HTTP status code of the forwarded request’s response, exactly received from the
-         * underlying integration’s API. This value will be returned as an integer.
+         * The HTTP status code of the forwarded request's response, exactly received from the
+         * underlying integration's API. This value will be returned as an integer.
          */
         fun statusCode(statusCode: Long) = statusCode(JsonField.of(statusCode))
 
@@ -538,12 +538,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Request && data == other.data && headers == other.headers && method == other.method && params == other.params && route == other.route && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Request &&
+                data == other.data &&
+                headers == other.headers &&
+                method == other.method &&
+                params == other.params &&
+                route == other.route &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(data, headers, method, params, route, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(data, headers, method, params, route, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -556,12 +562,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RequestForwardingForwardResponse && data == other.data && headers == other.headers && request == other.request && statusCode == other.statusCode && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is RequestForwardingForwardResponse &&
+            data == other.data &&
+            headers == other.headers &&
+            request == other.request &&
+            statusCode == other.statusCode &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(data, headers, request, statusCode, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(data, headers, request, statusCode, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

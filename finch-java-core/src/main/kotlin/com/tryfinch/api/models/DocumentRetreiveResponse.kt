@@ -119,10 +119,10 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DocumentRetreiveResponse && w42020 == other.w42020 && w42005 == other.w42005 /* spotless:on */
+        return other is DocumentRetreiveResponse && w42020 == other.w42020 && w42005 == other.w42005
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(w42020, w42005) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(w42020, w42005)
 
     override fun toString(): String =
         when {

@@ -189,12 +189,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Paging && offset == other.offset && count == other.count && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Paging &&
+            offset == other.offset &&
+            count == other.count &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(offset, count, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

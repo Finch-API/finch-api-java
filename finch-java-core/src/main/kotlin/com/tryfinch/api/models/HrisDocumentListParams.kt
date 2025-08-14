@@ -379,7 +379,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -392,10 +392,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisDocumentListParams && individualIds == other.individualIds && limit == other.limit && offset == other.offset && types == other.types && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is HrisDocumentListParams &&
+            individualIds == other.individualIds &&
+            limit == other.limit &&
+            offset == other.offset &&
+            types == other.types &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualIds, limit, offset, types, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(individualIds, limit, offset, types, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "HrisDocumentListParams{individualIds=$individualIds, limit=$limit, offset=$offset, types=$types, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

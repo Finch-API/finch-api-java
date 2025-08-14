@@ -1006,12 +1006,33 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                customerId == other.customerId &&
+                customerName == other.customerName &&
+                products == other.products &&
+                customerEmail == other.customerEmail &&
+                integration == other.integration &&
+                manual == other.manual &&
+                minutesToExpire == other.minutesToExpire &&
+                redirectUri == other.redirectUri &&
+                sandbox == other.sandbox &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(customerId, customerName, products, customerEmail, integration, manual, minutesToExpire, redirectUri, sandbox, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                customerId,
+                customerName,
+                products,
+                customerEmail,
+                integration,
+                manual,
+                minutesToExpire,
+                redirectUri,
+                sandbox,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1188,7 +1209,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectProducts && value == other.value /* spotless:on */
+            return other is ConnectProducts && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1495,7 +1516,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is AuthMethod && value == other.value /* spotless:on */
+                return other is AuthMethod && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1508,12 +1529,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Integration && authMethod == other.authMethod && provider == other.provider && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Integration &&
+                authMethod == other.authMethod &&
+                provider == other.provider &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(authMethod, provider, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(authMethod, provider, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1637,7 +1661,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Sandbox && value == other.value /* spotless:on */
+            return other is Sandbox && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1650,10 +1674,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ConnectSessionNewParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ConnectSessionNewParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ConnectSessionNewParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

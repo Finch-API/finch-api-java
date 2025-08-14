@@ -631,12 +631,39 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is BenefitsSupport && commuter == other.commuter && customPostTax == other.customPostTax && customPreTax == other.customPreTax && fsaDependentCare == other.fsaDependentCare && fsaMedical == other.fsaMedical && hsaPost == other.hsaPost && hsaPre == other.hsaPre && s125Dental == other.s125Dental && s125Medical == other.s125Medical && s125Vision == other.s125Vision && simple == other.simple && simpleIra == other.simpleIra && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is BenefitsSupport &&
+            commuter == other.commuter &&
+            customPostTax == other.customPostTax &&
+            customPreTax == other.customPreTax &&
+            fsaDependentCare == other.fsaDependentCare &&
+            fsaMedical == other.fsaMedical &&
+            hsaPost == other.hsaPost &&
+            hsaPre == other.hsaPre &&
+            s125Dental == other.s125Dental &&
+            s125Medical == other.s125Medical &&
+            s125Vision == other.s125Vision &&
+            simple == other.simple &&
+            simpleIra == other.simpleIra &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(commuter, customPostTax, customPreTax, fsaDependentCare, fsaMedical, hsaPost, hsaPre, s125Dental, s125Medical, s125Vision, simple, simpleIra, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            commuter,
+            customPostTax,
+            customPreTax,
+            fsaDependentCare,
+            fsaMedical,
+            hsaPost,
+            hsaPre,
+            s125Dental,
+            s125Medical,
+            s125Vision,
+            simple,
+            simpleIra,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

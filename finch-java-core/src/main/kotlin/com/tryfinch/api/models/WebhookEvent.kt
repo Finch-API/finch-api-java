@@ -187,10 +187,28 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is WebhookEvent && accountUpdated == other.accountUpdated && jobCompletion == other.jobCompletion && companyUpdated == other.companyUpdated && directory == other.directory && employment == other.employment && individual == other.individual && payment == other.payment && payStatement == other.payStatement /* spotless:on */
+        return other is WebhookEvent &&
+            accountUpdated == other.accountUpdated &&
+            jobCompletion == other.jobCompletion &&
+            companyUpdated == other.companyUpdated &&
+            directory == other.directory &&
+            employment == other.employment &&
+            individual == other.individual &&
+            payment == other.payment &&
+            payStatement == other.payStatement
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accountUpdated, jobCompletion, companyUpdated, directory, employment, individual, payment, payStatement) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            accountUpdated,
+            jobCompletion,
+            companyUpdated,
+            directory,
+            employment,
+            individual,
+            payment,
+            payStatement,
+        )
 
     override fun toString(): String =
         when {

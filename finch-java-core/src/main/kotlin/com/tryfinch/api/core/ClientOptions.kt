@@ -437,11 +437,6 @@ private constructor(
             headers.put("X-Stainless-Runtime", "JRE")
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             headers.put("Finch-API-Version", "2020-09-17")
-            accessToken?.let {
-                if (!it.isEmpty()) {
-                    headers.put("Authorization", "Bearer $it")
-                }
-            }
             clientId?.let { username ->
                 clientSecret?.let { password ->
                     if (!username.isEmpty() && !password.isEmpty()) {
@@ -450,6 +445,11 @@ private constructor(
                             "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
                         )
                     }
+                }
+            }
+            accessToken?.let {
+                if (!it.isEmpty()) {
+                    headers.put("Authorization", "Bearer $it")
                 }
             }
             headers.replaceAll(this.headers.build())
