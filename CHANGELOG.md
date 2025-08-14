@@ -1,5 +1,41 @@
 # Changelog
 
+## 7.5.0 (2025-08-14)
+
+Full Changelog: [v7.4.0...v7.5.0](https://github.com/Finch-API/finch-api-java/compare/v7.4.0...v7.5.0)
+
+### Features
+
+* add retryable exception ([451adb3](https://github.com/Finch-API/finch-api-java/commit/451adb3fea351e5e905f4f947b96ffb0692fc381))
+* **api:** api update ([e282b93](https://github.com/Finch-API/finch-api-java/commit/e282b93f4af685cb1f90e0d3f625992f2244fca7))
+* **api:** api update ([21029e1](https://github.com/Finch-API/finch-api-java/commit/21029e1962110fd6394a08af08b97ae39e784e79))
+* **client:** ensure compat with proguard ([56c3b0b](https://github.com/Finch-API/finch-api-java/commit/56c3b0bcad2cff10e9b412efe55230544214dfcd))
+
+
+### Bug Fixes
+
+* **client:** prioritise bearer auth ([3e8af3a](https://github.com/Finch-API/finch-api-java/commit/3e8af3ad0b7ba3f17f845da25205fcd12df9389e))
+* **client:** r8 support ([700fb08](https://github.com/Finch-API/finch-api-java/commit/700fb080718f1b339860b9e384f3f359a0e6290f))
+
+
+### Performance Improvements
+
+* **internal:** make formatting faster ([6c97cb5](https://github.com/Finch-API/finch-api-java/commit/6c97cb5e79daab075eb43efb35ab992baa011770))
+
+
+### Chores
+
+* **example:** fix run example comment ([316356f](https://github.com/Finch-API/finch-api-java/commit/316356fb19963ef6ef9698102f2f66ea7111d8be))
+* increase max gradle JVM heap to 8GB ([1eed053](https://github.com/Finch-API/finch-api-java/commit/1eed053bef23cc9aa82085af0d17c94adc63e225))
+* **internal:** add async lock helper ([290ee95](https://github.com/Finch-API/finch-api-java/commit/290ee954c5520a181678d8472e5849a42485b1ae))
+* **internal:** bump ci test timeout ([9e577c2](https://github.com/Finch-API/finch-api-java/commit/9e577c2f9c082d753abca9d7b2157f5dbc1d3536))
+* **internal:** dynamically determine included projects ([a9f3ad6](https://github.com/Finch-API/finch-api-java/commit/a9f3ad61141a729a69b5482e65537af3f247fe75))
+* **internal:** format identity methods ([fee1332](https://github.com/Finch-API/finch-api-java/commit/fee13320c0585e2ff8ac12e08de92619d81504e9))
+* **internal:** reduce proguard ci logging ([97228cc](https://github.com/Finch-API/finch-api-java/commit/97228cca761aa1e433639279102a592877e87dca))
+* **internal:** support passing arguments to test script ([ed21d5f](https://github.com/Finch-API/finch-api-java/commit/ed21d5f3060c72300e10783daa1845c2b05fb30b))
+* **internal:** update comment in script ([9a58acb](https://github.com/Finch-API/finch-api-java/commit/9a58acbb6d50ac2c08c2a00243fc547d8f6193fe))
+* update @stainless-api/prism-cli to v5.15.0 ([9338715](https://github.com/Finch-API/finch-api-java/commit/93387157cbd7f20a97e713952ae8eacd34a6129f))
+
 ## 7.4.0 (2025-07-24)
 
 Full Changelog: [v7.3.1...v7.4.0](https://github.com/Finch-API/finch-api-java/compare/v7.3.1...v7.4.0)
