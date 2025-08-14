@@ -1,5 +1,13 @@
 # Changelog
 
+## 7.5.1 (2025-08-14)
+
+Full Changelog: [v7.5.0...v7.5.1](https://github.com/Finch-API/finch-api-java/compare/v7.5.0...v7.5.1)
+
+### Chores
+
+* **ci:** add build job ([c822318](https://github.com/Finch-API/finch-api-java/commit/c822318168ff1ed0865bdcb5725b087256e40482))
+
 ## 7.5.0 (2025-08-14)
 
 Full Changelog: [v7.4.0...v7.5.0](https://github.com/Finch-API/finch-api-java/compare/v7.4.0...v7.5.0)
