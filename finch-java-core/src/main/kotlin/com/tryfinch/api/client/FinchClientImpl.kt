@@ -189,7 +189,7 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
         @get:JsonProperty("provider_id") val providerId: String,
     )
 
-    override fun close() = clientOptions.httpClient.close()
+    override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         FinchClient.WithRawResponse {
