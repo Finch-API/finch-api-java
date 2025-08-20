@@ -96,7 +96,7 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
 
     override fun connect(): ConnectService = connect
 
-    override fun close() = clientOptions.httpClient.close()
+    override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         FinchClient.WithRawResponse {
