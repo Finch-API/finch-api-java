@@ -1,5 +1,14 @@
 # Changelog
 
+## 7.5.2 (2025-08-20)
+
+Full Changelog: [v7.5.1...v7.5.2](https://github.com/Finch-API/finch-api-java/compare/v7.5.1...v7.5.2)
+
+### Chores
+
+* **client:** refactor closing / shutdown ([133f431](https://github.com/Finch-API/finch-api-java/commit/133f4314793c2b74f97970d257b1c9d25c9ed3de))
+* **internal:** support running formatters directly ([fb89e60](https://github.com/Finch-API/finch-api-java/commit/fb89e608a0822ba5122f9ea5e3fa0fa561b1f388))
+
 ## 7.5.1 (2025-08-14)
 
 Full Changelog: [v7.5.0...v7.5.1](https://github.com/Finch-API/finch-api-java/compare/v7.5.0...v7.5.1)
