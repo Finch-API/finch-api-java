@@ -48,6 +48,8 @@ private constructor(
     private val customerEmail: JsonField<String>,
     private val customerId: JsonField<String>,
     private val customerName: JsonField<String>,
+    private val entityIds: JsonField<List<String>>,
+    private val entityMode: JsonField<EntityMode>,
     private val manual: JsonField<Boolean>,
     private val payrollProviderId: JsonField<String>,
     private val username: JsonField<String>,
@@ -90,6 +92,12 @@ private constructor(
         @JsonProperty("customer_name")
         @ExcludeMissing
         customerName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("entity_ids")
+        @ExcludeMissing
+        entityIds: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("entity_mode")
+        @ExcludeMissing
+        entityMode: JsonField<EntityMode> = JsonMissing.of(),
         @JsonProperty("manual") @ExcludeMissing manual: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("payroll_provider_id")
         @ExcludeMissing
@@ -110,6 +118,8 @@ private constructor(
         customerEmail,
         customerId,
         customerName,
+        entityIds,
+        entityMode,
         manual,
         payrollProviderId,
         username,
@@ -234,6 +244,22 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun customerName(): Optional<String> = customerName.getOptional("customer_name")
+
+    /**
+     * Array of entity IDs associated with this connection.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun entityIds(): Optional<List<String>> = entityIds.getOptional("entity_ids")
+
+    /**
+     * Indicates whether this connection manages a single entity or multiple entities.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun entityMode(): Optional<EntityMode> = entityMode.getOptional("entity_mode")
 
     /**
      * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
@@ -383,6 +409,24 @@ private constructor(
     fun _customerName(): JsonField<String> = customerName
 
     /**
+     * Returns the raw JSON value of [entityIds].
+     *
+     * Unlike [entityIds], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("entity_ids")
+    @ExcludeMissing
+    fun _entityIds(): JsonField<List<String>> = entityIds
+
+    /**
+     * Returns the raw JSON value of [entityMode].
+     *
+     * Unlike [entityMode], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("entity_mode")
+    @ExcludeMissing
+    fun _entityMode(): JsonField<EntityMode> = entityMode
+
+    /**
      * Returns the raw JSON value of [manual].
      *
      * Unlike [manual], this method doesn't throw if the JSON field has an unexpected type.
@@ -457,6 +501,8 @@ private constructor(
         private var customerEmail: JsonField<String> = JsonMissing.of()
         private var customerId: JsonField<String> = JsonMissing.of()
         private var customerName: JsonField<String> = JsonMissing.of()
+        private var entityIds: JsonField<MutableList<String>>? = null
+        private var entityMode: JsonField<EntityMode> = JsonMissing.of()
         private var manual: JsonField<Boolean> = JsonMissing.of()
         private var payrollProviderId: JsonField<String> = JsonMissing.of()
         private var username: JsonField<String> = JsonMissing.of()
@@ -478,6 +524,8 @@ private constructor(
             customerEmail = introspection.customerEmail
             customerId = introspection.customerId
             customerName = introspection.customerName
+            entityIds = introspection.entityIds.map { it.toMutableList() }
+            entityMode = introspection.entityMode
             manual = introspection.manual
             payrollProviderId = introspection.payrollProviderId
             username = introspection.username
@@ -723,6 +771,44 @@ private constructor(
             this.customerName = customerName
         }
 
+        /** Array of entity IDs associated with this connection. */
+        fun entityIds(entityIds: List<String>) = entityIds(JsonField.of(entityIds))
+
+        /**
+         * Sets [Builder.entityIds] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.entityIds] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun entityIds(entityIds: JsonField<List<String>>) = apply {
+            this.entityIds = entityIds.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds =
+                (entityIds ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("entityIds", it).add(entityId)
+                }
+        }
+
+        /** Indicates whether this connection manages a single entity or multiple entities. */
+        fun entityMode(entityMode: EntityMode) = entityMode(JsonField.of(entityMode))
+
+        /**
+         * Sets [Builder.entityMode] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.entityMode] with a well-typed [EntityMode] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun entityMode(entityMode: JsonField<EntityMode>) = apply { this.entityMode = entityMode }
+
         /**
          * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
          * (`true` if using Assisted Connect, `false` if connection is automated)
@@ -825,6 +911,8 @@ private constructor(
                 customerEmail,
                 customerId,
                 customerName,
+                (entityIds ?: JsonMissing.of()).map { it.toImmutable() },
+                entityMode,
                 manual,
                 payrollProviderId,
                 username,
@@ -853,6 +941,8 @@ private constructor(
         customerEmail()
         customerId()
         customerName()
+        entityIds()
+        entityMode().ifPresent { it.validate() }
         manual()
         payrollProviderId()
         username()
@@ -888,6 +978,8 @@ private constructor(
             (if (customerEmail.asKnown().isPresent) 1 else 0) +
             (if (customerId.asKnown().isPresent) 1 else 0) +
             (if (customerName.asKnown().isPresent) 1 else 0) +
+            (entityIds.asKnown().getOrNull()?.size ?: 0) +
+            (entityMode.asKnown().getOrNull()?.validity() ?: 0) +
             (if (manual.asKnown().isPresent) 1 else 0) +
             (if (payrollProviderId.asKnown().isPresent) 1 else 0) +
             (if (username.asKnown().isPresent) 1 else 0)
@@ -2446,6 +2538,133 @@ private constructor(
             "AuthenticationMethodDetail{type=$type, connectionStatus=$connectionStatus, products=$products, additionalProperties=$additionalProperties}"
     }
 
+    /** Indicates whether this connection manages a single entity or multiple entities. */
+    class EntityMode @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val SINGLE = of("single")
+
+            @JvmField val MULTI = of("multi")
+
+            @JvmStatic fun of(value: String) = EntityMode(JsonField.of(value))
+        }
+
+        /** An enum containing [EntityMode]'s known values. */
+        enum class Known {
+            SINGLE,
+            MULTI,
+        }
+
+        /**
+         * An enum containing [EntityMode]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [EntityMode] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            SINGLE,
+            MULTI,
+            /**
+             * An enum member indicating that [EntityMode] was instantiated with an unknown value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                SINGLE -> Value.SINGLE
+                MULTI -> Value.MULTI
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
+        fun known(): Known =
+            when (this) {
+                SINGLE -> Known.SINGLE
+                MULTI -> Known.MULTI
+                else -> throw FinchInvalidDataException("Unknown EntityMode: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): EntityMode = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is EntityMode && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
@@ -2466,6 +2685,8 @@ private constructor(
             customerEmail == other.customerEmail &&
             customerId == other.customerId &&
             customerName == other.customerName &&
+            entityIds == other.entityIds &&
+            entityMode == other.entityMode &&
             manual == other.manual &&
             payrollProviderId == other.payrollProviderId &&
             username == other.username &&
@@ -2488,6 +2709,8 @@ private constructor(
             customerEmail,
             customerId,
             customerName,
+            entityIds,
+            entityMode,
             manual,
             payrollProviderId,
             username,
@@ -2498,5 +2721,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Introspection{id=$id, clientId=$clientId, clientType=$clientType, connectionId=$connectionId, connectionStatus=$connectionStatus, connectionType=$connectionType, products=$products, providerId=$providerId, accountId=$accountId, authenticationMethods=$authenticationMethods, companyId=$companyId, customerEmail=$customerEmail, customerId=$customerId, customerName=$customerName, manual=$manual, payrollProviderId=$payrollProviderId, username=$username, additionalProperties=$additionalProperties}"
+        "Introspection{id=$id, clientId=$clientId, clientType=$clientType, connectionId=$connectionId, connectionStatus=$connectionStatus, connectionType=$connectionType, products=$products, providerId=$providerId, accountId=$accountId, authenticationMethods=$authenticationMethods, companyId=$companyId, customerEmail=$customerEmail, customerId=$customerId, customerName=$customerName, entityIds=$entityIds, entityMode=$entityMode, manual=$manual, payrollProviderId=$payrollProviderId, username=$username, additionalProperties=$additionalProperties}"
 }
