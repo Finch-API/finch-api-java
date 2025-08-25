@@ -23,10 +23,10 @@ internal class AccessTokenServiceTest {
         val createAccessTokenResponse =
             accessTokenService.create(
                 AccessTokenCreateParams.builder()
-                    .code("<your_authorization_code>")
                     .clientId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .clientSecret("<your_client_secret>")
-                    .redirectUri("https://example.com")
+                    .clientSecret("client_secret")
+                    .code("code")
+                    .redirectUri("redirect_uri")
                     .build()
             )
 
