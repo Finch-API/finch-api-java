@@ -1,5 +1,27 @@
 # Changelog
 
+## 7.6.0 (2025-09-03)
+
+Full Changelog: [v7.5.2...v7.6.0](https://github.com/Finch-API/finch-api-java/compare/v7.5.2...v7.6.0)
+
+### Features
+
+* **api:** api update ([ff49b09](https://github.com/Finch-API/finch-api-java/commit/ff49b09be8b1d99fd939600a128c733a45586417))
+* **api:** api update ([0f28b13](https://github.com/Finch-API/finch-api-java/commit/0f28b13c3cbb994557ed019c2020939a7e0476e1))
+
+
+### Bug Fixes
+
+* **ci:** use java-version 21 for publish step ([7d2e9d7](https://github.com/Finch-API/finch-api-java/commit/7d2e9d77738fef412fc7606230877cdb3befca7f))
+* fix casing issue ([a493f5f](https://github.com/Finch-API/finch-api-java/commit/a493f5f1779c5af85ea3122a3bcba407eb0b1099))
+* update singularization rules ([270e376](https://github.com/Finch-API/finch-api-java/commit/270e37692dcb7314ec7ff88debd588642615533d))
+
+
+### Chores
+
+* **ci:** reduce log noise ([b7eee64](https://github.com/Finch-API/finch-api-java/commit/b7eee641c7c531117813d3400955373a1268e495))
+* remove memory upper bound from publishing step ([c1d1685](https://github.com/Finch-API/finch-api-java/commit/c1d16852bef0a7a7177e3619cce87d754f391edc))
+
 ## 7.5.2 (2025-08-20)
 
 Full Changelog: [v7.5.1...v7.5.2](https://github.com/Finch-API/finch-api-java/compare/v7.5.1...v7.5.2)

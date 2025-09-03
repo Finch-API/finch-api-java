@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/7.5.2)
-[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/7.5.2/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.5.2)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/7.6.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/7.6.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.6.0)
 
 <!-- x-release-please-end -->
 
@@ -15,7 +15,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.5.2).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-java/7.6.0).
 
 <!-- x-release-please-end -->
 
@@ -26,7 +26,7 @@ The REST API documentation can be found on [developer.tryfinch.com](https://deve
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-java:7.5.2")
+implementation("com.tryfinch.api:finch-java:7.6.0")
 ```
 
 ### Maven
@@ -35,7 +35,7 @@ implementation("com.tryfinch.api:finch-java:7.5.2")
 <dependency>
   <groupId>com.tryfinch.api</groupId>
   <artifactId>finch-java</artifactId>
-  <version>7.5.2</version>
+  <version>7.6.0</version>
 </dependency>
 ```
 
@@ -596,7 +596,9 @@ import com.tryfinch.api.models.AccessTokenCreateParams;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
 HrisDirectoryListParams params = AccessTokenCreateParams.builder()
-    .code(JsonMissing.of())
+    .clientSecret("client_secret")
+    .code("code")
+    .clientId(JsonMissing.of())
     .build();
 ```
 
@@ -638,19 +640,19 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 import com.tryfinch.api.core.JsonField;
 import java.util.Optional;
 
-JsonField<String> code = client.accessTokens().create(params)._code();
+JsonField<String> clientId = client.accessTokens().create(params)._clientId();
 
-if (code.isMissing()) {
+if (clientId.isMissing()) {
   // The property is absent from the JSON response
-} else if (code.isNull()) {
+} else if (clientId.isNull()) {
   // The property was set to literal null
 } else {
   // Check if value was provided as a string
   // Other methods include `asNumber()`, `asBoolean()`, etc.
-  Optional<String> jsonString = code.asString();
+  Optional<String> jsonString = clientId.asString();
 
   // Try to deserialize into a custom type
-  MyClass myObject = code.asUnknown().orElseThrow().convert(MyClass.class);
+  MyClass myObject = clientId.asUnknown().orElseThrow().convert(MyClass.class);
 }
 ```
 
