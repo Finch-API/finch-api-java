@@ -596,9 +596,7 @@ import com.tryfinch.api.models.AccessTokenCreateParams;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
 HrisDirectoryListParams params = AccessTokenCreateParams.builder()
-    .clientSecret("client_secret")
-    .code("code")
-    .clientId(JsonMissing.of())
+    .code(JsonMissing.of())
     .build();
 ```
 
@@ -640,19 +638,19 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 import com.tryfinch.api.core.JsonField;
 import java.util.Optional;
 
-JsonField<String> clientId = client.accessTokens().create(params)._clientId();
+JsonField<String> code = client.accessTokens().create(params)._code();
 
-if (clientId.isMissing()) {
+if (code.isMissing()) {
   // The property is absent from the JSON response
-} else if (clientId.isNull()) {
+} else if (code.isNull()) {
   // The property was set to literal null
 } else {
   // Check if value was provided as a string
   // Other methods include `asNumber()`, `asBoolean()`, etc.
-  Optional<String> jsonString = clientId.asString();
+  Optional<String> jsonString = code.asString();
 
   // Try to deserialize into a custom type
-  MyClass myObject = clientId.asUnknown().orElseThrow().convert(MyClass.class);
+  MyClass myObject = code.asUnknown().orElseThrow().convert(MyClass.class);
 }
 ```
 
