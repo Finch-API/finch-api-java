@@ -28,22 +28,6 @@ private constructor(
 ) : Params {
 
     /**
-     * The client ID for your application
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
-     *   missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun clientId(): String = body.clientId()
-
-    /**
-     * The client secret for your application
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
-     *   missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun clientSecret(): String = body.clientSecret()
-
-    /**
      * The authorization code received from the authorization server
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -52,12 +36,35 @@ private constructor(
     fun code(): String = body.code()
 
     /**
+     * The client ID for your application
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun clientId(): Optional<String> = body.clientId()
+
+    /**
+     * The client secret for your application
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun clientSecret(): Optional<String> = body.clientSecret()
+
+    /**
      * The redirect URI used in the authorization request (optional)
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun redirectUri(): Optional<String> = body.redirectUri()
+
+    /**
+     * Returns the raw JSON value of [code].
+     *
+     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _code(): JsonField<String> = body._code()
 
     /**
      * Returns the raw JSON value of [clientId].
@@ -72,13 +79,6 @@ private constructor(
      * Unlike [clientSecret], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _clientSecret(): JsonField<String> = body._clientSecret()
-
-    /**
-     * Returns the raw JSON value of [code].
-     *
-     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _code(): JsonField<String> = body._code()
 
     /**
      * Returns the raw JSON value of [redirectUri].
@@ -104,8 +104,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .clientId()
-         * .clientSecret()
          * .code()
          * ```
          */
@@ -131,12 +129,23 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [code]
          * - [clientId]
          * - [clientSecret]
-         * - [code]
          * - [redirectUri]
          */
         fun body(body: CreateAccessTokenRequest) = apply { this.body = body.toBuilder() }
+
+        /** The authorization code received from the authorization server */
+        fun code(code: String) = apply { body.code(code) }
+
+        /**
+         * Sets [Builder.code] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.code] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun code(code: JsonField<String>) = apply { body.code(code) }
 
         /** The client ID for your application */
         fun clientId(clientId: String) = apply { body.clientId(clientId) }
@@ -162,17 +171,6 @@ private constructor(
         fun clientSecret(clientSecret: JsonField<String>) = apply {
             body.clientSecret(clientSecret)
         }
-
-        /** The authorization code received from the authorization server */
-        fun code(code: String) = apply { body.code(code) }
-
-        /**
-         * Sets [Builder.code] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.code] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun code(code: JsonField<String>) = apply { body.code(code) }
 
         /** The redirect URI used in the authorization request (optional) */
         fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
@@ -310,8 +308,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .clientId()
-         * .clientSecret()
          * .code()
          * ```
          *
@@ -333,42 +329,26 @@ private constructor(
 
     class CreateAccessTokenRequest
     private constructor(
+        private val code: JsonField<String>,
         private val clientId: JsonField<String>,
         private val clientSecret: JsonField<String>,
-        private val code: JsonField<String>,
         private val redirectUri: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
+            @JsonProperty("code") @ExcludeMissing code: JsonField<String> = JsonMissing.of(),
             @JsonProperty("client_id")
             @ExcludeMissing
             clientId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("client_secret")
             @ExcludeMissing
             clientSecret: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("code") @ExcludeMissing code: JsonField<String> = JsonMissing.of(),
             @JsonProperty("redirect_uri")
             @ExcludeMissing
             redirectUri: JsonField<String> = JsonMissing.of(),
-        ) : this(clientId, clientSecret, code, redirectUri, mutableMapOf())
-
-        /**
-         * The client ID for your application
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun clientId(): String = clientId.getRequired("client_id")
-
-        /**
-         * The client secret for your application
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun clientSecret(): String = clientSecret.getRequired("client_secret")
+        ) : this(code, clientId, clientSecret, redirectUri, mutableMapOf())
 
         /**
          * The authorization code received from the authorization server
@@ -379,12 +359,35 @@ private constructor(
         fun code(): String = code.getRequired("code")
 
         /**
+         * The client ID for your application
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun clientId(): Optional<String> = clientId.getOptional("client_id")
+
+        /**
+         * The client secret for your application
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun clientSecret(): Optional<String> = clientSecret.getOptional("client_secret")
+
+        /**
          * The redirect URI used in the authorization request (optional)
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun redirectUri(): Optional<String> = redirectUri.getOptional("redirect_uri")
+
+        /**
+         * Returns the raw JSON value of [code].
+         *
+         * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
 
         /**
          * Returns the raw JSON value of [clientId].
@@ -402,13 +405,6 @@ private constructor(
         @JsonProperty("client_secret")
         @ExcludeMissing
         fun _clientSecret(): JsonField<String> = clientSecret
-
-        /**
-         * Returns the raw JSON value of [code].
-         *
-         * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
 
         /**
          * Returns the raw JSON value of [redirectUri].
@@ -438,8 +434,6 @@ private constructor(
              *
              * The following fields are required:
              * ```java
-             * .clientId()
-             * .clientSecret()
              * .code()
              * ```
              */
@@ -449,20 +443,32 @@ private constructor(
         /** A builder for [CreateAccessTokenRequest]. */
         class Builder internal constructor() {
 
-            private var clientId: JsonField<String>? = null
-            private var clientSecret: JsonField<String>? = null
             private var code: JsonField<String>? = null
+            private var clientId: JsonField<String> = JsonMissing.of()
+            private var clientSecret: JsonField<String> = JsonMissing.of()
             private var redirectUri: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(createAccessTokenRequest: CreateAccessTokenRequest) = apply {
+                code = createAccessTokenRequest.code
                 clientId = createAccessTokenRequest.clientId
                 clientSecret = createAccessTokenRequest.clientSecret
-                code = createAccessTokenRequest.code
                 redirectUri = createAccessTokenRequest.redirectUri
                 additionalProperties = createAccessTokenRequest.additionalProperties.toMutableMap()
             }
+
+            /** The authorization code received from the authorization server */
+            fun code(code: String) = code(JsonField.of(code))
+
+            /**
+             * Sets [Builder.code] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.code] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun code(code: JsonField<String>) = apply { this.code = code }
 
             /** The client ID for your application */
             fun clientId(clientId: String) = clientId(JsonField.of(clientId))
@@ -489,18 +495,6 @@ private constructor(
             fun clientSecret(clientSecret: JsonField<String>) = apply {
                 this.clientSecret = clientSecret
             }
-
-            /** The authorization code received from the authorization server */
-            fun code(code: String) = code(JsonField.of(code))
-
-            /**
-             * Sets [Builder.code] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.code] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun code(code: JsonField<String>) = apply { this.code = code }
 
             /** The redirect URI used in the authorization request (optional) */
             fun redirectUri(redirectUri: String) = redirectUri(JsonField.of(redirectUri))
@@ -542,8 +536,6 @@ private constructor(
              *
              * The following fields are required:
              * ```java
-             * .clientId()
-             * .clientSecret()
              * .code()
              * ```
              *
@@ -551,9 +543,9 @@ private constructor(
              */
             fun build(): CreateAccessTokenRequest =
                 CreateAccessTokenRequest(
-                    checkRequired("clientId", clientId),
-                    checkRequired("clientSecret", clientSecret),
                     checkRequired("code", code),
+                    clientId,
+                    clientSecret,
                     redirectUri,
                     additionalProperties.toMutableMap(),
                 )
@@ -566,9 +558,9 @@ private constructor(
                 return@apply
             }
 
+            code()
             clientId()
             clientSecret()
-            code()
             redirectUri()
             validated = true
         }
@@ -589,9 +581,9 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (clientId.asKnown().isPresent) 1 else 0) +
+            (if (code.asKnown().isPresent) 1 else 0) +
+                (if (clientId.asKnown().isPresent) 1 else 0) +
                 (if (clientSecret.asKnown().isPresent) 1 else 0) +
-                (if (code.asKnown().isPresent) 1 else 0) +
                 (if (redirectUri.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
@@ -600,21 +592,21 @@ private constructor(
             }
 
             return other is CreateAccessTokenRequest &&
+                code == other.code &&
                 clientId == other.clientId &&
                 clientSecret == other.clientSecret &&
-                code == other.code &&
                 redirectUri == other.redirectUri &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(clientId, clientSecret, code, redirectUri, additionalProperties)
+            Objects.hash(code, clientId, clientSecret, redirectUri, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "CreateAccessTokenRequest{clientId=$clientId, clientSecret=$clientSecret, code=$code, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
+            "CreateAccessTokenRequest{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
