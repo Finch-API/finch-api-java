@@ -38,18 +38,11 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                         .metadata(
                                                             PayStatement.Earning.Attributes.Metadata
                                                                 .builder()
-                                                                .metadata(
-                                                                    PayStatement.Earning.Attributes
-                                                                        .Metadata
-                                                                        .InnerMetadata
-                                                                        .builder()
-                                                                        .putAdditionalProperty(
-                                                                            "foo",
-                                                                            JsonValue.from(
-                                                                                mapOf<String, Any>()
-                                                                            ),
-                                                                        )
-                                                                        .build()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
                                                                 )
                                                                 .build()
                                                         )
@@ -72,19 +65,11 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                 .Attributes
                                                                 .Metadata
                                                                 .builder()
-                                                                .metadata(
-                                                                    PayStatement.EmployeeDeduction
-                                                                        .Attributes
-                                                                        .Metadata
-                                                                        .InnerMetadata
-                                                                        .builder()
-                                                                        .putAdditionalProperty(
-                                                                            "foo",
-                                                                            JsonValue.from(
-                                                                                mapOf<String, Any>()
-                                                                            ),
-                                                                        )
-                                                                        .build()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
                                                                 )
                                                                 .build()
                                                         )
@@ -106,20 +91,11 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                 .Attributes
                                                                 .Metadata
                                                                 .builder()
-                                                                .metadata(
-                                                                    PayStatement
-                                                                        .EmployerContribution
-                                                                        .Attributes
-                                                                        .Metadata
-                                                                        .InnerMetadata
-                                                                        .builder()
-                                                                        .putAdditionalProperty(
-                                                                            "foo",
-                                                                            JsonValue.from(
-                                                                                mapOf<String, Any>()
-                                                                            ),
-                                                                        )
-                                                                        .build()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
                                                                 )
                                                                 .build()
                                                         )
@@ -147,18 +123,11 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                         .metadata(
                                                             PayStatement.Tax.Attributes.Metadata
                                                                 .builder()
-                                                                .metadata(
-                                                                    PayStatement.Tax.Attributes
-                                                                        .Metadata
-                                                                        .InnerMetadata
-                                                                        .builder()
-                                                                        .putAdditionalProperty(
-                                                                            "foo",
-                                                                            JsonValue.from(
-                                                                                mapOf<String, Any>()
-                                                                            ),
-                                                                        )
-                                                                        .build()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
                                                                 )
                                                                 .build()
                                                         )
@@ -203,18 +172,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                     .metadata(
                                                         PayStatement.Earning.Attributes.Metadata
                                                             .builder()
-                                                            .metadata(
-                                                                PayStatement.Earning.Attributes
-                                                                    .Metadata
-                                                                    .InnerMetadata
-                                                                    .builder()
-                                                                    .putAdditionalProperty(
-                                                                        "foo",
-                                                                        JsonValue.from(
-                                                                            mapOf<String, Any>()
-                                                                        ),
-                                                                    )
-                                                                    .build()
+                                                            .putAdditionalProperty(
+                                                                "foo",
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -235,19 +195,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                         PayStatement.EmployeeDeduction.Attributes
                                                             .Metadata
                                                             .builder()
-                                                            .metadata(
-                                                                PayStatement.EmployeeDeduction
-                                                                    .Attributes
-                                                                    .Metadata
-                                                                    .InnerMetadata
-                                                                    .builder()
-                                                                    .putAdditionalProperty(
-                                                                        "foo",
-                                                                        JsonValue.from(
-                                                                            mapOf<String, Any>()
-                                                                        ),
-                                                                    )
-                                                                    .build()
+                                                            .putAdditionalProperty(
+                                                                "foo",
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -268,19 +218,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                         PayStatement.EmployerContribution.Attributes
                                                             .Metadata
                                                             .builder()
-                                                            .metadata(
-                                                                PayStatement.EmployerContribution
-                                                                    .Attributes
-                                                                    .Metadata
-                                                                    .InnerMetadata
-                                                                    .builder()
-                                                                    .putAdditionalProperty(
-                                                                        "foo",
-                                                                        JsonValue.from(
-                                                                            mapOf<String, Any>()
-                                                                        ),
-                                                                    )
-                                                                    .build()
+                                                            .putAdditionalProperty(
+                                                                "foo",
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -306,17 +246,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                     .metadata(
                                                         PayStatement.Tax.Attributes.Metadata
                                                             .builder()
-                                                            .metadata(
-                                                                PayStatement.Tax.Attributes.Metadata
-                                                                    .InnerMetadata
-                                                                    .builder()
-                                                                    .putAdditionalProperty(
-                                                                        "foo",
-                                                                        JsonValue.from(
-                                                                            mapOf<String, Any>()
-                                                                        ),
-                                                                    )
-                                                                    .build()
+                                                            .putAdditionalProperty(
+                                                                "foo",
+                                                                JsonValue.from(mapOf<String, Any>()),
                                                             )
                                                             .build()
                                                     )
@@ -365,18 +297,11 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                         .metadata(
                                                             PayStatement.Earning.Attributes.Metadata
                                                                 .builder()
-                                                                .metadata(
-                                                                    PayStatement.Earning.Attributes
-                                                                        .Metadata
-                                                                        .InnerMetadata
-                                                                        .builder()
-                                                                        .putAdditionalProperty(
-                                                                            "foo",
-                                                                            JsonValue.from(
-                                                                                mapOf<String, Any>()
-                                                                            ),
-                                                                        )
-                                                                        .build()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
                                                                 )
                                                                 .build()
                                                         )
@@ -399,19 +324,11 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                 .Attributes
                                                                 .Metadata
                                                                 .builder()
-                                                                .metadata(
-                                                                    PayStatement.EmployeeDeduction
-                                                                        .Attributes
-                                                                        .Metadata
-                                                                        .InnerMetadata
-                                                                        .builder()
-                                                                        .putAdditionalProperty(
-                                                                            "foo",
-                                                                            JsonValue.from(
-                                                                                mapOf<String, Any>()
-                                                                            ),
-                                                                        )
-                                                                        .build()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
                                                                 )
                                                                 .build()
                                                         )
@@ -433,20 +350,11 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                                 .Attributes
                                                                 .Metadata
                                                                 .builder()
-                                                                .metadata(
-                                                                    PayStatement
-                                                                        .EmployerContribution
-                                                                        .Attributes
-                                                                        .Metadata
-                                                                        .InnerMetadata
-                                                                        .builder()
-                                                                        .putAdditionalProperty(
-                                                                            "foo",
-                                                                            JsonValue.from(
-                                                                                mapOf<String, Any>()
-                                                                            ),
-                                                                        )
-                                                                        .build()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
                                                                 )
                                                                 .build()
                                                         )
@@ -474,18 +382,11 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                                                         .metadata(
                                                             PayStatement.Tax.Attributes.Metadata
                                                                 .builder()
-                                                                .metadata(
-                                                                    PayStatement.Tax.Attributes
-                                                                        .Metadata
-                                                                        .InnerMetadata
-                                                                        .builder()
-                                                                        .putAdditionalProperty(
-                                                                            "foo",
-                                                                            JsonValue.from(
-                                                                                mapOf<String, Any>()
-                                                                            ),
-                                                                        )
-                                                                        .build()
+                                                                .putAdditionalProperty(
+                                                                    "foo",
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    ),
                                                                 )
                                                                 .build()
                                                         )
