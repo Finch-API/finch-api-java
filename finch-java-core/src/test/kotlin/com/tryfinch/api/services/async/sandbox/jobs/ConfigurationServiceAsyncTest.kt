@@ -5,7 +5,6 @@ package com.tryfinch.api.services.async.sandbox.jobs
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.SandboxJobConfiguration
-import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -38,13 +37,9 @@ internal class ConfigurationServiceAsyncTest {
 
         val sandboxJobConfigurationFuture =
             configurationServiceAsync.update(
-                SandboxJobConfigurationUpdateParams.builder()
-                    .sandboxJobConfiguration(
-                        SandboxJobConfiguration.builder()
-                            .completionStatus(SandboxJobConfiguration.CompletionStatus.COMPLETE)
-                            .type(SandboxJobConfiguration.Type.DATA_SYNC_ALL)
-                            .build()
-                    )
+                SandboxJobConfiguration.builder()
+                    .completionStatus(SandboxJobConfiguration.CompletionStatus.COMPLETE)
+                    .type(SandboxJobConfiguration.Type.DATA_SYNC_ALL)
                     .build()
             )
 
