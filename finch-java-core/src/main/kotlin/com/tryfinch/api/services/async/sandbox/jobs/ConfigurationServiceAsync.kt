@@ -56,6 +56,24 @@ interface ConfigurationServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SandboxJobConfiguration>
 
+    /** @see update */
+    fun update(
+        sandboxJobConfiguration: SandboxJobConfiguration,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<SandboxJobConfiguration> =
+        update(
+            SandboxJobConfigurationUpdateParams.builder()
+                .sandboxJobConfiguration(sandboxJobConfiguration)
+                .build(),
+            requestOptions,
+        )
+
+    /** @see update */
+    fun update(
+        sandboxJobConfiguration: SandboxJobConfiguration
+    ): CompletableFuture<SandboxJobConfiguration> =
+        update(sandboxJobConfiguration, RequestOptions.none())
+
     /**
      * A view of [ConfigurationServiceAsync] that provides access to raw HTTP responses for each
      * method.
@@ -112,5 +130,23 @@ interface ConfigurationServiceAsync {
             params: SandboxJobConfigurationUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SandboxJobConfiguration>>
+
+        /** @see update */
+        fun update(
+            sandboxJobConfiguration: SandboxJobConfiguration,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<SandboxJobConfiguration>> =
+            update(
+                SandboxJobConfigurationUpdateParams.builder()
+                    .sandboxJobConfiguration(sandboxJobConfiguration)
+                    .build(),
+                requestOptions,
+            )
+
+        /** @see update */
+        fun update(
+            sandboxJobConfiguration: SandboxJobConfiguration
+        ): CompletableFuture<HttpResponseFor<SandboxJobConfiguration>> =
+            update(sandboxJobConfiguration, RequestOptions.none())
     }
 }
