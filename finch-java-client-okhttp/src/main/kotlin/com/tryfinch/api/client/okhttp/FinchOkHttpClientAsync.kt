@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.tryfinch.api.client.FinchClientAsync
 import com.tryfinch.api.client.FinchClientAsyncImpl
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.Sleeper
 import com.tryfinch.api.core.Timeout
 import com.tryfinch.api.core.http.AsyncStreamResponse
 import com.tryfinch.api.core.http.Headers
@@ -132,6 +133,17 @@ class FinchOkHttpClientAsync private constructor() {
         fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
             clientOptions.streamHandlerExecutor(streamHandlerExecutor)
         }
+
+        /**
+         * The interface to use for delaying execution, like during retries.
+         *
+         * This is primarily useful for using fake delays in tests.
+         *
+         * Defaults to real execution delays.
+         *
+         * This class takes ownership of the sleeper and closes it when closed.
+         */
+        fun sleeper(sleeper: Sleeper) = apply { clientOptions.sleeper(sleeper) }
 
         /**
          * The clock to use for operations that require timing, like retries.
