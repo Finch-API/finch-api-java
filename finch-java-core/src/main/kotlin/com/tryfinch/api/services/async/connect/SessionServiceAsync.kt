@@ -30,7 +30,7 @@ interface SessionServiceAsync {
     fun new_(params: ConnectSessionNewParams): CompletableFuture<SessionNewResponse> =
         new_(params, RequestOptions.none())
 
-    /** @see new\_ */
+    /** @see new_ */
     fun new_(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -71,7 +71,7 @@ interface SessionServiceAsync {
         ): CompletableFuture<HttpResponseFor<SessionNewResponse>> =
             new_(params, RequestOptions.none())
 
-        /** @see new\_ */
+        /** @see new_ */
         fun new_(
             params: ConnectSessionNewParams,
             requestOptions: RequestOptions = RequestOptions.none(),
