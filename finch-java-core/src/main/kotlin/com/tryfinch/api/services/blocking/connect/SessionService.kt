@@ -30,7 +30,7 @@ interface SessionService {
     fun new_(params: ConnectSessionNewParams): SessionNewResponse =
         new_(params, RequestOptions.none())
 
-    /** @see new\_ */
+    /** @see new_ */
     fun new_(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -64,7 +64,7 @@ interface SessionService {
         fun new_(params: ConnectSessionNewParams): HttpResponseFor<SessionNewResponse> =
             new_(params, RequestOptions.none())
 
-        /** @see new\_ */
+        /** @see new_ */
         @MustBeClosed
         fun new_(
             params: ConnectSessionNewParams,
