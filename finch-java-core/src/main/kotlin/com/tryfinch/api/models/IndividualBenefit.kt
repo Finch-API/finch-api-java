@@ -30,6 +30,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class IndividualBenefit
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val body: JsonField<Body>,
     private val code: JsonField<Long>,
@@ -417,6 +418,7 @@ private constructor(
         }
 
         class UnionMember0
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val annualMaximum: JsonField<Long>,
             private val catchUp: JsonField<Boolean>,
@@ -959,6 +961,7 @@ private constructor(
         }
 
         class BatchError
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val code: JsonField<Double>,
             private val message: JsonField<String>,

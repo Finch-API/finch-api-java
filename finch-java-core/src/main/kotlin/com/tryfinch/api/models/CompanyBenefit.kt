@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class CompanyBenefit
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val benefitId: JsonField<String>,
     private val description: JsonField<String>,
@@ -334,6 +335,7 @@ private constructor(
 
     /** The company match for this benefit. */
     class BenefitCompanyMatchContribution
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val tiers: JsonField<List<Tier>>,
         private val type: JsonField<Type>,
@@ -523,6 +525,7 @@ private constructor(
                 (type.asKnown().getOrNull()?.validity() ?: 0)
 
         class Tier
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val match: JsonField<Long>,
             private val threshold: JsonField<Long>,

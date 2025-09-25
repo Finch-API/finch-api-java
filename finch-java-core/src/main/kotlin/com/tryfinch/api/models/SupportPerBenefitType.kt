@@ -17,6 +17,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class SupportPerBenefitType
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val companyBenefits: JsonField<OperationSupportMatrix>,
     private val individualBenefits: JsonField<OperationSupportMatrix>,

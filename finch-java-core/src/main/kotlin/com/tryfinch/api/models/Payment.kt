@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class Payment
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val companyDebit: JsonField<Money>,
@@ -831,6 +832,7 @@ private constructor(
 
     /** The pay period object. */
     class PayPeriod
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val endDate: JsonField<String>,
         private val startDate: JsonField<String>,

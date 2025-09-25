@@ -500,6 +500,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val customerId: JsonField<String>,
         private val customerName: JsonField<String>,
@@ -1218,6 +1219,7 @@ private constructor(
     }
 
     class Integration
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val authMethod: JsonField<AuthMethod>,
         private val provider: JsonField<String>,

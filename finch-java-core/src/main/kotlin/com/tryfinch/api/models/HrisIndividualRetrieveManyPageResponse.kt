@@ -19,6 +19,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class HrisIndividualRetrieveManyPageResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val responses: JsonField<List<IndividualResponse>>,
     private val additionalProperties: MutableMap<String, JsonValue>,

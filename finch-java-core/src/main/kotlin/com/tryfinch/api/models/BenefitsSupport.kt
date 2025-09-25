@@ -21,6 +21,7 @@ import kotlin.jvm.optionals.getOrNull
  * property will be null
  */
 class BenefitsSupport
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val commuter: JsonField<BenefitFeaturesAndOperations>,
     private val customPostTax: JsonField<BenefitFeaturesAndOperations>,

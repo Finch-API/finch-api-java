@@ -387,6 +387,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class CreateRuleRequest
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val attributes: JsonField<Attributes>,
         private val conditions: JsonField<List<Condition>>,
@@ -748,6 +749,7 @@ private constructor(
 
     /** Specifies the fields to be applied when the condition is met. */
     class Attributes
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val metadata: JsonField<Metadata>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1001,6 +1003,7 @@ private constructor(
     }
 
     class Condition
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val field: JsonField<String>,
         private val operator: JsonField<Operator>,

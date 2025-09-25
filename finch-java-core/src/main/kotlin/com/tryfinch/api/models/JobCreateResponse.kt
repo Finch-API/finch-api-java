@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class JobCreateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val allowedRefreshes: JsonField<Long>,
     private val jobId: JsonField<String>,

@@ -25,6 +25,7 @@ import kotlin.jvm.optionals.getOrNull
  * provider returns.
  */
 class Income
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val amount: JsonField<Long>,
     private val currency: JsonField<String>,

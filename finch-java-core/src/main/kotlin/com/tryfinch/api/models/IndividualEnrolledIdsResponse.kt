@@ -19,6 +19,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class IndividualEnrolledIdsResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val benefitId: JsonField<String>,
     private val individualIds: JsonField<List<String>>,

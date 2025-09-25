@@ -17,6 +17,7 @@ import java.util.Objects
 import java.util.Optional
 
 class Paging
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val offset: JsonField<Long>,
     private val count: JsonField<Long>,

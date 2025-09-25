@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class AutomatedAsyncJob
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val completedAt: JsonField<OffsetDateTime>,
     private val createdAt: JsonField<OffsetDateTime>,
@@ -499,6 +500,7 @@ private constructor(
 
     /** The input parameters for the job. */
     class Params
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val individualId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

@@ -328,6 +328,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class CreateAccessTokenRequest
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val code: JsonField<String>,
         private val clientId: JsonField<String>,

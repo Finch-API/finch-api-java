@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class PayStatementResponseBody
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val paging: JsonField<Paging>,
     private val payStatements: JsonField<List<PayStatement>>,
@@ -209,6 +210,7 @@ private constructor(
             (payStatements.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class Paging
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val offset: JsonField<Long>,
         private val count: JsonField<Long>,

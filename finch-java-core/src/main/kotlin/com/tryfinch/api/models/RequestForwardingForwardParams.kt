@@ -350,6 +350,7 @@ private constructor(
 
     /** Forward Request Body */
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val method: JsonField<String>,
         private val route: JsonField<String>,
