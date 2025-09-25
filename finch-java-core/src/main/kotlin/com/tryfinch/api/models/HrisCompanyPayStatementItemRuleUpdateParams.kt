@@ -237,6 +237,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class UpdateRuleRequest
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val optionalProperty: JsonValue,
         private val additionalProperties: MutableMap<String, JsonValue>,

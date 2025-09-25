@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class UpdateCompanyBenefitResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val benefitId: JsonField<String>,
     private val jobId: JsonField<String>,

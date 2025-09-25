@@ -1375,6 +1375,7 @@ private constructor(
                 (if (title.asKnown().isPresent) 1 else 0)
 
         class CustomField
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val value: JsonValue,
@@ -1529,6 +1530,7 @@ private constructor(
 
         /** The department object. */
         class Department
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1675,6 +1677,7 @@ private constructor(
         }
 
         class Email
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val data: JsonField<String>,
             private val type: JsonField<Type>,
@@ -1982,6 +1985,7 @@ private constructor(
 
         /** The employment object. */
         class Employment
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val subtype: JsonField<Subtype>,
             private val type: JsonField<Type>,
@@ -2944,6 +2948,7 @@ private constructor(
 
         /** The manager object representing the manager of the individual within the org. */
         class Manager
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3086,6 +3091,7 @@ private constructor(
         }
 
         class PhoneNumber
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val data: JsonField<String>,
             private val type: JsonField<Type>,

@@ -18,6 +18,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class IndividualInDirectory
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val department: JsonField<Department>,
@@ -404,6 +405,7 @@ private constructor(
 
     /** The department object. */
     class Department
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -548,6 +550,7 @@ private constructor(
 
     /** The manager object. */
     class Manager
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class Provider
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val authenticationMethods: JsonField<List<AuthenticationMethod>>,
@@ -519,6 +520,7 @@ private constructor(
             (products.asKnown().getOrNull()?.size ?: 0)
 
     class AuthenticationMethod
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val benefitsSupport: JsonField<BenefitsSupport>,
         private val supportedFields: JsonField<SupportedFields>,
@@ -746,6 +748,7 @@ private constructor(
 
         /** The supported data fields returned by our HR and payroll endpoints */
         class SupportedFields
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val company: JsonField<SupportedCompanyFields>,
             private val directory: JsonField<SupportedDirectoryFields>,
@@ -1123,6 +1126,7 @@ private constructor(
                     (payment.asKnown().getOrNull()?.validity() ?: 0)
 
             class SupportedCompanyFields
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val id: JsonField<Boolean>,
                 private val accounts: JsonField<Accounts>,
@@ -1561,6 +1565,7 @@ private constructor(
                         (if (primaryPhoneNumber.asKnown().isPresent) 1 else 0)
 
                 class Accounts
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val accountName: JsonField<Boolean>,
                     private val accountNumber: JsonField<Boolean>,
@@ -1895,6 +1900,7 @@ private constructor(
                 }
 
                 class Departments
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val name: JsonField<Boolean>,
                     private val parent: JsonField<Parent>,
@@ -2061,6 +2067,7 @@ private constructor(
                             (parent.asKnown().getOrNull()?.validity() ?: 0)
 
                     class Parent
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                     private constructor(
                         private val name: JsonField<Boolean>,
                         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2232,6 +2239,7 @@ private constructor(
                 }
 
                 class Entity
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val subtype: JsonField<Boolean>,
                     private val type: JsonField<Boolean>,
@@ -2417,6 +2425,7 @@ private constructor(
                 }
 
                 class Locations
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val city: JsonField<Boolean>,
                     private val country: JsonField<Boolean>,
@@ -2799,6 +2808,7 @@ private constructor(
             }
 
             class SupportedDirectoryFields
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val individuals: JsonField<Individuals>,
                 private val paging: JsonField<Paging>,
@@ -2973,6 +2983,7 @@ private constructor(
                         (paging.asKnown().getOrNull()?.validity() ?: 0)
 
                 class Individuals
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val id: JsonField<Boolean>,
                     private val department: JsonField<Boolean>,
@@ -3342,6 +3353,7 @@ private constructor(
                             (if (middleName.asKnown().isPresent) 1 else 0)
 
                     class Manager
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                     private constructor(
                         private val id: JsonField<Boolean>,
                         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3525,6 +3537,7 @@ private constructor(
                 }
 
                 class Paging
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val count: JsonField<Boolean>,
                     private val offset: JsonField<Boolean>,
@@ -3731,6 +3744,7 @@ private constructor(
             }
 
             class SupportedEmploymentFields
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val id: JsonField<Boolean>,
                 private val classCode: JsonField<Boolean>,
@@ -4477,6 +4491,7 @@ private constructor(
                         (if (title.asKnown().isPresent) 1 else 0)
 
                 class Department
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val name: JsonField<Boolean>,
                     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -4625,6 +4640,7 @@ private constructor(
                 }
 
                 class Employment
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val subtype: JsonField<Boolean>,
                     private val type: JsonField<Boolean>,
@@ -4812,6 +4828,7 @@ private constructor(
                 }
 
                 class Income
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val amount: JsonField<Boolean>,
                     private val currency: JsonField<Boolean>,
@@ -5035,6 +5052,7 @@ private constructor(
                 }
 
                 class Location
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val city: JsonField<Boolean>,
                     private val country: JsonField<Boolean>,
@@ -5376,6 +5394,7 @@ private constructor(
                 }
 
                 class Manager
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val id: JsonField<Boolean>,
                     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -5576,6 +5595,7 @@ private constructor(
             }
 
             class SupportedIndividualFields
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val id: JsonField<Boolean>,
                 private val dob: JsonField<Boolean>,
@@ -6160,6 +6180,7 @@ private constructor(
                         (if (ssn.asKnown().isPresent) 1 else 0)
 
                 class Emails
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val data: JsonField<Boolean>,
                     private val type: JsonField<Boolean>,
@@ -6343,6 +6364,7 @@ private constructor(
                 }
 
                 class PhoneNumbers
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val data: JsonField<Boolean>,
                     private val type: JsonField<Boolean>,
@@ -6528,6 +6550,7 @@ private constructor(
                 }
 
                 class Residence
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val city: JsonField<Boolean>,
                     private val country: JsonField<Boolean>,
@@ -6918,6 +6941,7 @@ private constructor(
             }
 
             class SupportedPayGroupFields
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val id: JsonField<Boolean>,
                 private val individualIds: JsonField<Boolean>,
@@ -7186,6 +7210,7 @@ private constructor(
             }
 
             class SupportedPayStatementFields
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val paging: JsonField<Paging>,
                 private val payStatements: JsonField<PayStatements>,
@@ -7362,6 +7387,7 @@ private constructor(
                         (payStatements.asKnown().getOrNull()?.validity() ?: 0)
 
                 class Paging
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val count: JsonField<Boolean>,
                     private val offset: JsonField<Boolean>,
@@ -7569,6 +7595,7 @@ private constructor(
                 }
 
                 class PayStatements
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val earnings: JsonField<Earnings>,
                     private val employeeDeductions: JsonField<EmployeeDeductions>,
@@ -8064,6 +8091,7 @@ private constructor(
                             (if (type.asKnown().isPresent) 1 else 0)
 
                     class Earnings
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                     private constructor(
                         private val amount: JsonField<Boolean>,
                         private val currency: JsonField<Boolean>,
@@ -8330,6 +8358,7 @@ private constructor(
                     }
 
                     class EmployeeDeductions
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                     private constructor(
                         private val amount: JsonField<Boolean>,
                         private val currency: JsonField<Boolean>,
@@ -8635,6 +8664,7 @@ private constructor(
                     }
 
                     class EmployerContributions
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                     private constructor(
                         private val amount: JsonField<Boolean>,
                         private val currency: JsonField<Boolean>,
@@ -8869,6 +8899,7 @@ private constructor(
                     }
 
                     class Taxes
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                     private constructor(
                         private val amount: JsonField<Boolean>,
                         private val currency: JsonField<Boolean>,
@@ -9243,6 +9274,7 @@ private constructor(
             }
 
             class SupportedPaymentFields
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val id: JsonField<Boolean>,
                 private val companyDebit: JsonField<Boolean>,
@@ -9805,6 +9837,7 @@ private constructor(
                         (payPeriod.asKnown().getOrNull()?.validity() ?: 0)
 
                 class PayPeriod
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val endDate: JsonField<Boolean>,
                     private val startDate: JsonField<Boolean>,

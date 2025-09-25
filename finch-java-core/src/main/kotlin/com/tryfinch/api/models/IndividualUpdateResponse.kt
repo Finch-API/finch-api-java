@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class IndividualUpdateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val dob: JsonField<String>,
@@ -655,6 +656,7 @@ private constructor(
             (if (ssn.asKnown().isPresent) 1 else 0)
 
     class Email
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val data: JsonField<String>,
         private val type: JsonField<Type>,
@@ -1255,6 +1257,7 @@ private constructor(
     }
 
     class PhoneNumber
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val data: JsonField<String>,
         private val type: JsonField<Type>,

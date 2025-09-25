@@ -257,6 +257,7 @@ private constructor(
 
     /** Individual Ids Request Body */
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val requests: JsonField<List<Request>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -435,6 +436,7 @@ private constructor(
     }
 
     class Request
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val individualId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

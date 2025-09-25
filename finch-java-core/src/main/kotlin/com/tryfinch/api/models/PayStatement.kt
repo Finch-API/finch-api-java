@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class PayStatement
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val earnings: JsonField<List<Earning?>>,
     private val employeeDeductions: JsonField<List<EmployeeDeduction?>>,
@@ -618,6 +619,7 @@ private constructor(
             (type.asKnown().getOrNull()?.validity() ?: 0)
 
     class Earning
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val amount: JsonField<Long>,
         private val currency: JsonField<String>,
@@ -1173,6 +1175,7 @@ private constructor(
         }
 
         class Attributes
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val metadata: JsonField<Metadata>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1479,6 +1482,7 @@ private constructor(
     }
 
     class EmployeeDeduction
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val amount: JsonField<Long>,
         private val currency: JsonField<String>,
@@ -1836,6 +1840,7 @@ private constructor(
                 (attributes.asKnown().getOrNull()?.validity() ?: 0)
 
         class Attributes
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val metadata: JsonField<Metadata>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2142,6 +2147,7 @@ private constructor(
     }
 
     class EmployerContribution
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val currency: JsonField<String>,
         private val name: JsonField<String>,
@@ -2451,6 +2457,7 @@ private constructor(
                 (attributes.asKnown().getOrNull()?.validity() ?: 0)
 
         class Attributes
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val metadata: JsonField<Metadata>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2891,6 +2898,7 @@ private constructor(
     }
 
     class Tax
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val currency: JsonField<String>,
         private val employer: JsonField<Boolean>,
@@ -3388,6 +3396,7 @@ private constructor(
         }
 
         class Attributes
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val metadata: JsonField<Metadata>,
             private val additionalProperties: MutableMap<String, JsonValue>,

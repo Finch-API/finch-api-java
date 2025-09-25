@@ -22,6 +22,7 @@ import kotlin.jvm.optionals.getOrNull
  * dependents, and withholding details.
  */
 class W42020
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val data: JsonField<Data>,
     private val type: JsonField<Type>,
@@ -219,6 +220,7 @@ private constructor(
 
     /** Detailed information specific to the 2020 W4 form. */
     class Data
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val amountForOtherDependents: JsonField<Long>,
         private val amountForQualifyingChildrenUnder17: JsonField<Long>,
