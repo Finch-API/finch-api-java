@@ -14,6 +14,7 @@ import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -27,7 +28,7 @@ import kotlin.jvm.optionals.getOrNull
  */
 class RequestForwardingForwardParams
 private constructor(
-    private val body: Body,
+    private val body: ForwardRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -63,14 +64,20 @@ private constructor(
      * The HTTP headers to include on the forwarded request. This value must be specified as an
      * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
      * "v1" }`
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun _headers_(): JsonValue = body._headers_()
+    fun headers(): Optional<Headers> = body.headers()
 
     /**
      * The query parameters for the forwarded request. This value must be specified as a valid JSON
      * object rather than a query string.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun _params(): JsonValue = body._params()
+    fun params(): Optional<Params> = body.params()
 
     /**
      * Returns the raw JSON value of [method].
@@ -92,6 +99,20 @@ private constructor(
      * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _data(): JsonField<String> = body._data()
+
+    /**
+     * Returns the raw JSON value of [headers].
+     *
+     * Unlike [headers], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _headers_(): JsonField<Headers> = body._headers_()
+
+    /**
+     * Returns the raw JSON value of [params].
+     *
+     * Unlike [params], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _params(): JsonField<Params> = body._params()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -121,7 +142,7 @@ private constructor(
     /** A builder for [RequestForwardingForwardParams]. */
     class Builder internal constructor() {
 
-        private var body: Body.Builder = Body.builder()
+        private var body: ForwardRequest.Builder = ForwardRequest.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -144,7 +165,7 @@ private constructor(
          * - [params]
          * - etc.
          */
-        fun body(body: Body) = apply { this.body = body.toBuilder() }
+        fun body(body: ForwardRequest) = apply { this.body = body.toBuilder() }
 
         /**
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
@@ -196,13 +217,35 @@ private constructor(
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
          */
-        fun headers(headers: JsonValue) = apply { body.headers(headers) }
+        fun headers(headers: Headers?) = apply { body.headers(headers) }
+
+        /** Alias for calling [Builder.headers] with `headers.orElse(null)`. */
+        fun headers(headers: Optional<Headers>) = headers(headers.getOrNull())
+
+        /**
+         * Sets [Builder.headers] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.headers] with a well-typed [Headers] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun headers(headers: JsonField<Headers>) = apply { body.headers(headers) }
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
-        fun params(params: JsonValue) = apply { body.params(params) }
+        fun params(params: Params?) = apply { body.params(params) }
+
+        /** Alias for calling [Builder.params] with `params.orElse(null)`. */
+        fun params(params: Optional<Params>) = params(params.getOrNull())
+
+        /**
+         * Sets [Builder.params] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.params] with a well-typed [Params] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun params(params: JsonField<Params>) = apply { body.params(params) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -342,21 +385,20 @@ private constructor(
             )
     }
 
-    fun _body(): Body = body
+    fun _body(): ForwardRequest = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
-    /** Forward Request Body */
-    class Body
+    class ForwardRequest
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val method: JsonField<String>,
         private val route: JsonField<String>,
         private val data: JsonField<String>,
-        private val headers: JsonValue,
-        private val params: JsonValue,
+        private val headers: JsonField<Headers>,
+        private val params: JsonField<Params>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -365,8 +407,8 @@ private constructor(
             @JsonProperty("method") @ExcludeMissing method: JsonField<String> = JsonMissing.of(),
             @JsonProperty("route") @ExcludeMissing route: JsonField<String> = JsonMissing.of(),
             @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("headers") @ExcludeMissing headers: JsonValue = JsonMissing.of(),
-            @JsonProperty("params") @ExcludeMissing params: JsonValue = JsonMissing.of(),
+            @JsonProperty("headers") @ExcludeMissing headers: JsonField<Headers> = JsonMissing.of(),
+            @JsonProperty("params") @ExcludeMissing params: JsonField<Params> = JsonMissing.of(),
         ) : this(method, route, data, headers, params, mutableMapOf())
 
         /**
@@ -400,14 +442,20 @@ private constructor(
          * The HTTP headers to include on the forwarded request. This value must be specified as an
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("headers") @ExcludeMissing fun _headers_(): JsonValue = headers
+        fun headers(): Optional<Headers> = headers.getOptional("headers")
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("params") @ExcludeMissing fun _params(): JsonValue = params
+        fun params(): Optional<Params> = params.getOptional("params")
 
         /**
          * Returns the raw JSON value of [method].
@@ -430,6 +478,20 @@ private constructor(
          */
         @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
+        /**
+         * Returns the raw JSON value of [headers].
+         *
+         * Unlike [headers], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("headers") @ExcludeMissing fun _headers_(): JsonField<Headers> = headers
+
+        /**
+         * Returns the raw JSON value of [params].
+         *
+         * Unlike [params], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("params") @ExcludeMissing fun _params(): JsonField<Params> = params
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -445,7 +507,7 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [Body].
+             * Returns a mutable builder for constructing an instance of [ForwardRequest].
              *
              * The following fields are required:
              * ```java
@@ -456,24 +518,24 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [Body]. */
+        /** A builder for [ForwardRequest]. */
         class Builder internal constructor() {
 
             private var method: JsonField<String>? = null
             private var route: JsonField<String>? = null
             private var data: JsonField<String> = JsonMissing.of()
-            private var headers: JsonValue = JsonMissing.of()
-            private var params: JsonValue = JsonMissing.of()
+            private var headers: JsonField<Headers> = JsonMissing.of()
+            private var params: JsonField<Params> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                method = body.method
-                route = body.route
-                data = body.data
-                headers = body.headers
-                params = body.params
-                additionalProperties = body.additionalProperties.toMutableMap()
+            internal fun from(forwardRequest: ForwardRequest) = apply {
+                method = forwardRequest.method
+                route = forwardRequest.route
+                data = forwardRequest.data
+                headers = forwardRequest.headers
+                params = forwardRequest.params
+                additionalProperties = forwardRequest.additionalProperties.toMutableMap()
             }
 
             /**
@@ -530,13 +592,37 @@ private constructor(
              * an object of key-value pairs. Example: `{"Content-Type": "application/xml",
              * "X-API-Version": "v1" }`
              */
-            fun headers(headers: JsonValue) = apply { this.headers = headers }
+            fun headers(headers: Headers?) = headers(JsonField.ofNullable(headers))
+
+            /** Alias for calling [Builder.headers] with `headers.orElse(null)`. */
+            fun headers(headers: Optional<Headers>) = headers(headers.getOrNull())
+
+            /**
+             * Sets [Builder.headers] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.headers] with a well-typed [Headers] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun headers(headers: JsonField<Headers>) = apply { this.headers = headers }
 
             /**
              * The query parameters for the forwarded request. This value must be specified as a
              * valid JSON object rather than a query string.
              */
-            fun params(params: JsonValue) = apply { this.params = params }
+            fun params(params: Params?) = params(JsonField.ofNullable(params))
+
+            /** Alias for calling [Builder.params] with `params.orElse(null)`. */
+            fun params(params: Optional<Params>) = params(params.getOrNull())
+
+            /**
+             * Sets [Builder.params] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.params] with a well-typed [Params] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun params(params: JsonField<Params>) = apply { this.params = params }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -558,7 +644,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [Body].
+             * Returns an immutable instance of [ForwardRequest].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -570,8 +656,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): Body =
-                Body(
+            fun build(): ForwardRequest =
+                ForwardRequest(
                     checkRequired("method", method),
                     checkRequired("route", route),
                     data,
@@ -583,7 +669,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body = apply {
+        fun validate(): ForwardRequest = apply {
             if (validated) {
                 return@apply
             }
@@ -591,6 +677,8 @@ private constructor(
             method()
             route()
             data()
+            headers().ifPresent { it.validate() }
+            params().ifPresent { it.validate() }
             validated = true
         }
 
@@ -612,14 +700,16 @@ private constructor(
         internal fun validity(): Int =
             (if (method.asKnown().isPresent) 1 else 0) +
                 (if (route.asKnown().isPresent) 1 else 0) +
-                (if (data.asKnown().isPresent) 1 else 0)
+                (if (data.asKnown().isPresent) 1 else 0) +
+                (headers.asKnown().getOrNull()?.validity() ?: 0) +
+                (params.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return other is Body &&
+            return other is ForwardRequest &&
                 method == other.method &&
                 route == other.route &&
                 data == other.data &&
@@ -635,7 +725,214 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
+            "ForwardRequest{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
+    }
+
+    /**
+     * The HTTP headers to include on the forwarded request. This value must be specified as an
+     * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
+     * "v1" }`
+     */
+    class Headers
+    @JsonCreator
+    private constructor(
+        @com.fasterxml.jackson.annotation.JsonValue
+        private val additionalProperties: Map<String, JsonValue>
+    ) {
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Headers]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Headers]. */
+        class Builder internal constructor() {
+
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(headers: Headers) = apply {
+                additionalProperties = headers.additionalProperties.toMutableMap()
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Headers].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Headers = Headers(additionalProperties.toImmutable())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Headers = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Headers && additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() = "Headers{additionalProperties=$additionalProperties}"
+    }
+
+    /**
+     * The query parameters for the forwarded request. This value must be specified as a valid JSON
+     * object rather than a query string.
+     */
+    class Params
+    @JsonCreator
+    private constructor(
+        @com.fasterxml.jackson.annotation.JsonValue
+        private val additionalProperties: Map<String, JsonValue>
+    ) {
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Params]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Params]. */
+        class Builder internal constructor() {
+
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(params: Params) = apply {
+                additionalProperties = params.additionalProperties.toMutableMap()
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Params].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Params = Params(additionalProperties.toImmutable())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Params = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Params && additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() = "Params{additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

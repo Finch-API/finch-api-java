@@ -16,8 +16,8 @@ private constructor(
     private val service: ProviderServiceAsync,
     private val streamHandlerExecutor: Executor,
     private val params: ProviderListParams,
-    private val items: List<Provider>,
-) : PageAsync<Provider> {
+    private val items: List<ProviderListResponse>,
+) : PageAsync<ProviderListResponse> {
 
     override fun hasNextPage(): Boolean = false
 
@@ -27,13 +27,14 @@ private constructor(
     override fun nextPage(): CompletableFuture<ProviderListPageAsync> =
         service.list(nextPageParams())
 
-    fun autoPager(): AutoPagerAsync<Provider> = AutoPagerAsync.from(this, streamHandlerExecutor)
+    fun autoPager(): AutoPagerAsync<ProviderListResponse> =
+        AutoPagerAsync.from(this, streamHandlerExecutor)
 
     /** The parameters that were used to request this page. */
     fun params(): ProviderListParams = params
 
     /** The response that this page was parsed from. */
-    override fun items(): List<Provider> = items
+    override fun items(): List<ProviderListResponse> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -59,7 +60,7 @@ private constructor(
         private var service: ProviderServiceAsync? = null
         private var streamHandlerExecutor: Executor? = null
         private var params: ProviderListParams? = null
-        private var items: List<Provider>? = null
+        private var items: List<ProviderListResponse>? = null
 
         @JvmSynthetic
         internal fun from(providerListPageAsync: ProviderListPageAsync) = apply {
@@ -79,7 +80,7 @@ private constructor(
         fun params(params: ProviderListParams) = apply { this.params = params }
 
         /** The response that this page was parsed from. */
-        fun items(items: List<Provider>) = apply { this.items = items }
+        fun items(items: List<ProviderListResponse>) = apply { this.items = items }
 
         /**
          * Returns an immutable instance of [ProviderListPageAsync].

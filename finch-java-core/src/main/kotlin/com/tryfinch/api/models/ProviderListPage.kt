@@ -13,8 +13,8 @@ class ProviderListPage
 private constructor(
     private val service: ProviderService,
     private val params: ProviderListParams,
-    private val items: List<Provider>,
-) : Page<Provider> {
+    private val items: List<ProviderListResponse>,
+) : Page<ProviderListResponse> {
 
     override fun hasNextPage(): Boolean = false
 
@@ -23,13 +23,13 @@ private constructor(
 
     override fun nextPage(): ProviderListPage = service.list(nextPageParams())
 
-    fun autoPager(): AutoPager<Provider> = AutoPager.from(this)
+    fun autoPager(): AutoPager<ProviderListResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): ProviderListParams = params
 
     /** The response that this page was parsed from. */
-    override fun items(): List<Provider> = items
+    override fun items(): List<ProviderListResponse> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -53,7 +53,7 @@ private constructor(
 
         private var service: ProviderService? = null
         private var params: ProviderListParams? = null
-        private var items: List<Provider>? = null
+        private var items: List<ProviderListResponse>? = null
 
         @JvmSynthetic
         internal fun from(providerListPage: ProviderListPage) = apply {
@@ -68,7 +68,7 @@ private constructor(
         fun params(params: ProviderListParams) = apply { this.params = params }
 
         /** The response that this page was parsed from. */
-        fun items(items: List<Provider>) = apply { this.items = items }
+        fun items(items: List<ProviderListResponse>) = apply { this.items = items }
 
         /**
          * Returns an immutable instance of [ProviderListPage].

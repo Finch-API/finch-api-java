@@ -9,25 +9,25 @@ import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class ProviderTest {
+internal class ProviderListResponseTest {
 
     @Test
     fun create() {
-        val provider =
-            Provider.builder()
+        val providerListResponse =
+            ProviderListResponse.builder()
                 .id("id")
                 .displayName("display_name")
                 .addProduct("string")
                 .addAuthenticationMethod(
-                    Provider.AuthenticationMethod.builder()
-                        .type(Provider.AuthenticationMethod.Type.ASSISTED)
+                    ProviderListResponse.AuthenticationMethod.builder()
+                        .type(ProviderListResponse.AuthenticationMethod.Type.ASSISTED)
                         .benefitsSupport(
-                            Provider.AuthenticationMethod.BenefitsSupport.builder()
+                            ProviderListResponse.AuthenticationMethod.BenefitsSupport.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
                         .supportedFields(
-                            Provider.AuthenticationMethod.SupportedFields.builder()
+                            ProviderListResponse.AuthenticationMethod.SupportedFields.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
@@ -41,51 +41,51 @@ internal class ProviderTest {
                 .primaryColor("primary_color")
                 .build()
 
-        assertThat(provider.id()).isEqualTo("id")
-        assertThat(provider.displayName()).isEqualTo("display_name")
-        assertThat(provider.products()).containsExactly("string")
-        assertThat(provider.authenticationMethods().getOrNull())
+        assertThat(providerListResponse.id()).isEqualTo("id")
+        assertThat(providerListResponse.displayName()).isEqualTo("display_name")
+        assertThat(providerListResponse.products()).containsExactly("string")
+        assertThat(providerListResponse.authenticationMethods().getOrNull())
             .containsExactly(
-                Provider.AuthenticationMethod.builder()
-                    .type(Provider.AuthenticationMethod.Type.ASSISTED)
+                ProviderListResponse.AuthenticationMethod.builder()
+                    .type(ProviderListResponse.AuthenticationMethod.Type.ASSISTED)
                     .benefitsSupport(
-                        Provider.AuthenticationMethod.BenefitsSupport.builder()
+                        ProviderListResponse.AuthenticationMethod.BenefitsSupport.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
                     .supportedFields(
-                        Provider.AuthenticationMethod.SupportedFields.builder()
+                        ProviderListResponse.AuthenticationMethod.SupportedFields.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
                     .build()
             )
-        assertThat(provider.beta()).contains(true)
-        assertThat(provider.icon()).contains("icon")
-        assertThat(provider.logo()).contains("logo")
-        assertThat(provider.manual()).contains(true)
-        assertThat(provider.mfaRequired()).contains(true)
-        assertThat(provider.primaryColor()).contains("primary_color")
+        assertThat(providerListResponse.beta()).contains(true)
+        assertThat(providerListResponse.icon()).contains("icon")
+        assertThat(providerListResponse.logo()).contains("logo")
+        assertThat(providerListResponse.manual()).contains(true)
+        assertThat(providerListResponse.mfaRequired()).contains(true)
+        assertThat(providerListResponse.primaryColor()).contains("primary_color")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val provider =
-            Provider.builder()
+        val providerListResponse =
+            ProviderListResponse.builder()
                 .id("id")
                 .displayName("display_name")
                 .addProduct("string")
                 .addAuthenticationMethod(
-                    Provider.AuthenticationMethod.builder()
-                        .type(Provider.AuthenticationMethod.Type.ASSISTED)
+                    ProviderListResponse.AuthenticationMethod.builder()
+                        .type(ProviderListResponse.AuthenticationMethod.Type.ASSISTED)
                         .benefitsSupport(
-                            Provider.AuthenticationMethod.BenefitsSupport.builder()
+                            ProviderListResponse.AuthenticationMethod.BenefitsSupport.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
                         .supportedFields(
-                            Provider.AuthenticationMethod.SupportedFields.builder()
+                            ProviderListResponse.AuthenticationMethod.SupportedFields.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
@@ -99,12 +99,12 @@ internal class ProviderTest {
                 .primaryColor("primary_color")
                 .build()
 
-        val roundtrippedProvider =
+        val roundtrippedProviderListResponse =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(provider),
-                jacksonTypeRef<Provider>(),
+                jsonMapper.writeValueAsString(providerListResponse),
+                jacksonTypeRef<ProviderListResponse>(),
             )
 
-        assertThat(roundtrippedProvider).isEqualTo(provider)
+        assertThat(roundtrippedProviderListResponse).isEqualTo(providerListResponse)
     }
 }

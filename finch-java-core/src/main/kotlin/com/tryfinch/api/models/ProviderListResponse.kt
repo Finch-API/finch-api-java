@@ -20,7 +20,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-class Provider
+class ProviderListResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
@@ -252,7 +252,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [Provider].
+         * Returns a mutable builder for constructing an instance of [ProviderListResponse].
          *
          * The following fields are required:
          * ```java
@@ -264,7 +264,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [Provider]. */
+    /** A builder for [ProviderListResponse]. */
     class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
@@ -280,18 +280,19 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(provider: Provider) = apply {
-            id = provider.id
-            displayName = provider.displayName
-            products = provider.products.map { it.toMutableList() }
-            authenticationMethods = provider.authenticationMethods.map { it.toMutableList() }
-            beta = provider.beta
-            icon = provider.icon
-            logo = provider.logo
-            manual = provider.manual
-            mfaRequired = provider.mfaRequired
-            primaryColor = provider.primaryColor
-            additionalProperties = provider.additionalProperties.toMutableMap()
+        internal fun from(providerListResponse: ProviderListResponse) = apply {
+            id = providerListResponse.id
+            displayName = providerListResponse.displayName
+            products = providerListResponse.products.map { it.toMutableList() }
+            authenticationMethods =
+                providerListResponse.authenticationMethods.map { it.toMutableList() }
+            beta = providerListResponse.beta
+            icon = providerListResponse.icon
+            logo = providerListResponse.logo
+            manual = providerListResponse.manual
+            mfaRequired = providerListResponse.mfaRequired
+            primaryColor = providerListResponse.primaryColor
+            additionalProperties = providerListResponse.additionalProperties.toMutableMap()
         }
 
         /** The id of the payroll provider used in Connect. */
@@ -466,7 +467,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [Provider].
+         * Returns an immutable instance of [ProviderListResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -479,8 +480,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): Provider =
-            Provider(
+        fun build(): ProviderListResponse =
+            ProviderListResponse(
                 checkRequired("id", id),
                 checkRequired("displayName", displayName),
                 checkRequired("products", products).map { it.toImmutable() },
@@ -497,7 +498,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): Provider = apply {
+    fun validate(): ProviderListResponse = apply {
         if (validated) {
             return@apply
         }
@@ -1157,7 +1158,7 @@ private constructor(
             return true
         }
 
-        return other is Provider &&
+        return other is ProviderListResponse &&
             id == other.id &&
             displayName == other.displayName &&
             products == other.products &&
@@ -1190,5 +1191,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Provider{id=$id, displayName=$displayName, products=$products, authenticationMethods=$authenticationMethods, beta=$beta, icon=$icon, logo=$logo, manual=$manual, mfaRequired=$mfaRequired, primaryColor=$primaryColor, additionalProperties=$additionalProperties}"
+        "ProviderListResponse{id=$id, displayName=$displayName, products=$products, authenticationMethods=$authenticationMethods, beta=$beta, icon=$icon, logo=$logo, manual=$manual, mfaRequired=$mfaRequired, primaryColor=$primaryColor, additionalProperties=$additionalProperties}"
 }
