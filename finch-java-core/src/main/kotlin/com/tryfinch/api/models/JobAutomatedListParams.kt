@@ -16,19 +16,11 @@ import kotlin.jvm.optionals.getOrNull
  */
 class JobAutomatedListParams
 private constructor(
-    private val entityId: String?,
     private val limit: Long?,
     private val offset: Long?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
-
-    /**
-     * The entity ID to use when authenticating with a multi-account token. Required when using a
-     * multi-account token to specify which entity's data to access. Example:
-     * `123e4567-e89b-12d3-a456-426614174000`
-     */
-    fun entityId(): Optional<String> = Optional.ofNullable(entityId)
 
     /** Number of items to return */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
@@ -55,7 +47,6 @@ private constructor(
     /** A builder for [JobAutomatedListParams]. */
     class Builder internal constructor() {
 
-        private var entityId: String? = null
         private var limit: Long? = null
         private var offset: Long? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -63,22 +54,11 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(jobAutomatedListParams: JobAutomatedListParams) = apply {
-            entityId = jobAutomatedListParams.entityId
             limit = jobAutomatedListParams.limit
             offset = jobAutomatedListParams.offset
             additionalHeaders = jobAutomatedListParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobAutomatedListParams.additionalQueryParams.toBuilder()
         }
-
-        /**
-         * The entity ID to use when authenticating with a multi-account token. Required when using
-         * a multi-account token to specify which entity's data to access. Example:
-         * `123e4567-e89b-12d3-a456-426614174000`
-         */
-        fun entityId(entityId: String?) = apply { this.entityId = entityId }
-
-        /** Alias for calling [Builder.entityId] with `entityId.orElse(null)`. */
-        fun entityId(entityId: Optional<String>) = entityId(entityId.getOrNull())
 
         /** Number of items to return */
         fun limit(limit: Long?) = apply { this.limit = limit }
@@ -211,7 +191,6 @@ private constructor(
          */
         fun build(): JobAutomatedListParams =
             JobAutomatedListParams(
-                entityId,
                 limit,
                 offset,
                 additionalHeaders.build(),
@@ -224,7 +203,6 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityId?.let { put("entity_id", it) }
                 limit?.let { put("limit", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
                 putAll(additionalQueryParams)
@@ -237,7 +215,6 @@ private constructor(
         }
 
         return other is JobAutomatedListParams &&
-            entityId == other.entityId &&
             limit == other.limit &&
             offset == other.offset &&
             additionalHeaders == other.additionalHeaders &&
@@ -245,8 +222,8 @@ private constructor(
     }
 
     override fun hashCode(): Int =
-        Objects.hash(entityId, limit, offset, additionalHeaders, additionalQueryParams)
+        Objects.hash(limit, offset, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "JobAutomatedListParams{entityId=$entityId, limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobAutomatedListParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
