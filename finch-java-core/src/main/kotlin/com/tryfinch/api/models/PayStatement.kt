@@ -24,13 +24,13 @@ class PayStatement
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val earnings: JsonField<List<Earning?>>,
-    private val employeeDeductions: JsonField<List<EmployeeDeduction?>>,
-    private val employerContributions: JsonField<List<EmployerContribution?>>,
+    private val employeeDeductions: JsonField<List<EmployeeDeduction>>,
+    private val employerContributions: JsonField<List<EmployerContribution>>,
     private val grossPay: JsonField<Money>,
     private val individualId: JsonField<String>,
     private val netPay: JsonField<Money>,
     private val paymentMethod: JsonField<PaymentMethod>,
-    private val taxes: JsonField<List<Tax?>>,
+    private val taxes: JsonField<List<Tax>>,
     private val totalHours: JsonField<Double>,
     private val type: JsonField<Type>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -43,10 +43,10 @@ private constructor(
         earnings: JsonField<List<Earning?>> = JsonMissing.of(),
         @JsonProperty("employee_deductions")
         @ExcludeMissing
-        employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
+        employeeDeductions: JsonField<List<EmployeeDeduction>> = JsonMissing.of(),
         @JsonProperty("employer_contributions")
         @ExcludeMissing
-        employerContributions: JsonField<List<EmployerContribution?>> = JsonMissing.of(),
+        employerContributions: JsonField<List<EmployerContribution>> = JsonMissing.of(),
         @JsonProperty("gross_pay") @ExcludeMissing grossPay: JsonField<Money> = JsonMissing.of(),
         @JsonProperty("individual_id")
         @ExcludeMissing
@@ -55,7 +55,7 @@ private constructor(
         @JsonProperty("payment_method")
         @ExcludeMissing
         paymentMethod: JsonField<PaymentMethod> = JsonMissing.of(),
-        @JsonProperty("taxes") @ExcludeMissing taxes: JsonField<List<Tax?>> = JsonMissing.of(),
+        @JsonProperty("taxes") @ExcludeMissing taxes: JsonField<List<Tax>> = JsonMissing.of(),
         @JsonProperty("total_hours")
         @ExcludeMissing
         totalHours: JsonField<Double> = JsonMissing.of(),
@@ -88,14 +88,14 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun employeeDeductions(): Optional<List<EmployeeDeduction?>> =
+    fun employeeDeductions(): Optional<List<EmployeeDeduction>> =
         employeeDeductions.getOptional("employee_deductions")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun employerContributions(): Optional<List<EmployerContribution?>> =
+    fun employerContributions(): Optional<List<EmployerContribution>> =
         employerContributions.getOptional("employer_contributions")
 
     /**
@@ -132,7 +132,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun taxes(): Optional<List<Tax?>> = taxes.getOptional("taxes")
+    fun taxes(): Optional<List<Tax>> = taxes.getOptional("taxes")
 
     /**
      * The number of hours worked for this pay period
@@ -165,7 +165,7 @@ private constructor(
      */
     @JsonProperty("employee_deductions")
     @ExcludeMissing
-    fun _employeeDeductions(): JsonField<List<EmployeeDeduction?>> = employeeDeductions
+    fun _employeeDeductions(): JsonField<List<EmployeeDeduction>> = employeeDeductions
 
     /**
      * Returns the raw JSON value of [employerContributions].
@@ -175,7 +175,7 @@ private constructor(
      */
     @JsonProperty("employer_contributions")
     @ExcludeMissing
-    fun _employerContributions(): JsonField<List<EmployerContribution?>> = employerContributions
+    fun _employerContributions(): JsonField<List<EmployerContribution>> = employerContributions
 
     /**
      * Returns the raw JSON value of [grossPay].
@@ -214,7 +214,7 @@ private constructor(
      *
      * Unlike [taxes], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax?>> = taxes
+    @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax>> = taxes
 
     /**
      * Returns the raw JSON value of [totalHours].
@@ -268,13 +268,13 @@ private constructor(
     class Builder internal constructor() {
 
         private var earnings: JsonField<MutableList<Earning?>>? = null
-        private var employeeDeductions: JsonField<MutableList<EmployeeDeduction?>>? = null
-        private var employerContributions: JsonField<MutableList<EmployerContribution?>>? = null
+        private var employeeDeductions: JsonField<MutableList<EmployeeDeduction>>? = null
+        private var employerContributions: JsonField<MutableList<EmployerContribution>>? = null
         private var grossPay: JsonField<Money>? = null
         private var individualId: JsonField<String>? = null
         private var netPay: JsonField<Money>? = null
         private var paymentMethod: JsonField<PaymentMethod>? = null
-        private var taxes: JsonField<MutableList<Tax?>>? = null
+        private var taxes: JsonField<MutableList<Tax>>? = null
         private var totalHours: JsonField<Double>? = null
         private var type: JsonField<Type>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -324,23 +324,23 @@ private constructor(
         }
 
         /** The array of deductions objects associated with this pay statement. */
-        fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) =
+        fun employeeDeductions(employeeDeductions: List<EmployeeDeduction>?) =
             employeeDeductions(JsonField.ofNullable(employeeDeductions))
 
         /**
          * Alias for calling [Builder.employeeDeductions] with `employeeDeductions.orElse(null)`.
          */
-        fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction?>>) =
+        fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction>>) =
             employeeDeductions(employeeDeductions.getOrNull())
 
         /**
          * Sets [Builder.employeeDeductions] to an arbitrary JSON value.
          *
          * You should usually call [Builder.employeeDeductions] with a well-typed
-         * `List<EmployeeDeduction?>` value instead. This method is primarily for setting the field
+         * `List<EmployeeDeduction>` value instead. This method is primarily for setting the field
          * to an undocumented or not yet supported value.
          */
-        fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) = apply {
+        fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction>>) = apply {
             this.employeeDeductions = employeeDeductions.map { it.toMutableList() }
         }
 
@@ -356,24 +356,24 @@ private constructor(
                 }
         }
 
-        fun employerContributions(employerContributions: List<EmployerContribution?>?) =
+        fun employerContributions(employerContributions: List<EmployerContribution>?) =
             employerContributions(JsonField.ofNullable(employerContributions))
 
         /**
          * Alias for calling [Builder.employerContributions] with
          * `employerContributions.orElse(null)`.
          */
-        fun employerContributions(employerContributions: Optional<List<EmployerContribution?>>) =
+        fun employerContributions(employerContributions: Optional<List<EmployerContribution>>) =
             employerContributions(employerContributions.getOrNull())
 
         /**
          * Sets [Builder.employerContributions] to an arbitrary JSON value.
          *
          * You should usually call [Builder.employerContributions] with a well-typed
-         * `List<EmployerContribution?>` value instead. This method is primarily for setting the
+         * `List<EmployerContribution>` value instead. This method is primarily for setting the
          * field to an undocumented or not yet supported value.
          */
-        fun employerContributions(employerContributions: JsonField<List<EmployerContribution?>>) =
+        fun employerContributions(employerContributions: JsonField<List<EmployerContribution>>) =
             apply {
                 this.employerContributions = employerContributions.map { it.toMutableList() }
             }
@@ -450,19 +450,18 @@ private constructor(
         }
 
         /** The array of taxes objects associated with this pay statement. */
-        fun taxes(taxes: List<Tax?>?) = taxes(JsonField.ofNullable(taxes))
+        fun taxes(taxes: List<Tax>?) = taxes(JsonField.ofNullable(taxes))
 
         /** Alias for calling [Builder.taxes] with `taxes.orElse(null)`. */
-        fun taxes(taxes: Optional<List<Tax?>>) = taxes(taxes.getOrNull())
+        fun taxes(taxes: Optional<List<Tax>>) = taxes(taxes.getOrNull())
 
         /**
          * Sets [Builder.taxes] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.taxes] with a well-typed `List<Tax?>` value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.taxes] with a well-typed `List<Tax>` value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun taxes(taxes: JsonField<List<Tax?>>) = apply {
+        fun taxes(taxes: JsonField<List<Tax>>) = apply {
             this.taxes = taxes.map { it.toMutableList() }
         }
 
@@ -578,13 +577,13 @@ private constructor(
         }
 
         earnings().ifPresent { it.forEach { it?.validate() } }
-        employeeDeductions().ifPresent { it.forEach { it?.validate() } }
-        employerContributions().ifPresent { it.forEach { it?.validate() } }
+        employeeDeductions().ifPresent { it.forEach { it.validate() } }
+        employerContributions().ifPresent { it.forEach { it.validate() } }
         grossPay().ifPresent { it.validate() }
         individualId()
         netPay().ifPresent { it.validate() }
         paymentMethod().ifPresent { it.validate() }
-        taxes().ifPresent { it.forEach { it?.validate() } }
+        taxes().ifPresent { it.forEach { it.validate() } }
         totalHours()
         type().ifPresent { it.validate() }
         validated = true
@@ -606,15 +605,13 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (earnings.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
-            (employeeDeductions.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
-                ?: 0) +
-            (employerContributions.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
-                ?: 0) +
+            (employeeDeductions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (employerContributions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (grossPay.asKnown().getOrNull()?.validity() ?: 0) +
             (if (individualId.asKnown().isPresent) 1 else 0) +
             (netPay.asKnown().getOrNull()?.validity() ?: 0) +
             (paymentMethod.asKnown().getOrNull()?.validity() ?: 0) +
-            (taxes.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+            (taxes.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (totalHours.asKnown().isPresent) 1 else 0) +
             (type.asKnown().getOrNull()?.validity() ?: 0)
 
