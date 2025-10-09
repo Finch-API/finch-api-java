@@ -27,7 +27,7 @@ internal class W42005Test {
                 .build()
 
         assertThat(w42005.data())
-            .contains(
+            .isEqualTo(
                 W42005.Data.builder()
                     .additionalWithholding(0L)
                     .exemption(W42005.Data.Exemption.EXEMPT)
@@ -36,8 +36,8 @@ internal class W42005Test {
                     .totalNumberOfAllowances(0L)
                     .build()
             )
-        assertThat(w42005.type()).contains(W42005.Type.W4_2005)
-        assertThat(w42005.year()).contains(0.0)
+        assertThat(w42005.type()).isEqualTo(W42005.Type.W4_2005)
+        assertThat(w42005.year()).isEqualTo(0.0)
     }
 
     @Test

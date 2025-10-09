@@ -11,6 +11,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -40,26 +41,26 @@ private constructor(
     /**
      * Detailed information specific to the 2005 W4 form.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun data(): Optional<Data> = data.getOptional("data")
+    fun data(): Data = data.getRequired("data")
 
     /**
      * Specifies the form type, indicating that this document is a 2005 W4 form.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun type(): Optional<Type> = type.getOptional("type")
+    fun type(): Type = type.getRequired("type")
 
     /**
      * The tax year this W4 document applies to.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun year(): Optional<Double> = year.getOptional("year")
+    fun year(): Double = year.getRequired("year")
 
     /**
      * Returns the raw JSON value of [data].
@@ -96,16 +97,25 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [W42005]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [W42005].
+         *
+         * The following fields are required:
+         * ```java
+         * .data()
+         * .type()
+         * .year()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [W42005]. */
     class Builder internal constructor() {
 
-        private var data: JsonField<Data> = JsonMissing.of()
-        private var type: JsonField<Type> = JsonMissing.of()
-        private var year: JsonField<Double> = JsonMissing.of()
+        private var data: JsonField<Data>? = null
+        private var type: JsonField<Type>? = null
+        private var year: JsonField<Double>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -139,17 +149,7 @@ private constructor(
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** The tax year this W4 document applies to. */
-        fun year(year: Double?) = year(JsonField.ofNullable(year))
-
-        /**
-         * Alias for [Builder.year].
-         *
-         * This unboxed primitive overload exists for backwards compatibility.
-         */
-        fun year(year: Double) = year(year as Double?)
-
-        /** Alias for calling [Builder.year] with `year.orElse(null)`. */
-        fun year(year: Optional<Double>) = year(year.getOrNull())
+        fun year(year: Double) = year(JsonField.of(year))
 
         /**
          * Sets [Builder.year] to an arbitrary JSON value.
@@ -182,8 +182,23 @@ private constructor(
          * Returns an immutable instance of [W42005].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .data()
+         * .type()
+         * .year()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): W42005 = W42005(data, type, year, additionalProperties.toMutableMap())
+        fun build(): W42005 =
+            W42005(
+                checkRequired("data", data),
+                checkRequired("type", type),
+                checkRequired("year", year),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
@@ -193,8 +208,8 @@ private constructor(
             return@apply
         }
 
-        data().ifPresent { it.validate() }
-        type().ifPresent { it.validate() }
+        data().validate()
+        type().validate()
         year()
         validated = true
     }
@@ -259,11 +274,11 @@ private constructor(
         /**
          * Additional withholding amount (in cents).
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun additionalWithholding(): Optional<Long> =
-            additionalWithholding.getOptional("additional_withholding")
+        fun additionalWithholding(): Long =
+            additionalWithholding.getRequired("additional_withholding")
 
         /**
          * Indicates exemption status from federal tax withholding.
@@ -284,19 +299,19 @@ private constructor(
         /**
          * The unique identifier for the individual associated with this 2005 W4 form.
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun individualId(): Optional<String> = individualId.getOptional("individual_id")
+        fun individualId(): String = individualId.getRequired("individual_id")
 
         /**
          * Total number of allowances claimed (in cents).
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun totalNumberOfAllowances(): Optional<Long> =
-            totalNumberOfAllowances.getOptional("total_number_of_allowances")
+        fun totalNumberOfAllowances(): Long =
+            totalNumberOfAllowances.getRequired("total_number_of_allowances")
 
         /**
          * Returns the raw JSON value of [additionalWithholding].
@@ -361,18 +376,29 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Data]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Data].
+             *
+             * The following fields are required:
+             * ```java
+             * .additionalWithholding()
+             * .exemption()
+             * .filingStatus()
+             * .individualId()
+             * .totalNumberOfAllowances()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Data]. */
         class Builder internal constructor() {
 
-            private var additionalWithholding: JsonField<Long> = JsonMissing.of()
-            private var exemption: JsonField<Exemption> = JsonMissing.of()
-            private var filingStatus: JsonField<FilingStatus> = JsonMissing.of()
-            private var individualId: JsonField<String> = JsonMissing.of()
-            private var totalNumberOfAllowances: JsonField<Long> = JsonMissing.of()
+            private var additionalWithholding: JsonField<Long>? = null
+            private var exemption: JsonField<Exemption>? = null
+            private var filingStatus: JsonField<FilingStatus>? = null
+            private var individualId: JsonField<String>? = null
+            private var totalNumberOfAllowances: JsonField<Long>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -386,23 +412,8 @@ private constructor(
             }
 
             /** Additional withholding amount (in cents). */
-            fun additionalWithholding(additionalWithholding: Long?) =
-                additionalWithholding(JsonField.ofNullable(additionalWithholding))
-
-            /**
-             * Alias for [Builder.additionalWithholding].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
             fun additionalWithholding(additionalWithholding: Long) =
-                additionalWithholding(additionalWithholding as Long?)
-
-            /**
-             * Alias for calling [Builder.additionalWithholding] with
-             * `additionalWithholding.orElse(null)`.
-             */
-            fun additionalWithholding(additionalWithholding: Optional<Long>) =
-                additionalWithholding(additionalWithholding.getOrNull())
+                additionalWithholding(JsonField.of(additionalWithholding))
 
             /**
              * Sets [Builder.additionalWithholding] to an arbitrary JSON value.
@@ -416,7 +427,10 @@ private constructor(
             }
 
             /** Indicates exemption status from federal tax withholding. */
-            fun exemption(exemption: Exemption) = exemption(JsonField.of(exemption))
+            fun exemption(exemption: Exemption?) = exemption(JsonField.ofNullable(exemption))
+
+            /** Alias for calling [Builder.exemption] with `exemption.orElse(null)`. */
+            fun exemption(exemption: Optional<Exemption>) = exemption(exemption.getOrNull())
 
             /**
              * Sets [Builder.exemption] to an arbitrary JSON value.
@@ -461,23 +475,8 @@ private constructor(
             }
 
             /** Total number of allowances claimed (in cents). */
-            fun totalNumberOfAllowances(totalNumberOfAllowances: Long?) =
-                totalNumberOfAllowances(JsonField.ofNullable(totalNumberOfAllowances))
-
-            /**
-             * Alias for [Builder.totalNumberOfAllowances].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
             fun totalNumberOfAllowances(totalNumberOfAllowances: Long) =
-                totalNumberOfAllowances(totalNumberOfAllowances as Long?)
-
-            /**
-             * Alias for calling [Builder.totalNumberOfAllowances] with
-             * `totalNumberOfAllowances.orElse(null)`.
-             */
-            fun totalNumberOfAllowances(totalNumberOfAllowances: Optional<Long>) =
-                totalNumberOfAllowances(totalNumberOfAllowances.getOrNull())
+                totalNumberOfAllowances(JsonField.of(totalNumberOfAllowances))
 
             /**
              * Sets [Builder.totalNumberOfAllowances] to an arbitrary JSON value.
@@ -513,14 +512,25 @@ private constructor(
              * Returns an immutable instance of [Data].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .additionalWithholding()
+             * .exemption()
+             * .filingStatus()
+             * .individualId()
+             * .totalNumberOfAllowances()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Data =
                 Data(
-                    additionalWithholding,
-                    exemption,
-                    filingStatus,
-                    individualId,
-                    totalNumberOfAllowances,
+                    checkRequired("additionalWithholding", additionalWithholding),
+                    checkRequired("exemption", exemption),
+                    checkRequired("filingStatus", filingStatus),
+                    checkRequired("individualId", individualId),
+                    checkRequired("totalNumberOfAllowances", totalNumberOfAllowances),
                     additionalProperties.toMutableMap(),
                 )
         }
