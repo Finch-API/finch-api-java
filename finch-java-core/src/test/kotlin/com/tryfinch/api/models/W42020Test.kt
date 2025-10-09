@@ -30,7 +30,7 @@ internal class W42020Test {
                 .build()
 
         assertThat(w42020.data())
-            .contains(
+            .isEqualTo(
                 W42020.Data.builder()
                     .amountForOtherDependents(0L)
                     .amountForQualifyingChildrenUnder17(0L)
@@ -42,8 +42,8 @@ internal class W42020Test {
                     .totalClaimDependentAndOtherCredits(0L)
                     .build()
             )
-        assertThat(w42020.type()).contains(W42020.Type.W4_2020)
-        assertThat(w42020.year()).contains(0.0)
+        assertThat(w42020.type()).isEqualTo(W42020.Type.W4_2020)
+        assertThat(w42020.year()).isEqualTo(0.0)
     }
 
     @Test
