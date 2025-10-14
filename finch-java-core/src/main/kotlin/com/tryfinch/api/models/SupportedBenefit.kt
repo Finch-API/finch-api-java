@@ -546,6 +546,8 @@ private constructor(
 
             @JvmField val PERCENT = of("percent")
 
+            @JvmField val TIERED = of("tiered")
+
             @JvmStatic fun of(value: String) = CompanyContribution(JsonField.of(value))
         }
 
@@ -553,6 +555,7 @@ private constructor(
         enum class Known {
             FIXED,
             PERCENT,
+            TIERED,
         }
 
         /**
@@ -567,6 +570,7 @@ private constructor(
         enum class Value {
             FIXED,
             PERCENT,
+            TIERED,
             /**
              * An enum member indicating that [CompanyContribution] was instantiated with an unknown
              * value.
@@ -585,6 +589,7 @@ private constructor(
             when (this) {
                 FIXED -> Value.FIXED
                 PERCENT -> Value.PERCENT
+                TIERED -> Value.TIERED
                 else -> Value._UNKNOWN
             }
 
@@ -600,6 +605,7 @@ private constructor(
             when (this) {
                 FIXED -> Known.FIXED
                 PERCENT -> Known.PERCENT
+                TIERED -> Known.TIERED
                 else -> throw FinchInvalidDataException("Unknown CompanyContribution: $value")
             }
 
