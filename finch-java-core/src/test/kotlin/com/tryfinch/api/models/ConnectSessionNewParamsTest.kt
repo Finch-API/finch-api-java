@@ -10,10 +10,9 @@ internal class ConnectSessionNewParamsTest {
     @Test
     fun create() {
         ConnectSessionNewParams.builder()
+            .customerEmail("dev@stainless.com")
             .customerId("x")
             .customerName("x")
-            .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
-            .customerEmail("dev@stainless.com")
             .integration(
                 ConnectSessionNewParams.Integration.builder()
                     .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
@@ -22,6 +21,7 @@ internal class ConnectSessionNewParamsTest {
             )
             .manual(true)
             .minutesToExpire(1.0)
+            .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
             .redirectUri("redirect_uri")
             .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
             .build()
@@ -31,10 +31,9 @@ internal class ConnectSessionNewParamsTest {
     fun body() {
         val params =
             ConnectSessionNewParams.builder()
+                .customerEmail("dev@stainless.com")
                 .customerId("x")
                 .customerName("x")
-                .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
-                .customerEmail("dev@stainless.com")
                 .integration(
                     ConnectSessionNewParams.Integration.builder()
                         .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
@@ -43,16 +42,16 @@ internal class ConnectSessionNewParamsTest {
                 )
                 .manual(true)
                 .minutesToExpire(1.0)
+                .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
                 .redirectUri("redirect_uri")
                 .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                 .build()
 
         val body = params._body()
 
+        assertThat(body.customerEmail()).contains("dev@stainless.com")
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
-        assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
-        assertThat(body.customerEmail()).contains("dev@stainless.com")
         assertThat(body.integration())
             .contains(
                 ConnectSessionNewParams.Integration.builder()
@@ -62,23 +61,9 @@ internal class ConnectSessionNewParamsTest {
             )
         assertThat(body.manual()).contains(true)
         assertThat(body.minutesToExpire()).contains(1.0)
+        assertThat(body.products())
+            .containsExactly(ConnectSessionNewParams.ConnectProducts.BENEFITS)
         assertThat(body.redirectUri()).contains("redirect_uri")
         assertThat(body.sandbox()).contains(ConnectSessionNewParams.Sandbox.FINCH)
-    }
-
-    @Test
-    fun bodyWithoutOptionalFields() {
-        val params =
-            ConnectSessionNewParams.builder()
-                .customerId("x")
-                .customerName("x")
-                .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
-                .build()
-
-        val body = params._body()
-
-        assertThat(body.customerId()).isEqualTo("x")
-        assertThat(body.customerName()).isEqualTo("x")
-        assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
     }
 }
