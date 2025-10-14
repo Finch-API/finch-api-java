@@ -26,10 +26,9 @@ internal class SessionServiceAsyncTest {
         val responseFuture =
             sessionServiceAsync.new_(
                 ConnectSessionNewParams.builder()
+                    .customerEmail("dev@stainless.com")
                     .customerId("x")
                     .customerName("x")
-                    .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
-                    .customerEmail("dev@stainless.com")
                     .integration(
                         ConnectSessionNewParams.Integration.builder()
                             .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
@@ -38,6 +37,7 @@ internal class SessionServiceAsyncTest {
                     )
                     .manual(true)
                     .minutesToExpire(1.0)
+                    .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
                     .redirectUri("redirect_uri")
                     .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                     .build()
@@ -62,7 +62,7 @@ internal class SessionServiceAsyncTest {
                 ConnectSessionReauthenticateParams.builder()
                     .connectionId("connection_id")
                     .minutesToExpire(0L)
-                    .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
+                    .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
                     .redirectUri("https://example.com")
                     .build()
             )

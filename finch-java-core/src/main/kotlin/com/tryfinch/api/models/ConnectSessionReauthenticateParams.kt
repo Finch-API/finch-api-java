@@ -26,7 +26,7 @@ import kotlin.jvm.optionals.getOrNull
 /** Create a new Connect session for reauthenticating an existing connection */
 class ConnectSessionReauthenticateParams
 private constructor(
-    private val body: Body,
+    private val body: ReauthenticateRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -42,10 +42,10 @@ private constructor(
     /**
      * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun minutesToExpire(): Optional<Long> = body.minutesToExpire()
+    fun minutesToExpire(): Long = body.minutesToExpire()
 
     /**
      * The products to request access to (optional for reauthentication)
@@ -110,6 +110,9 @@ private constructor(
          * The following fields are required:
          * ```java
          * .connectionId()
+         * .minutesToExpire()
+         * .products()
+         * .redirectUri()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -118,7 +121,7 @@ private constructor(
     /** A builder for [ConnectSessionReauthenticateParams]. */
     class Builder internal constructor() {
 
-        private var body: Body.Builder = Body.builder()
+        private var body: ReauthenticateRequest.Builder = ReauthenticateRequest.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -141,7 +144,7 @@ private constructor(
          * - [products]
          * - [redirectUri]
          */
-        fun body(body: Body) = apply { this.body = body.toBuilder() }
+        fun body(body: ReauthenticateRequest) = apply { this.body = body.toBuilder() }
 
         /** The ID of the existing connection to reauthenticate */
         fun connectionId(connectionId: String) = apply { body.connectionId(connectionId) }
@@ -160,20 +163,7 @@ private constructor(
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        fun minutesToExpire(minutesToExpire: Long?) = apply {
-            body.minutesToExpire(minutesToExpire)
-        }
-
-        /**
-         * Alias for [Builder.minutesToExpire].
-         *
-         * This unboxed primitive overload exists for backwards compatibility.
-         */
-        fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
-
-        /** Alias for calling [Builder.minutesToExpire] with `minutesToExpire.orElse(null)`. */
-        fun minutesToExpire(minutesToExpire: Optional<Long>) =
-            minutesToExpire(minutesToExpire.getOrNull())
+        fun minutesToExpire(minutesToExpire: Long) = apply { body.minutesToExpire(minutesToExpire) }
 
         /**
          * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
@@ -348,6 +338,9 @@ private constructor(
          * The following fields are required:
          * ```java
          * .connectionId()
+         * .minutesToExpire()
+         * .products()
+         * .redirectUri()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -360,13 +353,13 @@ private constructor(
             )
     }
 
-    fun _body(): Body = body
+    fun _body(): ReauthenticateRequest = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
-    class Body
+    class ReauthenticateRequest
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val connectionId: JsonField<String>,
@@ -403,10 +396,10 @@ private constructor(
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun minutesToExpire(): Optional<Long> = minutesToExpire.getOptional("minutes_to_expire")
+        fun minutesToExpire(): Long = minutesToExpire.getRequired("minutes_to_expire")
 
         /**
          * The products to request access to (optional for reauthentication)
@@ -477,32 +470,35 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [Body].
+             * Returns a mutable builder for constructing an instance of [ReauthenticateRequest].
              *
              * The following fields are required:
              * ```java
              * .connectionId()
+             * .minutesToExpire()
+             * .products()
+             * .redirectUri()
              * ```
              */
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [Body]. */
+        /** A builder for [ReauthenticateRequest]. */
         class Builder internal constructor() {
 
             private var connectionId: JsonField<String>? = null
-            private var minutesToExpire: JsonField<Long> = JsonMissing.of()
+            private var minutesToExpire: JsonField<Long>? = null
             private var products: JsonField<MutableList<ConnectProducts>>? = null
-            private var redirectUri: JsonField<String> = JsonMissing.of()
+            private var redirectUri: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                connectionId = body.connectionId
-                minutesToExpire = body.minutesToExpire
-                products = body.products.map { it.toMutableList() }
-                redirectUri = body.redirectUri
-                additionalProperties = body.additionalProperties.toMutableMap()
+            internal fun from(reauthenticateRequest: ReauthenticateRequest) = apply {
+                connectionId = reauthenticateRequest.connectionId
+                minutesToExpire = reauthenticateRequest.minutesToExpire
+                products = reauthenticateRequest.products.map { it.toMutableList() }
+                redirectUri = reauthenticateRequest.redirectUri
+                additionalProperties = reauthenticateRequest.additionalProperties.toMutableMap()
             }
 
             /** The ID of the existing connection to reauthenticate */
@@ -523,19 +519,8 @@ private constructor(
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Long?) =
-                minutesToExpire(JsonField.ofNullable(minutesToExpire))
-
-            /**
-             * Alias for [Builder.minutesToExpire].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
-            fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
-
-            /** Alias for calling [Builder.minutesToExpire] with `minutesToExpire.orElse(null)`. */
-            fun minutesToExpire(minutesToExpire: Optional<Long>) =
-                minutesToExpire(minutesToExpire.getOrNull())
+            fun minutesToExpire(minutesToExpire: Long) =
+                minutesToExpire(JsonField.of(minutesToExpire))
 
             /**
              * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
@@ -615,30 +600,33 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [Body].
+             * Returns an immutable instance of [ReauthenticateRequest].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
              * ```java
              * .connectionId()
+             * .minutesToExpire()
+             * .products()
+             * .redirectUri()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): Body =
-                Body(
+            fun build(): ReauthenticateRequest =
+                ReauthenticateRequest(
                     checkRequired("connectionId", connectionId),
-                    minutesToExpire,
-                    (products ?: JsonMissing.of()).map { it.toImmutable() },
-                    redirectUri,
+                    checkRequired("minutesToExpire", minutesToExpire),
+                    checkRequired("products", products).map { it.toImmutable() },
+                    checkRequired("redirectUri", redirectUri),
                     additionalProperties.toMutableMap(),
                 )
         }
 
         private var validated: Boolean = false
 
-        fun validate(): Body = apply {
+        fun validate(): ReauthenticateRequest = apply {
             if (validated) {
                 return@apply
             }
@@ -676,7 +664,7 @@ private constructor(
                 return true
             }
 
-            return other is Body &&
+            return other is ReauthenticateRequest &&
                 connectionId == other.connectionId &&
                 minutesToExpire == other.minutesToExpire &&
                 products == other.products &&
@@ -691,7 +679,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
+            "ReauthenticateRequest{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
     /** The Finch products that can be requested during the Connect flow. */
@@ -710,41 +698,41 @@ private constructor(
 
         companion object {
 
+            @JvmField val BENEFITS = of("benefits")
+
             @JvmField val COMPANY = of("company")
+
+            @JvmField val DEDUCTION = of("deduction")
 
             @JvmField val DIRECTORY = of("directory")
 
-            @JvmField val INDIVIDUAL = of("individual")
+            @JvmField val DOCUMENTS = of("documents")
 
             @JvmField val EMPLOYMENT = of("employment")
+
+            @JvmField val INDIVIDUAL = of("individual")
 
             @JvmField val PAYMENT = of("payment")
 
             @JvmField val PAY_STATEMENT = of("pay_statement")
 
-            @JvmField val BENEFITS = of("benefits")
-
             @JvmField val SSN = of("ssn")
-
-            @JvmField val DEDUCTION = of("deduction")
-
-            @JvmField val DOCUMENTS = of("documents")
 
             @JvmStatic fun of(value: String) = ConnectProducts(JsonField.of(value))
         }
 
         /** An enum containing [ConnectProducts]'s known values. */
         enum class Known {
+            BENEFITS,
             COMPANY,
+            DEDUCTION,
             DIRECTORY,
-            INDIVIDUAL,
+            DOCUMENTS,
             EMPLOYMENT,
+            INDIVIDUAL,
             PAYMENT,
             PAY_STATEMENT,
-            BENEFITS,
             SSN,
-            DEDUCTION,
-            DOCUMENTS,
         }
 
         /**
@@ -757,16 +745,16 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
+            BENEFITS,
             COMPANY,
+            DEDUCTION,
             DIRECTORY,
-            INDIVIDUAL,
+            DOCUMENTS,
             EMPLOYMENT,
+            INDIVIDUAL,
             PAYMENT,
             PAY_STATEMENT,
-            BENEFITS,
             SSN,
-            DEDUCTION,
-            DOCUMENTS,
             /**
              * An enum member indicating that [ConnectProducts] was instantiated with an unknown
              * value.
@@ -783,16 +771,16 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
+                BENEFITS -> Value.BENEFITS
                 COMPANY -> Value.COMPANY
+                DEDUCTION -> Value.DEDUCTION
                 DIRECTORY -> Value.DIRECTORY
-                INDIVIDUAL -> Value.INDIVIDUAL
+                DOCUMENTS -> Value.DOCUMENTS
                 EMPLOYMENT -> Value.EMPLOYMENT
+                INDIVIDUAL -> Value.INDIVIDUAL
                 PAYMENT -> Value.PAYMENT
                 PAY_STATEMENT -> Value.PAY_STATEMENT
-                BENEFITS -> Value.BENEFITS
                 SSN -> Value.SSN
-                DEDUCTION -> Value.DEDUCTION
-                DOCUMENTS -> Value.DOCUMENTS
                 else -> Value._UNKNOWN
             }
 
@@ -806,16 +794,16 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
+                BENEFITS -> Known.BENEFITS
                 COMPANY -> Known.COMPANY
+                DEDUCTION -> Known.DEDUCTION
                 DIRECTORY -> Known.DIRECTORY
-                INDIVIDUAL -> Known.INDIVIDUAL
+                DOCUMENTS -> Known.DOCUMENTS
                 EMPLOYMENT -> Known.EMPLOYMENT
+                INDIVIDUAL -> Known.INDIVIDUAL
                 PAYMENT -> Known.PAYMENT
                 PAY_STATEMENT -> Known.PAY_STATEMENT
-                BENEFITS -> Known.BENEFITS
                 SSN -> Known.SSN
-                DEDUCTION -> Known.DEDUCTION
-                DOCUMENTS -> Known.DOCUMENTS
                 else -> throw FinchInvalidDataException("Unknown ConnectProducts: $value")
             }
 
