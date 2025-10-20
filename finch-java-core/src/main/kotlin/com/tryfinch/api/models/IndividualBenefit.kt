@@ -21,8 +21,10 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.allMaxBy
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.getOrThrow
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -422,8 +424,8 @@ private constructor(
         private constructor(
             private val annualMaximum: JsonField<Long>,
             private val catchUp: JsonField<Boolean>,
-            private val companyContribution: JsonField<BenefitContribution>,
-            private val employeeDeduction: JsonField<BenefitContribution>,
+            private val companyContribution: JsonField<CompanyContribution>,
+            private val employeeDeduction: JsonField<EmployeeDeduction>,
             private val hsaContributionLimit: JsonField<HsaContributionLimit>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
@@ -438,10 +440,10 @@ private constructor(
                 catchUp: JsonField<Boolean> = JsonMissing.of(),
                 @JsonProperty("company_contribution")
                 @ExcludeMissing
-                companyContribution: JsonField<BenefitContribution> = JsonMissing.of(),
+                companyContribution: JsonField<CompanyContribution> = JsonMissing.of(),
                 @JsonProperty("employee_deduction")
                 @ExcludeMissing
-                employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of(),
+                employeeDeduction: JsonField<EmployeeDeduction> = JsonMissing.of(),
                 @JsonProperty("hsa_contribution_limit")
                 @ExcludeMissing
                 hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of(),
@@ -475,14 +477,14 @@ private constructor(
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun companyContribution(): Optional<BenefitContribution> =
+            fun companyContribution(): Optional<CompanyContribution> =
                 companyContribution.getOptional("company_contribution")
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun employeeDeduction(): Optional<BenefitContribution> =
+            fun employeeDeduction(): Optional<EmployeeDeduction> =
                 employeeDeduction.getOptional("employee_deduction")
 
             /**
@@ -519,7 +521,7 @@ private constructor(
              */
             @JsonProperty("company_contribution")
             @ExcludeMissing
-            fun _companyContribution(): JsonField<BenefitContribution> = companyContribution
+            fun _companyContribution(): JsonField<CompanyContribution> = companyContribution
 
             /**
              * Returns the raw JSON value of [employeeDeduction].
@@ -529,7 +531,7 @@ private constructor(
              */
             @JsonProperty("employee_deduction")
             @ExcludeMissing
-            fun _employeeDeduction(): JsonField<BenefitContribution> = employeeDeduction
+            fun _employeeDeduction(): JsonField<EmployeeDeduction> = employeeDeduction
 
             /**
              * Returns the raw JSON value of [hsaContributionLimit].
@@ -574,8 +576,8 @@ private constructor(
 
                 private var annualMaximum: JsonField<Long>? = null
                 private var catchUp: JsonField<Boolean>? = null
-                private var companyContribution: JsonField<BenefitContribution>? = null
-                private var employeeDeduction: JsonField<BenefitContribution>? = null
+                private var companyContribution: JsonField<CompanyContribution>? = null
+                private var employeeDeduction: JsonField<EmployeeDeduction>? = null
                 private var hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -642,48 +644,83 @@ private constructor(
                  */
                 fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
 
-                fun companyContribution(companyContribution: BenefitContribution?) =
+                fun companyContribution(companyContribution: CompanyContribution?) =
                     companyContribution(JsonField.ofNullable(companyContribution))
 
                 /**
                  * Alias for calling [Builder.companyContribution] with
                  * `companyContribution.orElse(null)`.
                  */
-                fun companyContribution(companyContribution: Optional<BenefitContribution>) =
+                fun companyContribution(companyContribution: Optional<CompanyContribution>) =
                     companyContribution(companyContribution.getOrNull())
 
                 /**
                  * Sets [Builder.companyContribution] to an arbitrary JSON value.
                  *
                  * You should usually call [Builder.companyContribution] with a well-typed
-                 * [BenefitContribution] value instead. This method is primarily for setting the
+                 * [CompanyContribution] value instead. This method is primarily for setting the
                  * field to an undocumented or not yet supported value.
                  */
-                fun companyContribution(companyContribution: JsonField<BenefitContribution>) =
+                fun companyContribution(companyContribution: JsonField<CompanyContribution>) =
                     apply {
                         this.companyContribution = companyContribution
                     }
 
-                fun employeeDeduction(employeeDeduction: BenefitContribution?) =
+                /**
+                 * Alias for calling [companyContribution] with
+                 * `CompanyContribution.ofInnerUnionMember0(innerUnionMember0)`.
+                 */
+                fun companyContribution(innerUnionMember0: CompanyContribution.InnerUnionMember0) =
+                    companyContribution(CompanyContribution.ofInnerUnionMember0(innerUnionMember0))
+
+                /**
+                 * Alias for calling [companyContribution] with
+                 * `CompanyContribution.ofUnionMember1(unionMember1)`.
+                 */
+                fun companyContribution(unionMember1: CompanyContribution.UnionMember1) =
+                    companyContribution(CompanyContribution.ofUnionMember1(unionMember1))
+
+                /**
+                 * Alias for calling [companyContribution] with
+                 * `CompanyContribution.ofUnionMember2(unionMember2)`.
+                 */
+                fun companyContribution(unionMember2: CompanyContribution.UnionMember2) =
+                    companyContribution(CompanyContribution.ofUnionMember2(unionMember2))
+
+                fun employeeDeduction(employeeDeduction: EmployeeDeduction?) =
                     employeeDeduction(JsonField.ofNullable(employeeDeduction))
 
                 /**
                  * Alias for calling [Builder.employeeDeduction] with
                  * `employeeDeduction.orElse(null)`.
                  */
-                fun employeeDeduction(employeeDeduction: Optional<BenefitContribution>) =
+                fun employeeDeduction(employeeDeduction: Optional<EmployeeDeduction>) =
                     employeeDeduction(employeeDeduction.getOrNull())
 
                 /**
                  * Sets [Builder.employeeDeduction] to an arbitrary JSON value.
                  *
                  * You should usually call [Builder.employeeDeduction] with a well-typed
-                 * [BenefitContribution] value instead. This method is primarily for setting the
-                 * field to an undocumented or not yet supported value.
+                 * [EmployeeDeduction] value instead. This method is primarily for setting the field
+                 * to an undocumented or not yet supported value.
                  */
-                fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
+                fun employeeDeduction(employeeDeduction: JsonField<EmployeeDeduction>) = apply {
                     this.employeeDeduction = employeeDeduction
                 }
+
+                /**
+                 * Alias for calling [employeeDeduction] with
+                 * `EmployeeDeduction.ofInnerUnionMember0(innerUnionMember0)`.
+                 */
+                fun employeeDeduction(innerUnionMember0: EmployeeDeduction.InnerUnionMember0) =
+                    employeeDeduction(EmployeeDeduction.ofInnerUnionMember0(innerUnionMember0))
+
+                /**
+                 * Alias for calling [employeeDeduction] with
+                 * `EmployeeDeduction.ofUnionMember1(unionMember1)`.
+                 */
+                fun employeeDeduction(unionMember1: EmployeeDeduction.UnionMember1) =
+                    employeeDeduction(EmployeeDeduction.ofUnionMember1(unionMember1))
 
                 /** Type for HSA contribution limit if the benefit is a HSA. */
                 fun hsaContributionLimit(hsaContributionLimit: HsaContributionLimit?) =
@@ -792,6 +829,2366 @@ private constructor(
                     (companyContribution.asKnown().getOrNull()?.validity() ?: 0) +
                     (employeeDeduction.asKnown().getOrNull()?.validity() ?: 0) +
                     (hsaContributionLimit.asKnown().getOrNull()?.validity() ?: 0)
+
+            @JsonDeserialize(using = CompanyContribution.Deserializer::class)
+            @JsonSerialize(using = CompanyContribution.Serializer::class)
+            class CompanyContribution
+            private constructor(
+                private val innerUnionMember0: InnerUnionMember0? = null,
+                private val unionMember1: UnionMember1? = null,
+                private val unionMember2: UnionMember2? = null,
+                private val _json: JsonValue? = null,
+            ) {
+
+                fun innerUnionMember0(): Optional<InnerUnionMember0> =
+                    Optional.ofNullable(innerUnionMember0)
+
+                fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
+
+                fun unionMember2(): Optional<UnionMember2> = Optional.ofNullable(unionMember2)
+
+                fun isInnerUnionMember0(): Boolean = innerUnionMember0 != null
+
+                fun isUnionMember1(): Boolean = unionMember1 != null
+
+                fun isUnionMember2(): Boolean = unionMember2 != null
+
+                fun asInnerUnionMember0(): InnerUnionMember0 =
+                    innerUnionMember0.getOrThrow("innerUnionMember0")
+
+                fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
+
+                fun asUnionMember2(): UnionMember2 = unionMember2.getOrThrow("unionMember2")
+
+                fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+                fun <T> accept(visitor: Visitor<T>): T =
+                    when {
+                        innerUnionMember0 != null ->
+                            visitor.visitInnerUnionMember0(innerUnionMember0)
+                        unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
+                        unionMember2 != null -> visitor.visitUnionMember2(unionMember2)
+                        else -> visitor.unknown(_json)
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): CompanyContribution = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    accept(
+                        object : Visitor<Unit> {
+                            override fun visitInnerUnionMember0(
+                                innerUnionMember0: InnerUnionMember0
+                            ) {
+                                innerUnionMember0.validate()
+                            }
+
+                            override fun visitUnionMember1(unionMember1: UnionMember1) {
+                                unionMember1.validate()
+                            }
+
+                            override fun visitUnionMember2(unionMember2: UnionMember2) {
+                                unionMember2.validate()
+                            }
+                        }
+                    )
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    accept(
+                        object : Visitor<Int> {
+                            override fun visitInnerUnionMember0(
+                                innerUnionMember0: InnerUnionMember0
+                            ) = innerUnionMember0.validity()
+
+                            override fun visitUnionMember1(unionMember1: UnionMember1) =
+                                unionMember1.validity()
+
+                            override fun visitUnionMember2(unionMember2: UnionMember2) =
+                                unionMember2.validity()
+
+                            override fun unknown(json: JsonValue?) = 0
+                        }
+                    )
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is CompanyContribution &&
+                        innerUnionMember0 == other.innerUnionMember0 &&
+                        unionMember1 == other.unionMember1 &&
+                        unionMember2 == other.unionMember2
+                }
+
+                override fun hashCode(): Int =
+                    Objects.hash(innerUnionMember0, unionMember1, unionMember2)
+
+                override fun toString(): String =
+                    when {
+                        innerUnionMember0 != null ->
+                            "CompanyContribution{innerUnionMember0=$innerUnionMember0}"
+                        unionMember1 != null -> "CompanyContribution{unionMember1=$unionMember1}"
+                        unionMember2 != null -> "CompanyContribution{unionMember2=$unionMember2}"
+                        _json != null -> "CompanyContribution{_unknown=$_json}"
+                        else -> throw IllegalStateException("Invalid CompanyContribution")
+                    }
+
+                companion object {
+
+                    @JvmStatic
+                    fun ofInnerUnionMember0(innerUnionMember0: InnerUnionMember0) =
+                        CompanyContribution(innerUnionMember0 = innerUnionMember0)
+
+                    @JvmStatic
+                    fun ofUnionMember1(unionMember1: UnionMember1) =
+                        CompanyContribution(unionMember1 = unionMember1)
+
+                    @JvmStatic
+                    fun ofUnionMember2(unionMember2: UnionMember2) =
+                        CompanyContribution(unionMember2 = unionMember2)
+                }
+
+                /**
+                 * An interface that defines how to map each variant of [CompanyContribution] to a
+                 * value of type [T].
+                 */
+                interface Visitor<out T> {
+
+                    fun visitInnerUnionMember0(innerUnionMember0: InnerUnionMember0): T
+
+                    fun visitUnionMember1(unionMember1: UnionMember1): T
+
+                    fun visitUnionMember2(unionMember2: UnionMember2): T
+
+                    /**
+                     * Maps an unknown variant of [CompanyContribution] to a value of type [T].
+                     *
+                     * An instance of [CompanyContribution] can contain an unknown variant if it was
+                     * deserialized from data that doesn't match any known variant. For example, if
+                     * the SDK is on an older version than the API, then the API may respond with
+                     * new variants that the SDK is unaware of.
+                     *
+                     * @throws FinchInvalidDataException in the default implementation.
+                     */
+                    fun unknown(json: JsonValue?): T {
+                        throw FinchInvalidDataException("Unknown CompanyContribution: $json")
+                    }
+                }
+
+                internal class Deserializer :
+                    BaseDeserializer<CompanyContribution>(CompanyContribution::class) {
+
+                    override fun ObjectCodec.deserialize(node: JsonNode): CompanyContribution {
+                        val json = JsonValue.fromJsonNode(node)
+
+                        val bestMatches =
+                            sequenceOf(
+                                    tryDeserialize(node, jacksonTypeRef<InnerUnionMember0>())?.let {
+                                        CompanyContribution(innerUnionMember0 = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
+                                        CompanyContribution(unionMember1 = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<UnionMember2>())?.let {
+                                        CompanyContribution(unionMember2 = it, _json = json)
+                                    },
+                                )
+                                .filterNotNull()
+                                .allMaxBy { it.validity() }
+                                .toList()
+                        return when (bestMatches.size) {
+                            // This can happen if what we're deserializing is completely
+                            // incompatible with all the possible variants (e.g. deserializing from
+                            // boolean).
+                            0 -> CompanyContribution(_json = json)
+                            1 -> bestMatches.single()
+                            // If there's more than one match with the highest validity, then use
+                            // the first completely valid match, or simply the first match if none
+                            // are completely valid.
+                            else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+                        }
+                    }
+                }
+
+                internal class Serializer :
+                    BaseSerializer<CompanyContribution>(CompanyContribution::class) {
+
+                    override fun serialize(
+                        value: CompanyContribution,
+                        generator: JsonGenerator,
+                        provider: SerializerProvider,
+                    ) {
+                        when {
+                            value.innerUnionMember0 != null ->
+                                generator.writeObject(value.innerUnionMember0)
+                            value.unionMember1 != null -> generator.writeObject(value.unionMember1)
+                            value.unionMember2 != null -> generator.writeObject(value.unionMember2)
+                            value._json != null -> generator.writeObject(value._json)
+                            else -> throw IllegalStateException("Invalid CompanyContribution")
+                        }
+                    }
+                }
+
+                class InnerUnionMember0
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val amount: JsonField<Long>,
+                    private val type: JsonField<Type>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("amount")
+                        @ExcludeMissing
+                        amount: JsonField<Long> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        type: JsonField<Type> = JsonMissing.of(),
+                    ) : this(amount, type, mutableMapOf())
+
+                    /**
+                     * Contribution amount in cents.
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun amount(): Long = amount.getRequired("amount")
+
+                    /**
+                     * Fixed contribution type.
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun type(): Type = type.getRequired("type")
+
+                    /**
+                     * Returns the raw JSON value of [amount].
+                     *
+                     * Unlike [amount], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+                    /**
+                     * Returns the raw JSON value of [type].
+                     *
+                     * Unlike [type], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerUnionMember0].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .amount()
+                         * .type()
+                         * ```
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [InnerUnionMember0]. */
+                    class Builder internal constructor() {
+
+                        private var amount: JsonField<Long>? = null
+                        private var type: JsonField<Type>? = null
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(innerUnionMember0: InnerUnionMember0) = apply {
+                            amount = innerUnionMember0.amount
+                            type = innerUnionMember0.type
+                            additionalProperties =
+                                innerUnionMember0.additionalProperties.toMutableMap()
+                        }
+
+                        /** Contribution amount in cents. */
+                        fun amount(amount: Long) = amount(JsonField.of(amount))
+
+                        /**
+                         * Sets [Builder.amount] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.amount] with a well-typed [Long] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
+                        /** Fixed contribution type. */
+                        fun type(type: Type) = type(JsonField.of(type))
+
+                        /**
+                         * Sets [Builder.type] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.type] with a well-typed [Type] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [InnerUnionMember0].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .amount()
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
+                        fun build(): InnerUnionMember0 =
+                            InnerUnionMember0(
+                                checkRequired("amount", amount),
+                                checkRequired("type", type),
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): InnerUnionMember0 = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        amount()
+                        type().validate()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (amount.asKnown().isPresent) 1 else 0) +
+                            (type.asKnown().getOrNull()?.validity() ?: 0)
+
+                    /** Fixed contribution type. */
+                    class Type
+                    @JsonCreator
+                    private constructor(private val value: JsonField<String>) : Enum {
+
+                        /**
+                         * Returns this class instance's raw value.
+                         *
+                         * This is usually only useful if this instance was deserialized from data
+                         * that doesn't match any known member, and you want to know that value. For
+                         * example, if the SDK is on an older version than the API, then the API may
+                         * respond with new members that the SDK is unaware of.
+                         */
+                        @com.fasterxml.jackson.annotation.JsonValue
+                        fun _value(): JsonField<String> = value
+
+                        companion object {
+
+                            @JvmField val FIXED = of("fixed")
+
+                            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+                        }
+
+                        /** An enum containing [Type]'s known values. */
+                        enum class Known {
+                            FIXED
+                        }
+
+                        /**
+                         * An enum containing [Type]'s known values, as well as an [_UNKNOWN]
+                         * member.
+                         *
+                         * An instance of [Type] can contain an unknown value in a couple of cases:
+                         * - It was deserialized from data that doesn't match any known member. For
+                         *   example, if the SDK is on an older version than the API, then the API
+                         *   may respond with new members that the SDK is unaware of.
+                         * - It was constructed with an arbitrary value using the [of] method.
+                         */
+                        enum class Value {
+                            FIXED,
+                            /**
+                             * An enum member indicating that [Type] was instantiated with an
+                             * unknown value.
+                             */
+                            _UNKNOWN,
+                        }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value, or
+                         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                         *
+                         * Use the [known] method instead if you're certain the value is always
+                         * known or if you want to throw for the unknown case.
+                         */
+                        fun value(): Value =
+                            when (this) {
+                                FIXED -> Value.FIXED
+                                else -> Value._UNKNOWN
+                            }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value.
+                         *
+                         * Use the [value] method instead if you're uncertain the value is always
+                         * known and don't want to throw for the unknown case.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value is a not
+                         *   a known member.
+                         */
+                        fun known(): Known =
+                            when (this) {
+                                FIXED -> Known.FIXED
+                                else -> throw FinchInvalidDataException("Unknown Type: $value")
+                            }
+
+                        /**
+                         * Returns this class instance's primitive wire representation.
+                         *
+                         * This differs from the [toString] method because that method is primarily
+                         * for debugging and generally doesn't throw.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value does not
+                         *   have the expected primitive type.
+                         */
+                        fun asString(): String =
+                            _value().asString().orElseThrow {
+                                FinchInvalidDataException("Value is not a String")
+                            }
+
+                        private var validated: Boolean = false
+
+                        fun validate(): Type = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            known()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Type && value == other.value
+                        }
+
+                        override fun hashCode() = value.hashCode()
+
+                        override fun toString() = value.toString()
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is InnerUnionMember0 &&
+                            amount == other.amount &&
+                            type == other.type &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(amount, type, additionalProperties)
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "InnerUnionMember0{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
+                }
+
+                class UnionMember1
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val amount: JsonField<Long>,
+                    private val type: JsonField<Type>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("amount")
+                        @ExcludeMissing
+                        amount: JsonField<Long> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        type: JsonField<Type> = JsonMissing.of(),
+                    ) : this(amount, type, mutableMapOf())
+
+                    /**
+                     * Contribution amount in basis points (1/100th of a percent).
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun amount(): Long = amount.getRequired("amount")
+
+                    /**
+                     * Percentage contribution type.
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun type(): Type = type.getRequired("type")
+
+                    /**
+                     * Returns the raw JSON value of [amount].
+                     *
+                     * Unlike [amount], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+                    /**
+                     * Returns the raw JSON value of [type].
+                     *
+                     * Unlike [type], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of [UnionMember1].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .amount()
+                         * .type()
+                         * ```
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [UnionMember1]. */
+                    class Builder internal constructor() {
+
+                        private var amount: JsonField<Long>? = null
+                        private var type: JsonField<Type>? = null
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(unionMember1: UnionMember1) = apply {
+                            amount = unionMember1.amount
+                            type = unionMember1.type
+                            additionalProperties = unionMember1.additionalProperties.toMutableMap()
+                        }
+
+                        /** Contribution amount in basis points (1/100th of a percent). */
+                        fun amount(amount: Long) = amount(JsonField.of(amount))
+
+                        /**
+                         * Sets [Builder.amount] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.amount] with a well-typed [Long] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
+                        /** Percentage contribution type. */
+                        fun type(type: Type) = type(JsonField.of(type))
+
+                        /**
+                         * Sets [Builder.type] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.type] with a well-typed [Type] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [UnionMember1].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .amount()
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
+                        fun build(): UnionMember1 =
+                            UnionMember1(
+                                checkRequired("amount", amount),
+                                checkRequired("type", type),
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): UnionMember1 = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        amount()
+                        type().validate()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (amount.asKnown().isPresent) 1 else 0) +
+                            (type.asKnown().getOrNull()?.validity() ?: 0)
+
+                    /** Percentage contribution type. */
+                    class Type
+                    @JsonCreator
+                    private constructor(private val value: JsonField<String>) : Enum {
+
+                        /**
+                         * Returns this class instance's raw value.
+                         *
+                         * This is usually only useful if this instance was deserialized from data
+                         * that doesn't match any known member, and you want to know that value. For
+                         * example, if the SDK is on an older version than the API, then the API may
+                         * respond with new members that the SDK is unaware of.
+                         */
+                        @com.fasterxml.jackson.annotation.JsonValue
+                        fun _value(): JsonField<String> = value
+
+                        companion object {
+
+                            @JvmField val PERCENT = of("percent")
+
+                            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+                        }
+
+                        /** An enum containing [Type]'s known values. */
+                        enum class Known {
+                            PERCENT
+                        }
+
+                        /**
+                         * An enum containing [Type]'s known values, as well as an [_UNKNOWN]
+                         * member.
+                         *
+                         * An instance of [Type] can contain an unknown value in a couple of cases:
+                         * - It was deserialized from data that doesn't match any known member. For
+                         *   example, if the SDK is on an older version than the API, then the API
+                         *   may respond with new members that the SDK is unaware of.
+                         * - It was constructed with an arbitrary value using the [of] method.
+                         */
+                        enum class Value {
+                            PERCENT,
+                            /**
+                             * An enum member indicating that [Type] was instantiated with an
+                             * unknown value.
+                             */
+                            _UNKNOWN,
+                        }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value, or
+                         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                         *
+                         * Use the [known] method instead if you're certain the value is always
+                         * known or if you want to throw for the unknown case.
+                         */
+                        fun value(): Value =
+                            when (this) {
+                                PERCENT -> Value.PERCENT
+                                else -> Value._UNKNOWN
+                            }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value.
+                         *
+                         * Use the [value] method instead if you're uncertain the value is always
+                         * known and don't want to throw for the unknown case.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value is a not
+                         *   a known member.
+                         */
+                        fun known(): Known =
+                            when (this) {
+                                PERCENT -> Known.PERCENT
+                                else -> throw FinchInvalidDataException("Unknown Type: $value")
+                            }
+
+                        /**
+                         * Returns this class instance's primitive wire representation.
+                         *
+                         * This differs from the [toString] method because that method is primarily
+                         * for debugging and generally doesn't throw.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value does not
+                         *   have the expected primitive type.
+                         */
+                        fun asString(): String =
+                            _value().asString().orElseThrow {
+                                FinchInvalidDataException("Value is not a String")
+                            }
+
+                        private var validated: Boolean = false
+
+                        fun validate(): Type = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            known()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Type && value == other.value
+                        }
+
+                        override fun hashCode() = value.hashCode()
+
+                        override fun toString() = value.toString()
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is UnionMember1 &&
+                            amount == other.amount &&
+                            type == other.type &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(amount, type, additionalProperties)
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "UnionMember1{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
+                }
+
+                class UnionMember2
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val tiers: JsonField<List<Tier>>,
+                    private val type: JsonField<Type>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("tiers")
+                        @ExcludeMissing
+                        tiers: JsonField<List<Tier>> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        type: JsonField<Type> = JsonMissing.of(),
+                    ) : this(tiers, type, mutableMapOf())
+
+                    /**
+                     * Array of tier objects defining employer match tiers based on employee
+                     * contribution thresholds.
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun tiers(): List<Tier> = tiers.getRequired("tiers")
+
+                    /**
+                     * Tiered contribution type (only valid for company_contribution).
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun type(): Type = type.getRequired("type")
+
+                    /**
+                     * Returns the raw JSON value of [tiers].
+                     *
+                     * Unlike [tiers], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("tiers")
+                    @ExcludeMissing
+                    fun _tiers(): JsonField<List<Tier>> = tiers
+
+                    /**
+                     * Returns the raw JSON value of [type].
+                     *
+                     * Unlike [type], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of [UnionMember2].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .tiers()
+                         * .type()
+                         * ```
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [UnionMember2]. */
+                    class Builder internal constructor() {
+
+                        private var tiers: JsonField<MutableList<Tier>>? = null
+                        private var type: JsonField<Type>? = null
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(unionMember2: UnionMember2) = apply {
+                            tiers = unionMember2.tiers.map { it.toMutableList() }
+                            type = unionMember2.type
+                            additionalProperties = unionMember2.additionalProperties.toMutableMap()
+                        }
+
+                        /**
+                         * Array of tier objects defining employer match tiers based on employee
+                         * contribution thresholds.
+                         */
+                        fun tiers(tiers: List<Tier>) = tiers(JsonField.of(tiers))
+
+                        /**
+                         * Sets [Builder.tiers] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.tiers] with a well-typed `List<Tier>`
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun tiers(tiers: JsonField<List<Tier>>) = apply {
+                            this.tiers = tiers.map { it.toMutableList() }
+                        }
+
+                        /**
+                         * Adds a single [Tier] to [tiers].
+                         *
+                         * @throws IllegalStateException if the field was previously set to a
+                         *   non-list.
+                         */
+                        fun addTier(tier: Tier) = apply {
+                            tiers =
+                                (tiers ?: JsonField.of(mutableListOf())).also {
+                                    checkKnown("tiers", it).add(tier)
+                                }
+                        }
+
+                        /** Tiered contribution type (only valid for company_contribution). */
+                        fun type(type: Type) = type(JsonField.of(type))
+
+                        /**
+                         * Sets [Builder.type] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.type] with a well-typed [Type] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [UnionMember2].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .tiers()
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
+                        fun build(): UnionMember2 =
+                            UnionMember2(
+                                checkRequired("tiers", tiers).map { it.toImmutable() },
+                                checkRequired("type", type),
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): UnionMember2 = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        tiers().forEach { it.validate() }
+                        type().validate()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (tiers.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                            (type.asKnown().getOrNull()?.validity() ?: 0)
+
+                    class Tier
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                    private constructor(
+                        private val match: JsonField<Long>,
+                        private val threshold: JsonField<Long>,
+                        private val additionalProperties: MutableMap<String, JsonValue>,
+                    ) {
+
+                        @JsonCreator
+                        private constructor(
+                            @JsonProperty("match")
+                            @ExcludeMissing
+                            match: JsonField<Long> = JsonMissing.of(),
+                            @JsonProperty("threshold")
+                            @ExcludeMissing
+                            threshold: JsonField<Long> = JsonMissing.of(),
+                        ) : this(match, threshold, mutableMapOf())
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type or is unexpectedly missing or null (e.g. if the server responded
+                         *   with an unexpected value).
+                         */
+                        fun match(): Long = match.getRequired("match")
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type or is unexpectedly missing or null (e.g. if the server responded
+                         *   with an unexpected value).
+                         */
+                        fun threshold(): Long = threshold.getRequired("threshold")
+
+                        /**
+                         * Returns the raw JSON value of [match].
+                         *
+                         * Unlike [match], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("match") @ExcludeMissing fun _match(): JsonField<Long> = match
+
+                        /**
+                         * Returns the raw JSON value of [threshold].
+                         *
+                         * Unlike [threshold], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("threshold")
+                        @ExcludeMissing
+                        fun _threshold(): JsonField<Long> = threshold
+
+                        @JsonAnySetter
+                        private fun putAdditionalProperty(key: String, value: JsonValue) {
+                            additionalProperties.put(key, value)
+                        }
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> =
+                            Collections.unmodifiableMap(additionalProperties)
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Tier].
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .match()
+                             * .threshold()
+                             * ```
+                             */
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [Tier]. */
+                        class Builder internal constructor() {
+
+                            private var match: JsonField<Long>? = null
+                            private var threshold: JsonField<Long>? = null
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(tier: Tier) = apply {
+                                match = tier.match
+                                threshold = tier.threshold
+                                additionalProperties = tier.additionalProperties.toMutableMap()
+                            }
+
+                            fun match(match: Long) = match(JsonField.of(match))
+
+                            /**
+                             * Sets [Builder.match] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.match] with a well-typed [Long]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
+                            fun match(match: JsonField<Long>) = apply { this.match = match }
+
+                            fun threshold(threshold: Long) = threshold(JsonField.of(threshold))
+
+                            /**
+                             * Sets [Builder.threshold] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.threshold] with a well-typed [Long]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
+                            fun threshold(threshold: JsonField<Long>) = apply {
+                                this.threshold = threshold
+                            }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            /**
+                             * Returns an immutable instance of [Tier].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .match()
+                             * .threshold()
+                             * ```
+                             *
+                             * @throws IllegalStateException if any required field is unset.
+                             */
+                            fun build(): Tier =
+                                Tier(
+                                    checkRequired("match", match),
+                                    checkRequired("threshold", threshold),
+                                    additionalProperties.toMutableMap(),
+                                )
+                        }
+
+                        private var validated: Boolean = false
+
+                        fun validate(): Tier = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            match()
+                            threshold()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (match.asKnown().isPresent) 1 else 0) +
+                                (if (threshold.asKnown().isPresent) 1 else 0)
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Tier &&
+                                match == other.match &&
+                                threshold == other.threshold &&
+                                additionalProperties == other.additionalProperties
+                        }
+
+                        private val hashCode: Int by lazy {
+                            Objects.hash(match, threshold, additionalProperties)
+                        }
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "Tier{match=$match, threshold=$threshold, additionalProperties=$additionalProperties}"
+                    }
+
+                    /** Tiered contribution type (only valid for company_contribution). */
+                    class Type
+                    @JsonCreator
+                    private constructor(private val value: JsonField<String>) : Enum {
+
+                        /**
+                         * Returns this class instance's raw value.
+                         *
+                         * This is usually only useful if this instance was deserialized from data
+                         * that doesn't match any known member, and you want to know that value. For
+                         * example, if the SDK is on an older version than the API, then the API may
+                         * respond with new members that the SDK is unaware of.
+                         */
+                        @com.fasterxml.jackson.annotation.JsonValue
+                        fun _value(): JsonField<String> = value
+
+                        companion object {
+
+                            @JvmField val TIERED = of("tiered")
+
+                            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+                        }
+
+                        /** An enum containing [Type]'s known values. */
+                        enum class Known {
+                            TIERED
+                        }
+
+                        /**
+                         * An enum containing [Type]'s known values, as well as an [_UNKNOWN]
+                         * member.
+                         *
+                         * An instance of [Type] can contain an unknown value in a couple of cases:
+                         * - It was deserialized from data that doesn't match any known member. For
+                         *   example, if the SDK is on an older version than the API, then the API
+                         *   may respond with new members that the SDK is unaware of.
+                         * - It was constructed with an arbitrary value using the [of] method.
+                         */
+                        enum class Value {
+                            TIERED,
+                            /**
+                             * An enum member indicating that [Type] was instantiated with an
+                             * unknown value.
+                             */
+                            _UNKNOWN,
+                        }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value, or
+                         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                         *
+                         * Use the [known] method instead if you're certain the value is always
+                         * known or if you want to throw for the unknown case.
+                         */
+                        fun value(): Value =
+                            when (this) {
+                                TIERED -> Value.TIERED
+                                else -> Value._UNKNOWN
+                            }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value.
+                         *
+                         * Use the [value] method instead if you're uncertain the value is always
+                         * known and don't want to throw for the unknown case.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value is a not
+                         *   a known member.
+                         */
+                        fun known(): Known =
+                            when (this) {
+                                TIERED -> Known.TIERED
+                                else -> throw FinchInvalidDataException("Unknown Type: $value")
+                            }
+
+                        /**
+                         * Returns this class instance's primitive wire representation.
+                         *
+                         * This differs from the [toString] method because that method is primarily
+                         * for debugging and generally doesn't throw.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value does not
+                         *   have the expected primitive type.
+                         */
+                        fun asString(): String =
+                            _value().asString().orElseThrow {
+                                FinchInvalidDataException("Value is not a String")
+                            }
+
+                        private var validated: Boolean = false
+
+                        fun validate(): Type = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            known()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Type && value == other.value
+                        }
+
+                        override fun hashCode() = value.hashCode()
+
+                        override fun toString() = value.toString()
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is UnionMember2 &&
+                            tiers == other.tiers &&
+                            type == other.type &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(tiers, type, additionalProperties)
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "UnionMember2{tiers=$tiers, type=$type, additionalProperties=$additionalProperties}"
+                }
+            }
+
+            @JsonDeserialize(using = EmployeeDeduction.Deserializer::class)
+            @JsonSerialize(using = EmployeeDeduction.Serializer::class)
+            class EmployeeDeduction
+            private constructor(
+                private val innerUnionMember0: InnerUnionMember0? = null,
+                private val unionMember1: UnionMember1? = null,
+                private val _json: JsonValue? = null,
+            ) {
+
+                fun innerUnionMember0(): Optional<InnerUnionMember0> =
+                    Optional.ofNullable(innerUnionMember0)
+
+                fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
+
+                fun isInnerUnionMember0(): Boolean = innerUnionMember0 != null
+
+                fun isUnionMember1(): Boolean = unionMember1 != null
+
+                fun asInnerUnionMember0(): InnerUnionMember0 =
+                    innerUnionMember0.getOrThrow("innerUnionMember0")
+
+                fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
+
+                fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+                fun <T> accept(visitor: Visitor<T>): T =
+                    when {
+                        innerUnionMember0 != null ->
+                            visitor.visitInnerUnionMember0(innerUnionMember0)
+                        unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
+                        else -> visitor.unknown(_json)
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): EmployeeDeduction = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    accept(
+                        object : Visitor<Unit> {
+                            override fun visitInnerUnionMember0(
+                                innerUnionMember0: InnerUnionMember0
+                            ) {
+                                innerUnionMember0.validate()
+                            }
+
+                            override fun visitUnionMember1(unionMember1: UnionMember1) {
+                                unionMember1.validate()
+                            }
+                        }
+                    )
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    accept(
+                        object : Visitor<Int> {
+                            override fun visitInnerUnionMember0(
+                                innerUnionMember0: InnerUnionMember0
+                            ) = innerUnionMember0.validity()
+
+                            override fun visitUnionMember1(unionMember1: UnionMember1) =
+                                unionMember1.validity()
+
+                            override fun unknown(json: JsonValue?) = 0
+                        }
+                    )
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is EmployeeDeduction &&
+                        innerUnionMember0 == other.innerUnionMember0 &&
+                        unionMember1 == other.unionMember1
+                }
+
+                override fun hashCode(): Int = Objects.hash(innerUnionMember0, unionMember1)
+
+                override fun toString(): String =
+                    when {
+                        innerUnionMember0 != null ->
+                            "EmployeeDeduction{innerUnionMember0=$innerUnionMember0}"
+                        unionMember1 != null -> "EmployeeDeduction{unionMember1=$unionMember1}"
+                        _json != null -> "EmployeeDeduction{_unknown=$_json}"
+                        else -> throw IllegalStateException("Invalid EmployeeDeduction")
+                    }
+
+                companion object {
+
+                    @JvmStatic
+                    fun ofInnerUnionMember0(innerUnionMember0: InnerUnionMember0) =
+                        EmployeeDeduction(innerUnionMember0 = innerUnionMember0)
+
+                    @JvmStatic
+                    fun ofUnionMember1(unionMember1: UnionMember1) =
+                        EmployeeDeduction(unionMember1 = unionMember1)
+                }
+
+                /**
+                 * An interface that defines how to map each variant of [EmployeeDeduction] to a
+                 * value of type [T].
+                 */
+                interface Visitor<out T> {
+
+                    fun visitInnerUnionMember0(innerUnionMember0: InnerUnionMember0): T
+
+                    fun visitUnionMember1(unionMember1: UnionMember1): T
+
+                    /**
+                     * Maps an unknown variant of [EmployeeDeduction] to a value of type [T].
+                     *
+                     * An instance of [EmployeeDeduction] can contain an unknown variant if it was
+                     * deserialized from data that doesn't match any known variant. For example, if
+                     * the SDK is on an older version than the API, then the API may respond with
+                     * new variants that the SDK is unaware of.
+                     *
+                     * @throws FinchInvalidDataException in the default implementation.
+                     */
+                    fun unknown(json: JsonValue?): T {
+                        throw FinchInvalidDataException("Unknown EmployeeDeduction: $json")
+                    }
+                }
+
+                internal class Deserializer :
+                    BaseDeserializer<EmployeeDeduction>(EmployeeDeduction::class) {
+
+                    override fun ObjectCodec.deserialize(node: JsonNode): EmployeeDeduction {
+                        val json = JsonValue.fromJsonNode(node)
+
+                        val bestMatches =
+                            sequenceOf(
+                                    tryDeserialize(node, jacksonTypeRef<InnerUnionMember0>())?.let {
+                                        EmployeeDeduction(innerUnionMember0 = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
+                                        EmployeeDeduction(unionMember1 = it, _json = json)
+                                    },
+                                )
+                                .filterNotNull()
+                                .allMaxBy { it.validity() }
+                                .toList()
+                        return when (bestMatches.size) {
+                            // This can happen if what we're deserializing is completely
+                            // incompatible with all the possible variants (e.g. deserializing from
+                            // boolean).
+                            0 -> EmployeeDeduction(_json = json)
+                            1 -> bestMatches.single()
+                            // If there's more than one match with the highest validity, then use
+                            // the first completely valid match, or simply the first match if none
+                            // are completely valid.
+                            else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+                        }
+                    }
+                }
+
+                internal class Serializer :
+                    BaseSerializer<EmployeeDeduction>(EmployeeDeduction::class) {
+
+                    override fun serialize(
+                        value: EmployeeDeduction,
+                        generator: JsonGenerator,
+                        provider: SerializerProvider,
+                    ) {
+                        when {
+                            value.innerUnionMember0 != null ->
+                                generator.writeObject(value.innerUnionMember0)
+                            value.unionMember1 != null -> generator.writeObject(value.unionMember1)
+                            value._json != null -> generator.writeObject(value._json)
+                            else -> throw IllegalStateException("Invalid EmployeeDeduction")
+                        }
+                    }
+                }
+
+                class InnerUnionMember0
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val amount: JsonField<Long>,
+                    private val type: JsonField<Type>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("amount")
+                        @ExcludeMissing
+                        amount: JsonField<Long> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        type: JsonField<Type> = JsonMissing.of(),
+                    ) : this(amount, type, mutableMapOf())
+
+                    /**
+                     * Contribution amount in cents.
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun amount(): Long = amount.getRequired("amount")
+
+                    /**
+                     * Fixed contribution type.
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun type(): Type = type.getRequired("type")
+
+                    /**
+                     * Returns the raw JSON value of [amount].
+                     *
+                     * Unlike [amount], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+                    /**
+                     * Returns the raw JSON value of [type].
+                     *
+                     * Unlike [type], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerUnionMember0].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .amount()
+                         * .type()
+                         * ```
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [InnerUnionMember0]. */
+                    class Builder internal constructor() {
+
+                        private var amount: JsonField<Long>? = null
+                        private var type: JsonField<Type>? = null
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(innerUnionMember0: InnerUnionMember0) = apply {
+                            amount = innerUnionMember0.amount
+                            type = innerUnionMember0.type
+                            additionalProperties =
+                                innerUnionMember0.additionalProperties.toMutableMap()
+                        }
+
+                        /** Contribution amount in cents. */
+                        fun amount(amount: Long) = amount(JsonField.of(amount))
+
+                        /**
+                         * Sets [Builder.amount] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.amount] with a well-typed [Long] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
+                        /** Fixed contribution type. */
+                        fun type(type: Type) = type(JsonField.of(type))
+
+                        /**
+                         * Sets [Builder.type] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.type] with a well-typed [Type] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [InnerUnionMember0].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .amount()
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
+                        fun build(): InnerUnionMember0 =
+                            InnerUnionMember0(
+                                checkRequired("amount", amount),
+                                checkRequired("type", type),
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): InnerUnionMember0 = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        amount()
+                        type().validate()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (amount.asKnown().isPresent) 1 else 0) +
+                            (type.asKnown().getOrNull()?.validity() ?: 0)
+
+                    /** Fixed contribution type. */
+                    class Type
+                    @JsonCreator
+                    private constructor(private val value: JsonField<String>) : Enum {
+
+                        /**
+                         * Returns this class instance's raw value.
+                         *
+                         * This is usually only useful if this instance was deserialized from data
+                         * that doesn't match any known member, and you want to know that value. For
+                         * example, if the SDK is on an older version than the API, then the API may
+                         * respond with new members that the SDK is unaware of.
+                         */
+                        @com.fasterxml.jackson.annotation.JsonValue
+                        fun _value(): JsonField<String> = value
+
+                        companion object {
+
+                            @JvmField val FIXED = of("fixed")
+
+                            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+                        }
+
+                        /** An enum containing [Type]'s known values. */
+                        enum class Known {
+                            FIXED
+                        }
+
+                        /**
+                         * An enum containing [Type]'s known values, as well as an [_UNKNOWN]
+                         * member.
+                         *
+                         * An instance of [Type] can contain an unknown value in a couple of cases:
+                         * - It was deserialized from data that doesn't match any known member. For
+                         *   example, if the SDK is on an older version than the API, then the API
+                         *   may respond with new members that the SDK is unaware of.
+                         * - It was constructed with an arbitrary value using the [of] method.
+                         */
+                        enum class Value {
+                            FIXED,
+                            /**
+                             * An enum member indicating that [Type] was instantiated with an
+                             * unknown value.
+                             */
+                            _UNKNOWN,
+                        }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value, or
+                         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                         *
+                         * Use the [known] method instead if you're certain the value is always
+                         * known or if you want to throw for the unknown case.
+                         */
+                        fun value(): Value =
+                            when (this) {
+                                FIXED -> Value.FIXED
+                                else -> Value._UNKNOWN
+                            }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value.
+                         *
+                         * Use the [value] method instead if you're uncertain the value is always
+                         * known and don't want to throw for the unknown case.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value is a not
+                         *   a known member.
+                         */
+                        fun known(): Known =
+                            when (this) {
+                                FIXED -> Known.FIXED
+                                else -> throw FinchInvalidDataException("Unknown Type: $value")
+                            }
+
+                        /**
+                         * Returns this class instance's primitive wire representation.
+                         *
+                         * This differs from the [toString] method because that method is primarily
+                         * for debugging and generally doesn't throw.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value does not
+                         *   have the expected primitive type.
+                         */
+                        fun asString(): String =
+                            _value().asString().orElseThrow {
+                                FinchInvalidDataException("Value is not a String")
+                            }
+
+                        private var validated: Boolean = false
+
+                        fun validate(): Type = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            known()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Type && value == other.value
+                        }
+
+                        override fun hashCode() = value.hashCode()
+
+                        override fun toString() = value.toString()
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is InnerUnionMember0 &&
+                            amount == other.amount &&
+                            type == other.type &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(amount, type, additionalProperties)
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "InnerUnionMember0{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
+                }
+
+                class UnionMember1
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val amount: JsonField<Long>,
+                    private val type: JsonField<Type>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("amount")
+                        @ExcludeMissing
+                        amount: JsonField<Long> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        type: JsonField<Type> = JsonMissing.of(),
+                    ) : this(amount, type, mutableMapOf())
+
+                    /**
+                     * Contribution amount in basis points (1/100th of a percent).
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun amount(): Long = amount.getRequired("amount")
+
+                    /**
+                     * Percentage contribution type.
+                     *
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type or
+                     *   is unexpectedly missing or null (e.g. if the server responded with an
+                     *   unexpected value).
+                     */
+                    fun type(): Type = type.getRequired("type")
+
+                    /**
+                     * Returns the raw JSON value of [amount].
+                     *
+                     * Unlike [amount], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+                    /**
+                     * Returns the raw JSON value of [type].
+                     *
+                     * Unlike [type], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of [UnionMember1].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .amount()
+                         * .type()
+                         * ```
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [UnionMember1]. */
+                    class Builder internal constructor() {
+
+                        private var amount: JsonField<Long>? = null
+                        private var type: JsonField<Type>? = null
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(unionMember1: UnionMember1) = apply {
+                            amount = unionMember1.amount
+                            type = unionMember1.type
+                            additionalProperties = unionMember1.additionalProperties.toMutableMap()
+                        }
+
+                        /** Contribution amount in basis points (1/100th of a percent). */
+                        fun amount(amount: Long) = amount(JsonField.of(amount))
+
+                        /**
+                         * Sets [Builder.amount] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.amount] with a well-typed [Long] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
+                        /** Percentage contribution type. */
+                        fun type(type: Type) = type(JsonField.of(type))
+
+                        /**
+                         * Sets [Builder.type] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.type] with a well-typed [Type] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [UnionMember1].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .amount()
+                         * .type()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
+                        fun build(): UnionMember1 =
+                            UnionMember1(
+                                checkRequired("amount", amount),
+                                checkRequired("type", type),
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): UnionMember1 = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        amount()
+                        type().validate()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (amount.asKnown().isPresent) 1 else 0) +
+                            (type.asKnown().getOrNull()?.validity() ?: 0)
+
+                    /** Percentage contribution type. */
+                    class Type
+                    @JsonCreator
+                    private constructor(private val value: JsonField<String>) : Enum {
+
+                        /**
+                         * Returns this class instance's raw value.
+                         *
+                         * This is usually only useful if this instance was deserialized from data
+                         * that doesn't match any known member, and you want to know that value. For
+                         * example, if the SDK is on an older version than the API, then the API may
+                         * respond with new members that the SDK is unaware of.
+                         */
+                        @com.fasterxml.jackson.annotation.JsonValue
+                        fun _value(): JsonField<String> = value
+
+                        companion object {
+
+                            @JvmField val PERCENT = of("percent")
+
+                            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+                        }
+
+                        /** An enum containing [Type]'s known values. */
+                        enum class Known {
+                            PERCENT
+                        }
+
+                        /**
+                         * An enum containing [Type]'s known values, as well as an [_UNKNOWN]
+                         * member.
+                         *
+                         * An instance of [Type] can contain an unknown value in a couple of cases:
+                         * - It was deserialized from data that doesn't match any known member. For
+                         *   example, if the SDK is on an older version than the API, then the API
+                         *   may respond with new members that the SDK is unaware of.
+                         * - It was constructed with an arbitrary value using the [of] method.
+                         */
+                        enum class Value {
+                            PERCENT,
+                            /**
+                             * An enum member indicating that [Type] was instantiated with an
+                             * unknown value.
+                             */
+                            _UNKNOWN,
+                        }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value, or
+                         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                         *
+                         * Use the [known] method instead if you're certain the value is always
+                         * known or if you want to throw for the unknown case.
+                         */
+                        fun value(): Value =
+                            when (this) {
+                                PERCENT -> Value.PERCENT
+                                else -> Value._UNKNOWN
+                            }
+
+                        /**
+                         * Returns an enum member corresponding to this class instance's value.
+                         *
+                         * Use the [value] method instead if you're uncertain the value is always
+                         * known and don't want to throw for the unknown case.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value is a not
+                         *   a known member.
+                         */
+                        fun known(): Known =
+                            when (this) {
+                                PERCENT -> Known.PERCENT
+                                else -> throw FinchInvalidDataException("Unknown Type: $value")
+                            }
+
+                        /**
+                         * Returns this class instance's primitive wire representation.
+                         *
+                         * This differs from the [toString] method because that method is primarily
+                         * for debugging and generally doesn't throw.
+                         *
+                         * @throws FinchInvalidDataException if this class instance's value does not
+                         *   have the expected primitive type.
+                         */
+                        fun asString(): String =
+                            _value().asString().orElseThrow {
+                                FinchInvalidDataException("Value is not a String")
+                            }
+
+                        private var validated: Boolean = false
+
+                        fun validate(): Type = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            known()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Type && value == other.value
+                        }
+
+                        override fun hashCode() = value.hashCode()
+
+                        override fun toString() = value.toString()
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is UnionMember1 &&
+                            amount == other.amount &&
+                            type == other.type &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(amount, type, additionalProperties)
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "UnionMember1{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
+                }
+            }
 
             /** Type for HSA contribution limit if the benefit is a HSA. */
             class HsaContributionLimit
