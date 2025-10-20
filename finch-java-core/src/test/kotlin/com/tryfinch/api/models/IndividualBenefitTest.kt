@@ -18,15 +18,28 @@ internal class IndividualBenefitTest {
                         .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
-                            BenefitContribution.builder()
+                            IndividualBenefit.Body.UnionMember0.CompanyContribution
+                                .InnerUnionMember0
+                                .builder()
                                 .amount(0L)
-                                .type(BenefitContribution.Type.FIXED)
+                                .type(
+                                    IndividualBenefit.Body.UnionMember0.CompanyContribution
+                                        .InnerUnionMember0
+                                        .Type
+                                        .FIXED
+                                )
                                 .build()
                         )
                         .employeeDeduction(
-                            BenefitContribution.builder()
+                            IndividualBenefit.Body.UnionMember0.EmployeeDeduction.InnerUnionMember0
+                                .builder()
                                 .amount(0L)
-                                .type(BenefitContribution.Type.FIXED)
+                                .type(
+                                    IndividualBenefit.Body.UnionMember0.EmployeeDeduction
+                                        .InnerUnionMember0
+                                        .Type
+                                        .FIXED
+                                )
                                 .build()
                         )
                         .hsaContributionLimit(
@@ -45,15 +58,28 @@ internal class IndividualBenefitTest {
                         .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
-                            BenefitContribution.builder()
+                            IndividualBenefit.Body.UnionMember0.CompanyContribution
+                                .InnerUnionMember0
+                                .builder()
                                 .amount(0L)
-                                .type(BenefitContribution.Type.FIXED)
+                                .type(
+                                    IndividualBenefit.Body.UnionMember0.CompanyContribution
+                                        .InnerUnionMember0
+                                        .Type
+                                        .FIXED
+                                )
                                 .build()
                         )
                         .employeeDeduction(
-                            BenefitContribution.builder()
+                            IndividualBenefit.Body.UnionMember0.EmployeeDeduction.InnerUnionMember0
+                                .builder()
                                 .amount(0L)
-                                .type(BenefitContribution.Type.FIXED)
+                                .type(
+                                    IndividualBenefit.Body.UnionMember0.EmployeeDeduction
+                                        .InnerUnionMember0
+                                        .Type
+                                        .FIXED
+                                )
                                 .build()
                         )
                         .hsaContributionLimit(
@@ -76,15 +102,28 @@ internal class IndividualBenefitTest {
                         .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
-                            BenefitContribution.builder()
+                            IndividualBenefit.Body.UnionMember0.CompanyContribution
+                                .InnerUnionMember0
+                                .builder()
                                 .amount(0L)
-                                .type(BenefitContribution.Type.FIXED)
+                                .type(
+                                    IndividualBenefit.Body.UnionMember0.CompanyContribution
+                                        .InnerUnionMember0
+                                        .Type
+                                        .FIXED
+                                )
                                 .build()
                         )
                         .employeeDeduction(
-                            BenefitContribution.builder()
+                            IndividualBenefit.Body.UnionMember0.EmployeeDeduction.InnerUnionMember0
+                                .builder()
                                 .amount(0L)
-                                .type(BenefitContribution.Type.FIXED)
+                                .type(
+                                    IndividualBenefit.Body.UnionMember0.EmployeeDeduction
+                                        .InnerUnionMember0
+                                        .Type
+                                        .FIXED
+                                )
                                 .build()
                         )
                         .hsaContributionLimit(
