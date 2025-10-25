@@ -3,8 +3,10 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -13,11 +15,15 @@ import kotlin.jvm.optionals.getOrNull
 class HrisBenefitRetrieveParams
 private constructor(
     private val benefitId: String?,
+    private val entityIds: List<String>,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun benefitId(): Optional<String> = Optional.ofNullable(benefitId)
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String> = entityIds
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -29,10 +35,13 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): HrisBenefitRetrieveParams = builder().build()
-
         /**
          * Returns a mutable builder for constructing an instance of [HrisBenefitRetrieveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .entityIds()
+         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -41,12 +50,14 @@ private constructor(
     class Builder internal constructor() {
 
         private var benefitId: String? = null
+        private var entityIds: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(hrisBenefitRetrieveParams: HrisBenefitRetrieveParams) = apply {
             benefitId = hrisBenefitRetrieveParams.benefitId
+            entityIds = hrisBenefitRetrieveParams.entityIds.toMutableList()
             additionalHeaders = hrisBenefitRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisBenefitRetrieveParams.additionalQueryParams.toBuilder()
         }
@@ -55,6 +66,20 @@ private constructor(
 
         /** Alias for calling [Builder.benefitId] with `benefitId.orElse(null)`. */
         fun benefitId(benefitId: Optional<String>) = benefitId(benefitId.getOrNull())
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>) = apply {
+            this.entityIds = entityIds.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -158,10 +183,18 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .entityIds()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitRetrieveParams =
             HrisBenefitRetrieveParams(
                 benefitId,
+                checkRequired("entityIds", entityIds).toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -175,7 +208,13 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -184,12 +223,14 @@ private constructor(
 
         return other is HrisBenefitRetrieveParams &&
             benefitId == other.benefitId &&
+            entityIds == other.entityIds &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = Objects.hash(benefitId, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int =
+        Objects.hash(benefitId, entityIds, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisBenefitRetrieveParams{benefitId=$benefitId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisBenefitRetrieveParams{benefitId=$benefitId, entityIds=$entityIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

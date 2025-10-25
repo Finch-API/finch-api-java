@@ -32,24 +32,14 @@ interface PayStatementItemService {
      * support will be added soon Retrieve a list of detailed pay statement items for the access
      * token's connection account.
      */
-    fun list(): HrisCompanyPayStatementItemListPage =
-        list(HrisCompanyPayStatementItemListParams.none())
+    fun list(params: HrisCompanyPayStatementItemListParams): HrisCompanyPayStatementItemListPage =
+        list(params, RequestOptions.none())
 
     /** @see list */
     fun list(
-        params: HrisCompanyPayStatementItemListParams =
-            HrisCompanyPayStatementItemListParams.none(),
+        params: HrisCompanyPayStatementItemListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisCompanyPayStatementItemListPage
-
-    /** @see list */
-    fun list(
-        params: HrisCompanyPayStatementItemListParams = HrisCompanyPayStatementItemListParams.none()
-    ): HrisCompanyPayStatementItemListPage = list(params, RequestOptions.none())
-
-    /** @see list */
-    fun list(requestOptions: RequestOptions): HrisCompanyPayStatementItemListPage =
-        list(HrisCompanyPayStatementItemListParams.none(), requestOptions)
 
     /**
      * A view of [PayStatementItemService] that provides access to raw HTTP responses for each
@@ -73,30 +63,16 @@ interface PayStatementItemService {
          * same as [PayStatementItemService.list].
          */
         @MustBeClosed
-        fun list(): HttpResponseFor<HrisCompanyPayStatementItemListPage> =
-            list(HrisCompanyPayStatementItemListParams.none())
-
-        /** @see list */
-        @MustBeClosed
         fun list(
-            params: HrisCompanyPayStatementItemListParams =
-                HrisCompanyPayStatementItemListParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<HrisCompanyPayStatementItemListPage>
-
-        /** @see list */
-        @MustBeClosed
-        fun list(
-            params: HrisCompanyPayStatementItemListParams =
-                HrisCompanyPayStatementItemListParams.none()
+            params: HrisCompanyPayStatementItemListParams
         ): HttpResponseFor<HrisCompanyPayStatementItemListPage> =
             list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<HrisCompanyPayStatementItemListPage> =
-            list(HrisCompanyPayStatementItemListParams.none(), requestOptions)
+            params: HrisCompanyPayStatementItemListParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<HrisCompanyPayStatementItemListPage>
     }
 }

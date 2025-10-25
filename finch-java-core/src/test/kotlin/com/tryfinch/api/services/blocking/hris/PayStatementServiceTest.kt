@@ -23,6 +23,7 @@ internal class PayStatementServiceTest {
         val page =
             payStatementService.retrieveMany(
                 HrisPayStatementRetrieveManyParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                     .addRequest(
                         HrisPayStatementRetrieveManyParams.Request.builder()
                             .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

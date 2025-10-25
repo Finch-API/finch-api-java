@@ -4,6 +4,8 @@ package com.tryfinch.api.services.async.payroll
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
+import com.tryfinch.api.models.PayrollPayGroupListParams
+import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -19,7 +21,13 @@ internal class PayGroupServiceAsyncTest {
                 .build()
         val payGroupServiceAsync = client.payroll().payGroups()
 
-        val payGroupFuture = payGroupServiceAsync.retrieve("pay_group_id")
+        val payGroupFuture =
+            payGroupServiceAsync.retrieve(
+                PayrollPayGroupRetrieveParams.builder()
+                    .payGroupId("pay_group_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
 
         val payGroup = payGroupFuture.get()
         payGroup.validate()
@@ -34,7 +42,12 @@ internal class PayGroupServiceAsyncTest {
                 .build()
         val payGroupServiceAsync = client.payroll().payGroups()
 
-        val pageFuture = payGroupServiceAsync.list()
+        val pageFuture =
+            payGroupServiceAsync.list(
+                PayrollPayGroupListParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
 
         val page = pageFuture.get()
         page.items().forEach { it.validate() }

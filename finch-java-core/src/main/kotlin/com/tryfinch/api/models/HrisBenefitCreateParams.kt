@@ -29,10 +29,14 @@ import kotlin.jvm.optionals.getOrNull
  */
 class HrisBenefitCreateParams
 private constructor(
+    private val entityIds: List<String>,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String> = entityIds
 
     /**
      * The company match for this benefit.
@@ -110,24 +114,45 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): HrisBenefitCreateParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [HrisBenefitCreateParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisBenefitCreateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .entityIds()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [HrisBenefitCreateParams]. */
     class Builder internal constructor() {
 
+        private var entityIds: MutableList<String>? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(hrisBenefitCreateParams: HrisBenefitCreateParams) = apply {
+            entityIds = hrisBenefitCreateParams.entityIds.toMutableList()
             body = hrisBenefitCreateParams.body.toBuilder()
             additionalHeaders = hrisBenefitCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisBenefitCreateParams.additionalQueryParams.toBuilder()
+        }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>) = apply {
+            this.entityIds = entityIds.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
 
         /**
@@ -331,9 +356,17 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitCreateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .entityIds()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitCreateParams =
             HrisBenefitCreateParams(
+                checkRequired("entityIds", entityIds).toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -344,7 +377,13 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -1180,13 +1219,15 @@ private constructor(
         }
 
         return other is HrisBenefitCreateParams &&
+            entityIds == other.entityIds &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int =
+        Objects.hash(entityIds, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisBenefitCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisBenefitCreateParams{entityIds=$entityIds, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

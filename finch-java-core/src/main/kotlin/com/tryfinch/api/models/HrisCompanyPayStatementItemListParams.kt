@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -22,6 +23,7 @@ import kotlin.jvm.optionals.getOrNull
  */
 class HrisCompanyPayStatementItemListParams
 private constructor(
+    private val entityIds: List<String>,
     private val categories: List<Category>?,
     private val endDate: LocalDate?,
     private val name: String?,
@@ -30,6 +32,9 @@ private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String> = entityIds
 
     /**
      * Comma-delimited list of pay statement item categories to filter on. If empty, defaults to all
@@ -65,11 +70,14 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): HrisCompanyPayStatementItemListParams = builder().build()
-
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisCompanyPayStatementItemListParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .entityIds()
+         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -77,6 +85,7 @@ private constructor(
     /** A builder for [HrisCompanyPayStatementItemListParams]. */
     class Builder internal constructor() {
 
+        private var entityIds: MutableList<String>? = null
         private var categories: MutableList<Category>? = null
         private var endDate: LocalDate? = null
         private var name: String? = null
@@ -89,6 +98,7 @@ private constructor(
         internal fun from(
             hrisCompanyPayStatementItemListParams: HrisCompanyPayStatementItemListParams
         ) = apply {
+            entityIds = hrisCompanyPayStatementItemListParams.entityIds.toMutableList()
             categories = hrisCompanyPayStatementItemListParams.categories?.toMutableList()
             endDate = hrisCompanyPayStatementItemListParams.endDate
             name = hrisCompanyPayStatementItemListParams.name
@@ -97,6 +107,20 @@ private constructor(
             additionalHeaders = hrisCompanyPayStatementItemListParams.additionalHeaders.toBuilder()
             additionalQueryParams =
                 hrisCompanyPayStatementItemListParams.additionalQueryParams.toBuilder()
+        }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>) = apply {
+            this.entityIds = entityIds.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
 
         /**
@@ -251,9 +275,17 @@ private constructor(
          * Returns an immutable instance of [HrisCompanyPayStatementItemListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .entityIds()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisCompanyPayStatementItemListParams =
             HrisCompanyPayStatementItemListParams(
+                checkRequired("entityIds", entityIds).toImmutable(),
                 categories?.toImmutable(),
                 endDate,
                 name,
@@ -269,6 +301,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
+                entityIds.forEach { put("entity_ids[]", it) }
                 categories?.forEach { put("categories[]", it.toString()) }
                 endDate?.let { put("end_date", it.toString()) }
                 name?.let { put("name", it) }
@@ -420,6 +453,7 @@ private constructor(
         }
 
         return other is HrisCompanyPayStatementItemListParams &&
+            entityIds == other.entityIds &&
             categories == other.categories &&
             endDate == other.endDate &&
             name == other.name &&
@@ -431,6 +465,7 @@ private constructor(
 
     override fun hashCode(): Int =
         Objects.hash(
+            entityIds,
             categories,
             endDate,
             name,
@@ -441,5 +476,5 @@ private constructor(
         )
 
     override fun toString() =
-        "HrisCompanyPayStatementItemListParams{categories=$categories, endDate=$endDate, name=$name, startDate=$startDate, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisCompanyPayStatementItemListParams{entityIds=$entityIds, categories=$categories, endDate=$endDate, name=$name, startDate=$startDate, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -6,6 +6,8 @@ import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleCreateParams
+import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleDeleteParams
+import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleListParams
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -25,6 +27,7 @@ internal class RuleServiceTest {
         val rule =
             ruleService.create(
                 HrisCompanyPayStatementItemRuleCreateParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                     .attributes(
                         HrisCompanyPayStatementItemRuleCreateParams.Attributes.builder()
                             .metadata(
@@ -69,6 +72,7 @@ internal class RuleServiceTest {
             ruleService.update(
                 HrisCompanyPayStatementItemRuleUpdateParams.builder()
                     .ruleId("rule_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                     .optionalProperty(JsonValue.from(mapOf<String, Any>()))
                     .build()
             )
@@ -85,7 +89,12 @@ internal class RuleServiceTest {
                 .build()
         val ruleService = client.hris().company().payStatementItem().rules()
 
-        val page = ruleService.list()
+        val page =
+            ruleService.list(
+                HrisCompanyPayStatementItemRuleListParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
 
         page.response().validate()
     }
@@ -99,7 +108,13 @@ internal class RuleServiceTest {
                 .build()
         val ruleService = client.hris().company().payStatementItem().rules()
 
-        val rule = ruleService.delete("rule_id")
+        val rule =
+            ruleService.delete(
+                HrisCompanyPayStatementItemRuleDeleteParams.builder()
+                    .ruleId("rule_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
 
         rule.validate()
     }

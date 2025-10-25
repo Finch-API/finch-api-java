@@ -12,6 +12,7 @@ internal class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
     fun create() {
         HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
             .benefitId("benefit_id")
+            .addEntityId("550e8400-e29b-41d4-a716-446655440000")
             .individualIds(
                 "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
             )
@@ -23,6 +24,7 @@ internal class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
         val params =
             HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
                 .benefitId("benefit_id")
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .build()
 
         assertThat(params._pathParam(0)).isEqualTo("benefit_id")
@@ -35,6 +37,7 @@ internal class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
         val params =
             HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
                 .benefitId("benefit_id")
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .individualIds(
                     "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a"
                 )
@@ -45,6 +48,7 @@ internal class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
         assertThat(queryParams)
             .isEqualTo(
                 QueryParams.builder()
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
                     .put(
                         "individual_ids",
                         "d675d2b7-6d7b-41a8-b2d3-001eb3fb88f6,d02a6346-1f08-4312-a064-49ff3cafaa7a",
@@ -58,10 +62,16 @@ internal class HrisBenefitIndividualRetrieveManyBenefitsParamsTest {
         val params =
             HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
                 .benefitId("benefit_id")
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .build()
 
         val queryParams = params._queryParams()
 
-        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
     }
 }
