@@ -3,8 +3,10 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -12,11 +14,15 @@ import kotlin.jvm.optionals.getOrNull
 /** Read company directory and organization structure */
 class HrisDirectoryListParams
 private constructor(
+    private val entityIds: List<String>,
     private val limit: Long?,
     private val offset: Long?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String> = entityIds
 
     /** Number of employees to return (defaults to all) */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
@@ -34,15 +40,21 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): HrisDirectoryListParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [HrisDirectoryListParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisDirectoryListParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .entityIds()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [HrisDirectoryListParams]. */
     class Builder internal constructor() {
 
+        private var entityIds: MutableList<String>? = null
         private var limit: Long? = null
         private var offset: Long? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -50,10 +62,25 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(hrisDirectoryListParams: HrisDirectoryListParams) = apply {
+            entityIds = hrisDirectoryListParams.entityIds.toMutableList()
             limit = hrisDirectoryListParams.limit
             offset = hrisDirectoryListParams.offset
             additionalHeaders = hrisDirectoryListParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisDirectoryListParams.additionalQueryParams.toBuilder()
+        }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>) = apply {
+            this.entityIds = entityIds.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
 
         /** Number of employees to return (defaults to all) */
@@ -184,9 +211,17 @@ private constructor(
          * Returns an immutable instance of [HrisDirectoryListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .entityIds()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisDirectoryListParams =
             HrisDirectoryListParams(
+                checkRequired("entityIds", entityIds).toImmutable(),
                 limit,
                 offset,
                 additionalHeaders.build(),
@@ -199,6 +234,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
+                entityIds.forEach { put("entity_ids[]", it) }
                 limit?.let { put("limit", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
                 putAll(additionalQueryParams)
@@ -211,6 +247,7 @@ private constructor(
         }
 
         return other is HrisDirectoryListParams &&
+            entityIds == other.entityIds &&
             limit == other.limit &&
             offset == other.offset &&
             additionalHeaders == other.additionalHeaders &&
@@ -218,8 +255,8 @@ private constructor(
     }
 
     override fun hashCode(): Int =
-        Objects.hash(limit, offset, additionalHeaders, additionalQueryParams)
+        Objects.hash(entityIds, limit, offset, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisDirectoryListParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisDirectoryListParams{entityIds=$entityIds, limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

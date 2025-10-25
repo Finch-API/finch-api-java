@@ -27,48 +27,28 @@ interface DirectoryServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): DirectoryServiceAsync
 
     /** Read company directory and organization structure */
-    fun list(): CompletableFuture<HrisDirectoryListPageAsync> = list(HrisDirectoryListParams.none())
+    fun list(params: HrisDirectoryListParams): CompletableFuture<HrisDirectoryListPageAsync> =
+        list(params, RequestOptions.none())
 
     /** @see list */
     fun list(
-        params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
+        params: HrisDirectoryListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HrisDirectoryListPageAsync>
 
-    /** @see list */
-    fun list(
-        params: HrisDirectoryListParams = HrisDirectoryListParams.none()
-    ): CompletableFuture<HrisDirectoryListPageAsync> = list(params, RequestOptions.none())
-
-    /** @see list */
-    fun list(requestOptions: RequestOptions): CompletableFuture<HrisDirectoryListPageAsync> =
-        list(HrisDirectoryListParams.none(), requestOptions)
-
     /** Read company directory and organization structure */
     @Deprecated("use `list` instead")
-    fun listIndividuals(): CompletableFuture<HrisDirectoryListIndividualsPageAsync> =
-        listIndividuals(HrisDirectoryListIndividualsParams.none())
-
-    /** @see listIndividuals */
-    @Deprecated("use `list` instead")
     fun listIndividuals(
-        params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<HrisDirectoryListIndividualsPageAsync>
-
-    /** @see listIndividuals */
-    @Deprecated("use `list` instead")
-    fun listIndividuals(
-        params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none()
+        params: HrisDirectoryListIndividualsParams
     ): CompletableFuture<HrisDirectoryListIndividualsPageAsync> =
         listIndividuals(params, RequestOptions.none())
 
     /** @see listIndividuals */
     @Deprecated("use `list` instead")
     fun listIndividuals(
-        requestOptions: RequestOptions
-    ): CompletableFuture<HrisDirectoryListIndividualsPageAsync> =
-        listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
+        params: HrisDirectoryListIndividualsParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<HrisDirectoryListIndividualsPageAsync>
 
     /**
      * A view of [DirectoryServiceAsync] that provides access to raw HTTP responses for each method.
@@ -88,55 +68,32 @@ interface DirectoryServiceAsync {
          * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
          * [DirectoryServiceAsync.list].
          */
-        fun list(): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>> =
-            list(HrisDirectoryListParams.none())
-
-        /** @see list */
         fun list(
-            params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>>
-
-        /** @see list */
-        fun list(
-            params: HrisDirectoryListParams = HrisDirectoryListParams.none()
+            params: HrisDirectoryListParams
         ): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>> =
-            list(HrisDirectoryListParams.none(), requestOptions)
+            params: HrisDirectoryListParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<HrisDirectoryListPageAsync>>
 
         /**
          * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
          * [DirectoryServiceAsync.listIndividuals].
          */
         @Deprecated("use `list` instead")
-        fun listIndividuals():
-            CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>> =
-            listIndividuals(HrisDirectoryListIndividualsParams.none())
-
-        /** @see listIndividuals */
-        @Deprecated("use `list` instead")
         fun listIndividuals(
-            params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>>
-
-        /** @see listIndividuals */
-        @Deprecated("use `list` instead")
-        fun listIndividuals(
-            params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none()
+            params: HrisDirectoryListIndividualsParams
         ): CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>> =
             listIndividuals(params, RequestOptions.none())
 
         /** @see listIndividuals */
         @Deprecated("use `list` instead")
         fun listIndividuals(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>> =
-            listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
+            params: HrisDirectoryListIndividualsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<HrisDirectoryListIndividualsPageAsync>>
     }
 }

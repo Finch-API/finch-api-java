@@ -28,21 +28,14 @@ interface CompanyService {
     fun payStatementItem(): PayStatementItemService
 
     /** Read basic company data */
-    fun retrieve(): Company = retrieve(HrisCompanyRetrieveParams.none())
-
-    /** @see retrieve */
-    fun retrieve(
-        params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): Company
-
-    /** @see retrieve */
-    fun retrieve(params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()): Company =
+    fun retrieve(params: HrisCompanyRetrieveParams): Company =
         retrieve(params, RequestOptions.none())
 
     /** @see retrieve */
-    fun retrieve(requestOptions: RequestOptions): Company =
-        retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
+    fun retrieve(
+        params: HrisCompanyRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Company
 
     /** A view of [CompanyService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -61,24 +54,14 @@ interface CompanyService {
          * [CompanyService.retrieve].
          */
         @MustBeClosed
-        fun retrieve(): HttpResponseFor<Company> = retrieve(HrisCompanyRetrieveParams.none())
+        fun retrieve(params: HrisCompanyRetrieveParams): HttpResponseFor<Company> =
+            retrieve(params, RequestOptions.none())
 
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
-            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
+            params: HrisCompanyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Company>
-
-        /** @see retrieve */
-        @MustBeClosed
-        fun retrieve(
-            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
-        ): HttpResponseFor<Company> = retrieve(params, RequestOptions.none())
-
-        /** @see retrieve */
-        @MustBeClosed
-        fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
-            retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
     }
 }

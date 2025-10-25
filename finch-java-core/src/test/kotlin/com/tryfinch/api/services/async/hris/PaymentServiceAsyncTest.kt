@@ -25,6 +25,7 @@ internal class PaymentServiceAsyncTest {
             paymentServiceAsync.list(
                 HrisPaymentListParams.builder()
                     .endDate(LocalDate.parse("2021-01-01"))
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                     .startDate(LocalDate.parse("2021-01-01"))
                     .build()
             )

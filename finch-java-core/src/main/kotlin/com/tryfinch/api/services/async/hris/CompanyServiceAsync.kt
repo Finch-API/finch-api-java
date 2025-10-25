@@ -28,22 +28,14 @@ interface CompanyServiceAsync {
     fun payStatementItem(): PayStatementItemServiceAsync
 
     /** Read basic company data */
-    fun retrieve(): CompletableFuture<Company> = retrieve(HrisCompanyRetrieveParams.none())
+    fun retrieve(params: HrisCompanyRetrieveParams): CompletableFuture<Company> =
+        retrieve(params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
-        params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
+        params: HrisCompanyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Company>
-
-    /** @see retrieve */
-    fun retrieve(
-        params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
-    ): CompletableFuture<Company> = retrieve(params, RequestOptions.none())
-
-    /** @see retrieve */
-    fun retrieve(requestOptions: RequestOptions): CompletableFuture<Company> =
-        retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 
     /**
      * A view of [CompanyServiceAsync] that provides access to raw HTTP responses for each method.
@@ -65,22 +57,14 @@ interface CompanyServiceAsync {
          * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
          * [CompanyServiceAsync.retrieve].
          */
-        fun retrieve(): CompletableFuture<HttpResponseFor<Company>> =
-            retrieve(HrisCompanyRetrieveParams.none())
-
-        /** @see retrieve */
         fun retrieve(
-            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Company>>
-
-        /** @see retrieve */
-        fun retrieve(
-            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none()
+            params: HrisCompanyRetrieveParams
         ): CompletableFuture<HttpResponseFor<Company>> = retrieve(params, RequestOptions.none())
 
         /** @see retrieve */
-        fun retrieve(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<Company>> =
-            retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
+        fun retrieve(
+            params: HrisCompanyRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Company>>
     }
 }

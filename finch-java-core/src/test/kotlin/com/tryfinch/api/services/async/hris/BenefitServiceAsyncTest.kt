@@ -7,6 +7,9 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.BenefitFrequency
 import com.tryfinch.api.models.BenefitType
 import com.tryfinch.api.models.HrisBenefitCreateParams
+import com.tryfinch.api.models.HrisBenefitListParams
+import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -26,6 +29,7 @@ internal class BenefitServiceAsyncTest {
         val createCompanyBenefitsResponseFuture =
             benefitServiceAsync.create(
                 HrisBenefitCreateParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                     .companyContribution(
                         HrisBenefitCreateParams.BenefitCompanyMatchContribution.builder()
                             .addTier(
@@ -59,7 +63,13 @@ internal class BenefitServiceAsyncTest {
                 .build()
         val benefitServiceAsync = client.hris().benefits()
 
-        val companyBenefitFuture = benefitServiceAsync.retrieve("benefit_id")
+        val companyBenefitFuture =
+            benefitServiceAsync.retrieve(
+                HrisBenefitRetrieveParams.builder()
+                    .benefitId("benefit_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
 
         val companyBenefit = companyBenefitFuture.get()
         companyBenefit.validate()
@@ -78,6 +88,7 @@ internal class BenefitServiceAsyncTest {
             benefitServiceAsync.update(
                 HrisBenefitUpdateParams.builder()
                     .benefitId("benefit_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                     .description("description")
                     .build()
             )
@@ -95,7 +106,12 @@ internal class BenefitServiceAsyncTest {
                 .build()
         val benefitServiceAsync = client.hris().benefits()
 
-        val pageFuture = benefitServiceAsync.list()
+        val pageFuture =
+            benefitServiceAsync.list(
+                HrisBenefitListParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
 
         val page = pageFuture.get()
         page.items().forEach { it.validate() }
@@ -110,7 +126,12 @@ internal class BenefitServiceAsyncTest {
                 .build()
         val benefitServiceAsync = client.hris().benefits()
 
-        val pageFuture = benefitServiceAsync.listSupportedBenefits()
+        val pageFuture =
+            benefitServiceAsync.listSupportedBenefits(
+                HrisBenefitListSupportedBenefitsParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
 
         val page = pageFuture.get()
         page.items().forEach { it.validate() }
