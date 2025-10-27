@@ -9,13 +9,15 @@ import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import java.time.LocalDate
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Read payroll and contractor related payments by the company. */
 class HrisPaymentListParams
 private constructor(
     private val endDate: LocalDate,
-    private val entityIds: List<String>,
     private val startDate: LocalDate,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -23,11 +25,11 @@ private constructor(
     /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
     fun endDate(): LocalDate = endDate
 
-    /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
-
     /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
     fun startDate(): LocalDate = startDate
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -45,7 +47,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .endDate()
-         * .entityIds()
          * .startDate()
          * ```
          */
@@ -56,16 +57,16 @@ private constructor(
     class Builder internal constructor() {
 
         private var endDate: LocalDate? = null
-        private var entityIds: MutableList<String>? = null
         private var startDate: LocalDate? = null
+        private var entityIds: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(hrisPaymentListParams: HrisPaymentListParams) = apply {
             endDate = hrisPaymentListParams.endDate
-            entityIds = hrisPaymentListParams.entityIds.toMutableList()
             startDate = hrisPaymentListParams.startDate
+            entityIds = hrisPaymentListParams.entityIds?.toMutableList()
             additionalHeaders = hrisPaymentListParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisPaymentListParams.additionalQueryParams.toBuilder()
         }
@@ -73,10 +74,16 @@ private constructor(
         /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
         fun endDate(endDate: LocalDate) = apply { this.endDate = endDate }
 
+        /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+        fun startDate(startDate: LocalDate) = apply { this.startDate = startDate }
+
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
 
         /**
          * Adds a single [String] to [entityIds].
@@ -86,9 +93,6 @@ private constructor(
         fun addEntityId(entityId: String) = apply {
             entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
-
-        /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
-        fun startDate(startDate: LocalDate) = apply { this.startDate = startDate }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -196,7 +200,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .endDate()
-         * .entityIds()
          * .startDate()
          * ```
          *
@@ -205,8 +208,8 @@ private constructor(
         fun build(): HrisPaymentListParams =
             HrisPaymentListParams(
                 checkRequired("endDate", endDate),
-                checkRequired("entityIds", entityIds).toImmutable(),
                 checkRequired("startDate", startDate),
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -218,8 +221,8 @@ private constructor(
         QueryParams.builder()
             .apply {
                 put("end_date", endDate.toString())
-                entityIds.forEach { put("entity_ids[]", it) }
                 put("start_date", startDate.toString())
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -231,15 +234,15 @@ private constructor(
 
         return other is HrisPaymentListParams &&
             endDate == other.endDate &&
-            entityIds == other.entityIds &&
             startDate == other.startDate &&
+            entityIds == other.entityIds &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(endDate, entityIds, startDate, additionalHeaders, additionalQueryParams)
+        Objects.hash(endDate, startDate, entityIds, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisPaymentListParams{endDate=$endDate, entityIds=$entityIds, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisPaymentListParams{endDate=$endDate, startDate=$startDate, entityIds=$entityIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

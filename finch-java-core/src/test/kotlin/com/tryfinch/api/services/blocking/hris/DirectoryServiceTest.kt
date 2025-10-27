@@ -4,8 +4,6 @@ package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
-import com.tryfinch.api.models.HrisDirectoryListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -21,12 +19,7 @@ internal class DirectoryServiceTest {
                 .build()
         val directoryService = client.hris().directory()
 
-        val page =
-            directoryService.list(
-                HrisDirectoryListParams.builder()
-                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        val page = directoryService.list()
 
         page.response().validate()
     }
@@ -40,12 +33,7 @@ internal class DirectoryServiceTest {
                 .build()
         val directoryService = client.hris().directory()
 
-        val page =
-            directoryService.listIndividuals(
-                HrisDirectoryListIndividualsParams.builder()
-                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        val page = directoryService.listIndividuals()
 
         page.response().validate()
     }

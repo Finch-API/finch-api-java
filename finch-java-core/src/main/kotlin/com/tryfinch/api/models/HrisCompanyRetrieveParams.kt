@@ -3,22 +3,23 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Read basic company data */
 class HrisCompanyRetrieveParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -30,13 +31,10 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): HrisCompanyRetrieveParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of [HrisCompanyRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -50,15 +48,18 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(hrisCompanyRetrieveParams: HrisCompanyRetrieveParams) = apply {
-            entityIds = hrisCompanyRetrieveParams.entityIds.toMutableList()
+            entityIds = hrisCompanyRetrieveParams.entityIds?.toMutableList()
             additionalHeaders = hrisCompanyRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisCompanyRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
 
         /**
          * Adds a single [String] to [entityIds].
@@ -171,17 +172,10 @@ private constructor(
          * Returns an immutable instance of [HrisCompanyRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisCompanyRetrieveParams =
             HrisCompanyRetrieveParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -192,7 +186,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

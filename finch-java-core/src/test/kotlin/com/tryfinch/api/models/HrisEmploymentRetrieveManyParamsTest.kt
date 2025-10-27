@@ -43,10 +43,47 @@ internal class HrisEmploymentRetrieveManyParamsTest {
     }
 
     @Test
+    fun queryParamsWithoutOptionalFields() {
+        val params =
+            HrisEmploymentRetrieveManyParams.builder()
+                .addRequest(
+                    HrisEmploymentRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
+                )
+                .build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
+    }
+
+    @Test
     fun body() {
         val params =
             HrisEmploymentRetrieveManyParams.builder()
                 .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                .addRequest(
+                    HrisEmploymentRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
+                )
+                .build()
+
+        val body = params._body()
+
+        assertThat(body.requests())
+            .containsExactly(
+                HrisEmploymentRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
+            )
+    }
+
+    @Test
+    fun bodyWithoutOptionalFields() {
+        val params =
+            HrisEmploymentRetrieveManyParams.builder()
                 .addRequest(
                     HrisEmploymentRetrieveManyParams.Request.builder()
                         .individualId("individual_id")

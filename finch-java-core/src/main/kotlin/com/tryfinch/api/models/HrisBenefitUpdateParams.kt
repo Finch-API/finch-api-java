@@ -11,7 +11,6 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -25,7 +24,7 @@ import kotlin.jvm.optionals.getOrNull
 class HrisBenefitUpdateParams
 private constructor(
     private val benefitId: String?,
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -34,7 +33,7 @@ private constructor(
     fun benefitId(): Optional<String> = Optional.ofNullable(benefitId)
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /**
      * Updated name or description.
@@ -63,14 +62,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [HrisBenefitUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
-         */
+        @JvmStatic fun none(): HrisBenefitUpdateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [HrisBenefitUpdateParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -86,7 +80,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(hrisBenefitUpdateParams: HrisBenefitUpdateParams) = apply {
             benefitId = hrisBenefitUpdateParams.benefitId
-            entityIds = hrisBenefitUpdateParams.entityIds.toMutableList()
+            entityIds = hrisBenefitUpdateParams.entityIds?.toMutableList()
             body = hrisBenefitUpdateParams.body.toBuilder()
             additionalHeaders = hrisBenefitUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisBenefitUpdateParams.additionalQueryParams.toBuilder()
@@ -98,9 +92,12 @@ private constructor(
         fun benefitId(benefitId: Optional<String>) = benefitId(benefitId.getOrNull())
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
 
         /**
          * Adds a single [String] to [entityIds].
@@ -253,18 +250,11 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitUpdateParams =
             HrisBenefitUpdateParams(
                 benefitId,
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -284,7 +274,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

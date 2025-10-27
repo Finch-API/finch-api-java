@@ -46,18 +46,10 @@ internal class HrisDocumentListParamsTest {
 
     @Test
     fun queryParamsWithoutOptionalFields() {
-        val params =
-            HrisDocumentListParams.builder()
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = HrisDocumentListParams.builder().build()
 
         val queryParams = params._queryParams()
 
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

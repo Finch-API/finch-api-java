@@ -51,19 +51,11 @@ internal class HrisIndividualRetrieveManyParamsTest {
 
     @Test
     fun queryParamsWithoutOptionalFields() {
-        val params =
-            HrisIndividualRetrieveManyParams.builder()
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = HrisIndividualRetrieveManyParams.builder().build()
 
         val queryParams = params._queryParams()
 
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test
@@ -97,10 +89,7 @@ internal class HrisIndividualRetrieveManyParamsTest {
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            HrisIndividualRetrieveManyParams.builder()
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = HrisIndividualRetrieveManyParams.builder().build()
 
         val body = params._body()
     }

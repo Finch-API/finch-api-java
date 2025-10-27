@@ -29,4 +29,13 @@ internal class HrisBenefitListParamsTest {
                     .build()
             )
     }
+
+    @Test
+    fun queryParamsWithoutOptionalFields() {
+        val params = HrisBenefitListParams.builder().build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
+    }
 }

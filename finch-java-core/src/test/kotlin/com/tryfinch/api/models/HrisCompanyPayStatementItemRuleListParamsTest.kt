@@ -31,4 +31,13 @@ internal class HrisCompanyPayStatementItemRuleListParamsTest {
                     .build()
             )
     }
+
+    @Test
+    fun queryParamsWithoutOptionalFields() {
+        val params = HrisCompanyPayStatementItemRuleListParams.builder().build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
+    }
 }

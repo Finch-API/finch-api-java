@@ -40,7 +40,6 @@ internal class ServiceParamsTest {
 
         directoryService.list(
             HrisDirectoryListParams.builder()
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .putAdditionalHeader("Secret-Header", "42")
                 .putAdditionalQueryParam("secret_query_param", "42")
                 .build()

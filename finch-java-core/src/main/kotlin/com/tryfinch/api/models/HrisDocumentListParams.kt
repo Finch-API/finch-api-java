@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -18,7 +17,7 @@ import kotlin.jvm.optionals.getOrNull
 /** **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents. */
 class HrisDocumentListParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val individualIds: List<String>?,
     private val limit: Long?,
     private val offset: Long?,
@@ -28,7 +27,7 @@ private constructor(
 ) : Params {
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /**
      * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
@@ -55,14 +54,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [HrisDocumentListParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
-         */
+        @JvmStatic fun none(): HrisDocumentListParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [HrisDocumentListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -79,7 +73,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(hrisDocumentListParams: HrisDocumentListParams) = apply {
-            entityIds = hrisDocumentListParams.entityIds.toMutableList()
+            entityIds = hrisDocumentListParams.entityIds?.toMutableList()
             individualIds = hrisDocumentListParams.individualIds?.toMutableList()
             limit = hrisDocumentListParams.limit
             offset = hrisDocumentListParams.offset
@@ -89,9 +83,12 @@ private constructor(
         }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
 
         /**
          * Adds a single [String] to [entityIds].
@@ -264,17 +261,10 @@ private constructor(
          * Returns an immutable instance of [HrisDocumentListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisDocumentListParams =
             HrisDocumentListParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 individualIds?.toImmutable(),
                 limit,
                 offset,
@@ -289,7 +279,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 individualIds?.forEach { put("individual_ids[]", it) }
                 limit?.let { put("limit", it.toString()) }
                 offset?.let { put("offset", it.toString()) }

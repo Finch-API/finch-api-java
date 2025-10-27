@@ -27,27 +27,45 @@ interface DirectoryService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): DirectoryService
 
     /** Read company directory and organization structure */
-    fun list(params: HrisDirectoryListParams): HrisDirectoryListPage =
-        list(params, RequestOptions.none())
+    fun list(): HrisDirectoryListPage = list(HrisDirectoryListParams.none())
 
     /** @see list */
     fun list(
-        params: HrisDirectoryListParams,
+        params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListPage
 
+    /** @see list */
+    fun list(
+        params: HrisDirectoryListParams = HrisDirectoryListParams.none()
+    ): HrisDirectoryListPage = list(params, RequestOptions.none())
+
+    /** @see list */
+    fun list(requestOptions: RequestOptions): HrisDirectoryListPage =
+        list(HrisDirectoryListParams.none(), requestOptions)
+
     /** Read company directory and organization structure */
     @Deprecated("use `list` instead")
-    fun listIndividuals(
-        params: HrisDirectoryListIndividualsParams
-    ): HrisDirectoryListIndividualsPage = listIndividuals(params, RequestOptions.none())
+    fun listIndividuals(): HrisDirectoryListIndividualsPage =
+        listIndividuals(HrisDirectoryListIndividualsParams.none())
 
     /** @see listIndividuals */
     @Deprecated("use `list` instead")
     fun listIndividuals(
-        params: HrisDirectoryListIndividualsParams,
+        params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListIndividualsPage
+
+    /** @see listIndividuals */
+    @Deprecated("use `list` instead")
+    fun listIndividuals(
+        params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none()
+    ): HrisDirectoryListIndividualsPage = listIndividuals(params, RequestOptions.none())
+
+    /** @see listIndividuals */
+    @Deprecated("use `list` instead")
+    fun listIndividuals(requestOptions: RequestOptions): HrisDirectoryListIndividualsPage =
+        listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
 
     /** A view of [DirectoryService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -64,15 +82,25 @@ interface DirectoryService {
          * [DirectoryService.list].
          */
         @MustBeClosed
-        fun list(params: HrisDirectoryListParams): HttpResponseFor<HrisDirectoryListPage> =
-            list(params, RequestOptions.none())
+        fun list(): HttpResponseFor<HrisDirectoryListPage> = list(HrisDirectoryListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
-            params: HrisDirectoryListParams,
+            params: HrisDirectoryListParams = HrisDirectoryListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisDirectoryListPage>
+
+        /** @see list */
+        @MustBeClosed
+        fun list(
+            params: HrisDirectoryListParams = HrisDirectoryListParams.none()
+        ): HttpResponseFor<HrisDirectoryListPage> = list(params, RequestOptions.none())
+
+        /** @see list */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<HrisDirectoryListPage> =
+            list(HrisDirectoryListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
@@ -80,8 +108,22 @@ interface DirectoryService {
          */
         @Deprecated("use `list` instead")
         @MustBeClosed
+        fun listIndividuals(): HttpResponseFor<HrisDirectoryListIndividualsPage> =
+            listIndividuals(HrisDirectoryListIndividualsParams.none())
+
+        /** @see listIndividuals */
+        @Deprecated("use `list` instead")
+        @MustBeClosed
         fun listIndividuals(
-            params: HrisDirectoryListIndividualsParams
+            params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<HrisDirectoryListIndividualsPage>
+
+        /** @see listIndividuals */
+        @Deprecated("use `list` instead")
+        @MustBeClosed
+        fun listIndividuals(
+            params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none()
         ): HttpResponseFor<HrisDirectoryListIndividualsPage> =
             listIndividuals(params, RequestOptions.none())
 
@@ -89,8 +131,8 @@ interface DirectoryService {
         @Deprecated("use `list` instead")
         @MustBeClosed
         fun listIndividuals(
-            params: HrisDirectoryListIndividualsParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<HrisDirectoryListIndividualsPage>
+            requestOptions: RequestOptions
+        ): HttpResponseFor<HrisDirectoryListIndividualsPage> =
+            listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
     }
 }

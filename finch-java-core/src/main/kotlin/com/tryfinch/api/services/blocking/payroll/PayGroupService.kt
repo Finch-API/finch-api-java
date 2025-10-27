@@ -27,22 +27,22 @@ interface PayGroupService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): PayGroupService
 
     /** Read information from a single pay group */
-    fun retrieve(
-        payGroupId: String,
-        params: PayrollPayGroupRetrieveParams,
-    ): PayGroupRetrieveResponse = retrieve(payGroupId, params, RequestOptions.none())
+    fun retrieve(payGroupId: String): PayGroupRetrieveResponse =
+        retrieve(payGroupId, PayrollPayGroupRetrieveParams.none())
 
     /** @see retrieve */
     fun retrieve(
         payGroupId: String,
-        params: PayrollPayGroupRetrieveParams,
+        params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayGroupRetrieveResponse =
         retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(params: PayrollPayGroupRetrieveParams): PayGroupRetrieveResponse =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(
+        payGroupId: String,
+        params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
+    ): PayGroupRetrieveResponse = retrieve(payGroupId, params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
@@ -50,15 +50,31 @@ interface PayGroupService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayGroupRetrieveResponse
 
+    /** @see retrieve */
+    fun retrieve(params: PayrollPayGroupRetrieveParams): PayGroupRetrieveResponse =
+        retrieve(params, RequestOptions.none())
+
+    /** @see retrieve */
+    fun retrieve(payGroupId: String, requestOptions: RequestOptions): PayGroupRetrieveResponse =
+        retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
+
     /** Read company pay groups and frequencies */
-    fun list(params: PayrollPayGroupListParams): PayrollPayGroupListPage =
-        list(params, RequestOptions.none())
+    fun list(): PayrollPayGroupListPage = list(PayrollPayGroupListParams.none())
 
     /** @see list */
     fun list(
-        params: PayrollPayGroupListParams,
+        params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayrollPayGroupListPage
+
+    /** @see list */
+    fun list(
+        params: PayrollPayGroupListParams = PayrollPayGroupListParams.none()
+    ): PayrollPayGroupListPage = list(params, RequestOptions.none())
+
+    /** @see list */
+    fun list(requestOptions: RequestOptions): PayrollPayGroupListPage =
+        list(PayrollPayGroupListParams.none(), requestOptions)
 
     /** A view of [PayGroupService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -75,20 +91,32 @@ interface PayGroupService {
          * otherwise the same as [PayGroupService.retrieve].
          */
         @MustBeClosed
+        fun retrieve(payGroupId: String): HttpResponseFor<PayGroupRetrieveResponse> =
+            retrieve(payGroupId, PayrollPayGroupRetrieveParams.none())
+
+        /** @see retrieve */
+        @MustBeClosed
         fun retrieve(
             payGroupId: String,
-            params: PayrollPayGroupRetrieveParams,
+            params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PayGroupRetrieveResponse> =
+            retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
+
+        /** @see retrieve */
+        @MustBeClosed
+        fun retrieve(
+            payGroupId: String,
+            params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
         ): HttpResponseFor<PayGroupRetrieveResponse> =
             retrieve(payGroupId, params, RequestOptions.none())
 
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
-            payGroupId: String,
             params: PayrollPayGroupRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PayGroupRetrieveResponse> =
-            retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
+        ): HttpResponseFor<PayGroupRetrieveResponse>
 
         /** @see retrieve */
         @MustBeClosed
@@ -99,23 +127,35 @@ interface PayGroupService {
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
-            params: PayrollPayGroupRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PayGroupRetrieveResponse>
+            payGroupId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PayGroupRetrieveResponse> =
+            retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the same as
          * [PayGroupService.list].
          */
         @MustBeClosed
-        fun list(params: PayrollPayGroupListParams): HttpResponseFor<PayrollPayGroupListPage> =
-            list(params, RequestOptions.none())
+        fun list(): HttpResponseFor<PayrollPayGroupListPage> =
+            list(PayrollPayGroupListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
-            params: PayrollPayGroupListParams,
+            params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayrollPayGroupListPage>
+
+        /** @see list */
+        @MustBeClosed
+        fun list(
+            params: PayrollPayGroupListParams = PayrollPayGroupListParams.none()
+        ): HttpResponseFor<PayrollPayGroupListPage> = list(params, RequestOptions.none())
+
+        /** @see list */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<PayrollPayGroupListPage> =
+            list(PayrollPayGroupListParams.none(), requestOptions)
     }
 }

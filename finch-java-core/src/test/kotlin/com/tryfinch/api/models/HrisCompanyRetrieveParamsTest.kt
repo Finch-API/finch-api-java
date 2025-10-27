@@ -31,4 +31,13 @@ internal class HrisCompanyRetrieveParamsTest {
                     .build()
             )
     }
+
+    @Test
+    fun queryParamsWithoutOptionalFields() {
+        val params = HrisCompanyRetrieveParams.builder().build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
+    }
 }

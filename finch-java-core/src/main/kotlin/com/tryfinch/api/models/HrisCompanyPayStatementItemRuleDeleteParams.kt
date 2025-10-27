@@ -4,7 +4,6 @@ package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -19,7 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 class HrisCompanyPayStatementItemRuleDeleteParams
 private constructor(
     private val ruleId: String?,
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -28,7 +27,7 @@ private constructor(
     fun ruleId(): Optional<String> = Optional.ofNullable(ruleId)
 
     /** The entity IDs to delete the rule for. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
@@ -43,14 +42,11 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): HrisCompanyPayStatementItemRuleDeleteParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisCompanyPayStatementItemRuleDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -69,7 +65,7 @@ private constructor(
             hrisCompanyPayStatementItemRuleDeleteParams: HrisCompanyPayStatementItemRuleDeleteParams
         ) = apply {
             ruleId = hrisCompanyPayStatementItemRuleDeleteParams.ruleId
-            entityIds = hrisCompanyPayStatementItemRuleDeleteParams.entityIds.toMutableList()
+            entityIds = hrisCompanyPayStatementItemRuleDeleteParams.entityIds?.toMutableList()
             additionalHeaders =
                 hrisCompanyPayStatementItemRuleDeleteParams.additionalHeaders.toBuilder()
             additionalQueryParams =
@@ -84,9 +80,12 @@ private constructor(
         fun ruleId(ruleId: Optional<String>) = ruleId(ruleId.getOrNull())
 
         /** The entity IDs to delete the rule for. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
 
         /**
          * Adds a single [String] to [entityIds].
@@ -221,18 +220,11 @@ private constructor(
          * Returns an immutable instance of [HrisCompanyPayStatementItemRuleDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisCompanyPayStatementItemRuleDeleteParams =
             HrisCompanyPayStatementItemRuleDeleteParams(
                 ruleId,
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -253,7 +245,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()
