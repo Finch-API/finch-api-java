@@ -12,9 +12,9 @@ internal class HrisCompanyPayStatementItemListParamsTest {
     @Test
     fun create() {
         HrisCompanyPayStatementItemListParams.builder()
-            .addEntityId("550e8400-e29b-41d4-a716-446655440000")
             .addCategory(HrisCompanyPayStatementItemListParams.Category.EARNINGS)
             .endDate(LocalDate.parse("2024-07-01"))
+            .addEntityId("550e8400-e29b-41d4-a716-446655440000")
             .name("name")
             .startDate(LocalDate.parse("2024-01-01"))
             .type("base_compensation")
@@ -25,9 +25,9 @@ internal class HrisCompanyPayStatementItemListParamsTest {
     fun queryParams() {
         val params =
             HrisCompanyPayStatementItemListParams.builder()
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .addCategory(HrisCompanyPayStatementItemListParams.Category.EARNINGS)
                 .endDate(LocalDate.parse("2024-07-01"))
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .name("name")
                 .startDate(LocalDate.parse("2024-01-01"))
                 .type("base_compensation")
@@ -38,9 +38,9 @@ internal class HrisCompanyPayStatementItemListParamsTest {
         assertThat(queryParams)
             .isEqualTo(
                 QueryParams.builder()
-                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
                     .put("categories[]", "earnings")
                     .put("end_date", "2024-07-01")
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
                     .put("name", "name")
                     .put("start_date", "2024-01-01")
                     .put("type", "base_compensation")
@@ -50,18 +50,10 @@ internal class HrisCompanyPayStatementItemListParamsTest {
 
     @Test
     fun queryParamsWithoutOptionalFields() {
-        val params =
-            HrisCompanyPayStatementItemListParams.builder()
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = HrisCompanyPayStatementItemListParams.builder().build()
 
         val queryParams = params._queryParams()
 
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

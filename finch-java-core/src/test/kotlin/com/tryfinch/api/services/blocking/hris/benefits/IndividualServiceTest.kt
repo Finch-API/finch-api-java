@@ -5,7 +5,6 @@ package com.tryfinch.api.services.blocking.hris.benefits
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
-import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -42,13 +41,7 @@ internal class IndividualServiceTest {
                 .build()
         val individualService = client.hris().benefits().individuals()
 
-        val page =
-            individualService.retrieveManyBenefits(
-                HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
-                    .benefitId("benefit_id")
-                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        val page = individualService.retrieveManyBenefits("benefit_id")
 
         page.items().forEach { it.validate() }
     }

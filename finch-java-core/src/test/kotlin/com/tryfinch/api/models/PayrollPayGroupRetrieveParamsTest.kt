@@ -18,11 +18,7 @@ internal class PayrollPayGroupRetrieveParamsTest {
 
     @Test
     fun pathParams() {
-        val params =
-            PayrollPayGroupRetrieveParams.builder()
-                .payGroupId("pay_group_id")
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
 
         assertThat(params._pathParam(0)).isEqualTo("pay_group_id")
         // out-of-bound path param
@@ -45,5 +41,14 @@ internal class PayrollPayGroupRetrieveParamsTest {
                     .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
                     .build()
             )
+    }
+
+    @Test
+    fun queryParamsWithoutOptionalFields() {
+        val params = PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

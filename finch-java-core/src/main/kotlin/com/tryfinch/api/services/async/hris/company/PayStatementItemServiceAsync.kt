@@ -32,16 +32,27 @@ interface PayStatementItemServiceAsync {
      * support will be added soon Retrieve a list of detailed pay statement items for the access
      * token's connection account.
      */
+    fun list(): CompletableFuture<HrisCompanyPayStatementItemListPageAsync> =
+        list(HrisCompanyPayStatementItemListParams.none())
+
+    /** @see list */
     fun list(
-        params: HrisCompanyPayStatementItemListParams
+        params: HrisCompanyPayStatementItemListParams =
+            HrisCompanyPayStatementItemListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<HrisCompanyPayStatementItemListPageAsync>
+
+    /** @see list */
+    fun list(
+        params: HrisCompanyPayStatementItemListParams = HrisCompanyPayStatementItemListParams.none()
     ): CompletableFuture<HrisCompanyPayStatementItemListPageAsync> =
         list(params, RequestOptions.none())
 
     /** @see list */
     fun list(
-        params: HrisCompanyPayStatementItemListParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<HrisCompanyPayStatementItemListPageAsync>
+        requestOptions: RequestOptions
+    ): CompletableFuture<HrisCompanyPayStatementItemListPageAsync> =
+        list(HrisCompanyPayStatementItemListParams.none(), requestOptions)
 
     /**
      * A view of [PayStatementItemServiceAsync] that provides access to raw HTTP responses for each
@@ -64,15 +75,27 @@ interface PayStatementItemServiceAsync {
          * Returns a raw HTTP response for `get /employer/pay-statement-item`, but is otherwise the
          * same as [PayStatementItemServiceAsync.list].
          */
+        fun list(): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>> =
+            list(HrisCompanyPayStatementItemListParams.none())
+
+        /** @see list */
         fun list(
-            params: HrisCompanyPayStatementItemListParams
+            params: HrisCompanyPayStatementItemListParams =
+                HrisCompanyPayStatementItemListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>>
+
+        /** @see list */
+        fun list(
+            params: HrisCompanyPayStatementItemListParams =
+                HrisCompanyPayStatementItemListParams.none()
         ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
-            params: HrisCompanyPayStatementItemListParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>>
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>> =
+            list(HrisCompanyPayStatementItemListParams.none(), requestOptions)
     }
 }

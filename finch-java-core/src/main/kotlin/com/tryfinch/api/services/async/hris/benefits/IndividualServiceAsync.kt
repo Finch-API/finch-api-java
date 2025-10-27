@@ -29,19 +29,31 @@ interface IndividualServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualServiceAsync
 
     /** Lists individuals currently enrolled in a given deduction. */
+    fun enrolledIds(benefitId: String): CompletableFuture<IndividualEnrolledIdsResponse> =
+        enrolledIds(benefitId, HrisBenefitIndividualEnrolledIdsParams.none())
+
+    /** @see enrolledIds */
     fun enrolledIds(
         benefitId: String,
-        params: HrisBenefitIndividualEnrolledIdsParams,
+        params: HrisBenefitIndividualEnrolledIdsParams =
+            HrisBenefitIndividualEnrolledIdsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<IndividualEnrolledIdsResponse> =
+        enrolledIds(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+    /** @see enrolledIds */
+    fun enrolledIds(
+        benefitId: String,
+        params: HrisBenefitIndividualEnrolledIdsParams =
+            HrisBenefitIndividualEnrolledIdsParams.none(),
     ): CompletableFuture<IndividualEnrolledIdsResponse> =
         enrolledIds(benefitId, params, RequestOptions.none())
 
     /** @see enrolledIds */
     fun enrolledIds(
-        benefitId: String,
         params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<IndividualEnrolledIdsResponse> =
-        enrolledIds(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+    ): CompletableFuture<IndividualEnrolledIdsResponse>
 
     /** @see enrolledIds */
     fun enrolledIds(
@@ -50,24 +62,39 @@ interface IndividualServiceAsync {
 
     /** @see enrolledIds */
     fun enrolledIds(
-        params: HrisBenefitIndividualEnrolledIdsParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<IndividualEnrolledIdsResponse>
+        benefitId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<IndividualEnrolledIdsResponse> =
+        enrolledIds(benefitId, HrisBenefitIndividualEnrolledIdsParams.none(), requestOptions)
 
     /** Get enrollment information for the given individuals. */
     fun retrieveManyBenefits(
+        benefitId: String
+    ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
+        retrieveManyBenefits(benefitId, HrisBenefitIndividualRetrieveManyBenefitsParams.none())
+
+    /** @see retrieveManyBenefits */
+    fun retrieveManyBenefits(
         benefitId: String,
-        params: HrisBenefitIndividualRetrieveManyBenefitsParams,
+        params: HrisBenefitIndividualRetrieveManyBenefitsParams =
+            HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
+        retrieveManyBenefits(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+    /** @see retrieveManyBenefits */
+    fun retrieveManyBenefits(
+        benefitId: String,
+        params: HrisBenefitIndividualRetrieveManyBenefitsParams =
+            HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
     ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
         retrieveManyBenefits(benefitId, params, RequestOptions.none())
 
     /** @see retrieveManyBenefits */
     fun retrieveManyBenefits(
-        benefitId: String,
         params: HrisBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
-        retrieveManyBenefits(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+    ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>
 
     /** @see retrieveManyBenefits */
     fun retrieveManyBenefits(
@@ -77,24 +104,41 @@ interface IndividualServiceAsync {
 
     /** @see retrieveManyBenefits */
     fun retrieveManyBenefits(
-        params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>
+        benefitId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
+        retrieveManyBenefits(
+            benefitId,
+            HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
+            requestOptions,
+        )
 
     /** Unenroll individuals from a deduction or contribution */
+    fun unenrollMany(benefitId: String): CompletableFuture<UnenrolledIndividualBenefitResponse> =
+        unenrollMany(benefitId, HrisBenefitIndividualUnenrollManyParams.none())
+
+    /** @see unenrollMany */
     fun unenrollMany(
         benefitId: String,
-        params: HrisBenefitIndividualUnenrollManyParams,
+        params: HrisBenefitIndividualUnenrollManyParams =
+            HrisBenefitIndividualUnenrollManyParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<UnenrolledIndividualBenefitResponse> =
+        unenrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+    /** @see unenrollMany */
+    fun unenrollMany(
+        benefitId: String,
+        params: HrisBenefitIndividualUnenrollManyParams =
+            HrisBenefitIndividualUnenrollManyParams.none(),
     ): CompletableFuture<UnenrolledIndividualBenefitResponse> =
         unenrollMany(benefitId, params, RequestOptions.none())
 
     /** @see unenrollMany */
     fun unenrollMany(
-        benefitId: String,
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<UnenrolledIndividualBenefitResponse> =
-        unenrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+    ): CompletableFuture<UnenrolledIndividualBenefitResponse>
 
     /** @see unenrollMany */
     fun unenrollMany(
@@ -104,9 +148,10 @@ interface IndividualServiceAsync {
 
     /** @see unenrollMany */
     fun unenrollMany(
-        params: HrisBenefitIndividualUnenrollManyParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<UnenrolledIndividualBenefitResponse>
+        benefitId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<UnenrolledIndividualBenefitResponse> =
+        unenrollMany(benefitId, HrisBenefitIndividualUnenrollManyParams.none(), requestOptions)
 
     /**
      * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
@@ -128,18 +173,32 @@ interface IndividualServiceAsync {
          * otherwise the same as [IndividualServiceAsync.enrolledIds].
          */
         fun enrolledIds(
+            benefitId: String
+        ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>> =
+            enrolledIds(benefitId, HrisBenefitIndividualEnrolledIdsParams.none())
+
+        /** @see enrolledIds */
+        fun enrolledIds(
             benefitId: String,
-            params: HrisBenefitIndividualEnrolledIdsParams,
+            params: HrisBenefitIndividualEnrolledIdsParams =
+                HrisBenefitIndividualEnrolledIdsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>> =
+            enrolledIds(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+        /** @see enrolledIds */
+        fun enrolledIds(
+            benefitId: String,
+            params: HrisBenefitIndividualEnrolledIdsParams =
+                HrisBenefitIndividualEnrolledIdsParams.none(),
         ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>> =
             enrolledIds(benefitId, params, RequestOptions.none())
 
         /** @see enrolledIds */
         fun enrolledIds(
-            benefitId: String,
             params: HrisBenefitIndividualEnrolledIdsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>> =
-            enrolledIds(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+        ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>>
 
         /** @see enrolledIds */
         fun enrolledIds(
@@ -149,27 +208,42 @@ interface IndividualServiceAsync {
 
         /** @see enrolledIds */
         fun enrolledIds(
-            params: HrisBenefitIndividualEnrolledIdsParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>>
+            benefitId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<IndividualEnrolledIdsResponse>> =
+            enrolledIds(benefitId, HrisBenefitIndividualEnrolledIdsParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/individuals`, but is
          * otherwise the same as [IndividualServiceAsync.retrieveManyBenefits].
          */
         fun retrieveManyBenefits(
+            benefitId: String
+        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>> =
+            retrieveManyBenefits(benefitId, HrisBenefitIndividualRetrieveManyBenefitsParams.none())
+
+        /** @see retrieveManyBenefits */
+        fun retrieveManyBenefits(
             benefitId: String,
-            params: HrisBenefitIndividualRetrieveManyBenefitsParams,
+            params: HrisBenefitIndividualRetrieveManyBenefitsParams =
+                HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>> =
+            retrieveManyBenefits(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+        /** @see retrieveManyBenefits */
+        fun retrieveManyBenefits(
+            benefitId: String,
+            params: HrisBenefitIndividualRetrieveManyBenefitsParams =
+                HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
         ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>> =
             retrieveManyBenefits(benefitId, params, RequestOptions.none())
 
         /** @see retrieveManyBenefits */
         fun retrieveManyBenefits(
-            benefitId: String,
             params: HrisBenefitIndividualRetrieveManyBenefitsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>> =
-            retrieveManyBenefits(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>>
 
         /** @see retrieveManyBenefits */
         fun retrieveManyBenefits(
@@ -179,27 +253,46 @@ interface IndividualServiceAsync {
 
         /** @see retrieveManyBenefits */
         fun retrieveManyBenefits(
-            params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>>
+            benefitId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>> =
+            retrieveManyBenefits(
+                benefitId,
+                HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `delete /employer/benefits/{benefit_id}/individuals`, but
          * is otherwise the same as [IndividualServiceAsync.unenrollMany].
          */
         fun unenrollMany(
+            benefitId: String
+        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>> =
+            unenrollMany(benefitId, HrisBenefitIndividualUnenrollManyParams.none())
+
+        /** @see unenrollMany */
+        fun unenrollMany(
             benefitId: String,
-            params: HrisBenefitIndividualUnenrollManyParams,
+            params: HrisBenefitIndividualUnenrollManyParams =
+                HrisBenefitIndividualUnenrollManyParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>> =
+            unenrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+        /** @see unenrollMany */
+        fun unenrollMany(
+            benefitId: String,
+            params: HrisBenefitIndividualUnenrollManyParams =
+                HrisBenefitIndividualUnenrollManyParams.none(),
         ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>> =
             unenrollMany(benefitId, params, RequestOptions.none())
 
         /** @see unenrollMany */
         fun unenrollMany(
-            benefitId: String,
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>> =
-            unenrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>>
 
         /** @see unenrollMany */
         fun unenrollMany(
@@ -209,8 +302,9 @@ interface IndividualServiceAsync {
 
         /** @see unenrollMany */
         fun unenrollMany(
-            params: HrisBenefitIndividualUnenrollManyParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>>
+            benefitId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<UnenrolledIndividualBenefitResponse>> =
+            unenrollMany(benefitId, HrisBenefitIndividualUnenrollManyParams.none(), requestOptions)
     }
 }

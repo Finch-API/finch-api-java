@@ -18,11 +18,7 @@ internal class HrisDocumentRetreiveParamsTest {
 
     @Test
     fun pathParams() {
-        val params =
-            HrisDocumentRetreiveParams.builder()
-                .documentId("document_id")
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = HrisDocumentRetreiveParams.builder().documentId("document_id").build()
 
         assertThat(params._pathParam(0)).isEqualTo("document_id")
         // out-of-bound path param
@@ -45,5 +41,14 @@ internal class HrisDocumentRetreiveParamsTest {
                     .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
                     .build()
             )
+    }
+
+    @Test
+    fun queryParamsWithoutOptionalFields() {
+        val params = HrisDocumentRetreiveParams.builder().documentId("document_id").build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

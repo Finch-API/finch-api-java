@@ -29,39 +29,56 @@ interface DocumentService {
     /**
      * **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents.
      */
-    fun list(params: HrisDocumentListParams): DocumentListResponse =
-        list(params, RequestOptions.none())
+    fun list(): DocumentListResponse = list(HrisDocumentListParams.none())
 
     /** @see list */
     fun list(
-        params: HrisDocumentListParams,
+        params: HrisDocumentListParams = HrisDocumentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentListResponse
+
+    /** @see list */
+    fun list(params: HrisDocumentListParams = HrisDocumentListParams.none()): DocumentListResponse =
+        list(params, RequestOptions.none())
+
+    /** @see list */
+    fun list(requestOptions: RequestOptions): DocumentListResponse =
+        list(HrisDocumentListParams.none(), requestOptions)
 
     /**
      * **Beta:** This endpoint is in beta and may change. Retrieve details of a specific document by
      * its ID.
      */
-    fun retreive(documentId: String, params: HrisDocumentRetreiveParams): DocumentRetreiveResponse =
-        retreive(documentId, params, RequestOptions.none())
+    fun retreive(documentId: String): DocumentRetreiveResponse =
+        retreive(documentId, HrisDocumentRetreiveParams.none())
 
     /** @see retreive */
     fun retreive(
         documentId: String,
-        params: HrisDocumentRetreiveParams,
+        params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse =
         retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
 
     /** @see retreive */
-    fun retreive(params: HrisDocumentRetreiveParams): DocumentRetreiveResponse =
-        retreive(params, RequestOptions.none())
+    fun retreive(
+        documentId: String,
+        params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
+    ): DocumentRetreiveResponse = retreive(documentId, params, RequestOptions.none())
 
     /** @see retreive */
     fun retreive(
         params: HrisDocumentRetreiveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse
+
+    /** @see retreive */
+    fun retreive(params: HrisDocumentRetreiveParams): DocumentRetreiveResponse =
+        retreive(params, RequestOptions.none())
+
+    /** @see retreive */
+    fun retreive(documentId: String, requestOptions: RequestOptions): DocumentRetreiveResponse =
+        retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
 
     /** A view of [DocumentService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -78,35 +95,57 @@ interface DocumentService {
          * [DocumentService.list].
          */
         @MustBeClosed
-        fun list(params: HrisDocumentListParams): HttpResponseFor<DocumentListResponse> =
-            list(params, RequestOptions.none())
+        fun list(): HttpResponseFor<DocumentListResponse> = list(HrisDocumentListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
-            params: HrisDocumentListParams,
+            params: HrisDocumentListParams = HrisDocumentListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentListResponse>
+
+        /** @see list */
+        @MustBeClosed
+        fun list(
+            params: HrisDocumentListParams = HrisDocumentListParams.none()
+        ): HttpResponseFor<DocumentListResponse> = list(params, RequestOptions.none())
+
+        /** @see list */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<DocumentListResponse> =
+            list(HrisDocumentListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/documents/{document_id}`, but is otherwise
          * the same as [DocumentService.retreive].
          */
         @MustBeClosed
+        fun retreive(documentId: String): HttpResponseFor<DocumentRetreiveResponse> =
+            retreive(documentId, HrisDocumentRetreiveParams.none())
+
+        /** @see retreive */
+        @MustBeClosed
         fun retreive(
             documentId: String,
-            params: HrisDocumentRetreiveParams,
+            params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DocumentRetreiveResponse> =
+            retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
+
+        /** @see retreive */
+        @MustBeClosed
+        fun retreive(
+            documentId: String,
+            params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
         ): HttpResponseFor<DocumentRetreiveResponse> =
             retreive(documentId, params, RequestOptions.none())
 
         /** @see retreive */
         @MustBeClosed
         fun retreive(
-            documentId: String,
             params: HrisDocumentRetreiveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<DocumentRetreiveResponse> =
-            retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
+        ): HttpResponseFor<DocumentRetreiveResponse>
 
         /** @see retreive */
         @MustBeClosed
@@ -117,8 +156,9 @@ interface DocumentService {
         /** @see retreive */
         @MustBeClosed
         fun retreive(
-            params: HrisDocumentRetreiveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<DocumentRetreiveResponse>
+            documentId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DocumentRetreiveResponse> =
+            retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
     }
 }

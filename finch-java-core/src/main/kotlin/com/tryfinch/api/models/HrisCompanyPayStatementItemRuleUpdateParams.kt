@@ -10,7 +10,6 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -27,7 +26,7 @@ import kotlin.jvm.optionals.getOrNull
 class HrisCompanyPayStatementItemRuleUpdateParams
 private constructor(
     private val ruleId: String?,
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val body: UpdateRuleRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -36,7 +35,7 @@ private constructor(
     fun ruleId(): Optional<String> = Optional.ofNullable(ruleId)
 
     /** The entity IDs to update the rule for. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     fun _optionalProperty(): JsonValue = body._optionalProperty()
 
@@ -52,14 +51,11 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): HrisCompanyPayStatementItemRuleUpdateParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisCompanyPayStatementItemRuleUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -78,7 +74,7 @@ private constructor(
             hrisCompanyPayStatementItemRuleUpdateParams: HrisCompanyPayStatementItemRuleUpdateParams
         ) = apply {
             ruleId = hrisCompanyPayStatementItemRuleUpdateParams.ruleId
-            entityIds = hrisCompanyPayStatementItemRuleUpdateParams.entityIds.toMutableList()
+            entityIds = hrisCompanyPayStatementItemRuleUpdateParams.entityIds?.toMutableList()
             body = hrisCompanyPayStatementItemRuleUpdateParams.body.toBuilder()
             additionalHeaders =
                 hrisCompanyPayStatementItemRuleUpdateParams.additionalHeaders.toBuilder()
@@ -92,9 +88,12 @@ private constructor(
         fun ruleId(ruleId: Optional<String>) = ruleId(ruleId.getOrNull())
 
         /** The entity IDs to update the rule for. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
 
         /**
          * Adds a single [String] to [entityIds].
@@ -239,18 +238,11 @@ private constructor(
          * Returns an immutable instance of [HrisCompanyPayStatementItemRuleUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisCompanyPayStatementItemRuleUpdateParams =
             HrisCompanyPayStatementItemRuleUpdateParams(
                 ruleId,
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -270,7 +262,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

@@ -60,10 +60,7 @@ FinchClient client = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build();
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build();
-HrisDirectoryListPage page = client.hris().directory().list(params);
+HrisDirectoryListPage page = client.hris().directory().list();
 ```
 
 ## Client configuration
@@ -169,10 +166,7 @@ FinchClient client = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build();
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build();
-CompletableFuture<HrisDirectoryListPageAsync> page = client.async().hris().directory().list(params);
+CompletableFuture<HrisDirectoryListPageAsync> page = client.async().hris().directory().list();
 ```
 
 Or create an asynchronous client from the beginning:
@@ -191,10 +185,7 @@ FinchClientAsync client = FinchOkHttpClientAsync.builder()
     .accessToken("My Access Token")
     .build();
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build();
-CompletableFuture<HrisDirectoryListPageAsync> page = client.hris().directory().list(params);
+CompletableFuture<HrisDirectoryListPageAsync> page = client.hris().directory().list();
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
@@ -211,10 +202,7 @@ import com.tryfinch.api.core.http.HttpResponseFor;
 import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build();
-HttpResponseFor<HrisDirectoryListPage> page = client.hris().directory().withRawResponse().list(params);
+HttpResponseFor<HrisDirectoryListPage> page = client.hris().directory().withRawResponse().list();
 
 int statusCode = page.statusCode();
 Headers headers = page.headers();
@@ -267,7 +255,7 @@ When using the synchronous client, the method returns an [`Iterable`](https://do
 import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.IndividualInDirectory;
 
-HrisDirectoryListPage page = client.hris().directory().list(params);
+HrisDirectoryListPage page = client.hris().directory().list();
 
 // Process as an Iterable
 for (IndividualInDirectory directory : page.autoPager()) {
@@ -290,7 +278,7 @@ import com.tryfinch.api.models.IndividualInDirectory;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-CompletableFuture<HrisDirectoryListPageAsync> pageFuture = client.async().hris().directory().list(params);
+CompletableFuture<HrisDirectoryListPageAsync> pageFuture = client.async().hris().directory().list();
 
 pageFuture.thenRun(page -> page.autoPager().subscribe(directory -> {
     System.out.println(directory);
@@ -339,7 +327,7 @@ To access individual page items and manually request the next page, use the `ite
 import com.tryfinch.api.models.HrisDirectoryListPage;
 import com.tryfinch.api.models.IndividualInDirectory;
 
-HrisDirectoryListPage page = client.hris().directory().list(params);
+HrisDirectoryListPage page = client.hris().directory().list();
 while (true) {
     for (IndividualInDirectory directory : page.items()) {
         System.out.println(directory);
@@ -424,9 +412,7 @@ To set a custom timeout, configure the method call using the `timeout` method:
 ```java
 import com.tryfinch.api.models.HrisDirectoryListPage;
 
-HrisDirectoryListPage page = client.hris().directory().list(
-  params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
-);
+HrisDirectoryListPage page = client.hris().directory().list(RequestOptions.builder().timeout(Duration.ofSeconds(30)).build());
 ```
 
 Or configure the default for all method calls at the client level:
@@ -548,9 +534,7 @@ To set a documented parameter or property to an undocumented or not yet supporte
 ```java
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build();
+HrisDirectoryListParams params = HrisDirectoryListParams.builder().build();
 ```
 
 The most straightforward way to create a [`JsonValue`](finch-java-core/src/main/kotlin/com/tryfinch/api/core/Values.kt) is using its `from(...)` method:
@@ -598,10 +582,11 @@ To forcibly omit a required parameter or property, pass [`JsonMissing`](finch-ja
 
 ```java
 import com.tryfinch.api.core.JsonMissing;
+import com.tryfinch.api.models.AccessTokenCreateParams;
 import com.tryfinch.api.models.HrisDirectoryListParams;
 
-HrisDirectoryListParams params = HrisDirectoryListParams.builder()
-    .entityIds(JsonMissing.of())
+HrisDirectoryListParams params = AccessTokenCreateParams.builder()
+    .code(JsonMissing.of())
     .build();
 ```
 
@@ -678,9 +663,7 @@ Or configure the method call to validate the response using the `responseValidat
 ```java
 import com.tryfinch.api.models.HrisDirectoryListPage;
 
-HrisDirectoryListPage page = client.hris().directory().list(
-  params, RequestOptions.builder().responseValidation(true).build()
-);
+HrisDirectoryListPage page = client.hris().directory().list(RequestOptions.builder().responseValidation(true).build());
 ```
 
 Or configure the default for all method calls at the client level:

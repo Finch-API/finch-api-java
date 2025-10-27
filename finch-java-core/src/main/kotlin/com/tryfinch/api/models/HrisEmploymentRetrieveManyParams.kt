@@ -19,19 +19,20 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Read individual employment and income data */
 class HrisEmploymentRetrieveManyParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /**
      * The array of batch requests.
@@ -66,7 +67,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .entityIds()
          * .requests()
          * ```
          */
@@ -84,7 +84,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(hrisEmploymentRetrieveManyParams: HrisEmploymentRetrieveManyParams) =
             apply {
-                entityIds = hrisEmploymentRetrieveManyParams.entityIds.toMutableList()
+                entityIds = hrisEmploymentRetrieveManyParams.entityIds?.toMutableList()
                 body = hrisEmploymentRetrieveManyParams.body.toBuilder()
                 additionalHeaders = hrisEmploymentRetrieveManyParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
@@ -92,9 +92,12 @@ private constructor(
             }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
 
         /**
          * Adds a single [String] to [entityIds].
@@ -257,7 +260,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .entityIds()
          * .requests()
          * ```
          *
@@ -265,7 +267,7 @@ private constructor(
          */
         fun build(): HrisEmploymentRetrieveManyParams =
             HrisEmploymentRetrieveManyParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -279,7 +281,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

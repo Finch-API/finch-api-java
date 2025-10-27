@@ -7,8 +7,6 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.BenefitFrequency
 import com.tryfinch.api.models.BenefitType
 import com.tryfinch.api.models.HrisBenefitCreateParams
-import com.tryfinch.api.models.HrisBenefitListParams
-import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
 import org.junit.jupiter.api.Test
@@ -103,12 +101,7 @@ internal class BenefitServiceTest {
                 .build()
         val benefitService = client.hris().benefits()
 
-        val page =
-            benefitService.list(
-                HrisBenefitListParams.builder()
-                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        val page = benefitService.list()
 
         page.items().forEach { it.validate() }
     }
@@ -122,12 +115,7 @@ internal class BenefitServiceTest {
                 .build()
         val benefitService = client.hris().benefits()
 
-        val page =
-            benefitService.listSupportedBenefits(
-                HrisBenefitListSupportedBenefitsParams.builder()
-                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        val page = benefitService.listSupportedBenefits()
 
         page.items().forEach { it.validate() }
     }

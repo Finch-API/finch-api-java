@@ -7,7 +7,6 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleCreateParams
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleDeleteParams
-import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleListParams
 import com.tryfinch.api.models.HrisCompanyPayStatementItemRuleUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -91,12 +90,7 @@ internal class RuleServiceAsyncTest {
                 .build()
         val ruleServiceAsync = client.hris().company().payStatementItem().rules()
 
-        val pageFuture =
-            ruleServiceAsync.list(
-                HrisCompanyPayStatementItemRuleListParams.builder()
-                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        val pageFuture = ruleServiceAsync.list()
 
         val page = pageFuture.get()
         page.response().validate()

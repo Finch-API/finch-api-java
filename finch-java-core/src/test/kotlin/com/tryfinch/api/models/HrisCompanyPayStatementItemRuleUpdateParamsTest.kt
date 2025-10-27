@@ -20,11 +20,7 @@ internal class HrisCompanyPayStatementItemRuleUpdateParamsTest {
 
     @Test
     fun pathParams() {
-        val params =
-            HrisCompanyPayStatementItemRuleUpdateParams.builder()
-                .ruleId("rule_id")
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = HrisCompanyPayStatementItemRuleUpdateParams.builder().ruleId("rule_id").build()
 
         assertThat(params._pathParam(0)).isEqualTo("rule_id")
         // out-of-bound path param
@@ -52,20 +48,11 @@ internal class HrisCompanyPayStatementItemRuleUpdateParamsTest {
 
     @Test
     fun queryParamsWithoutOptionalFields() {
-        val params =
-            HrisCompanyPayStatementItemRuleUpdateParams.builder()
-                .ruleId("rule_id")
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = HrisCompanyPayStatementItemRuleUpdateParams.builder().ruleId("rule_id").build()
 
         val queryParams = params._queryParams()
 
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
-                    .build()
-            )
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test
@@ -84,11 +71,7 @@ internal class HrisCompanyPayStatementItemRuleUpdateParamsTest {
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            HrisCompanyPayStatementItemRuleUpdateParams.builder()
-                .ruleId("rule_id")
-                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .build()
+        val params = HrisCompanyPayStatementItemRuleUpdateParams.builder().ruleId("rule_id").build()
 
         val body = params._body()
     }
