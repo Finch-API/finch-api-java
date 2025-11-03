@@ -42,10 +42,10 @@ private constructor(
     /**
      * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
-     *   missing or null (e.g. if the server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun minutesToExpire(): Long = body.minutesToExpire()
+    fun minutesToExpire(): Optional<Long> = body.minutesToExpire()
 
     /**
      * The products to request access to (optional for reauthentication)
@@ -110,9 +110,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .connectionId()
-         * .minutesToExpire()
-         * .products()
-         * .redirectUri()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -338,9 +335,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .connectionId()
-         * .minutesToExpire()
-         * .products()
-         * .redirectUri()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -396,10 +390,10 @@ private constructor(
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        fun minutesToExpire(): Long = minutesToExpire.getRequired("minutes_to_expire")
+        fun minutesToExpire(): Optional<Long> = minutesToExpire.getOptional("minutes_to_expire")
 
         /**
          * The products to request access to (optional for reauthentication)
@@ -475,9 +469,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .connectionId()
-             * .minutesToExpire()
-             * .products()
-             * .redirectUri()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -487,9 +478,9 @@ private constructor(
         class Builder internal constructor() {
 
             private var connectionId: JsonField<String>? = null
-            private var minutesToExpire: JsonField<Long>? = null
+            private var minutesToExpire: JsonField<Long> = JsonMissing.of()
             private var products: JsonField<MutableList<ConnectProducts>>? = null
-            private var redirectUri: JsonField<String>? = null
+            private var redirectUri: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -607,9 +598,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .connectionId()
-             * .minutesToExpire()
-             * .products()
-             * .redirectUri()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
@@ -617,9 +605,9 @@ private constructor(
             fun build(): ReauthenticateRequest =
                 ReauthenticateRequest(
                     checkRequired("connectionId", connectionId),
-                    checkRequired("minutesToExpire", minutesToExpire),
-                    checkRequired("products", products).map { it.toImmutable() },
-                    checkRequired("redirectUri", redirectUri),
+                    minutesToExpire,
+                    (products ?: JsonMissing.of()).map { it.toImmutable() },
+                    redirectUri,
                     additionalProperties.toMutableMap(),
                 )
         }

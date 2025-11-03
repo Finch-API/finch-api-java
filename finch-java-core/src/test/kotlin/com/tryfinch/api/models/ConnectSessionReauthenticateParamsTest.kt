@@ -31,9 +31,19 @@ internal class ConnectSessionReauthenticateParamsTest {
         val body = params._body()
 
         assertThat(body.connectionId()).isEqualTo("connection_id")
-        assertThat(body.minutesToExpire()).isEqualTo(0L)
+        assertThat(body.minutesToExpire()).contains(0L)
         assertThat(body.products().getOrNull())
             .containsExactly(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
         assertThat(body.redirectUri()).contains("https://example.com")
+    }
+
+    @Test
+    fun bodyWithoutOptionalFields() {
+        val params =
+            ConnectSessionReauthenticateParams.builder().connectionId("connection_id").build()
+
+        val body = params._body()
+
+        assertThat(body.connectionId()).isEqualTo("connection_id")
     }
 }
