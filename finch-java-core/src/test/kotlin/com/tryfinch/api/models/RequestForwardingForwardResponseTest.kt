@@ -21,7 +21,7 @@ internal class RequestForwardingForwardResponseTest {
                         .data("string")
                         .headers(
                             RequestForwardingForwardResponse.Request.Headers.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("string"))
                                 .build()
                         )
                         .params(
@@ -48,7 +48,7 @@ internal class RequestForwardingForwardResponseTest {
                     .data("string")
                     .headers(
                         RequestForwardingForwardResponse.Request.Headers.builder()
-                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .putAdditionalProperty("foo", JsonValue.from("string"))
                             .build()
                     )
                     .params(
@@ -80,7 +80,7 @@ internal class RequestForwardingForwardResponseTest {
                         .data("string")
                         .headers(
                             RequestForwardingForwardResponse.Request.Headers.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("string"))
                                 .build()
                         )
                         .params(
