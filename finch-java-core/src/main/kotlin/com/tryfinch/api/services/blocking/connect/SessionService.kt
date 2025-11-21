@@ -6,9 +6,9 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
-import com.tryfinch.api.models.ConnectSessionNewParams
+import com.tryfinch.api.models.ConnectSessionConnectParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
-import com.tryfinch.api.models.SessionNewResponse
+import com.tryfinch.api.models.SessionConnectResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 import java.util.function.Consumer
 
@@ -27,14 +27,14 @@ interface SessionService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): SessionService
 
     /** Create a new connect session for an employer */
-    fun new_(params: ConnectSessionNewParams): SessionNewResponse =
-        new_(params, RequestOptions.none())
+    fun connect(params: ConnectSessionConnectParams): SessionConnectResponse =
+        connect(params, RequestOptions.none())
 
-    /** @see new_ */
-    fun new_(
-        params: ConnectSessionNewParams,
+    /** @see connect */
+    fun connect(
+        params: ConnectSessionConnectParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): SessionNewResponse
+    ): SessionConnectResponse
 
     /** Create a new Connect session for reauthenticating an existing connection */
     fun reauthenticate(params: ConnectSessionReauthenticateParams): SessionReauthenticateResponse =
@@ -58,18 +58,18 @@ interface SessionService {
 
         /**
          * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the same as
-         * [SessionService.new_].
+         * [SessionService.connect].
          */
         @MustBeClosed
-        fun new_(params: ConnectSessionNewParams): HttpResponseFor<SessionNewResponse> =
-            new_(params, RequestOptions.none())
+        fun connect(params: ConnectSessionConnectParams): HttpResponseFor<SessionConnectResponse> =
+            connect(params, RequestOptions.none())
 
-        /** @see new_ */
+        /** @see connect */
         @MustBeClosed
-        fun new_(
-            params: ConnectSessionNewParams,
+        fun connect(
+            params: ConnectSessionConnectParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<SessionNewResponse>
+        ): HttpResponseFor<SessionConnectResponse>
 
         /**
          * Returns a raw HTTP response for `post /connect/sessions/reauthenticate`, but is otherwise

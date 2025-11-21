@@ -4,7 +4,7 @@ package com.tryfinch.api.services.async.connect
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
-import com.tryfinch.api.models.ConnectSessionNewParams
+import com.tryfinch.api.models.ConnectSessionConnectParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -15,7 +15,7 @@ internal class SessionServiceAsyncTest {
 
     @Disabled("prism tests are broken")
     @Test
-    fun new_() {
+    fun connect() {
         val client =
             FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
@@ -24,22 +24,22 @@ internal class SessionServiceAsyncTest {
         val sessionServiceAsync = client.connect().sessions()
 
         val responseFuture =
-            sessionServiceAsync.new_(
-                ConnectSessionNewParams.builder()
+            sessionServiceAsync.connect(
+                ConnectSessionConnectParams.builder()
                     .customerId("x")
                     .customerName("x")
-                    .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
+                    .addProduct(ConnectSessionConnectParams.ConnectProducts.BENEFITS)
                     .customerEmail("dev@stainless.com")
                     .integration(
-                        ConnectSessionNewParams.Integration.builder()
+                        ConnectSessionConnectParams.Integration.builder()
                             .provider("provider")
-                            .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
+                            .authMethod(ConnectSessionConnectParams.Integration.AuthMethod.ASSISTED)
                             .build()
                     )
                     .manual(true)
                     .minutesToExpire(1.0)
                     .redirectUri("redirect_uri")
-                    .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
+                    .sandbox(ConnectSessionConnectParams.Sandbox.FINCH)
                     .build()
             )
 

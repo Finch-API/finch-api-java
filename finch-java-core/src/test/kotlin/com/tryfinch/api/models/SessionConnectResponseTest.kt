@@ -7,35 +7,35 @@ import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class SessionNewResponseTest {
+internal class SessionConnectResponseTest {
 
     @Test
     fun create() {
-        val sessionNewResponse =
-            SessionNewResponse.builder()
+        val sessionConnectResponse =
+            SessionConnectResponse.builder()
                 .connectUrl("https://example.com")
                 .sessionId("session_id")
                 .build()
 
-        assertThat(sessionNewResponse.connectUrl()).isEqualTo("https://example.com")
-        assertThat(sessionNewResponse.sessionId()).isEqualTo("session_id")
+        assertThat(sessionConnectResponse.connectUrl()).isEqualTo("https://example.com")
+        assertThat(sessionConnectResponse.sessionId()).isEqualTo("session_id")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val sessionNewResponse =
-            SessionNewResponse.builder()
+        val sessionConnectResponse =
+            SessionConnectResponse.builder()
                 .connectUrl("https://example.com")
                 .sessionId("session_id")
                 .build()
 
-        val roundtrippedSessionNewResponse =
+        val roundtrippedSessionConnectResponse =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(sessionNewResponse),
-                jacksonTypeRef<SessionNewResponse>(),
+                jsonMapper.writeValueAsString(sessionConnectResponse),
+                jacksonTypeRef<SessionConnectResponse>(),
             )
 
-        assertThat(roundtrippedSessionNewResponse).isEqualTo(sessionNewResponse)
+        assertThat(roundtrippedSessionConnectResponse).isEqualTo(sessionConnectResponse)
     }
 }

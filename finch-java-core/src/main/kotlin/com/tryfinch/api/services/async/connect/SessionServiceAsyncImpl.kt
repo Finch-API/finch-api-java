@@ -15,9 +15,9 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.models.ConnectSessionNewParams
+import com.tryfinch.api.models.ConnectSessionConnectParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
-import com.tryfinch.api.models.SessionNewResponse
+import com.tryfinch.api.models.SessionConnectResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
@@ -34,12 +34,12 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SessionServiceAsync =
         SessionServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun new_(
-        params: ConnectSessionNewParams,
+    override fun connect(
+        params: ConnectSessionConnectParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<SessionNewResponse> =
+    ): CompletableFuture<SessionConnectResponse> =
         // post /connect/sessions
-        withRawResponse().new_(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().connect(params, requestOptions).thenApply { it.parse() }
 
     override fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
@@ -61,13 +61,13 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val newHandler: Handler<SessionNewResponse> =
-            jsonHandler<SessionNewResponse>(clientOptions.jsonMapper)
+        private val connectHandler: Handler<SessionConnectResponse> =
+            jsonHandler<SessionConnectResponse>(clientOptions.jsonMapper)
 
-        override fun new_(
-            params: ConnectSessionNewParams,
+        override fun connect(
+            params: ConnectSessionConnectParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<SessionNewResponse>> {
+        ): CompletableFuture<HttpResponseFor<SessionConnectResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -82,7 +82,7 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { newHandler.handle(it) }
+                            .use { connectHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
