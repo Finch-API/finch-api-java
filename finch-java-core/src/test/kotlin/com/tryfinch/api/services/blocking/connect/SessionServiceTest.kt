@@ -4,7 +4,7 @@ package com.tryfinch.api.services.blocking.connect
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.ConnectSessionConnectParams
+import com.tryfinch.api.models.ConnectSessionNewParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -15,7 +15,7 @@ internal class SessionServiceTest {
 
     @Disabled("prism tests are broken")
     @Test
-    fun connect() {
+    fun new_() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
@@ -24,22 +24,22 @@ internal class SessionServiceTest {
         val sessionService = client.connect().sessions()
 
         val response =
-            sessionService.connect(
-                ConnectSessionConnectParams.builder()
+            sessionService.new_(
+                ConnectSessionNewParams.builder()
                     .customerId("x")
                     .customerName("x")
-                    .addProduct(ConnectSessionConnectParams.ConnectProducts.BENEFITS)
+                    .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
                     .customerEmail("dev@stainless.com")
                     .integration(
-                        ConnectSessionConnectParams.Integration.builder()
+                        ConnectSessionNewParams.Integration.builder()
                             .provider("provider")
-                            .authMethod(ConnectSessionConnectParams.Integration.AuthMethod.ASSISTED)
+                            .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                             .build()
                     )
                     .manual(true)
                     .minutesToExpire(1.0)
                     .redirectUri("redirect_uri")
-                    .sandbox(ConnectSessionConnectParams.Sandbox.FINCH)
+                    .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                     .build()
             )
 

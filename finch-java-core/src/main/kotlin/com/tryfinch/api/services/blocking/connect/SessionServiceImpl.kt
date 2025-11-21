@@ -15,9 +15,9 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
-import com.tryfinch.api.models.ConnectSessionConnectParams
+import com.tryfinch.api.models.ConnectSessionNewParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
-import com.tryfinch.api.models.SessionConnectResponse
+import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 import java.util.function.Consumer
 
@@ -33,12 +33,12 @@ class SessionServiceImpl internal constructor(private val clientOptions: ClientO
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SessionService =
         SessionServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun connect(
-        params: ConnectSessionConnectParams,
+    override fun new_(
+        params: ConnectSessionNewParams,
         requestOptions: RequestOptions,
-    ): SessionConnectResponse =
+    ): SessionNewResponse =
         // post /connect/sessions
-        withRawResponse().connect(params, requestOptions).parse()
+        withRawResponse().new_(params, requestOptions).parse()
 
     override fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
@@ -60,13 +60,13 @@ class SessionServiceImpl internal constructor(private val clientOptions: ClientO
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val connectHandler: Handler<SessionConnectResponse> =
-            jsonHandler<SessionConnectResponse>(clientOptions.jsonMapper)
+        private val newHandler: Handler<SessionNewResponse> =
+            jsonHandler<SessionNewResponse>(clientOptions.jsonMapper)
 
-        override fun connect(
-            params: ConnectSessionConnectParams,
+        override fun new_(
+            params: ConnectSessionNewParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<SessionConnectResponse> {
+        ): HttpResponseFor<SessionNewResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -79,7 +79,7 @@ class SessionServiceImpl internal constructor(private val clientOptions: ClientO
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use { connectHandler.handle(it) }
+                    .use { newHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

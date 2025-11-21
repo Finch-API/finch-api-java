@@ -5,9 +5,9 @@ package com.tryfinch.api.services.async.connect
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
-import com.tryfinch.api.models.ConnectSessionConnectParams
+import com.tryfinch.api.models.ConnectSessionNewParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
-import com.tryfinch.api.models.SessionConnectResponse
+import com.tryfinch.api.models.SessionNewResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
@@ -27,14 +27,14 @@ interface SessionServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): SessionServiceAsync
 
     /** Create a new connect session for an employer */
-    fun connect(params: ConnectSessionConnectParams): CompletableFuture<SessionConnectResponse> =
-        connect(params, RequestOptions.none())
+    fun new_(params: ConnectSessionNewParams): CompletableFuture<SessionNewResponse> =
+        new_(params, RequestOptions.none())
 
-    /** @see connect */
-    fun connect(
-        params: ConnectSessionConnectParams,
+    /** @see new_ */
+    fun new_(
+        params: ConnectSessionNewParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<SessionConnectResponse>
+    ): CompletableFuture<SessionNewResponse>
 
     /** Create a new Connect session for reauthenticating an existing connection */
     fun reauthenticate(
@@ -64,18 +64,18 @@ interface SessionServiceAsync {
 
         /**
          * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the same as
-         * [SessionServiceAsync.connect].
+         * [SessionServiceAsync.new_].
          */
-        fun connect(
-            params: ConnectSessionConnectParams
-        ): CompletableFuture<HttpResponseFor<SessionConnectResponse>> =
-            connect(params, RequestOptions.none())
+        fun new_(
+            params: ConnectSessionNewParams
+        ): CompletableFuture<HttpResponseFor<SessionNewResponse>> =
+            new_(params, RequestOptions.none())
 
-        /** @see connect */
-        fun connect(
-            params: ConnectSessionConnectParams,
+        /** @see new_ */
+        fun new_(
+            params: ConnectSessionNewParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<SessionConnectResponse>>
+        ): CompletableFuture<HttpResponseFor<SessionNewResponse>>
 
         /**
          * Returns a raw HTTP response for `post /connect/sessions/reauthenticate`, but is otherwise
