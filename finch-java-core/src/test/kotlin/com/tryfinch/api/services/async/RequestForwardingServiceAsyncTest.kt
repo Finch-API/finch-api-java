@@ -27,13 +27,13 @@ internal class RequestForwardingServiceAsyncTest {
                     .method("method")
                     .route("route")
                     .data("data")
-                    .headers(
-                        RequestForwardingForwardParams.Headers.builder()
+                    .params(
+                        RequestForwardingForwardParams.Params.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
-                    .params(
-                        RequestForwardingForwardParams.Params.builder()
+                    .requestHeaders(
+                        RequestForwardingForwardParams.RequestHeaders.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
