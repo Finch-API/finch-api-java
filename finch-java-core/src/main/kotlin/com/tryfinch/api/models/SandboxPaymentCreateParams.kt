@@ -1547,6 +1547,8 @@ private constructor(
             fun amount(): Optional<Long> = amount.getOptional("amount")
 
             /**
+             * The deduction name. Required when type is specified.
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
@@ -1641,6 +1643,7 @@ private constructor(
                  */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
+                /** The deduction name. Required when type is specified. */
                 fun name(name: String) = name(JsonField.of(name))
 
                 /**
@@ -2024,6 +2027,8 @@ private constructor(
             fun amount(): Optional<Long> = amount.getOptional("amount")
 
             /**
+             * The contribution name. Required when type is specified.
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
@@ -2103,6 +2108,7 @@ private constructor(
                  */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
+                /** The contribution name. Required when type is specified. */
                 fun name(name: String) = name(JsonField.of(name))
 
                 /**
