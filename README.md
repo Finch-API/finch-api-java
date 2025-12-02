@@ -348,13 +348,13 @@ The SDK uses the standard [OkHttp logging interceptor](https://github.com/square
 Enable logging by setting the `FINCH_LOG` environment variable to `info`:
 
 ```sh
-$ export FINCH_LOG=info
+export FINCH_LOG=info
 ```
 
 Or to `debug` for more verbose logging:
 
 ```sh
-$ export FINCH_LOG=debug
+export FINCH_LOG=debug
 ```
 
 ## Webhook Verification
