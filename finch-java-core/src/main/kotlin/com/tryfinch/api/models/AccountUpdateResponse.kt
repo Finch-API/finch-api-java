@@ -17,7 +17,6 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
-import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class AccountUpdateResponse
@@ -26,9 +25,10 @@ private constructor(
     private val accountId: JsonField<String>,
     private val authenticationType: JsonField<AuthenticationType>,
     private val companyId: JsonField<String>,
+    private val connectionId: JsonField<String>,
+    private val entityId: JsonField<String>,
     private val products: JsonField<List<String>>,
     private val providerId: JsonField<String>,
-    private val connectionId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -39,22 +39,24 @@ private constructor(
         @ExcludeMissing
         authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
         @JsonProperty("company_id") @ExcludeMissing companyId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        connectionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("entity_id") @ExcludeMissing entityId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("products")
         @ExcludeMissing
         products: JsonField<List<String>> = JsonMissing.of(),
         @JsonProperty("provider_id")
         @ExcludeMissing
         providerId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("connection_id")
-        @ExcludeMissing
-        connectionId: JsonField<String> = JsonMissing.of(),
     ) : this(
         accountId,
         authenticationType,
         companyId,
+        connectionId,
+        entityId,
         products,
         providerId,
-        connectionId,
         mutableMapOf(),
     )
 
@@ -82,6 +84,22 @@ private constructor(
     @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     /**
+     * The ID of the new connection
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun connectionId(): String = connectionId.getRequired("connection_id")
+
+    /**
+     * The ID of the entity whose status was updated
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun entityId(): String = entityId.getRequired("entity_id")
+
+    /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -94,14 +112,6 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun providerId(): String = providerId.getRequired("provider_id")
-
-    /**
-     * The ID of the new connection
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun connectionId(): Optional<String> = connectionId.getOptional("connection_id")
 
     /**
      * Returns the raw JSON value of [accountId].
@@ -134,6 +144,22 @@ private constructor(
     fun _companyId(): JsonField<String> = companyId
 
     /**
+     * Returns the raw JSON value of [connectionId].
+     *
+     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    fun _connectionId(): JsonField<String> = connectionId
+
+    /**
+     * Returns the raw JSON value of [entityId].
+     *
+     * Unlike [entityId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("entity_id") @ExcludeMissing fun _entityId(): JsonField<String> = entityId
+
+    /**
      * Returns the raw JSON value of [products].
      *
      * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
@@ -146,15 +172,6 @@ private constructor(
      * Unlike [providerId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("provider_id") @ExcludeMissing fun _providerId(): JsonField<String> = providerId
-
-    /**
-     * Returns the raw JSON value of [connectionId].
-     *
-     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    fun _connectionId(): JsonField<String> = connectionId
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -178,6 +195,8 @@ private constructor(
          * .accountId()
          * .authenticationType()
          * .companyId()
+         * .connectionId()
+         * .entityId()
          * .products()
          * .providerId()
          * ```
@@ -191,9 +210,10 @@ private constructor(
         private var accountId: JsonField<String>? = null
         private var authenticationType: JsonField<AuthenticationType>? = null
         private var companyId: JsonField<String>? = null
+        private var connectionId: JsonField<String>? = null
+        private var entityId: JsonField<String>? = null
         private var products: JsonField<MutableList<String>>? = null
         private var providerId: JsonField<String>? = null
-        private var connectionId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -201,9 +221,10 @@ private constructor(
             accountId = accountUpdateResponse.accountId
             authenticationType = accountUpdateResponse.authenticationType
             companyId = accountUpdateResponse.companyId
+            connectionId = accountUpdateResponse.connectionId
+            entityId = accountUpdateResponse.entityId
             products = accountUpdateResponse.products.map { it.toMutableList() }
             providerId = accountUpdateResponse.providerId
-            connectionId = accountUpdateResponse.connectionId
             additionalProperties = accountUpdateResponse.additionalProperties.toMutableMap()
         }
 
@@ -249,6 +270,31 @@ private constructor(
         @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
+        /** The ID of the new connection */
+        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+
+        /**
+         * Sets [Builder.connectionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            this.connectionId = connectionId
+        }
+
+        /** The ID of the entity whose status was updated */
+        fun entityId(entityId: String) = entityId(JsonField.of(entityId))
+
+        /**
+         * Sets [Builder.entityId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.entityId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun entityId(entityId: JsonField<String>) = apply { this.entityId = entityId }
+
         fun products(products: List<String>) = products(JsonField.of(products))
 
         /**
@@ -286,20 +332,6 @@ private constructor(
          */
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
 
-        /** The ID of the new connection */
-        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
-
-        /**
-         * Sets [Builder.connectionId] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun connectionId(connectionId: JsonField<String>) = apply {
-            this.connectionId = connectionId
-        }
-
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -329,6 +361,8 @@ private constructor(
          * .accountId()
          * .authenticationType()
          * .companyId()
+         * .connectionId()
+         * .entityId()
          * .products()
          * .providerId()
          * ```
@@ -340,9 +374,10 @@ private constructor(
                 checkRequired("accountId", accountId),
                 checkRequired("authenticationType", authenticationType),
                 checkRequired("companyId", companyId),
+                checkRequired("connectionId", connectionId),
+                checkRequired("entityId", entityId),
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
-                connectionId,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -357,9 +392,10 @@ private constructor(
         accountId()
         authenticationType().validate()
         companyId()
+        connectionId()
+        entityId()
         products()
         providerId()
-        connectionId()
         validated = true
     }
 
@@ -381,9 +417,10 @@ private constructor(
         (if (accountId.asKnown().isPresent) 1 else 0) +
             (authenticationType.asKnown().getOrNull()?.validity() ?: 0) +
             (if (companyId.asKnown().isPresent) 1 else 0) +
+            (if (connectionId.asKnown().isPresent) 1 else 0) +
+            (if (entityId.asKnown().isPresent) 1 else 0) +
             (products.asKnown().getOrNull()?.size ?: 0) +
-            (if (providerId.asKnown().isPresent) 1 else 0) +
-            (if (connectionId.asKnown().isPresent) 1 else 0)
+            (if (providerId.asKnown().isPresent) 1 else 0)
 
     class AuthenticationType
     @JsonCreator
@@ -535,9 +572,10 @@ private constructor(
             accountId == other.accountId &&
             authenticationType == other.authenticationType &&
             companyId == other.companyId &&
+            connectionId == other.connectionId &&
+            entityId == other.entityId &&
             products == other.products &&
             providerId == other.providerId &&
-            connectionId == other.connectionId &&
             additionalProperties == other.additionalProperties
     }
 
@@ -546,9 +584,10 @@ private constructor(
             accountId,
             authenticationType,
             companyId,
+            connectionId,
+            entityId,
             products,
             providerId,
-            connectionId,
             additionalProperties,
         )
     }
@@ -556,5 +595,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "AccountUpdateResponse{accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, products=$products, providerId=$providerId, connectionId=$connectionId, additionalProperties=$additionalProperties}"
+        "AccountUpdateResponse{accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, connectionId=$connectionId, entityId=$entityId, products=$products, providerId=$providerId, additionalProperties=$additionalProperties}"
 }

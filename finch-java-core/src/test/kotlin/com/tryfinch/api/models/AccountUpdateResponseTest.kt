@@ -16,9 +16,10 @@ internal class AccountUpdateResponseTest {
                 .accountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .authenticationType(AccountUpdateResponse.AuthenticationType.CREDENTIAL)
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .entityId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addProduct("string")
                 .providerId("provider_id")
-                .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         assertThat(accountUpdateResponse.accountId())
@@ -27,10 +28,12 @@ internal class AccountUpdateResponseTest {
             .isEqualTo(AccountUpdateResponse.AuthenticationType.CREDENTIAL)
         assertThat(accountUpdateResponse.companyId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(accountUpdateResponse.connectionId())
+            .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(accountUpdateResponse.entityId())
+            .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(accountUpdateResponse.products()).containsExactly("string")
         assertThat(accountUpdateResponse.providerId()).isEqualTo("provider_id")
-        assertThat(accountUpdateResponse.connectionId())
-            .contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 
     @Test
@@ -41,9 +44,10 @@ internal class AccountUpdateResponseTest {
                 .accountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .authenticationType(AccountUpdateResponse.AuthenticationType.CREDENTIAL)
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .entityId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addProduct("string")
                 .providerId("provider_id")
-                .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         val roundtrippedAccountUpdateResponse =
