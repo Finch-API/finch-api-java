@@ -10,10 +10,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon List all rules of a connection account.
- */
+/** List all rules of a connection account. */
 class HrisCompanyPayStatementItemRuleListParams
 private constructor(
     private val entityIds: List<String>?,

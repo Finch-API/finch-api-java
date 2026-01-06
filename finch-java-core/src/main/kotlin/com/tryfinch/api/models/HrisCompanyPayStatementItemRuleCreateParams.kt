@@ -23,11 +23,9 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon Custom rules can be created to associate specific attributes to pay
- * statement items depending on the use case. For example, pay statement items that meet certain
- * conditions can be labeled as a pre-tax 401k. This metadata can be retrieved where pay statement
- * item information is available.
+ * Custom rules can be created to associate specific attributes to pay statement items depending on
+ * the use case. For example, pay statement items that meet certain conditions can be labeled as a
+ * pre-tax 401k. This metadata can be retrieved where pay statement item information is available.
  */
 class HrisCompanyPayStatementItemRuleCreateParams
 private constructor(

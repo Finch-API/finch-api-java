@@ -15,11 +15,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon Retrieve a list of detailed pay statement items for the access token's
- * connection account.
- */
+/** Retrieve a list of detailed pay statement items for the access token's connection account. */
 class HrisCompanyPayStatementItemListParams
 private constructor(
     private val categories: List<Category>?,

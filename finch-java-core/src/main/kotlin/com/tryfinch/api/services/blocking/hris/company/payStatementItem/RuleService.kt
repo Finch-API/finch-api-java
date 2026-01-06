@@ -31,11 +31,10 @@ interface RuleService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuleService
 
     /**
-     * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
-     * support will be added soon Custom rules can be created to associate specific attributes to
-     * pay statement items depending on the use case. For example, pay statement items that meet
-     * certain conditions can be labeled as a pre-tax 401k. This metadata can be retrieved where pay
-     * statement item information is available.
+     * Custom rules can be created to associate specific attributes to pay statement items depending
+     * on the use case. For example, pay statement items that meet certain conditions can be labeled
+     * as a pre-tax 401k. This metadata can be retrieved where pay statement item information is
+     * available.
      */
     fun create(): RuleCreateResponse = create(HrisCompanyPayStatementItemRuleCreateParams.none())
 
@@ -56,10 +55,7 @@ interface RuleService {
     fun create(requestOptions: RequestOptions): RuleCreateResponse =
         create(HrisCompanyPayStatementItemRuleCreateParams.none(), requestOptions)
 
-    /**
-     * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
-     * support will be added soon Update a rule for a pay statement item.
-     */
+    /** Update a rule for a pay statement item. */
     fun update(ruleId: String): RuleUpdateResponse =
         update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none())
 
@@ -92,10 +88,7 @@ interface RuleService {
     fun update(ruleId: String, requestOptions: RequestOptions): RuleUpdateResponse =
         update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none(), requestOptions)
 
-    /**
-     * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
-     * support will be added soon List all rules of a connection account.
-     */
+    /** List all rules of a connection account. */
     fun list(): HrisCompanyPayStatementItemRuleListPage =
         list(HrisCompanyPayStatementItemRuleListParams.none())
 
@@ -116,10 +109,7 @@ interface RuleService {
     fun list(requestOptions: RequestOptions): HrisCompanyPayStatementItemRuleListPage =
         list(HrisCompanyPayStatementItemRuleListParams.none(), requestOptions)
 
-    /**
-     * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
-     * support will be added soon Delete a rule for a pay statement item.
-     */
+    /** Delete a rule for a pay statement item. */
     fun delete(ruleId: String): RuleDeleteResponse =
         delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none())
 

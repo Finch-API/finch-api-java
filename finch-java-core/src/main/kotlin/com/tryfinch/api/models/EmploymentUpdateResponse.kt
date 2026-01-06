@@ -144,8 +144,7 @@ private constructor(
     fun employment(): Optional<Employment> = employment.getOptional("employment")
 
     /**
-     * The detailed employment status of the individual. Available options: `active`, `deceased`,
-     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+     * The detailed employment status of the individual.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -554,10 +553,7 @@ private constructor(
          */
         fun employment(employment: JsonField<Employment>) = apply { this.employment = employment }
 
-        /**
-         * The detailed employment status of the individual. Available options: `active`,
-         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
-         */
+        /** The detailed employment status of the individual. */
         fun employmentStatus(employmentStatus: EmploymentStatus?) =
             employmentStatus(JsonField.ofNullable(employmentStatus))
 
@@ -1674,10 +1670,7 @@ private constructor(
             "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    /**
-     * The detailed employment status of the individual. Available options: `active`, `deceased`,
-     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
-     */
+    /** The detailed employment status of the individual. */
     class EmploymentStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 

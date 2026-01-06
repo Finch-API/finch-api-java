@@ -25,8 +25,8 @@ interface ManualService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): ManualService
 
     /**
-     * Get a manual job by `job_id`. Manual jobs are completed by a human and include Assisted
-     * Benefits jobs.
+     * Check the status and outcome of a job by `job_id`. This includes all deductions jobs
+     * including those for both automated and assisted integrations.
      */
     fun retrieve(jobId: String): ManualAsyncJob = retrieve(jobId, JobManualRetrieveParams.none())
 
