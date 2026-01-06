@@ -22,10 +22,16 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+    /**
+     * The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. Filters
+     * payments by their **pay_date** field.
+     */
     fun endDate(): LocalDate = endDate
 
-    /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+    /**
+     * The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. Filters
+     * payments by their **pay_date** field.
+     */
     fun startDate(): LocalDate = startDate
 
     /** The entity IDs to specify which entities' data to access. */
@@ -71,10 +77,16 @@ private constructor(
             additionalQueryParams = hrisPaymentListParams.additionalQueryParams.toBuilder()
         }
 
-        /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+        /**
+         * The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format.
+         * Filters payments by their **pay_date** field.
+         */
         fun endDate(endDate: LocalDate) = apply { this.endDate = endDate }
 
-        /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+        /**
+         * The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format.
+         * Filters payments by their **pay_date** field.
+         */
         fun startDate(startDate: LocalDate) = apply { this.startDate = startDate }
 
         /** The entity IDs to specify which entities' data to access. */
