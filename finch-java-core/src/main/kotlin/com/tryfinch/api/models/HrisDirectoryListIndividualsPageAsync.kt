@@ -46,9 +46,8 @@ private constructor(
         }
 
         val offset = paging().flatMap { it._offset().getOptional("offset") }.getOrDefault(0)
-        val totalCount =
-            paging().flatMap { it._count().getOptional("count") }.getOrDefault(Long.MAX_VALUE)
-        return offset + items().size < totalCount
+        val totalCount = paging().flatMap { it._count().getOptional("count") }.getOrNull()
+        return totalCount == null || offset + items().size < totalCount
     }
 
     fun nextPageParams(): HrisDirectoryListIndividualsParams {
