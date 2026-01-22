@@ -34,6 +34,12 @@ private constructor(
     /** The entity IDs to update the rule for. */
     fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```java
+     * MyClass myObject = hrisCompanyPayStatementItemRuleUpdateParams.optionalProperty().convert(MyClass.class);
+     * ```
+     */
     fun _optionalProperty(): JsonValue = body._optionalProperty()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -278,6 +284,12 @@ private constructor(
             optionalProperty: JsonValue = JsonMissing.of()
         ) : this(optionalProperty, mutableMapOf())
 
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```java
+         * MyClass myObject = updateRuleRequest.optionalProperty().convert(MyClass.class);
+         * ```
+         */
         @JsonProperty("optionalProperty")
         @ExcludeMissing
         fun _optionalProperty(): JsonValue = optionalProperty

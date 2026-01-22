@@ -1511,6 +1511,13 @@ private constructor(
              */
             fun name(): Optional<String> = name.getOptional("name")
 
+            /**
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```java
+             * MyClass myObject = customField.value().convert(MyClass.class);
+             * ```
+             */
             @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
 
             /**
