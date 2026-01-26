@@ -1,5 +1,94 @@
 # Changelog
 
+## 7.6.0 (2026-01-26)
+
+Full Changelog: [v7.5.2...v7.6.0](https://github.com/Finch-API/finch-api-java/compare/v7.5.2...v7.6.0)
+
+### Features
+
+* **api:** add per endpoint security ([5fafaa5](https://github.com/Finch-API/finch-api-java/commit/5fafaa534db2efd6ce6bb614f42686f3eb734290))
+* **api:** api update ([d114bf8](https://github.com/Finch-API/finch-api-java/commit/d114bf8b2a9f7d1ca4d7678b3f84d4415f6de250))
+* **api:** api update ([583f215](https://github.com/Finch-API/finch-api-java/commit/583f2157c9ba12c8fb2a4d3357e304a761d80d29))
+* **api:** api update ([56c238b](https://github.com/Finch-API/finch-api-java/commit/56c238bc6f032873b09194c07a80fc7becaa2d19))
+* **api:** api update ([c9a39db](https://github.com/Finch-API/finch-api-java/commit/c9a39dbf2bf942f09842523e2030a5fc3b4479c2))
+* **api:** api update ([e963bfe](https://github.com/Finch-API/finch-api-java/commit/e963bfe49943b1627350bb453aa5e365b6a4e403))
+* **api:** api update ([2814404](https://github.com/Finch-API/finch-api-java/commit/28144046563bb50e4cbcdfad70433e966cf40ac7))
+* **api:** api update ([f60dbd4](https://github.com/Finch-API/finch-api-java/commit/f60dbd4306fab2c6493196679ff8be9fd0f8d008))
+* **api:** api update ([f1ef890](https://github.com/Finch-API/finch-api-java/commit/f1ef890b1ead7d30f4ffb592892623f957d0a03e))
+* **api:** api update ([24c0b05](https://github.com/Finch-API/finch-api-java/commit/24c0b059c00f8b0908d66301245164eaee278b7a))
+* **api:** api update ([fbab0ba](https://github.com/Finch-API/finch-api-java/commit/fbab0ba5eed5e7f3c75c3c7785ab41b7acb55f19))
+* **api:** api update ([3a26e4f](https://github.com/Finch-API/finch-api-java/commit/3a26e4f96315303b48f0775e781d760b50d85929))
+* **api:** api update ([5c9fec8](https://github.com/Finch-API/finch-api-java/commit/5c9fec8ead298e28ee3a90309f61a734daa7ed4b))
+* **api:** api update ([bc19956](https://github.com/Finch-API/finch-api-java/commit/bc19956c16b1e6fa5f0f37dfee22194da07bede6))
+* **api:** api update ([19b774e](https://github.com/Finch-API/finch-api-java/commit/19b774ef845581fa543a5e9d7c540e7d58132c95))
+* **api:** api update ([7eff3c6](https://github.com/Finch-API/finch-api-java/commit/7eff3c601e747085742c4560c9e333de4e245dfd))
+* **api:** api update ([3503998](https://github.com/Finch-API/finch-api-java/commit/3503998e2b446f9286f5c28a79e62569325898d0))
+* **api:** api update ([ea749ed](https://github.com/Finch-API/finch-api-java/commit/ea749ede27636c78c8de471f0941a0d4fb4dec02))
+* **api:** api update ([84344df](https://github.com/Finch-API/finch-api-java/commit/84344df511feb9ed95c9736b81514cc4a02e6951))
+* **api:** make client id, client secret optional again ([93b2777](https://github.com/Finch-API/finch-api-java/commit/93b27774e3140495ae3feddbc855758049d52fd2))
+* **api:** manual updates ([4c8cbc7](https://github.com/Finch-API/finch-api-java/commit/4c8cbc73eed77c2e20e0c2d395ce7499bca43b04))
+* **api:** update automated code reviewer selection ([76becaa](https://github.com/Finch-API/finch-api-java/commit/76becaa877296f48c0831fcf0d21875abcb1a44d))
+* **client:** add `HttpRequest#url()` method ([b43ba30](https://github.com/Finch-API/finch-api-java/commit/b43ba309b4d56aec597de5108bea5465fceb923b))
+* **client:** add convenience overloads for some methods ([28a1baf](https://github.com/Finch-API/finch-api-java/commit/28a1bafa09a4b893f15e9dc967a2df42383105bb))
+* **client:** allow configuring dispatcher executor service ([0689bb4](https://github.com/Finch-API/finch-api-java/commit/0689bb4a10bb168576d848f33233545dbc7156f8))
+* **client:** expose sleeper option ([5f4376b](https://github.com/Finch-API/finch-api-java/commit/5f4376b1db5e14b1fcd2b8f4e98bd266f292dae5))
+* **client:** send `X-Stainless-Kotlin-Version` header ([20e5c53](https://github.com/Finch-API/finch-api-java/commit/20e5c536aa140d08151c39b9572c374642565228))
+
+
+### Bug Fixes
+
+* **ci:** use java-version 21 for publish step ([46d1d62](https://github.com/Finch-API/finch-api-java/commit/46d1d624faf831e418279de54d5e4bc4d71bf85d))
+* **client:** add missing additional properties fields ([2398373](https://github.com/Finch-API/finch-api-java/commit/2398373823e712d63e0283390c90374f82023af3))
+* **client:** cancel okhttp call when future cancelled ([86a5dc5](https://github.com/Finch-API/finch-api-java/commit/86a5dc52967c68f4b4d856973e4d5953d76f4af8))
+* **client:** deserialization of empty objects ([592591e](https://github.com/Finch-API/finch-api-java/commit/592591e6a48cb3881e9d0588da88786057cdb6e2))
+* **client:** disallow coercion from float to int ([2d0273c](https://github.com/Finch-API/finch-api-java/commit/2d0273c3989c811ac16b27abae0de81f2dceb1db))
+* **client:** ensure single timer is created per client ([5f4376b](https://github.com/Finch-API/finch-api-java/commit/5f4376b1db5e14b1fcd2b8f4e98bd266f292dae5))
+* **client:** fully respect max retries ([94750f2](https://github.com/Finch-API/finch-api-java/commit/94750f288e550ecd8368a725ac1a4e106b05c3b3))
+* **client:** incorrect `getPackageVersion` impl ([8d2117e](https://github.com/Finch-API/finch-api-java/commit/8d2117e480463deccd487d13b4cde83a1ce7b5a4))
+* **client:** multi-value header serialization ([0fb6659](https://github.com/Finch-API/finch-api-java/commit/0fb6659cae5838c594a8892906244a607a3a7715))
+* **client:** preserve time zone in lenient date-time parsing ([30f0600](https://github.com/Finch-API/finch-api-java/commit/30f06008fdbb0a31227177d9903414ff6df83250))
+* **client:** send retry count header for max retries 0 ([94750f2](https://github.com/Finch-API/finch-api-java/commit/94750f288e550ecd8368a725ac1a4e106b05c3b3))
+* date time deserialization leniency ([fcc607b](https://github.com/Finch-API/finch-api-java/commit/fcc607ba9e5c963c75d4ac5f89c8f994e37afdec))
+* fix casing issue ([9d4c016](https://github.com/Finch-API/finch-api-java/commit/9d4c016c75f6c368c9f22cb5be97f57c795d06a8))
+* **java:** Resolve name collisions ([63229b5](https://github.com/Finch-API/finch-api-java/commit/63229b5783848125d03187e0b37dc61cc0cf0c79))
+* **tests:** skip broken date validation test ([bb45176](https://github.com/Finch-API/finch-api-java/commit/bb451762c67f56c1c9622ec83b936d931c41adea))
+* update singularization rules ([6bef352](https://github.com/Finch-API/finch-api-java/commit/6bef35297e00b64fe43687658a463b01cb471dec))
+
+
+### Chores
+
+* **ci:** reduce log noise ([b8708e5](https://github.com/Finch-API/finch-api-java/commit/b8708e571a3ccf49f5e3f7ed65de412c32d6b106))
+* **ci:** upgrade `actions/github-script` ([1813964](https://github.com/Finch-API/finch-api-java/commit/1813964b2614d1ad2d1d5cde621c24f69599afad))
+* **ci:** upgrade `actions/setup-java` ([7a3233e](https://github.com/Finch-API/finch-api-java/commit/7a3233eb16aba07614b96b7d05c23335d460209c))
+* improve formatter performance ([fd24e7b](https://github.com/Finch-API/finch-api-java/commit/fd24e7b9636dd0b4eb8c9a413c889895c77644ab))
+* **internal:** change some comment formatting ([d3b4941](https://github.com/Finch-API/finch-api-java/commit/d3b4941c3d620b181902d447e7be83d37dff2612))
+* **internal:** clean up maven repo artifact script and add html documentation to repo root ([eaa7933](https://github.com/Finch-API/finch-api-java/commit/eaa793399dfdc649b9ec6b4fa05594b93310cd41))
+* **internal:** codegen related update ([67b9eae](https://github.com/Finch-API/finch-api-java/commit/67b9eaef0fc3df1889daf266a546a1f570f3fb06))
+* **internal:** codegen related update ([925032e](https://github.com/Finch-API/finch-api-java/commit/925032e6b2a86225914d17179124fa4247ad36e0))
+* **internal:** codegen related update ([62d8e8f](https://github.com/Finch-API/finch-api-java/commit/62d8e8f8209010ff526937ffd9192e62079793ed))
+* **internal:** codegen related update ([db5d4c4](https://github.com/Finch-API/finch-api-java/commit/db5d4c44ee1b70ae81f0e42efb61f6f4fc8529db))
+* **internal:** correct cache invalidation for `SKIP_MOCK_TESTS` ([58f8c23](https://github.com/Finch-API/finch-api-java/commit/58f8c233b4e9ac4841f2af66db47fad5e88f67a1))
+* **internal:** depend on packages directly in example ([94750f2](https://github.com/Finch-API/finch-api-java/commit/94750f288e550ecd8368a725ac1a4e106b05c3b3))
+* **internal:** improve maven repo docs ([baeae07](https://github.com/Finch-API/finch-api-java/commit/baeae07eebcd08d98ff4acac2aa8cffb004c22b5))
+* **internal:** support uploading Maven repo artifacts to stainless package server ([9873736](https://github.com/Finch-API/finch-api-java/commit/9873736e0a83ab0b004d59e2f0c9865c5789c145))
+* **internal:** update `actions/checkout` version ([fa05bce](https://github.com/Finch-API/finch-api-java/commit/fa05bce0f3198fa3a78f2caa227b510696364589))
+* **internal:** update maven repo doc to include authentication ([c6606b8](https://github.com/Finch-API/finch-api-java/commit/c6606b83d0b6673b3d4d56519038d8c0a3e57be9))
+* **ownership:** move from data to platform team ([#558](https://github.com/Finch-API/finch-api-java/issues/558)) ([fcd08ea](https://github.com/Finch-API/finch-api-java/commit/fcd08ea7d032a3249b306b464aef92dfa0bd6b95))
+* remove memory upper bound from publishing step ([a118c48](https://github.com/Finch-API/finch-api-java/commit/a118c48200235a49f838a719f7484fbd1a6090d7))
+* test on Jackson 2.14.0 to avoid encountering FasterXML/jackson-databind[#3240](https://github.com/Finch-API/finch-api-java/issues/3240) in tests ([fcc607b](https://github.com/Finch-API/finch-api-java/commit/fcc607ba9e5c963c75d4ac5f89c8f994e37afdec))
+
+
+### Documentation
+
+* add comment for arbitrary value fields ([a1f83d6](https://github.com/Finch-API/finch-api-java/commit/a1f83d66c48ee7f1bc9f2c0fc70b3a3d52fec6ec))
+* prominently feature MCP server setup in root SDK readmes ([fce4bb1](https://github.com/Finch-API/finch-api-java/commit/fce4bb19c061af82790d425778d5a44ba069b15c))
+* remove `$` for better copy-pasteabality ([39ae10c](https://github.com/Finch-API/finch-api-java/commit/39ae10cac9281088b6ede4bd2106f205921b6f2e))
+
+
+### Refactors
+
+* **client:** handling of absent pagination total ([15b40fc](https://github.com/Finch-API/finch-api-java/commit/15b40fc2a69417b872dd376c93db67e68adc0478))
+
 ## 7.5.2 (2025-08-20)
 
 Full Changelog: [v7.5.1...v7.5.2](https://github.com/Finch-API/finch-api-java/compare/v7.5.1...v7.5.2)
