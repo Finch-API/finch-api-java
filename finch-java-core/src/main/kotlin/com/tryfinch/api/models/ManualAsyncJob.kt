@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ManualAsyncJob
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val body: JsonField<List<JsonValue?>>,
     private val jobId: JsonField<String>,

@@ -513,6 +513,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class CompanyWithoutId
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val accounts: JsonField<List<Account>>,
         private val departments: JsonField<List<Department?>>,
@@ -1059,6 +1060,7 @@ private constructor(
     }
 
     class Account
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val accountName: JsonField<String>,
         private val accountNumber: JsonField<String>,
@@ -1552,6 +1554,7 @@ private constructor(
     }
 
     class Department
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
         private val parent: JsonField<Parent>,
@@ -1716,6 +1719,7 @@ private constructor(
 
         /** The parent department, if present. */
         class Parent
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1882,6 +1886,7 @@ private constructor(
 
     /** The entity type object. */
     class Entity
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val subtype: JsonField<Subtype>,
         private val type: JsonField<Type>,

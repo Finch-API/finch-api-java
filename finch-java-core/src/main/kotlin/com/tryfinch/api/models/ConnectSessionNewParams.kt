@@ -26,42 +26,54 @@ import kotlin.jvm.optionals.getOrNull
 /** Create a new connect session for an employer */
 class ConnectSessionNewParams
 private constructor(
-    private val body: Body,
+    private val body: CreateConnectSessionRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /**
+     * Unique identifier for the customer
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun customerId(): String = body.customerId()
 
     /**
+     * Name of the customer
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun customerName(): String = body.customerName()
 
     /**
+     * The Finch products to request access to
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun products(): List<ConnectProducts> = body.products()
 
     /**
+     * Email address of the customer
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun customerEmail(): Optional<String> = body.customerEmail()
 
     /**
+     * Integration configuration for the connect session
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun integration(): Optional<Integration> = body.integration()
 
     /**
+     * Enable manual authentication mode
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -76,12 +88,16 @@ private constructor(
     fun minutesToExpire(): Optional<Double> = body.minutesToExpire()
 
     /**
+     * The URI to redirect to after the Connect flow is completed
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun redirectUri(): Optional<String> = body.redirectUri()
 
     /**
+     * Sandbox mode for testing
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -178,7 +194,8 @@ private constructor(
     /** A builder for [ConnectSessionNewParams]. */
     class Builder internal constructor() {
 
-        private var body: Body.Builder = Body.builder()
+        private var body: CreateConnectSessionRequest.Builder =
+            CreateConnectSessionRequest.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -201,8 +218,9 @@ private constructor(
          * - [integration]
          * - etc.
          */
-        fun body(body: Body) = apply { this.body = body.toBuilder() }
+        fun body(body: CreateConnectSessionRequest) = apply { this.body = body.toBuilder() }
 
+        /** Unique identifier for the customer */
         fun customerId(customerId: String) = apply { body.customerId(customerId) }
 
         /**
@@ -214,6 +232,7 @@ private constructor(
          */
         fun customerId(customerId: JsonField<String>) = apply { body.customerId(customerId) }
 
+        /** Name of the customer */
         fun customerName(customerName: String) = apply { body.customerName(customerName) }
 
         /**
@@ -227,6 +246,7 @@ private constructor(
             body.customerName(customerName)
         }
 
+        /** The Finch products to request access to */
         fun products(products: List<ConnectProducts>) = apply { body.products(products) }
 
         /**
@@ -245,6 +265,7 @@ private constructor(
          */
         fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
+        /** Email address of the customer */
         fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
 
         /** Alias for calling [Builder.customerEmail] with `customerEmail.orElse(null)`. */
@@ -262,6 +283,7 @@ private constructor(
             body.customerEmail(customerEmail)
         }
 
+        /** Integration configuration for the connect session */
         fun integration(integration: Integration?) = apply { body.integration(integration) }
 
         /** Alias for calling [Builder.integration] with `integration.orElse(null)`. */
@@ -278,6 +300,7 @@ private constructor(
             body.integration(integration)
         }
 
+        /** Enable manual authentication mode */
         fun manual(manual: Boolean?) = apply { body.manual(manual) }
 
         /**
@@ -327,6 +350,7 @@ private constructor(
             body.minutesToExpire(minutesToExpire)
         }
 
+        /** The URI to redirect to after the Connect flow is completed */
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
         /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
@@ -341,6 +365,7 @@ private constructor(
          */
         fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
+        /** Sandbox mode for testing */
         fun sandbox(sandbox: Sandbox?) = apply { body.sandbox(sandbox) }
 
         /** Alias for calling [Builder.sandbox] with `sandbox.orElse(null)`. */
@@ -493,13 +518,14 @@ private constructor(
             )
     }
 
-    fun _body(): Body = body
+    fun _body(): CreateConnectSessionRequest = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
-    class Body
+    class CreateConnectSessionRequest
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val customerId: JsonField<String>,
         private val customerName: JsonField<String>,
@@ -552,36 +578,48 @@ private constructor(
         )
 
         /**
+         * Unique identifier for the customer
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun customerId(): String = customerId.getRequired("customer_id")
 
         /**
+         * Name of the customer
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun customerName(): String = customerName.getRequired("customer_name")
 
         /**
+         * The Finch products to request access to
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun products(): List<ConnectProducts> = products.getRequired("products")
 
         /**
+         * Email address of the customer
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun customerEmail(): Optional<String> = customerEmail.getOptional("customer_email")
 
         /**
+         * Integration configuration for the connect session
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun integration(): Optional<Integration> = integration.getOptional("integration")
 
         /**
+         * Enable manual authentication mode
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -596,12 +634,16 @@ private constructor(
         fun minutesToExpire(): Optional<Double> = minutesToExpire.getOptional("minutes_to_expire")
 
         /**
+         * The URI to redirect to after the Connect flow is completed
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun redirectUri(): Optional<String> = redirectUri.getOptional("redirect_uri")
 
         /**
+         * Sandbox mode for testing
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -702,7 +744,8 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [Body].
+             * Returns a mutable builder for constructing an instance of
+             * [CreateConnectSessionRequest].
              *
              * The following fields are required:
              * ```java
@@ -714,7 +757,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [Body]. */
+        /** A builder for [CreateConnectSessionRequest]. */
         class Builder internal constructor() {
 
             private var customerId: JsonField<String>? = null
@@ -729,19 +772,21 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                customerId = body.customerId
-                customerName = body.customerName
-                products = body.products.map { it.toMutableList() }
-                customerEmail = body.customerEmail
-                integration = body.integration
-                manual = body.manual
-                minutesToExpire = body.minutesToExpire
-                redirectUri = body.redirectUri
-                sandbox = body.sandbox
-                additionalProperties = body.additionalProperties.toMutableMap()
+            internal fun from(createConnectSessionRequest: CreateConnectSessionRequest) = apply {
+                customerId = createConnectSessionRequest.customerId
+                customerName = createConnectSessionRequest.customerName
+                products = createConnectSessionRequest.products.map { it.toMutableList() }
+                customerEmail = createConnectSessionRequest.customerEmail
+                integration = createConnectSessionRequest.integration
+                manual = createConnectSessionRequest.manual
+                minutesToExpire = createConnectSessionRequest.minutesToExpire
+                redirectUri = createConnectSessionRequest.redirectUri
+                sandbox = createConnectSessionRequest.sandbox
+                additionalProperties =
+                    createConnectSessionRequest.additionalProperties.toMutableMap()
             }
 
+            /** Unique identifier for the customer */
             fun customerId(customerId: String) = customerId(JsonField.of(customerId))
 
             /**
@@ -753,6 +798,7 @@ private constructor(
              */
             fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
+            /** Name of the customer */
             fun customerName(customerName: String) = customerName(JsonField.of(customerName))
 
             /**
@@ -766,6 +812,7 @@ private constructor(
                 this.customerName = customerName
             }
 
+            /** The Finch products to request access to */
             fun products(products: List<ConnectProducts>) = products(JsonField.of(products))
 
             /**
@@ -791,6 +838,7 @@ private constructor(
                     }
             }
 
+            /** Email address of the customer */
             fun customerEmail(customerEmail: String?) =
                 customerEmail(JsonField.ofNullable(customerEmail))
 
@@ -809,6 +857,7 @@ private constructor(
                 this.customerEmail = customerEmail
             }
 
+            /** Integration configuration for the connect session */
             fun integration(integration: Integration?) =
                 integration(JsonField.ofNullable(integration))
 
@@ -827,6 +876,7 @@ private constructor(
                 this.integration = integration
             }
 
+            /** Enable manual authentication mode */
             fun manual(manual: Boolean?) = manual(JsonField.ofNullable(manual))
 
             /**
@@ -878,6 +928,7 @@ private constructor(
                 this.minutesToExpire = minutesToExpire
             }
 
+            /** The URI to redirect to after the Connect flow is completed */
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
 
             /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
@@ -894,6 +945,7 @@ private constructor(
                 this.redirectUri = redirectUri
             }
 
+            /** Sandbox mode for testing */
             fun sandbox(sandbox: Sandbox?) = sandbox(JsonField.ofNullable(sandbox))
 
             /** Alias for calling [Builder.sandbox] with `sandbox.orElse(null)`. */
@@ -928,7 +980,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [Body].
+             * Returns an immutable instance of [CreateConnectSessionRequest].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -941,8 +993,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): Body =
-                Body(
+            fun build(): CreateConnectSessionRequest =
+                CreateConnectSessionRequest(
                     checkRequired("customerId", customerId),
                     checkRequired("customerName", customerName),
                     checkRequired("products", products).map { it.toImmutable() },
@@ -958,7 +1010,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body = apply {
+        fun validate(): CreateConnectSessionRequest = apply {
             if (validated) {
                 return@apply
             }
@@ -1006,7 +1058,7 @@ private constructor(
                 return true
             }
 
-            return other is Body &&
+            return other is CreateConnectSessionRequest &&
                 customerId == other.customerId &&
                 customerName == other.customerName &&
                 products == other.products &&
@@ -1037,7 +1089,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
+            "CreateConnectSessionRequest{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
     }
 
     /** The Finch products that can be requested during the Connect flow. */
@@ -1056,41 +1108,41 @@ private constructor(
 
         companion object {
 
+            @JvmField val BENEFITS = of("benefits")
+
             @JvmField val COMPANY = of("company")
+
+            @JvmField val DEDUCTION = of("deduction")
 
             @JvmField val DIRECTORY = of("directory")
 
-            @JvmField val INDIVIDUAL = of("individual")
+            @JvmField val DOCUMENTS = of("documents")
 
             @JvmField val EMPLOYMENT = of("employment")
+
+            @JvmField val INDIVIDUAL = of("individual")
 
             @JvmField val PAYMENT = of("payment")
 
             @JvmField val PAY_STATEMENT = of("pay_statement")
 
-            @JvmField val BENEFITS = of("benefits")
-
             @JvmField val SSN = of("ssn")
-
-            @JvmField val DEDUCTION = of("deduction")
-
-            @JvmField val DOCUMENTS = of("documents")
 
             @JvmStatic fun of(value: String) = ConnectProducts(JsonField.of(value))
         }
 
         /** An enum containing [ConnectProducts]'s known values. */
         enum class Known {
+            BENEFITS,
             COMPANY,
+            DEDUCTION,
             DIRECTORY,
-            INDIVIDUAL,
+            DOCUMENTS,
             EMPLOYMENT,
+            INDIVIDUAL,
             PAYMENT,
             PAY_STATEMENT,
-            BENEFITS,
             SSN,
-            DEDUCTION,
-            DOCUMENTS,
         }
 
         /**
@@ -1103,16 +1155,16 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
+            BENEFITS,
             COMPANY,
+            DEDUCTION,
             DIRECTORY,
-            INDIVIDUAL,
+            DOCUMENTS,
             EMPLOYMENT,
+            INDIVIDUAL,
             PAYMENT,
             PAY_STATEMENT,
-            BENEFITS,
             SSN,
-            DEDUCTION,
-            DOCUMENTS,
             /**
              * An enum member indicating that [ConnectProducts] was instantiated with an unknown
              * value.
@@ -1129,16 +1181,16 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
+                BENEFITS -> Value.BENEFITS
                 COMPANY -> Value.COMPANY
+                DEDUCTION -> Value.DEDUCTION
                 DIRECTORY -> Value.DIRECTORY
-                INDIVIDUAL -> Value.INDIVIDUAL
+                DOCUMENTS -> Value.DOCUMENTS
                 EMPLOYMENT -> Value.EMPLOYMENT
+                INDIVIDUAL -> Value.INDIVIDUAL
                 PAYMENT -> Value.PAYMENT
                 PAY_STATEMENT -> Value.PAY_STATEMENT
-                BENEFITS -> Value.BENEFITS
                 SSN -> Value.SSN
-                DEDUCTION -> Value.DEDUCTION
-                DOCUMENTS -> Value.DOCUMENTS
                 else -> Value._UNKNOWN
             }
 
@@ -1152,16 +1204,16 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
+                BENEFITS -> Known.BENEFITS
                 COMPANY -> Known.COMPANY
+                DEDUCTION -> Known.DEDUCTION
                 DIRECTORY -> Known.DIRECTORY
-                INDIVIDUAL -> Known.INDIVIDUAL
+                DOCUMENTS -> Known.DOCUMENTS
                 EMPLOYMENT -> Known.EMPLOYMENT
+                INDIVIDUAL -> Known.INDIVIDUAL
                 PAYMENT -> Known.PAYMENT
                 PAY_STATEMENT -> Known.PAY_STATEMENT
-                BENEFITS -> Known.BENEFITS
                 SSN -> Known.SSN
-                DEDUCTION -> Known.DEDUCTION
-                DOCUMENTS -> Known.DOCUMENTS
                 else -> throw FinchInvalidDataException("Unknown ConnectProducts: $value")
             }
 
@@ -1217,32 +1269,47 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /** Integration configuration for the connect session */
     class Integration
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val authMethod: JsonField<AuthMethod>,
         private val provider: JsonField<String>,
+        private val authMethod: JsonField<AuthMethod>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
+            @JsonProperty("provider")
+            @ExcludeMissing
+            provider: JsonField<String> = JsonMissing.of(),
             @JsonProperty("auth_method")
             @ExcludeMissing
             authMethod: JsonField<AuthMethod> = JsonMissing.of(),
-            @JsonProperty("provider") @ExcludeMissing provider: JsonField<String> = JsonMissing.of(),
-        ) : this(authMethod, provider, mutableMapOf())
+        ) : this(provider, authMethod, mutableMapOf())
 
         /**
+         * The provider to integrate with
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun provider(): String = provider.getRequired("provider")
+
+        /**
+         * The authentication method to use
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun authMethod(): Optional<AuthMethod> = authMethod.getOptional("auth_method")
 
         /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * Returns the raw JSON value of [provider].
+         *
+         * Unlike [provider], this method doesn't throw if the JSON field has an unexpected type.
          */
-        fun provider(): Optional<String> = provider.getOptional("provider")
+        @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
 
         /**
          * Returns the raw JSON value of [authMethod].
@@ -1252,13 +1319,6 @@ private constructor(
         @JsonProperty("auth_method")
         @ExcludeMissing
         fun _authMethod(): JsonField<AuthMethod> = authMethod
-
-        /**
-         * Returns the raw JSON value of [provider].
-         *
-         * Unlike [provider], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1274,24 +1334,44 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Integration]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Integration].
+             *
+             * The following fields are required:
+             * ```java
+             * .provider()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Integration]. */
         class Builder internal constructor() {
 
+            private var provider: JsonField<String>? = null
             private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
-            private var provider: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(integration: Integration) = apply {
-                authMethod = integration.authMethod
                 provider = integration.provider
+                authMethod = integration.authMethod
                 additionalProperties = integration.additionalProperties.toMutableMap()
             }
 
+            /** The provider to integrate with */
+            fun provider(provider: String) = provider(JsonField.of(provider))
+
+            /**
+             * Sets [Builder.provider] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.provider] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun provider(provider: JsonField<String>) = apply { this.provider = provider }
+
+            /** The authentication method to use */
             fun authMethod(authMethod: AuthMethod?) = authMethod(JsonField.ofNullable(authMethod))
 
             /** Alias for calling [Builder.authMethod] with `authMethod.orElse(null)`. */
@@ -1307,20 +1387,6 @@ private constructor(
             fun authMethod(authMethod: JsonField<AuthMethod>) = apply {
                 this.authMethod = authMethod
             }
-
-            fun provider(provider: String?) = provider(JsonField.ofNullable(provider))
-
-            /** Alias for calling [Builder.provider] with `provider.orElse(null)`. */
-            fun provider(provider: Optional<String>) = provider(provider.getOrNull())
-
-            /**
-             * Sets [Builder.provider] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.provider] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun provider(provider: JsonField<String>) = apply { this.provider = provider }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1345,9 +1411,20 @@ private constructor(
              * Returns an immutable instance of [Integration].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .provider()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Integration =
-                Integration(authMethod, provider, additionalProperties.toMutableMap())
+                Integration(
+                    checkRequired("provider", provider),
+                    authMethod,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -1357,8 +1434,8 @@ private constructor(
                 return@apply
             }
 
-            authMethod().ifPresent { it.validate() }
             provider()
+            authMethod().ifPresent { it.validate() }
             validated = true
         }
 
@@ -1378,9 +1455,10 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (authMethod.asKnown().getOrNull()?.validity() ?: 0) +
-                (if (provider.asKnown().isPresent) 1 else 0)
+            (if (provider.asKnown().isPresent) 1 else 0) +
+                (authMethod.asKnown().getOrNull()?.validity() ?: 0)
 
+        /** The authentication method to use */
         class AuthMethod @JsonCreator private constructor(private val value: JsonField<String>) :
             Enum {
 
@@ -1530,21 +1608,22 @@ private constructor(
             }
 
             return other is Integration &&
-                authMethod == other.authMethod &&
                 provider == other.provider &&
+                authMethod == other.authMethod &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(authMethod, provider, additionalProperties)
+            Objects.hash(provider, authMethod, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Integration{authMethod=$authMethod, provider=$provider, additionalProperties=$additionalProperties}"
+            "Integration{provider=$provider, authMethod=$authMethod, additionalProperties=$additionalProperties}"
     }
 
+    /** Sandbox mode for testing */
     class Sandbox @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**

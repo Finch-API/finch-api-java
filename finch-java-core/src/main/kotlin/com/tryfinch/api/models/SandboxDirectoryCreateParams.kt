@@ -204,48 +204,137 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class IndividualOrEmployment
-    @JsonCreator
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        @JsonProperty("class_code") @ExcludeMissing private val classCode: JsonField<String>,
-        @JsonProperty("custom_fields")
-        @ExcludeMissing
+        private val classCode: JsonField<String>,
         private val customFields: JsonField<List<CustomField>>,
-        @JsonProperty("department") @ExcludeMissing private val department: JsonField<Department>,
-        @JsonProperty("dob") @ExcludeMissing private val dob: JsonField<String>,
-        @JsonProperty("emails") @ExcludeMissing private val emails: JsonField<List<Email>>,
-        @JsonProperty("employment") @ExcludeMissing private val employment: JsonField<Employment>,
-        @JsonProperty("employment_status")
-        @ExcludeMissing
+        private val department: JsonField<Department>,
+        private val dob: JsonField<String>,
+        private val emails: JsonField<List<Email>>,
+        private val employment: JsonField<Employment>,
         private val employmentStatus: JsonField<EmploymentStatus>,
-        @JsonProperty("encrypted_ssn") @ExcludeMissing private val encryptedSsn: JsonField<String>,
-        @JsonProperty("end_date") @ExcludeMissing private val endDate: JsonField<String>,
-        @JsonProperty("ethnicity") @ExcludeMissing private val ethnicity: JsonField<Ethnicity>,
-        @JsonProperty("first_name") @ExcludeMissing private val firstName: JsonField<String>,
-        @JsonProperty("gender") @ExcludeMissing private val gender: JsonField<Gender>,
-        @JsonProperty("income") @ExcludeMissing private val income: JsonField<Income>,
-        @JsonProperty("income_history")
-        @ExcludeMissing
+        private val encryptedSsn: JsonField<String>,
+        private val endDate: JsonField<String>,
+        private val ethnicity: JsonField<Ethnicity>,
+        private val firstName: JsonField<String>,
+        private val gender: JsonField<Gender>,
+        private val income: JsonField<Income>,
         private val incomeHistory: JsonField<List<Income?>>,
-        @JsonProperty("is_active") @ExcludeMissing private val isActive: JsonField<Boolean>,
-        @JsonProperty("last_name") @ExcludeMissing private val lastName: JsonField<String>,
-        @JsonProperty("latest_rehire_date")
-        @ExcludeMissing
+        private val isActive: JsonField<Boolean>,
+        private val lastName: JsonField<String>,
         private val latestRehireDate: JsonField<String>,
-        @JsonProperty("location") @ExcludeMissing private val location: JsonField<Location>,
-        @JsonProperty("manager") @ExcludeMissing private val manager: JsonField<Manager>,
-        @JsonProperty("middle_name") @ExcludeMissing private val middleName: JsonField<String>,
-        @JsonProperty("phone_numbers")
-        @ExcludeMissing
+        private val location: JsonField<Location>,
+        private val manager: JsonField<Manager>,
+        private val middleName: JsonField<String>,
         private val phoneNumbers: JsonField<List<PhoneNumber?>>,
-        @JsonProperty("preferred_name")
-        @ExcludeMissing
         private val preferredName: JsonField<String>,
-        @JsonProperty("residence") @ExcludeMissing private val residence: JsonField<Location>,
-        @JsonProperty("source_id") @ExcludeMissing private val sourceId: JsonField<String>,
-        @JsonProperty("ssn") @ExcludeMissing private val ssn: JsonField<String>,
-        @JsonProperty("start_date") @ExcludeMissing private val startDate: JsonField<String>,
-        @JsonProperty("title") @ExcludeMissing private val title: JsonField<String>,
+        private val residence: JsonField<Location>,
+        private val sourceId: JsonField<String>,
+        private val ssn: JsonField<String>,
+        private val startDate: JsonField<String>,
+        private val title: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("class_code")
+            @ExcludeMissing
+            classCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("custom_fields")
+            @ExcludeMissing
+            customFields: JsonField<List<CustomField>> = JsonMissing.of(),
+            @JsonProperty("department")
+            @ExcludeMissing
+            department: JsonField<Department> = JsonMissing.of(),
+            @JsonProperty("dob") @ExcludeMissing dob: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("emails")
+            @ExcludeMissing
+            emails: JsonField<List<Email>> = JsonMissing.of(),
+            @JsonProperty("employment")
+            @ExcludeMissing
+            employment: JsonField<Employment> = JsonMissing.of(),
+            @JsonProperty("employment_status")
+            @ExcludeMissing
+            employmentStatus: JsonField<EmploymentStatus> = JsonMissing.of(),
+            @JsonProperty("encrypted_ssn")
+            @ExcludeMissing
+            encryptedSsn: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("end_date") @ExcludeMissing endDate: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("ethnicity")
+            @ExcludeMissing
+            ethnicity: JsonField<Ethnicity> = JsonMissing.of(),
+            @JsonProperty("first_name")
+            @ExcludeMissing
+            firstName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("gender") @ExcludeMissing gender: JsonField<Gender> = JsonMissing.of(),
+            @JsonProperty("income") @ExcludeMissing income: JsonField<Income> = JsonMissing.of(),
+            @JsonProperty("income_history")
+            @ExcludeMissing
+            incomeHistory: JsonField<List<Income?>> = JsonMissing.of(),
+            @JsonProperty("is_active")
+            @ExcludeMissing
+            isActive: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("last_name")
+            @ExcludeMissing
+            lastName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("latest_rehire_date")
+            @ExcludeMissing
+            latestRehireDate: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("location")
+            @ExcludeMissing
+            location: JsonField<Location> = JsonMissing.of(),
+            @JsonProperty("manager") @ExcludeMissing manager: JsonField<Manager> = JsonMissing.of(),
+            @JsonProperty("middle_name")
+            @ExcludeMissing
+            middleName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("phone_numbers")
+            @ExcludeMissing
+            phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of(),
+            @JsonProperty("preferred_name")
+            @ExcludeMissing
+            preferredName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("residence")
+            @ExcludeMissing
+            residence: JsonField<Location> = JsonMissing.of(),
+            @JsonProperty("source_id")
+            @ExcludeMissing
+            sourceId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("ssn") @ExcludeMissing ssn: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("start_date")
+            @ExcludeMissing
+            startDate: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+        ) : this(
+            classCode,
+            customFields,
+            department,
+            dob,
+            emails,
+            employment,
+            employmentStatus,
+            encryptedSsn,
+            endDate,
+            ethnicity,
+            firstName,
+            gender,
+            income,
+            incomeHistory,
+            isActive,
+            lastName,
+            latestRehireDate,
+            location,
+            manager,
+            middleName,
+            phoneNumbers,
+            preferredName,
+            residence,
+            sourceId,
+            ssn,
+            startDate,
+            title,
+            mutableMapOf(),
+        )
 
         /**
          * Worker's compensation classification code for this employee
@@ -293,8 +382,7 @@ private constructor(
         fun employment(): Optional<Employment> = employment.getOptional("employment")
 
         /**
-         * The detailed employment status of the individual. Available options: `active`,
-         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+         * The detailed employment status of the individual.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -675,6 +763,16 @@ private constructor(
          */
         @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
         fun toBuilder() = Builder().from(this)
 
         companion object {
@@ -715,6 +813,7 @@ private constructor(
             private var ssn: JsonField<String> = JsonMissing.of()
             private var startDate: JsonField<String> = JsonMissing.of()
             private var title: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(individualOrEmployment: IndividualOrEmployment) = apply {
@@ -745,6 +844,7 @@ private constructor(
                 ssn = individualOrEmployment.ssn
                 startDate = individualOrEmployment.startDate
                 title = individualOrEmployment.title
+                additionalProperties = individualOrEmployment.additionalProperties.toMutableMap()
             }
 
             /** Worker's compensation classification code for this employee */
@@ -872,10 +972,7 @@ private constructor(
                 this.employment = employment
             }
 
-            /**
-             * The detailed employment status of the individual. Available options: `active`,
-             * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
-             */
+            /** The detailed employment status of the individual. */
             fun employmentStatus(employmentStatus: EmploymentStatus?) =
                 employmentStatus(JsonField.ofNullable(employmentStatus))
 
@@ -1255,6 +1352,25 @@ private constructor(
              */
             fun title(title: JsonField<String>) = apply { this.title = title }
 
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             /**
              * Returns an immutable instance of [IndividualOrEmployment].
              *
@@ -1289,6 +1405,7 @@ private constructor(
                     ssn,
                     startDate,
                     title,
+                    additionalProperties.toMutableMap(),
                 )
         }
 
@@ -1375,6 +1492,7 @@ private constructor(
                 (if (title.asKnown().isPresent) 1 else 0)
 
         class CustomField
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val value: JsonValue,
@@ -1393,6 +1511,13 @@ private constructor(
              */
             fun name(): Optional<String> = name.getOptional("name")
 
+            /**
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```java
+             * MyClass myObject = customField.value().convert(MyClass.class);
+             * ```
+             */
             @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
 
             /**
@@ -1529,6 +1654,7 @@ private constructor(
 
         /** The department object. */
         class Department
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1675,6 +1801,7 @@ private constructor(
         }
 
         class Email
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val data: JsonField<String>,
             private val type: JsonField<Type>,
@@ -1982,6 +2109,7 @@ private constructor(
 
         /** The employment object. */
         class Employment
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val subtype: JsonField<Subtype>,
             private val type: JsonField<Type>,
@@ -2463,10 +2591,7 @@ private constructor(
                 "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
         }
 
-        /**
-         * The detailed employment status of the individual. Available options: `active`,
-         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
-         */
+        /** The detailed employment status of the individual. */
         class EmploymentStatus
         @JsonCreator
         private constructor(private val value: JsonField<String>) : Enum {
@@ -2944,6 +3069,7 @@ private constructor(
 
         /** The manager object representing the manager of the individual within the org. */
         class Manager
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3086,6 +3212,7 @@ private constructor(
         }
 
         class PhoneNumber
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val data: JsonField<String>,
             private val type: JsonField<Type>,
@@ -3427,7 +3554,8 @@ private constructor(
                 sourceId == other.sourceId &&
                 ssn == other.ssn &&
                 startDate == other.startDate &&
-                title == other.title
+                title == other.title &&
+                additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
@@ -3459,13 +3587,14 @@ private constructor(
                 ssn,
                 startDate,
                 title,
+                additionalProperties,
             )
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title}"
+            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

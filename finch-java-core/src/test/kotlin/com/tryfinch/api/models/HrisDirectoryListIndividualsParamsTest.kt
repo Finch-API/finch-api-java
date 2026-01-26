@@ -10,17 +10,32 @@ internal class HrisDirectoryListIndividualsParamsTest {
 
     @Test
     fun create() {
-        HrisDirectoryListIndividualsParams.builder().limit(0L).offset(0L).build()
+        HrisDirectoryListIndividualsParams.builder()
+            .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+            .limit(0L)
+            .offset(0L)
+            .build()
     }
 
     @Test
     fun queryParams() {
-        val params = HrisDirectoryListIndividualsParams.builder().limit(0L).offset(0L).build()
+        val params =
+            HrisDirectoryListIndividualsParams.builder()
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                .limit(0L)
+                .offset(0L)
+                .build()
 
         val queryParams = params._queryParams()
 
         assertThat(queryParams)
-            .isEqualTo(QueryParams.builder().put("limit", "0").put("offset", "0").build())
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
+                    .put("limit", "0")
+                    .put("offset", "0")
+                    .build()
+            )
     }
 
     @Test

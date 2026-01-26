@@ -202,6 +202,7 @@ private constructor(
     }
 
     class UnionMember0
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val dob: JsonField<String>,
@@ -1202,6 +1203,7 @@ private constructor(
         }
 
         class PhoneNumber
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val data: JsonField<String>,
             private val type: JsonField<Type>,
@@ -1532,6 +1534,7 @@ private constructor(
         }
 
         class Email
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val data: JsonField<String>,
             private val type: JsonField<Type>,
@@ -1907,6 +1910,7 @@ private constructor(
     }
 
     class BatchError
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val code: JsonField<Double>,
         private val message: JsonField<String>,

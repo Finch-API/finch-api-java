@@ -206,6 +206,7 @@ private constructor(
     }
 
     class UnionMember0
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val classCode: JsonField<String>,
@@ -337,8 +338,7 @@ private constructor(
         fun employment(): Optional<Employment> = employment.getOptional("employment")
 
         /**
-         * The detailed employment status of the individual. Available options: `active`,
-         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+         * The detailed employment status of the individual.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -773,10 +773,7 @@ private constructor(
                 this.employment = employment
             }
 
-            /**
-             * The detailed employment status of the individual. Available options: `active`,
-             * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
-             */
+            /** The detailed employment status of the individual. */
             fun employmentStatus(employmentStatus: EmploymentStatus?) =
                 employmentStatus(JsonField.ofNullable(employmentStatus))
 
@@ -1214,6 +1211,7 @@ private constructor(
 
         /** The department object. */
         class Department
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1376,6 +1374,7 @@ private constructor(
 
         /** The employment object. */
         class Employment
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val subtype: JsonField<Subtype>,
             private val type: JsonField<Type>,
@@ -1877,10 +1876,7 @@ private constructor(
                 "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
         }
 
-        /**
-         * The detailed employment status of the individual. Available options: `active`,
-         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
-         */
+        /** The detailed employment status of the individual. */
         class EmploymentStatus
         @JsonCreator
         private constructor(private val value: JsonField<String>) : Enum {
@@ -2046,6 +2042,7 @@ private constructor(
 
         /** The manager object representing the manager of the individual within the org. */
         class Manager
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2204,6 +2201,7 @@ private constructor(
         }
 
         class CustomField
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val value: JsonField<Value>,
@@ -2702,6 +2700,7 @@ private constructor(
     }
 
     class BatchError
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val code: JsonField<Double>,
         private val message: JsonField<String>,

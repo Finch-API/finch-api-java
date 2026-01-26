@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class PaymentCreateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val payDate: JsonField<String>,
     private val paymentId: JsonField<String>,

@@ -17,6 +17,7 @@ import java.util.Objects
 import java.util.Optional
 
 class AutomatedCreateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val allowedRefreshes: JsonField<Long>,
     private val remainingRefreshes: JsonField<Long>,

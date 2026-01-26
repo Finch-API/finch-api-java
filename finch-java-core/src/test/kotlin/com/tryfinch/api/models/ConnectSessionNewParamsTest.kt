@@ -12,12 +12,12 @@ internal class ConnectSessionNewParamsTest {
         ConnectSessionNewParams.builder()
             .customerId("x")
             .customerName("x")
-            .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
+            .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
             .customerEmail("dev@stainless.com")
             .integration(
                 ConnectSessionNewParams.Integration.builder()
-                    .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .provider("provider")
+                    .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .build()
             )
             .manual(true)
@@ -33,12 +33,12 @@ internal class ConnectSessionNewParamsTest {
             ConnectSessionNewParams.builder()
                 .customerId("x")
                 .customerName("x")
-                .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
+                .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
                 .customerEmail("dev@stainless.com")
                 .integration(
                     ConnectSessionNewParams.Integration.builder()
-                        .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                         .provider("provider")
+                        .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                         .build()
                 )
                 .manual(true)
@@ -51,13 +51,14 @@ internal class ConnectSessionNewParamsTest {
 
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
-        assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
+        assertThat(body.products())
+            .containsExactly(ConnectSessionNewParams.ConnectProducts.BENEFITS)
         assertThat(body.customerEmail()).contains("dev@stainless.com")
         assertThat(body.integration())
             .contains(
                 ConnectSessionNewParams.Integration.builder()
-                    .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .provider("provider")
+                    .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .build()
             )
         assertThat(body.manual()).contains(true)
@@ -72,13 +73,14 @@ internal class ConnectSessionNewParamsTest {
             ConnectSessionNewParams.builder()
                 .customerId("x")
                 .customerName("x")
-                .addProduct(ConnectSessionNewParams.ConnectProducts.COMPANY)
+                .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
                 .build()
 
         val body = params._body()
 
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
-        assertThat(body.products()).containsExactly(ConnectSessionNewParams.ConnectProducts.COMPANY)
+        assertThat(body.products())
+            .containsExactly(ConnectSessionNewParams.ConnectProducts.BENEFITS)
     }
 }

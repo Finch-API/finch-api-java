@@ -24,10 +24,14 @@ import kotlin.jvm.optionals.getOrNull
 /** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyParams
 private constructor(
+    private val entityIds: List<String>?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -79,6 +83,7 @@ private constructor(
     /** A builder for [HrisIndividualRetrieveManyParams]. */
     class Builder internal constructor() {
 
+        private var entityIds: MutableList<String>? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -86,11 +91,29 @@ private constructor(
         @JvmSynthetic
         internal fun from(hrisIndividualRetrieveManyParams: HrisIndividualRetrieveManyParams) =
             apply {
+                entityIds = hrisIndividualRetrieveManyParams.entityIds?.toMutableList()
                 body = hrisIndividualRetrieveManyParams.body.toBuilder()
                 additionalHeaders = hrisIndividualRetrieveManyParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
                     hrisIndividualRetrieveManyParams.additionalQueryParams.toBuilder()
             }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         /**
          * Sets the entire request body.
@@ -257,6 +280,7 @@ private constructor(
          */
         fun build(): HrisIndividualRetrieveManyParams =
             HrisIndividualRetrieveManyParams(
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -267,9 +291,16 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val options: JsonField<Options>,
         private val requests: JsonField<List<Request>>,
@@ -466,6 +497,7 @@ private constructor(
     }
 
     class Options
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val include: JsonField<List<String>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -623,6 +655,7 @@ private constructor(
     }
 
     class Request
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val individualId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -773,13 +806,15 @@ private constructor(
         }
 
         return other is HrisIndividualRetrieveManyParams &&
+            entityIds == other.entityIds &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int =
+        Objects.hash(entityIds, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisIndividualRetrieveManyParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisIndividualRetrieveManyParams{entityIds=$entityIds, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

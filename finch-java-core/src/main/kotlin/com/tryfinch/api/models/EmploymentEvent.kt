@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class EmploymentEvent
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val accountId: JsonField<String>,
     private val companyId: JsonField<String>,
@@ -324,6 +325,7 @@ private constructor(
             (eventType.asKnown().getOrNull()?.validity() ?: 0)
 
     class Data
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val individualId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

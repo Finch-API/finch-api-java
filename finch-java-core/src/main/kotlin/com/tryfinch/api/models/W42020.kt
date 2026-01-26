@@ -11,6 +11,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -22,6 +23,7 @@ import kotlin.jvm.optionals.getOrNull
  * dependents, and withholding details.
  */
 class W42020
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val data: JsonField<Data>,
     private val type: JsonField<Type>,
@@ -39,26 +41,26 @@ private constructor(
     /**
      * Detailed information specific to the 2020 W4 form.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun data(): Optional<Data> = data.getOptional("data")
+    fun data(): Data = data.getRequired("data")
 
     /**
      * Specifies the form type, indicating that this document is a 2020 W4 form.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun type(): Optional<Type> = type.getOptional("type")
+    fun type(): Type = type.getRequired("type")
 
     /**
      * The tax year this W4 document applies to.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun year(): Optional<Double> = year.getOptional("year")
+    fun year(): Double = year.getRequired("year")
 
     /**
      * Returns the raw JSON value of [data].
@@ -95,16 +97,25 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [W42020]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [W42020].
+         *
+         * The following fields are required:
+         * ```java
+         * .data()
+         * .type()
+         * .year()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [W42020]. */
     class Builder internal constructor() {
 
-        private var data: JsonField<Data> = JsonMissing.of()
-        private var type: JsonField<Type> = JsonMissing.of()
-        private var year: JsonField<Double> = JsonMissing.of()
+        private var data: JsonField<Data>? = null
+        private var type: JsonField<Type>? = null
+        private var year: JsonField<Double>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -138,17 +149,7 @@ private constructor(
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** The tax year this W4 document applies to. */
-        fun year(year: Double?) = year(JsonField.ofNullable(year))
-
-        /**
-         * Alias for [Builder.year].
-         *
-         * This unboxed primitive overload exists for backwards compatibility.
-         */
-        fun year(year: Double) = year(year as Double?)
-
-        /** Alias for calling [Builder.year] with `year.orElse(null)`. */
-        fun year(year: Optional<Double>) = year(year.getOrNull())
+        fun year(year: Double) = year(JsonField.of(year))
 
         /**
          * Sets [Builder.year] to an arbitrary JSON value.
@@ -181,8 +182,23 @@ private constructor(
          * Returns an immutable instance of [W42020].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .data()
+         * .type()
+         * .year()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): W42020 = W42020(data, type, year, additionalProperties.toMutableMap())
+        fun build(): W42020 =
+            W42020(
+                checkRequired("data", data),
+                checkRequired("type", type),
+                checkRequired("year", year),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
@@ -192,8 +208,8 @@ private constructor(
             return@apply
         }
 
-        data().ifPresent { it.validate() }
-        type().ifPresent { it.validate() }
+        data().validate()
+        type().validate()
         year()
         validated = true
     }
@@ -219,6 +235,7 @@ private constructor(
 
     /** Detailed information specific to the 2020 W4 form. */
     class Data
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val amountForOtherDependents: JsonField<Long>,
         private val amountForQualifyingChildrenUnder17: JsonField<Long>,
@@ -272,38 +289,38 @@ private constructor(
         /**
          * Amount claimed for dependents other than qualifying children under 17 (in cents).
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun amountForOtherDependents(): Optional<Long> =
-            amountForOtherDependents.getOptional("amount_for_other_dependents")
+        fun amountForOtherDependents(): Long =
+            amountForOtherDependents.getRequired("amount_for_other_dependents")
 
         /**
          * Amount claimed for dependents under 17 years old (in cents).
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun amountForQualifyingChildrenUnder17(): Optional<Long> =
-            amountForQualifyingChildrenUnder17.getOptional(
+        fun amountForQualifyingChildrenUnder17(): Long =
+            amountForQualifyingChildrenUnder17.getRequired(
                 "amount_for_qualifying_children_under_17"
             )
 
         /**
          * Deductible expenses (in cents).
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun deductions(): Optional<Long> = deductions.getOptional("deductions")
+        fun deductions(): Long = deductions.getRequired("deductions")
 
         /**
          * Additional withholding amount (in cents).
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun extraWithholding(): Optional<Long> = extraWithholding.getOptional("extra_withholding")
+        fun extraWithholding(): Long = extraWithholding.getRequired("extra_withholding")
 
         /**
          * The individual's filing status for tax purposes.
@@ -316,27 +333,27 @@ private constructor(
         /**
          * The unique identifier for the individual associated with this document.
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun individualId(): Optional<String> = individualId.getOptional("individual_id")
+        fun individualId(): String = individualId.getRequired("individual_id")
 
         /**
          * Additional income from sources outside of primary employment (in cents).
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun otherIncome(): Optional<Long> = otherIncome.getOptional("other_income")
+        fun otherIncome(): Long = otherIncome.getRequired("other_income")
 
         /**
          * Total amount claimed for dependents and other credits (in cents).
          *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun totalClaimDependentAndOtherCredits(): Optional<Long> =
-            totalClaimDependentAndOtherCredits.getOptional(
+        fun totalClaimDependentAndOtherCredits(): Long =
+            totalClaimDependentAndOtherCredits.getRequired(
                 "total_claim_dependent_and_other_credits"
             )
 
@@ -432,21 +449,35 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Data]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Data].
+             *
+             * The following fields are required:
+             * ```java
+             * .amountForOtherDependents()
+             * .amountForQualifyingChildrenUnder17()
+             * .deductions()
+             * .extraWithholding()
+             * .filingStatus()
+             * .individualId()
+             * .otherIncome()
+             * .totalClaimDependentAndOtherCredits()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Data]. */
         class Builder internal constructor() {
 
-            private var amountForOtherDependents: JsonField<Long> = JsonMissing.of()
-            private var amountForQualifyingChildrenUnder17: JsonField<Long> = JsonMissing.of()
-            private var deductions: JsonField<Long> = JsonMissing.of()
-            private var extraWithholding: JsonField<Long> = JsonMissing.of()
-            private var filingStatus: JsonField<FilingStatus> = JsonMissing.of()
-            private var individualId: JsonField<String> = JsonMissing.of()
-            private var otherIncome: JsonField<Long> = JsonMissing.of()
-            private var totalClaimDependentAndOtherCredits: JsonField<Long> = JsonMissing.of()
+            private var amountForOtherDependents: JsonField<Long>? = null
+            private var amountForQualifyingChildrenUnder17: JsonField<Long>? = null
+            private var deductions: JsonField<Long>? = null
+            private var extraWithholding: JsonField<Long>? = null
+            private var filingStatus: JsonField<FilingStatus>? = null
+            private var individualId: JsonField<String>? = null
+            private var otherIncome: JsonField<Long>? = null
+            private var totalClaimDependentAndOtherCredits: JsonField<Long>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -463,23 +494,8 @@ private constructor(
             }
 
             /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
-            fun amountForOtherDependents(amountForOtherDependents: Long?) =
-                amountForOtherDependents(JsonField.ofNullable(amountForOtherDependents))
-
-            /**
-             * Alias for [Builder.amountForOtherDependents].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
             fun amountForOtherDependents(amountForOtherDependents: Long) =
-                amountForOtherDependents(amountForOtherDependents as Long?)
-
-            /**
-             * Alias for calling [Builder.amountForOtherDependents] with
-             * `amountForOtherDependents.orElse(null)`.
-             */
-            fun amountForOtherDependents(amountForOtherDependents: Optional<Long>) =
-                amountForOtherDependents(amountForOtherDependents.getOrNull())
+                amountForOtherDependents(JsonField.of(amountForOtherDependents))
 
             /**
              * Sets [Builder.amountForOtherDependents] to an arbitrary JSON value.
@@ -493,26 +509,8 @@ private constructor(
             }
 
             /** Amount claimed for dependents under 17 years old (in cents). */
-            fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: Long?) =
-                amountForQualifyingChildrenUnder17(
-                    JsonField.ofNullable(amountForQualifyingChildrenUnder17)
-                )
-
-            /**
-             * Alias for [Builder.amountForQualifyingChildrenUnder17].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
             fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: Long) =
-                amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17 as Long?)
-
-            /**
-             * Alias for calling [Builder.amountForQualifyingChildrenUnder17] with
-             * `amountForQualifyingChildrenUnder17.orElse(null)`.
-             */
-            fun amountForQualifyingChildrenUnder17(
-                amountForQualifyingChildrenUnder17: Optional<Long>
-            ) = amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17.getOrNull())
+                amountForQualifyingChildrenUnder17(JsonField.of(amountForQualifyingChildrenUnder17))
 
             /**
              * Sets [Builder.amountForQualifyingChildrenUnder17] to an arbitrary JSON value.
@@ -528,17 +526,7 @@ private constructor(
             }
 
             /** Deductible expenses (in cents). */
-            fun deductions(deductions: Long?) = deductions(JsonField.ofNullable(deductions))
-
-            /**
-             * Alias for [Builder.deductions].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
-            fun deductions(deductions: Long) = deductions(deductions as Long?)
-
-            /** Alias for calling [Builder.deductions] with `deductions.orElse(null)`. */
-            fun deductions(deductions: Optional<Long>) = deductions(deductions.getOrNull())
+            fun deductions(deductions: Long) = deductions(JsonField.of(deductions))
 
             /**
              * Sets [Builder.deductions] to an arbitrary JSON value.
@@ -550,22 +538,8 @@ private constructor(
             fun deductions(deductions: JsonField<Long>) = apply { this.deductions = deductions }
 
             /** Additional withholding amount (in cents). */
-            fun extraWithholding(extraWithholding: Long?) =
-                extraWithholding(JsonField.ofNullable(extraWithholding))
-
-            /**
-             * Alias for [Builder.extraWithholding].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
             fun extraWithholding(extraWithholding: Long) =
-                extraWithholding(extraWithholding as Long?)
-
-            /**
-             * Alias for calling [Builder.extraWithholding] with `extraWithholding.orElse(null)`.
-             */
-            fun extraWithholding(extraWithholding: Optional<Long>) =
-                extraWithholding(extraWithholding.getOrNull())
+                extraWithholding(JsonField.of(extraWithholding))
 
             /**
              * Sets [Builder.extraWithholding] to an arbitrary JSON value.
@@ -612,17 +586,7 @@ private constructor(
             }
 
             /** Additional income from sources outside of primary employment (in cents). */
-            fun otherIncome(otherIncome: Long?) = otherIncome(JsonField.ofNullable(otherIncome))
-
-            /**
-             * Alias for [Builder.otherIncome].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
-            fun otherIncome(otherIncome: Long) = otherIncome(otherIncome as Long?)
-
-            /** Alias for calling [Builder.otherIncome] with `otherIncome.orElse(null)`. */
-            fun otherIncome(otherIncome: Optional<Long>) = otherIncome(otherIncome.getOrNull())
+            fun otherIncome(otherIncome: Long) = otherIncome(JsonField.of(otherIncome))
 
             /**
              * Sets [Builder.otherIncome] to an arbitrary JSON value.
@@ -634,26 +598,8 @@ private constructor(
             fun otherIncome(otherIncome: JsonField<Long>) = apply { this.otherIncome = otherIncome }
 
             /** Total amount claimed for dependents and other credits (in cents). */
-            fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long?) =
-                totalClaimDependentAndOtherCredits(
-                    JsonField.ofNullable(totalClaimDependentAndOtherCredits)
-                )
-
-            /**
-             * Alias for [Builder.totalClaimDependentAndOtherCredits].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
             fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long) =
-                totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits as Long?)
-
-            /**
-             * Alias for calling [Builder.totalClaimDependentAndOtherCredits] with
-             * `totalClaimDependentAndOtherCredits.orElse(null)`.
-             */
-            fun totalClaimDependentAndOtherCredits(
-                totalClaimDependentAndOtherCredits: Optional<Long>
-            ) = totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits.getOrNull())
+                totalClaimDependentAndOtherCredits(JsonField.of(totalClaimDependentAndOtherCredits))
 
             /**
              * Sets [Builder.totalClaimDependentAndOtherCredits] to an arbitrary JSON value.
@@ -691,17 +637,37 @@ private constructor(
              * Returns an immutable instance of [Data].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .amountForOtherDependents()
+             * .amountForQualifyingChildrenUnder17()
+             * .deductions()
+             * .extraWithholding()
+             * .filingStatus()
+             * .individualId()
+             * .otherIncome()
+             * .totalClaimDependentAndOtherCredits()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Data =
                 Data(
-                    amountForOtherDependents,
-                    amountForQualifyingChildrenUnder17,
-                    deductions,
-                    extraWithholding,
-                    filingStatus,
-                    individualId,
-                    otherIncome,
-                    totalClaimDependentAndOtherCredits,
+                    checkRequired("amountForOtherDependents", amountForOtherDependents),
+                    checkRequired(
+                        "amountForQualifyingChildrenUnder17",
+                        amountForQualifyingChildrenUnder17,
+                    ),
+                    checkRequired("deductions", deductions),
+                    checkRequired("extraWithholding", extraWithholding),
+                    checkRequired("filingStatus", filingStatus),
+                    checkRequired("individualId", individualId),
+                    checkRequired("otherIncome", otherIncome),
+                    checkRequired(
+                        "totalClaimDependentAndOtherCredits",
+                        totalClaimDependentAndOtherCredits,
+                    ),
                     additionalProperties.toMutableMap(),
                 )
         }

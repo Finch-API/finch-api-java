@@ -20,6 +20,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class PayGroupListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,

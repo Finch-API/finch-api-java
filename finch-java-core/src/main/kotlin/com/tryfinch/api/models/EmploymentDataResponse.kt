@@ -17,6 +17,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class EmploymentDataResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val body: JsonField<EmploymentData>,
     private val code: JsonField<Long>,

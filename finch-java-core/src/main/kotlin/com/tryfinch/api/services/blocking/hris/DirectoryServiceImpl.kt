@@ -14,8 +14,7 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPageResponse
+import com.tryfinch.api.models.DirectoryListIndividualsResponse
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListPageResponse
@@ -45,7 +44,7 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
     override fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
         requestOptions: RequestOptions,
-    ): HrisDirectoryListIndividualsPage =
+    ): DirectoryListIndividualsResponse =
         // get /employer/directory
         withRawResponse().listIndividuals(params, requestOptions).parse()
 
@@ -96,14 +95,14 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
             }
         }
 
-        private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPageResponse> =
-            jsonHandler<HrisDirectoryListIndividualsPageResponse>(clientOptions.jsonMapper)
+        private val listIndividualsHandler: Handler<DirectoryListIndividualsResponse> =
+            jsonHandler<DirectoryListIndividualsResponse>(clientOptions.jsonMapper)
 
         @Deprecated("use `list` instead")
         override fun listIndividuals(
             params: HrisDirectoryListIndividualsParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<HrisDirectoryListIndividualsPage> {
+        ): HttpResponseFor<DirectoryListIndividualsResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -120,13 +119,6 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
                         if (requestOptions.responseValidation!!) {
                             it.validate()
                         }
-                    }
-                    .let {
-                        HrisDirectoryListIndividualsPage.builder()
-                            .service(DirectoryServiceImpl(clientOptions))
-                            .params(params)
-                            .response(it)
-                            .build()
                     }
             }
         }

@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class SessionReauthenticateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val connectUrl: JsonField<String>,
     private val sessionId: JsonField<String>,

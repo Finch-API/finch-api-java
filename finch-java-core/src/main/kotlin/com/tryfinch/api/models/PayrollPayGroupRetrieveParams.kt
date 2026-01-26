@@ -5,6 +5,7 @@ package com.tryfinch.api.models
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -13,11 +14,15 @@ import kotlin.jvm.optionals.getOrNull
 class PayrollPayGroupRetrieveParams
 private constructor(
     private val payGroupId: String?,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun payGroupId(): Optional<String> = Optional.ofNullable(payGroupId)
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -42,12 +47,14 @@ private constructor(
     class Builder internal constructor() {
 
         private var payGroupId: String? = null
+        private var entityIds: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(payrollPayGroupRetrieveParams: PayrollPayGroupRetrieveParams) = apply {
             payGroupId = payrollPayGroupRetrieveParams.payGroupId
+            entityIds = payrollPayGroupRetrieveParams.entityIds?.toMutableList()
             additionalHeaders = payrollPayGroupRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = payrollPayGroupRetrieveParams.additionalQueryParams.toBuilder()
         }
@@ -56,6 +63,23 @@ private constructor(
 
         /** Alias for calling [Builder.payGroupId] with `payGroupId.orElse(null)`. */
         fun payGroupId(payGroupId: Optional<String>) = payGroupId(payGroupId.getOrNull())
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -163,6 +187,7 @@ private constructor(
         fun build(): PayrollPayGroupRetrieveParams =
             PayrollPayGroupRetrieveParams(
                 payGroupId,
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -176,7 +201,13 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -185,13 +216,14 @@ private constructor(
 
         return other is PayrollPayGroupRetrieveParams &&
             payGroupId == other.payGroupId &&
+            entityIds == other.entityIds &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(payGroupId, additionalHeaders, additionalQueryParams)
+        Objects.hash(payGroupId, entityIds, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "PayrollPayGroupRetrieveParams{payGroupId=$payGroupId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "PayrollPayGroupRetrieveParams{payGroupId=$payGroupId, entityIds=$entityIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -11,6 +11,7 @@ internal class HrisDocumentListParamsTest {
     @Test
     fun create() {
         HrisDocumentListParams.builder()
+            .addEntityId("550e8400-e29b-41d4-a716-446655440000")
             .addIndividualId("string")
             .limit(0L)
             .offset(0L)
@@ -22,6 +23,7 @@ internal class HrisDocumentListParamsTest {
     fun queryParams() {
         val params =
             HrisDocumentListParams.builder()
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .addIndividualId("string")
                 .limit(0L)
                 .offset(0L)
@@ -33,6 +35,7 @@ internal class HrisDocumentListParamsTest {
         assertThat(queryParams)
             .isEqualTo(
                 QueryParams.builder()
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
                     .put("individual_ids[]", "string")
                     .put("limit", "0")
                     .put("offset", "0")

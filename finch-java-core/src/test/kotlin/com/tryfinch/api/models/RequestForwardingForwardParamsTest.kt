@@ -11,11 +11,19 @@ internal class RequestForwardingForwardParamsTest {
     @Test
     fun create() {
         RequestForwardingForwardParams.builder()
-            .method("POST")
-            .route("/people/search")
-            .data(null)
-            .headers(JsonValue.from(mapOf("content-type" to "application/json")))
-            .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+            .method("method")
+            .route("route")
+            .data("data")
+            .params(
+                RequestForwardingForwardParams.Params.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+            .requestHeaders(
+                RequestForwardingForwardParams.RequestHeaders.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
             .build()
     }
 
@@ -23,32 +31,48 @@ internal class RequestForwardingForwardParamsTest {
     fun body() {
         val params =
             RequestForwardingForwardParams.builder()
-                .method("POST")
-                .route("/people/search")
-                .data(null)
-                .headers(JsonValue.from(mapOf("content-type" to "application/json")))
-                .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+                .method("method")
+                .route("route")
+                .data("data")
+                .params(
+                    RequestForwardingForwardParams.Params.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
+                .requestHeaders(
+                    RequestForwardingForwardParams.RequestHeaders.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
                 .build()
 
         val body = params._body()
 
-        assertThat(body.method()).isEqualTo("POST")
-        assertThat(body.route()).isEqualTo("/people/search")
-        assertThat(body.data()).isEmpty
-        assertThat(body._headers_())
-            .isEqualTo(JsonValue.from(mapOf("content-type" to "application/json")))
-        assertThat(body._params())
-            .isEqualTo(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+        assertThat(body.method()).isEqualTo("method")
+        assertThat(body.route()).isEqualTo("route")
+        assertThat(body.data()).contains("data")
+        assertThat(body.params())
+            .contains(
+                RequestForwardingForwardParams.Params.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+        assertThat(body.requestHeaders())
+            .contains(
+                RequestForwardingForwardParams.RequestHeaders.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
         val params =
-            RequestForwardingForwardParams.builder().method("POST").route("/people/search").build()
+            RequestForwardingForwardParams.builder().method("method").route("route").build()
 
         val body = params._body()
 
-        assertThat(body.method()).isEqualTo("POST")
-        assertThat(body.route()).isEqualTo("/people/search")
+        assertThat(body.method()).isEqualTo("method")
+        assertThat(body.route()).isEqualTo("route")
     }
 }

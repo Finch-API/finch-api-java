@@ -19,6 +19,7 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 class HrisDirectoryListPageResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val individuals: JsonField<List<IndividualInDirectory>>,
     private val paging: JsonField<Paging>,

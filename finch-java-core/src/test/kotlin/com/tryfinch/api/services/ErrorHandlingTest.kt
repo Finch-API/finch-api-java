@@ -22,6 +22,7 @@ import com.tryfinch.api.errors.RateLimitException
 import com.tryfinch.api.errors.UnauthorizedException
 import com.tryfinch.api.errors.UnexpectedStatusCodeException
 import com.tryfinch.api.errors.UnprocessableEntityException
+import com.tryfinch.api.models.HrisCompanyRetrieveParams
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.entry
 import org.junit.jupiter.api.BeforeEach
@@ -67,7 +68,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<BadRequestException> { companyService.retrieve() }
+        val e =
+            assertThrows<BadRequestException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(400)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -84,7 +92,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<BadRequestException> { companyService.retrieve() }
+        val e =
+            assertThrows<BadRequestException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(400)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -101,7 +116,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<UnauthorizedException> { companyService.retrieve() }
+        val e =
+            assertThrows<UnauthorizedException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(401)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -118,7 +140,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<UnauthorizedException> { companyService.retrieve() }
+        val e =
+            assertThrows<UnauthorizedException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(401)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -135,7 +164,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<PermissionDeniedException> { companyService.retrieve() }
+        val e =
+            assertThrows<PermissionDeniedException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(403)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -152,7 +188,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<PermissionDeniedException> { companyService.retrieve() }
+        val e =
+            assertThrows<PermissionDeniedException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(403)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -169,7 +212,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<NotFoundException> { companyService.retrieve() }
+        val e =
+            assertThrows<NotFoundException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(404)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -186,7 +236,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<NotFoundException> { companyService.retrieve() }
+        val e =
+            assertThrows<NotFoundException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(404)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -203,7 +260,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<UnprocessableEntityException> { companyService.retrieve() }
+        val e =
+            assertThrows<UnprocessableEntityException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(422)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -220,7 +284,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<UnprocessableEntityException> { companyService.retrieve() }
+        val e =
+            assertThrows<UnprocessableEntityException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(422)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -237,7 +308,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<RateLimitException> { companyService.retrieve() }
+        val e =
+            assertThrows<RateLimitException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(429)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -254,7 +332,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<RateLimitException> { companyService.retrieve() }
+        val e =
+            assertThrows<RateLimitException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(429)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -271,7 +356,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<InternalServerException> { companyService.retrieve() }
+        val e =
+            assertThrows<InternalServerException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(500)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -288,7 +380,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<InternalServerException> { companyService.retrieve() }
+        val e =
+            assertThrows<InternalServerException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(500)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -305,7 +404,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<UnexpectedStatusCodeException> { companyService.retrieve() }
+        val e =
+            assertThrows<UnexpectedStatusCodeException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(999)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -322,7 +428,14 @@ internal class ErrorHandlingTest {
                 )
         )
 
-        val e = assertThrows<UnexpectedStatusCodeException> { companyService.retrieve() }
+        val e =
+            assertThrows<UnexpectedStatusCodeException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e.statusCode()).isEqualTo(999)
         assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
@@ -337,7 +450,14 @@ internal class ErrorHandlingTest {
                 .willReturn(status(200).withHeader(HEADER_NAME, HEADER_VALUE).withBody(NOT_JSON))
         )
 
-        val e = assertThrows<FinchException> { companyService.retrieve() }
+        val e =
+            assertThrows<FinchException> {
+                companyService.retrieve(
+                    HrisCompanyRetrieveParams.builder()
+                        .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                        .build()
+                )
+            }
 
         assertThat(e).hasMessage("Error reading response")
     }

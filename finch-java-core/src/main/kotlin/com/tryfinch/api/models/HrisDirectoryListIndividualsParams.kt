@@ -5,6 +5,7 @@ package com.tryfinch.api.models
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -13,11 +14,15 @@ import kotlin.jvm.optionals.getOrNull
 @Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsParams
 private constructor(
+    private val entityIds: List<String>?,
     private val limit: Long?,
     private val offset: Long?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /** Number of employees to return (defaults to all) */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
@@ -47,6 +52,7 @@ private constructor(
     /** A builder for [HrisDirectoryListIndividualsParams]. */
     class Builder internal constructor() {
 
+        private var entityIds: MutableList<String>? = null
         private var limit: Long? = null
         private var offset: Long? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -55,12 +61,30 @@ private constructor(
         @JvmSynthetic
         internal fun from(hrisDirectoryListIndividualsParams: HrisDirectoryListIndividualsParams) =
             apply {
+                entityIds = hrisDirectoryListIndividualsParams.entityIds?.toMutableList()
                 limit = hrisDirectoryListIndividualsParams.limit
                 offset = hrisDirectoryListIndividualsParams.offset
                 additionalHeaders = hrisDirectoryListIndividualsParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
                     hrisDirectoryListIndividualsParams.additionalQueryParams.toBuilder()
             }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /** Alias for calling [Builder.entityIds] with `entityIds.orElse(null)`. */
+        fun entityIds(entityIds: Optional<List<String>>) = entityIds(entityIds.getOrNull())
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         /** Number of employees to return (defaults to all) */
         fun limit(limit: Long?) = apply { this.limit = limit }
@@ -193,6 +217,7 @@ private constructor(
          */
         fun build(): HrisDirectoryListIndividualsParams =
             HrisDirectoryListIndividualsParams(
+                entityIds?.toImmutable(),
                 limit,
                 offset,
                 additionalHeaders.build(),
@@ -205,6 +230,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
                 limit?.let { put("limit", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
                 putAll(additionalQueryParams)
@@ -217,6 +243,7 @@ private constructor(
         }
 
         return other is HrisDirectoryListIndividualsParams &&
+            entityIds == other.entityIds &&
             limit == other.limit &&
             offset == other.offset &&
             additionalHeaders == other.additionalHeaders &&
@@ -224,8 +251,8 @@ private constructor(
     }
 
     override fun hashCode(): Int =
-        Objects.hash(limit, offset, additionalHeaders, additionalQueryParams)
+        Objects.hash(entityIds, limit, offset, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisDirectoryListIndividualsParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisDirectoryListIndividualsParams{entityIds=$entityIds, limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

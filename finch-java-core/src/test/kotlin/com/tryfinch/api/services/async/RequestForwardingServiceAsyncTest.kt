@@ -24,11 +24,19 @@ internal class RequestForwardingServiceAsyncTest {
         val responseFuture =
             requestForwardingServiceAsync.forward(
                 RequestForwardingForwardParams.builder()
-                    .method("POST")
-                    .route("/people/search")
-                    .data(null)
-                    .headers(JsonValue.from(mapOf("content-type" to "application/json")))
-                    .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+                    .method("method")
+                    .route("route")
+                    .data("data")
+                    .params(
+                        RequestForwardingForwardParams.Params.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .requestHeaders(
+                        RequestForwardingForwardParams.RequestHeaders.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .build()
             )
 

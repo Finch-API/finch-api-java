@@ -4,6 +4,7 @@ package com.tryfinch.api.services.blocking.payroll
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -19,7 +20,13 @@ internal class PayGroupServiceTest {
                 .build()
         val payGroupService = client.payroll().payGroups()
 
-        val payGroup = payGroupService.retrieve("pay_group_id")
+        val payGroup =
+            payGroupService.retrieve(
+                PayrollPayGroupRetrieveParams.builder()
+                    .payGroupId("pay_group_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
 
         payGroup.validate()
     }

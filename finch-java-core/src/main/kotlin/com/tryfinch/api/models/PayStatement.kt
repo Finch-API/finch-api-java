@@ -21,15 +21,16 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class PayStatement
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val earnings: JsonField<List<Earning?>>,
-    private val employeeDeductions: JsonField<List<EmployeeDeduction?>>,
-    private val employerContributions: JsonField<List<EmployerContribution?>>,
+    private val employeeDeductions: JsonField<List<EmployeeDeduction>>,
+    private val employerContributions: JsonField<List<EmployerContribution>>,
     private val grossPay: JsonField<Money>,
     private val individualId: JsonField<String>,
     private val netPay: JsonField<Money>,
     private val paymentMethod: JsonField<PaymentMethod>,
-    private val taxes: JsonField<List<Tax?>>,
+    private val taxes: JsonField<List<Tax>>,
     private val totalHours: JsonField<Double>,
     private val type: JsonField<Type>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -42,10 +43,10 @@ private constructor(
         earnings: JsonField<List<Earning?>> = JsonMissing.of(),
         @JsonProperty("employee_deductions")
         @ExcludeMissing
-        employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
+        employeeDeductions: JsonField<List<EmployeeDeduction>> = JsonMissing.of(),
         @JsonProperty("employer_contributions")
         @ExcludeMissing
-        employerContributions: JsonField<List<EmployerContribution?>> = JsonMissing.of(),
+        employerContributions: JsonField<List<EmployerContribution>> = JsonMissing.of(),
         @JsonProperty("gross_pay") @ExcludeMissing grossPay: JsonField<Money> = JsonMissing.of(),
         @JsonProperty("individual_id")
         @ExcludeMissing
@@ -54,7 +55,7 @@ private constructor(
         @JsonProperty("payment_method")
         @ExcludeMissing
         paymentMethod: JsonField<PaymentMethod> = JsonMissing.of(),
-        @JsonProperty("taxes") @ExcludeMissing taxes: JsonField<List<Tax?>> = JsonMissing.of(),
+        @JsonProperty("taxes") @ExcludeMissing taxes: JsonField<List<Tax>> = JsonMissing.of(),
         @JsonProperty("total_hours")
         @ExcludeMissing
         totalHours: JsonField<Double> = JsonMissing.of(),
@@ -87,14 +88,14 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun employeeDeductions(): Optional<List<EmployeeDeduction?>> =
+    fun employeeDeductions(): Optional<List<EmployeeDeduction>> =
         employeeDeductions.getOptional("employee_deductions")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun employerContributions(): Optional<List<EmployerContribution?>> =
+    fun employerContributions(): Optional<List<EmployerContribution>> =
         employerContributions.getOptional("employer_contributions")
 
     /**
@@ -131,7 +132,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun taxes(): Optional<List<Tax?>> = taxes.getOptional("taxes")
+    fun taxes(): Optional<List<Tax>> = taxes.getOptional("taxes")
 
     /**
      * The number of hours worked for this pay period
@@ -164,7 +165,7 @@ private constructor(
      */
     @JsonProperty("employee_deductions")
     @ExcludeMissing
-    fun _employeeDeductions(): JsonField<List<EmployeeDeduction?>> = employeeDeductions
+    fun _employeeDeductions(): JsonField<List<EmployeeDeduction>> = employeeDeductions
 
     /**
      * Returns the raw JSON value of [employerContributions].
@@ -174,7 +175,7 @@ private constructor(
      */
     @JsonProperty("employer_contributions")
     @ExcludeMissing
-    fun _employerContributions(): JsonField<List<EmployerContribution?>> = employerContributions
+    fun _employerContributions(): JsonField<List<EmployerContribution>> = employerContributions
 
     /**
      * Returns the raw JSON value of [grossPay].
@@ -213,7 +214,7 @@ private constructor(
      *
      * Unlike [taxes], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax?>> = taxes
+    @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax>> = taxes
 
     /**
      * Returns the raw JSON value of [totalHours].
@@ -267,13 +268,13 @@ private constructor(
     class Builder internal constructor() {
 
         private var earnings: JsonField<MutableList<Earning?>>? = null
-        private var employeeDeductions: JsonField<MutableList<EmployeeDeduction?>>? = null
-        private var employerContributions: JsonField<MutableList<EmployerContribution?>>? = null
+        private var employeeDeductions: JsonField<MutableList<EmployeeDeduction>>? = null
+        private var employerContributions: JsonField<MutableList<EmployerContribution>>? = null
         private var grossPay: JsonField<Money>? = null
         private var individualId: JsonField<String>? = null
         private var netPay: JsonField<Money>? = null
         private var paymentMethod: JsonField<PaymentMethod>? = null
-        private var taxes: JsonField<MutableList<Tax?>>? = null
+        private var taxes: JsonField<MutableList<Tax>>? = null
         private var totalHours: JsonField<Double>? = null
         private var type: JsonField<Type>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -323,23 +324,23 @@ private constructor(
         }
 
         /** The array of deductions objects associated with this pay statement. */
-        fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) =
+        fun employeeDeductions(employeeDeductions: List<EmployeeDeduction>?) =
             employeeDeductions(JsonField.ofNullable(employeeDeductions))
 
         /**
          * Alias for calling [Builder.employeeDeductions] with `employeeDeductions.orElse(null)`.
          */
-        fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction?>>) =
+        fun employeeDeductions(employeeDeductions: Optional<List<EmployeeDeduction>>) =
             employeeDeductions(employeeDeductions.getOrNull())
 
         /**
          * Sets [Builder.employeeDeductions] to an arbitrary JSON value.
          *
          * You should usually call [Builder.employeeDeductions] with a well-typed
-         * `List<EmployeeDeduction?>` value instead. This method is primarily for setting the field
+         * `List<EmployeeDeduction>` value instead. This method is primarily for setting the field
          * to an undocumented or not yet supported value.
          */
-        fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) = apply {
+        fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction>>) = apply {
             this.employeeDeductions = employeeDeductions.map { it.toMutableList() }
         }
 
@@ -355,24 +356,24 @@ private constructor(
                 }
         }
 
-        fun employerContributions(employerContributions: List<EmployerContribution?>?) =
+        fun employerContributions(employerContributions: List<EmployerContribution>?) =
             employerContributions(JsonField.ofNullable(employerContributions))
 
         /**
          * Alias for calling [Builder.employerContributions] with
          * `employerContributions.orElse(null)`.
          */
-        fun employerContributions(employerContributions: Optional<List<EmployerContribution?>>) =
+        fun employerContributions(employerContributions: Optional<List<EmployerContribution>>) =
             employerContributions(employerContributions.getOrNull())
 
         /**
          * Sets [Builder.employerContributions] to an arbitrary JSON value.
          *
          * You should usually call [Builder.employerContributions] with a well-typed
-         * `List<EmployerContribution?>` value instead. This method is primarily for setting the
+         * `List<EmployerContribution>` value instead. This method is primarily for setting the
          * field to an undocumented or not yet supported value.
          */
-        fun employerContributions(employerContributions: JsonField<List<EmployerContribution?>>) =
+        fun employerContributions(employerContributions: JsonField<List<EmployerContribution>>) =
             apply {
                 this.employerContributions = employerContributions.map { it.toMutableList() }
             }
@@ -449,19 +450,18 @@ private constructor(
         }
 
         /** The array of taxes objects associated with this pay statement. */
-        fun taxes(taxes: List<Tax?>?) = taxes(JsonField.ofNullable(taxes))
+        fun taxes(taxes: List<Tax>?) = taxes(JsonField.ofNullable(taxes))
 
         /** Alias for calling [Builder.taxes] with `taxes.orElse(null)`. */
-        fun taxes(taxes: Optional<List<Tax?>>) = taxes(taxes.getOrNull())
+        fun taxes(taxes: Optional<List<Tax>>) = taxes(taxes.getOrNull())
 
         /**
          * Sets [Builder.taxes] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.taxes] with a well-typed `List<Tax?>` value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.taxes] with a well-typed `List<Tax>` value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun taxes(taxes: JsonField<List<Tax?>>) = apply {
+        fun taxes(taxes: JsonField<List<Tax>>) = apply {
             this.taxes = taxes.map { it.toMutableList() }
         }
 
@@ -577,13 +577,13 @@ private constructor(
         }
 
         earnings().ifPresent { it.forEach { it?.validate() } }
-        employeeDeductions().ifPresent { it.forEach { it?.validate() } }
-        employerContributions().ifPresent { it.forEach { it?.validate() } }
+        employeeDeductions().ifPresent { it.forEach { it.validate() } }
+        employerContributions().ifPresent { it.forEach { it.validate() } }
         grossPay().ifPresent { it.validate() }
         individualId()
         netPay().ifPresent { it.validate() }
         paymentMethod().ifPresent { it.validate() }
-        taxes().ifPresent { it.forEach { it?.validate() } }
+        taxes().ifPresent { it.forEach { it.validate() } }
         totalHours()
         type().ifPresent { it.validate() }
         validated = true
@@ -605,19 +605,18 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (earnings.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
-            (employeeDeductions.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
-                ?: 0) +
-            (employerContributions.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
-                ?: 0) +
+            (employeeDeductions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (employerContributions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (grossPay.asKnown().getOrNull()?.validity() ?: 0) +
             (if (individualId.asKnown().isPresent) 1 else 0) +
             (netPay.asKnown().getOrNull()?.validity() ?: 0) +
             (paymentMethod.asKnown().getOrNull()?.validity() ?: 0) +
-            (taxes.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+            (taxes.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (totalHours.asKnown().isPresent) 1 else 0) +
             (type.asKnown().getOrNull()?.validity() ?: 0)
 
     class Earning
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val amount: JsonField<Long>,
         private val currency: JsonField<String>,
@@ -1173,6 +1172,7 @@ private constructor(
         }
 
         class Attributes
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val metadata: JsonField<Metadata>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1186,6 +1186,9 @@ private constructor(
             ) : this(metadata, mutableMapOf())
 
             /**
+             * The metadata to be attached to the entity by existing rules. It is a key-value pairs
+             * where the values can be of any type (string, number, boolean, object, array, etc.).
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
@@ -1239,6 +1242,11 @@ private constructor(
                     additionalProperties = attributes.additionalProperties.toMutableMap()
                 }
 
+                /**
+                 * The metadata to be attached to the entity by existing rules. It is a key-value
+                 * pairs where the values can be of any type (string, number, boolean, object,
+                 * array, etc.).
+                 */
                 fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
                 /**
@@ -1319,93 +1327,37 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int = (metadata.asKnown().getOrNull()?.validity() ?: 0)
 
+            /**
+             * The metadata to be attached to the entity by existing rules. It is a key-value pairs
+             * where the values can be of any type (string, number, boolean, object, array, etc.).
+             */
             class Metadata
+            @JsonCreator
             private constructor(
-                private val metadata: JsonField<InnerMetadata>,
-                private val additionalProperties: MutableMap<String, JsonValue>,
+                @com.fasterxml.jackson.annotation.JsonValue
+                private val additionalProperties: Map<String, JsonValue>
             ) {
-
-                @JsonCreator
-                private constructor(
-                    @JsonProperty("metadata")
-                    @ExcludeMissing
-                    metadata: JsonField<InnerMetadata> = JsonMissing.of()
-                ) : this(metadata, mutableMapOf())
-
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 *
-                 * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-                 *   unexpectedly missing or null (e.g. if the server responded with an unexpected
-                 *   value).
-                 */
-                fun metadata(): InnerMetadata = metadata.getRequired("metadata")
-
-                /**
-                 * Returns the raw JSON value of [metadata].
-                 *
-                 * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
-                 * type.
-                 */
-                @JsonProperty("metadata")
-                @ExcludeMissing
-                fun _metadata(): JsonField<InnerMetadata> = metadata
-
-                @JsonAnySetter
-                private fun putAdditionalProperty(key: String, value: JsonValue) {
-                    additionalProperties.put(key, value)
-                }
 
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> =
-                    Collections.unmodifiableMap(additionalProperties)
+                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
                 fun toBuilder() = Builder().from(this)
 
                 companion object {
 
-                    /**
-                     * Returns a mutable builder for constructing an instance of [Metadata].
-                     *
-                     * The following fields are required:
-                     * ```java
-                     * .metadata()
-                     * ```
-                     */
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
                 /** A builder for [Metadata]. */
                 class Builder internal constructor() {
 
-                    private var metadata: JsonField<InnerMetadata>? = null
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(metadata: Metadata) = apply {
-                        this.metadata = metadata.metadata
                         additionalProperties = metadata.additionalProperties.toMutableMap()
-                    }
-
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
-
-                    /**
-                     * Sets [Builder.metadata] to an arbitrary JSON value.
-                     *
-                     * You should usually call [Builder.metadata] with a well-typed [InnerMetadata]
-                     * value instead. This method is primarily for setting the field to an
-                     * undocumented or not yet supported value.
-                     */
-                    fun metadata(metadata: JsonField<InnerMetadata>) = apply {
-                        this.metadata = metadata
                     }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1434,19 +1386,8 @@ private constructor(
                      * Returns an immutable instance of [Metadata].
                      *
                      * Further updates to this [Builder] will not mutate the returned instance.
-                     *
-                     * The following fields are required:
-                     * ```java
-                     * .metadata()
-                     * ```
-                     *
-                     * @throws IllegalStateException if any required field is unset.
                      */
-                    fun build(): Metadata =
-                        Metadata(
-                            checkRequired("metadata", metadata),
-                            additionalProperties.toMutableMap(),
-                        )
+                    fun build(): Metadata = Metadata(additionalProperties.toImmutable())
                 }
 
                 private var validated: Boolean = false
@@ -1456,7 +1397,6 @@ private constructor(
                         return@apply
                     }
 
-                    metadata().validate()
                     validated = true
                 }
 
@@ -1475,140 +1415,24 @@ private constructor(
                  * Used for best match union deserialization.
                  */
                 @JvmSynthetic
-                internal fun validity(): Int = (metadata.asKnown().getOrNull()?.validity() ?: 0)
-
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
-                class InnerMetadata
-                @JsonCreator
-                private constructor(
-                    @com.fasterxml.jackson.annotation.JsonValue
-                    private val additionalProperties: Map<String, JsonValue>
-                ) {
-
-                    @JsonAnyGetter
-                    @ExcludeMissing
-                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                    fun toBuilder() = Builder().from(this)
-
-                    companion object {
-
-                        /**
-                         * Returns a mutable builder for constructing an instance of
-                         * [InnerMetadata].
-                         */
-                        @JvmStatic fun builder() = Builder()
+                internal fun validity(): Int =
+                    additionalProperties.count { (_, value) ->
+                        !value.isNull() && !value.isMissing()
                     }
-
-                    /** A builder for [InnerMetadata]. */
-                    class Builder internal constructor() {
-
-                        private var additionalProperties: MutableMap<String, JsonValue> =
-                            mutableMapOf()
-
-                        @JvmSynthetic
-                        internal fun from(innerMetadata: InnerMetadata) = apply {
-                            additionalProperties = innerMetadata.additionalProperties.toMutableMap()
-                        }
-
-                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.clear()
-                                putAllAdditionalProperties(additionalProperties)
-                            }
-
-                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                            additionalProperties.put(key, value)
-                        }
-
-                        fun putAllAdditionalProperties(
-                            additionalProperties: Map<String, JsonValue>
-                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
-
-                        fun removeAdditionalProperty(key: String) = apply {
-                            additionalProperties.remove(key)
-                        }
-
-                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
-
-                        /**
-                         * Returns an immutable instance of [InnerMetadata].
-                         *
-                         * Further updates to this [Builder] will not mutate the returned instance.
-                         */
-                        fun build(): InnerMetadata =
-                            InnerMetadata(additionalProperties.toImmutable())
-                    }
-
-                    private var validated: Boolean = false
-
-                    fun validate(): InnerMetadata = apply {
-                        if (validated) {
-                            return@apply
-                        }
-
-                        validated = true
-                    }
-
-                    fun isValid(): Boolean =
-                        try {
-                            validate()
-                            true
-                        } catch (e: FinchInvalidDataException) {
-                            false
-                        }
-
-                    /**
-                     * Returns a score indicating how many valid values are contained in this object
-                     * recursively.
-                     *
-                     * Used for best match union deserialization.
-                     */
-                    @JvmSynthetic
-                    internal fun validity(): Int =
-                        additionalProperties.count { (_, value) ->
-                            !value.isNull() && !value.isMissing()
-                        }
-
-                    override fun equals(other: Any?): Boolean {
-                        if (this === other) {
-                            return true
-                        }
-
-                        return other is InnerMetadata &&
-                            additionalProperties == other.additionalProperties
-                    }
-
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-
-                    override fun hashCode(): Int = hashCode
-
-                    override fun toString() =
-                        "InnerMetadata{additionalProperties=$additionalProperties}"
-                }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
                         return true
                     }
 
-                    return other is Metadata &&
-                        metadata == other.metadata &&
-                        additionalProperties == other.additionalProperties
+                    return other is Metadata && additionalProperties == other.additionalProperties
                 }
 
-                private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
 
                 override fun hashCode(): Int = hashCode
 
-                override fun toString() =
-                    "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1655,6 +1479,7 @@ private constructor(
     }
 
     class EmployeeDeduction
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val amount: JsonField<Long>,
         private val currency: JsonField<String>,
@@ -2012,6 +1837,7 @@ private constructor(
                 (attributes.asKnown().getOrNull()?.validity() ?: 0)
 
         class Attributes
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val metadata: JsonField<Metadata>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2025,6 +1851,9 @@ private constructor(
             ) : this(metadata, mutableMapOf())
 
             /**
+             * The metadata to be attached to the entity by existing rules. It is a key-value pairs
+             * where the values can be of any type (string, number, boolean, object, array, etc.).
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
@@ -2078,6 +1907,11 @@ private constructor(
                     additionalProperties = attributes.additionalProperties.toMutableMap()
                 }
 
+                /**
+                 * The metadata to be attached to the entity by existing rules. It is a key-value
+                 * pairs where the values can be of any type (string, number, boolean, object,
+                 * array, etc.).
+                 */
                 fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
                 /**
@@ -2158,93 +1992,37 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int = (metadata.asKnown().getOrNull()?.validity() ?: 0)
 
+            /**
+             * The metadata to be attached to the entity by existing rules. It is a key-value pairs
+             * where the values can be of any type (string, number, boolean, object, array, etc.).
+             */
             class Metadata
+            @JsonCreator
             private constructor(
-                private val metadata: JsonField<InnerMetadata>,
-                private val additionalProperties: MutableMap<String, JsonValue>,
+                @com.fasterxml.jackson.annotation.JsonValue
+                private val additionalProperties: Map<String, JsonValue>
             ) {
-
-                @JsonCreator
-                private constructor(
-                    @JsonProperty("metadata")
-                    @ExcludeMissing
-                    metadata: JsonField<InnerMetadata> = JsonMissing.of()
-                ) : this(metadata, mutableMapOf())
-
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 *
-                 * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-                 *   unexpectedly missing or null (e.g. if the server responded with an unexpected
-                 *   value).
-                 */
-                fun metadata(): InnerMetadata = metadata.getRequired("metadata")
-
-                /**
-                 * Returns the raw JSON value of [metadata].
-                 *
-                 * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
-                 * type.
-                 */
-                @JsonProperty("metadata")
-                @ExcludeMissing
-                fun _metadata(): JsonField<InnerMetadata> = metadata
-
-                @JsonAnySetter
-                private fun putAdditionalProperty(key: String, value: JsonValue) {
-                    additionalProperties.put(key, value)
-                }
 
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> =
-                    Collections.unmodifiableMap(additionalProperties)
+                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
                 fun toBuilder() = Builder().from(this)
 
                 companion object {
 
-                    /**
-                     * Returns a mutable builder for constructing an instance of [Metadata].
-                     *
-                     * The following fields are required:
-                     * ```java
-                     * .metadata()
-                     * ```
-                     */
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
                 /** A builder for [Metadata]. */
                 class Builder internal constructor() {
 
-                    private var metadata: JsonField<InnerMetadata>? = null
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(metadata: Metadata) = apply {
-                        this.metadata = metadata.metadata
                         additionalProperties = metadata.additionalProperties.toMutableMap()
-                    }
-
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
-
-                    /**
-                     * Sets [Builder.metadata] to an arbitrary JSON value.
-                     *
-                     * You should usually call [Builder.metadata] with a well-typed [InnerMetadata]
-                     * value instead. This method is primarily for setting the field to an
-                     * undocumented or not yet supported value.
-                     */
-                    fun metadata(metadata: JsonField<InnerMetadata>) = apply {
-                        this.metadata = metadata
                     }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -2273,19 +2051,8 @@ private constructor(
                      * Returns an immutable instance of [Metadata].
                      *
                      * Further updates to this [Builder] will not mutate the returned instance.
-                     *
-                     * The following fields are required:
-                     * ```java
-                     * .metadata()
-                     * ```
-                     *
-                     * @throws IllegalStateException if any required field is unset.
                      */
-                    fun build(): Metadata =
-                        Metadata(
-                            checkRequired("metadata", metadata),
-                            additionalProperties.toMutableMap(),
-                        )
+                    fun build(): Metadata = Metadata(additionalProperties.toImmutable())
                 }
 
                 private var validated: Boolean = false
@@ -2295,7 +2062,6 @@ private constructor(
                         return@apply
                     }
 
-                    metadata().validate()
                     validated = true
                 }
 
@@ -2314,140 +2080,24 @@ private constructor(
                  * Used for best match union deserialization.
                  */
                 @JvmSynthetic
-                internal fun validity(): Int = (metadata.asKnown().getOrNull()?.validity() ?: 0)
-
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
-                class InnerMetadata
-                @JsonCreator
-                private constructor(
-                    @com.fasterxml.jackson.annotation.JsonValue
-                    private val additionalProperties: Map<String, JsonValue>
-                ) {
-
-                    @JsonAnyGetter
-                    @ExcludeMissing
-                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                    fun toBuilder() = Builder().from(this)
-
-                    companion object {
-
-                        /**
-                         * Returns a mutable builder for constructing an instance of
-                         * [InnerMetadata].
-                         */
-                        @JvmStatic fun builder() = Builder()
+                internal fun validity(): Int =
+                    additionalProperties.count { (_, value) ->
+                        !value.isNull() && !value.isMissing()
                     }
-
-                    /** A builder for [InnerMetadata]. */
-                    class Builder internal constructor() {
-
-                        private var additionalProperties: MutableMap<String, JsonValue> =
-                            mutableMapOf()
-
-                        @JvmSynthetic
-                        internal fun from(innerMetadata: InnerMetadata) = apply {
-                            additionalProperties = innerMetadata.additionalProperties.toMutableMap()
-                        }
-
-                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.clear()
-                                putAllAdditionalProperties(additionalProperties)
-                            }
-
-                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                            additionalProperties.put(key, value)
-                        }
-
-                        fun putAllAdditionalProperties(
-                            additionalProperties: Map<String, JsonValue>
-                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
-
-                        fun removeAdditionalProperty(key: String) = apply {
-                            additionalProperties.remove(key)
-                        }
-
-                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
-
-                        /**
-                         * Returns an immutable instance of [InnerMetadata].
-                         *
-                         * Further updates to this [Builder] will not mutate the returned instance.
-                         */
-                        fun build(): InnerMetadata =
-                            InnerMetadata(additionalProperties.toImmutable())
-                    }
-
-                    private var validated: Boolean = false
-
-                    fun validate(): InnerMetadata = apply {
-                        if (validated) {
-                            return@apply
-                        }
-
-                        validated = true
-                    }
-
-                    fun isValid(): Boolean =
-                        try {
-                            validate()
-                            true
-                        } catch (e: FinchInvalidDataException) {
-                            false
-                        }
-
-                    /**
-                     * Returns a score indicating how many valid values are contained in this object
-                     * recursively.
-                     *
-                     * Used for best match union deserialization.
-                     */
-                    @JvmSynthetic
-                    internal fun validity(): Int =
-                        additionalProperties.count { (_, value) ->
-                            !value.isNull() && !value.isMissing()
-                        }
-
-                    override fun equals(other: Any?): Boolean {
-                        if (this === other) {
-                            return true
-                        }
-
-                        return other is InnerMetadata &&
-                            additionalProperties == other.additionalProperties
-                    }
-
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-
-                    override fun hashCode(): Int = hashCode
-
-                    override fun toString() =
-                        "InnerMetadata{additionalProperties=$additionalProperties}"
-                }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
                         return true
                     }
 
-                    return other is Metadata &&
-                        metadata == other.metadata &&
-                        additionalProperties == other.additionalProperties
+                    return other is Metadata && additionalProperties == other.additionalProperties
                 }
 
-                private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
 
                 override fun hashCode(): Int = hashCode
 
-                override fun toString() =
-                    "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2494,6 +2144,7 @@ private constructor(
     }
 
     class EmployerContribution
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val currency: JsonField<String>,
         private val name: JsonField<String>,
@@ -2803,6 +2454,7 @@ private constructor(
                 (attributes.asKnown().getOrNull()?.validity() ?: 0)
 
         class Attributes
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val metadata: JsonField<Metadata>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2816,6 +2468,9 @@ private constructor(
             ) : this(metadata, mutableMapOf())
 
             /**
+             * The metadata to be attached to the entity by existing rules. It is a key-value pairs
+             * where the values can be of any type (string, number, boolean, object, array, etc.).
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
@@ -2869,6 +2524,11 @@ private constructor(
                     additionalProperties = attributes.additionalProperties.toMutableMap()
                 }
 
+                /**
+                 * The metadata to be attached to the entity by existing rules. It is a key-value
+                 * pairs where the values can be of any type (string, number, boolean, object,
+                 * array, etc.).
+                 */
                 fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
                 /**
@@ -2949,93 +2609,37 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int = (metadata.asKnown().getOrNull()?.validity() ?: 0)
 
+            /**
+             * The metadata to be attached to the entity by existing rules. It is a key-value pairs
+             * where the values can be of any type (string, number, boolean, object, array, etc.).
+             */
             class Metadata
+            @JsonCreator
             private constructor(
-                private val metadata: JsonField<InnerMetadata>,
-                private val additionalProperties: MutableMap<String, JsonValue>,
+                @com.fasterxml.jackson.annotation.JsonValue
+                private val additionalProperties: Map<String, JsonValue>
             ) {
-
-                @JsonCreator
-                private constructor(
-                    @JsonProperty("metadata")
-                    @ExcludeMissing
-                    metadata: JsonField<InnerMetadata> = JsonMissing.of()
-                ) : this(metadata, mutableMapOf())
-
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 *
-                 * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-                 *   unexpectedly missing or null (e.g. if the server responded with an unexpected
-                 *   value).
-                 */
-                fun metadata(): InnerMetadata = metadata.getRequired("metadata")
-
-                /**
-                 * Returns the raw JSON value of [metadata].
-                 *
-                 * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
-                 * type.
-                 */
-                @JsonProperty("metadata")
-                @ExcludeMissing
-                fun _metadata(): JsonField<InnerMetadata> = metadata
-
-                @JsonAnySetter
-                private fun putAdditionalProperty(key: String, value: JsonValue) {
-                    additionalProperties.put(key, value)
-                }
 
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> =
-                    Collections.unmodifiableMap(additionalProperties)
+                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
                 fun toBuilder() = Builder().from(this)
 
                 companion object {
 
-                    /**
-                     * Returns a mutable builder for constructing an instance of [Metadata].
-                     *
-                     * The following fields are required:
-                     * ```java
-                     * .metadata()
-                     * ```
-                     */
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
                 /** A builder for [Metadata]. */
                 class Builder internal constructor() {
 
-                    private var metadata: JsonField<InnerMetadata>? = null
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(metadata: Metadata) = apply {
-                        this.metadata = metadata.metadata
                         additionalProperties = metadata.additionalProperties.toMutableMap()
-                    }
-
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
-
-                    /**
-                     * Sets [Builder.metadata] to an arbitrary JSON value.
-                     *
-                     * You should usually call [Builder.metadata] with a well-typed [InnerMetadata]
-                     * value instead. This method is primarily for setting the field to an
-                     * undocumented or not yet supported value.
-                     */
-                    fun metadata(metadata: JsonField<InnerMetadata>) = apply {
-                        this.metadata = metadata
                     }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -3064,19 +2668,8 @@ private constructor(
                      * Returns an immutable instance of [Metadata].
                      *
                      * Further updates to this [Builder] will not mutate the returned instance.
-                     *
-                     * The following fields are required:
-                     * ```java
-                     * .metadata()
-                     * ```
-                     *
-                     * @throws IllegalStateException if any required field is unset.
                      */
-                    fun build(): Metadata =
-                        Metadata(
-                            checkRequired("metadata", metadata),
-                            additionalProperties.toMutableMap(),
-                        )
+                    fun build(): Metadata = Metadata(additionalProperties.toImmutable())
                 }
 
                 private var validated: Boolean = false
@@ -3086,7 +2679,6 @@ private constructor(
                         return@apply
                     }
 
-                    metadata().validate()
                     validated = true
                 }
 
@@ -3105,140 +2697,24 @@ private constructor(
                  * Used for best match union deserialization.
                  */
                 @JvmSynthetic
-                internal fun validity(): Int = (metadata.asKnown().getOrNull()?.validity() ?: 0)
-
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
-                class InnerMetadata
-                @JsonCreator
-                private constructor(
-                    @com.fasterxml.jackson.annotation.JsonValue
-                    private val additionalProperties: Map<String, JsonValue>
-                ) {
-
-                    @JsonAnyGetter
-                    @ExcludeMissing
-                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                    fun toBuilder() = Builder().from(this)
-
-                    companion object {
-
-                        /**
-                         * Returns a mutable builder for constructing an instance of
-                         * [InnerMetadata].
-                         */
-                        @JvmStatic fun builder() = Builder()
+                internal fun validity(): Int =
+                    additionalProperties.count { (_, value) ->
+                        !value.isNull() && !value.isMissing()
                     }
-
-                    /** A builder for [InnerMetadata]. */
-                    class Builder internal constructor() {
-
-                        private var additionalProperties: MutableMap<String, JsonValue> =
-                            mutableMapOf()
-
-                        @JvmSynthetic
-                        internal fun from(innerMetadata: InnerMetadata) = apply {
-                            additionalProperties = innerMetadata.additionalProperties.toMutableMap()
-                        }
-
-                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.clear()
-                                putAllAdditionalProperties(additionalProperties)
-                            }
-
-                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                            additionalProperties.put(key, value)
-                        }
-
-                        fun putAllAdditionalProperties(
-                            additionalProperties: Map<String, JsonValue>
-                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
-
-                        fun removeAdditionalProperty(key: String) = apply {
-                            additionalProperties.remove(key)
-                        }
-
-                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
-
-                        /**
-                         * Returns an immutable instance of [InnerMetadata].
-                         *
-                         * Further updates to this [Builder] will not mutate the returned instance.
-                         */
-                        fun build(): InnerMetadata =
-                            InnerMetadata(additionalProperties.toImmutable())
-                    }
-
-                    private var validated: Boolean = false
-
-                    fun validate(): InnerMetadata = apply {
-                        if (validated) {
-                            return@apply
-                        }
-
-                        validated = true
-                    }
-
-                    fun isValid(): Boolean =
-                        try {
-                            validate()
-                            true
-                        } catch (e: FinchInvalidDataException) {
-                            false
-                        }
-
-                    /**
-                     * Returns a score indicating how many valid values are contained in this object
-                     * recursively.
-                     *
-                     * Used for best match union deserialization.
-                     */
-                    @JvmSynthetic
-                    internal fun validity(): Int =
-                        additionalProperties.count { (_, value) ->
-                            !value.isNull() && !value.isMissing()
-                        }
-
-                    override fun equals(other: Any?): Boolean {
-                        if (this === other) {
-                            return true
-                        }
-
-                        return other is InnerMetadata &&
-                            additionalProperties == other.additionalProperties
-                    }
-
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-
-                    override fun hashCode(): Int = hashCode
-
-                    override fun toString() =
-                        "InnerMetadata{additionalProperties=$additionalProperties}"
-                }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
                         return true
                     }
 
-                    return other is Metadata &&
-                        metadata == other.metadata &&
-                        additionalProperties == other.additionalProperties
+                    return other is Metadata && additionalProperties == other.additionalProperties
                 }
 
-                private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
 
                 override fun hashCode(): Int = hashCode
 
-                override fun toString() =
-                    "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -3419,6 +2895,7 @@ private constructor(
     }
 
     class Tax
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val currency: JsonField<String>,
         private val employer: JsonField<Boolean>,
@@ -3916,6 +3393,7 @@ private constructor(
         }
 
         class Attributes
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val metadata: JsonField<Metadata>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3929,6 +3407,9 @@ private constructor(
             ) : this(metadata, mutableMapOf())
 
             /**
+             * The metadata to be attached to the entity by existing rules. It is a key-value pairs
+             * where the values can be of any type (string, number, boolean, object, array, etc.).
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
@@ -3982,6 +3463,11 @@ private constructor(
                     additionalProperties = attributes.additionalProperties.toMutableMap()
                 }
 
+                /**
+                 * The metadata to be attached to the entity by existing rules. It is a key-value
+                 * pairs where the values can be of any type (string, number, boolean, object,
+                 * array, etc.).
+                 */
                 fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
                 /**
@@ -4062,93 +3548,37 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int = (metadata.asKnown().getOrNull()?.validity() ?: 0)
 
+            /**
+             * The metadata to be attached to the entity by existing rules. It is a key-value pairs
+             * where the values can be of any type (string, number, boolean, object, array, etc.).
+             */
             class Metadata
+            @JsonCreator
             private constructor(
-                private val metadata: JsonField<InnerMetadata>,
-                private val additionalProperties: MutableMap<String, JsonValue>,
+                @com.fasterxml.jackson.annotation.JsonValue
+                private val additionalProperties: Map<String, JsonValue>
             ) {
-
-                @JsonCreator
-                private constructor(
-                    @JsonProperty("metadata")
-                    @ExcludeMissing
-                    metadata: JsonField<InnerMetadata> = JsonMissing.of()
-                ) : this(metadata, mutableMapOf())
-
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 *
-                 * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-                 *   unexpectedly missing or null (e.g. if the server responded with an unexpected
-                 *   value).
-                 */
-                fun metadata(): InnerMetadata = metadata.getRequired("metadata")
-
-                /**
-                 * Returns the raw JSON value of [metadata].
-                 *
-                 * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected
-                 * type.
-                 */
-                @JsonProperty("metadata")
-                @ExcludeMissing
-                fun _metadata(): JsonField<InnerMetadata> = metadata
-
-                @JsonAnySetter
-                private fun putAdditionalProperty(key: String, value: JsonValue) {
-                    additionalProperties.put(key, value)
-                }
 
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> =
-                    Collections.unmodifiableMap(additionalProperties)
+                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
                 fun toBuilder() = Builder().from(this)
 
                 companion object {
 
-                    /**
-                     * Returns a mutable builder for constructing an instance of [Metadata].
-                     *
-                     * The following fields are required:
-                     * ```java
-                     * .metadata()
-                     * ```
-                     */
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
                 /** A builder for [Metadata]. */
                 class Builder internal constructor() {
 
-                    private var metadata: JsonField<InnerMetadata>? = null
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(metadata: Metadata) = apply {
-                        this.metadata = metadata.metadata
                         additionalProperties = metadata.additionalProperties.toMutableMap()
-                    }
-
-                    /**
-                     * The metadata to be attached to the entity by existing rules. It is a
-                     * key-value pairs where the values can be of any type (string, number, boolean,
-                     * object, array, etc.).
-                     */
-                    fun metadata(metadata: InnerMetadata) = metadata(JsonField.of(metadata))
-
-                    /**
-                     * Sets [Builder.metadata] to an arbitrary JSON value.
-                     *
-                     * You should usually call [Builder.metadata] with a well-typed [InnerMetadata]
-                     * value instead. This method is primarily for setting the field to an
-                     * undocumented or not yet supported value.
-                     */
-                    fun metadata(metadata: JsonField<InnerMetadata>) = apply {
-                        this.metadata = metadata
                     }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -4177,19 +3607,8 @@ private constructor(
                      * Returns an immutable instance of [Metadata].
                      *
                      * Further updates to this [Builder] will not mutate the returned instance.
-                     *
-                     * The following fields are required:
-                     * ```java
-                     * .metadata()
-                     * ```
-                     *
-                     * @throws IllegalStateException if any required field is unset.
                      */
-                    fun build(): Metadata =
-                        Metadata(
-                            checkRequired("metadata", metadata),
-                            additionalProperties.toMutableMap(),
-                        )
+                    fun build(): Metadata = Metadata(additionalProperties.toImmutable())
                 }
 
                 private var validated: Boolean = false
@@ -4199,7 +3618,6 @@ private constructor(
                         return@apply
                     }
 
-                    metadata().validate()
                     validated = true
                 }
 
@@ -4218,140 +3636,24 @@ private constructor(
                  * Used for best match union deserialization.
                  */
                 @JvmSynthetic
-                internal fun validity(): Int = (metadata.asKnown().getOrNull()?.validity() ?: 0)
-
-                /**
-                 * The metadata to be attached to the entity by existing rules. It is a key-value
-                 * pairs where the values can be of any type (string, number, boolean, object,
-                 * array, etc.).
-                 */
-                class InnerMetadata
-                @JsonCreator
-                private constructor(
-                    @com.fasterxml.jackson.annotation.JsonValue
-                    private val additionalProperties: Map<String, JsonValue>
-                ) {
-
-                    @JsonAnyGetter
-                    @ExcludeMissing
-                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                    fun toBuilder() = Builder().from(this)
-
-                    companion object {
-
-                        /**
-                         * Returns a mutable builder for constructing an instance of
-                         * [InnerMetadata].
-                         */
-                        @JvmStatic fun builder() = Builder()
+                internal fun validity(): Int =
+                    additionalProperties.count { (_, value) ->
+                        !value.isNull() && !value.isMissing()
                     }
-
-                    /** A builder for [InnerMetadata]. */
-                    class Builder internal constructor() {
-
-                        private var additionalProperties: MutableMap<String, JsonValue> =
-                            mutableMapOf()
-
-                        @JvmSynthetic
-                        internal fun from(innerMetadata: InnerMetadata) = apply {
-                            additionalProperties = innerMetadata.additionalProperties.toMutableMap()
-                        }
-
-                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                            apply {
-                                this.additionalProperties.clear()
-                                putAllAdditionalProperties(additionalProperties)
-                            }
-
-                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                            additionalProperties.put(key, value)
-                        }
-
-                        fun putAllAdditionalProperties(
-                            additionalProperties: Map<String, JsonValue>
-                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
-
-                        fun removeAdditionalProperty(key: String) = apply {
-                            additionalProperties.remove(key)
-                        }
-
-                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                            keys.forEach(::removeAdditionalProperty)
-                        }
-
-                        /**
-                         * Returns an immutable instance of [InnerMetadata].
-                         *
-                         * Further updates to this [Builder] will not mutate the returned instance.
-                         */
-                        fun build(): InnerMetadata =
-                            InnerMetadata(additionalProperties.toImmutable())
-                    }
-
-                    private var validated: Boolean = false
-
-                    fun validate(): InnerMetadata = apply {
-                        if (validated) {
-                            return@apply
-                        }
-
-                        validated = true
-                    }
-
-                    fun isValid(): Boolean =
-                        try {
-                            validate()
-                            true
-                        } catch (e: FinchInvalidDataException) {
-                            false
-                        }
-
-                    /**
-                     * Returns a score indicating how many valid values are contained in this object
-                     * recursively.
-                     *
-                     * Used for best match union deserialization.
-                     */
-                    @JvmSynthetic
-                    internal fun validity(): Int =
-                        additionalProperties.count { (_, value) ->
-                            !value.isNull() && !value.isMissing()
-                        }
-
-                    override fun equals(other: Any?): Boolean {
-                        if (this === other) {
-                            return true
-                        }
-
-                        return other is InnerMetadata &&
-                            additionalProperties == other.additionalProperties
-                    }
-
-                    private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-
-                    override fun hashCode(): Int = hashCode
-
-                    override fun toString() =
-                        "InnerMetadata{additionalProperties=$additionalProperties}"
-                }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
                         return true
                     }
 
-                    return other is Metadata &&
-                        metadata == other.metadata &&
-                        additionalProperties == other.additionalProperties
+                    return other is Metadata && additionalProperties == other.additionalProperties
                 }
 
-                private val hashCode: Int by lazy { Objects.hash(metadata, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
 
                 override fun hashCode(): Int = hashCode
 
-                override fun toString() =
-                    "Metadata{metadata=$metadata, additionalProperties=$additionalProperties}"
+                override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
