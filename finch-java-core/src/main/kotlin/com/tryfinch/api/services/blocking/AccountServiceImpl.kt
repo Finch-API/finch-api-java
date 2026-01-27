@@ -4,6 +4,7 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -74,7 +75,11 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
                     .addPathSegments("disconnect")
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
-                    .prepare(clientOptions, params)
+                    .prepare(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -101,7 +106,11 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("introspect")
                     .build()
-                    .prepare(clientOptions, params)
+                    .prepare(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {

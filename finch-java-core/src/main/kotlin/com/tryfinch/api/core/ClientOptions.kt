@@ -552,4 +552,29 @@ private constructor(
         (streamHandlerExecutor as? ExecutorService)?.shutdown()
         sleeper.close()
     }
+
+    @JvmSynthetic
+    internal fun securityHeaders(security: SecurityOptions): Headers {
+        val headers = Headers.builder()
+        if (security.bearerAuth) {
+            accessToken?.let {
+                if (!it.isEmpty()) {
+                    headers.put("Authorization", "Bearer $it")
+                }
+            }
+        }
+        if (security.basicAuth) {
+            clientId?.let { username ->
+                clientSecret?.let { password ->
+                    if (!username.isEmpty() && !password.isEmpty()) {
+                        headers.put(
+                            "Authorization",
+                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
+                        )
+                    }
+                }
+            }
+        }
+        return headers.build()
+    }
 }
