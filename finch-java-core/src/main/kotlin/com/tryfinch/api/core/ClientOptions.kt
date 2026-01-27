@@ -492,21 +492,6 @@ private constructor(
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             headers.put("X-Stainless-Kotlin-Version", KotlinVersion.CURRENT.toString())
             headers.put("Finch-API-Version", "2020-09-17")
-            accessToken?.let {
-                if (!it.isEmpty()) {
-                    headers.put("Authorization", "Bearer $it")
-                }
-            }
-            clientId?.let { username ->
-                clientSecret?.let { password ->
-                    if (!username.isEmpty() && !password.isEmpty()) {
-                        headers.put(
-                            "Authorization",
-                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
-                        )
-                    }
-                }
-            }
             headers.replaceAll(this.headers.build())
             queryParams.replaceAll(this.queryParams.build())
 
@@ -551,5 +536,30 @@ private constructor(
         httpClient.close()
         (streamHandlerExecutor as? ExecutorService)?.shutdown()
         sleeper.close()
+    }
+
+    @JvmSynthetic
+    internal fun securityHeaders(security: SecurityOptions): Headers {
+        val headers = Headers.builder()
+        if (security.bearerAuth) {
+            accessToken?.let {
+                if (!it.isEmpty()) {
+                    headers.put("Authorization", "Bearer $it")
+                }
+            }
+        }
+        if (security.basicAuth) {
+            clientId?.let { username ->
+                clientSecret?.let { password ->
+                    if (!username.isEmpty() && !password.isEmpty()) {
+                        headers.put(
+                            "Authorization",
+                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
+                        )
+                    }
+                }
+            }
+        }
+        return headers.build()
     }
 }
