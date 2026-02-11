@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -17,15 +16,8 @@ internal class JobAutomatedCreateParamsTest {
     fun body() {
         val params = JobAutomatedCreateParams.builder().bodyDataSyncAll().build()
 
-        val body = params._body().getOrNull()
+        val body = params._body()
 
         assertThat(body).isEqualTo(JobAutomatedCreateParams.Body.ofDataSyncAll())
-    }
-
-    @Test
-    fun bodyWithoutOptionalFields() {
-        val params = JobAutomatedCreateParams.builder().build()
-
-        val body = params._body().getOrNull()
     }
 }
