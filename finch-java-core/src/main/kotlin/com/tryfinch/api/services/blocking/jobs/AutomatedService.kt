@@ -43,22 +43,14 @@ interface AutomatedService {
      * This endpoint is available for *Scale* tier customers as an add-on. To request access to this
      * endpoint, please contact your Finch account manager.
      */
-    fun create(): AutomatedCreateResponse = create(JobAutomatedCreateParams.none())
+    fun create(params: JobAutomatedCreateParams): AutomatedCreateResponse =
+        create(params, RequestOptions.none())
 
     /** @see create */
     fun create(
-        params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+        params: JobAutomatedCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedCreateResponse
-
-    /** @see create */
-    fun create(
-        params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
-    ): AutomatedCreateResponse = create(params, RequestOptions.none())
-
-    /** @see create */
-    fun create(requestOptions: RequestOptions): AutomatedCreateResponse =
-        create(JobAutomatedCreateParams.none(), requestOptions)
 
     /** Get an automated job by `job_id`. */
     fun retrieve(jobId: String): AutomatedAsyncJob =
@@ -128,26 +120,15 @@ interface AutomatedService {
          * [AutomatedService.create].
          */
         @MustBeClosed
-        fun create(): HttpResponseFor<AutomatedCreateResponse> =
-            create(JobAutomatedCreateParams.none())
+        fun create(params: JobAutomatedCreateParams): HttpResponseFor<AutomatedCreateResponse> =
+            create(params, RequestOptions.none())
 
         /** @see create */
         @MustBeClosed
         fun create(
-            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+            params: JobAutomatedCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedCreateResponse>
-
-        /** @see create */
-        @MustBeClosed
-        fun create(
-            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
-        ): HttpResponseFor<AutomatedCreateResponse> = create(params, RequestOptions.none())
-
-        /** @see create */
-        @MustBeClosed
-        fun create(requestOptions: RequestOptions): HttpResponseFor<AutomatedCreateResponse> =
-            create(JobAutomatedCreateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /jobs/automated/{job_id}`, but is otherwise the same
