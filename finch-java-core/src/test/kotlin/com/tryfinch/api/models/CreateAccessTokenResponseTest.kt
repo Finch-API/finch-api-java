@@ -24,6 +24,7 @@ internal class CreateAccessTokenResponseTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .customerId("customer_id")
+                .customerName("customer_name")
                 .build()
 
         assertThat(createAccessTokenResponse.accessToken()).isEqualTo("access_token")
@@ -40,6 +41,7 @@ internal class CreateAccessTokenResponseTest {
         assertThat(createAccessTokenResponse.accountId()).contains("account_id")
         assertThat(createAccessTokenResponse.companyId()).contains("company_id")
         assertThat(createAccessTokenResponse.customerId()).contains("customer_id")
+        assertThat(createAccessTokenResponse.customerName()).contains("customer_name")
     }
 
     @Test
@@ -58,6 +60,7 @@ internal class CreateAccessTokenResponseTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .customerId("customer_id")
+                .customerName("customer_name")
                 .build()
 
         val roundtrippedCreateAccessTokenResponse =
