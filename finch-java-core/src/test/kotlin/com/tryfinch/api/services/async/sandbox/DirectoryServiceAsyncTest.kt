@@ -75,6 +75,9 @@ internal class DirectoryServiceAsyncTest {
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                         )
                         .firstName("first_name")
+                        .flsaStatus(
+                            SandboxDirectoryCreateParams.IndividualOrEmployment.FlsaStatus.EXEMPT
+                        )
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()

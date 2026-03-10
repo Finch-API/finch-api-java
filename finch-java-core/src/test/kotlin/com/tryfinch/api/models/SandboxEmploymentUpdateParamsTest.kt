@@ -31,6 +31,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
             .endDate("end_date")
             .firstName("first_name")
+            .flsaStatus(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
             .income(
                 Income.builder()
                     .amount(0L)
@@ -105,6 +106,7 @@ internal class SandboxEmploymentUpdateParamsTest {
                 .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
+                .flsaStatus(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
                 .income(
                     Income.builder()
                         .amount(0L)
@@ -170,6 +172,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             .contains(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
         assertThat(body.endDate()).contains("end_date")
         assertThat(body.firstName()).contains("first_name")
+        assertThat(body.flsaStatus()).contains(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
         assertThat(body.income())
             .contains(
                 Income.builder()
