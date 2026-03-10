@@ -34,6 +34,7 @@ private constructor(
     private val accountId: JsonField<String>,
     private val companyId: JsonField<String>,
     private val customerId: JsonField<String>,
+    private val customerName: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -66,6 +67,9 @@ private constructor(
         @JsonProperty("customer_id")
         @ExcludeMissing
         customerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("customer_name")
+        @ExcludeMissing
+        customerName: JsonField<String> = JsonMissing.of(),
     ) : this(
         accessToken,
         clientType,
@@ -78,6 +82,7 @@ private constructor(
         accountId,
         companyId,
         customerId,
+        customerName,
         mutableMapOf(),
     )
 
@@ -175,6 +180,15 @@ private constructor(
     fun customerId(): Optional<String> = customerId.getOptional("customer_id")
 
     /**
+     * The name of your customer you provided to Finch when a connect session was created for this
+     * connection
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun customerName(): Optional<String> = customerName.getOptional("customer_name")
+
+    /**
      * Returns the raw JSON value of [accessToken].
      *
      * Unlike [accessToken], this method doesn't throw if the JSON field has an unexpected type.
@@ -267,6 +281,15 @@ private constructor(
      */
     @JsonProperty("customer_id") @ExcludeMissing fun _customerId(): JsonField<String> = customerId
 
+    /**
+     * Returns the raw JSON value of [customerName].
+     *
+     * Unlike [customerName], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("customer_name")
+    @ExcludeMissing
+    fun _customerName(): JsonField<String> = customerName
+
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
         additionalProperties.put(key, value)
@@ -313,6 +336,7 @@ private constructor(
         private var accountId: JsonField<String> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
         private var customerId: JsonField<String> = JsonMissing.of()
+        private var customerName: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -328,6 +352,7 @@ private constructor(
             accountId = createAccessTokenResponse.accountId
             companyId = createAccessTokenResponse.companyId
             customerId = createAccessTokenResponse.customerId
+            customerName = createAccessTokenResponse.customerName
             additionalProperties = createAccessTokenResponse.additionalProperties.toMutableMap()
         }
 
@@ -514,6 +539,26 @@ private constructor(
          */
         fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
+        /**
+         * The name of your customer you provided to Finch when a connect session was created for
+         * this connection
+         */
+        fun customerName(customerName: String?) = customerName(JsonField.ofNullable(customerName))
+
+        /** Alias for calling [Builder.customerName] with `customerName.orElse(null)`. */
+        fun customerName(customerName: Optional<String>) = customerName(customerName.getOrNull())
+
+        /**
+         * Sets [Builder.customerName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customerName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun customerName(customerName: JsonField<String>) = apply {
+            this.customerName = customerName
+        }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -565,6 +610,7 @@ private constructor(
                 accountId,
                 companyId,
                 customerId,
+                customerName,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -587,6 +633,7 @@ private constructor(
         accountId()
         companyId()
         customerId()
+        customerName()
         validated = true
     }
 
@@ -615,7 +662,8 @@ private constructor(
             (if (tokenType.asKnown().isPresent) 1 else 0) +
             (if (accountId.asKnown().isPresent) 1 else 0) +
             (if (companyId.asKnown().isPresent) 1 else 0) +
-            (if (customerId.asKnown().isPresent) 1 else 0)
+            (if (customerId.asKnown().isPresent) 1 else 0) +
+            (if (customerName.asKnown().isPresent) 1 else 0)
 
     /** The type of application associated with a token. */
     class ClientType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -900,6 +948,7 @@ private constructor(
             accountId == other.accountId &&
             companyId == other.companyId &&
             customerId == other.customerId &&
+            customerName == other.customerName &&
             additionalProperties == other.additionalProperties
     }
 
@@ -916,6 +965,7 @@ private constructor(
             accountId,
             companyId,
             customerId,
+            customerName,
             additionalProperties,
         )
     }
@@ -923,5 +973,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CreateAccessTokenResponse{accessToken=$accessToken, clientType=$clientType, connectionId=$connectionId, connectionType=$connectionType, entityIds=$entityIds, products=$products, providerId=$providerId, tokenType=$tokenType, accountId=$accountId, companyId=$companyId, customerId=$customerId, additionalProperties=$additionalProperties}"
+        "CreateAccessTokenResponse{accessToken=$accessToken, clientType=$clientType, connectionId=$connectionId, connectionType=$connectionType, entityIds=$entityIds, products=$products, providerId=$providerId, tokenType=$tokenType, accountId=$accountId, companyId=$companyId, customerId=$customerId, customerName=$customerName, additionalProperties=$additionalProperties}"
 }
