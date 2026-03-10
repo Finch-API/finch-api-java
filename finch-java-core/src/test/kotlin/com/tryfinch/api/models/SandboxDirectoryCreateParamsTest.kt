@@ -56,6 +56,9 @@ internal class SandboxDirectoryCreateParamsTest {
                     .endDate("end_date")
                     .ethnicity(SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN)
                     .firstName("first_name")
+                    .flsaStatus(
+                        SandboxDirectoryCreateParams.IndividualOrEmployment.FlsaStatus.EXEMPT
+                    )
                     .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                     .income(
                         Income.builder()
@@ -178,6 +181,9 @@ internal class SandboxDirectoryCreateParamsTest {
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN
                         )
                         .firstName("first_name")
+                        .flsaStatus(
+                            SandboxDirectoryCreateParams.IndividualOrEmployment.FlsaStatus.EXEMPT
+                        )
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                         .income(
                             Income.builder()
@@ -294,6 +300,9 @@ internal class SandboxDirectoryCreateParamsTest {
                     .endDate("end_date")
                     .ethnicity(SandboxDirectoryCreateParams.IndividualOrEmployment.Ethnicity.ASIAN)
                     .firstName("first_name")
+                    .flsaStatus(
+                        SandboxDirectoryCreateParams.IndividualOrEmployment.FlsaStatus.EXEMPT
+                    )
                     .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
                     .income(
                         Income.builder()

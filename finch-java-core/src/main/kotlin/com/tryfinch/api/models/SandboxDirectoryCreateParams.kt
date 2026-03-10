@@ -217,6 +217,7 @@ private constructor(
         private val endDate: JsonField<String>,
         private val ethnicity: JsonField<Ethnicity>,
         private val firstName: JsonField<String>,
+        private val flsaStatus: JsonField<FlsaStatus>,
         private val gender: JsonField<Gender>,
         private val income: JsonField<Income>,
         private val incomeHistory: JsonField<List<Income?>>,
@@ -267,6 +268,9 @@ private constructor(
             @JsonProperty("first_name")
             @ExcludeMissing
             firstName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("flsa_status")
+            @ExcludeMissing
+            flsaStatus: JsonField<FlsaStatus> = JsonMissing.of(),
             @JsonProperty("gender") @ExcludeMissing gender: JsonField<Gender> = JsonMissing.of(),
             @JsonProperty("income") @ExcludeMissing income: JsonField<Income> = JsonMissing.of(),
             @JsonProperty("income_history")
@@ -317,6 +321,7 @@ private constructor(
             endDate,
             ethnicity,
             firstName,
+            flsaStatus,
             gender,
             income,
             incomeHistory,
@@ -421,6 +426,14 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun firstName(): Optional<String> = firstName.getOptional("first_name")
+
+        /**
+         * The FLSA status of the individual. Available options: `exempt`, `non_exempt`, `unknown`.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun flsaStatus(): Optional<FlsaStatus> = flsaStatus.getOptional("flsa_status")
 
         /**
          * The gender of the individual.
@@ -638,6 +651,15 @@ private constructor(
         @JsonProperty("first_name") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
 
         /**
+         * Returns the raw JSON value of [flsaStatus].
+         *
+         * Unlike [flsaStatus], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("flsa_status")
+        @ExcludeMissing
+        fun _flsaStatus(): JsonField<FlsaStatus> = flsaStatus
+
+        /**
          * Returns the raw JSON value of [gender].
          *
          * Unlike [gender], this method doesn't throw if the JSON field has an unexpected type.
@@ -797,6 +819,7 @@ private constructor(
             private var endDate: JsonField<String> = JsonMissing.of()
             private var ethnicity: JsonField<Ethnicity> = JsonMissing.of()
             private var firstName: JsonField<String> = JsonMissing.of()
+            private var flsaStatus: JsonField<FlsaStatus> = JsonMissing.of()
             private var gender: JsonField<Gender> = JsonMissing.of()
             private var income: JsonField<Income> = JsonMissing.of()
             private var incomeHistory: JsonField<MutableList<Income?>>? = null
@@ -828,6 +851,7 @@ private constructor(
                 endDate = individualOrEmployment.endDate
                 ethnicity = individualOrEmployment.ethnicity
                 firstName = individualOrEmployment.firstName
+                flsaStatus = individualOrEmployment.flsaStatus
                 gender = individualOrEmployment.gender
                 income = individualOrEmployment.income
                 incomeHistory = individualOrEmployment.incomeHistory.map { it.toMutableList() }
@@ -1059,6 +1083,26 @@ private constructor(
              * supported value.
              */
             fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
+
+            /**
+             * The FLSA status of the individual. Available options: `exempt`, `non_exempt`,
+             * `unknown`.
+             */
+            fun flsaStatus(flsaStatus: FlsaStatus?) = flsaStatus(JsonField.ofNullable(flsaStatus))
+
+            /** Alias for calling [Builder.flsaStatus] with `flsaStatus.orElse(null)`. */
+            fun flsaStatus(flsaStatus: Optional<FlsaStatus>) = flsaStatus(flsaStatus.getOrNull())
+
+            /**
+             * Sets [Builder.flsaStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.flsaStatus] with a well-typed [FlsaStatus] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun flsaStatus(flsaStatus: JsonField<FlsaStatus>) = apply {
+                this.flsaStatus = flsaStatus
+            }
 
             /** The gender of the individual. */
             fun gender(gender: Gender?) = gender(JsonField.ofNullable(gender))
@@ -1389,6 +1433,7 @@ private constructor(
                     endDate,
                     ethnicity,
                     firstName,
+                    flsaStatus,
                     gender,
                     income,
                     (incomeHistory ?: JsonMissing.of()).map { it.toImmutable() },
@@ -1427,6 +1472,7 @@ private constructor(
             endDate()
             ethnicity().ifPresent { it.validate() }
             firstName()
+            flsaStatus().ifPresent { it.validate() }
             gender().ifPresent { it.validate() }
             income().ifPresent { it.validate() }
             incomeHistory().ifPresent { it.forEach { it?.validate() } }
@@ -1473,6 +1519,7 @@ private constructor(
                 (if (endDate.asKnown().isPresent) 1 else 0) +
                 (ethnicity.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (firstName.asKnown().isPresent) 1 else 0) +
+                (flsaStatus.asKnown().getOrNull()?.validity() ?: 0) +
                 (gender.asKnown().getOrNull()?.validity() ?: 0) +
                 (income.asKnown().getOrNull()?.validity() ?: 0) +
                 (incomeHistory.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
@@ -2925,6 +2972,146 @@ private constructor(
             override fun toString() = value.toString()
         }
 
+        /**
+         * The FLSA status of the individual. Available options: `exempt`, `non_exempt`, `unknown`.
+         */
+        class FlsaStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val EXEMPT = of("exempt")
+
+                @JvmField val NON_EXEMPT = of("non_exempt")
+
+                @JvmField val UNKNOWN = of("unknown")
+
+                @JvmStatic fun of(value: String) = FlsaStatus(JsonField.of(value))
+            }
+
+            /** An enum containing [FlsaStatus]'s known values. */
+            enum class Known {
+                EXEMPT,
+                NON_EXEMPT,
+                UNKNOWN,
+            }
+
+            /**
+             * An enum containing [FlsaStatus]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [FlsaStatus] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                EXEMPT,
+                NON_EXEMPT,
+                UNKNOWN,
+                /**
+                 * An enum member indicating that [FlsaStatus] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    EXEMPT -> Value.EXEMPT
+                    NON_EXEMPT -> Value.NON_EXEMPT
+                    UNKNOWN -> Value.UNKNOWN
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    EXEMPT -> Known.EXEMPT
+                    NON_EXEMPT -> Known.NON_EXEMPT
+                    UNKNOWN -> Known.UNKNOWN
+                    else -> throw FinchInvalidDataException("Unknown FlsaStatus: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): FlsaStatus = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is FlsaStatus && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
         /** The gender of the individual. */
         class Gender @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -3539,6 +3726,7 @@ private constructor(
                 endDate == other.endDate &&
                 ethnicity == other.ethnicity &&
                 firstName == other.firstName &&
+                flsaStatus == other.flsaStatus &&
                 gender == other.gender &&
                 income == other.income &&
                 incomeHistory == other.incomeHistory &&
@@ -3571,6 +3759,7 @@ private constructor(
                 endDate,
                 ethnicity,
                 firstName,
+                flsaStatus,
                 gender,
                 income,
                 incomeHistory,
@@ -3594,7 +3783,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, flsaStatus=$flsaStatus, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

@@ -47,6 +47,7 @@ internal class EmploymentServiceTest {
                     .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
                     .endDate("end_date")
                     .firstName("first_name")
+                    .flsaStatus(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
                     .income(
                         Income.builder()
                             .amount(0L)
