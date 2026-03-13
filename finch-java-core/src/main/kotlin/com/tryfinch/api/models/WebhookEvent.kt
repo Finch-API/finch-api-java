@@ -17,6 +17,7 @@ import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @JsonDeserialize(using = WebhookEvent.Deserializer::class)
 @JsonSerialize(using = WebhookEvent.Serializer::class)
@@ -292,17 +293,25 @@ private constructor(
 
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
+            val eventType = json.asObject().getOrNull()?.get("event_type")?.asString()?.getOrNull()
+
+            when (eventType) {
+                "account.updated" -> {
+                    return tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
+                        WebhookEvent(accountUpdated = it, _json = json)
+                    } ?: WebhookEvent(_json = json)
+                }
+                "company.updated" -> {
+                    return tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
+                        WebhookEvent(companyUpdated = it, _json = json)
+                    } ?: WebhookEvent(_json = json)
+                }
+            }
 
             val bestMatches =
                 sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
-                            WebhookEvent(accountUpdated = it, _json = json)
-                        },
                         tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>())?.let {
                             WebhookEvent(jobCompletion = it, _json = json)
-                        },
-                        tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
-                            WebhookEvent(companyUpdated = it, _json = json)
                         },
                         tryDeserialize(node, jacksonTypeRef<DirectoryEvent>())?.let {
                             WebhookEvent(directory = it, _json = json)
