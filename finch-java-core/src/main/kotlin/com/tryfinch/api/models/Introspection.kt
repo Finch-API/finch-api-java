@@ -2509,6 +2509,7 @@ private constructor(
         private val id: JsonField<String>,
         private val name: JsonField<String>,
         private val sourceId: JsonField<String>,
+        private val status: JsonField<EntityConnectionStatus>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -2519,7 +2520,10 @@ private constructor(
             @JsonProperty("source_id")
             @ExcludeMissing
             sourceId: JsonField<String> = JsonMissing.of(),
-        ) : this(id, name, sourceId, mutableMapOf())
+            @JsonProperty("status")
+            @ExcludeMissing
+            status: JsonField<EntityConnectionStatus> = JsonMissing.of(),
+        ) : this(id, name, sourceId, status, mutableMapOf())
 
         /**
          * The connection account ID for this entity
@@ -2546,6 +2550,14 @@ private constructor(
         fun sourceId(): Optional<String> = sourceId.getOptional("source_id")
 
         /**
+         * The status of the entity connection
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun status(): EntityConnectionStatus = status.getRequired("status")
+
+        /**
          * Returns the raw JSON value of [id].
          *
          * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
@@ -2565,6 +2577,15 @@ private constructor(
          * Unlike [sourceId], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
+
+        /**
+         * Returns the raw JSON value of [status].
+         *
+         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("status")
+        @ExcludeMissing
+        fun _status(): JsonField<EntityConnectionStatus> = status
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -2588,6 +2609,7 @@ private constructor(
              * .id()
              * .name()
              * .sourceId()
+             * .status()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -2599,6 +2621,7 @@ private constructor(
             private var id: JsonField<String>? = null
             private var name: JsonField<String>? = null
             private var sourceId: JsonField<String>? = null
+            private var status: JsonField<EntityConnectionStatus>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -2606,6 +2629,7 @@ private constructor(
                 id = multiAccountEntity.id
                 name = multiAccountEntity.name
                 sourceId = multiAccountEntity.sourceId
+                status = multiAccountEntity.status
                 additionalProperties = multiAccountEntity.additionalProperties.toMutableMap()
             }
 
@@ -2651,6 +2675,18 @@ private constructor(
              */
             fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
+            /** The status of the entity connection */
+            fun status(status: EntityConnectionStatus) = status(JsonField.of(status))
+
+            /**
+             * Sets [Builder.status] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.status] with a well-typed [EntityConnectionStatus]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun status(status: JsonField<EntityConnectionStatus>) = apply { this.status = status }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -2680,6 +2716,7 @@ private constructor(
              * .id()
              * .name()
              * .sourceId()
+             * .status()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
@@ -2689,6 +2726,7 @@ private constructor(
                     checkRequired("id", id),
                     checkRequired("name", name),
                     checkRequired("sourceId", sourceId),
+                    checkRequired("status", status),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -2703,6 +2741,7 @@ private constructor(
             id()
             name()
             sourceId()
+            status().validate()
             validated = true
         }
 
@@ -2724,7 +2763,174 @@ private constructor(
         internal fun validity(): Int =
             (if (id.asKnown().isPresent) 1 else 0) +
                 (if (name.asKnown().isPresent) 1 else 0) +
-                (if (sourceId.asKnown().isPresent) 1 else 0)
+                (if (sourceId.asKnown().isPresent) 1 else 0) +
+                (status.asKnown().getOrNull()?.validity() ?: 0)
+
+        /** The status of the entity connection */
+        class EntityConnectionStatus
+        @JsonCreator
+        private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val PENDING = of("pending")
+
+                @JvmField val PROCESSING = of("processing")
+
+                @JvmField val CONNECTED = of("connected")
+
+                @JvmField val ERROR_NO_ACCOUNT_SETUP = of("error_no_account_setup")
+
+                @JvmField val ERROR_PERMISSIONS = of("error_permissions")
+
+                @JvmField val REAUTH = of("reauth")
+
+                @JvmField val DISCONNECTED = of("disconnected")
+
+                @JvmStatic fun of(value: String) = EntityConnectionStatus(JsonField.of(value))
+            }
+
+            /** An enum containing [EntityConnectionStatus]'s known values. */
+            enum class Known {
+                PENDING,
+                PROCESSING,
+                CONNECTED,
+                ERROR_NO_ACCOUNT_SETUP,
+                ERROR_PERMISSIONS,
+                REAUTH,
+                DISCONNECTED,
+            }
+
+            /**
+             * An enum containing [EntityConnectionStatus]'s known values, as well as an [_UNKNOWN]
+             * member.
+             *
+             * An instance of [EntityConnectionStatus] can contain an unknown value in a couple of
+             * cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                PENDING,
+                PROCESSING,
+                CONNECTED,
+                ERROR_NO_ACCOUNT_SETUP,
+                ERROR_PERMISSIONS,
+                REAUTH,
+                DISCONNECTED,
+                /**
+                 * An enum member indicating that [EntityConnectionStatus] was instantiated with an
+                 * unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    PENDING -> Value.PENDING
+                    PROCESSING -> Value.PROCESSING
+                    CONNECTED -> Value.CONNECTED
+                    ERROR_NO_ACCOUNT_SETUP -> Value.ERROR_NO_ACCOUNT_SETUP
+                    ERROR_PERMISSIONS -> Value.ERROR_PERMISSIONS
+                    REAUTH -> Value.REAUTH
+                    DISCONNECTED -> Value.DISCONNECTED
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    PENDING -> Known.PENDING
+                    PROCESSING -> Known.PROCESSING
+                    CONNECTED -> Known.CONNECTED
+                    ERROR_NO_ACCOUNT_SETUP -> Known.ERROR_NO_ACCOUNT_SETUP
+                    ERROR_PERMISSIONS -> Known.ERROR_PERMISSIONS
+                    REAUTH -> Known.REAUTH
+                    DISCONNECTED -> Known.DISCONNECTED
+                    else ->
+                        throw FinchInvalidDataException("Unknown EntityConnectionStatus: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): EntityConnectionStatus = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is EntityConnectionStatus && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -2735,15 +2941,18 @@ private constructor(
                 id == other.id &&
                 name == other.name &&
                 sourceId == other.sourceId &&
+                status == other.status &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(id, name, sourceId, additionalProperties) }
+        private val hashCode: Int by lazy {
+            Objects.hash(id, name, sourceId, status, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "MultiAccountEntity{id=$id, name=$name, sourceId=$sourceId, additionalProperties=$additionalProperties}"
+            "MultiAccountEntity{id=$id, name=$name, sourceId=$sourceId, status=$status, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
