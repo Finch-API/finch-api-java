@@ -559,7 +559,7 @@ private constructor(
         if (security.bearerAuth) {
             accessToken?.let {
                 if (!it.isEmpty()) {
-                    headers.put("Authorization", "Bearer $it")
+                    headers.replace("Authorization", "Bearer $it")
                 }
             }
         }
@@ -567,7 +567,7 @@ private constructor(
             clientId?.let { username ->
                 clientSecret?.let { password ->
                     if (!username.isEmpty() && !password.isEmpty()) {
-                        headers.put(
+                        headers.replace(
                             "Authorization",
                             "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
                         )
