@@ -445,6 +445,14 @@ private constructor(
                 ?.let { clientSecret(it) }
             (System.getProperty("finch.webhookSecret") ?: System.getenv("FINCH_WEBHOOK_SECRET"))
                 ?.let { webhookSecret(it) }
+            System.getenv("FINCH_CUSTOM_HEADERS")?.let { customHeadersEnv ->
+                for (line in customHeadersEnv.split("\n")) {
+                    val colon = line.indexOf(':')
+                    if (colon >= 0) {
+                        putHeader(line.substring(0, colon).trim(), line.substring(colon + 1).trim())
+                    }
+                }
+            }
         }
 
         /**
