@@ -16,11 +16,13 @@ internal class BaseWebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .build()
 
         assertThat(baseWebhookEvent.accountId()).isEqualTo("account_id")
         assertThat(baseWebhookEvent.companyId()).isEqualTo("company_id")
         assertThat(baseWebhookEvent.connectionId()).contains("connection_id")
+        assertThat(baseWebhookEvent.entityId()).contains("entity_id")
     }
 
     @Test
@@ -31,6 +33,7 @@ internal class BaseWebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .build()
 
         val roundtrippedBaseWebhookEvent =
