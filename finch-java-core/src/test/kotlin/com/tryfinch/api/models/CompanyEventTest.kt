@@ -17,6 +17,7 @@ internal class CompanyEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     CompanyEvent.Data.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -28,6 +29,7 @@ internal class CompanyEventTest {
         assertThat(companyEvent.accountId()).isEqualTo("account_id")
         assertThat(companyEvent.companyId()).isEqualTo("company_id")
         assertThat(companyEvent.connectionId()).contains("connection_id")
+        assertThat(companyEvent.entityId()).contains("entity_id")
         assertThat(companyEvent.data())
             .contains(
                 CompanyEvent.Data.builder()
@@ -45,6 +47,7 @@ internal class CompanyEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     CompanyEvent.Data.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))

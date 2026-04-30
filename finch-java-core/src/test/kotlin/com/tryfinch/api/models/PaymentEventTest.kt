@@ -16,6 +16,7 @@ internal class PaymentEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     PaymentEvent.PaymentIdentifiers.builder()
                         .payDate("pay_date")
@@ -28,6 +29,7 @@ internal class PaymentEventTest {
         assertThat(paymentEvent.accountId()).isEqualTo("account_id")
         assertThat(paymentEvent.companyId()).isEqualTo("company_id")
         assertThat(paymentEvent.connectionId()).contains("connection_id")
+        assertThat(paymentEvent.entityId()).contains("entity_id")
         assertThat(paymentEvent.data())
             .contains(
                 PaymentEvent.PaymentIdentifiers.builder()
@@ -46,6 +48,7 @@ internal class PaymentEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     PaymentEvent.PaymentIdentifiers.builder()
                         .payDate("pay_date")

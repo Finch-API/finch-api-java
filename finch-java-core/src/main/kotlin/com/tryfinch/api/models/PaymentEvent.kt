@@ -24,6 +24,7 @@ private constructor(
     private val accountId: JsonField<String>,
     private val companyId: JsonField<String>,
     private val connectionId: JsonField<String>,
+    private val entityId: JsonField<String>,
     private val data: JsonField<PaymentIdentifiers>,
     private val eventType: JsonField<EventType>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -36,19 +37,21 @@ private constructor(
         @JsonProperty("connection_id")
         @ExcludeMissing
         connectionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("entity_id") @ExcludeMissing entityId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("data")
         @ExcludeMissing
         data: JsonField<PaymentIdentifiers> = JsonMissing.of(),
         @JsonProperty("event_type")
         @ExcludeMissing
         eventType: JsonField<EventType> = JsonMissing.of(),
-    ) : this(accountId, companyId, connectionId, data, eventType, mutableMapOf())
+    ) : this(accountId, companyId, connectionId, entityId, data, eventType, mutableMapOf())
 
     fun toBaseWebhookEvent(): BaseWebhookEvent =
         BaseWebhookEvent.builder()
             .accountId(accountId)
             .companyId(companyId)
             .connectionId(connectionId)
+            .entityId(entityId)
             .build()
 
     /**
@@ -76,6 +79,14 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun connectionId(): Optional<String> = connectionId.getOptional("connection_id")
+
+    /**
+     * Unique Finch id of the entity for which data has been updated.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun entityId(): Optional<String> = entityId.getOptional("entity_id")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -117,6 +128,13 @@ private constructor(
     @JsonProperty("connection_id")
     @ExcludeMissing
     fun _connectionId(): JsonField<String> = connectionId
+
+    /**
+     * Returns the raw JSON value of [entityId].
+     *
+     * Unlike [entityId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("entity_id") @ExcludeMissing fun _entityId(): JsonField<String> = entityId
 
     /**
      * Returns the raw JSON value of [data].
@@ -164,6 +182,7 @@ private constructor(
         private var accountId: JsonField<String>? = null
         private var companyId: JsonField<String>? = null
         private var connectionId: JsonField<String> = JsonMissing.of()
+        private var entityId: JsonField<String> = JsonMissing.of()
         private var data: JsonField<PaymentIdentifiers> = JsonMissing.of()
         private var eventType: JsonField<EventType> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -173,6 +192,7 @@ private constructor(
             accountId = paymentEvent.accountId
             companyId = paymentEvent.companyId
             connectionId = paymentEvent.connectionId
+            entityId = paymentEvent.entityId
             data = paymentEvent.data
             eventType = paymentEvent.eventType
             additionalProperties = paymentEvent.additionalProperties.toMutableMap()
@@ -225,6 +245,17 @@ private constructor(
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
+
+        /** Unique Finch id of the entity for which data has been updated. */
+        fun entityId(entityId: String) = entityId(JsonField.of(entityId))
+
+        /**
+         * Sets [Builder.entityId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.entityId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun entityId(entityId: JsonField<String>) = apply { this.entityId = entityId }
 
         fun data(data: PaymentIdentifiers) = data(JsonField.of(data))
 
@@ -285,6 +316,7 @@ private constructor(
                 checkRequired("accountId", accountId),
                 checkRequired("companyId", companyId),
                 connectionId,
+                entityId,
                 data,
                 eventType,
                 additionalProperties.toMutableMap(),
@@ -301,6 +333,7 @@ private constructor(
         accountId()
         companyId()
         connectionId()
+        entityId()
         data().ifPresent { it.validate() }
         eventType().ifPresent { it.validate() }
         validated = true
@@ -324,6 +357,7 @@ private constructor(
         (if (accountId.asKnown().isPresent) 1 else 0) +
             (if (companyId.asKnown().isPresent) 1 else 0) +
             (if (connectionId.asKnown().isPresent) 1 else 0) +
+            (if (entityId.asKnown().isPresent) 1 else 0) +
             (data.asKnown().getOrNull()?.validity() ?: 0) +
             (eventType.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -668,17 +702,26 @@ private constructor(
             accountId == other.accountId &&
             companyId == other.companyId &&
             connectionId == other.connectionId &&
+            entityId == other.entityId &&
             data == other.data &&
             eventType == other.eventType &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(accountId, companyId, connectionId, data, eventType, additionalProperties)
+        Objects.hash(
+            accountId,
+            companyId,
+            connectionId,
+            entityId,
+            data,
+            eventType,
+            additionalProperties,
+        )
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PaymentEvent{accountId=$accountId, companyId=$companyId, connectionId=$connectionId, data=$data, eventType=$eventType, additionalProperties=$additionalProperties}"
+        "PaymentEvent{accountId=$accountId, companyId=$companyId, connectionId=$connectionId, entityId=$entityId, data=$data, eventType=$eventType, additionalProperties=$additionalProperties}"
 }
