@@ -143,8 +143,9 @@ private constructor(
          */
         fun body(body: JsonField<Body>) = apply { this.body = body }
 
-        /** Alias for calling [body] with `Body.ofUnionMember0(unionMember0)`. */
-        fun body(unionMember0: Body.UnionMember0) = body(Body.ofUnionMember0(unionMember0))
+        /** Alias for calling [body] with `Body.ofIndividualBenefit(individualBenefit)`. */
+        fun body(individualBenefit: Body.InnerIndividualBenefit) =
+            body(Body.ofIndividualBenefit(individualBenefit))
 
         /** Alias for calling [body] with `Body.ofBatchError(batchError)`. */
         fun body(batchError: Body.BatchError) = body(Body.ofBatchError(batchError))
@@ -250,20 +251,22 @@ private constructor(
     @JsonSerialize(using = Body.Serializer::class)
     class Body
     private constructor(
-        private val unionMember0: UnionMember0? = null,
+        private val individualBenefit: InnerIndividualBenefit? = null,
         private val batchError: BatchError? = null,
         private val _json: JsonValue? = null,
     ) {
 
-        fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+        fun individualBenefit(): Optional<InnerIndividualBenefit> =
+            Optional.ofNullable(individualBenefit)
 
         fun batchError(): Optional<BatchError> = Optional.ofNullable(batchError)
 
-        fun isUnionMember0(): Boolean = unionMember0 != null
+        fun isIndividualBenefit(): Boolean = individualBenefit != null
 
         fun isBatchError(): Boolean = batchError != null
 
-        fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+        fun asIndividualBenefit(): InnerIndividualBenefit =
+            individualBenefit.getOrThrow("individualBenefit")
 
         fun asBatchError(): BatchError = batchError.getOrThrow("batchError")
 
@@ -271,7 +274,7 @@ private constructor(
 
         fun <T> accept(visitor: Visitor<T>): T =
             when {
-                unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+                individualBenefit != null -> visitor.visitIndividualBenefit(individualBenefit)
                 batchError != null -> visitor.visitBatchError(batchError)
                 else -> visitor.unknown(_json)
             }
@@ -285,8 +288,8 @@ private constructor(
 
             accept(
                 object : Visitor<Unit> {
-                    override fun visitUnionMember0(unionMember0: UnionMember0) {
-                        unionMember0.validate()
+                    override fun visitIndividualBenefit(individualBenefit: InnerIndividualBenefit) {
+                        individualBenefit.validate()
                     }
 
                     override fun visitBatchError(batchError: BatchError) {
@@ -315,8 +318,8 @@ private constructor(
         internal fun validity(): Int =
             accept(
                 object : Visitor<Int> {
-                    override fun visitUnionMember0(unionMember0: UnionMember0) =
-                        unionMember0.validity()
+                    override fun visitIndividualBenefit(individualBenefit: InnerIndividualBenefit) =
+                        individualBenefit.validity()
 
                     override fun visitBatchError(batchError: BatchError) = batchError.validity()
 
@@ -330,15 +333,15 @@ private constructor(
             }
 
             return other is Body &&
-                unionMember0 == other.unionMember0 &&
+                individualBenefit == other.individualBenefit &&
                 batchError == other.batchError
         }
 
-        override fun hashCode(): Int = Objects.hash(unionMember0, batchError)
+        override fun hashCode(): Int = Objects.hash(individualBenefit, batchError)
 
         override fun toString(): String =
             when {
-                unionMember0 != null -> "Body{unionMember0=$unionMember0}"
+                individualBenefit != null -> "Body{individualBenefit=$individualBenefit}"
                 batchError != null -> "Body{batchError=$batchError}"
                 _json != null -> "Body{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Body")
@@ -347,7 +350,8 @@ private constructor(
         companion object {
 
             @JvmStatic
-            fun ofUnionMember0(unionMember0: UnionMember0) = Body(unionMember0 = unionMember0)
+            fun ofIndividualBenefit(individualBenefit: InnerIndividualBenefit) =
+                Body(individualBenefit = individualBenefit)
 
             @JvmStatic fun ofBatchError(batchError: BatchError) = Body(batchError = batchError)
         }
@@ -355,7 +359,7 @@ private constructor(
         /** An interface that defines how to map each variant of [Body] to a value of type [T]. */
         interface Visitor<out T> {
 
-            fun visitUnionMember0(unionMember0: UnionMember0): T
+            fun visitIndividualBenefit(individualBenefit: InnerIndividualBenefit): T
 
             fun visitBatchError(batchError: BatchError): T
 
@@ -380,8 +384,8 @@ private constructor(
 
                 val bestMatches =
                     sequenceOf(
-                            tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                                Body(unionMember0 = it, _json = json)
+                            tryDeserialize(node, jacksonTypeRef<InnerIndividualBenefit>())?.let {
+                                Body(individualBenefit = it, _json = json)
                             },
                             tryDeserialize(node, jacksonTypeRef<BatchError>())?.let {
                                 Body(batchError = it, _json = json)
@@ -411,7 +415,8 @@ private constructor(
                 provider: SerializerProvider,
             ) {
                 when {
-                    value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                    value.individualBenefit != null ->
+                        generator.writeObject(value.individualBenefit)
                     value.batchError != null -> generator.writeObject(value.batchError)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid Body")
@@ -419,7 +424,7 @@ private constructor(
             }
         }
 
-        class UnionMember0
+        class InnerIndividualBenefit
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val annualMaximum: JsonField<Long>,
@@ -565,7 +570,8 @@ private constructor(
             companion object {
 
                 /**
-                 * Returns a mutable builder for constructing an instance of [UnionMember0].
+                 * Returns a mutable builder for constructing an instance of
+                 * [InnerIndividualBenefit].
                  *
                  * The following fields are required:
                  * ```java
@@ -578,7 +584,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [UnionMember0]. */
+            /** A builder for [InnerIndividualBenefit]. */
             class Builder internal constructor() {
 
                 private var annualMaximum: JsonField<Long>? = null
@@ -589,13 +595,14 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(unionMember0: UnionMember0) = apply {
-                    annualMaximum = unionMember0.annualMaximum
-                    catchUp = unionMember0.catchUp
-                    companyContribution = unionMember0.companyContribution
-                    employeeDeduction = unionMember0.employeeDeduction
-                    hsaContributionLimit = unionMember0.hsaContributionLimit
-                    additionalProperties = unionMember0.additionalProperties.toMutableMap()
+                internal fun from(innerIndividualBenefit: InnerIndividualBenefit) = apply {
+                    annualMaximum = innerIndividualBenefit.annualMaximum
+                    catchUp = innerIndividualBenefit.catchUp
+                    companyContribution = innerIndividualBenefit.companyContribution
+                    employeeDeduction = innerIndividualBenefit.employeeDeduction
+                    hsaContributionLimit = innerIndividualBenefit.hsaContributionLimit
+                    additionalProperties =
+                        innerIndividualBenefit.additionalProperties.toMutableMap()
                 }
 
                 /**
@@ -680,24 +687,24 @@ private constructor(
 
                 /**
                  * Alias for calling [companyContribution] with
-                 * `CompanyContribution.ofInnerUnionMember0(innerUnionMember0)`.
+                 * `CompanyContribution.ofFixed(fixed)`.
                  */
-                fun companyContribution(innerUnionMember0: CompanyContribution.InnerUnionMember0) =
-                    companyContribution(CompanyContribution.ofInnerUnionMember0(innerUnionMember0))
+                fun companyContribution(fixed: CompanyContribution.CompanyContributionFixed) =
+                    companyContribution(CompanyContribution.ofFixed(fixed))
 
                 /**
                  * Alias for calling [companyContribution] with
-                 * `CompanyContribution.ofUnionMember1(unionMember1)`.
+                 * `CompanyContribution.ofPercent(percent)`.
                  */
-                fun companyContribution(unionMember1: CompanyContribution.UnionMember1) =
-                    companyContribution(CompanyContribution.ofUnionMember1(unionMember1))
+                fun companyContribution(percent: CompanyContribution.CompanyContributionPercent) =
+                    companyContribution(CompanyContribution.ofPercent(percent))
 
                 /**
                  * Alias for calling [companyContribution] with
-                 * `CompanyContribution.ofUnionMember2(unionMember2)`.
+                 * `CompanyContribution.ofTiered(tiered)`.
                  */
-                fun companyContribution(unionMember2: CompanyContribution.UnionMember2) =
-                    companyContribution(CompanyContribution.ofUnionMember2(unionMember2))
+                fun companyContribution(tiered: CompanyContribution.CompanyContributionTiered) =
+                    companyContribution(CompanyContribution.ofTiered(tiered))
 
                 /**
                  * Employee deduction configuration. Supports both fixed amounts (in cents) and
@@ -726,17 +733,19 @@ private constructor(
 
                 /**
                  * Alias for calling [employeeDeduction] with
-                 * `EmployeeDeduction.ofInnerUnionMember0(innerUnionMember0)`.
+                 * `EmployeeDeduction.ofContributionFixed(contributionFixed)`.
                  */
-                fun employeeDeduction(innerUnionMember0: EmployeeDeduction.InnerUnionMember0) =
-                    employeeDeduction(EmployeeDeduction.ofInnerUnionMember0(innerUnionMember0))
+                fun employeeDeduction(
+                    contributionFixed: EmployeeDeduction.EmployeeDeductionContributionFixed
+                ) = employeeDeduction(EmployeeDeduction.ofContributionFixed(contributionFixed))
 
                 /**
                  * Alias for calling [employeeDeduction] with
-                 * `EmployeeDeduction.ofUnionMember1(unionMember1)`.
+                 * `EmployeeDeduction.ofContributionPercent(contributionPercent)`.
                  */
-                fun employeeDeduction(unionMember1: EmployeeDeduction.UnionMember1) =
-                    employeeDeduction(EmployeeDeduction.ofUnionMember1(unionMember1))
+                fun employeeDeduction(
+                    contributionPercent: EmployeeDeduction.EmployeeDeductionContributionPercent
+                ) = employeeDeduction(EmployeeDeduction.ofContributionPercent(contributionPercent))
 
                 /** Type for HSA contribution limit if the benefit is a HSA. */
                 fun hsaContributionLimit(hsaContributionLimit: HsaContributionLimit?) =
@@ -784,7 +793,7 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [UnionMember0].
+                 * Returns an immutable instance of [InnerIndividualBenefit].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  *
@@ -798,8 +807,8 @@ private constructor(
                  *
                  * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): UnionMember0 =
-                    UnionMember0(
+                fun build(): InnerIndividualBenefit =
+                    InnerIndividualBenefit(
                         checkRequired("annualMaximum", annualMaximum),
                         checkRequired("catchUp", catchUp),
                         checkRequired("companyContribution", companyContribution),
@@ -811,7 +820,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): UnionMember0 = apply {
+            fun validate(): InnerIndividualBenefit = apply {
                 if (validated) {
                     return@apply
                 }
@@ -855,40 +864,37 @@ private constructor(
             @JsonSerialize(using = CompanyContribution.Serializer::class)
             class CompanyContribution
             private constructor(
-                private val innerUnionMember0: InnerUnionMember0? = null,
-                private val unionMember1: UnionMember1? = null,
-                private val unionMember2: UnionMember2? = null,
+                private val fixed: CompanyContributionFixed? = null,
+                private val percent: CompanyContributionPercent? = null,
+                private val tiered: CompanyContributionTiered? = null,
                 private val _json: JsonValue? = null,
             ) {
 
-                fun innerUnionMember0(): Optional<InnerUnionMember0> =
-                    Optional.ofNullable(innerUnionMember0)
+                fun fixed(): Optional<CompanyContributionFixed> = Optional.ofNullable(fixed)
 
-                fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
+                fun percent(): Optional<CompanyContributionPercent> = Optional.ofNullable(percent)
 
-                fun unionMember2(): Optional<UnionMember2> = Optional.ofNullable(unionMember2)
+                fun tiered(): Optional<CompanyContributionTiered> = Optional.ofNullable(tiered)
 
-                fun isInnerUnionMember0(): Boolean = innerUnionMember0 != null
+                fun isFixed(): Boolean = fixed != null
 
-                fun isUnionMember1(): Boolean = unionMember1 != null
+                fun isPercent(): Boolean = percent != null
 
-                fun isUnionMember2(): Boolean = unionMember2 != null
+                fun isTiered(): Boolean = tiered != null
 
-                fun asInnerUnionMember0(): InnerUnionMember0 =
-                    innerUnionMember0.getOrThrow("innerUnionMember0")
+                fun asFixed(): CompanyContributionFixed = fixed.getOrThrow("fixed")
 
-                fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
+                fun asPercent(): CompanyContributionPercent = percent.getOrThrow("percent")
 
-                fun asUnionMember2(): UnionMember2 = unionMember2.getOrThrow("unionMember2")
+                fun asTiered(): CompanyContributionTiered = tiered.getOrThrow("tiered")
 
                 fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
                 fun <T> accept(visitor: Visitor<T>): T =
                     when {
-                        innerUnionMember0 != null ->
-                            visitor.visitInnerUnionMember0(innerUnionMember0)
-                        unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                        unionMember2 != null -> visitor.visitUnionMember2(unionMember2)
+                        fixed != null -> visitor.visitFixed(fixed)
+                        percent != null -> visitor.visitPercent(percent)
+                        tiered != null -> visitor.visitTiered(tiered)
                         else -> visitor.unknown(_json)
                     }
 
@@ -901,18 +907,16 @@ private constructor(
 
                     accept(
                         object : Visitor<Unit> {
-                            override fun visitInnerUnionMember0(
-                                innerUnionMember0: InnerUnionMember0
-                            ) {
-                                innerUnionMember0.validate()
+                            override fun visitFixed(fixed: CompanyContributionFixed) {
+                                fixed.validate()
                             }
 
-                            override fun visitUnionMember1(unionMember1: UnionMember1) {
-                                unionMember1.validate()
+                            override fun visitPercent(percent: CompanyContributionPercent) {
+                                percent.validate()
                             }
 
-                            override fun visitUnionMember2(unionMember2: UnionMember2) {
-                                unionMember2.validate()
+                            override fun visitTiered(tiered: CompanyContributionTiered) {
+                                tiered.validate()
                             }
                         }
                     )
@@ -937,15 +941,14 @@ private constructor(
                 internal fun validity(): Int =
                     accept(
                         object : Visitor<Int> {
-                            override fun visitInnerUnionMember0(
-                                innerUnionMember0: InnerUnionMember0
-                            ) = innerUnionMember0.validity()
+                            override fun visitFixed(fixed: CompanyContributionFixed) =
+                                fixed.validity()
 
-                            override fun visitUnionMember1(unionMember1: UnionMember1) =
-                                unionMember1.validity()
+                            override fun visitPercent(percent: CompanyContributionPercent) =
+                                percent.validity()
 
-                            override fun visitUnionMember2(unionMember2: UnionMember2) =
-                                unionMember2.validity()
+                            override fun visitTiered(tiered: CompanyContributionTiered) =
+                                tiered.validity()
 
                             override fun unknown(json: JsonValue?) = 0
                         }
@@ -957,20 +960,18 @@ private constructor(
                     }
 
                     return other is CompanyContribution &&
-                        innerUnionMember0 == other.innerUnionMember0 &&
-                        unionMember1 == other.unionMember1 &&
-                        unionMember2 == other.unionMember2
+                        fixed == other.fixed &&
+                        percent == other.percent &&
+                        tiered == other.tiered
                 }
 
-                override fun hashCode(): Int =
-                    Objects.hash(innerUnionMember0, unionMember1, unionMember2)
+                override fun hashCode(): Int = Objects.hash(fixed, percent, tiered)
 
                 override fun toString(): String =
                     when {
-                        innerUnionMember0 != null ->
-                            "CompanyContribution{innerUnionMember0=$innerUnionMember0}"
-                        unionMember1 != null -> "CompanyContribution{unionMember1=$unionMember1}"
-                        unionMember2 != null -> "CompanyContribution{unionMember2=$unionMember2}"
+                        fixed != null -> "CompanyContribution{fixed=$fixed}"
+                        percent != null -> "CompanyContribution{percent=$percent}"
+                        tiered != null -> "CompanyContribution{tiered=$tiered}"
                         _json != null -> "CompanyContribution{_unknown=$_json}"
                         else -> throw IllegalStateException("Invalid CompanyContribution")
                     }
@@ -978,16 +979,16 @@ private constructor(
                 companion object {
 
                     @JvmStatic
-                    fun ofInnerUnionMember0(innerUnionMember0: InnerUnionMember0) =
-                        CompanyContribution(innerUnionMember0 = innerUnionMember0)
+                    fun ofFixed(fixed: CompanyContributionFixed) =
+                        CompanyContribution(fixed = fixed)
 
                     @JvmStatic
-                    fun ofUnionMember1(unionMember1: UnionMember1) =
-                        CompanyContribution(unionMember1 = unionMember1)
+                    fun ofPercent(percent: CompanyContributionPercent) =
+                        CompanyContribution(percent = percent)
 
                     @JvmStatic
-                    fun ofUnionMember2(unionMember2: UnionMember2) =
-                        CompanyContribution(unionMember2 = unionMember2)
+                    fun ofTiered(tiered: CompanyContributionTiered) =
+                        CompanyContribution(tiered = tiered)
                 }
 
                 /**
@@ -996,11 +997,11 @@ private constructor(
                  */
                 interface Visitor<out T> {
 
-                    fun visitInnerUnionMember0(innerUnionMember0: InnerUnionMember0): T
+                    fun visitFixed(fixed: CompanyContributionFixed): T
 
-                    fun visitUnionMember1(unionMember1: UnionMember1): T
+                    fun visitPercent(percent: CompanyContributionPercent): T
 
-                    fun visitUnionMember2(unionMember2: UnionMember2): T
+                    fun visitTiered(tiered: CompanyContributionTiered): T
 
                     /**
                      * Maps an unknown variant of [CompanyContribution] to a value of type [T].
@@ -1025,15 +1026,18 @@ private constructor(
 
                         val bestMatches =
                             sequenceOf(
-                                    tryDeserialize(node, jacksonTypeRef<InnerUnionMember0>())?.let {
-                                        CompanyContribution(innerUnionMember0 = it, _json = json)
-                                    },
-                                    tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
-                                        CompanyContribution(unionMember1 = it, _json = json)
-                                    },
-                                    tryDeserialize(node, jacksonTypeRef<UnionMember2>())?.let {
-                                        CompanyContribution(unionMember2 = it, _json = json)
-                                    },
+                                    tryDeserialize(node, jacksonTypeRef<CompanyContributionFixed>())
+                                        ?.let { CompanyContribution(fixed = it, _json = json) },
+                                    tryDeserialize(
+                                            node,
+                                            jacksonTypeRef<CompanyContributionPercent>(),
+                                        )
+                                        ?.let { CompanyContribution(percent = it, _json = json) },
+                                    tryDeserialize(
+                                            node,
+                                            jacksonTypeRef<CompanyContributionTiered>(),
+                                        )
+                                        ?.let { CompanyContribution(tiered = it, _json = json) },
                                 )
                                 .filterNotNull()
                                 .allMaxBy { it.validity() }
@@ -1061,17 +1065,16 @@ private constructor(
                         provider: SerializerProvider,
                     ) {
                         when {
-                            value.innerUnionMember0 != null ->
-                                generator.writeObject(value.innerUnionMember0)
-                            value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                            value.unionMember2 != null -> generator.writeObject(value.unionMember2)
+                            value.fixed != null -> generator.writeObject(value.fixed)
+                            value.percent != null -> generator.writeObject(value.percent)
+                            value.tiered != null -> generator.writeObject(value.tiered)
                             value._json != null -> generator.writeObject(value._json)
                             else -> throw IllegalStateException("Invalid CompanyContribution")
                         }
                     }
                 }
 
-                class InnerUnionMember0
+                class CompanyContributionFixed
                 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val amount: JsonField<Long>,
@@ -1141,7 +1144,7 @@ private constructor(
 
                         /**
                          * Returns a mutable builder for constructing an instance of
-                         * [InnerUnionMember0].
+                         * [CompanyContributionFixed].
                          *
                          * The following fields are required:
                          * ```java
@@ -1152,7 +1155,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [InnerUnionMember0]. */
+                    /** A builder for [CompanyContributionFixed]. */
                     class Builder internal constructor() {
 
                         private var amount: JsonField<Long>? = null
@@ -1161,12 +1164,13 @@ private constructor(
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(innerUnionMember0: InnerUnionMember0) = apply {
-                            amount = innerUnionMember0.amount
-                            type = innerUnionMember0.type
-                            additionalProperties =
-                                innerUnionMember0.additionalProperties.toMutableMap()
-                        }
+                        internal fun from(companyContributionFixed: CompanyContributionFixed) =
+                            apply {
+                                amount = companyContributionFixed.amount
+                                type = companyContributionFixed.type
+                                additionalProperties =
+                                    companyContributionFixed.additionalProperties.toMutableMap()
+                            }
 
                         /**
                          * Contribution amount in cents (for type=fixed) or basis points (for
@@ -1221,7 +1225,7 @@ private constructor(
                         }
 
                         /**
-                         * Returns an immutable instance of [InnerUnionMember0].
+                         * Returns an immutable instance of [CompanyContributionFixed].
                          *
                          * Further updates to this [Builder] will not mutate the returned instance.
                          *
@@ -1233,8 +1237,8 @@ private constructor(
                          *
                          * @throws IllegalStateException if any required field is unset.
                          */
-                        fun build(): InnerUnionMember0 =
-                            InnerUnionMember0(
+                        fun build(): CompanyContributionFixed =
+                            CompanyContributionFixed(
                                 checkRequired("amount", amount),
                                 checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
@@ -1243,7 +1247,7 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): InnerUnionMember0 = apply {
+                    fun validate(): CompanyContributionFixed = apply {
                         if (validated) {
                             return@apply
                         }
@@ -1410,7 +1414,7 @@ private constructor(
                             return true
                         }
 
-                        return other is InnerUnionMember0 &&
+                        return other is CompanyContributionFixed &&
                             amount == other.amount &&
                             type == other.type &&
                             additionalProperties == other.additionalProperties
@@ -1423,10 +1427,10 @@ private constructor(
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "InnerUnionMember0{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
+                        "CompanyContributionFixed{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
                 }
 
-                class UnionMember1
+                class CompanyContributionPercent
                 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val amount: JsonField<Long>,
@@ -1495,7 +1499,8 @@ private constructor(
                     companion object {
 
                         /**
-                         * Returns a mutable builder for constructing an instance of [UnionMember1].
+                         * Returns a mutable builder for constructing an instance of
+                         * [CompanyContributionPercent].
                          *
                          * The following fields are required:
                          * ```java
@@ -1506,7 +1511,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [UnionMember1]. */
+                    /** A builder for [CompanyContributionPercent]. */
                     class Builder internal constructor() {
 
                         private var amount: JsonField<Long>? = null
@@ -1515,11 +1520,13 @@ private constructor(
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(unionMember1: UnionMember1) = apply {
-                            amount = unionMember1.amount
-                            type = unionMember1.type
-                            additionalProperties = unionMember1.additionalProperties.toMutableMap()
-                        }
+                        internal fun from(companyContributionPercent: CompanyContributionPercent) =
+                            apply {
+                                amount = companyContributionPercent.amount
+                                type = companyContributionPercent.type
+                                additionalProperties =
+                                    companyContributionPercent.additionalProperties.toMutableMap()
+                            }
 
                         /**
                          * Contribution amount in cents (for type=fixed) or basis points (for
@@ -1574,7 +1581,7 @@ private constructor(
                         }
 
                         /**
-                         * Returns an immutable instance of [UnionMember1].
+                         * Returns an immutable instance of [CompanyContributionPercent].
                          *
                          * Further updates to this [Builder] will not mutate the returned instance.
                          *
@@ -1586,8 +1593,8 @@ private constructor(
                          *
                          * @throws IllegalStateException if any required field is unset.
                          */
-                        fun build(): UnionMember1 =
-                            UnionMember1(
+                        fun build(): CompanyContributionPercent =
+                            CompanyContributionPercent(
                                 checkRequired("amount", amount),
                                 checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
@@ -1596,7 +1603,7 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): UnionMember1 = apply {
+                    fun validate(): CompanyContributionPercent = apply {
                         if (validated) {
                             return@apply
                         }
@@ -1763,7 +1770,7 @@ private constructor(
                             return true
                         }
 
-                        return other is UnionMember1 &&
+                        return other is CompanyContributionPercent &&
                             amount == other.amount &&
                             type == other.type &&
                             additionalProperties == other.additionalProperties
@@ -1776,10 +1783,10 @@ private constructor(
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "UnionMember1{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
+                        "CompanyContributionPercent{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
                 }
 
-                class UnionMember2
+                class CompanyContributionTiered
                 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val tiers: JsonField<List<Tier>>,
@@ -1850,7 +1857,8 @@ private constructor(
                     companion object {
 
                         /**
-                         * Returns a mutable builder for constructing an instance of [UnionMember2].
+                         * Returns a mutable builder for constructing an instance of
+                         * [CompanyContributionTiered].
                          *
                          * The following fields are required:
                          * ```java
@@ -1861,7 +1869,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [UnionMember2]. */
+                    /** A builder for [CompanyContributionTiered]. */
                     class Builder internal constructor() {
 
                         private var tiers: JsonField<MutableList<Tier>>? = null
@@ -1870,11 +1878,13 @@ private constructor(
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(unionMember2: UnionMember2) = apply {
-                            tiers = unionMember2.tiers.map { it.toMutableList() }
-                            type = unionMember2.type
-                            additionalProperties = unionMember2.additionalProperties.toMutableMap()
-                        }
+                        internal fun from(companyContributionTiered: CompanyContributionTiered) =
+                            apply {
+                                tiers = companyContributionTiered.tiers.map { it.toMutableList() }
+                                type = companyContributionTiered.type
+                                additionalProperties =
+                                    companyContributionTiered.additionalProperties.toMutableMap()
+                            }
 
                         /**
                          * Array of tier objects defining employer match tiers based on employee
@@ -1944,7 +1954,7 @@ private constructor(
                         }
 
                         /**
-                         * Returns an immutable instance of [UnionMember2].
+                         * Returns an immutable instance of [CompanyContributionTiered].
                          *
                          * Further updates to this [Builder] will not mutate the returned instance.
                          *
@@ -1956,8 +1966,8 @@ private constructor(
                          *
                          * @throws IllegalStateException if any required field is unset.
                          */
-                        fun build(): UnionMember2 =
-                            UnionMember2(
+                        fun build(): CompanyContributionTiered =
+                            CompanyContributionTiered(
                                 checkRequired("tiers", tiers).map { it.toImmutable() },
                                 checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
@@ -1966,7 +1976,7 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): UnionMember2 = apply {
+                    fun validate(): CompanyContributionTiered = apply {
                         if (validated) {
                             return@apply
                         }
@@ -2344,7 +2354,7 @@ private constructor(
                             return true
                         }
 
-                        return other is UnionMember2 &&
+                        return other is CompanyContributionTiered &&
                             tiers == other.tiers &&
                             type == other.type &&
                             additionalProperties == other.additionalProperties
@@ -2357,7 +2367,7 @@ private constructor(
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "UnionMember2{tiers=$tiers, type=$type, additionalProperties=$additionalProperties}"
+                        "CompanyContributionTiered{tiers=$tiers, type=$type, additionalProperties=$additionalProperties}"
                 }
             }
 
@@ -2369,32 +2379,35 @@ private constructor(
             @JsonSerialize(using = EmployeeDeduction.Serializer::class)
             class EmployeeDeduction
             private constructor(
-                private val innerUnionMember0: InnerUnionMember0? = null,
-                private val unionMember1: UnionMember1? = null,
+                private val contributionFixed: EmployeeDeductionContributionFixed? = null,
+                private val contributionPercent: EmployeeDeductionContributionPercent? = null,
                 private val _json: JsonValue? = null,
             ) {
 
-                fun innerUnionMember0(): Optional<InnerUnionMember0> =
-                    Optional.ofNullable(innerUnionMember0)
+                fun contributionFixed(): Optional<EmployeeDeductionContributionFixed> =
+                    Optional.ofNullable(contributionFixed)
 
-                fun unionMember1(): Optional<UnionMember1> = Optional.ofNullable(unionMember1)
+                fun contributionPercent(): Optional<EmployeeDeductionContributionPercent> =
+                    Optional.ofNullable(contributionPercent)
 
-                fun isInnerUnionMember0(): Boolean = innerUnionMember0 != null
+                fun isContributionFixed(): Boolean = contributionFixed != null
 
-                fun isUnionMember1(): Boolean = unionMember1 != null
+                fun isContributionPercent(): Boolean = contributionPercent != null
 
-                fun asInnerUnionMember0(): InnerUnionMember0 =
-                    innerUnionMember0.getOrThrow("innerUnionMember0")
+                fun asContributionFixed(): EmployeeDeductionContributionFixed =
+                    contributionFixed.getOrThrow("contributionFixed")
 
-                fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
+                fun asContributionPercent(): EmployeeDeductionContributionPercent =
+                    contributionPercent.getOrThrow("contributionPercent")
 
                 fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
                 fun <T> accept(visitor: Visitor<T>): T =
                     when {
-                        innerUnionMember0 != null ->
-                            visitor.visitInnerUnionMember0(innerUnionMember0)
-                        unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
+                        contributionFixed != null ->
+                            visitor.visitContributionFixed(contributionFixed)
+                        contributionPercent != null ->
+                            visitor.visitContributionPercent(contributionPercent)
                         else -> visitor.unknown(_json)
                     }
 
@@ -2407,14 +2420,16 @@ private constructor(
 
                     accept(
                         object : Visitor<Unit> {
-                            override fun visitInnerUnionMember0(
-                                innerUnionMember0: InnerUnionMember0
+                            override fun visitContributionFixed(
+                                contributionFixed: EmployeeDeductionContributionFixed
                             ) {
-                                innerUnionMember0.validate()
+                                contributionFixed.validate()
                             }
 
-                            override fun visitUnionMember1(unionMember1: UnionMember1) {
-                                unionMember1.validate()
+                            override fun visitContributionPercent(
+                                contributionPercent: EmployeeDeductionContributionPercent
+                            ) {
+                                contributionPercent.validate()
                             }
                         }
                     )
@@ -2439,12 +2454,13 @@ private constructor(
                 internal fun validity(): Int =
                     accept(
                         object : Visitor<Int> {
-                            override fun visitInnerUnionMember0(
-                                innerUnionMember0: InnerUnionMember0
-                            ) = innerUnionMember0.validity()
+                            override fun visitContributionFixed(
+                                contributionFixed: EmployeeDeductionContributionFixed
+                            ) = contributionFixed.validity()
 
-                            override fun visitUnionMember1(unionMember1: UnionMember1) =
-                                unionMember1.validity()
+                            override fun visitContributionPercent(
+                                contributionPercent: EmployeeDeductionContributionPercent
+                            ) = contributionPercent.validity()
 
                             override fun unknown(json: JsonValue?) = 0
                         }
@@ -2456,17 +2472,18 @@ private constructor(
                     }
 
                     return other is EmployeeDeduction &&
-                        innerUnionMember0 == other.innerUnionMember0 &&
-                        unionMember1 == other.unionMember1
+                        contributionFixed == other.contributionFixed &&
+                        contributionPercent == other.contributionPercent
                 }
 
-                override fun hashCode(): Int = Objects.hash(innerUnionMember0, unionMember1)
+                override fun hashCode(): Int = Objects.hash(contributionFixed, contributionPercent)
 
                 override fun toString(): String =
                     when {
-                        innerUnionMember0 != null ->
-                            "EmployeeDeduction{innerUnionMember0=$innerUnionMember0}"
-                        unionMember1 != null -> "EmployeeDeduction{unionMember1=$unionMember1}"
+                        contributionFixed != null ->
+                            "EmployeeDeduction{contributionFixed=$contributionFixed}"
+                        contributionPercent != null ->
+                            "EmployeeDeduction{contributionPercent=$contributionPercent}"
                         _json != null -> "EmployeeDeduction{_unknown=$_json}"
                         else -> throw IllegalStateException("Invalid EmployeeDeduction")
                     }
@@ -2474,12 +2491,13 @@ private constructor(
                 companion object {
 
                     @JvmStatic
-                    fun ofInnerUnionMember0(innerUnionMember0: InnerUnionMember0) =
-                        EmployeeDeduction(innerUnionMember0 = innerUnionMember0)
+                    fun ofContributionFixed(contributionFixed: EmployeeDeductionContributionFixed) =
+                        EmployeeDeduction(contributionFixed = contributionFixed)
 
                     @JvmStatic
-                    fun ofUnionMember1(unionMember1: UnionMember1) =
-                        EmployeeDeduction(unionMember1 = unionMember1)
+                    fun ofContributionPercent(
+                        contributionPercent: EmployeeDeductionContributionPercent
+                    ) = EmployeeDeduction(contributionPercent = contributionPercent)
                 }
 
                 /**
@@ -2488,9 +2506,13 @@ private constructor(
                  */
                 interface Visitor<out T> {
 
-                    fun visitInnerUnionMember0(innerUnionMember0: InnerUnionMember0): T
+                    fun visitContributionFixed(
+                        contributionFixed: EmployeeDeductionContributionFixed
+                    ): T
 
-                    fun visitUnionMember1(unionMember1: UnionMember1): T
+                    fun visitContributionPercent(
+                        contributionPercent: EmployeeDeductionContributionPercent
+                    ): T
 
                     /**
                      * Maps an unknown variant of [EmployeeDeduction] to a value of type [T].
@@ -2515,12 +2537,23 @@ private constructor(
 
                         val bestMatches =
                             sequenceOf(
-                                    tryDeserialize(node, jacksonTypeRef<InnerUnionMember0>())?.let {
-                                        EmployeeDeduction(innerUnionMember0 = it, _json = json)
-                                    },
-                                    tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
-                                        EmployeeDeduction(unionMember1 = it, _json = json)
-                                    },
+                                    tryDeserialize(
+                                            node,
+                                            jacksonTypeRef<EmployeeDeductionContributionFixed>(),
+                                        )
+                                        ?.let {
+                                            EmployeeDeduction(contributionFixed = it, _json = json)
+                                        },
+                                    tryDeserialize(
+                                            node,
+                                            jacksonTypeRef<EmployeeDeductionContributionPercent>(),
+                                        )
+                                        ?.let {
+                                            EmployeeDeduction(
+                                                contributionPercent = it,
+                                                _json = json,
+                                            )
+                                        },
                                 )
                                 .filterNotNull()
                                 .allMaxBy { it.validity() }
@@ -2548,16 +2581,17 @@ private constructor(
                         provider: SerializerProvider,
                     ) {
                         when {
-                            value.innerUnionMember0 != null ->
-                                generator.writeObject(value.innerUnionMember0)
-                            value.unionMember1 != null -> generator.writeObject(value.unionMember1)
+                            value.contributionFixed != null ->
+                                generator.writeObject(value.contributionFixed)
+                            value.contributionPercent != null ->
+                                generator.writeObject(value.contributionPercent)
                             value._json != null -> generator.writeObject(value._json)
                             else -> throw IllegalStateException("Invalid EmployeeDeduction")
                         }
                     }
                 }
 
-                class InnerUnionMember0
+                class EmployeeDeductionContributionFixed
                 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val amount: JsonField<Long>,
@@ -2627,7 +2661,7 @@ private constructor(
 
                         /**
                          * Returns a mutable builder for constructing an instance of
-                         * [InnerUnionMember0].
+                         * [EmployeeDeductionContributionFixed].
                          *
                          * The following fields are required:
                          * ```java
@@ -2638,7 +2672,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [InnerUnionMember0]. */
+                    /** A builder for [EmployeeDeductionContributionFixed]. */
                     class Builder internal constructor() {
 
                         private var amount: JsonField<Long>? = null
@@ -2647,11 +2681,14 @@ private constructor(
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(innerUnionMember0: InnerUnionMember0) = apply {
-                            amount = innerUnionMember0.amount
-                            type = innerUnionMember0.type
+                        internal fun from(
+                            employeeDeductionContributionFixed: EmployeeDeductionContributionFixed
+                        ) = apply {
+                            amount = employeeDeductionContributionFixed.amount
+                            type = employeeDeductionContributionFixed.type
                             additionalProperties =
-                                innerUnionMember0.additionalProperties.toMutableMap()
+                                employeeDeductionContributionFixed.additionalProperties
+                                    .toMutableMap()
                         }
 
                         /**
@@ -2707,7 +2744,7 @@ private constructor(
                         }
 
                         /**
-                         * Returns an immutable instance of [InnerUnionMember0].
+                         * Returns an immutable instance of [EmployeeDeductionContributionFixed].
                          *
                          * Further updates to this [Builder] will not mutate the returned instance.
                          *
@@ -2719,8 +2756,8 @@ private constructor(
                          *
                          * @throws IllegalStateException if any required field is unset.
                          */
-                        fun build(): InnerUnionMember0 =
-                            InnerUnionMember0(
+                        fun build(): EmployeeDeductionContributionFixed =
+                            EmployeeDeductionContributionFixed(
                                 checkRequired("amount", amount),
                                 checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
@@ -2729,7 +2766,7 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): InnerUnionMember0 = apply {
+                    fun validate(): EmployeeDeductionContributionFixed = apply {
                         if (validated) {
                             return@apply
                         }
@@ -2896,7 +2933,7 @@ private constructor(
                             return true
                         }
 
-                        return other is InnerUnionMember0 &&
+                        return other is EmployeeDeductionContributionFixed &&
                             amount == other.amount &&
                             type == other.type &&
                             additionalProperties == other.additionalProperties
@@ -2909,10 +2946,10 @@ private constructor(
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "InnerUnionMember0{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
+                        "EmployeeDeductionContributionFixed{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
                 }
 
-                class UnionMember1
+                class EmployeeDeductionContributionPercent
                 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val amount: JsonField<Long>,
@@ -2981,7 +3018,8 @@ private constructor(
                     companion object {
 
                         /**
-                         * Returns a mutable builder for constructing an instance of [UnionMember1].
+                         * Returns a mutable builder for constructing an instance of
+                         * [EmployeeDeductionContributionPercent].
                          *
                          * The following fields are required:
                          * ```java
@@ -2992,7 +3030,7 @@ private constructor(
                         @JvmStatic fun builder() = Builder()
                     }
 
-                    /** A builder for [UnionMember1]. */
+                    /** A builder for [EmployeeDeductionContributionPercent]. */
                     class Builder internal constructor() {
 
                         private var amount: JsonField<Long>? = null
@@ -3001,10 +3039,15 @@ private constructor(
                             mutableMapOf()
 
                         @JvmSynthetic
-                        internal fun from(unionMember1: UnionMember1) = apply {
-                            amount = unionMember1.amount
-                            type = unionMember1.type
-                            additionalProperties = unionMember1.additionalProperties.toMutableMap()
+                        internal fun from(
+                            employeeDeductionContributionPercent:
+                                EmployeeDeductionContributionPercent
+                        ) = apply {
+                            amount = employeeDeductionContributionPercent.amount
+                            type = employeeDeductionContributionPercent.type
+                            additionalProperties =
+                                employeeDeductionContributionPercent.additionalProperties
+                                    .toMutableMap()
                         }
 
                         /**
@@ -3060,7 +3103,7 @@ private constructor(
                         }
 
                         /**
-                         * Returns an immutable instance of [UnionMember1].
+                         * Returns an immutable instance of [EmployeeDeductionContributionPercent].
                          *
                          * Further updates to this [Builder] will not mutate the returned instance.
                          *
@@ -3072,8 +3115,8 @@ private constructor(
                          *
                          * @throws IllegalStateException if any required field is unset.
                          */
-                        fun build(): UnionMember1 =
-                            UnionMember1(
+                        fun build(): EmployeeDeductionContributionPercent =
+                            EmployeeDeductionContributionPercent(
                                 checkRequired("amount", amount),
                                 checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
@@ -3082,7 +3125,7 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun validate(): UnionMember1 = apply {
+                    fun validate(): EmployeeDeductionContributionPercent = apply {
                         if (validated) {
                             return@apply
                         }
@@ -3249,7 +3292,7 @@ private constructor(
                             return true
                         }
 
-                        return other is UnionMember1 &&
+                        return other is EmployeeDeductionContributionPercent &&
                             amount == other.amount &&
                             type == other.type &&
                             additionalProperties == other.additionalProperties
@@ -3262,7 +3305,7 @@ private constructor(
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "UnionMember1{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
+                        "EmployeeDeductionContributionPercent{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
                 }
             }
 
@@ -3407,7 +3450,7 @@ private constructor(
                     return true
                 }
 
-                return other is UnionMember0 &&
+                return other is InnerIndividualBenefit &&
                     annualMaximum == other.annualMaximum &&
                     catchUp == other.catchUp &&
                     companyContribution == other.companyContribution &&
@@ -3430,7 +3473,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "UnionMember0{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, employeeDeduction=$employeeDeduction, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
+                "InnerIndividualBenefit{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, employeeDeduction=$employeeDeduction, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
         }
 
         class BatchError

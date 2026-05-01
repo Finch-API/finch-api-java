@@ -15,28 +15,28 @@ import org.junit.jupiter.params.provider.EnumSource
 internal class BenefitContributionTest {
 
     @Test
-    fun ofUnionMember0() {
-        val unionMember0 =
-            BenefitContribution.UnionMember0.builder()
+    fun ofFixed() {
+        val fixed =
+            BenefitContribution.BenefitContributionFixed.builder()
                 .amount(0L)
-                .type(BenefitContribution.UnionMember0.Type.FIXED)
+                .type(BenefitContribution.BenefitContributionFixed.Type.FIXED)
                 .build()
 
-        val benefitContribution = BenefitContribution.ofUnionMember0(unionMember0)
+        val benefitContribution = BenefitContribution.ofFixed(fixed)
 
-        assertThat(benefitContribution.unionMember0()).contains(unionMember0)
-        assertThat(benefitContribution.unionMember1()).isEmpty
-        assertThat(benefitContribution.unionMember2()).isEmpty
+        assertThat(benefitContribution.fixed()).contains(fixed)
+        assertThat(benefitContribution.percent()).isEmpty
+        assertThat(benefitContribution.tiered()).isEmpty
     }
 
     @Test
-    fun ofUnionMember0Roundtrip() {
+    fun ofFixedRoundtrip() {
         val jsonMapper = jsonMapper()
         val benefitContribution =
-            BenefitContribution.ofUnionMember0(
-                BenefitContribution.UnionMember0.builder()
+            BenefitContribution.ofFixed(
+                BenefitContribution.BenefitContributionFixed.builder()
                     .amount(0L)
-                    .type(BenefitContribution.UnionMember0.Type.FIXED)
+                    .type(BenefitContribution.BenefitContributionFixed.Type.FIXED)
                     .build()
             )
 
@@ -50,28 +50,28 @@ internal class BenefitContributionTest {
     }
 
     @Test
-    fun ofUnionMember1() {
-        val unionMember1 =
-            BenefitContribution.UnionMember1.builder()
+    fun ofPercent() {
+        val percent =
+            BenefitContribution.BenefitContributionPercent.builder()
                 .amount(0L)
-                .type(BenefitContribution.UnionMember1.Type.PERCENT)
+                .type(BenefitContribution.BenefitContributionPercent.Type.PERCENT)
                 .build()
 
-        val benefitContribution = BenefitContribution.ofUnionMember1(unionMember1)
+        val benefitContribution = BenefitContribution.ofPercent(percent)
 
-        assertThat(benefitContribution.unionMember0()).isEmpty
-        assertThat(benefitContribution.unionMember1()).contains(unionMember1)
-        assertThat(benefitContribution.unionMember2()).isEmpty
+        assertThat(benefitContribution.fixed()).isEmpty
+        assertThat(benefitContribution.percent()).contains(percent)
+        assertThat(benefitContribution.tiered()).isEmpty
     }
 
     @Test
-    fun ofUnionMember1Roundtrip() {
+    fun ofPercentRoundtrip() {
         val jsonMapper = jsonMapper()
         val benefitContribution =
-            BenefitContribution.ofUnionMember1(
-                BenefitContribution.UnionMember1.builder()
+            BenefitContribution.ofPercent(
+                BenefitContribution.BenefitContributionPercent.builder()
                     .amount(0L)
-                    .type(BenefitContribution.UnionMember1.Type.PERCENT)
+                    .type(BenefitContribution.BenefitContributionPercent.Type.PERCENT)
                     .build()
             )
 
@@ -85,35 +85,38 @@ internal class BenefitContributionTest {
     }
 
     @Test
-    fun ofUnionMember2() {
-        val unionMember2 =
-            BenefitContribution.UnionMember2.builder()
+    fun ofTiered() {
+        val tiered =
+            BenefitContribution.BenefitContributionTiered.builder()
                 .addTier(
-                    BenefitContribution.UnionMember2.Tier.builder().match(1L).threshold(1L).build()
+                    BenefitContribution.BenefitContributionTiered.Tier.builder()
+                        .match(1L)
+                        .threshold(1L)
+                        .build()
                 )
-                .type(BenefitContribution.UnionMember2.Type.TIERED)
+                .type(BenefitContribution.BenefitContributionTiered.Type.TIERED)
                 .build()
 
-        val benefitContribution = BenefitContribution.ofUnionMember2(unionMember2)
+        val benefitContribution = BenefitContribution.ofTiered(tiered)
 
-        assertThat(benefitContribution.unionMember0()).isEmpty
-        assertThat(benefitContribution.unionMember1()).isEmpty
-        assertThat(benefitContribution.unionMember2()).contains(unionMember2)
+        assertThat(benefitContribution.fixed()).isEmpty
+        assertThat(benefitContribution.percent()).isEmpty
+        assertThat(benefitContribution.tiered()).contains(tiered)
     }
 
     @Test
-    fun ofUnionMember2Roundtrip() {
+    fun ofTieredRoundtrip() {
         val jsonMapper = jsonMapper()
         val benefitContribution =
-            BenefitContribution.ofUnionMember2(
-                BenefitContribution.UnionMember2.builder()
+            BenefitContribution.ofTiered(
+                BenefitContribution.BenefitContributionTiered.builder()
                     .addTier(
-                        BenefitContribution.UnionMember2.Tier.builder()
+                        BenefitContribution.BenefitContributionTiered.Tier.builder()
                             .match(1L)
                             .threshold(1L)
                             .build()
                     )
-                    .type(BenefitContribution.UnionMember2.Type.TIERED)
+                    .type(BenefitContribution.BenefitContributionTiered.Type.TIERED)
                     .build()
             )
 

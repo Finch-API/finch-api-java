@@ -17,28 +17,32 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                 .addResponse(
                     EmploymentDataResponse.builder()
                         .body(
-                            EmploymentData.UnionMember0.builder()
+                            EmploymentData.InnerEmploymentData.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .classCode("class_code")
                                 .department(
-                                    EmploymentData.UnionMember0.Department.builder()
+                                    EmploymentData.InnerEmploymentData.Department.builder()
                                         .name("name")
                                         .build()
                                 )
                                 .employment(
-                                    EmploymentData.UnionMember0.Employment.builder()
+                                    EmploymentData.InnerEmploymentData.Employment.builder()
                                         .subtype(
-                                            EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME
+                                            EmploymentData.InnerEmploymentData.Employment.Subtype
+                                                .FULL_TIME
                                         )
-                                        .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                                        .type(
+                                            EmploymentData.InnerEmploymentData.Employment.Type
+                                                .EMPLOYEE
+                                        )
                                         .build()
                                 )
                                 .employmentStatus(
-                                    EmploymentData.UnionMember0.EmploymentStatus.ACTIVE
+                                    EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE
                                 )
                                 .endDate("end_date")
                                 .firstName("first_name")
-                                .flsaStatus(EmploymentData.UnionMember0.FlsaStatus.EXEMPT)
+                                .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
                                 .isActive(true)
                                 .lastName("last_name")
                                 .latestRehireDate("latest_rehire_date")
@@ -55,7 +59,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                         .build()
                                 )
                                 .manager(
-                                    EmploymentData.UnionMember0.Manager.builder()
+                                    EmploymentData.InnerEmploymentData.Manager.builder()
                                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                         .build()
                                 )
@@ -63,7 +67,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                 .startDate("start_date")
                                 .title("title")
                                 .addCustomField(
-                                    EmploymentData.UnionMember0.CustomField.builder()
+                                    EmploymentData.InnerEmploymentData.CustomField.builder()
                                         .name("name")
                                         .value("string")
                                         .build()
@@ -98,26 +102,31 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
             .containsExactly(
                 EmploymentDataResponse.builder()
                     .body(
-                        EmploymentData.UnionMember0.builder()
+                        EmploymentData.InnerEmploymentData.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .classCode("class_code")
                             .department(
-                                EmploymentData.UnionMember0.Department.builder()
+                                EmploymentData.InnerEmploymentData.Department.builder()
                                     .name("name")
                                     .build()
                             )
                             .employment(
-                                EmploymentData.UnionMember0.Employment.builder()
+                                EmploymentData.InnerEmploymentData.Employment.builder()
                                     .subtype(
-                                        EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME
+                                        EmploymentData.InnerEmploymentData.Employment.Subtype
+                                            .FULL_TIME
                                     )
-                                    .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                                    .type(
+                                        EmploymentData.InnerEmploymentData.Employment.Type.EMPLOYEE
+                                    )
                                     .build()
                             )
-                            .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
+                            .employmentStatus(
+                                EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE
+                            )
                             .endDate("end_date")
                             .firstName("first_name")
-                            .flsaStatus(EmploymentData.UnionMember0.FlsaStatus.EXEMPT)
+                            .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
                             .isActive(true)
                             .lastName("last_name")
                             .latestRehireDate("latest_rehire_date")
@@ -134,7 +143,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                     .build()
                             )
                             .manager(
-                                EmploymentData.UnionMember0.Manager.builder()
+                                EmploymentData.InnerEmploymentData.Manager.builder()
                                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                     .build()
                             )
@@ -142,7 +151,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                             .startDate("start_date")
                             .title("title")
                             .addCustomField(
-                                EmploymentData.UnionMember0.CustomField.builder()
+                                EmploymentData.InnerEmploymentData.CustomField.builder()
                                     .name("name")
                                     .value("string")
                                     .build()
@@ -181,28 +190,32 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                 .addResponse(
                     EmploymentDataResponse.builder()
                         .body(
-                            EmploymentData.UnionMember0.builder()
+                            EmploymentData.InnerEmploymentData.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .classCode("class_code")
                                 .department(
-                                    EmploymentData.UnionMember0.Department.builder()
+                                    EmploymentData.InnerEmploymentData.Department.builder()
                                         .name("name")
                                         .build()
                                 )
                                 .employment(
-                                    EmploymentData.UnionMember0.Employment.builder()
+                                    EmploymentData.InnerEmploymentData.Employment.builder()
                                         .subtype(
-                                            EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME
+                                            EmploymentData.InnerEmploymentData.Employment.Subtype
+                                                .FULL_TIME
                                         )
-                                        .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                                        .type(
+                                            EmploymentData.InnerEmploymentData.Employment.Type
+                                                .EMPLOYEE
+                                        )
                                         .build()
                                 )
                                 .employmentStatus(
-                                    EmploymentData.UnionMember0.EmploymentStatus.ACTIVE
+                                    EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE
                                 )
                                 .endDate("end_date")
                                 .firstName("first_name")
-                                .flsaStatus(EmploymentData.UnionMember0.FlsaStatus.EXEMPT)
+                                .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
                                 .isActive(true)
                                 .lastName("last_name")
                                 .latestRehireDate("latest_rehire_date")
@@ -219,7 +232,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                         .build()
                                 )
                                 .manager(
-                                    EmploymentData.UnionMember0.Manager.builder()
+                                    EmploymentData.InnerEmploymentData.Manager.builder()
                                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                         .build()
                                 )
@@ -227,7 +240,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                 .startDate("start_date")
                                 .title("title")
                                 .addCustomField(
-                                    EmploymentData.UnionMember0.CustomField.builder()
+                                    EmploymentData.InnerEmploymentData.CustomField.builder()
                                         .name("name")
                                         .value("string")
                                         .build()

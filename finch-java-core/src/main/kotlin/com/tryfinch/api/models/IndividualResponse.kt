@@ -128,9 +128,8 @@ private constructor(
          */
         fun body(body: JsonField<Individual>) = apply { this.body = body }
 
-        /** Alias for calling [body] with `Individual.ofUnionMember0(unionMember0)`. */
-        fun body(unionMember0: Individual.UnionMember0) =
-            body(Individual.ofUnionMember0(unionMember0))
+        /** Alias for calling [body] with `Individual.ofIndividual(individual)`. */
+        fun body(individual: Individual.InnerIndividual) = body(Individual.ofIndividual(individual))
 
         /** Alias for calling [body] with `Individual.ofBatchError(batchError)`. */
         fun body(batchError: Individual.BatchError) = body(Individual.ofBatchError(batchError))
