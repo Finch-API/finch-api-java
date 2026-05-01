@@ -16,22 +16,24 @@ import org.junit.jupiter.params.provider.EnumSource
 internal class EmploymentDataTest {
 
     @Test
-    fun ofUnionMember0() {
-        val unionMember0 =
-            EmploymentData.UnionMember0.builder()
+    fun ofEmploymentData() {
+        val employmentData =
+            EmploymentData.InnerEmploymentData.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .classCode("class_code")
-                .department(EmploymentData.UnionMember0.Department.builder().name("name").build())
+                .department(
+                    EmploymentData.InnerEmploymentData.Department.builder().name("name").build()
+                )
                 .employment(
-                    EmploymentData.UnionMember0.Employment.builder()
-                        .subtype(EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME)
-                        .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                    EmploymentData.InnerEmploymentData.Employment.builder()
+                        .subtype(EmploymentData.InnerEmploymentData.Employment.Subtype.FULL_TIME)
+                        .type(EmploymentData.InnerEmploymentData.Employment.Type.EMPLOYEE)
                         .build()
                 )
-                .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
+                .employmentStatus(EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
-                .flsaStatus(EmploymentData.UnionMember0.FlsaStatus.EXEMPT)
+                .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
                 .isActive(true)
                 .lastName("last_name")
                 .latestRehireDate("latest_rehire_date")
@@ -48,7 +50,7 @@ internal class EmploymentDataTest {
                         .build()
                 )
                 .manager(
-                    EmploymentData.UnionMember0.Manager.builder()
+                    EmploymentData.InnerEmploymentData.Manager.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .build()
                 )
@@ -56,7 +58,7 @@ internal class EmploymentDataTest {
                 .startDate("start_date")
                 .title("title")
                 .addCustomField(
-                    EmploymentData.UnionMember0.CustomField.builder()
+                    EmploymentData.InnerEmploymentData.CustomField.builder()
                         .name("name")
                         .value("string")
                         .build()
@@ -81,33 +83,35 @@ internal class EmploymentDataTest {
                 .workId("work_id")
                 .build()
 
-        val employmentData = EmploymentData.ofUnionMember0(unionMember0)
+        val employmentData = EmploymentData.ofEmploymentData(employmentData)
 
-        assertThat(employmentData.unionMember0()).contains(unionMember0)
+        assertThat(employmentData.employmentData()).contains(employmentData)
         assertThat(employmentData.batchError()).isEmpty
     }
 
     @Test
-    fun ofUnionMember0Roundtrip() {
+    fun ofEmploymentDataRoundtrip() {
         val jsonMapper = jsonMapper()
         val employmentData =
-            EmploymentData.ofUnionMember0(
-                EmploymentData.UnionMember0.builder()
+            EmploymentData.ofEmploymentData(
+                EmploymentData.InnerEmploymentData.builder()
                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .classCode("class_code")
                     .department(
-                        EmploymentData.UnionMember0.Department.builder().name("name").build()
+                        EmploymentData.InnerEmploymentData.Department.builder().name("name").build()
                     )
                     .employment(
-                        EmploymentData.UnionMember0.Employment.builder()
-                            .subtype(EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME)
-                            .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                        EmploymentData.InnerEmploymentData.Employment.builder()
+                            .subtype(
+                                EmploymentData.InnerEmploymentData.Employment.Subtype.FULL_TIME
+                            )
+                            .type(EmploymentData.InnerEmploymentData.Employment.Type.EMPLOYEE)
                             .build()
                     )
-                    .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
+                    .employmentStatus(EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE)
                     .endDate("end_date")
                     .firstName("first_name")
-                    .flsaStatus(EmploymentData.UnionMember0.FlsaStatus.EXEMPT)
+                    .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
                     .isActive(true)
                     .lastName("last_name")
                     .latestRehireDate("latest_rehire_date")
@@ -124,7 +128,7 @@ internal class EmploymentDataTest {
                             .build()
                     )
                     .manager(
-                        EmploymentData.UnionMember0.Manager.builder()
+                        EmploymentData.InnerEmploymentData.Manager.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
                     )
@@ -132,7 +136,7 @@ internal class EmploymentDataTest {
                     .startDate("start_date")
                     .title("title")
                     .addCustomField(
-                        EmploymentData.UnionMember0.CustomField.builder()
+                        EmploymentData.InnerEmploymentData.CustomField.builder()
                             .name("name")
                             .value("string")
                             .build()
@@ -179,7 +183,7 @@ internal class EmploymentDataTest {
 
         val employmentData = EmploymentData.ofBatchError(batchError)
 
-        assertThat(employmentData.unionMember0()).isEmpty
+        assertThat(employmentData.employmentData()).isEmpty
         assertThat(employmentData.batchError()).contains(batchError)
     }
 

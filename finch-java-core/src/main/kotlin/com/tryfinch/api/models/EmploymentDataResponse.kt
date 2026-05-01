@@ -131,9 +131,9 @@ private constructor(
          */
         fun body(body: JsonField<EmploymentData>) = apply { this.body = body }
 
-        /** Alias for calling [body] with `EmploymentData.ofUnionMember0(unionMember0)`. */
-        fun body(unionMember0: EmploymentData.UnionMember0) =
-            body(EmploymentData.ofUnionMember0(unionMember0))
+        /** Alias for calling [body] with `EmploymentData.ofEmploymentData(employmentData)`. */
+        fun body(employmentData: EmploymentData.InnerEmploymentData) =
+            body(EmploymentData.ofEmploymentData(employmentData))
 
         /** Alias for calling [body] with `EmploymentData.ofBatchError(batchError)`. */
         fun body(batchError: EmploymentData.BatchError) =

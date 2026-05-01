@@ -15,20 +15,20 @@ import org.junit.jupiter.params.provider.EnumSource
 internal class IndividualTest {
 
     @Test
-    fun ofUnionMember0() {
-        val unionMember0 =
-            Individual.UnionMember0.builder()
+    fun ofIndividual() {
+        val individual =
+            Individual.InnerIndividual.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dob("dob")
-                .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
+                .ethnicity(Individual.InnerIndividual.Ethnicity.ASIAN)
                 .firstName("first_name")
-                .gender(Individual.UnionMember0.Gender.FEMALE)
+                .gender(Individual.InnerIndividual.Gender.FEMALE)
                 .lastName("last_name")
                 .middleName("middle_name")
                 .addPhoneNumber(
-                    Individual.UnionMember0.PhoneNumber.builder()
+                    Individual.InnerIndividual.PhoneNumber.builder()
                         .data("data")
-                        .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
+                        .type(Individual.InnerIndividual.PhoneNumber.Type.WORK)
                         .build()
                 )
                 .preferredName("preferred_name")
@@ -45,38 +45,38 @@ internal class IndividualTest {
                         .build()
                 )
                 .addEmail(
-                    Individual.UnionMember0.Email.builder()
+                    Individual.InnerIndividual.Email.builder()
                         .data("data")
-                        .type(Individual.UnionMember0.Email.Type.WORK)
+                        .type(Individual.InnerIndividual.Email.Type.WORK)
                         .build()
                 )
                 .encryptedSsn("encrypted_ssn")
                 .ssn("ssn")
                 .build()
 
-        val individual = Individual.ofUnionMember0(unionMember0)
+        val individual = Individual.ofIndividual(individual)
 
-        assertThat(individual.unionMember0()).contains(unionMember0)
+        assertThat(individual.individual()).contains(individual)
         assertThat(individual.batchError()).isEmpty
     }
 
     @Test
-    fun ofUnionMember0Roundtrip() {
+    fun ofIndividualRoundtrip() {
         val jsonMapper = jsonMapper()
         val individual =
-            Individual.ofUnionMember0(
-                Individual.UnionMember0.builder()
+            Individual.ofIndividual(
+                Individual.InnerIndividual.builder()
                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .dob("dob")
-                    .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
+                    .ethnicity(Individual.InnerIndividual.Ethnicity.ASIAN)
                     .firstName("first_name")
-                    .gender(Individual.UnionMember0.Gender.FEMALE)
+                    .gender(Individual.InnerIndividual.Gender.FEMALE)
                     .lastName("last_name")
                     .middleName("middle_name")
                     .addPhoneNumber(
-                        Individual.UnionMember0.PhoneNumber.builder()
+                        Individual.InnerIndividual.PhoneNumber.builder()
                             .data("data")
-                            .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
+                            .type(Individual.InnerIndividual.PhoneNumber.Type.WORK)
                             .build()
                     )
                     .preferredName("preferred_name")
@@ -93,9 +93,9 @@ internal class IndividualTest {
                             .build()
                     )
                     .addEmail(
-                        Individual.UnionMember0.Email.builder()
+                        Individual.InnerIndividual.Email.builder()
                             .data("data")
-                            .type(Individual.UnionMember0.Email.Type.WORK)
+                            .type(Individual.InnerIndividual.Email.Type.WORK)
                             .build()
                     )
                     .encryptedSsn("encrypted_ssn")
@@ -124,7 +124,7 @@ internal class IndividualTest {
 
         val individual = Individual.ofBatchError(batchError)
 
-        assertThat(individual.unionMember0()).isEmpty
+        assertThat(individual.individual()).isEmpty
         assertThat(individual.batchError()).contains(batchError)
     }
 
