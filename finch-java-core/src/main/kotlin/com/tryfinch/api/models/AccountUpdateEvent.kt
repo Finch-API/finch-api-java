@@ -322,6 +322,14 @@ private constructor(
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws FinchInvalidDataException if any value type in this object doesn't match its expected
+     *   type.
+     */
     fun validate(): AccountUpdateEvent = apply {
         if (validated) {
             return@apply
@@ -516,6 +524,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Data = apply {
             if (validated) {
                 return@apply
@@ -750,6 +767,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): AuthenticationMethod = apply {
                 if (validated) {
                     return@apply
@@ -1129,6 +1156,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): SupportedFields = apply {
                     if (validated) {
                         return@apply
@@ -1577,6 +1614,16 @@ private constructor(
 
                     private var validated: Boolean = false
 
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
                     fun validate(): SupportedCompanyFields = apply {
                         if (validated) {
                             return@apply
@@ -1894,6 +1941,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Accounts = apply {
                             if (validated) {
                                 return@apply
@@ -2101,6 +2158,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Departments = apply {
                             if (validated) {
                                 return@apply
@@ -2241,6 +2308,16 @@ private constructor(
 
                             private var validated: Boolean = false
 
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
                             fun validate(): Parent = apply {
                                 if (validated) {
                                     return@apply
@@ -2449,6 +2526,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Entity = apply {
                             if (validated) {
                                 return@apply
@@ -2784,6 +2871,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Locations = apply {
                             if (validated) {
                                 return@apply
@@ -3044,6 +3141,16 @@ private constructor(
 
                     private var validated: Boolean = false
 
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
                     fun validate(): SupportedDirectoryFields = apply {
                         if (validated) {
                             return@apply
@@ -3411,6 +3518,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Individuals = apply {
                             if (validated) {
                                 return@apply
@@ -3559,6 +3676,16 @@ private constructor(
 
                             private var validated: Boolean = false
 
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
                             fun validate(): Manager = apply {
                                 if (validated) {
                                     return@apply
@@ -3781,6 +3908,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Paging = apply {
                             if (validated) {
                                 return@apply
@@ -4556,6 +4693,16 @@ private constructor(
 
                     private var validated: Boolean = false
 
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
                     fun validate(): SupportedEmploymentFields = apply {
                         if (validated) {
                             return@apply
@@ -4723,6 +4870,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Department = apply {
                             if (validated) {
                                 return@apply
@@ -4912,6 +5069,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Employment = apply {
                             if (validated) {
                                 return@apply
@@ -5136,6 +5303,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Income = apply {
                             if (validated) {
                                 return@apply
@@ -5473,6 +5650,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Location = apply {
                             if (validated) {
                                 return@apply
@@ -5648,6 +5835,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Manager = apply {
                             if (validated) {
                                 return@apply
@@ -6299,6 +6496,16 @@ private constructor(
 
                     private var validated: Boolean = false
 
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
                     fun validate(): SupportedIndividualFields = apply {
                         if (validated) {
                             return@apply
@@ -6487,6 +6694,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Emails = apply {
                             if (validated) {
                                 return@apply
@@ -6676,6 +6893,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): PhoneNumbers = apply {
                             if (validated) {
                                 return@apply
@@ -7011,6 +7238,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Residence = apply {
                             if (validated) {
                                 return@apply
@@ -7347,6 +7584,16 @@ private constructor(
 
                     private var validated: Boolean = false
 
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
                     fun validate(): SupportedPayGroupFields = apply {
                         if (validated) {
                             return@apply
@@ -7555,6 +7802,16 @@ private constructor(
 
                     private var validated: Boolean = false
 
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
                     fun validate(): SupportedPayStatementFields = apply {
                         if (validated) {
                             return@apply
@@ -7745,6 +8002,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): Paging = apply {
                             if (validated) {
                                 return@apply
@@ -8255,6 +8522,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): PayStatements = apply {
                             if (validated) {
                                 return@apply
@@ -8520,6 +8797,16 @@ private constructor(
 
                             private var validated: Boolean = false
 
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
                             fun validate(): Earnings = apply {
                                 if (validated) {
                                     return@apply
@@ -8832,6 +9119,16 @@ private constructor(
 
                             private var validated: Boolean = false
 
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
                             fun validate(): EmployeeDeductions = apply {
                                 if (validated) {
                                     return@apply
@@ -9086,6 +9383,16 @@ private constructor(
 
                             private var validated: Boolean = false
 
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
                             fun validate(): EmployerContributions = apply {
                                 if (validated) {
                                     return@apply
@@ -9394,6 +9701,16 @@ private constructor(
 
                             private var validated: Boolean = false
 
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
                             fun validate(): Taxes = apply {
                                 if (validated) {
                                     return@apply
@@ -10049,6 +10366,16 @@ private constructor(
 
                     private var validated: Boolean = false
 
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
                     fun validate(): SupportedPaymentFields = apply {
                         if (validated) {
                             return@apply
@@ -10244,6 +10571,16 @@ private constructor(
 
                         private var validated: Boolean = false
 
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
                         fun validate(): PayPeriod = apply {
                             if (validated) {
                                 return@apply
@@ -10485,6 +10822,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Type = apply {
                     if (validated) {
                         return@apply
@@ -10648,6 +10995,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): EventType = apply {
             if (validated) {
                 return@apply
