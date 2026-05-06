@@ -352,8 +352,6 @@ while (true) {
 
 ## Logging
 
-The SDK uses the standard [OkHttp logging interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).
-
 Enable logging by setting the `FINCH_LOG` environment variable to `info`:
 
 ```sh
@@ -364,6 +362,20 @@ Or to `debug` for more verbose logging:
 
 ```sh
 export FINCH_LOG=debug
+```
+
+Or configure the client manually using the `logLevel` method:
+
+```java
+import com.tryfinch.api.client.FinchClient;
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient;
+import com.tryfinch.api.core.LogLevel;
+
+FinchClient client = FinchOkHttpClient.builder()
+    .fromEnv()
+    .logLevel(LogLevel.INFO)
+    .accessToken("My Access Token")
+    .build();
 ```
 
 ## Webhook Verification
