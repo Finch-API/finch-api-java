@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.tryfinch.api.client.FinchClientAsync
 import com.tryfinch.api.client.FinchClientAsyncImpl
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.LogLevel
 import com.tryfinch.api.core.Sleeper
 import com.tryfinch.api.core.Timeout
 import com.tryfinch.api.core.http.AsyncStreamResponse
@@ -289,6 +290,15 @@ class FinchOkHttpClientAsync private constructor() {
          * Defaults to 2.
          */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
+
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
         fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
 
