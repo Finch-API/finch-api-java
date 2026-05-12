@@ -16,24 +16,28 @@ import org.junit.jupiter.params.provider.EnumSource
 internal class EmploymentDataTest {
 
     @Test
-    fun ofEmploymentData() {
-        val employmentData =
-            EmploymentData.InnerEmploymentData.builder()
+    fun ofResponseBody() {
+        val responseBody =
+            EmploymentData.EmploymentDataResponseBody.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .classCode("class_code")
                 .department(
-                    EmploymentData.InnerEmploymentData.Department.builder().name("name").build()
-                )
-                .employment(
-                    EmploymentData.InnerEmploymentData.Employment.builder()
-                        .subtype(EmploymentData.InnerEmploymentData.Employment.Subtype.FULL_TIME)
-                        .type(EmploymentData.InnerEmploymentData.Employment.Type.EMPLOYEE)
+                    EmploymentData.EmploymentDataResponseBody.Department.builder()
+                        .name("name")
                         .build()
                 )
-                .employmentStatus(EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE)
+                .employment(
+                    EmploymentData.EmploymentDataResponseBody.Employment.builder()
+                        .subtype(
+                            EmploymentData.EmploymentDataResponseBody.Employment.Subtype.FULL_TIME
+                        )
+                        .type(EmploymentData.EmploymentDataResponseBody.Employment.Type.EMPLOYEE)
+                        .build()
+                )
+                .employmentStatus(EmploymentData.EmploymentDataResponseBody.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
-                .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
+                .flsaStatus(EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT)
                 .isActive(true)
                 .lastName("last_name")
                 .latestRehireDate("latest_rehire_date")
@@ -50,7 +54,7 @@ internal class EmploymentDataTest {
                         .build()
                 )
                 .manager(
-                    EmploymentData.InnerEmploymentData.Manager.builder()
+                    EmploymentData.EmploymentDataResponseBody.Manager.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .build()
                 )
@@ -58,7 +62,7 @@ internal class EmploymentDataTest {
                 .startDate("start_date")
                 .title("title")
                 .addCustomField(
-                    EmploymentData.InnerEmploymentData.CustomField.builder()
+                    EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                         .name("name")
                         .value("string")
                         .build()
@@ -83,35 +87,42 @@ internal class EmploymentDataTest {
                 .workId("work_id")
                 .build()
 
-        val employmentData = EmploymentData.ofEmploymentData(employmentData)
+        val employmentData = EmploymentData.ofResponseBody(responseBody)
 
-        assertThat(employmentData.employmentData()).contains(employmentData)
+        assertThat(employmentData.responseBody()).contains(responseBody)
         assertThat(employmentData.batchError()).isEmpty
     }
 
     @Test
-    fun ofEmploymentDataRoundtrip() {
+    fun ofResponseBodyRoundtrip() {
         val jsonMapper = jsonMapper()
         val employmentData =
-            EmploymentData.ofEmploymentData(
-                EmploymentData.InnerEmploymentData.builder()
+            EmploymentData.ofResponseBody(
+                EmploymentData.EmploymentDataResponseBody.builder()
                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .classCode("class_code")
                     .department(
-                        EmploymentData.InnerEmploymentData.Department.builder().name("name").build()
-                    )
-                    .employment(
-                        EmploymentData.InnerEmploymentData.Employment.builder()
-                            .subtype(
-                                EmploymentData.InnerEmploymentData.Employment.Subtype.FULL_TIME
-                            )
-                            .type(EmploymentData.InnerEmploymentData.Employment.Type.EMPLOYEE)
+                        EmploymentData.EmploymentDataResponseBody.Department.builder()
+                            .name("name")
                             .build()
                     )
-                    .employmentStatus(EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE)
+                    .employment(
+                        EmploymentData.EmploymentDataResponseBody.Employment.builder()
+                            .subtype(
+                                EmploymentData.EmploymentDataResponseBody.Employment.Subtype
+                                    .FULL_TIME
+                            )
+                            .type(
+                                EmploymentData.EmploymentDataResponseBody.Employment.Type.EMPLOYEE
+                            )
+                            .build()
+                    )
+                    .employmentStatus(
+                        EmploymentData.EmploymentDataResponseBody.EmploymentStatus.ACTIVE
+                    )
                     .endDate("end_date")
                     .firstName("first_name")
-                    .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
+                    .flsaStatus(EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT)
                     .isActive(true)
                     .lastName("last_name")
                     .latestRehireDate("latest_rehire_date")
@@ -128,7 +139,7 @@ internal class EmploymentDataTest {
                             .build()
                     )
                     .manager(
-                        EmploymentData.InnerEmploymentData.Manager.builder()
+                        EmploymentData.EmploymentDataResponseBody.Manager.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
                     )
@@ -136,7 +147,7 @@ internal class EmploymentDataTest {
                     .startDate("start_date")
                     .title("title")
                     .addCustomField(
-                        EmploymentData.InnerEmploymentData.CustomField.builder()
+                        EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                             .name("name")
                             .value("string")
                             .build()
@@ -183,7 +194,7 @@ internal class EmploymentDataTest {
 
         val employmentData = EmploymentData.ofBatchError(batchError)
 
-        assertThat(employmentData.employmentData()).isEmpty
+        assertThat(employmentData.responseBody()).isEmpty
         assertThat(employmentData.batchError()).contains(batchError)
     }
 

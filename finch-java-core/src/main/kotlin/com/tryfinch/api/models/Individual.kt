@@ -35,20 +35,20 @@ import kotlin.jvm.optionals.getOrNull
 @JsonSerialize(using = Individual.Serializer::class)
 class Individual
 private constructor(
-    private val individual: InnerIndividual? = null,
+    private val responseBody: IndividualResponseBody? = null,
     private val batchError: BatchError? = null,
     private val _json: JsonValue? = null,
 ) {
 
-    fun individual(): Optional<InnerIndividual> = Optional.ofNullable(individual)
+    fun responseBody(): Optional<IndividualResponseBody> = Optional.ofNullable(responseBody)
 
     fun batchError(): Optional<BatchError> = Optional.ofNullable(batchError)
 
-    fun isIndividual(): Boolean = individual != null
+    fun isResponseBody(): Boolean = responseBody != null
 
     fun isBatchError(): Boolean = batchError != null
 
-    fun asIndividual(): InnerIndividual = individual.getOrThrow("individual")
+    fun asResponseBody(): IndividualResponseBody = responseBody.getOrThrow("responseBody")
 
     fun asBatchError(): BatchError = batchError.getOrThrow("batchError")
 
@@ -66,8 +66,8 @@ private constructor(
      *
      * Optional<String> result = individual.accept(new Individual.Visitor<Optional<String>>() {
      *     @Override
-     *     public Optional<String> visitIndividual(InnerIndividual individual) {
-     *         return Optional.of(individual.toString());
+     *     public Optional<String> visitResponseBody(IndividualResponseBody responseBody) {
+     *         return Optional.of(responseBody.toString());
      *     }
      *
      *     // ...
@@ -85,7 +85,7 @@ private constructor(
      */
     fun <T> accept(visitor: Visitor<T>): T =
         when {
-            individual != null -> visitor.visitIndividual(individual)
+            responseBody != null -> visitor.visitResponseBody(responseBody)
             batchError != null -> visitor.visitBatchError(batchError)
             else -> visitor.unknown(_json)
         }
@@ -107,8 +107,8 @@ private constructor(
 
         accept(
             object : Visitor<Unit> {
-                override fun visitIndividual(individual: InnerIndividual) {
-                    individual.validate()
+                override fun visitResponseBody(responseBody: IndividualResponseBody) {
+                    responseBody.validate()
                 }
 
                 override fun visitBatchError(batchError: BatchError) {
@@ -136,7 +136,8 @@ private constructor(
     internal fun validity(): Int =
         accept(
             object : Visitor<Int> {
-                override fun visitIndividual(individual: InnerIndividual) = individual.validity()
+                override fun visitResponseBody(responseBody: IndividualResponseBody) =
+                    responseBody.validity()
 
                 override fun visitBatchError(batchError: BatchError) = batchError.validity()
 
@@ -150,15 +151,15 @@ private constructor(
         }
 
         return other is Individual &&
-            individual == other.individual &&
+            responseBody == other.responseBody &&
             batchError == other.batchError
     }
 
-    override fun hashCode(): Int = Objects.hash(individual, batchError)
+    override fun hashCode(): Int = Objects.hash(responseBody, batchError)
 
     override fun toString(): String =
         when {
-            individual != null -> "Individual{individual=$individual}"
+            responseBody != null -> "Individual{responseBody=$responseBody}"
             batchError != null -> "Individual{batchError=$batchError}"
             _json != null -> "Individual{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid Individual")
@@ -167,7 +168,8 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun ofIndividual(individual: InnerIndividual) = Individual(individual = individual)
+        fun ofResponseBody(responseBody: IndividualResponseBody) =
+            Individual(responseBody = responseBody)
 
         @JvmStatic fun ofBatchError(batchError: BatchError) = Individual(batchError = batchError)
     }
@@ -175,7 +177,7 @@ private constructor(
     /** An interface that defines how to map each variant of [Individual] to a value of type [T]. */
     interface Visitor<out T> {
 
-        fun visitIndividual(individual: InnerIndividual): T
+        fun visitResponseBody(responseBody: IndividualResponseBody): T
 
         fun visitBatchError(batchError: BatchError): T
 
@@ -200,8 +202,8 @@ private constructor(
 
             val bestMatches =
                 sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<InnerIndividual>())?.let {
-                            Individual(individual = it, _json = json)
+                        tryDeserialize(node, jacksonTypeRef<IndividualResponseBody>())?.let {
+                            Individual(responseBody = it, _json = json)
                         },
                         tryDeserialize(node, jacksonTypeRef<BatchError>())?.let {
                             Individual(batchError = it, _json = json)
@@ -230,7 +232,7 @@ private constructor(
             provider: SerializerProvider,
         ) {
             when {
-                value.individual != null -> generator.writeObject(value.individual)
+                value.responseBody != null -> generator.writeObject(value.responseBody)
                 value.batchError != null -> generator.writeObject(value.batchError)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid Individual")
@@ -238,7 +240,7 @@ private constructor(
         }
     }
 
-    class InnerIndividual
+    class IndividualResponseBody
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
@@ -526,7 +528,7 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [InnerIndividual].
+             * Returns a mutable builder for constructing an instance of [IndividualResponseBody].
              *
              * The following fields are required:
              * ```java
@@ -545,7 +547,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [InnerIndividual]. */
+        /** A builder for [IndividualResponseBody]. */
         class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
@@ -564,21 +566,21 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(innerIndividual: InnerIndividual) = apply {
-                id = innerIndividual.id
-                dob = innerIndividual.dob
-                ethnicity = innerIndividual.ethnicity
-                firstName = innerIndividual.firstName
-                gender = innerIndividual.gender
-                lastName = innerIndividual.lastName
-                middleName = innerIndividual.middleName
-                phoneNumbers = innerIndividual.phoneNumbers.map { it.toMutableList() }
-                preferredName = innerIndividual.preferredName
-                residence = innerIndividual.residence
-                emails = innerIndividual.emails.map { it.toMutableList() }
-                encryptedSsn = innerIndividual.encryptedSsn
-                ssn = innerIndividual.ssn
-                additionalProperties = innerIndividual.additionalProperties.toMutableMap()
+            internal fun from(individualResponseBody: IndividualResponseBody) = apply {
+                id = individualResponseBody.id
+                dob = individualResponseBody.dob
+                ethnicity = individualResponseBody.ethnicity
+                firstName = individualResponseBody.firstName
+                gender = individualResponseBody.gender
+                lastName = individualResponseBody.lastName
+                middleName = individualResponseBody.middleName
+                phoneNumbers = individualResponseBody.phoneNumbers.map { it.toMutableList() }
+                preferredName = individualResponseBody.preferredName
+                residence = individualResponseBody.residence
+                emails = individualResponseBody.emails.map { it.toMutableList() }
+                encryptedSsn = individualResponseBody.encryptedSsn
+                ssn = individualResponseBody.ssn
+                additionalProperties = individualResponseBody.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -835,7 +837,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [InnerIndividual].
+             * Returns an immutable instance of [IndividualResponseBody].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -855,8 +857,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): InnerIndividual =
-                InnerIndividual(
+            fun build(): IndividualResponseBody =
+                IndividualResponseBody(
                     checkRequired("id", id),
                     checkRequired("dob", dob),
                     checkRequired("ethnicity", ethnicity),
@@ -885,7 +887,7 @@ private constructor(
          * @throws FinchInvalidDataException if any value type in this object doesn't match its
          *   expected type.
          */
-        fun validate(): InnerIndividual = apply {
+        fun validate(): IndividualResponseBody = apply {
             if (validated) {
                 return@apply
             }
@@ -1973,7 +1975,7 @@ private constructor(
                 return true
             }
 
-            return other is InnerIndividual &&
+            return other is IndividualResponseBody &&
                 id == other.id &&
                 dob == other.dob &&
                 ethnicity == other.ethnicity &&
@@ -2012,7 +2014,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "InnerIndividual{id=$id, dob=$dob, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, emails=$emails, encryptedSsn=$encryptedSsn, ssn=$ssn, additionalProperties=$additionalProperties}"
+            "IndividualResponseBody{id=$id, dob=$dob, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, emails=$emails, encryptedSsn=$encryptedSsn, ssn=$ssn, additionalProperties=$additionalProperties}"
     }
 
     class BatchError
