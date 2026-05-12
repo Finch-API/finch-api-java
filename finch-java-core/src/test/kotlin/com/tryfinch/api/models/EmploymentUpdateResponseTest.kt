@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.jsonMapper
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
@@ -21,7 +20,7 @@ internal class EmploymentUpdateResponseTest {
                 .addCustomField(
                     EmploymentUpdateResponse.CustomField.builder()
                         .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .value("string")
                         .build()
                 )
                 .department(EmploymentUpdateResponse.Department.builder().name("name").build())
@@ -34,6 +33,7 @@ internal class EmploymentUpdateResponseTest {
                 .employmentStatus(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
+                .flsaStatus(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
                 .income(
                     Income.builder()
                         .amount(0L)
@@ -80,10 +80,7 @@ internal class EmploymentUpdateResponseTest {
         assertThat(employmentUpdateResponse.classCode()).contains("class_code")
         assertThat(employmentUpdateResponse.customFields().getOrNull())
             .containsExactly(
-                EmploymentUpdateResponse.CustomField.builder()
-                    .name("name")
-                    .value(JsonValue.from(mapOf<String, Any>()))
-                    .build()
+                EmploymentUpdateResponse.CustomField.builder().name("name").value("string").build()
             )
         assertThat(employmentUpdateResponse.department())
             .contains(EmploymentUpdateResponse.Department.builder().name("name").build())
@@ -98,6 +95,8 @@ internal class EmploymentUpdateResponseTest {
             .contains(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
         assertThat(employmentUpdateResponse.endDate()).contains("end_date")
         assertThat(employmentUpdateResponse.firstName()).contains("first_name")
+        assertThat(employmentUpdateResponse.flsaStatus())
+            .contains(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
         assertThat(employmentUpdateResponse.income())
             .contains(
                 Income.builder()
@@ -154,7 +153,7 @@ internal class EmploymentUpdateResponseTest {
                 .addCustomField(
                     EmploymentUpdateResponse.CustomField.builder()
                         .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .value("string")
                         .build()
                 )
                 .department(EmploymentUpdateResponse.Department.builder().name("name").build())
@@ -167,6 +166,7 @@ internal class EmploymentUpdateResponseTest {
                 .employmentStatus(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
+                .flsaStatus(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
                 .income(
                     Income.builder()
                         .amount(0L)

@@ -17,6 +17,7 @@ import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @JsonDeserialize(using = WebhookEvent.Deserializer::class)
 @JsonSerialize(using = WebhookEvent.Serializer::class)
@@ -83,6 +84,35 @@ private constructor(
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
+    /**
+     * Maps this instance's current variant to a value of type [T] using the given [visitor].
+     *
+     * Note that this method is _not_ forwards compatible with new variants from the API, unless
+     * [visitor] overrides [Visitor.unknown]. To handle variants not known to this version of the
+     * SDK gracefully, consider overriding [Visitor.unknown]:
+     * ```java
+     * import com.tryfinch.api.core.JsonValue;
+     * import java.util.Optional;
+     *
+     * Optional<String> result = webhookEvent.accept(new WebhookEvent.Visitor<Optional<String>>() {
+     *     @Override
+     *     public Optional<String> visitAccountUpdated(AccountUpdateEvent accountUpdated) {
+     *         return Optional.of(accountUpdated.toString());
+     *     }
+     *
+     *     // ...
+     *
+     *     @Override
+     *     public Optional<String> unknown(JsonValue json) {
+     *         // Or inspect the `json`.
+     *         return Optional.empty();
+     *     }
+     * });
+     * ```
+     *
+     * @throws FinchInvalidDataException if [Visitor.unknown] is not overridden in [visitor] and the
+     *   current variant is unknown.
+     */
     fun <T> accept(visitor: Visitor<T>): T =
         when {
             accountUpdated != null -> visitor.visitAccountUpdated(accountUpdated)
@@ -98,6 +128,14 @@ private constructor(
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws FinchInvalidDataException if any value type in this object doesn't match its expected
+     *   type.
+     */
     fun validate(): WebhookEvent = apply {
         if (validated) {
             return@apply
@@ -292,17 +330,25 @@ private constructor(
 
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
+            val eventType = json.asObject().getOrNull()?.get("event_type")?.asString()?.getOrNull()
+
+            when (eventType) {
+                "account.updated" -> {
+                    return tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
+                        WebhookEvent(accountUpdated = it, _json = json)
+                    } ?: WebhookEvent(_json = json)
+                }
+                "company.updated" -> {
+                    return tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
+                        WebhookEvent(companyUpdated = it, _json = json)
+                    } ?: WebhookEvent(_json = json)
+                }
+            }
 
             val bestMatches =
                 sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
-                            WebhookEvent(accountUpdated = it, _json = json)
-                        },
                         tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>())?.let {
                             WebhookEvent(jobCompletion = it, _json = json)
-                        },
-                        tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
-                            WebhookEvent(companyUpdated = it, _json = json)
                         },
                         tryDeserialize(node, jacksonTypeRef<DirectoryEvent>())?.let {
                             WebhookEvent(directory = it, _json = json)

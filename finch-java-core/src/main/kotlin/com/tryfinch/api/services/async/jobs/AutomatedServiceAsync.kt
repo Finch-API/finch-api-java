@@ -43,23 +43,41 @@ interface AutomatedServiceAsync {
      * This endpoint is available for *Scale* tier customers as an add-on. To request access to this
      * endpoint, please contact your Finch account manager.
      */
-    fun create(): CompletableFuture<AutomatedCreateResponse> =
-        create(JobAutomatedCreateParams.none())
+    fun create(params: JobAutomatedCreateParams): CompletableFuture<AutomatedCreateResponse> =
+        create(params, RequestOptions.none())
 
     /** @see create */
     fun create(
-        params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+        params: JobAutomatedCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AutomatedCreateResponse>
 
     /** @see create */
     fun create(
-        params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
-    ): CompletableFuture<AutomatedCreateResponse> = create(params, RequestOptions.none())
+        body: JobAutomatedCreateParams.Body,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<AutomatedCreateResponse> =
+        create(JobAutomatedCreateParams.builder().body(body).build(), requestOptions)
 
     /** @see create */
-    fun create(requestOptions: RequestOptions): CompletableFuture<AutomatedCreateResponse> =
-        create(JobAutomatedCreateParams.none(), requestOptions)
+    fun create(body: JobAutomatedCreateParams.Body): CompletableFuture<AutomatedCreateResponse> =
+        create(body, RequestOptions.none())
+
+    /** @see create */
+    fun create(
+        w4FormEmployeeSync: JobAutomatedCreateParams.Body.W4FormEmployeeSync,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<AutomatedCreateResponse> =
+        create(
+            JobAutomatedCreateParams.Body.ofW4FormEmployeeSync(w4FormEmployeeSync),
+            requestOptions,
+        )
+
+    /** @see create */
+    fun create(
+        w4FormEmployeeSync: JobAutomatedCreateParams.Body.W4FormEmployeeSync
+    ): CompletableFuture<AutomatedCreateResponse> =
+        create(w4FormEmployeeSync, RequestOptions.none())
 
     /** Get an automated job by `job_id`. */
     fun retrieve(jobId: String): CompletableFuture<AutomatedAsyncJob> =
@@ -136,26 +154,45 @@ interface AutomatedServiceAsync {
          * Returns a raw HTTP response for `post /jobs/automated`, but is otherwise the same as
          * [AutomatedServiceAsync.create].
          */
-        fun create(): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
-            create(JobAutomatedCreateParams.none())
-
-        /** @see create */
         fun create(
-            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>>
-
-        /** @see create */
-        fun create(
-            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none()
+            params: JobAutomatedCreateParams
         ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see create */
         fun create(
-            requestOptions: RequestOptions
+            params: JobAutomatedCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>>
+
+        /** @see create */
+        fun create(
+            body: JobAutomatedCreateParams.Body,
+            requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
-            create(JobAutomatedCreateParams.none(), requestOptions)
+            create(JobAutomatedCreateParams.builder().body(body).build(), requestOptions)
+
+        /** @see create */
+        fun create(
+            body: JobAutomatedCreateParams.Body
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
+            create(body, RequestOptions.none())
+
+        /** @see create */
+        fun create(
+            w4FormEmployeeSync: JobAutomatedCreateParams.Body.W4FormEmployeeSync,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
+            create(
+                JobAutomatedCreateParams.Body.ofW4FormEmployeeSync(w4FormEmployeeSync),
+                requestOptions,
+            )
+
+        /** @see create */
+        fun create(
+            w4FormEmployeeSync: JobAutomatedCreateParams.Body.W4FormEmployeeSync
+        ): CompletableFuture<HttpResponseFor<AutomatedCreateResponse>> =
+            create(w4FormEmployeeSync, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `get /jobs/automated/{job_id}`, but is otherwise the same

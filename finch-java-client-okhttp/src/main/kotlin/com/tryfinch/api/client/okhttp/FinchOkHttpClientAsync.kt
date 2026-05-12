@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.tryfinch.api.client.FinchClientAsync
 import com.tryfinch.api.client.FinchClientAsyncImpl
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.LogLevel
 import com.tryfinch.api.core.Sleeper
 import com.tryfinch.api.core.Timeout
 import com.tryfinch.api.core.http.AsyncStreamResponse
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.HttpClient
+import com.tryfinch.api.core.http.ProxyAuthenticator
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.jsonMapper
 import java.net.Proxy
@@ -49,6 +51,9 @@ class FinchOkHttpClientAsync private constructor() {
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()
         private var dispatcherExecutorService: ExecutorService? = null
         private var proxy: Proxy? = null
+        private var proxyAuthenticator: ProxyAuthenticator? = null
+        private var maxIdleConnections: Int? = null
+        private var keepAliveDuration: Duration? = null
         private var sslSocketFactory: SSLSocketFactory? = null
         private var trustManager: X509TrustManager? = null
         private var hostnameVerifier: HostnameVerifier? = null
@@ -76,6 +81,60 @@ class FinchOkHttpClientAsync private constructor() {
 
         /** Alias for calling [Builder.proxy] with `proxy.orElse(null)`. */
         fun proxy(proxy: Optional<Proxy>) = proxy(proxy.getOrNull())
+
+        /**
+         * Provides credentials when an HTTP proxy responds with `407 Proxy Authentication
+         * Required`.
+         */
+        fun proxyAuthenticator(proxyAuthenticator: ProxyAuthenticator?) = apply {
+            this.proxyAuthenticator = proxyAuthenticator
+        }
+
+        /**
+         * Alias for calling [Builder.proxyAuthenticator] with `proxyAuthenticator.orElse(null)`.
+         */
+        fun proxyAuthenticator(proxyAuthenticator: Optional<ProxyAuthenticator>) =
+            proxyAuthenticator(proxyAuthenticator.getOrNull())
+
+        /**
+         * The maximum number of idle connections kept by the underlying OkHttp connection pool.
+         *
+         * If this is set, then [keepAliveDuration] must also be set.
+         *
+         * If unset, then OkHttp's default is used.
+         */
+        fun maxIdleConnections(maxIdleConnections: Int?) = apply {
+            this.maxIdleConnections = maxIdleConnections
+        }
+
+        /**
+         * Alias for [Builder.maxIdleConnections].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun maxIdleConnections(maxIdleConnections: Int) =
+            maxIdleConnections(maxIdleConnections as Int?)
+
+        /**
+         * Alias for calling [Builder.maxIdleConnections] with `maxIdleConnections.orElse(null)`.
+         */
+        fun maxIdleConnections(maxIdleConnections: Optional<Int>) =
+            maxIdleConnections(maxIdleConnections.getOrNull())
+
+        /**
+         * The keep-alive duration for idle connections in the underlying OkHttp connection pool.
+         *
+         * If this is set, then [maxIdleConnections] must also be set.
+         *
+         * If unset, then OkHttp's default is used.
+         */
+        fun keepAliveDuration(keepAliveDuration: Duration?) = apply {
+            this.keepAliveDuration = keepAliveDuration
+        }
+
+        /** Alias for calling [Builder.keepAliveDuration] with `keepAliveDuration.orElse(null)`. */
+        fun keepAliveDuration(keepAliveDuration: Optional<Duration>) =
+            keepAliveDuration(keepAliveDuration.getOrNull())
 
         /**
          * The socket factory used to secure HTTPS connections.
@@ -188,6 +247,9 @@ class FinchOkHttpClientAsync private constructor() {
         /**
          * Whether to call `validate` on every response before returning it.
          *
+         * Setting this to `true` is _not_ forwards compatible with new types from the API for
+         * existing fields.
+         *
          * Defaults to false, which means the shape of the response will not be validated upfront.
          * Instead, validation will only occur for the parts of the response that are accessed.
          */
@@ -228,6 +290,15 @@ class FinchOkHttpClientAsync private constructor() {
          * Defaults to 2.
          */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
+
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
         fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
 
@@ -351,6 +422,9 @@ class FinchOkHttpClientAsync private constructor() {
                         OkHttpClient.builder()
                             .timeout(clientOptions.timeout())
                             .proxy(proxy)
+                            .proxyAuthenticator(proxyAuthenticator)
+                            .maxIdleConnections(maxIdleConnections)
+                            .keepAliveDuration(keepAliveDuration)
                             .dispatcherExecutorService(dispatcherExecutorService)
                             .sslSocketFactory(sslSocketFactory)
                             .trustManager(trustManager)

@@ -14,36 +14,39 @@ internal class IndividualBenefitTest {
         val individualBenefit =
             IndividualBenefit.builder()
                 .body(
-                    IndividualBenefit.Body.UnionMember0.builder()
+                    IndividualBenefit.Body.InnerIndividualBenefit.builder()
                         .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
-                            IndividualBenefit.Body.UnionMember0.CompanyContribution
-                                .InnerUnionMember0
+                            IndividualBenefit.Body.InnerIndividualBenefit.CompanyContribution
+                                .CompanyContributionFixed
                                 .builder()
                                 .amount(0L)
                                 .type(
-                                    IndividualBenefit.Body.UnionMember0.CompanyContribution
-                                        .InnerUnionMember0
+                                    IndividualBenefit.Body.InnerIndividualBenefit
+                                        .CompanyContribution
+                                        .CompanyContributionFixed
                                         .Type
                                         .FIXED
                                 )
                                 .build()
                         )
                         .employeeDeduction(
-                            IndividualBenefit.Body.UnionMember0.EmployeeDeduction.InnerUnionMember0
+                            IndividualBenefit.Body.InnerIndividualBenefit.EmployeeDeduction
+                                .EmployeeDeductionContributionFixed
                                 .builder()
                                 .amount(0L)
                                 .type(
-                                    IndividualBenefit.Body.UnionMember0.EmployeeDeduction
-                                        .InnerUnionMember0
+                                    IndividualBenefit.Body.InnerIndividualBenefit.EmployeeDeduction
+                                        .EmployeeDeductionContributionFixed
                                         .Type
                                         .FIXED
                                 )
                                 .build()
                         )
                         .hsaContributionLimit(
-                            IndividualBenefit.Body.UnionMember0.HsaContributionLimit.INDIVIDUAL
+                            IndividualBenefit.Body.InnerIndividualBenefit.HsaContributionLimit
+                                .INDIVIDUAL
                         )
                         .build()
                 )
@@ -53,37 +56,40 @@ internal class IndividualBenefitTest {
 
         assertThat(individualBenefit.body())
             .isEqualTo(
-                IndividualBenefit.Body.ofUnionMember0(
-                    IndividualBenefit.Body.UnionMember0.builder()
+                IndividualBenefit.Body.ofIndividualBenefit(
+                    IndividualBenefit.Body.InnerIndividualBenefit.builder()
                         .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
-                            IndividualBenefit.Body.UnionMember0.CompanyContribution
-                                .InnerUnionMember0
+                            IndividualBenefit.Body.InnerIndividualBenefit.CompanyContribution
+                                .CompanyContributionFixed
                                 .builder()
                                 .amount(0L)
                                 .type(
-                                    IndividualBenefit.Body.UnionMember0.CompanyContribution
-                                        .InnerUnionMember0
+                                    IndividualBenefit.Body.InnerIndividualBenefit
+                                        .CompanyContribution
+                                        .CompanyContributionFixed
                                         .Type
                                         .FIXED
                                 )
                                 .build()
                         )
                         .employeeDeduction(
-                            IndividualBenefit.Body.UnionMember0.EmployeeDeduction.InnerUnionMember0
+                            IndividualBenefit.Body.InnerIndividualBenefit.EmployeeDeduction
+                                .EmployeeDeductionContributionFixed
                                 .builder()
                                 .amount(0L)
                                 .type(
-                                    IndividualBenefit.Body.UnionMember0.EmployeeDeduction
-                                        .InnerUnionMember0
+                                    IndividualBenefit.Body.InnerIndividualBenefit.EmployeeDeduction
+                                        .EmployeeDeductionContributionFixed
                                         .Type
                                         .FIXED
                                 )
                                 .build()
                         )
                         .hsaContributionLimit(
-                            IndividualBenefit.Body.UnionMember0.HsaContributionLimit.INDIVIDUAL
+                            IndividualBenefit.Body.InnerIndividualBenefit.HsaContributionLimit
+                                .INDIVIDUAL
                         )
                         .build()
                 )
@@ -98,36 +104,39 @@ internal class IndividualBenefitTest {
         val individualBenefit =
             IndividualBenefit.builder()
                 .body(
-                    IndividualBenefit.Body.UnionMember0.builder()
+                    IndividualBenefit.Body.InnerIndividualBenefit.builder()
                         .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
-                            IndividualBenefit.Body.UnionMember0.CompanyContribution
-                                .InnerUnionMember0
+                            IndividualBenefit.Body.InnerIndividualBenefit.CompanyContribution
+                                .CompanyContributionFixed
                                 .builder()
                                 .amount(0L)
                                 .type(
-                                    IndividualBenefit.Body.UnionMember0.CompanyContribution
-                                        .InnerUnionMember0
+                                    IndividualBenefit.Body.InnerIndividualBenefit
+                                        .CompanyContribution
+                                        .CompanyContributionFixed
                                         .Type
                                         .FIXED
                                 )
                                 .build()
                         )
                         .employeeDeduction(
-                            IndividualBenefit.Body.UnionMember0.EmployeeDeduction.InnerUnionMember0
+                            IndividualBenefit.Body.InnerIndividualBenefit.EmployeeDeduction
+                                .EmployeeDeductionContributionFixed
                                 .builder()
                                 .amount(0L)
                                 .type(
-                                    IndividualBenefit.Body.UnionMember0.EmployeeDeduction
-                                        .InnerUnionMember0
+                                    IndividualBenefit.Body.InnerIndividualBenefit.EmployeeDeduction
+                                        .EmployeeDeductionContributionFixed
                                         .Type
                                         .FIXED
                                 )
                                 .build()
                         )
                         .hsaContributionLimit(
-                            IndividualBenefit.Body.UnionMember0.HsaContributionLimit.INDIVIDUAL
+                            IndividualBenefit.Body.InnerIndividualBenefit.HsaContributionLimit
+                                .INDIVIDUAL
                         )
                         .build()
                 )

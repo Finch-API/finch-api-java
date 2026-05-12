@@ -4,6 +4,7 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -95,7 +96,7 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
                     .putAllHeaders(modifiedParams._headers())
                     .body(json(clientOptions.jsonMapper, modifiedParams._body()))
                     .build()
-                    .prepare(clientOptions, modifiedParams)
+                    .prepare(clientOptions, modifiedParams, SecurityOptions.none())
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {

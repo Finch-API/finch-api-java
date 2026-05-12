@@ -21,6 +21,7 @@ internal class WebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     AccountUpdateEvent.Data.builder()
                         .authenticationMethod(
@@ -965,6 +966,7 @@ internal class WebhookEventTest {
                     .accountId("account_id")
                     .companyId("company_id")
                     .connectionId("connection_id")
+                    .entityId("entity_id")
                     .data(
                         AccountUpdateEvent.Data.builder()
                             .authenticationMethod(
@@ -2123,6 +2125,7 @@ internal class WebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(JobCompletionEvent.Data.builder().jobId("job_id").jobUrl("job_url").build())
                 .eventType(JobCompletionEvent.EventType.JOB_BENEFIT_CREATE_COMPLETED)
                 .build()
@@ -2148,6 +2151,7 @@ internal class WebhookEventTest {
                     .accountId("account_id")
                     .companyId("company_id")
                     .connectionId("connection_id")
+                    .entityId("entity_id")
                     .data(
                         JobCompletionEvent.Data.builder().jobId("job_id").jobUrl("job_url").build()
                     )
@@ -2171,6 +2175,7 @@ internal class WebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     CompanyEvent.Data.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -2200,6 +2205,7 @@ internal class WebhookEventTest {
                     .accountId("account_id")
                     .companyId("company_id")
                     .connectionId("connection_id")
+                    .entityId("entity_id")
                     .data(
                         CompanyEvent.Data.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -2225,6 +2231,7 @@ internal class WebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(DirectoryEvent.Data.builder().individualId("individual_id").build())
                 .eventType(DirectoryEvent.EventType.DIRECTORY_CREATED)
                 .build()
@@ -2250,6 +2257,7 @@ internal class WebhookEventTest {
                     .accountId("account_id")
                     .companyId("company_id")
                     .connectionId("connection_id")
+                    .entityId("entity_id")
                     .data(DirectoryEvent.Data.builder().individualId("individual_id").build())
                     .eventType(DirectoryEvent.EventType.DIRECTORY_CREATED)
                     .build()
@@ -2271,6 +2279,7 @@ internal class WebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(EmploymentEvent.Data.builder().individualId("individual_id").build())
                 .eventType(EmploymentEvent.EventType.EMPLOYMENT_CREATED)
                 .build()
@@ -2296,6 +2305,7 @@ internal class WebhookEventTest {
                     .accountId("account_id")
                     .companyId("company_id")
                     .connectionId("connection_id")
+                    .entityId("entity_id")
                     .data(EmploymentEvent.Data.builder().individualId("individual_id").build())
                     .eventType(EmploymentEvent.EventType.EMPLOYMENT_CREATED)
                     .build()
@@ -2317,6 +2327,7 @@ internal class WebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(IndividualEvent.Data.builder().individualId("individual_id").build())
                 .eventType(IndividualEvent.EventType.INDIVIDUAL_CREATED)
                 .build()
@@ -2342,6 +2353,7 @@ internal class WebhookEventTest {
                     .accountId("account_id")
                     .companyId("company_id")
                     .connectionId("connection_id")
+                    .entityId("entity_id")
                     .data(IndividualEvent.Data.builder().individualId("individual_id").build())
                     .eventType(IndividualEvent.EventType.INDIVIDUAL_CREATED)
                     .build()
@@ -2363,6 +2375,7 @@ internal class WebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     PaymentEvent.PaymentIdentifiers.builder()
                         .payDate("pay_date")
@@ -2393,6 +2406,7 @@ internal class WebhookEventTest {
                     .accountId("account_id")
                     .companyId("company_id")
                     .connectionId("connection_id")
+                    .entityId("entity_id")
                     .data(
                         PaymentEvent.PaymentIdentifiers.builder()
                             .payDate("pay_date")
@@ -2419,6 +2433,7 @@ internal class WebhookEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     PayStatementEvent.Data.builder()
                         .individualId("individual_id")
@@ -2449,6 +2464,7 @@ internal class WebhookEventTest {
                     .accountId("account_id")
                     .companyId("company_id")
                     .connectionId("connection_id")
+                    .entityId("entity_id")
                     .data(
                         PayStatementEvent.Data.builder()
                             .individualId("individual_id")

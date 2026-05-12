@@ -128,9 +128,9 @@ private constructor(
          */
         fun body(body: JsonField<Individual>) = apply { this.body = body }
 
-        /** Alias for calling [body] with `Individual.ofUnionMember0(unionMember0)`. */
-        fun body(unionMember0: Individual.UnionMember0) =
-            body(Individual.ofUnionMember0(unionMember0))
+        /** Alias for calling [body] with `Individual.ofResponseBody(responseBody)`. */
+        fun body(responseBody: Individual.IndividualResponseBody) =
+            body(Individual.ofResponseBody(responseBody))
 
         /** Alias for calling [body] with `Individual.ofBatchError(batchError)`. */
         fun body(batchError: Individual.BatchError) = body(Individual.ofBatchError(batchError))
@@ -202,6 +202,14 @@ private constructor(
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws FinchInvalidDataException if any value type in this object doesn't match its expected
+     *   type.
+     */
     fun validate(): IndividualResponse = apply {
         if (validated) {
             return@apply

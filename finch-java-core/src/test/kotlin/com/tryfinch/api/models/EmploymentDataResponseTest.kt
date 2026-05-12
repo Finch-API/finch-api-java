@@ -15,21 +15,32 @@ internal class EmploymentDataResponseTest {
         val employmentDataResponse =
             EmploymentDataResponse.builder()
                 .body(
-                    EmploymentData.UnionMember0.builder()
+                    EmploymentData.EmploymentDataResponseBody.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .classCode("class_code")
                         .department(
-                            EmploymentData.UnionMember0.Department.builder().name("name").build()
-                        )
-                        .employment(
-                            EmploymentData.UnionMember0.Employment.builder()
-                                .subtype(EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME)
-                                .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                            EmploymentData.EmploymentDataResponseBody.Department.builder()
+                                .name("name")
                                 .build()
                         )
-                        .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
+                        .employment(
+                            EmploymentData.EmploymentDataResponseBody.Employment.builder()
+                                .subtype(
+                                    EmploymentData.EmploymentDataResponseBody.Employment.Subtype
+                                        .FULL_TIME
+                                )
+                                .type(
+                                    EmploymentData.EmploymentDataResponseBody.Employment.Type
+                                        .EMPLOYEE
+                                )
+                                .build()
+                        )
+                        .employmentStatus(
+                            EmploymentData.EmploymentDataResponseBody.EmploymentStatus.ACTIVE
+                        )
                         .endDate("end_date")
                         .firstName("first_name")
+                        .flsaStatus(EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT)
                         .isActive(true)
                         .lastName("last_name")
                         .latestRehireDate("latest_rehire_date")
@@ -46,7 +57,7 @@ internal class EmploymentDataResponseTest {
                                 .build()
                         )
                         .manager(
-                            EmploymentData.UnionMember0.Manager.builder()
+                            EmploymentData.EmploymentDataResponseBody.Manager.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .build()
                         )
@@ -54,7 +65,7 @@ internal class EmploymentDataResponseTest {
                         .startDate("start_date")
                         .title("title")
                         .addCustomField(
-                            EmploymentData.UnionMember0.CustomField.builder()
+                            EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                                 .name("name")
                                 .value("string")
                                 .build()
@@ -85,22 +96,33 @@ internal class EmploymentDataResponseTest {
 
         assertThat(employmentDataResponse.body())
             .isEqualTo(
-                EmploymentData.ofUnionMember0(
-                    EmploymentData.UnionMember0.builder()
+                EmploymentData.ofResponseBody(
+                    EmploymentData.EmploymentDataResponseBody.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .classCode("class_code")
                         .department(
-                            EmploymentData.UnionMember0.Department.builder().name("name").build()
-                        )
-                        .employment(
-                            EmploymentData.UnionMember0.Employment.builder()
-                                .subtype(EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME)
-                                .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                            EmploymentData.EmploymentDataResponseBody.Department.builder()
+                                .name("name")
                                 .build()
                         )
-                        .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
+                        .employment(
+                            EmploymentData.EmploymentDataResponseBody.Employment.builder()
+                                .subtype(
+                                    EmploymentData.EmploymentDataResponseBody.Employment.Subtype
+                                        .FULL_TIME
+                                )
+                                .type(
+                                    EmploymentData.EmploymentDataResponseBody.Employment.Type
+                                        .EMPLOYEE
+                                )
+                                .build()
+                        )
+                        .employmentStatus(
+                            EmploymentData.EmploymentDataResponseBody.EmploymentStatus.ACTIVE
+                        )
                         .endDate("end_date")
                         .firstName("first_name")
+                        .flsaStatus(EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT)
                         .isActive(true)
                         .lastName("last_name")
                         .latestRehireDate("latest_rehire_date")
@@ -117,7 +139,7 @@ internal class EmploymentDataResponseTest {
                                 .build()
                         )
                         .manager(
-                            EmploymentData.UnionMember0.Manager.builder()
+                            EmploymentData.EmploymentDataResponseBody.Manager.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .build()
                         )
@@ -125,7 +147,7 @@ internal class EmploymentDataResponseTest {
                         .startDate("start_date")
                         .title("title")
                         .addCustomField(
-                            EmploymentData.UnionMember0.CustomField.builder()
+                            EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                                 .name("name")
                                 .value("string")
                                 .build()
@@ -162,21 +184,32 @@ internal class EmploymentDataResponseTest {
         val employmentDataResponse =
             EmploymentDataResponse.builder()
                 .body(
-                    EmploymentData.UnionMember0.builder()
+                    EmploymentData.EmploymentDataResponseBody.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .classCode("class_code")
                         .department(
-                            EmploymentData.UnionMember0.Department.builder().name("name").build()
-                        )
-                        .employment(
-                            EmploymentData.UnionMember0.Employment.builder()
-                                .subtype(EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME)
-                                .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                            EmploymentData.EmploymentDataResponseBody.Department.builder()
+                                .name("name")
                                 .build()
                         )
-                        .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
+                        .employment(
+                            EmploymentData.EmploymentDataResponseBody.Employment.builder()
+                                .subtype(
+                                    EmploymentData.EmploymentDataResponseBody.Employment.Subtype
+                                        .FULL_TIME
+                                )
+                                .type(
+                                    EmploymentData.EmploymentDataResponseBody.Employment.Type
+                                        .EMPLOYEE
+                                )
+                                .build()
+                        )
+                        .employmentStatus(
+                            EmploymentData.EmploymentDataResponseBody.EmploymentStatus.ACTIVE
+                        )
                         .endDate("end_date")
                         .firstName("first_name")
+                        .flsaStatus(EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT)
                         .isActive(true)
                         .lastName("last_name")
                         .latestRehireDate("latest_rehire_date")
@@ -193,7 +226,7 @@ internal class EmploymentDataResponseTest {
                                 .build()
                         )
                         .manager(
-                            EmploymentData.UnionMember0.Manager.builder()
+                            EmploymentData.EmploymentDataResponseBody.Manager.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .build()
                         )
@@ -201,7 +234,7 @@ internal class EmploymentDataResponseTest {
                         .startDate("start_date")
                         .title("title")
                         .addCustomField(
-                            EmploymentData.UnionMember0.CustomField.builder()
+                            EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                                 .name("name")
                                 .value("string")
                                 .build()

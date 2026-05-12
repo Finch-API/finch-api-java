@@ -5,12 +5,16 @@ package com.tryfinch.api.errors
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
+import com.tryfinch.api.core.jsonMapper
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class UnprocessableEntityException
 private constructor(private val headers: Headers, private val body: JsonValue, cause: Throwable?) :
-    FinchServiceException("422: $body", cause) {
+    FinchServiceException(
+        "422: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = 422
 

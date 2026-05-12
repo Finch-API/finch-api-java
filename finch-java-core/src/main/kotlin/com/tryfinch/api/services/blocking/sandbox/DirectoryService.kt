@@ -39,6 +39,18 @@ interface DirectoryService {
     ): List<DirectoryCreateResponse> = create(params, RequestOptions.none())
 
     /** @see create */
+    fun create(
+        body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): List<DirectoryCreateResponse> =
+        create(SandboxDirectoryCreateParams.builder().body(body).build(), requestOptions)
+
+    /** @see create */
+    fun create(
+        body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>
+    ): List<DirectoryCreateResponse> = create(body, RequestOptions.none())
+
+    /** @see create */
     fun create(requestOptions: RequestOptions): List<DirectoryCreateResponse> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -72,6 +84,20 @@ interface DirectoryService {
         fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
         ): HttpResponseFor<List<DirectoryCreateResponse>> = create(params, RequestOptions.none())
+
+        /** @see create */
+        @MustBeClosed
+        fun create(
+            body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<List<DirectoryCreateResponse>> =
+            create(SandboxDirectoryCreateParams.builder().body(body).build(), requestOptions)
+
+        /** @see create */
+        @MustBeClosed
+        fun create(
+            body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>
+        ): HttpResponseFor<List<DirectoryCreateResponse>> = create(body, RequestOptions.none())
 
         /** @see create */
         @MustBeClosed

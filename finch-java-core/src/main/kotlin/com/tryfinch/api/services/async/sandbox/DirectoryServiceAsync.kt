@@ -40,6 +40,18 @@ interface DirectoryServiceAsync {
     ): CompletableFuture<List<DirectoryCreateResponse>> = create(params, RequestOptions.none())
 
     /** @see create */
+    fun create(
+        body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<List<DirectoryCreateResponse>> =
+        create(SandboxDirectoryCreateParams.builder().body(body).build(), requestOptions)
+
+    /** @see create */
+    fun create(
+        body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>
+    ): CompletableFuture<List<DirectoryCreateResponse>> = create(body, RequestOptions.none())
+
+    /** @see create */
     fun create(requestOptions: RequestOptions): CompletableFuture<List<DirectoryCreateResponse>> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -75,6 +87,19 @@ interface DirectoryServiceAsync {
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none()
         ): CompletableFuture<HttpResponseFor<List<DirectoryCreateResponse>>> =
             create(params, RequestOptions.none())
+
+        /** @see create */
+        fun create(
+            body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<List<DirectoryCreateResponse>>> =
+            create(SandboxDirectoryCreateParams.builder().body(body).build(), requestOptions)
+
+        /** @see create */
+        fun create(
+            body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>
+        ): CompletableFuture<HttpResponseFor<List<DirectoryCreateResponse>>> =
+            create(body, RequestOptions.none())
 
         /** @see create */
         fun create(

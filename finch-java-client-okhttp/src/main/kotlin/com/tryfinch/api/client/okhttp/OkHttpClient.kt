@@ -8,20 +8,26 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpRequestBody
 import com.tryfinch.api.core.http.HttpResponse
+import com.tryfinch.api.core.http.ProxyAuthenticator
 import com.tryfinch.api.errors.FinchIoException
 import java.io.IOException
 import java.io.InputStream
+import java.io.OutputStream
 import java.net.Proxy
 import java.time.Duration
 import java.util.concurrent.CancellationException
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
+import kotlin.jvm.optionals.getOrNull
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.ConnectionPool
 import okhttp3.Dispatcher
+import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
@@ -29,17 +35,18 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import okio.BufferedSink
+import okio.buffer
+import okio.sink
 
 class OkHttpClient
-private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClient) : HttpClient {
+internal constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClient) : HttpClient {
 
     override fun execute(request: HttpRequest, requestOptions: RequestOptions): HttpResponse {
         val call = newCall(request, requestOptions)
 
         return try {
-            call.execute().toResponse()
+            call.execute().toHttpResponse()
         } catch (e: IOException) {
             throw FinchIoException("Request failed", e)
         } finally {
@@ -57,7 +64,7 @@ private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClien
         call.enqueue(
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
-                    future.complete(response.toResponse())
+                    future.complete(response.toHttpResponse())
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
@@ -85,18 +92,6 @@ private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClien
     private fun newCall(request: HttpRequest, requestOptions: RequestOptions): Call {
         val clientBuilder = okHttpClient.newBuilder()
 
-        val logLevel =
-            when (System.getenv("FINCH_LOG")?.lowercase()) {
-                "info" -> HttpLoggingInterceptor.Level.BASIC
-                "debug" -> HttpLoggingInterceptor.Level.BODY
-                else -> null
-            }
-        if (logLevel != null) {
-            clientBuilder.addNetworkInterceptor(
-                HttpLoggingInterceptor().setLevel(logLevel).apply { redactHeader("Authorization") }
-            )
-        }
-
         requestOptions.timeout?.let {
             clientBuilder
                 .connectTimeout(it.connect())
@@ -109,89 +104,6 @@ private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClien
         return client.newCall(request.toRequest(client))
     }
 
-    private fun HttpRequest.toRequest(client: okhttp3.OkHttpClient): Request {
-        var body: RequestBody? = body?.toRequestBody()
-        if (body == null && requiresBody(method)) {
-            body = "".toRequestBody()
-        }
-
-        val builder = Request.Builder().url(toUrl()).method(method.name, body)
-        headers.names().forEach { name ->
-            headers.values(name).forEach { builder.addHeader(name, it) }
-        }
-
-        if (
-            !headers.names().contains("X-Stainless-Read-Timeout") && client.readTimeoutMillis != 0
-        ) {
-            builder.addHeader(
-                "X-Stainless-Read-Timeout",
-                Duration.ofMillis(client.readTimeoutMillis.toLong()).seconds.toString(),
-            )
-        }
-        if (!headers.names().contains("X-Stainless-Timeout") && client.callTimeoutMillis != 0) {
-            builder.addHeader(
-                "X-Stainless-Timeout",
-                Duration.ofMillis(client.callTimeoutMillis.toLong()).seconds.toString(),
-            )
-        }
-
-        return builder.build()
-    }
-
-    /** `OkHttpClient` always requires a request body for some methods. */
-    private fun requiresBody(method: HttpMethod): Boolean =
-        when (method) {
-            HttpMethod.POST,
-            HttpMethod.PUT,
-            HttpMethod.PATCH -> true
-            else -> false
-        }
-
-    private fun HttpRequest.toUrl(): String {
-        val builder = baseUrl.toHttpUrl().newBuilder()
-        pathSegments.forEach(builder::addPathSegment)
-        queryParams.keys().forEach { key ->
-            queryParams.values(key).forEach { builder.addQueryParameter(key, it) }
-        }
-
-        return builder.toString()
-    }
-
-    private fun HttpRequestBody.toRequestBody(): RequestBody {
-        val mediaType = contentType()?.toMediaType()
-        val length = contentLength()
-
-        return object : RequestBody() {
-            override fun contentType(): MediaType? = mediaType
-
-            override fun contentLength(): Long = length
-
-            override fun isOneShot(): Boolean = !repeatable()
-
-            override fun writeTo(sink: BufferedSink) = writeTo(sink.outputStream())
-        }
-    }
-
-    private fun Response.toResponse(): HttpResponse {
-        val headers = headers.toHeaders()
-
-        return object : HttpResponse {
-            override fun statusCode(): Int = code
-
-            override fun headers(): Headers = headers
-
-            override fun body(): InputStream = body!!.byteStream()
-
-            override fun close() = body!!.close()
-        }
-    }
-
-    private fun okhttp3.Headers.toHeaders(): Headers {
-        val headersBuilder = Headers.builder()
-        forEach { (name, value) -> headersBuilder.put(name, value) }
-        return headersBuilder.build()
-    }
-
     companion object {
         @JvmStatic fun builder() = Builder()
     }
@@ -200,6 +112,9 @@ private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClien
 
         private var timeout: Timeout = Timeout.default()
         private var proxy: Proxy? = null
+        private var proxyAuthenticator: ProxyAuthenticator? = null
+        private var maxIdleConnections: Int? = null
+        private var keepAliveDuration: Duration? = null
         private var dispatcherExecutorService: ExecutorService? = null
         private var sslSocketFactory: SSLSocketFactory? = null
         private var trustManager: X509TrustManager? = null
@@ -210,6 +125,32 @@ private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClien
         fun timeout(timeout: Duration) = timeout(Timeout.builder().request(timeout).build())
 
         fun proxy(proxy: Proxy?) = apply { this.proxy = proxy }
+
+        fun proxyAuthenticator(proxyAuthenticator: ProxyAuthenticator?) = apply {
+            this.proxyAuthenticator = proxyAuthenticator
+        }
+
+        /**
+         * Sets the maximum number of idle connections kept by the underlying [ConnectionPool].
+         *
+         * If this is set, then [keepAliveDuration] must also be set.
+         *
+         * If unset, then OkHttp's default is used.
+         */
+        fun maxIdleConnections(maxIdleConnections: Int?) = apply {
+            this.maxIdleConnections = maxIdleConnections
+        }
+
+        /**
+         * Sets the keep-alive duration for idle connections in the underlying [ConnectionPool].
+         *
+         * If this is set, then [maxIdleConnections] must also be set.
+         *
+         * If unset, then OkHttp's default is used.
+         */
+        fun keepAliveDuration(keepAliveDuration: Duration?) = apply {
+            this.keepAliveDuration = keepAliveDuration
+        }
 
         fun dispatcherExecutorService(dispatcherExecutorService: ExecutorService?) = apply {
             this.dispatcherExecutorService = dispatcherExecutorService
@@ -238,7 +179,36 @@ private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClien
                     .callTimeout(timeout.request())
                     .proxy(proxy)
                     .apply {
+                        proxyAuthenticator?.let { auth ->
+                            proxyAuthenticator { route, response ->
+                                auth
+                                    .authenticate(
+                                        route?.proxy ?: Proxy.NO_PROXY,
+                                        response.request.toHttpRequest(),
+                                        response.toHttpResponse(),
+                                    )
+                                    .getOrNull()
+                                    ?.toRequest(client = null)
+                            }
+                        }
+
                         dispatcherExecutorService?.let { dispatcher(Dispatcher(it)) }
+
+                        val maxIdleConnections = maxIdleConnections
+                        val keepAliveDuration = keepAliveDuration
+                        if (maxIdleConnections != null && keepAliveDuration != null) {
+                            connectionPool(
+                                ConnectionPool(
+                                    maxIdleConnections,
+                                    keepAliveDuration.toNanos(),
+                                    TimeUnit.NANOSECONDS,
+                                )
+                            )
+                        } else {
+                            check((maxIdleConnections != null) == (keepAliveDuration != null)) {
+                                "Both or none of `maxIdleConnections` and `keepAliveDuration` must be set, but only one was set"
+                            }
+                        }
 
                         val sslSocketFactory = sslSocketFactory
                         val trustManager = trustManager
@@ -260,4 +230,127 @@ private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClien
                     }
             )
     }
+}
+
+private fun HttpRequest.toRequest(client: okhttp3.OkHttpClient?): Request {
+    var body: RequestBody? = body?.toRequestBody()
+    if (body == null && requiresBody(method)) {
+        body = "".toRequestBody()
+    }
+
+    val builder = Request.Builder().url(toUrl()).method(method.name, body)
+    headers.names().forEach { name -> headers.values(name).forEach { builder.addHeader(name, it) } }
+
+    if (client != null) {
+        if (
+            !headers.names().contains("X-Stainless-Read-Timeout") && client.readTimeoutMillis != 0
+        ) {
+            builder.addHeader(
+                "X-Stainless-Read-Timeout",
+                Duration.ofMillis(client.readTimeoutMillis.toLong()).seconds.toString(),
+            )
+        }
+        if (!headers.names().contains("X-Stainless-Timeout") && client.callTimeoutMillis != 0) {
+            builder.addHeader(
+                "X-Stainless-Timeout",
+                Duration.ofMillis(client.callTimeoutMillis.toLong()).seconds.toString(),
+            )
+        }
+    }
+
+    return builder.build()
+}
+
+/** `OkHttpClient` always requires a request body for some methods. */
+private fun requiresBody(method: HttpMethod): Boolean =
+    when (method) {
+        HttpMethod.POST,
+        HttpMethod.PUT,
+        HttpMethod.PATCH -> true
+        else -> false
+    }
+
+private fun HttpRequest.toUrl(): String {
+    val builder = baseUrl.toHttpUrl().newBuilder()
+    pathSegments.forEach(builder::addPathSegment)
+    queryParams.keys().forEach { key ->
+        queryParams.values(key).forEach { builder.addQueryParameter(key, it) }
+    }
+
+    return builder.toString()
+}
+
+private fun HttpRequestBody.toRequestBody(): RequestBody {
+    val mediaType = contentType()?.toMediaType()
+    val length = contentLength()
+
+    return object : RequestBody() {
+        override fun contentType(): MediaType? = mediaType
+
+        override fun contentLength(): Long = length
+
+        override fun isOneShot(): Boolean = !repeatable()
+
+        override fun writeTo(sink: BufferedSink) = writeTo(sink.outputStream())
+    }
+}
+
+private fun Request.toHttpRequest(): HttpRequest {
+    val builder = HttpRequest.builder().method(HttpMethod.valueOf(method)).baseUrl(url.toBaseUrl())
+    url.pathSegments.forEach(builder::addPathSegment)
+    url.queryParameterNames.forEach { name ->
+        url.queryParameterValues(name).filterNotNull().forEach { builder.putQueryParam(name, it) }
+    }
+    headers.forEach { (name, value) -> builder.putHeader(name, value) }
+    body?.let { builder.body(it.toHttpRequestBody()) }
+    return builder.build()
+}
+
+private fun HttpUrl.toBaseUrl(): String = buildString {
+    append(scheme).append("://").append(host)
+    if (port != HttpUrl.defaultPort(scheme)) {
+        append(":").append(port)
+    }
+}
+
+private fun RequestBody.toHttpRequestBody(): HttpRequestBody {
+    val mediaType = contentType()?.toString()
+    val length = contentLength()
+    val isOneShot = isOneShot()
+    val source = this
+    return object : HttpRequestBody {
+        override fun contentType(): String? = mediaType
+
+        override fun contentLength(): Long = length
+
+        override fun repeatable(): Boolean = !isOneShot
+
+        override fun writeTo(outputStream: OutputStream) {
+            val sink = outputStream.sink().buffer()
+            source.writeTo(sink)
+            sink.flush()
+        }
+
+        override fun close() {}
+    }
+}
+
+private fun Response.toHttpResponse(): HttpResponse {
+    val headers = headers.toHeaders()
+
+    return object : HttpResponse {
+        override fun statusCode(): Int = code
+
+        override fun headers(): Headers = headers
+
+        override fun body(): InputStream = body!!.byteStream()
+
+        override fun close() = body!!.close()
+    }
+}
+
+private fun okhttp3.Headers.toHeaders(): Headers {
+    val headersBuilder = Headers.builder()
+    forEach { (name, value) -> headersBuilder.put(name, value) }
+    return headersBuilder.build()
 }

@@ -16,18 +16,20 @@ internal class HrisIndividualRetrieveManyPageResponseTest {
                 .addResponse(
                     IndividualResponse.builder()
                         .body(
-                            Individual.UnionMember0.builder()
+                            Individual.IndividualResponseBody.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .dob("dob")
-                                .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
+                                .ethnicity(Individual.IndividualResponseBody.Ethnicity.ASIAN)
                                 .firstName("first_name")
-                                .gender(Individual.UnionMember0.Gender.FEMALE)
+                                .gender(Individual.IndividualResponseBody.Gender.FEMALE)
                                 .lastName("last_name")
                                 .middleName("middle_name")
                                 .addPhoneNumber(
-                                    Individual.UnionMember0.PhoneNumber.builder()
+                                    Individual.IndividualResponseBody.PhoneNumber.builder()
                                         .data("data")
-                                        .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
+                                        .type(
+                                            Individual.IndividualResponseBody.PhoneNumber.Type.WORK
+                                        )
                                         .build()
                                 )
                                 .preferredName("preferred_name")
@@ -44,9 +46,9 @@ internal class HrisIndividualRetrieveManyPageResponseTest {
                                         .build()
                                 )
                                 .addEmail(
-                                    Individual.UnionMember0.Email.builder()
+                                    Individual.IndividualResponseBody.Email.builder()
                                         .data("data")
-                                        .type(Individual.UnionMember0.Email.Type.WORK)
+                                        .type(Individual.IndividualResponseBody.Email.Type.WORK)
                                         .build()
                                 )
                                 .encryptedSsn("encrypted_ssn")
@@ -63,18 +65,18 @@ internal class HrisIndividualRetrieveManyPageResponseTest {
             .containsExactly(
                 IndividualResponse.builder()
                     .body(
-                        Individual.UnionMember0.builder()
+                        Individual.IndividualResponseBody.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .dob("dob")
-                            .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
+                            .ethnicity(Individual.IndividualResponseBody.Ethnicity.ASIAN)
                             .firstName("first_name")
-                            .gender(Individual.UnionMember0.Gender.FEMALE)
+                            .gender(Individual.IndividualResponseBody.Gender.FEMALE)
                             .lastName("last_name")
                             .middleName("middle_name")
                             .addPhoneNumber(
-                                Individual.UnionMember0.PhoneNumber.builder()
+                                Individual.IndividualResponseBody.PhoneNumber.builder()
                                     .data("data")
-                                    .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
+                                    .type(Individual.IndividualResponseBody.PhoneNumber.Type.WORK)
                                     .build()
                             )
                             .preferredName("preferred_name")
@@ -91,9 +93,9 @@ internal class HrisIndividualRetrieveManyPageResponseTest {
                                     .build()
                             )
                             .addEmail(
-                                Individual.UnionMember0.Email.builder()
+                                Individual.IndividualResponseBody.Email.builder()
                                     .data("data")
-                                    .type(Individual.UnionMember0.Email.Type.WORK)
+                                    .type(Individual.IndividualResponseBody.Email.Type.WORK)
                                     .build()
                             )
                             .encryptedSsn("encrypted_ssn")
@@ -114,18 +116,20 @@ internal class HrisIndividualRetrieveManyPageResponseTest {
                 .addResponse(
                     IndividualResponse.builder()
                         .body(
-                            Individual.UnionMember0.builder()
+                            Individual.IndividualResponseBody.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .dob("dob")
-                                .ethnicity(Individual.UnionMember0.Ethnicity.ASIAN)
+                                .ethnicity(Individual.IndividualResponseBody.Ethnicity.ASIAN)
                                 .firstName("first_name")
-                                .gender(Individual.UnionMember0.Gender.FEMALE)
+                                .gender(Individual.IndividualResponseBody.Gender.FEMALE)
                                 .lastName("last_name")
                                 .middleName("middle_name")
                                 .addPhoneNumber(
-                                    Individual.UnionMember0.PhoneNumber.builder()
+                                    Individual.IndividualResponseBody.PhoneNumber.builder()
                                         .data("data")
-                                        .type(Individual.UnionMember0.PhoneNumber.Type.WORK)
+                                        .type(
+                                            Individual.IndividualResponseBody.PhoneNumber.Type.WORK
+                                        )
                                         .build()
                                 )
                                 .preferredName("preferred_name")
@@ -142,9 +146,9 @@ internal class HrisIndividualRetrieveManyPageResponseTest {
                                         .build()
                                 )
                                 .addEmail(
-                                    Individual.UnionMember0.Email.builder()
+                                    Individual.IndividualResponseBody.Email.builder()
                                         .data("data")
-                                        .type(Individual.UnionMember0.Email.Type.WORK)
+                                        .type(Individual.IndividualResponseBody.Email.Type.WORK)
                                         .build()
                                 )
                                 .encryptedSsn("encrypted_ssn")

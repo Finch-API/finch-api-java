@@ -16,6 +16,7 @@ internal class PayStatementEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     PayStatementEvent.Data.builder()
                         .individualId("individual_id")
@@ -28,6 +29,7 @@ internal class PayStatementEventTest {
         assertThat(payStatementEvent.accountId()).isEqualTo("account_id")
         assertThat(payStatementEvent.companyId()).isEqualTo("company_id")
         assertThat(payStatementEvent.connectionId()).contains("connection_id")
+        assertThat(payStatementEvent.entityId()).contains("entity_id")
         assertThat(payStatementEvent.data())
             .contains(
                 PayStatementEvent.Data.builder()
@@ -47,6 +49,7 @@ internal class PayStatementEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     PayStatementEvent.Data.builder()
                         .individualId("individual_id")

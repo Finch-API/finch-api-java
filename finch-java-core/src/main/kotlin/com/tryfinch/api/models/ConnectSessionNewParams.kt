@@ -48,7 +48,9 @@ private constructor(
     fun customerName(): String = body.customerName()
 
     /**
-     * The Finch products to request access to
+     * The Finch products to request access to. Use `benefits` to access deductions endpoints —
+     * `deduction` is a deprecated alias that is still accepted but should not be combined with
+     * `benefits`.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -246,7 +248,11 @@ private constructor(
             body.customerName(customerName)
         }
 
-        /** The Finch products to request access to */
+        /**
+         * The Finch products to request access to. Use `benefits` to access deductions endpoints —
+         * `deduction` is a deprecated alias that is still accepted but should not be combined with
+         * `benefits`.
+         */
         fun products(products: List<ConnectProducts>) = apply { body.products(products) }
 
         /**
@@ -594,7 +600,9 @@ private constructor(
         fun customerName(): String = customerName.getRequired("customer_name")
 
         /**
-         * The Finch products to request access to
+         * The Finch products to request access to. Use `benefits` to access deductions endpoints —
+         * `deduction` is a deprecated alias that is still accepted but should not be combined with
+         * `benefits`.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -812,7 +820,11 @@ private constructor(
                 this.customerName = customerName
             }
 
-            /** The Finch products to request access to */
+            /**
+             * The Finch products to request access to. Use `benefits` to access deductions
+             * endpoints — `deduction` is a deprecated alias that is still accepted but should not
+             * be combined with `benefits`.
+             */
             fun products(products: List<ConnectProducts>) = products(JsonField.of(products))
 
             /**
@@ -1010,6 +1022,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): CreateConnectSessionRequest = apply {
             if (validated) {
                 return@apply
@@ -1092,7 +1113,6 @@ private constructor(
             "CreateConnectSessionRequest{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
     }
 
-    /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
@@ -1231,6 +1251,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): ConnectProducts = apply {
             if (validated) {
                 return@apply
@@ -1429,6 +1458,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Integration = apply {
             if (validated) {
                 return@apply
@@ -1564,6 +1602,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): AuthMethod = apply {
                 if (validated) {
                     return@apply
@@ -1710,6 +1758,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Sandbox = apply {
             if (validated) {
                 return@apply

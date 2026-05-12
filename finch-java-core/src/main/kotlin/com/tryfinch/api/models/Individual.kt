@@ -35,34 +35,71 @@ import kotlin.jvm.optionals.getOrNull
 @JsonSerialize(using = Individual.Serializer::class)
 class Individual
 private constructor(
-    private val unionMember0: UnionMember0? = null,
+    private val responseBody: IndividualResponseBody? = null,
     private val batchError: BatchError? = null,
     private val _json: JsonValue? = null,
 ) {
 
-    fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+    fun responseBody(): Optional<IndividualResponseBody> = Optional.ofNullable(responseBody)
 
     fun batchError(): Optional<BatchError> = Optional.ofNullable(batchError)
 
-    fun isUnionMember0(): Boolean = unionMember0 != null
+    fun isResponseBody(): Boolean = responseBody != null
 
     fun isBatchError(): Boolean = batchError != null
 
-    fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+    fun asResponseBody(): IndividualResponseBody = responseBody.getOrThrow("responseBody")
 
     fun asBatchError(): BatchError = batchError.getOrThrow("batchError")
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
+    /**
+     * Maps this instance's current variant to a value of type [T] using the given [visitor].
+     *
+     * Note that this method is _not_ forwards compatible with new variants from the API, unless
+     * [visitor] overrides [Visitor.unknown]. To handle variants not known to this version of the
+     * SDK gracefully, consider overriding [Visitor.unknown]:
+     * ```java
+     * import com.tryfinch.api.core.JsonValue;
+     * import java.util.Optional;
+     *
+     * Optional<String> result = individual.accept(new Individual.Visitor<Optional<String>>() {
+     *     @Override
+     *     public Optional<String> visitResponseBody(IndividualResponseBody responseBody) {
+     *         return Optional.of(responseBody.toString());
+     *     }
+     *
+     *     // ...
+     *
+     *     @Override
+     *     public Optional<String> unknown(JsonValue json) {
+     *         // Or inspect the `json`.
+     *         return Optional.empty();
+     *     }
+     * });
+     * ```
+     *
+     * @throws FinchInvalidDataException if [Visitor.unknown] is not overridden in [visitor] and the
+     *   current variant is unknown.
+     */
     fun <T> accept(visitor: Visitor<T>): T =
         when {
-            unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+            responseBody != null -> visitor.visitResponseBody(responseBody)
             batchError != null -> visitor.visitBatchError(batchError)
             else -> visitor.unknown(_json)
         }
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws FinchInvalidDataException if any value type in this object doesn't match its expected
+     *   type.
+     */
     fun validate(): Individual = apply {
         if (validated) {
             return@apply
@@ -70,8 +107,8 @@ private constructor(
 
         accept(
             object : Visitor<Unit> {
-                override fun visitUnionMember0(unionMember0: UnionMember0) {
-                    unionMember0.validate()
+                override fun visitResponseBody(responseBody: IndividualResponseBody) {
+                    responseBody.validate()
                 }
 
                 override fun visitBatchError(batchError: BatchError) {
@@ -99,7 +136,8 @@ private constructor(
     internal fun validity(): Int =
         accept(
             object : Visitor<Int> {
-                override fun visitUnionMember0(unionMember0: UnionMember0) = unionMember0.validity()
+                override fun visitResponseBody(responseBody: IndividualResponseBody) =
+                    responseBody.validity()
 
                 override fun visitBatchError(batchError: BatchError) = batchError.validity()
 
@@ -113,15 +151,15 @@ private constructor(
         }
 
         return other is Individual &&
-            unionMember0 == other.unionMember0 &&
+            responseBody == other.responseBody &&
             batchError == other.batchError
     }
 
-    override fun hashCode(): Int = Objects.hash(unionMember0, batchError)
+    override fun hashCode(): Int = Objects.hash(responseBody, batchError)
 
     override fun toString(): String =
         when {
-            unionMember0 != null -> "Individual{unionMember0=$unionMember0}"
+            responseBody != null -> "Individual{responseBody=$responseBody}"
             batchError != null -> "Individual{batchError=$batchError}"
             _json != null -> "Individual{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid Individual")
@@ -130,7 +168,8 @@ private constructor(
     companion object {
 
         @JvmStatic
-        fun ofUnionMember0(unionMember0: UnionMember0) = Individual(unionMember0 = unionMember0)
+        fun ofResponseBody(responseBody: IndividualResponseBody) =
+            Individual(responseBody = responseBody)
 
         @JvmStatic fun ofBatchError(batchError: BatchError) = Individual(batchError = batchError)
     }
@@ -138,7 +177,7 @@ private constructor(
     /** An interface that defines how to map each variant of [Individual] to a value of type [T]. */
     interface Visitor<out T> {
 
-        fun visitUnionMember0(unionMember0: UnionMember0): T
+        fun visitResponseBody(responseBody: IndividualResponseBody): T
 
         fun visitBatchError(batchError: BatchError): T
 
@@ -163,8 +202,8 @@ private constructor(
 
             val bestMatches =
                 sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                            Individual(unionMember0 = it, _json = json)
+                        tryDeserialize(node, jacksonTypeRef<IndividualResponseBody>())?.let {
+                            Individual(responseBody = it, _json = json)
                         },
                         tryDeserialize(node, jacksonTypeRef<BatchError>())?.let {
                             Individual(batchError = it, _json = json)
@@ -193,7 +232,7 @@ private constructor(
             provider: SerializerProvider,
         ) {
             when {
-                value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                value.responseBody != null -> generator.writeObject(value.responseBody)
                 value.batchError != null -> generator.writeObject(value.batchError)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid Individual")
@@ -201,7 +240,7 @@ private constructor(
         }
     }
 
-    class UnionMember0
+    class IndividualResponseBody
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
@@ -489,7 +528,7 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [UnionMember0].
+             * Returns a mutable builder for constructing an instance of [IndividualResponseBody].
              *
              * The following fields are required:
              * ```java
@@ -508,7 +547,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [UnionMember0]. */
+        /** A builder for [IndividualResponseBody]. */
         class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
@@ -527,21 +566,21 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(unionMember0: UnionMember0) = apply {
-                id = unionMember0.id
-                dob = unionMember0.dob
-                ethnicity = unionMember0.ethnicity
-                firstName = unionMember0.firstName
-                gender = unionMember0.gender
-                lastName = unionMember0.lastName
-                middleName = unionMember0.middleName
-                phoneNumbers = unionMember0.phoneNumbers.map { it.toMutableList() }
-                preferredName = unionMember0.preferredName
-                residence = unionMember0.residence
-                emails = unionMember0.emails.map { it.toMutableList() }
-                encryptedSsn = unionMember0.encryptedSsn
-                ssn = unionMember0.ssn
-                additionalProperties = unionMember0.additionalProperties.toMutableMap()
+            internal fun from(individualResponseBody: IndividualResponseBody) = apply {
+                id = individualResponseBody.id
+                dob = individualResponseBody.dob
+                ethnicity = individualResponseBody.ethnicity
+                firstName = individualResponseBody.firstName
+                gender = individualResponseBody.gender
+                lastName = individualResponseBody.lastName
+                middleName = individualResponseBody.middleName
+                phoneNumbers = individualResponseBody.phoneNumbers.map { it.toMutableList() }
+                preferredName = individualResponseBody.preferredName
+                residence = individualResponseBody.residence
+                emails = individualResponseBody.emails.map { it.toMutableList() }
+                encryptedSsn = individualResponseBody.encryptedSsn
+                ssn = individualResponseBody.ssn
+                additionalProperties = individualResponseBody.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -798,7 +837,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [UnionMember0].
+             * Returns an immutable instance of [IndividualResponseBody].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -818,8 +857,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): UnionMember0 =
-                UnionMember0(
+            fun build(): IndividualResponseBody =
+                IndividualResponseBody(
                     checkRequired("id", id),
                     checkRequired("dob", dob),
                     checkRequired("ethnicity", ethnicity),
@@ -839,7 +878,16 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): UnionMember0 = apply {
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): IndividualResponseBody = apply {
             if (validated) {
                 return@apply
             }
@@ -1022,6 +1070,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Ethnicity = apply {
                 if (validated) {
                     return@apply
@@ -1164,6 +1222,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Gender = apply {
                 if (validated) {
                     return@apply
@@ -1355,6 +1423,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): PhoneNumber = apply {
                 if (validated) {
                     return@apply
@@ -1476,6 +1554,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Type = apply {
                     if (validated) {
                         return@apply
@@ -1684,6 +1772,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Email = apply {
                 if (validated) {
                     return@apply
@@ -1805,6 +1903,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Type = apply {
                     if (validated) {
                         return@apply
@@ -1867,7 +1975,7 @@ private constructor(
                 return true
             }
 
-            return other is UnionMember0 &&
+            return other is IndividualResponseBody &&
                 id == other.id &&
                 dob == other.dob &&
                 ethnicity == other.ethnicity &&
@@ -1906,7 +2014,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "UnionMember0{id=$id, dob=$dob, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, emails=$emails, encryptedSsn=$encryptedSsn, ssn=$ssn, additionalProperties=$additionalProperties}"
+            "IndividualResponseBody{id=$id, dob=$dob, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, emails=$emails, encryptedSsn=$encryptedSsn, ssn=$ssn, additionalProperties=$additionalProperties}"
     }
 
     class BatchError
@@ -2115,6 +2223,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): BatchError = apply {
             if (validated) {
                 return@apply

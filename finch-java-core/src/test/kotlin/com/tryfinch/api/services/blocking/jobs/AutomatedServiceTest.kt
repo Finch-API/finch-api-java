@@ -21,8 +21,7 @@ internal class AutomatedServiceTest {
                 .build()
         val automatedService = client.jobs().automated()
 
-        val automated =
-            automatedService.create(JobAutomatedCreateParams.builder().bodyDataSyncAll().build())
+        val automated = automatedService.create(JobAutomatedCreateParams.Body.ofDataSyncAll())
 
         automated.validate()
     }

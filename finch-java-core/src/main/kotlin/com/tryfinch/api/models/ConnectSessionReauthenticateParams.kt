@@ -48,7 +48,9 @@ private constructor(
     fun minutesToExpire(): Optional<Long> = body.minutesToExpire()
 
     /**
-     * The products to request access to (optional for reauthentication)
+     * The products to request access to (optional for reauthentication). Use `benefits` to access
+     * deductions endpoints — `deduction` is a deprecated alias that is still accepted but should
+     * not be combined with `benefits`.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -173,7 +175,11 @@ private constructor(
             body.minutesToExpire(minutesToExpire)
         }
 
-        /** The products to request access to (optional for reauthentication) */
+        /**
+         * The products to request access to (optional for reauthentication). Use `benefits` to
+         * access deductions endpoints — `deduction` is a deprecated alias that is still accepted
+         * but should not be combined with `benefits`.
+         */
         fun products(products: List<ConnectProducts>?) = apply { body.products(products) }
 
         /** Alias for calling [Builder.products] with `products.orElse(null)`. */
@@ -396,7 +402,9 @@ private constructor(
         fun minutesToExpire(): Optional<Long> = minutesToExpire.getOptional("minutes_to_expire")
 
         /**
-         * The products to request access to (optional for reauthentication)
+         * The products to request access to (optional for reauthentication). Use `benefits` to
+         * access deductions endpoints — `deduction` is a deprecated alias that is still accepted
+         * but should not be combined with `benefits`.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -524,7 +532,11 @@ private constructor(
                 this.minutesToExpire = minutesToExpire
             }
 
-            /** The products to request access to (optional for reauthentication) */
+            /**
+             * The products to request access to (optional for reauthentication). Use `benefits` to
+             * access deductions endpoints — `deduction` is a deprecated alias that is still
+             * accepted but should not be combined with `benefits`.
+             */
             fun products(products: List<ConnectProducts>?) =
                 products(JsonField.ofNullable(products))
 
@@ -614,6 +626,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): ReauthenticateRequest = apply {
             if (validated) {
                 return@apply
@@ -670,7 +691,6 @@ private constructor(
             "ReauthenticateRequest{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
-    /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
@@ -809,6 +829,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): ConnectProducts = apply {
             if (validated) {
                 return@apply
