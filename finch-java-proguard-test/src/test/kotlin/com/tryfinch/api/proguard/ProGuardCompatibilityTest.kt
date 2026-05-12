@@ -93,19 +93,19 @@ internal class ProGuardCompatibilityTest {
     fun individualRoundtrip() {
         val jsonMapper = jsonMapper()
         val individual =
-            Individual.ofIndividual(
-                Individual.InnerIndividual.builder()
+            Individual.ofResponseBody(
+                Individual.IndividualResponseBody.builder()
                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .dob("dob")
-                    .ethnicity(Individual.InnerIndividual.Ethnicity.ASIAN)
+                    .ethnicity(Individual.IndividualResponseBody.Ethnicity.ASIAN)
                     .firstName("first_name")
-                    .gender(Individual.InnerIndividual.Gender.FEMALE)
+                    .gender(Individual.IndividualResponseBody.Gender.FEMALE)
                     .lastName("last_name")
                     .middleName("middle_name")
                     .addPhoneNumber(
-                        Individual.InnerIndividual.PhoneNumber.builder()
+                        Individual.IndividualResponseBody.PhoneNumber.builder()
                             .data("data")
-                            .type(Individual.InnerIndividual.PhoneNumber.Type.WORK)
+                            .type(Individual.IndividualResponseBody.PhoneNumber.Type.WORK)
                             .build()
                     )
                     .preferredName("preferred_name")
@@ -122,9 +122,9 @@ internal class ProGuardCompatibilityTest {
                             .build()
                     )
                     .addEmail(
-                        Individual.InnerIndividual.Email.builder()
+                        Individual.IndividualResponseBody.Email.builder()
                             .data("data")
-                            .type(Individual.InnerIndividual.Email.Type.WORK)
+                            .type(Individual.IndividualResponseBody.Email.Type.WORK)
                             .build()
                     )
                     .encryptedSsn("encrypted_ssn")

@@ -17,32 +17,37 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                 .addResponse(
                     EmploymentDataResponse.builder()
                         .body(
-                            EmploymentData.InnerEmploymentData.builder()
+                            EmploymentData.EmploymentDataResponseBody.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .classCode("class_code")
                                 .department(
-                                    EmploymentData.InnerEmploymentData.Department.builder()
+                                    EmploymentData.EmploymentDataResponseBody.Department.builder()
                                         .name("name")
                                         .build()
                                 )
                                 .employment(
-                                    EmploymentData.InnerEmploymentData.Employment.builder()
+                                    EmploymentData.EmploymentDataResponseBody.Employment.builder()
                                         .subtype(
-                                            EmploymentData.InnerEmploymentData.Employment.Subtype
+                                            EmploymentData.EmploymentDataResponseBody.Employment
+                                                .Subtype
                                                 .FULL_TIME
                                         )
                                         .type(
-                                            EmploymentData.InnerEmploymentData.Employment.Type
+                                            EmploymentData.EmploymentDataResponseBody.Employment
+                                                .Type
                                                 .EMPLOYEE
                                         )
                                         .build()
                                 )
                                 .employmentStatus(
-                                    EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE
+                                    EmploymentData.EmploymentDataResponseBody.EmploymentStatus
+                                        .ACTIVE
                                 )
                                 .endDate("end_date")
                                 .firstName("first_name")
-                                .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
+                                .flsaStatus(
+                                    EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT
+                                )
                                 .isActive(true)
                                 .lastName("last_name")
                                 .latestRehireDate("latest_rehire_date")
@@ -59,7 +64,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                         .build()
                                 )
                                 .manager(
-                                    EmploymentData.InnerEmploymentData.Manager.builder()
+                                    EmploymentData.EmploymentDataResponseBody.Manager.builder()
                                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                         .build()
                                 )
@@ -67,7 +72,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                 .startDate("start_date")
                                 .title("title")
                                 .addCustomField(
-                                    EmploymentData.InnerEmploymentData.CustomField.builder()
+                                    EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                                         .name("name")
                                         .value("string")
                                         .build()
@@ -102,31 +107,32 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
             .containsExactly(
                 EmploymentDataResponse.builder()
                     .body(
-                        EmploymentData.InnerEmploymentData.builder()
+                        EmploymentData.EmploymentDataResponseBody.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .classCode("class_code")
                             .department(
-                                EmploymentData.InnerEmploymentData.Department.builder()
+                                EmploymentData.EmploymentDataResponseBody.Department.builder()
                                     .name("name")
                                     .build()
                             )
                             .employment(
-                                EmploymentData.InnerEmploymentData.Employment.builder()
+                                EmploymentData.EmploymentDataResponseBody.Employment.builder()
                                     .subtype(
-                                        EmploymentData.InnerEmploymentData.Employment.Subtype
+                                        EmploymentData.EmploymentDataResponseBody.Employment.Subtype
                                             .FULL_TIME
                                     )
                                     .type(
-                                        EmploymentData.InnerEmploymentData.Employment.Type.EMPLOYEE
+                                        EmploymentData.EmploymentDataResponseBody.Employment.Type
+                                            .EMPLOYEE
                                     )
                                     .build()
                             )
                             .employmentStatus(
-                                EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE
+                                EmploymentData.EmploymentDataResponseBody.EmploymentStatus.ACTIVE
                             )
                             .endDate("end_date")
                             .firstName("first_name")
-                            .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
+                            .flsaStatus(EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT)
                             .isActive(true)
                             .lastName("last_name")
                             .latestRehireDate("latest_rehire_date")
@@ -143,7 +149,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                     .build()
                             )
                             .manager(
-                                EmploymentData.InnerEmploymentData.Manager.builder()
+                                EmploymentData.EmploymentDataResponseBody.Manager.builder()
                                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                     .build()
                             )
@@ -151,7 +157,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                             .startDate("start_date")
                             .title("title")
                             .addCustomField(
-                                EmploymentData.InnerEmploymentData.CustomField.builder()
+                                EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                                     .name("name")
                                     .value("string")
                                     .build()
@@ -190,32 +196,37 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                 .addResponse(
                     EmploymentDataResponse.builder()
                         .body(
-                            EmploymentData.InnerEmploymentData.builder()
+                            EmploymentData.EmploymentDataResponseBody.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .classCode("class_code")
                                 .department(
-                                    EmploymentData.InnerEmploymentData.Department.builder()
+                                    EmploymentData.EmploymentDataResponseBody.Department.builder()
                                         .name("name")
                                         .build()
                                 )
                                 .employment(
-                                    EmploymentData.InnerEmploymentData.Employment.builder()
+                                    EmploymentData.EmploymentDataResponseBody.Employment.builder()
                                         .subtype(
-                                            EmploymentData.InnerEmploymentData.Employment.Subtype
+                                            EmploymentData.EmploymentDataResponseBody.Employment
+                                                .Subtype
                                                 .FULL_TIME
                                         )
                                         .type(
-                                            EmploymentData.InnerEmploymentData.Employment.Type
+                                            EmploymentData.EmploymentDataResponseBody.Employment
+                                                .Type
                                                 .EMPLOYEE
                                         )
                                         .build()
                                 )
                                 .employmentStatus(
-                                    EmploymentData.InnerEmploymentData.EmploymentStatus.ACTIVE
+                                    EmploymentData.EmploymentDataResponseBody.EmploymentStatus
+                                        .ACTIVE
                                 )
                                 .endDate("end_date")
                                 .firstName("first_name")
-                                .flsaStatus(EmploymentData.InnerEmploymentData.FlsaStatus.EXEMPT)
+                                .flsaStatus(
+                                    EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT
+                                )
                                 .isActive(true)
                                 .lastName("last_name")
                                 .latestRehireDate("latest_rehire_date")
@@ -232,7 +243,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                         .build()
                                 )
                                 .manager(
-                                    EmploymentData.InnerEmploymentData.Manager.builder()
+                                    EmploymentData.EmploymentDataResponseBody.Manager.builder()
                                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                         .build()
                                 )
@@ -240,7 +251,7 @@ internal class HrisEmploymentRetrieveManyPageResponseTest {
                                 .startDate("start_date")
                                 .title("title")
                                 .addCustomField(
-                                    EmploymentData.InnerEmploymentData.CustomField.builder()
+                                    EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                                         .name("name")
                                         .value("string")
                                         .build()
