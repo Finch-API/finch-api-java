@@ -17,6 +17,8 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
+import com.tryfinch.api.models.EnrolledIndividualBenefitResponse
+import com.tryfinch.api.models.HrisBenefitIndividualEnrollManyParams
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
@@ -39,6 +41,13 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualServiceAsync =
         IndividualServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun enrollMany(
+        params: HrisBenefitIndividualEnrollManyParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<EnrolledIndividualBenefitResponse> =
+        // post /employer/benefits/{benefit_id}/individuals
+        withRawResponse().enrollMany(params, requestOptions).thenApply { it.parse() }
 
     override fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
@@ -73,6 +82,44 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             IndividualServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        private val enrollManyHandler: Handler<EnrolledIndividualBenefitResponse> =
+            jsonHandler<EnrolledIndividualBenefitResponse>(clientOptions.jsonMapper)
+
+        override fun enrollMany(
+            params: HrisBenefitIndividualEnrollManyParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<EnrolledIndividualBenefitResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "benefits", params._pathParam(0), "individuals")
+                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { enrollManyHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
 
         private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> =
             jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)
