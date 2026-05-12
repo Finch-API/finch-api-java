@@ -24,8 +24,10 @@ import com.tryfinch.api.models.HrisBenefitListPage
 import com.tryfinch.api.models.HrisBenefitListParams
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPage
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HrisBenefitRegisterParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
+import com.tryfinch.api.models.RegisterCompanyBenefitResponse
 import com.tryfinch.api.models.SupportedBenefit
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
@@ -84,6 +86,13 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
     ): HrisBenefitListSupportedBenefitsPage =
         // get /employer/benefits/meta
         withRawResponse().listSupportedBenefits(params, requestOptions).parse()
+
+    override fun register(
+        params: HrisBenefitRegisterParams,
+        requestOptions: RequestOptions,
+    ): RegisterCompanyBenefitResponse =
+        // post /employer/benefits/register
+        withRawResponse().register(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         BenefitService.WithRawResponse {
@@ -277,6 +286,38 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                             .params(params)
                             .items(it)
                             .build()
+                    }
+            }
+        }
+
+        private val registerHandler: Handler<RegisterCompanyBenefitResponse> =
+            jsonHandler<RegisterCompanyBenefitResponse>(clientOptions.jsonMapper)
+
+        override fun register(
+            params: HrisBenefitRegisterParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<RegisterCompanyBenefitResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "benefits", "register")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { registerHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
                     }
             }
         }

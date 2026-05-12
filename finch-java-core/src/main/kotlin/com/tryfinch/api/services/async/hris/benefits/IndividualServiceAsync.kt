@@ -5,6 +5,8 @@ package com.tryfinch.api.services.async.hris.benefits
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.EnrolledIndividualBenefitResponse
+import com.tryfinch.api.models.HrisBenefitIndividualEnrollManyParams
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
@@ -27,6 +29,50 @@ interface IndividualServiceAsync {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualServiceAsync
+
+    /**
+     * Enroll an individual into a deduction or contribution. This is an overwrite operation. If the
+     * employee is already enrolled, the enrollment amounts will be adjusted. Making the same
+     * request multiple times will not create new enrollments, but will continue to set the state of
+     * the existing enrollment.
+     */
+    fun enrollMany(benefitId: String): CompletableFuture<EnrolledIndividualBenefitResponse> =
+        enrollMany(benefitId, HrisBenefitIndividualEnrollManyParams.none())
+
+    /** @see enrollMany */
+    fun enrollMany(
+        benefitId: String,
+        params: HrisBenefitIndividualEnrollManyParams =
+            HrisBenefitIndividualEnrollManyParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<EnrolledIndividualBenefitResponse> =
+        enrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+    /** @see enrollMany */
+    fun enrollMany(
+        benefitId: String,
+        params: HrisBenefitIndividualEnrollManyParams = HrisBenefitIndividualEnrollManyParams.none(),
+    ): CompletableFuture<EnrolledIndividualBenefitResponse> =
+        enrollMany(benefitId, params, RequestOptions.none())
+
+    /** @see enrollMany */
+    fun enrollMany(
+        params: HrisBenefitIndividualEnrollManyParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<EnrolledIndividualBenefitResponse>
+
+    /** @see enrollMany */
+    fun enrollMany(
+        params: HrisBenefitIndividualEnrollManyParams
+    ): CompletableFuture<EnrolledIndividualBenefitResponse> =
+        enrollMany(params, RequestOptions.none())
+
+    /** @see enrollMany */
+    fun enrollMany(
+        benefitId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<EnrolledIndividualBenefitResponse> =
+        enrollMany(benefitId, HrisBenefitIndividualEnrollManyParams.none(), requestOptions)
 
     /** Lists individuals currently enrolled in a given deduction. */
     fun enrolledIds(benefitId: String): CompletableFuture<IndividualEnrolledIdsResponse> =
@@ -167,6 +213,51 @@ interface IndividualServiceAsync {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): IndividualServiceAsync.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /employer/benefits/{benefit_id}/individuals`, but
+         * is otherwise the same as [IndividualServiceAsync.enrollMany].
+         */
+        fun enrollMany(
+            benefitId: String
+        ): CompletableFuture<HttpResponseFor<EnrolledIndividualBenefitResponse>> =
+            enrollMany(benefitId, HrisBenefitIndividualEnrollManyParams.none())
+
+        /** @see enrollMany */
+        fun enrollMany(
+            benefitId: String,
+            params: HrisBenefitIndividualEnrollManyParams =
+                HrisBenefitIndividualEnrollManyParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<EnrolledIndividualBenefitResponse>> =
+            enrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+        /** @see enrollMany */
+        fun enrollMany(
+            benefitId: String,
+            params: HrisBenefitIndividualEnrollManyParams =
+                HrisBenefitIndividualEnrollManyParams.none(),
+        ): CompletableFuture<HttpResponseFor<EnrolledIndividualBenefitResponse>> =
+            enrollMany(benefitId, params, RequestOptions.none())
+
+        /** @see enrollMany */
+        fun enrollMany(
+            params: HrisBenefitIndividualEnrollManyParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<EnrolledIndividualBenefitResponse>>
+
+        /** @see enrollMany */
+        fun enrollMany(
+            params: HrisBenefitIndividualEnrollManyParams
+        ): CompletableFuture<HttpResponseFor<EnrolledIndividualBenefitResponse>> =
+            enrollMany(params, RequestOptions.none())
+
+        /** @see enrollMany */
+        fun enrollMany(
+            benefitId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<EnrolledIndividualBenefitResponse>> =
+            enrollMany(benefitId, HrisBenefitIndividualEnrollManyParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/enrolled`, but is
