@@ -6,13 +6,24 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.BaseDeserializer
+import com.tryfinch.api.core.BaseSerializer
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.allMaxBy
 import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -1551,14 +1562,14 @@ private constructor(
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
-            private val value: JsonValue,
+            private val value: JsonField<Value>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
             @JsonCreator
             private constructor(
                 @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("value") @ExcludeMissing value: JsonValue = JsonMissing.of(),
+                @JsonProperty("value") @ExcludeMissing value: JsonField<Value> = JsonMissing.of(),
             ) : this(name, value, mutableMapOf())
 
             /**
@@ -1568,13 +1579,10 @@ private constructor(
             fun name(): Optional<String> = name.getOptional("name")
 
             /**
-             * This arbitrary value can be deserialized into a custom type using the `convert`
-             * method:
-             * ```java
-             * MyClass myObject = customField.value().convert(MyClass.class);
-             * ```
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
              */
-            @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
+            fun value(): Optional<Value> = value.getOptional("value")
 
             /**
              * Returns the raw JSON value of [name].
@@ -1582,6 +1590,13 @@ private constructor(
              * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
              */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /**
+             * Returns the raw JSON value of [value].
+             *
+             * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Value> = value
 
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1605,7 +1620,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var name: JsonField<String> = JsonMissing.of()
-                private var value: JsonValue = JsonMissing.of()
+                private var value: JsonField<Value> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -1629,7 +1644,35 @@ private constructor(
                  */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
-                fun value(value: JsonValue) = apply { this.value = value }
+                fun value(value: Value?) = value(JsonField.ofNullable(value))
+
+                /** Alias for calling [Builder.value] with `value.orElse(null)`. */
+                fun value(value: Optional<Value>) = value(value.getOrNull())
+
+                /**
+                 * Sets [Builder.value] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.value] with a well-typed [Value] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun value(value: JsonField<Value>) = apply { this.value = value }
+
+                /** Alias for calling [value] with `Value.ofString(string)`. */
+                fun value(string: String) = value(Value.ofString(string))
+
+                /** Alias for calling [value] with `Value.ofJsonValues(jsonValues)`. */
+                fun valueOfJsonValues(jsonValues: List<JsonValue>) =
+                    value(Value.ofJsonValues(jsonValues))
+
+                /** Alias for calling [value] with `Value.ofJson(json)`. */
+                fun value(json: JsonValue) = value(Value.ofJson(json))
+
+                /** Alias for calling [value] with `Value.ofNumber(number)`. */
+                fun value(number: Double) = value(Value.ofNumber(number))
+
+                /** Alias for calling [value] with `Value.ofBool(bool)`. */
+                fun value(bool: Boolean) = value(Value.ofBool(bool))
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1680,6 +1723,7 @@ private constructor(
                 }
 
                 name()
+                value().ifPresent { it.validate() }
                 validated = true
             }
 
@@ -1697,7 +1741,291 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            @JvmSynthetic internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (name.asKnown().isPresent) 1 else 0) +
+                    (value.asKnown().getOrNull()?.validity() ?: 0)
+
+            @JsonDeserialize(using = Value.Deserializer::class)
+            @JsonSerialize(using = Value.Serializer::class)
+            class Value
+            private constructor(
+                private val string: String? = null,
+                private val jsonValues: List<JsonValue>? = null,
+                private val json: JsonValue? = null,
+                private val number: Double? = null,
+                private val bool: Boolean? = null,
+                private val _json: JsonValue? = null,
+            ) {
+
+                fun string(): Optional<String> = Optional.ofNullable(string)
+
+                fun jsonValues(): Optional<List<JsonValue>> = Optional.ofNullable(jsonValues)
+
+                fun json(): Optional<JsonValue> = Optional.ofNullable(json)
+
+                fun number(): Optional<Double> = Optional.ofNullable(number)
+
+                fun bool(): Optional<Boolean> = Optional.ofNullable(bool)
+
+                fun isString(): Boolean = string != null
+
+                fun isJsonValues(): Boolean = jsonValues != null
+
+                fun isJson(): Boolean = json != null
+
+                fun isNumber(): Boolean = number != null
+
+                fun isBool(): Boolean = bool != null
+
+                fun asString(): String = string.getOrThrow("string")
+
+                fun asJsonValues(): List<JsonValue> = jsonValues.getOrThrow("jsonValues")
+
+                fun asJson(): JsonValue = json.getOrThrow("json")
+
+                fun asNumber(): Double = number.getOrThrow("number")
+
+                fun asBool(): Boolean = bool.getOrThrow("bool")
+
+                fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+                /**
+                 * Maps this instance's current variant to a value of type [T] using the given
+                 * [visitor].
+                 *
+                 * Note that this method is _not_ forwards compatible with new variants from the
+                 * API, unless [visitor] overrides [Visitor.unknown]. To handle variants not known
+                 * to this version of the SDK gracefully, consider overriding [Visitor.unknown]:
+                 * ```java
+                 * import com.tryfinch.api.core.JsonValue;
+                 * import java.util.Optional;
+                 *
+                 * Optional<String> result = value.accept(new Value.Visitor<Optional<String>>() {
+                 *     @Override
+                 *     public Optional<String> visitString(String string) {
+                 *         return Optional.of(string.toString());
+                 *     }
+                 *
+                 *     // ...
+                 *
+                 *     @Override
+                 *     public Optional<String> unknown(JsonValue json) {
+                 *         // Or inspect the `json`.
+                 *         return Optional.empty();
+                 *     }
+                 * });
+                 * ```
+                 *
+                 * @throws FinchInvalidDataException if [Visitor.unknown] is not overridden in
+                 *   [visitor] and the current variant is unknown.
+                 */
+                fun <T> accept(visitor: Visitor<T>): T =
+                    when {
+                        string != null -> visitor.visitString(string)
+                        jsonValues != null -> visitor.visitJsonValues(jsonValues)
+                        json != null -> visitor.visitJson(json)
+                        number != null -> visitor.visitNumber(number)
+                        bool != null -> visitor.visitBool(bool)
+                        else -> visitor.unknown(_json)
+                    }
+
+                private var validated: Boolean = false
+
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
+                fun validate(): Value = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    accept(
+                        object : Visitor<Unit> {
+                            override fun visitString(string: String) {}
+
+                            override fun visitJsonValues(jsonValues: List<JsonValue>) {}
+
+                            override fun visitJson(json: JsonValue) {}
+
+                            override fun visitNumber(number: Double) {}
+
+                            override fun visitBool(bool: Boolean) {}
+                        }
+                    )
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    accept(
+                        object : Visitor<Int> {
+                            override fun visitString(string: String) = 1
+
+                            override fun visitJsonValues(jsonValues: List<JsonValue>) =
+                                jsonValues.size
+
+                            override fun visitJson(json: JsonValue) = 1
+
+                            override fun visitNumber(number: Double) = 1
+
+                            override fun visitBool(bool: Boolean) = 1
+
+                            override fun unknown(json: JsonValue?) = 0
+                        }
+                    )
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Value &&
+                        string == other.string &&
+                        jsonValues == other.jsonValues &&
+                        json == other.json &&
+                        number == other.number &&
+                        bool == other.bool
+                }
+
+                override fun hashCode(): Int = Objects.hash(string, jsonValues, json, number, bool)
+
+                override fun toString(): String =
+                    when {
+                        string != null -> "Value{string=$string}"
+                        jsonValues != null -> "Value{jsonValues=$jsonValues}"
+                        json != null -> "Value{json=$json}"
+                        number != null -> "Value{number=$number}"
+                        bool != null -> "Value{bool=$bool}"
+                        _json != null -> "Value{_unknown=$_json}"
+                        else -> throw IllegalStateException("Invalid Value")
+                    }
+
+                companion object {
+
+                    @JvmStatic fun ofString(string: String) = Value(string = string)
+
+                    @JvmStatic
+                    fun ofJsonValues(jsonValues: List<JsonValue>) =
+                        Value(jsonValues = jsonValues.toImmutable())
+
+                    @JvmStatic fun ofJson(json: JsonValue) = Value(json = json)
+
+                    @JvmStatic fun ofNumber(number: Double) = Value(number = number)
+
+                    @JvmStatic fun ofBool(bool: Boolean) = Value(bool = bool)
+                }
+
+                /**
+                 * An interface that defines how to map each variant of [Value] to a value of type
+                 * [T].
+                 */
+                interface Visitor<out T> {
+
+                    fun visitString(string: String): T
+
+                    fun visitJsonValues(jsonValues: List<JsonValue>): T
+
+                    fun visitJson(json: JsonValue): T
+
+                    fun visitNumber(number: Double): T
+
+                    fun visitBool(bool: Boolean): T
+
+                    /**
+                     * Maps an unknown variant of [Value] to a value of type [T].
+                     *
+                     * An instance of [Value] can contain an unknown variant if it was deserialized
+                     * from data that doesn't match any known variant. For example, if the SDK is on
+                     * an older version than the API, then the API may respond with new variants
+                     * that the SDK is unaware of.
+                     *
+                     * @throws FinchInvalidDataException in the default implementation.
+                     */
+                    fun unknown(json: JsonValue?): T {
+                        throw FinchInvalidDataException("Unknown Value: $json")
+                    }
+                }
+
+                internal class Deserializer : BaseDeserializer<Value>(Value::class) {
+
+                    override fun ObjectCodec.deserialize(node: JsonNode): Value {
+                        val json = JsonValue.fromJsonNode(node)
+
+                        val bestMatches =
+                            sequenceOf(
+                                    tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                        Value(string = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<List<JsonValue>>())?.let {
+                                        Value(jsonValues = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<Double>())?.let {
+                                        Value(number = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
+                                        Value(bool = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<JsonValue>())?.let {
+                                        Value(json = it, _json = json)
+                                    },
+                                )
+                                .filterNotNull()
+                                .allMaxBy { it.validity() }
+                                .toList()
+                        return when (bestMatches.size) {
+                            // This can happen if what we're deserializing is completely
+                            // incompatible with all the possible variants.
+                            0 -> Value(_json = json)
+                            1 -> bestMatches.single()
+                            // If there's more than one match with the highest validity, then use
+                            // the first completely valid match, or simply the first match if none
+                            // are completely valid.
+                            else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+                        }
+                    }
+                }
+
+                internal class Serializer : BaseSerializer<Value>(Value::class) {
+
+                    override fun serialize(
+                        value: Value,
+                        generator: JsonGenerator,
+                        provider: SerializerProvider,
+                    ) {
+                        when {
+                            value.string != null -> generator.writeObject(value.string)
+                            value.jsonValues != null -> generator.writeObject(value.jsonValues)
+                            value.json != null -> generator.writeObject(value.json)
+                            value.number != null -> generator.writeObject(value.number)
+                            value.bool != null -> generator.writeObject(value.bool)
+                            value._json != null -> generator.writeObject(value._json)
+                            else -> throw IllegalStateException("Invalid Value")
+                        }
+                    }
+                }
+            }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
