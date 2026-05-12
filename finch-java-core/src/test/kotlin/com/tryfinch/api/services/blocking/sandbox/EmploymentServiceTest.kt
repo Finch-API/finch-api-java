@@ -4,7 +4,6 @@ package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.Income
 import com.tryfinch.api.models.Location
 import com.tryfinch.api.models.SandboxEmploymentUpdateParams
@@ -32,7 +31,7 @@ internal class EmploymentServiceTest {
                     .addCustomField(
                         SandboxEmploymentUpdateParams.CustomField.builder()
                             .name("name")
-                            .value(JsonValue.from(mapOf<String, Any>()))
+                            .value("string")
                             .build()
                     )
                     .department(
@@ -86,7 +85,7 @@ internal class EmploymentServiceTest {
                     )
                     .middleName("middle_name")
                     .sourceId("source_id")
-                    .startDate("start_date")
+                    .startDate("3/4/2020")
                     .title("title")
                     .build()
             )

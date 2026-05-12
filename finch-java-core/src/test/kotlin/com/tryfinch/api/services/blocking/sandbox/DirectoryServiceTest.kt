@@ -4,7 +4,6 @@ package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.Income
 import com.tryfinch.api.models.Location
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
@@ -33,7 +32,7 @@ internal class DirectoryServiceTest {
                             SandboxDirectoryCreateParams.IndividualOrEmployment.CustomField
                                 .builder()
                                 .name("name")
-                                .value(JsonValue.from(mapOf<String, Any>()))
+                                .value("string")
                                 .build()
                         )
                         .department(
