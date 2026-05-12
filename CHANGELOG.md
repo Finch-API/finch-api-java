@@ -1,5 +1,14 @@
 # Changelog
 
+## 7.8.0 (2026-05-12)
+
+Full Changelog: [v7.7.0...v7.8.0](https://github.com/Finch-API/finch-api-java/compare/v7.7.0...v7.8.0)
+
+### Features
+
+* **api:** add register benefits method ([6e858e5](https://github.com/Finch-API/finch-api-java/commit/6e858e5cf21cc0a006e19444192ac43a2948f781))
+* **api:** manual updates ([ad2d05d](https://github.com/Finch-API/finch-api-java/commit/ad2d05dfca49f26443d904e242b7eea45a79fcb9))
+
 ## 7.7.0 (2026-05-12)
 
 Full Changelog: [v7.6.0...v7.7.0](https://github.com/Finch-API/finch-api-java/compare/v7.6.0...v7.7.0)
