@@ -5,8 +5,10 @@ package com.tryfinch.api.services.async
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.AccountDisconnectEntityParams
 import com.tryfinch.api.models.AccountDisconnectParams
 import com.tryfinch.api.models.AccountIntrospectParams
+import com.tryfinch.api.models.DisconnectEntityResponse
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 import java.util.concurrent.CompletableFuture
@@ -44,6 +46,20 @@ interface AccountServiceAsync {
     /** @see disconnect */
     fun disconnect(requestOptions: RequestOptions): CompletableFuture<DisconnectResponse> =
         disconnect(AccountDisconnectParams.none(), requestOptions)
+
+    /**
+     * Disconnect entity(s) from a connection without affecting other entities associated with the
+     * same connection.
+     */
+    fun disconnectEntity(
+        params: AccountDisconnectEntityParams
+    ): CompletableFuture<DisconnectEntityResponse> = disconnectEntity(params, RequestOptions.none())
+
+    /** @see disconnectEntity */
+    fun disconnectEntity(
+        params: AccountDisconnectEntityParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<DisconnectEntityResponse>
 
     /** Read account information associated with an `access_token` */
     fun introspect(): CompletableFuture<Introspection> = introspect(AccountIntrospectParams.none())
@@ -101,6 +117,21 @@ interface AccountServiceAsync {
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<DisconnectResponse>> =
             disconnect(AccountDisconnectParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `post /disconnect-entity`, but is otherwise the same as
+         * [AccountServiceAsync.disconnectEntity].
+         */
+        fun disconnectEntity(
+            params: AccountDisconnectEntityParams
+        ): CompletableFuture<HttpResponseFor<DisconnectEntityResponse>> =
+            disconnectEntity(params, RequestOptions.none())
+
+        /** @see disconnectEntity */
+        fun disconnectEntity(
+            params: AccountDisconnectEntityParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<DisconnectEntityResponse>>
 
         /**
          * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as

@@ -24,8 +24,10 @@ import com.tryfinch.api.models.HrisBenefitListPageAsync
 import com.tryfinch.api.models.HrisBenefitListParams
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HrisBenefitRegisterParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
+import com.tryfinch.api.models.RegisterCompanyBenefitResponse
 import com.tryfinch.api.models.SupportedBenefit
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
@@ -87,6 +89,13 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
     ): CompletableFuture<HrisBenefitListSupportedBenefitsPageAsync> =
         // get /employer/benefits/meta
         withRawResponse().listSupportedBenefits(params, requestOptions).thenApply { it.parse() }
+
+    override fun register(
+        params: HrisBenefitRegisterParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<RegisterCompanyBenefitResponse> =
+        // post /employer/benefits/register
+        withRawResponse().register(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         BenefitServiceAsync.WithRawResponse {
@@ -296,6 +305,41 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                                     .params(params)
                                     .items(it)
                                     .build()
+                            }
+                    }
+                }
+        }
+
+        private val registerHandler: Handler<RegisterCompanyBenefitResponse> =
+            jsonHandler<RegisterCompanyBenefitResponse>(clientOptions.jsonMapper)
+
+        override fun register(
+            params: HrisBenefitRegisterParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<RegisterCompanyBenefitResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "benefits", "register")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { registerHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
                             }
                     }
                 }
