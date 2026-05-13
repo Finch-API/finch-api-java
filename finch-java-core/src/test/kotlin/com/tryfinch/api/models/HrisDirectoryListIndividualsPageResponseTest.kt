@@ -7,12 +7,12 @@ import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class DirectoryListIndividualsResponseTest {
+internal class HrisDirectoryListIndividualsPageResponseTest {
 
     @Test
     fun create() {
-        val directoryListIndividualsResponse =
-            DirectoryListIndividualsResponse.builder()
+        val hrisDirectoryListIndividualsPageResponse =
+            HrisDirectoryListIndividualsPageResponse.builder()
                 .addIndividual(
                     IndividualInDirectory.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -31,7 +31,7 @@ internal class DirectoryListIndividualsResponseTest {
                 .paging(Paging.builder().offset(0L).count(0L).build())
                 .build()
 
-        assertThat(directoryListIndividualsResponse.individuals())
+        assertThat(hrisDirectoryListIndividualsPageResponse.individuals())
             .containsExactly(
                 IndividualInDirectory.builder()
                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -47,15 +47,15 @@ internal class DirectoryListIndividualsResponseTest {
                     .middleName("middle_name")
                     .build()
             )
-        assertThat(directoryListIndividualsResponse.paging())
+        assertThat(hrisDirectoryListIndividualsPageResponse.paging())
             .isEqualTo(Paging.builder().offset(0L).count(0L).build())
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val directoryListIndividualsResponse =
-            DirectoryListIndividualsResponse.builder()
+        val hrisDirectoryListIndividualsPageResponse =
+            HrisDirectoryListIndividualsPageResponse.builder()
                 .addIndividual(
                     IndividualInDirectory.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -74,13 +74,13 @@ internal class DirectoryListIndividualsResponseTest {
                 .paging(Paging.builder().offset(0L).count(0L).build())
                 .build()
 
-        val roundtrippedDirectoryListIndividualsResponse =
+        val roundtrippedHrisDirectoryListIndividualsPageResponse =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(directoryListIndividualsResponse),
-                jacksonTypeRef<DirectoryListIndividualsResponse>(),
+                jsonMapper.writeValueAsString(hrisDirectoryListIndividualsPageResponse),
+                jacksonTypeRef<HrisDirectoryListIndividualsPageResponse>(),
             )
 
-        assertThat(roundtrippedDirectoryListIndividualsResponse)
-            .isEqualTo(directoryListIndividualsResponse)
+        assertThat(roundtrippedHrisDirectoryListIndividualsPageResponse)
+            .isEqualTo(hrisDirectoryListIndividualsPageResponse)
     }
 }

@@ -18,7 +18,7 @@ import java.util.Collections
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-class DirectoryListIndividualsResponse
+class HrisDirectoryListIndividualsPageResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val individuals: JsonField<List<IndividualInDirectory>>,
@@ -80,7 +80,7 @@ private constructor(
 
         /**
          * Returns a mutable builder for constructing an instance of
-         * [DirectoryListIndividualsResponse].
+         * [HrisDirectoryListIndividualsPageResponse].
          *
          * The following fields are required:
          * ```java
@@ -91,7 +91,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [DirectoryListIndividualsResponse]. */
+    /** A builder for [HrisDirectoryListIndividualsPageResponse]. */
     class Builder internal constructor() {
 
         private var individuals: JsonField<MutableList<IndividualInDirectory>>? = null
@@ -99,14 +99,15 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(directoryListIndividualsResponse: DirectoryListIndividualsResponse) =
-            apply {
-                individuals =
-                    directoryListIndividualsResponse.individuals.map { it.toMutableList() }
-                paging = directoryListIndividualsResponse.paging
-                additionalProperties =
-                    directoryListIndividualsResponse.additionalProperties.toMutableMap()
-            }
+        internal fun from(
+            hrisDirectoryListIndividualsPageResponse: HrisDirectoryListIndividualsPageResponse
+        ) = apply {
+            individuals =
+                hrisDirectoryListIndividualsPageResponse.individuals.map { it.toMutableList() }
+            paging = hrisDirectoryListIndividualsPageResponse.paging
+            additionalProperties =
+                hrisDirectoryListIndividualsPageResponse.additionalProperties.toMutableMap()
+        }
 
         /** The array of employees. */
         fun individuals(individuals: List<IndividualInDirectory>) =
@@ -165,7 +166,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [DirectoryListIndividualsResponse].
+         * Returns an immutable instance of [HrisDirectoryListIndividualsPageResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -177,8 +178,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): DirectoryListIndividualsResponse =
-            DirectoryListIndividualsResponse(
+        fun build(): HrisDirectoryListIndividualsPageResponse =
+            HrisDirectoryListIndividualsPageResponse(
                 checkRequired("individuals", individuals).map { it.toImmutable() },
                 checkRequired("paging", paging),
                 additionalProperties.toMutableMap(),
@@ -195,7 +196,7 @@ private constructor(
      * @throws FinchInvalidDataException if any value type in this object doesn't match its expected
      *   type.
      */
-    fun validate(): DirectoryListIndividualsResponse = apply {
+    fun validate(): HrisDirectoryListIndividualsPageResponse = apply {
         if (validated) {
             return@apply
         }
@@ -228,7 +229,7 @@ private constructor(
             return true
         }
 
-        return other is DirectoryListIndividualsResponse &&
+        return other is HrisDirectoryListIndividualsPageResponse &&
             individuals == other.individuals &&
             paging == other.paging &&
             additionalProperties == other.additionalProperties
@@ -239,5 +240,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "DirectoryListIndividualsResponse{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
+        "HrisDirectoryListIndividualsPageResponse{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
 }
