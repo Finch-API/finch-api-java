@@ -8,13 +8,13 @@ import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class PayStatementResponseBodyTest {
+internal class PayStatementDataTest {
 
     @Test
     fun create() {
-        val payStatementResponseBody =
-            PayStatementResponseBody.builder()
-                .paging(PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build())
+        val payStatementData =
+            PayStatementData.builder()
+                .paging(PayStatementData.Paging.builder().offset(0L).count(0L).build())
                 .addPayStatement(
                     PayStatement.builder()
                         .addEarning(
@@ -112,9 +112,9 @@ internal class PayStatementResponseBodyTest {
                 )
                 .build()
 
-        assertThat(payStatementResponseBody.paging())
-            .isEqualTo(PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build())
-        assertThat(payStatementResponseBody.payStatements())
+        assertThat(payStatementData.paging())
+            .isEqualTo(PayStatementData.Paging.builder().offset(0L).count(0L).build())
+        assertThat(payStatementData.payStatements())
             .containsExactly(
                 PayStatement.builder()
                     .addEarning(
@@ -214,9 +214,9 @@ internal class PayStatementResponseBodyTest {
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val payStatementResponseBody =
-            PayStatementResponseBody.builder()
-                .paging(PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build())
+        val payStatementData =
+            PayStatementData.builder()
+                .paging(PayStatementData.Paging.builder().offset(0L).count(0L).build())
                 .addPayStatement(
                     PayStatement.builder()
                         .addEarning(
@@ -314,12 +314,12 @@ internal class PayStatementResponseBodyTest {
                 )
                 .build()
 
-        val roundtrippedPayStatementResponseBody =
+        val roundtrippedPayStatementData =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(payStatementResponseBody),
-                jacksonTypeRef<PayStatementResponseBody>(),
+                jsonMapper.writeValueAsString(payStatementData),
+                jacksonTypeRef<PayStatementData>(),
             )
 
-        assertThat(roundtrippedPayStatementResponseBody).isEqualTo(payStatementResponseBody)
+        assertThat(roundtrippedPayStatementData).isEqualTo(payStatementData)
     }
 }
