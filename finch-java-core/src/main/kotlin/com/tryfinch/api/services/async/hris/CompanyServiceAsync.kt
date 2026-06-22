@@ -7,7 +7,6 @@ import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
-import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -24,8 +23,6 @@ interface CompanyServiceAsync {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): CompanyServiceAsync
-
-    fun payStatementItem(): PayStatementItemServiceAsync
 
     /** Read basic company data */
     fun retrieve(): CompletableFuture<Company> = retrieve(HrisCompanyRetrieveParams.none())
@@ -58,8 +55,6 @@ interface CompanyServiceAsync {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): CompanyServiceAsync.WithRawResponse
-
-        fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
