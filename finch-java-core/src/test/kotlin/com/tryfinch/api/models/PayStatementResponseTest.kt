@@ -15,10 +15,8 @@ internal class PayStatementResponseTest {
         val payStatementResponse =
             PayStatementResponse.builder()
                 .body(
-                    PayStatementResponseBody.builder()
-                        .paging(
-                            PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build()
-                        )
+                    PayStatementData.builder()
+                        .paging(PayStatementData.Paging.builder().offset(0L).count(0L).build())
                         .addPayStatement(
                             PayStatement.builder()
                                 .addEarning(
@@ -125,11 +123,9 @@ internal class PayStatementResponseTest {
 
         assertThat(payStatementResponse.body())
             .isEqualTo(
-                PayStatementResponse.Body.ofPayStatementResponse(
-                    PayStatementResponseBody.builder()
-                        .paging(
-                            PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build()
-                        )
+                PayStatementResponse.Body.ofPayStatementData(
+                    PayStatementData.builder()
+                        .paging(PayStatementData.Paging.builder().offset(0L).count(0L).build())
                         .addPayStatement(
                             PayStatement.builder()
                                 .addEarning(
@@ -241,10 +237,8 @@ internal class PayStatementResponseTest {
         val payStatementResponse =
             PayStatementResponse.builder()
                 .body(
-                    PayStatementResponseBody.builder()
-                        .paging(
-                            PayStatementResponseBody.Paging.builder().offset(0L).count(0L).build()
-                        )
+                    PayStatementData.builder()
+                        .paging(PayStatementData.Paging.builder().offset(0L).count(0L).build())
                         .addPayStatement(
                             PayStatement.builder()
                                 .addEarning(

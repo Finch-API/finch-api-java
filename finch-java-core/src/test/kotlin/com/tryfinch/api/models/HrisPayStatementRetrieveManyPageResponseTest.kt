@@ -17,12 +17,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                 .addResponse(
                     PayStatementResponse.builder()
                         .body(
-                            PayStatementResponseBody.builder()
+                            PayStatementData.builder()
                                 .paging(
-                                    PayStatementResponseBody.Paging.builder()
-                                        .offset(0L)
-                                        .count(0L)
-                                        .build()
+                                    PayStatementData.Paging.builder().offset(0L).count(0L).build()
                                 )
                                 .addPayStatement(
                                     PayStatement.builder()
@@ -151,13 +148,8 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
             .containsExactly(
                 PayStatementResponse.builder()
                     .body(
-                        PayStatementResponseBody.builder()
-                            .paging(
-                                PayStatementResponseBody.Paging.builder()
-                                    .offset(0L)
-                                    .count(0L)
-                                    .build()
-                            )
+                        PayStatementData.builder()
+                            .paging(PayStatementData.Paging.builder().offset(0L).count(0L).build())
                             .addPayStatement(
                                 PayStatement.builder()
                                     .addEarning(
@@ -276,12 +268,9 @@ internal class HrisPayStatementRetrieveManyPageResponseTest {
                 .addResponse(
                     PayStatementResponse.builder()
                         .body(
-                            PayStatementResponseBody.builder()
+                            PayStatementData.builder()
                                 .paging(
-                                    PayStatementResponseBody.Paging.builder()
-                                        .offset(0L)
-                                        .count(0L)
-                                        .build()
+                                    PayStatementData.Paging.builder().offset(0L).count(0L).build()
                                 )
                                 .addPayStatement(
                                     PayStatement.builder()
