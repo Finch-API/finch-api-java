@@ -17,8 +17,6 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
-import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
-import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -29,16 +27,10 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         WithRawResponseImpl(clientOptions)
     }
 
-    private val payStatementItem: PayStatementItemServiceAsync by lazy {
-        PayStatementItemServiceAsyncImpl(clientOptions)
-    }
-
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CompanyServiceAsync =
         CompanyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
-
-    override fun payStatementItem(): PayStatementItemServiceAsync = payStatementItem
 
     override fun retrieve(
         params: HrisCompanyRetrieveParams,
@@ -53,19 +45,12 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
-        private val payStatementItem: PayStatementItemServiceAsync.WithRawResponse by lazy {
-            PayStatementItemServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
-
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): CompanyServiceAsync.WithRawResponse =
             CompanyServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
-
-        override fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse =
-            payStatementItem
 
         private val retrieveHandler: Handler<Company> =
             jsonHandler<Company>(clientOptions.jsonMapper)

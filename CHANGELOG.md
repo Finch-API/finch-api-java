@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.0.0 (2026-06-22)
+
+Full Changelog: [v7.10.0...v8.0.0](https://github.com/Finch-API/finch-api-java/compare/v7.10.0...v8.0.0)
+
+### Bug Fixes
+
+* **payroll:** pay_statement_item is now a direct subresource of hris instead of company ([d5a0907](https://github.com/Finch-API/finch-api-java/commit/d5a09070b404bdd5ba5bbaf85e91d8112b094328))
+
 ## 7.10.0 (2026-06-22)
 
 Full Changelog: [v7.9.0...v7.10.0](https://github.com/Finch-API/finch-api-java/compare/v7.9.0...v7.10.0)
