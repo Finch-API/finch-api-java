@@ -17,8 +17,6 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
-import com.tryfinch.api.services.blocking.hris.company.PayStatementItemService
-import com.tryfinch.api.services.blocking.hris.company.PayStatementItemServiceImpl
 import java.util.function.Consumer
 
 class CompanyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -28,16 +26,10 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
         WithRawResponseImpl(clientOptions)
     }
 
-    private val payStatementItem: PayStatementItemService by lazy {
-        PayStatementItemServiceImpl(clientOptions)
-    }
-
     override fun withRawResponse(): CompanyService.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CompanyService =
         CompanyServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
-
-    override fun payStatementItem(): PayStatementItemService = payStatementItem
 
     override fun retrieve(
         params: HrisCompanyRetrieveParams,
@@ -52,18 +44,12 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
-        private val payStatementItem: PayStatementItemService.WithRawResponse by lazy {
-            PayStatementItemServiceImpl.WithRawResponseImpl(clientOptions)
-        }
-
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): CompanyService.WithRawResponse =
             CompanyServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
-
-        override fun payStatementItem(): PayStatementItemService.WithRawResponse = payStatementItem
 
         private val retrieveHandler: Handler<Company> =
             jsonHandler<Company>(clientOptions.jsonMapper)

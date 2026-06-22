@@ -9,6 +9,7 @@ import com.tryfinch.api.services.blocking.hris.DirectoryService
 import com.tryfinch.api.services.blocking.hris.DocumentService
 import com.tryfinch.api.services.blocking.hris.EmploymentService
 import com.tryfinch.api.services.blocking.hris.IndividualService
+import com.tryfinch.api.services.blocking.hris.PayStatementItemService
 import com.tryfinch.api.services.blocking.hris.PayStatementService
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import java.util.function.Consumer
@@ -28,6 +29,8 @@ interface HrisService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): HrisService
 
     fun company(): CompanyService
+
+    fun payStatementItem(): PayStatementItemService
 
     fun directory(): DirectoryService
 
@@ -54,6 +57,8 @@ interface HrisService {
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): HrisService.WithRawResponse
 
         fun company(): CompanyService.WithRawResponse
+
+        fun payStatementItem(): PayStatementItemService.WithRawResponse
 
         fun directory(): DirectoryService.WithRawResponse
 
