@@ -527,21 +527,7 @@ private constructor(
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             headers.put("X-Stainless-Kotlin-Version", KotlinVersion.CURRENT.toString())
             headers.put("Finch-API-Version", "2020-09-17")
-            clientId?.let { username ->
-                clientSecret?.let { password ->
-                    if (!username.isEmpty() && !password.isEmpty()) {
-                        headers.put(
-                            "Authorization",
-                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
-                        )
-                    }
-                }
-            }
-            accessToken?.let {
-                if (!it.isEmpty()) {
-                    headers.put("Authorization", "Bearer $it")
-                }
-            }
+            // We replace after all the default headers to allow end-users to overwrite them.
             headers.replaceAll(this.headers.build())
             queryParams.replaceAll(this.queryParams.build())
 
