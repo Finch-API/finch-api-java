@@ -14,8 +14,8 @@ internal class HrisPayStatementRetrieveManyParamsTest {
             .addEntityId("550e8400-e29b-41d4-a716-446655440000")
             .addRequest(
                 HrisPayStatementRetrieveManyParams.Request.builder()
-                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .limit(50L)
+                    .paymentId("fc8b024e-d373-4c9c-80fc-f1625383d142")
+                    .limit(100L)
                     .offset(0L)
                     .build()
             )
@@ -29,8 +29,8 @@ internal class HrisPayStatementRetrieveManyParamsTest {
                 .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .addRequest(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .limit(50L)
+                        .paymentId("fc8b024e-d373-4c9c-80fc-f1625383d142")
+                        .limit(100L)
                         .offset(0L)
                         .build()
                 )
@@ -52,7 +52,7 @@ internal class HrisPayStatementRetrieveManyParamsTest {
             HrisPayStatementRetrieveManyParams.builder()
                 .addRequest(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .paymentId("fc8b024e-d373-4c9c-80fc-f1625383d142")
                         .build()
                 )
                 .build()
@@ -69,8 +69,8 @@ internal class HrisPayStatementRetrieveManyParamsTest {
                 .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .addRequest(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .limit(50L)
+                        .paymentId("fc8b024e-d373-4c9c-80fc-f1625383d142")
+                        .limit(100L)
                         .offset(0L)
                         .build()
                 )
@@ -81,8 +81,8 @@ internal class HrisPayStatementRetrieveManyParamsTest {
         assertThat(body.requests())
             .containsExactly(
                 HrisPayStatementRetrieveManyParams.Request.builder()
-                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .limit(50L)
+                    .paymentId("fc8b024e-d373-4c9c-80fc-f1625383d142")
+                    .limit(100L)
                     .offset(0L)
                     .build()
             )
@@ -94,7 +94,7 @@ internal class HrisPayStatementRetrieveManyParamsTest {
             HrisPayStatementRetrieveManyParams.builder()
                 .addRequest(
                     HrisPayStatementRetrieveManyParams.Request.builder()
-                        .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .paymentId("fc8b024e-d373-4c9c-80fc-f1625383d142")
                         .build()
                 )
                 .build()
@@ -104,7 +104,7 @@ internal class HrisPayStatementRetrieveManyParamsTest {
         assertThat(body.requests())
             .containsExactly(
                 HrisPayStatementRetrieveManyParams.Request.builder()
-                    .paymentId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .paymentId("fc8b024e-d373-4c9c-80fc-f1625383d142")
                     .build()
             )
     }

@@ -39,7 +39,7 @@ private constructor(
     fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /**
-     * The array of batch requests.
+     * The array of batch requests. Maximum 10 payment_ids per request.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -121,7 +121,7 @@ private constructor(
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        /** The array of batch requests. */
+        /** The array of batch requests. Maximum 10 payment_ids per request. */
         fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
         /**
@@ -305,7 +305,7 @@ private constructor(
         ) : this(requests, mutableMapOf())
 
         /**
-         * The array of batch requests.
+         * The array of batch requests. Maximum 10 payment_ids per request.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -358,7 +358,7 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** The array of batch requests. */
+            /** The array of batch requests. Maximum 10 payment_ids per request. */
             fun requests(requests: List<Request>) = requests(JsonField.of(requests))
 
             /**
@@ -505,7 +505,7 @@ private constructor(
         fun paymentId(): String = paymentId.getRequired("payment_id")
 
         /**
-         * Number of pay statements to return (defaults to all).
+         * Number of pay statements to return (defaults to 100, maximum 5000).
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -594,7 +594,7 @@ private constructor(
              */
             fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
-            /** Number of pay statements to return (defaults to all). */
+            /** Number of pay statements to return (defaults to 100, maximum 5000). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
 
             /**

@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.2.0 (2026-07-13)
+
+Full Changelog: [v8.1.0...v8.2.0](https://github.com/Finch-API/finch-api-java/compare/v8.1.0...v8.2.0)
+
+### Features
+
+* **api:** api update ([3de68b0](https://github.com/Finch-API/finch-api-java/commit/3de68b03ee9fe17eb3c14e26d238a74e3ffcc8fc))
+
 ## 8.1.0 (2026-07-01)
 
 Full Changelog: [v8.0.1...v8.1.0](https://github.com/Finch-API/finch-api-java/compare/v8.0.1...v8.1.0)
