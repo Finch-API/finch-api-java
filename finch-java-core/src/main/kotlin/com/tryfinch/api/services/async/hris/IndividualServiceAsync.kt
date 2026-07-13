@@ -25,26 +25,16 @@ interface IndividualServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): IndividualServiceAsync
 
     /** Read individual data, excluding income and employment data */
-    fun retrieveMany(): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
-        retrieveMany(HrisIndividualRetrieveManyParams.none())
-
-    /** @see retrieveMany */
     fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync>
-
-    /** @see retrieveMany */
-    fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
+        params: HrisIndividualRetrieveManyParams
     ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
         retrieveMany(params, RequestOptions.none())
 
     /** @see retrieveMany */
     fun retrieveMany(
-        requestOptions: RequestOptions
-    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync> =
-        retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
+        params: HrisIndividualRetrieveManyParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<HrisIndividualRetrieveManyPageAsync>
 
     /**
      * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
@@ -65,26 +55,15 @@ interface IndividualServiceAsync {
          * Returns a raw HTTP response for `post /employer/individual`, but is otherwise the same as
          * [IndividualServiceAsync.retrieveMany].
          */
-        fun retrieveMany():
-            CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
-            retrieveMany(HrisIndividualRetrieveManyParams.none())
-
-        /** @see retrieveMany */
         fun retrieveMany(
-            params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>>
-
-        /** @see retrieveMany */
-        fun retrieveMany(
-            params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none()
+            params: HrisIndividualRetrieveManyParams
         ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
             retrieveMany(params, RequestOptions.none())
 
         /** @see retrieveMany */
         fun retrieveMany(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>> =
-            retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
+            params: HrisIndividualRetrieveManyParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<HrisIndividualRetrieveManyPageAsync>>
     }
 }

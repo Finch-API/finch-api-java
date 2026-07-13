@@ -12,7 +12,7 @@ internal class HrisDirectoryListParamsTest {
     fun create() {
         HrisDirectoryListParams.builder()
             .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-            .limit(0L)
+            .limit(10000L)
             .offset(0L)
             .build()
     }
@@ -22,7 +22,7 @@ internal class HrisDirectoryListParamsTest {
         val params =
             HrisDirectoryListParams.builder()
                 .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .limit(0L)
+                .limit(10000L)
                 .offset(0L)
                 .build()
 
@@ -32,7 +32,7 @@ internal class HrisDirectoryListParamsTest {
             .isEqualTo(
                 QueryParams.builder()
                     .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
-                    .put("limit", "0")
+                    .put("limit", "10000")
                     .put("offset", "0")
                     .build()
             )

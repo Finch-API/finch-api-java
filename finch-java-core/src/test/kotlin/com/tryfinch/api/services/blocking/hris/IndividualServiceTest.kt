@@ -4,6 +4,7 @@ package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -19,7 +20,16 @@ internal class IndividualServiceTest {
                 .build()
         val individualService = client.hris().individuals()
 
-        val page = individualService.retrieveMany()
+        val page =
+            individualService.retrieveMany(
+                HrisIndividualRetrieveManyParams.builder()
+                    .addRequest(
+                        HrisIndividualRetrieveManyParams.Request.builder()
+                            .individualId("individual_id")
+                            .build()
+                    )
+                    .build()
+            )
 
         page.response().validate()
     }
