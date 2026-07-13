@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -34,23 +35,18 @@ private constructor(
     fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /**
+     * The array of batch requests. Maximum 10000 items per request.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun requests(): List<Request> = body.requests()
+
+    /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun options(): Optional<Options> = body.options()
-
-    /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun requests(): Optional<List<Request>> = body.requests()
-
-    /**
-     * Returns the raw JSON value of [options].
-     *
-     * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _options(): JsonField<Options> = body._options()
 
     /**
      * Returns the raw JSON value of [requests].
@@ -58,6 +54,13 @@ private constructor(
      * Unlike [requests], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _requests(): JsonField<List<Request>> = body._requests()
+
+    /**
+     * Returns the raw JSON value of [options].
+     *
+     * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _options(): JsonField<Options> = body._options()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -71,11 +74,14 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): HrisIndividualRetrieveManyParams = builder().build()
-
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisIndividualRetrieveManyParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .requests()
+         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -120,24 +126,12 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [options]
          * - [requests]
+         * - [options]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        fun options(options: Options?) = apply { body.options(options) }
-
-        /** Alias for calling [Builder.options] with `options.orElse(null)`. */
-        fun options(options: Optional<Options>) = options(options.getOrNull())
-
-        /**
-         * Sets [Builder.options] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.options] with a well-typed [Options] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun options(options: JsonField<Options>) = apply { body.options(options) }
-
+        /** The array of batch requests. Maximum 10000 items per request. */
         fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
         /**
@@ -155,6 +149,19 @@ private constructor(
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addRequest(request: Request) = apply { body.addRequest(request) }
+
+        fun options(options: Options?) = apply { body.options(options) }
+
+        /** Alias for calling [Builder.options] with `options.orElse(null)`. */
+        fun options(options: Optional<Options>) = options(options.getOrNull())
+
+        /**
+         * Sets [Builder.options] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.options] with a well-typed [Options] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun options(options: JsonField<Options>) = apply { body.options(options) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -277,6 +284,13 @@ private constructor(
          * Returns an immutable instance of [HrisIndividualRetrieveManyParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .requests()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisIndividualRetrieveManyParams =
             HrisIndividualRetrieveManyParams(
@@ -302,37 +316,32 @@ private constructor(
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val options: JsonField<Options>,
         private val requests: JsonField<List<Request>>,
+        private val options: JsonField<Options>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("options") @ExcludeMissing options: JsonField<Options> = JsonMissing.of(),
             @JsonProperty("requests")
             @ExcludeMissing
             requests: JsonField<List<Request>> = JsonMissing.of(),
-        ) : this(options, requests, mutableMapOf())
+            @JsonProperty("options") @ExcludeMissing options: JsonField<Options> = JsonMissing.of(),
+        ) : this(requests, options, mutableMapOf())
+
+        /**
+         * The array of batch requests. Maximum 10000 items per request.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun requests(): List<Request> = requests.getRequired("requests")
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun options(): Optional<Options> = options.getOptional("options")
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun requests(): Optional<List<Request>> = requests.getOptional("requests")
-
-        /**
-         * Returns the raw JSON value of [options].
-         *
-         * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("options") @ExcludeMissing fun _options(): JsonField<Options> = options
 
         /**
          * Returns the raw JSON value of [requests].
@@ -342,6 +351,13 @@ private constructor(
         @JsonProperty("requests")
         @ExcludeMissing
         fun _requests(): JsonField<List<Request>> = requests
+
+        /**
+         * Returns the raw JSON value of [options].
+         *
+         * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("options") @ExcludeMissing fun _options(): JsonField<Options> = options
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -357,38 +373,32 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Body]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .requests()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var options: JsonField<Options> = JsonMissing.of()
             private var requests: JsonField<MutableList<Request>>? = null
+            private var options: JsonField<Options> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                options = body.options
                 requests = body.requests.map { it.toMutableList() }
+                options = body.options
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            fun options(options: Options?) = options(JsonField.ofNullable(options))
-
-            /** Alias for calling [Builder.options] with `options.orElse(null)`. */
-            fun options(options: Optional<Options>) = options(options.getOrNull())
-
-            /**
-             * Sets [Builder.options] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.options] with a well-typed [Options] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun options(options: JsonField<Options>) = apply { this.options = options }
-
+            /** The array of batch requests. Maximum 10000 items per request. */
             fun requests(requests: List<Request>) = requests(JsonField.of(requests))
 
             /**
@@ -414,6 +424,20 @@ private constructor(
                     }
             }
 
+            fun options(options: Options?) = options(JsonField.ofNullable(options))
+
+            /** Alias for calling [Builder.options] with `options.orElse(null)`. */
+            fun options(options: Optional<Options>) = options(options.getOrNull())
+
+            /**
+             * Sets [Builder.options] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.options] with a well-typed [Options] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun options(options: JsonField<Options>) = apply { this.options = options }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -437,11 +461,18 @@ private constructor(
              * Returns an immutable instance of [Body].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .requests()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Body =
                 Body(
+                    checkRequired("requests", requests).map { it.toImmutable() },
                     options,
-                    (requests ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -462,8 +493,8 @@ private constructor(
                 return@apply
             }
 
+            requests().forEach { it.validate() }
             options().ifPresent { it.validate() }
-            requests().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -483,8 +514,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (options.asKnown().getOrNull()?.validity() ?: 0) +
-                (requests.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+            (requests.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (options.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -492,17 +523,190 @@ private constructor(
             }
 
             return other is Body &&
-                options == other.options &&
                 requests == other.requests &&
+                options == other.options &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(options, requests, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(requests, options, additionalProperties) }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{options=$options, requests=$requests, additionalProperties=$additionalProperties}"
+            "Body{requests=$requests, options=$options, additionalProperties=$additionalProperties}"
+    }
+
+    class Request
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val individualId: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            individualId: JsonField<String> = JsonMissing.of()
+        ) : this(individualId, mutableMapOf())
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun individualId(): String = individualId.getRequired("individual_id")
+
+        /**
+         * Returns the raw JSON value of [individualId].
+         *
+         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Request].
+             *
+             * The following fields are required:
+             * ```java
+             * .individualId()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Request]. */
+        class Builder internal constructor() {
+
+            private var individualId: JsonField<String>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(request: Request) = apply {
+                individualId = request.individualId
+                additionalProperties = request.additionalProperties.toMutableMap()
+            }
+
+            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+
+            /**
+             * Sets [Builder.individualId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Request].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .individualId()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Request =
+                Request(
+                    checkRequired("individualId", individualId),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): Request = apply {
+            if (validated) {
+                return@apply
+            }
+
+            individualId()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int = (if (individualId.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Request &&
+                individualId == other.individualId &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Request{individualId=$individualId, additionalProperties=$additionalProperties}"
     }
 
     class Options
@@ -670,161 +874,6 @@ private constructor(
 
         override fun toString() =
             "Options{include=$include, additionalProperties=$additionalProperties}"
-    }
-
-    class Request
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val individualId: JsonField<String>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("individual_id")
-            @ExcludeMissing
-            individualId: JsonField<String> = JsonMissing.of()
-        ) : this(individualId, mutableMapOf())
-
-        /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun individualId(): Optional<String> = individualId.getOptional("individual_id")
-
-        /**
-         * Returns the raw JSON value of [individualId].
-         *
-         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        fun _individualId(): JsonField<String> = individualId
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Request]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Request]. */
-        class Builder internal constructor() {
-
-            private var individualId: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(request: Request) = apply {
-                individualId = request.individualId
-                additionalProperties = request.additionalProperties.toMutableMap()
-            }
-
-            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
-
-            /**
-             * Sets [Builder.individualId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.individualId] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun individualId(individualId: JsonField<String>) = apply {
-                this.individualId = individualId
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Request].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Request = Request(individualId, additionalProperties.toMutableMap())
-        }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws FinchInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): Request = apply {
-            if (validated) {
-                return@apply
-            }
-
-            individualId()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int = (if (individualId.asKnown().isPresent) 1 else 0)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Request &&
-                individualId == other.individualId &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Request{individualId=$individualId, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

@@ -24,7 +24,7 @@ private constructor(
     /** The entity IDs to specify which entities' data to access. */
     fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
-    /** Number of employees to return (defaults to all) */
+    /** Number of employees to return (defaults to 100, maximum 10000) */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
     /** Index to start from (defaults to 0) */
@@ -86,7 +86,7 @@ private constructor(
             entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
 
-        /** Number of employees to return (defaults to all) */
+        /** Number of employees to return (defaults to 100, maximum 10000) */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
         /**
