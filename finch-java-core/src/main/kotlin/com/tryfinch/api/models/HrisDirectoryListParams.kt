@@ -20,7 +20,10 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The entity IDs to specify which entities' data to access. */
+    /**
+     * The entity IDs to specify which entities' data to access. Provide exactly one entity ID per
+     * request; a maximum of one is accepted.
+     */
     fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /** Number of employees to return (defaults to 100, maximum 10000) */
@@ -63,7 +66,10 @@ private constructor(
             additionalQueryParams = hrisDirectoryListParams.additionalQueryParams.toBuilder()
         }
 
-        /** The entity IDs to specify which entities' data to access. */
+        /**
+         * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
+         * per request; a maximum of one is accepted.
+         */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
         }
