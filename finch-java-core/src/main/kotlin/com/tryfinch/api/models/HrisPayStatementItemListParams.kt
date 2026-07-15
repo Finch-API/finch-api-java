@@ -40,7 +40,10 @@ private constructor(
      */
     fun endDate(): Optional<LocalDate> = Optional.ofNullable(endDate)
 
-    /** The entity IDs to specify which entities' data to access. */
+    /**
+     * The entity IDs to specify which entities' data to access. Provide exactly one entity ID per
+     * request; a maximum of one is accepted.
+     */
     fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /** Case-insensitive partial match search by pay statement item name. */
@@ -127,7 +130,10 @@ private constructor(
         /** Alias for calling [Builder.endDate] with `endDate.orElse(null)`. */
         fun endDate(endDate: Optional<LocalDate>) = endDate(endDate.getOrNull())
 
-        /** The entity IDs to specify which entities' data to access. */
+        /**
+         * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
+         * per request; a maximum of one is accepted.
+         */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
         }

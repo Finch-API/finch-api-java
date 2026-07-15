@@ -31,7 +31,10 @@ private constructor(
 
     fun ruleId(): Optional<String> = Optional.ofNullable(ruleId)
 
-    /** The entity IDs to update the rule for. */
+    /**
+     * The entity IDs to update the rule for. Provide exactly one entity ID per request; a maximum
+     * of one is accepted.
+     */
     fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /**
@@ -89,7 +92,10 @@ private constructor(
         /** Alias for calling [Builder.ruleId] with `ruleId.orElse(null)`. */
         fun ruleId(ruleId: Optional<String>) = ruleId(ruleId.getOrNull())
 
-        /** The entity IDs to update the rule for. */
+        /**
+         * The entity IDs to update the rule for. Provide exactly one entity ID per request; a
+         * maximum of one is accepted.
+         */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
         }
