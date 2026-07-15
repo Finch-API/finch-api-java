@@ -205,13 +205,11 @@ private constructor(
         authenticationMethods.getOptional("authentication_methods")
 
     /**
-     * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
-     * company ID
+     * The Finch UUID of the company associated with the `access_token`.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    @Deprecated("deprecated")
     fun companyId(): Optional<String> = companyId.getOptional("company_id")
 
     /**
@@ -366,10 +364,7 @@ private constructor(
      *
      * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @Deprecated("deprecated")
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    fun _companyId(): JsonField<String> = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /**
      * Returns the raw JSON value of [customerEmail].
@@ -671,11 +666,7 @@ private constructor(
                 }
         }
 
-        /**
-         * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
-         * this company ID
-         */
-        @Deprecated("deprecated")
+        /** The Finch UUID of the company associated with the `access_token`. */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
@@ -685,7 +676,6 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /**

@@ -46,13 +46,12 @@ private constructor(
     @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     /**
-     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-     * `connection_id` instead to identify the connection associated with this event.
+     * Unique Finch ID of the company for which data has been updated.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
+    fun companyId(): String = companyId.getRequired("company_id")
 
     /**
      * Unique Finch ID of the connection associated with the webhook event.
@@ -85,10 +84,7 @@ private constructor(
      *
      * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @Deprecated("deprecated")
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    fun _companyId(): JsonField<String> = companyId
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /**
      * Returns the raw JSON value of [connectionId].
@@ -167,11 +163,7 @@ private constructor(
         @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
-        /**
-         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-         * `connection_id` instead to identify the connection associated with this event.
-         */
-        @Deprecated("deprecated")
+        /** Unique Finch ID of the company for which data has been updated. */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
@@ -181,7 +173,6 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** Unique Finch ID of the connection associated with the webhook event. */

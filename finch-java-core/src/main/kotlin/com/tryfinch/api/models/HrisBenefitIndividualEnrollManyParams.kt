@@ -41,7 +41,10 @@ private constructor(
 
     fun benefitId(): Optional<String> = Optional.ofNullable(benefitId)
 
-    /** The entity IDs to specify which entities' data to access. */
+    /**
+     * The entity IDs to specify which entities' data to access. Provide exactly one entity ID per
+     * request; a maximum of one is accepted.
+     */
     fun entityIds(): Optional<List<String>> = Optional.ofNullable(entityIds)
 
     /** Array of the individual_id to enroll and a configuration object. */
@@ -92,7 +95,10 @@ private constructor(
         /** Alias for calling [Builder.benefitId] with `benefitId.orElse(null)`. */
         fun benefitId(benefitId: Optional<String>) = benefitId(benefitId.getOrNull())
 
-        /** The entity IDs to specify which entities' data to access. */
+        /**
+         * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
+         * per request; a maximum of one is accepted.
+         */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
         }
