@@ -108,6 +108,15 @@ private constructor(
     fun flsaStatus(): Optional<FlsaStatus> = body.flsaStatus()
 
     /**
+     * IRS flag indicating whether the employee is classified as a Highly Compensated Employee for
+     * nondiscrimination testing purposes (ADP/ACP tests). US-only.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun highlyCompensatedEmployee(): Optional<Boolean> = body.highlyCompensatedEmployee()
+
+    /**
      * The employee's income as reported by the provider. This may not always be annualized income,
      * but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
      * provider returns.
@@ -132,6 +141,15 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun isActive(): Optional<Boolean> = body.isActive()
+
+    /**
+     * IRS flag indicating whether the employee is classified as a Key Employee for top-heavy
+     * testing purposes. US-only.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun keyEmployee(): Optional<Boolean> = body.keyEmployee()
 
     /**
      * The legal last name of the individual.
@@ -192,6 +210,23 @@ private constructor(
     fun title(): Optional<String> = body.title()
 
     /**
+     * The code identifying the union the employee is a member of, as configured in the payroll
+     * system.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun unionCode(): Optional<String> = body.unionCode()
+
+    /**
+     * The local chapter or local number within the employee's union.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun unionLocal(): Optional<String> = body.unionLocal()
+
+    /**
      * Returns the raw JSON value of [classCode].
      *
      * Unlike [classCode], this method doesn't throw if the JSON field has an unexpected type.
@@ -249,6 +284,14 @@ private constructor(
     fun _flsaStatus(): JsonField<FlsaStatus> = body._flsaStatus()
 
     /**
+     * Returns the raw JSON value of [highlyCompensatedEmployee].
+     *
+     * Unlike [highlyCompensatedEmployee], this method doesn't throw if the JSON field has an
+     * unexpected type.
+     */
+    fun _highlyCompensatedEmployee(): JsonField<Boolean> = body._highlyCompensatedEmployee()
+
+    /**
      * Returns the raw JSON value of [income].
      *
      * Unlike [income], this method doesn't throw if the JSON field has an unexpected type.
@@ -268,6 +311,13 @@ private constructor(
      * Unlike [isActive], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _isActive(): JsonField<Boolean> = body._isActive()
+
+    /**
+     * Returns the raw JSON value of [keyEmployee].
+     *
+     * Unlike [keyEmployee], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _keyEmployee(): JsonField<Boolean> = body._keyEmployee()
 
     /**
      * Returns the raw JSON value of [lastName].
@@ -325,6 +375,20 @@ private constructor(
      * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _title(): JsonField<String> = body._title()
+
+    /**
+     * Returns the raw JSON value of [unionCode].
+     *
+     * Unlike [unionCode], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _unionCode(): JsonField<String> = body._unionCode()
+
+    /**
+     * Returns the raw JSON value of [unionLocal].
+     *
+     * Unlike [unionLocal], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _unionLocal(): JsonField<String> = body._unionLocal()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -523,6 +587,40 @@ private constructor(
         fun flsaStatus(flsaStatus: JsonField<FlsaStatus>) = apply { body.flsaStatus(flsaStatus) }
 
         /**
+         * IRS flag indicating whether the employee is classified as a Highly Compensated Employee
+         * for nondiscrimination testing purposes (ADP/ACP tests). US-only.
+         */
+        fun highlyCompensatedEmployee(highlyCompensatedEmployee: Boolean?) = apply {
+            body.highlyCompensatedEmployee(highlyCompensatedEmployee)
+        }
+
+        /**
+         * Alias for [Builder.highlyCompensatedEmployee].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun highlyCompensatedEmployee(highlyCompensatedEmployee: Boolean) =
+            highlyCompensatedEmployee(highlyCompensatedEmployee as Boolean?)
+
+        /**
+         * Alias for calling [Builder.highlyCompensatedEmployee] with
+         * `highlyCompensatedEmployee.orElse(null)`.
+         */
+        fun highlyCompensatedEmployee(highlyCompensatedEmployee: Optional<Boolean>) =
+            highlyCompensatedEmployee(highlyCompensatedEmployee.getOrNull())
+
+        /**
+         * Sets [Builder.highlyCompensatedEmployee] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.highlyCompensatedEmployee] with a well-typed [Boolean]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun highlyCompensatedEmployee(highlyCompensatedEmployee: JsonField<Boolean>) = apply {
+            body.highlyCompensatedEmployee(highlyCompensatedEmployee)
+        }
+
+        /**
          * The employee's income as reported by the provider. This may not always be annualized
          * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
          * information the provider returns.
@@ -588,6 +686,31 @@ private constructor(
          * value.
          */
         fun isActive(isActive: JsonField<Boolean>) = apply { body.isActive(isActive) }
+
+        /**
+         * IRS flag indicating whether the employee is classified as a Key Employee for top-heavy
+         * testing purposes. US-only.
+         */
+        fun keyEmployee(keyEmployee: Boolean?) = apply { body.keyEmployee(keyEmployee) }
+
+        /**
+         * Alias for [Builder.keyEmployee].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun keyEmployee(keyEmployee: Boolean) = keyEmployee(keyEmployee as Boolean?)
+
+        /** Alias for calling [Builder.keyEmployee] with `keyEmployee.orElse(null)`. */
+        fun keyEmployee(keyEmployee: Optional<Boolean>) = keyEmployee(keyEmployee.getOrNull())
+
+        /**
+         * Sets [Builder.keyEmployee] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.keyEmployee] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun keyEmployee(keyEmployee: JsonField<Boolean>) = apply { body.keyEmployee(keyEmployee) }
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String?) = apply { body.lastName(lastName) }
@@ -706,6 +829,39 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun title(title: JsonField<String>) = apply { body.title(title) }
+
+        /**
+         * The code identifying the union the employee is a member of, as configured in the payroll
+         * system.
+         */
+        fun unionCode(unionCode: String?) = apply { body.unionCode(unionCode) }
+
+        /** Alias for calling [Builder.unionCode] with `unionCode.orElse(null)`. */
+        fun unionCode(unionCode: Optional<String>) = unionCode(unionCode.getOrNull())
+
+        /**
+         * Sets [Builder.unionCode] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.unionCode] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun unionCode(unionCode: JsonField<String>) = apply { body.unionCode(unionCode) }
+
+        /** The local chapter or local number within the employee's union. */
+        fun unionLocal(unionLocal: String?) = apply { body.unionLocal(unionLocal) }
+
+        /** Alias for calling [Builder.unionLocal] with `unionLocal.orElse(null)`. */
+        fun unionLocal(unionLocal: Optional<String>) = unionLocal(unionLocal.getOrNull())
+
+        /**
+         * Sets [Builder.unionLocal] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.unionLocal] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun unionLocal(unionLocal: JsonField<String>) = apply { body.unionLocal(unionLocal) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -861,9 +1017,11 @@ private constructor(
         private val endDate: JsonField<String>,
         private val firstName: JsonField<String>,
         private val flsaStatus: JsonField<FlsaStatus>,
+        private val highlyCompensatedEmployee: JsonField<Boolean>,
         private val income: JsonField<Income>,
         private val incomeHistory: JsonField<List<Income?>>,
         private val isActive: JsonField<Boolean>,
+        private val keyEmployee: JsonField<Boolean>,
         private val lastName: JsonField<String>,
         private val latestRehireDate: JsonField<String>,
         private val location: JsonField<Location>,
@@ -872,6 +1030,8 @@ private constructor(
         private val sourceId: JsonField<String>,
         private val startDate: JsonField<String>,
         private val title: JsonField<String>,
+        private val unionCode: JsonField<String>,
+        private val unionLocal: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -899,6 +1059,9 @@ private constructor(
             @JsonProperty("flsa_status")
             @ExcludeMissing
             flsaStatus: JsonField<FlsaStatus> = JsonMissing.of(),
+            @JsonProperty("highly_compensated_employee")
+            @ExcludeMissing
+            highlyCompensatedEmployee: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("income") @ExcludeMissing income: JsonField<Income> = JsonMissing.of(),
             @JsonProperty("income_history")
             @ExcludeMissing
@@ -906,6 +1069,9 @@ private constructor(
             @JsonProperty("is_active")
             @ExcludeMissing
             isActive: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("key_employee")
+            @ExcludeMissing
+            keyEmployee: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("last_name")
             @ExcludeMissing
             lastName: JsonField<String> = JsonMissing.of(),
@@ -926,6 +1092,12 @@ private constructor(
             @ExcludeMissing
             startDate: JsonField<String> = JsonMissing.of(),
             @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("union_code")
+            @ExcludeMissing
+            unionCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("union_local")
+            @ExcludeMissing
+            unionLocal: JsonField<String> = JsonMissing.of(),
         ) : this(
             classCode,
             customFields,
@@ -935,9 +1107,11 @@ private constructor(
             endDate,
             firstName,
             flsaStatus,
+            highlyCompensatedEmployee,
             income,
             incomeHistory,
             isActive,
+            keyEmployee,
             lastName,
             latestRehireDate,
             location,
@@ -946,6 +1120,8 @@ private constructor(
             sourceId,
             startDate,
             title,
+            unionCode,
+            unionLocal,
             mutableMapOf(),
         )
 
@@ -1014,6 +1190,16 @@ private constructor(
         fun flsaStatus(): Optional<FlsaStatus> = flsaStatus.getOptional("flsa_status")
 
         /**
+         * IRS flag indicating whether the employee is classified as a Highly Compensated Employee
+         * for nondiscrimination testing purposes (ADP/ACP tests). US-only.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun highlyCompensatedEmployee(): Optional<Boolean> =
+            highlyCompensatedEmployee.getOptional("highly_compensated_employee")
+
+        /**
          * The employee's income as reported by the provider. This may not always be annualized
          * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
          * information the provider returns.
@@ -1038,6 +1224,15 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun isActive(): Optional<Boolean> = isActive.getOptional("is_active")
+
+        /**
+         * IRS flag indicating whether the employee is classified as a Key Employee for top-heavy
+         * testing purposes. US-only.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun keyEmployee(): Optional<Boolean> = keyEmployee.getOptional("key_employee")
 
         /**
          * The legal last name of the individual.
@@ -1097,6 +1292,23 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun title(): Optional<String> = title.getOptional("title")
+
+        /**
+         * The code identifying the union the employee is a member of, as configured in the payroll
+         * system.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun unionCode(): Optional<String> = unionCode.getOptional("union_code")
+
+        /**
+         * The local chapter or local number within the employee's union.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun unionLocal(): Optional<String> = unionLocal.getOptional("union_local")
 
         /**
          * Returns the raw JSON value of [classCode].
@@ -1167,6 +1379,16 @@ private constructor(
         fun _flsaStatus(): JsonField<FlsaStatus> = flsaStatus
 
         /**
+         * Returns the raw JSON value of [highlyCompensatedEmployee].
+         *
+         * Unlike [highlyCompensatedEmployee], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("highly_compensated_employee")
+        @ExcludeMissing
+        fun _highlyCompensatedEmployee(): JsonField<Boolean> = highlyCompensatedEmployee
+
+        /**
          * Returns the raw JSON value of [income].
          *
          * Unlike [income], this method doesn't throw if the JSON field has an unexpected type.
@@ -1189,6 +1411,15 @@ private constructor(
          * Unlike [isActive], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("is_active") @ExcludeMissing fun _isActive(): JsonField<Boolean> = isActive
+
+        /**
+         * Returns the raw JSON value of [keyEmployee].
+         *
+         * Unlike [keyEmployee], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("key_employee")
+        @ExcludeMissing
+        fun _keyEmployee(): JsonField<Boolean> = keyEmployee
 
         /**
          * Returns the raw JSON value of [lastName].
@@ -1251,6 +1482,22 @@ private constructor(
          */
         @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
+        /**
+         * Returns the raw JSON value of [unionCode].
+         *
+         * Unlike [unionCode], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("union_code") @ExcludeMissing fun _unionCode(): JsonField<String> = unionCode
+
+        /**
+         * Returns the raw JSON value of [unionLocal].
+         *
+         * Unlike [unionLocal], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("union_local")
+        @ExcludeMissing
+        fun _unionLocal(): JsonField<String> = unionLocal
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -1280,9 +1527,11 @@ private constructor(
             private var endDate: JsonField<String> = JsonMissing.of()
             private var firstName: JsonField<String> = JsonMissing.of()
             private var flsaStatus: JsonField<FlsaStatus> = JsonMissing.of()
+            private var highlyCompensatedEmployee: JsonField<Boolean> = JsonMissing.of()
             private var income: JsonField<Income> = JsonMissing.of()
             private var incomeHistory: JsonField<MutableList<Income?>>? = null
             private var isActive: JsonField<Boolean> = JsonMissing.of()
+            private var keyEmployee: JsonField<Boolean> = JsonMissing.of()
             private var lastName: JsonField<String> = JsonMissing.of()
             private var latestRehireDate: JsonField<String> = JsonMissing.of()
             private var location: JsonField<Location> = JsonMissing.of()
@@ -1291,6 +1540,8 @@ private constructor(
             private var sourceId: JsonField<String> = JsonMissing.of()
             private var startDate: JsonField<String> = JsonMissing.of()
             private var title: JsonField<String> = JsonMissing.of()
+            private var unionCode: JsonField<String> = JsonMissing.of()
+            private var unionLocal: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1303,9 +1554,11 @@ private constructor(
                 endDate = employmentWithoutId.endDate
                 firstName = employmentWithoutId.firstName
                 flsaStatus = employmentWithoutId.flsaStatus
+                highlyCompensatedEmployee = employmentWithoutId.highlyCompensatedEmployee
                 income = employmentWithoutId.income
                 incomeHistory = employmentWithoutId.incomeHistory.map { it.toMutableList() }
                 isActive = employmentWithoutId.isActive
+                keyEmployee = employmentWithoutId.keyEmployee
                 lastName = employmentWithoutId.lastName
                 latestRehireDate = employmentWithoutId.latestRehireDate
                 location = employmentWithoutId.location
@@ -1314,6 +1567,8 @@ private constructor(
                 sourceId = employmentWithoutId.sourceId
                 startDate = employmentWithoutId.startDate
                 title = employmentWithoutId.title
+                unionCode = employmentWithoutId.unionCode
+                unionLocal = employmentWithoutId.unionLocal
                 additionalProperties = employmentWithoutId.additionalProperties.toMutableMap()
             }
 
@@ -1471,6 +1726,39 @@ private constructor(
             }
 
             /**
+             * IRS flag indicating whether the employee is classified as a Highly Compensated
+             * Employee for nondiscrimination testing purposes (ADP/ACP tests). US-only.
+             */
+            fun highlyCompensatedEmployee(highlyCompensatedEmployee: Boolean?) =
+                highlyCompensatedEmployee(JsonField.ofNullable(highlyCompensatedEmployee))
+
+            /**
+             * Alias for [Builder.highlyCompensatedEmployee].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun highlyCompensatedEmployee(highlyCompensatedEmployee: Boolean) =
+                highlyCompensatedEmployee(highlyCompensatedEmployee as Boolean?)
+
+            /**
+             * Alias for calling [Builder.highlyCompensatedEmployee] with
+             * `highlyCompensatedEmployee.orElse(null)`.
+             */
+            fun highlyCompensatedEmployee(highlyCompensatedEmployee: Optional<Boolean>) =
+                highlyCompensatedEmployee(highlyCompensatedEmployee.getOrNull())
+
+            /**
+             * Sets [Builder.highlyCompensatedEmployee] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.highlyCompensatedEmployee] with a well-typed
+             * [Boolean] value instead. This method is primarily for setting the field to an
+             * undocumented or not yet supported value.
+             */
+            fun highlyCompensatedEmployee(highlyCompensatedEmployee: JsonField<Boolean>) = apply {
+                this.highlyCompensatedEmployee = highlyCompensatedEmployee
+            }
+
+            /**
              * The employee's income as reported by the provider. This may not always be annualized
              * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
              * information the provider returns.
@@ -1541,6 +1829,33 @@ private constructor(
              * supported value.
              */
             fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
+
+            /**
+             * IRS flag indicating whether the employee is classified as a Key Employee for
+             * top-heavy testing purposes. US-only.
+             */
+            fun keyEmployee(keyEmployee: Boolean?) = keyEmployee(JsonField.ofNullable(keyEmployee))
+
+            /**
+             * Alias for [Builder.keyEmployee].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun keyEmployee(keyEmployee: Boolean) = keyEmployee(keyEmployee as Boolean?)
+
+            /** Alias for calling [Builder.keyEmployee] with `keyEmployee.orElse(null)`. */
+            fun keyEmployee(keyEmployee: Optional<Boolean>) = keyEmployee(keyEmployee.getOrNull())
+
+            /**
+             * Sets [Builder.keyEmployee] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.keyEmployee] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun keyEmployee(keyEmployee: JsonField<Boolean>) = apply {
+                this.keyEmployee = keyEmployee
+            }
 
             /** The legal last name of the individual. */
             fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
@@ -1665,6 +1980,39 @@ private constructor(
              */
             fun title(title: JsonField<String>) = apply { this.title = title }
 
+            /**
+             * The code identifying the union the employee is a member of, as configured in the
+             * payroll system.
+             */
+            fun unionCode(unionCode: String?) = unionCode(JsonField.ofNullable(unionCode))
+
+            /** Alias for calling [Builder.unionCode] with `unionCode.orElse(null)`. */
+            fun unionCode(unionCode: Optional<String>) = unionCode(unionCode.getOrNull())
+
+            /**
+             * Sets [Builder.unionCode] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unionCode] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unionCode(unionCode: JsonField<String>) = apply { this.unionCode = unionCode }
+
+            /** The local chapter or local number within the employee's union. */
+            fun unionLocal(unionLocal: String?) = unionLocal(JsonField.ofNullable(unionLocal))
+
+            /** Alias for calling [Builder.unionLocal] with `unionLocal.orElse(null)`. */
+            fun unionLocal(unionLocal: Optional<String>) = unionLocal(unionLocal.getOrNull())
+
+            /**
+             * Sets [Builder.unionLocal] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unionLocal] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unionLocal(unionLocal: JsonField<String>) = apply { this.unionLocal = unionLocal }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -1699,9 +2047,11 @@ private constructor(
                     endDate,
                     firstName,
                     flsaStatus,
+                    highlyCompensatedEmployee,
                     income,
                     (incomeHistory ?: JsonMissing.of()).map { it.toImmutable() },
                     isActive,
+                    keyEmployee,
                     lastName,
                     latestRehireDate,
                     location,
@@ -1710,6 +2060,8 @@ private constructor(
                     sourceId,
                     startDate,
                     title,
+                    unionCode,
+                    unionLocal,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -1738,9 +2090,11 @@ private constructor(
             endDate()
             firstName()
             flsaStatus().ifPresent { it.validate() }
+            highlyCompensatedEmployee()
             income().ifPresent { it.validate() }
             incomeHistory().ifPresent { it.forEach { it?.validate() } }
             isActive()
+            keyEmployee()
             lastName()
             latestRehireDate()
             location().ifPresent { it.validate() }
@@ -1749,6 +2103,8 @@ private constructor(
             sourceId()
             startDate()
             title()
+            unionCode()
+            unionLocal()
             validated = true
         }
 
@@ -1776,10 +2132,12 @@ private constructor(
                 (if (endDate.asKnown().isPresent) 1 else 0) +
                 (if (firstName.asKnown().isPresent) 1 else 0) +
                 (flsaStatus.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (highlyCompensatedEmployee.asKnown().isPresent) 1 else 0) +
                 (income.asKnown().getOrNull()?.validity() ?: 0) +
                 (incomeHistory.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
                     ?: 0) +
                 (if (isActive.asKnown().isPresent) 1 else 0) +
+                (if (keyEmployee.asKnown().isPresent) 1 else 0) +
                 (if (lastName.asKnown().isPresent) 1 else 0) +
                 (if (latestRehireDate.asKnown().isPresent) 1 else 0) +
                 (location.asKnown().getOrNull()?.validity() ?: 0) +
@@ -1787,7 +2145,9 @@ private constructor(
                 (if (middleName.asKnown().isPresent) 1 else 0) +
                 (if (sourceId.asKnown().isPresent) 1 else 0) +
                 (if (startDate.asKnown().isPresent) 1 else 0) +
-                (if (title.asKnown().isPresent) 1 else 0)
+                (if (title.asKnown().isPresent) 1 else 0) +
+                (if (unionCode.asKnown().isPresent) 1 else 0) +
+                (if (unionLocal.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1803,9 +2163,11 @@ private constructor(
                 endDate == other.endDate &&
                 firstName == other.firstName &&
                 flsaStatus == other.flsaStatus &&
+                highlyCompensatedEmployee == other.highlyCompensatedEmployee &&
                 income == other.income &&
                 incomeHistory == other.incomeHistory &&
                 isActive == other.isActive &&
+                keyEmployee == other.keyEmployee &&
                 lastName == other.lastName &&
                 latestRehireDate == other.latestRehireDate &&
                 location == other.location &&
@@ -1814,6 +2176,8 @@ private constructor(
                 sourceId == other.sourceId &&
                 startDate == other.startDate &&
                 title == other.title &&
+                unionCode == other.unionCode &&
+                unionLocal == other.unionLocal &&
                 additionalProperties == other.additionalProperties
         }
 
@@ -1827,9 +2191,11 @@ private constructor(
                 endDate,
                 firstName,
                 flsaStatus,
+                highlyCompensatedEmployee,
                 income,
                 incomeHistory,
                 isActive,
+                keyEmployee,
                 lastName,
                 latestRehireDate,
                 location,
@@ -1838,6 +2204,8 @@ private constructor(
                 sourceId,
                 startDate,
                 title,
+                unionCode,
+                unionLocal,
                 additionalProperties,
             )
         }
@@ -1845,7 +2213,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "EmploymentWithoutId{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
+            "EmploymentWithoutId{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, highlyCompensatedEmployee=$highlyCompensatedEmployee, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, keyEmployee=$keyEmployee, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, unionCode=$unionCode, unionLocal=$unionLocal, additionalProperties=$additionalProperties}"
     }
 
     class CustomField

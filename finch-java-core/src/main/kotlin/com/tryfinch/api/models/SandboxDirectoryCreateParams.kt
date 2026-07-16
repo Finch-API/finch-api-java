@@ -230,13 +230,16 @@ private constructor(
         private val firstName: JsonField<String>,
         private val flsaStatus: JsonField<FlsaStatus>,
         private val gender: JsonField<Gender>,
+        private val highlyCompensatedEmployee: JsonField<Boolean>,
         private val income: JsonField<Income>,
         private val incomeHistory: JsonField<List<Income?>>,
         private val isActive: JsonField<Boolean>,
+        private val keyEmployee: JsonField<Boolean>,
         private val lastName: JsonField<String>,
         private val latestRehireDate: JsonField<String>,
         private val location: JsonField<Location>,
         private val manager: JsonField<Manager>,
+        private val maritalStatus: JsonField<MaritalStatus>,
         private val middleName: JsonField<String>,
         private val phoneNumbers: JsonField<List<PhoneNumber?>>,
         private val preferredName: JsonField<String>,
@@ -245,6 +248,8 @@ private constructor(
         private val ssn: JsonField<String>,
         private val startDate: JsonField<String>,
         private val title: JsonField<String>,
+        private val unionCode: JsonField<String>,
+        private val unionLocal: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -283,6 +288,9 @@ private constructor(
             @ExcludeMissing
             flsaStatus: JsonField<FlsaStatus> = JsonMissing.of(),
             @JsonProperty("gender") @ExcludeMissing gender: JsonField<Gender> = JsonMissing.of(),
+            @JsonProperty("highly_compensated_employee")
+            @ExcludeMissing
+            highlyCompensatedEmployee: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("income") @ExcludeMissing income: JsonField<Income> = JsonMissing.of(),
             @JsonProperty("income_history")
             @ExcludeMissing
@@ -290,6 +298,9 @@ private constructor(
             @JsonProperty("is_active")
             @ExcludeMissing
             isActive: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("key_employee")
+            @ExcludeMissing
+            keyEmployee: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("last_name")
             @ExcludeMissing
             lastName: JsonField<String> = JsonMissing.of(),
@@ -300,6 +311,9 @@ private constructor(
             @ExcludeMissing
             location: JsonField<Location> = JsonMissing.of(),
             @JsonProperty("manager") @ExcludeMissing manager: JsonField<Manager> = JsonMissing.of(),
+            @JsonProperty("marital_status")
+            @ExcludeMissing
+            maritalStatus: JsonField<MaritalStatus> = JsonMissing.of(),
             @JsonProperty("middle_name")
             @ExcludeMissing
             middleName: JsonField<String> = JsonMissing.of(),
@@ -320,6 +334,12 @@ private constructor(
             @ExcludeMissing
             startDate: JsonField<String> = JsonMissing.of(),
             @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("union_code")
+            @ExcludeMissing
+            unionCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("union_local")
+            @ExcludeMissing
+            unionLocal: JsonField<String> = JsonMissing.of(),
         ) : this(
             classCode,
             customFields,
@@ -334,13 +354,16 @@ private constructor(
             firstName,
             flsaStatus,
             gender,
+            highlyCompensatedEmployee,
             income,
             incomeHistory,
             isActive,
+            keyEmployee,
             lastName,
             latestRehireDate,
             location,
             manager,
+            maritalStatus,
             middleName,
             phoneNumbers,
             preferredName,
@@ -349,6 +372,8 @@ private constructor(
             ssn,
             startDate,
             title,
+            unionCode,
+            unionLocal,
             mutableMapOf(),
         )
 
@@ -455,6 +480,16 @@ private constructor(
         fun gender(): Optional<Gender> = gender.getOptional("gender")
 
         /**
+         * IRS flag indicating whether the employee is classified as a Highly Compensated Employee
+         * for nondiscrimination testing purposes (ADP/ACP tests). US-only.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun highlyCompensatedEmployee(): Optional<Boolean> =
+            highlyCompensatedEmployee.getOptional("highly_compensated_employee")
+
+        /**
          * The employee's income as reported by the provider. This may not always be annualized
          * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
          * information the provider returns.
@@ -479,6 +514,15 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun isActive(): Optional<Boolean> = isActive.getOptional("is_active")
+
+        /**
+         * IRS flag indicating whether the employee is classified as a Key Employee for top-heavy
+         * testing purposes. US-only.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun keyEmployee(): Optional<Boolean> = keyEmployee.getOptional("key_employee")
 
         /**
          * The legal last name of the individual.
@@ -508,6 +552,15 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun manager(): Optional<Manager> = manager.getOptional("manager")
+
+        /**
+         * The employee's marital status, used for beneficiary designation and spousal consent
+         * workflows.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun maritalStatus(): Optional<MaritalStatus> = maritalStatus.getOptional("marital_status")
 
         /**
          * The legal middle name of the individual.
@@ -568,6 +621,23 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun title(): Optional<String> = title.getOptional("title")
+
+        /**
+         * The code identifying the union the employee is a member of, as configured in the payroll
+         * system.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun unionCode(): Optional<String> = unionCode.getOptional("union_code")
+
+        /**
+         * The local chapter or local number within the employee's union.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun unionLocal(): Optional<String> = unionLocal.getOptional("union_local")
 
         /**
          * Returns the raw JSON value of [classCode].
@@ -678,6 +748,16 @@ private constructor(
         @JsonProperty("gender") @ExcludeMissing fun _gender(): JsonField<Gender> = gender
 
         /**
+         * Returns the raw JSON value of [highlyCompensatedEmployee].
+         *
+         * Unlike [highlyCompensatedEmployee], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("highly_compensated_employee")
+        @ExcludeMissing
+        fun _highlyCompensatedEmployee(): JsonField<Boolean> = highlyCompensatedEmployee
+
+        /**
          * Returns the raw JSON value of [income].
          *
          * Unlike [income], this method doesn't throw if the JSON field has an unexpected type.
@@ -700,6 +780,15 @@ private constructor(
          * Unlike [isActive], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("is_active") @ExcludeMissing fun _isActive(): JsonField<Boolean> = isActive
+
+        /**
+         * Returns the raw JSON value of [keyEmployee].
+         *
+         * Unlike [keyEmployee], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("key_employee")
+        @ExcludeMissing
+        fun _keyEmployee(): JsonField<Boolean> = keyEmployee
 
         /**
          * Returns the raw JSON value of [lastName].
@@ -731,6 +820,16 @@ private constructor(
          * Unlike [manager], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("manager") @ExcludeMissing fun _manager(): JsonField<Manager> = manager
+
+        /**
+         * Returns the raw JSON value of [maritalStatus].
+         *
+         * Unlike [maritalStatus], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("marital_status")
+        @ExcludeMissing
+        fun _maritalStatus(): JsonField<MaritalStatus> = maritalStatus
 
         /**
          * Returns the raw JSON value of [middleName].
@@ -796,6 +895,22 @@ private constructor(
          */
         @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
+        /**
+         * Returns the raw JSON value of [unionCode].
+         *
+         * Unlike [unionCode], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("union_code") @ExcludeMissing fun _unionCode(): JsonField<String> = unionCode
+
+        /**
+         * Returns the raw JSON value of [unionLocal].
+         *
+         * Unlike [unionLocal], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("union_local")
+        @ExcludeMissing
+        fun _unionLocal(): JsonField<String> = unionLocal
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -832,13 +947,16 @@ private constructor(
             private var firstName: JsonField<String> = JsonMissing.of()
             private var flsaStatus: JsonField<FlsaStatus> = JsonMissing.of()
             private var gender: JsonField<Gender> = JsonMissing.of()
+            private var highlyCompensatedEmployee: JsonField<Boolean> = JsonMissing.of()
             private var income: JsonField<Income> = JsonMissing.of()
             private var incomeHistory: JsonField<MutableList<Income?>>? = null
             private var isActive: JsonField<Boolean> = JsonMissing.of()
+            private var keyEmployee: JsonField<Boolean> = JsonMissing.of()
             private var lastName: JsonField<String> = JsonMissing.of()
             private var latestRehireDate: JsonField<String> = JsonMissing.of()
             private var location: JsonField<Location> = JsonMissing.of()
             private var manager: JsonField<Manager> = JsonMissing.of()
+            private var maritalStatus: JsonField<MaritalStatus> = JsonMissing.of()
             private var middleName: JsonField<String> = JsonMissing.of()
             private var phoneNumbers: JsonField<MutableList<PhoneNumber?>>? = null
             private var preferredName: JsonField<String> = JsonMissing.of()
@@ -847,6 +965,8 @@ private constructor(
             private var ssn: JsonField<String> = JsonMissing.of()
             private var startDate: JsonField<String> = JsonMissing.of()
             private var title: JsonField<String> = JsonMissing.of()
+            private var unionCode: JsonField<String> = JsonMissing.of()
+            private var unionLocal: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -864,13 +984,16 @@ private constructor(
                 firstName = individualOrEmployment.firstName
                 flsaStatus = individualOrEmployment.flsaStatus
                 gender = individualOrEmployment.gender
+                highlyCompensatedEmployee = individualOrEmployment.highlyCompensatedEmployee
                 income = individualOrEmployment.income
                 incomeHistory = individualOrEmployment.incomeHistory.map { it.toMutableList() }
                 isActive = individualOrEmployment.isActive
+                keyEmployee = individualOrEmployment.keyEmployee
                 lastName = individualOrEmployment.lastName
                 latestRehireDate = individualOrEmployment.latestRehireDate
                 location = individualOrEmployment.location
                 manager = individualOrEmployment.manager
+                maritalStatus = individualOrEmployment.maritalStatus
                 middleName = individualOrEmployment.middleName
                 phoneNumbers = individualOrEmployment.phoneNumbers.map { it.toMutableList() }
                 preferredName = individualOrEmployment.preferredName
@@ -879,6 +1002,8 @@ private constructor(
                 ssn = individualOrEmployment.ssn
                 startDate = individualOrEmployment.startDate
                 title = individualOrEmployment.title
+                unionCode = individualOrEmployment.unionCode
+                unionLocal = individualOrEmployment.unionLocal
                 additionalProperties = individualOrEmployment.additionalProperties.toMutableMap()
             }
 
@@ -1131,6 +1256,39 @@ private constructor(
             fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
 
             /**
+             * IRS flag indicating whether the employee is classified as a Highly Compensated
+             * Employee for nondiscrimination testing purposes (ADP/ACP tests). US-only.
+             */
+            fun highlyCompensatedEmployee(highlyCompensatedEmployee: Boolean?) =
+                highlyCompensatedEmployee(JsonField.ofNullable(highlyCompensatedEmployee))
+
+            /**
+             * Alias for [Builder.highlyCompensatedEmployee].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun highlyCompensatedEmployee(highlyCompensatedEmployee: Boolean) =
+                highlyCompensatedEmployee(highlyCompensatedEmployee as Boolean?)
+
+            /**
+             * Alias for calling [Builder.highlyCompensatedEmployee] with
+             * `highlyCompensatedEmployee.orElse(null)`.
+             */
+            fun highlyCompensatedEmployee(highlyCompensatedEmployee: Optional<Boolean>) =
+                highlyCompensatedEmployee(highlyCompensatedEmployee.getOrNull())
+
+            /**
+             * Sets [Builder.highlyCompensatedEmployee] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.highlyCompensatedEmployee] with a well-typed
+             * [Boolean] value instead. This method is primarily for setting the field to an
+             * undocumented or not yet supported value.
+             */
+            fun highlyCompensatedEmployee(highlyCompensatedEmployee: JsonField<Boolean>) = apply {
+                this.highlyCompensatedEmployee = highlyCompensatedEmployee
+            }
+
+            /**
              * The employee's income as reported by the provider. This may not always be annualized
              * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
              * information the provider returns.
@@ -1202,6 +1360,33 @@ private constructor(
              */
             fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
 
+            /**
+             * IRS flag indicating whether the employee is classified as a Key Employee for
+             * top-heavy testing purposes. US-only.
+             */
+            fun keyEmployee(keyEmployee: Boolean?) = keyEmployee(JsonField.ofNullable(keyEmployee))
+
+            /**
+             * Alias for [Builder.keyEmployee].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun keyEmployee(keyEmployee: Boolean) = keyEmployee(keyEmployee as Boolean?)
+
+            /** Alias for calling [Builder.keyEmployee] with `keyEmployee.orElse(null)`. */
+            fun keyEmployee(keyEmployee: Optional<Boolean>) = keyEmployee(keyEmployee.getOrNull())
+
+            /**
+             * Sets [Builder.keyEmployee] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.keyEmployee] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun keyEmployee(keyEmployee: JsonField<Boolean>) = apply {
+                this.keyEmployee = keyEmployee
+            }
+
             /** The legal last name of the individual. */
             fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
 
@@ -1265,6 +1450,28 @@ private constructor(
              * supported value.
              */
             fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
+
+            /**
+             * The employee's marital status, used for beneficiary designation and spousal consent
+             * workflows.
+             */
+            fun maritalStatus(maritalStatus: MaritalStatus?) =
+                maritalStatus(JsonField.ofNullable(maritalStatus))
+
+            /** Alias for calling [Builder.maritalStatus] with `maritalStatus.orElse(null)`. */
+            fun maritalStatus(maritalStatus: Optional<MaritalStatus>) =
+                maritalStatus(maritalStatus.getOrNull())
+
+            /**
+             * Sets [Builder.maritalStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.maritalStatus] with a well-typed [MaritalStatus]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun maritalStatus(maritalStatus: JsonField<MaritalStatus>) = apply {
+                this.maritalStatus = maritalStatus
+            }
 
             /** The legal middle name of the individual. */
             fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
@@ -1407,6 +1614,39 @@ private constructor(
              */
             fun title(title: JsonField<String>) = apply { this.title = title }
 
+            /**
+             * The code identifying the union the employee is a member of, as configured in the
+             * payroll system.
+             */
+            fun unionCode(unionCode: String?) = unionCode(JsonField.ofNullable(unionCode))
+
+            /** Alias for calling [Builder.unionCode] with `unionCode.orElse(null)`. */
+            fun unionCode(unionCode: Optional<String>) = unionCode(unionCode.getOrNull())
+
+            /**
+             * Sets [Builder.unionCode] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unionCode] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unionCode(unionCode: JsonField<String>) = apply { this.unionCode = unionCode }
+
+            /** The local chapter or local number within the employee's union. */
+            fun unionLocal(unionLocal: String?) = unionLocal(JsonField.ofNullable(unionLocal))
+
+            /** Alias for calling [Builder.unionLocal] with `unionLocal.orElse(null)`. */
+            fun unionLocal(unionLocal: Optional<String>) = unionLocal(unionLocal.getOrNull())
+
+            /**
+             * Sets [Builder.unionLocal] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unionLocal] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unionLocal(unionLocal: JsonField<String>) = apply { this.unionLocal = unionLocal }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -1446,13 +1686,16 @@ private constructor(
                     firstName,
                     flsaStatus,
                     gender,
+                    highlyCompensatedEmployee,
                     income,
                     (incomeHistory ?: JsonMissing.of()).map { it.toImmutable() },
                     isActive,
+                    keyEmployee,
                     lastName,
                     latestRehireDate,
                     location,
                     manager,
+                    maritalStatus,
                     middleName,
                     (phoneNumbers ?: JsonMissing.of()).map { it.toImmutable() },
                     preferredName,
@@ -1461,6 +1704,8 @@ private constructor(
                     ssn,
                     startDate,
                     title,
+                    unionCode,
+                    unionLocal,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -1494,13 +1739,16 @@ private constructor(
             firstName()
             flsaStatus().ifPresent { it.validate() }
             gender().ifPresent { it.validate() }
+            highlyCompensatedEmployee()
             income().ifPresent { it.validate() }
             incomeHistory().ifPresent { it.forEach { it?.validate() } }
             isActive()
+            keyEmployee()
             lastName()
             latestRehireDate()
             location().ifPresent { it.validate() }
             manager().ifPresent { it.validate() }
+            maritalStatus().ifPresent { it.validate() }
             middleName()
             phoneNumbers().ifPresent { it.forEach { it?.validate() } }
             preferredName()
@@ -1509,6 +1757,8 @@ private constructor(
             ssn()
             startDate()
             title()
+            unionCode()
+            unionLocal()
             validated = true
         }
 
@@ -1541,14 +1791,17 @@ private constructor(
                 (if (firstName.asKnown().isPresent) 1 else 0) +
                 (flsaStatus.asKnown().getOrNull()?.validity() ?: 0) +
                 (gender.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (highlyCompensatedEmployee.asKnown().isPresent) 1 else 0) +
                 (income.asKnown().getOrNull()?.validity() ?: 0) +
                 (incomeHistory.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() }
                     ?: 0) +
                 (if (isActive.asKnown().isPresent) 1 else 0) +
+                (if (keyEmployee.asKnown().isPresent) 1 else 0) +
                 (if (lastName.asKnown().isPresent) 1 else 0) +
                 (if (latestRehireDate.asKnown().isPresent) 1 else 0) +
                 (location.asKnown().getOrNull()?.validity() ?: 0) +
                 (manager.asKnown().getOrNull()?.validity() ?: 0) +
+                (maritalStatus.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (middleName.asKnown().isPresent) 1 else 0) +
                 (phoneNumbers.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
                 (if (preferredName.asKnown().isPresent) 1 else 0) +
@@ -1556,7 +1809,9 @@ private constructor(
                 (if (sourceId.asKnown().isPresent) 1 else 0) +
                 (if (ssn.asKnown().isPresent) 1 else 0) +
                 (if (startDate.asKnown().isPresent) 1 else 0) +
-                (if (title.asKnown().isPresent) 1 else 0)
+                (if (title.asKnown().isPresent) 1 else 0) +
+                (if (unionCode.asKnown().isPresent) 1 else 0) +
+                (if (unionLocal.asKnown().isPresent) 1 else 0)
 
         class CustomField
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -3855,6 +4110,175 @@ private constructor(
             override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
         }
 
+        /**
+         * The employee's marital status, used for beneficiary designation and spousal consent
+         * workflows.
+         */
+        class MaritalStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val SINGLE = of("single")
+
+                @JvmField val MARRIED = of("married")
+
+                @JvmField val DIVORCED = of("divorced")
+
+                @JvmField val WIDOWED = of("widowed")
+
+                @JvmField val DOMESTIC_PARTNER = of("domestic_partner")
+
+                @JvmField val UNKNOWN = of("unknown")
+
+                @JvmStatic fun of(value: String) = MaritalStatus(JsonField.of(value))
+            }
+
+            /** An enum containing [MaritalStatus]'s known values. */
+            enum class Known {
+                SINGLE,
+                MARRIED,
+                DIVORCED,
+                WIDOWED,
+                DOMESTIC_PARTNER,
+                UNKNOWN,
+            }
+
+            /**
+             * An enum containing [MaritalStatus]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [MaritalStatus] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                SINGLE,
+                MARRIED,
+                DIVORCED,
+                WIDOWED,
+                DOMESTIC_PARTNER,
+                UNKNOWN,
+                /**
+                 * An enum member indicating that [MaritalStatus] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    SINGLE -> Value.SINGLE
+                    MARRIED -> Value.MARRIED
+                    DIVORCED -> Value.DIVORCED
+                    WIDOWED -> Value.WIDOWED
+                    DOMESTIC_PARTNER -> Value.DOMESTIC_PARTNER
+                    UNKNOWN -> Value.UNKNOWN
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    SINGLE -> Known.SINGLE
+                    MARRIED -> Known.MARRIED
+                    DIVORCED -> Known.DIVORCED
+                    WIDOWED -> Known.WIDOWED
+                    DOMESTIC_PARTNER -> Known.DOMESTIC_PARTNER
+                    UNKNOWN -> Known.UNKNOWN
+                    else -> throw FinchInvalidDataException("Unknown MaritalStatus: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
+            fun validate(): MaritalStatus = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is MaritalStatus && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
         class PhoneNumber
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
@@ -4205,13 +4629,16 @@ private constructor(
                 firstName == other.firstName &&
                 flsaStatus == other.flsaStatus &&
                 gender == other.gender &&
+                highlyCompensatedEmployee == other.highlyCompensatedEmployee &&
                 income == other.income &&
                 incomeHistory == other.incomeHistory &&
                 isActive == other.isActive &&
+                keyEmployee == other.keyEmployee &&
                 lastName == other.lastName &&
                 latestRehireDate == other.latestRehireDate &&
                 location == other.location &&
                 manager == other.manager &&
+                maritalStatus == other.maritalStatus &&
                 middleName == other.middleName &&
                 phoneNumbers == other.phoneNumbers &&
                 preferredName == other.preferredName &&
@@ -4220,6 +4647,8 @@ private constructor(
                 ssn == other.ssn &&
                 startDate == other.startDate &&
                 title == other.title &&
+                unionCode == other.unionCode &&
+                unionLocal == other.unionLocal &&
                 additionalProperties == other.additionalProperties
         }
 
@@ -4238,13 +4667,16 @@ private constructor(
                 firstName,
                 flsaStatus,
                 gender,
+                highlyCompensatedEmployee,
                 income,
                 incomeHistory,
                 isActive,
+                keyEmployee,
                 lastName,
                 latestRehireDate,
                 location,
                 manager,
+                maritalStatus,
                 middleName,
                 phoneNumbers,
                 preferredName,
@@ -4253,6 +4685,8 @@ private constructor(
                 ssn,
                 startDate,
                 title,
+                unionCode,
+                unionLocal,
                 additionalProperties,
             )
         }
@@ -4260,7 +4694,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, flsaStatus=$flsaStatus, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, flsaStatus=$flsaStatus, gender=$gender, highlyCompensatedEmployee=$highlyCompensatedEmployee, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, keyEmployee=$keyEmployee, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, maritalStatus=$maritalStatus, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, unionCode=$unionCode, unionLocal=$unionLocal, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

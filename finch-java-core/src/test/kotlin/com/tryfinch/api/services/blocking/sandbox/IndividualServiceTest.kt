@@ -37,6 +37,7 @@ internal class IndividualServiceTest {
                     .firstName("first_name")
                     .gender(SandboxIndividualUpdateParams.Gender.FEMALE)
                     .lastName("last_name")
+                    .maritalStatus(SandboxIndividualUpdateParams.MaritalStatus.SINGLE)
                     .middleName("middle_name")
                     .addPhoneNumber(
                         SandboxIndividualUpdateParams.PhoneNumber.builder()

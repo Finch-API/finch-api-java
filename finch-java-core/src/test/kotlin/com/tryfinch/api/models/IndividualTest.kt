@@ -24,6 +24,7 @@ internal class IndividualTest {
                 .firstName("first_name")
                 .gender(Individual.IndividualResponseBody.Gender.FEMALE)
                 .lastName("last_name")
+                .maritalStatus(Individual.IndividualResponseBody.MaritalStatus.SINGLE)
                 .middleName("middle_name")
                 .addPhoneNumber(
                     Individual.IndividualResponseBody.PhoneNumber.builder()
@@ -72,6 +73,7 @@ internal class IndividualTest {
                     .firstName("first_name")
                     .gender(Individual.IndividualResponseBody.Gender.FEMALE)
                     .lastName("last_name")
+                    .maritalStatus(Individual.IndividualResponseBody.MaritalStatus.SINGLE)
                     .middleName("middle_name")
                     .addPhoneNumber(
                         Individual.IndividualResponseBody.PhoneNumber.builder()

@@ -38,7 +38,9 @@ internal class EmploymentDataTest {
                 .endDate("end_date")
                 .firstName("first_name")
                 .flsaStatus(EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT)
+                .highlyCompensatedEmployee(true)
                 .isActive(true)
+                .keyEmployee(true)
                 .lastName("last_name")
                 .latestRehireDate("latest_rehire_date")
                 .location(
@@ -61,6 +63,8 @@ internal class EmploymentDataTest {
                 .middleName("middle_name")
                 .startDate("start_date")
                 .title("title")
+                .unionCode("union_code")
+                .unionLocal("union_local")
                 .addCustomField(
                     EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                         .name("name")
@@ -123,7 +127,9 @@ internal class EmploymentDataTest {
                     .endDate("end_date")
                     .firstName("first_name")
                     .flsaStatus(EmploymentData.EmploymentDataResponseBody.FlsaStatus.EXEMPT)
+                    .highlyCompensatedEmployee(true)
                     .isActive(true)
+                    .keyEmployee(true)
                     .lastName("last_name")
                     .latestRehireDate("latest_rehire_date")
                     .location(
@@ -146,6 +152,8 @@ internal class EmploymentDataTest {
                     .middleName("middle_name")
                     .startDate("start_date")
                     .title("title")
+                    .unionCode("union_code")
+                    .unionLocal("union_local")
                     .addCustomField(
                         EmploymentData.EmploymentDataResponseBody.CustomField.builder()
                             .name("name")
