@@ -59,6 +59,7 @@ internal class SandboxDirectoryCreateParamsTest {
                         SandboxDirectoryCreateParams.IndividualOrEmployment.FlsaStatus.EXEMPT
                     )
                     .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
+                    .highlyCompensatedEmployee(true)
                     .income(
                         Income.builder()
                             .amount(0L)
@@ -76,6 +77,7 @@ internal class SandboxDirectoryCreateParamsTest {
                             .build()
                     )
                     .isActive(true)
+                    .keyEmployee(true)
                     .lastName("last_name")
                     .latestRehireDate("latest_rehire_date")
                     .location(
@@ -94,6 +96,9 @@ internal class SandboxDirectoryCreateParamsTest {
                         SandboxDirectoryCreateParams.IndividualOrEmployment.Manager.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
+                    )
+                    .maritalStatus(
+                        SandboxDirectoryCreateParams.IndividualOrEmployment.MaritalStatus.SINGLE
                     )
                     .middleName("middle_name")
                     .addPhoneNumber(
@@ -122,6 +127,8 @@ internal class SandboxDirectoryCreateParamsTest {
                     .ssn("ssn")
                     .startDate("start_date")
                     .title("title")
+                    .unionCode("union_code")
+                    .unionLocal("union_local")
                     .build()
             )
             .build()
@@ -184,6 +191,7 @@ internal class SandboxDirectoryCreateParamsTest {
                             SandboxDirectoryCreateParams.IndividualOrEmployment.FlsaStatus.EXEMPT
                         )
                         .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
+                        .highlyCompensatedEmployee(true)
                         .income(
                             Income.builder()
                                 .amount(0L)
@@ -201,6 +209,7 @@ internal class SandboxDirectoryCreateParamsTest {
                                 .build()
                         )
                         .isActive(true)
+                        .keyEmployee(true)
                         .lastName("last_name")
                         .latestRehireDate("latest_rehire_date")
                         .location(
@@ -219,6 +228,9 @@ internal class SandboxDirectoryCreateParamsTest {
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Manager.builder()
                                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .build()
+                        )
+                        .maritalStatus(
+                            SandboxDirectoryCreateParams.IndividualOrEmployment.MaritalStatus.SINGLE
                         )
                         .middleName("middle_name")
                         .addPhoneNumber(
@@ -249,6 +261,8 @@ internal class SandboxDirectoryCreateParamsTest {
                         .ssn("ssn")
                         .startDate("start_date")
                         .title("title")
+                        .unionCode("union_code")
+                        .unionLocal("union_local")
                         .build()
                 )
                 .build()
@@ -303,6 +317,7 @@ internal class SandboxDirectoryCreateParamsTest {
                         SandboxDirectoryCreateParams.IndividualOrEmployment.FlsaStatus.EXEMPT
                     )
                     .gender(SandboxDirectoryCreateParams.IndividualOrEmployment.Gender.FEMALE)
+                    .highlyCompensatedEmployee(true)
                     .income(
                         Income.builder()
                             .amount(0L)
@@ -320,6 +335,7 @@ internal class SandboxDirectoryCreateParamsTest {
                             .build()
                     )
                     .isActive(true)
+                    .keyEmployee(true)
                     .lastName("last_name")
                     .latestRehireDate("latest_rehire_date")
                     .location(
@@ -338,6 +354,9 @@ internal class SandboxDirectoryCreateParamsTest {
                         SandboxDirectoryCreateParams.IndividualOrEmployment.Manager.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
+                    )
+                    .maritalStatus(
+                        SandboxDirectoryCreateParams.IndividualOrEmployment.MaritalStatus.SINGLE
                     )
                     .middleName("middle_name")
                     .addPhoneNumber(
@@ -366,6 +385,8 @@ internal class SandboxDirectoryCreateParamsTest {
                     .ssn("ssn")
                     .startDate("start_date")
                     .title("title")
+                    .unionCode("union_code")
+                    .unionLocal("union_local")
                     .build()
             )
     }

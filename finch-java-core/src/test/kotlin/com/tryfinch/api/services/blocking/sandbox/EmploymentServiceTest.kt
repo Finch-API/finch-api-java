@@ -47,6 +47,7 @@ internal class EmploymentServiceTest {
                     .endDate("end_date")
                     .firstName("first_name")
                     .flsaStatus(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
+                    .highlyCompensatedEmployee(true)
                     .income(
                         Income.builder()
                             .amount(0L)
@@ -64,6 +65,7 @@ internal class EmploymentServiceTest {
                             .build()
                     )
                     .isActive(true)
+                    .keyEmployee(true)
                     .lastName("last_name")
                     .latestRehireDate("latest_rehire_date")
                     .location(
@@ -87,6 +89,8 @@ internal class EmploymentServiceTest {
                     .sourceId("source_id")
                     .startDate("3/4/2020")
                     .title("title")
+                    .unionCode("union_code")
+                    .unionLocal("union_local")
                     .build()
             )
 
