@@ -88,6 +88,15 @@ private constructor(
     fun lastName(): Optional<String> = body.lastName()
 
     /**
+     * The employee's marital status, used for beneficiary designation and spousal consent
+     * workflows.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun maritalStatus(): Optional<MaritalStatus> = body.maritalStatus()
+
+    /**
      * The legal middle name of the individual.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -173,6 +182,13 @@ private constructor(
      * Unlike [lastName], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _lastName(): JsonField<String> = body._lastName()
+
+    /**
+     * Returns the raw JSON value of [maritalStatus].
+     *
+     * Unlike [maritalStatus], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _maritalStatus(): JsonField<MaritalStatus> = body._maritalStatus()
 
     /**
      * Returns the raw JSON value of [middleName].
@@ -377,6 +393,29 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun lastName(lastName: JsonField<String>) = apply { body.lastName(lastName) }
+
+        /**
+         * The employee's marital status, used for beneficiary designation and spousal consent
+         * workflows.
+         */
+        fun maritalStatus(maritalStatus: MaritalStatus?) = apply {
+            body.maritalStatus(maritalStatus)
+        }
+
+        /** Alias for calling [Builder.maritalStatus] with `maritalStatus.orElse(null)`. */
+        fun maritalStatus(maritalStatus: Optional<MaritalStatus>) =
+            maritalStatus(maritalStatus.getOrNull())
+
+        /**
+         * Sets [Builder.maritalStatus] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.maritalStatus] with a well-typed [MaritalStatus] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun maritalStatus(maritalStatus: JsonField<MaritalStatus>) = apply {
+            body.maritalStatus(maritalStatus)
+        }
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: String?) = apply { body.middleName(middleName) }
@@ -622,6 +661,7 @@ private constructor(
         private val firstName: JsonField<String>,
         private val gender: JsonField<Gender>,
         private val lastName: JsonField<String>,
+        private val maritalStatus: JsonField<MaritalStatus>,
         private val middleName: JsonField<String>,
         private val phoneNumbers: JsonField<List<PhoneNumber?>>,
         private val preferredName: JsonField<String>,
@@ -649,6 +689,9 @@ private constructor(
             @JsonProperty("last_name")
             @ExcludeMissing
             lastName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("marital_status")
+            @ExcludeMissing
+            maritalStatus: JsonField<MaritalStatus> = JsonMissing.of(),
             @JsonProperty("middle_name")
             @ExcludeMissing
             middleName: JsonField<String> = JsonMissing.of(),
@@ -670,6 +713,7 @@ private constructor(
             firstName,
             gender,
             lastName,
+            maritalStatus,
             middleName,
             phoneNumbers,
             preferredName,
@@ -731,6 +775,15 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun lastName(): Optional<String> = lastName.getOptional("last_name")
+
+        /**
+         * The employee's marital status, used for beneficiary designation and spousal consent
+         * workflows.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun maritalStatus(): Optional<MaritalStatus> = maritalStatus.getOptional("marital_status")
 
         /**
          * The legal middle name of the individual.
@@ -825,6 +878,16 @@ private constructor(
         @JsonProperty("last_name") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
 
         /**
+         * Returns the raw JSON value of [maritalStatus].
+         *
+         * Unlike [maritalStatus], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("marital_status")
+        @ExcludeMissing
+        fun _maritalStatus(): JsonField<MaritalStatus> = maritalStatus
+
+        /**
          * Returns the raw JSON value of [middleName].
          *
          * Unlike [middleName], this method doesn't throw if the JSON field has an unexpected type.
@@ -895,6 +958,7 @@ private constructor(
             private var firstName: JsonField<String> = JsonMissing.of()
             private var gender: JsonField<Gender> = JsonMissing.of()
             private var lastName: JsonField<String> = JsonMissing.of()
+            private var maritalStatus: JsonField<MaritalStatus> = JsonMissing.of()
             private var middleName: JsonField<String> = JsonMissing.of()
             private var phoneNumbers: JsonField<MutableList<PhoneNumber?>>? = null
             private var preferredName: JsonField<String> = JsonMissing.of()
@@ -911,6 +975,7 @@ private constructor(
                 firstName = individualWithoutId.firstName
                 gender = individualWithoutId.gender
                 lastName = individualWithoutId.lastName
+                maritalStatus = individualWithoutId.maritalStatus
                 middleName = individualWithoutId.middleName
                 phoneNumbers = individualWithoutId.phoneNumbers.map { it.toMutableList() }
                 preferredName = individualWithoutId.preferredName
@@ -1044,6 +1109,28 @@ private constructor(
              */
             fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
+            /**
+             * The employee's marital status, used for beneficiary designation and spousal consent
+             * workflows.
+             */
+            fun maritalStatus(maritalStatus: MaritalStatus?) =
+                maritalStatus(JsonField.ofNullable(maritalStatus))
+
+            /** Alias for calling [Builder.maritalStatus] with `maritalStatus.orElse(null)`. */
+            fun maritalStatus(maritalStatus: Optional<MaritalStatus>) =
+                maritalStatus(maritalStatus.getOrNull())
+
+            /**
+             * Sets [Builder.maritalStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.maritalStatus] with a well-typed [MaritalStatus]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun maritalStatus(maritalStatus: JsonField<MaritalStatus>) = apply {
+                this.maritalStatus = maritalStatus
+            }
+
             /** The legal middle name of the individual. */
             fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
@@ -1174,6 +1261,7 @@ private constructor(
                     firstName,
                     gender,
                     lastName,
+                    maritalStatus,
                     middleName,
                     (phoneNumbers ?: JsonMissing.of()).map { it.toImmutable() },
                     preferredName,
@@ -1206,6 +1294,7 @@ private constructor(
             firstName()
             gender().ifPresent { it.validate() }
             lastName()
+            maritalStatus().ifPresent { it.validate() }
             middleName()
             phoneNumbers().ifPresent { it.forEach { it?.validate() } }
             preferredName()
@@ -1237,6 +1326,7 @@ private constructor(
                 (if (firstName.asKnown().isPresent) 1 else 0) +
                 (gender.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (lastName.asKnown().isPresent) 1 else 0) +
+                (maritalStatus.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (middleName.asKnown().isPresent) 1 else 0) +
                 (phoneNumbers.asKnown().getOrNull()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
                 (if (preferredName.asKnown().isPresent) 1 else 0) +
@@ -1256,6 +1346,7 @@ private constructor(
                 firstName == other.firstName &&
                 gender == other.gender &&
                 lastName == other.lastName &&
+                maritalStatus == other.maritalStatus &&
                 middleName == other.middleName &&
                 phoneNumbers == other.phoneNumbers &&
                 preferredName == other.preferredName &&
@@ -1273,6 +1364,7 @@ private constructor(
                 firstName,
                 gender,
                 lastName,
+                maritalStatus,
                 middleName,
                 phoneNumbers,
                 preferredName,
@@ -1285,7 +1377,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualWithoutId{dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
+            "IndividualWithoutId{dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, maritalStatus=$maritalStatus, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
     }
 
     class Email
@@ -1919,6 +2011,171 @@ private constructor(
             }
 
             return other is Gender && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
+    /**
+     * The employee's marital status, used for beneficiary designation and spousal consent
+     * workflows.
+     */
+    class MaritalStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val SINGLE = of("single")
+
+            @JvmField val MARRIED = of("married")
+
+            @JvmField val DIVORCED = of("divorced")
+
+            @JvmField val WIDOWED = of("widowed")
+
+            @JvmField val DOMESTIC_PARTNER = of("domestic_partner")
+
+            @JvmField val UNKNOWN = of("unknown")
+
+            @JvmStatic fun of(value: String) = MaritalStatus(JsonField.of(value))
+        }
+
+        /** An enum containing [MaritalStatus]'s known values. */
+        enum class Known {
+            SINGLE,
+            MARRIED,
+            DIVORCED,
+            WIDOWED,
+            DOMESTIC_PARTNER,
+            UNKNOWN,
+        }
+
+        /**
+         * An enum containing [MaritalStatus]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [MaritalStatus] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            SINGLE,
+            MARRIED,
+            DIVORCED,
+            WIDOWED,
+            DOMESTIC_PARTNER,
+            UNKNOWN,
+            /**
+             * An enum member indicating that [MaritalStatus] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                SINGLE -> Value.SINGLE
+                MARRIED -> Value.MARRIED
+                DIVORCED -> Value.DIVORCED
+                WIDOWED -> Value.WIDOWED
+                DOMESTIC_PARTNER -> Value.DOMESTIC_PARTNER
+                UNKNOWN -> Value.UNKNOWN
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
+        fun known(): Known =
+            when (this) {
+                SINGLE -> Known.SINGLE
+                MARRIED -> Known.MARRIED
+                DIVORCED -> Known.DIVORCED
+                WIDOWED -> Known.WIDOWED
+                DOMESTIC_PARTNER -> Known.DOMESTIC_PARTNER
+                UNKNOWN -> Known.UNKNOWN
+                else -> throw FinchInvalidDataException("Unknown MaritalStatus: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { FinchInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): MaritalStatus = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is MaritalStatus && value == other.value
         }
 
         override fun hashCode() = value.hashCode()

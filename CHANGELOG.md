@@ -1,5 +1,14 @@
 # Changelog
 
+## 8.4.0 (2026-07-17)
+
+Full Changelog: [v8.3.0...v8.4.0](https://github.com/Finch-API/finch-api-java/compare/v8.3.0...v8.4.0)
+
+### Features
+
+* **api:** api update ([831ea02](https://github.com/Finch-API/finch-api-java/commit/831ea02c3f30a075b8e897bf89ca7f961dbff228))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([ef001e4](https://github.com/Finch-API/finch-api-java/commit/ef001e4cc000b0570e7046973969153dca2100b3))
+
 ## 8.3.0 (2026-07-15)
 
 Full Changelog: [v8.2.0...v8.3.0](https://github.com/Finch-API/finch-api-java/compare/v8.2.0...v8.3.0)
