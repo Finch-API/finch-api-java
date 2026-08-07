@@ -14,7 +14,7 @@ internal class AccountUpdateResponseTest {
         val accountUpdateResponse =
             AccountUpdateResponse.builder()
                 .accountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .authenticationType(AccountUpdateResponse.AuthenticationType.CREDENTIAL)
+                .authenticationType(AccountUpdateResponse.AuthenticationType.API_TOKEN)
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .entityId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -25,7 +25,7 @@ internal class AccountUpdateResponseTest {
         assertThat(accountUpdateResponse.accountId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(accountUpdateResponse.authenticationType())
-            .isEqualTo(AccountUpdateResponse.AuthenticationType.CREDENTIAL)
+            .isEqualTo(AccountUpdateResponse.AuthenticationType.API_TOKEN)
         assertThat(accountUpdateResponse.companyId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(accountUpdateResponse.connectionId())
@@ -42,7 +42,7 @@ internal class AccountUpdateResponseTest {
         val accountUpdateResponse =
             AccountUpdateResponse.builder()
                 .accountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .authenticationType(AccountUpdateResponse.AuthenticationType.CREDENTIAL)
+                .authenticationType(AccountUpdateResponse.AuthenticationType.API_TOKEN)
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .connectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .entityId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
