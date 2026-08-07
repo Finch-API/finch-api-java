@@ -12,7 +12,7 @@ internal class SandboxConnectionCreateParamsTest {
     fun create() {
         SandboxConnectionCreateParams.builder()
             .providerId("provider_id")
-            .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
+            .authenticationType(SandboxConnectionCreateParams.AuthenticationType.API_TOKEN)
             .employeeSize(0L)
             .addProduct("string")
             .build()
@@ -23,7 +23,7 @@ internal class SandboxConnectionCreateParamsTest {
         val params =
             SandboxConnectionCreateParams.builder()
                 .providerId("provider_id")
-                .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
+                .authenticationType(SandboxConnectionCreateParams.AuthenticationType.API_TOKEN)
                 .employeeSize(0L)
                 .addProduct("string")
                 .build()
@@ -32,7 +32,7 @@ internal class SandboxConnectionCreateParamsTest {
 
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
-            .contains(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
+            .contains(SandboxConnectionCreateParams.AuthenticationType.API_TOKEN)
         assertThat(body.employeeSize()).contains(0L)
         assertThat(body.products().getOrNull()).containsExactly("string")
     }

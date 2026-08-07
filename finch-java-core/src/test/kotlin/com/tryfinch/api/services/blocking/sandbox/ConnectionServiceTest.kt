@@ -26,7 +26,7 @@ internal class ConnectionServiceTest {
             connectionService.create(
                 SandboxConnectionCreateParams.builder()
                     .providerId("provider_id")
-                    .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
+                    .authenticationType(SandboxConnectionCreateParams.AuthenticationType.API_TOKEN)
                     .employeeSize(0L)
                     .addProduct("string")
                     .build()
