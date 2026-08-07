@@ -26,12 +26,12 @@ private constructor(
     private val accessToken: JsonField<String>,
     private val accountId: JsonField<String>,
     private val authenticationType: JsonField<AuthenticationType>,
-    private val companyId: JsonField<String>,
     private val connectionId: JsonField<String>,
     private val entityId: JsonField<String>,
     private val products: JsonField<List<String>>,
     private val providerId: JsonField<String>,
     private val tokenType: JsonField<String>,
+    private val companyId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -44,7 +44,6 @@ private constructor(
         @JsonProperty("authentication_type")
         @ExcludeMissing
         authenticationType: JsonField<AuthenticationType> = JsonMissing.of(),
-        @JsonProperty("company_id") @ExcludeMissing companyId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("connection_id")
         @ExcludeMissing
         connectionId: JsonField<String> = JsonMissing.of(),
@@ -56,16 +55,17 @@ private constructor(
         @ExcludeMissing
         providerId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("token_type") @ExcludeMissing tokenType: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("company_id") @ExcludeMissing companyId: JsonField<String> = JsonMissing.of(),
     ) : this(
         accessToken,
         accountId,
         authenticationType,
-        companyId,
         connectionId,
         entityId,
         products,
         providerId,
         tokenType,
+        companyId,
         mutableMapOf(),
     )
 
@@ -87,12 +87,6 @@ private constructor(
      */
     fun authenticationType(): AuthenticationType =
         authenticationType.getRequired("authentication_type")
-
-    /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun companyId(): Optional<String> = companyId.getOptional("company_id")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -125,6 +119,12 @@ private constructor(
     fun tokenType(): String = tokenType.getRequired("token_type")
 
     /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun companyId(): Optional<String> = companyId.getOptional("company_id")
+
+    /**
      * Returns the raw JSON value of [accessToken].
      *
      * Unlike [accessToken], this method doesn't throw if the JSON field has an unexpected type.
@@ -149,13 +149,6 @@ private constructor(
     @JsonProperty("authentication_type")
     @ExcludeMissing
     fun _authenticationType(): JsonField<AuthenticationType> = authenticationType
-
-    /**
-     * Returns the raw JSON value of [companyId].
-     *
-     * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
 
     /**
      * Returns the raw JSON value of [connectionId].
@@ -194,6 +187,13 @@ private constructor(
      */
     @JsonProperty("token_type") @ExcludeMissing fun _tokenType(): JsonField<String> = tokenType
 
+    /**
+     * Returns the raw JSON value of [companyId].
+     *
+     * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
         additionalProperties.put(key, value)
@@ -216,7 +216,6 @@ private constructor(
          * .accessToken()
          * .accountId()
          * .authenticationType()
-         * .companyId()
          * .connectionId()
          * .entityId()
          * .products()
@@ -233,12 +232,12 @@ private constructor(
         private var accessToken: JsonField<String>? = null
         private var accountId: JsonField<String>? = null
         private var authenticationType: JsonField<AuthenticationType>? = null
-        private var companyId: JsonField<String>? = null
         private var connectionId: JsonField<String>? = null
         private var entityId: JsonField<String>? = null
         private var products: JsonField<MutableList<String>>? = null
         private var providerId: JsonField<String>? = null
         private var tokenType: JsonField<String>? = null
+        private var companyId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -246,12 +245,12 @@ private constructor(
             accessToken = connectionCreateResponse.accessToken
             accountId = connectionCreateResponse.accountId
             authenticationType = connectionCreateResponse.authenticationType
-            companyId = connectionCreateResponse.companyId
             connectionId = connectionCreateResponse.connectionId
             entityId = connectionCreateResponse.entityId
             products = connectionCreateResponse.products.map { it.toMutableList() }
             providerId = connectionCreateResponse.providerId
             tokenType = connectionCreateResponse.tokenType
+            companyId = connectionCreateResponse.companyId
             additionalProperties = connectionCreateResponse.additionalProperties.toMutableMap()
         }
 
@@ -290,20 +289,6 @@ private constructor(
         fun authenticationType(authenticationType: JsonField<AuthenticationType>) = apply {
             this.authenticationType = authenticationType
         }
-
-        fun companyId(companyId: String?) = companyId(JsonField.ofNullable(companyId))
-
-        /** Alias for calling [Builder.companyId] with `companyId.orElse(null)`. */
-        fun companyId(companyId: Optional<String>) = companyId(companyId.getOrNull())
-
-        /**
-         * Sets [Builder.companyId] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.companyId] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
@@ -375,6 +360,20 @@ private constructor(
          */
         fun tokenType(tokenType: JsonField<String>) = apply { this.tokenType = tokenType }
 
+        fun companyId(companyId: String?) = companyId(JsonField.ofNullable(companyId))
+
+        /** Alias for calling [Builder.companyId] with `companyId.orElse(null)`. */
+        fun companyId(companyId: Optional<String>) = companyId(companyId.getOrNull())
+
+        /**
+         * Sets [Builder.companyId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -404,7 +403,6 @@ private constructor(
          * .accessToken()
          * .accountId()
          * .authenticationType()
-         * .companyId()
          * .connectionId()
          * .entityId()
          * .products()
@@ -419,12 +417,12 @@ private constructor(
                 checkRequired("accessToken", accessToken),
                 checkRequired("accountId", accountId),
                 checkRequired("authenticationType", authenticationType),
-                checkRequired("companyId", companyId),
                 checkRequired("connectionId", connectionId),
                 checkRequired("entityId", entityId),
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
                 checkRequired("tokenType", tokenType),
+                companyId,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -447,12 +445,12 @@ private constructor(
         accessToken()
         accountId()
         authenticationType().validate()
-        companyId()
         connectionId()
         entityId()
         products()
         providerId()
         tokenType()
+        companyId()
         validated = true
     }
 
@@ -474,12 +472,12 @@ private constructor(
         (if (accessToken.asKnown().isPresent) 1 else 0) +
             (if (accountId.asKnown().isPresent) 1 else 0) +
             (authenticationType.asKnown().getOrNull()?.validity() ?: 0) +
-            (if (companyId.asKnown().isPresent) 1 else 0) +
             (if (connectionId.asKnown().isPresent) 1 else 0) +
             (if (entityId.asKnown().isPresent) 1 else 0) +
             (products.asKnown().getOrNull()?.size ?: 0) +
             (if (providerId.asKnown().isPresent) 1 else 0) +
-            (if (tokenType.asKnown().isPresent) 1 else 0)
+            (if (tokenType.asKnown().isPresent) 1 else 0) +
+            (if (companyId.asKnown().isPresent) 1 else 0)
 
     class AuthenticationType
     @JsonCreator
@@ -640,12 +638,12 @@ private constructor(
             accessToken == other.accessToken &&
             accountId == other.accountId &&
             authenticationType == other.authenticationType &&
-            companyId == other.companyId &&
             connectionId == other.connectionId &&
             entityId == other.entityId &&
             products == other.products &&
             providerId == other.providerId &&
             tokenType == other.tokenType &&
+            companyId == other.companyId &&
             additionalProperties == other.additionalProperties
     }
 
@@ -654,12 +652,12 @@ private constructor(
             accessToken,
             accountId,
             authenticationType,
-            companyId,
             connectionId,
             entityId,
             products,
             providerId,
             tokenType,
+            companyId,
             additionalProperties,
         )
     }
@@ -667,5 +665,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ConnectionCreateResponse{accessToken=$accessToken, accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, connectionId=$connectionId, entityId=$entityId, products=$products, providerId=$providerId, tokenType=$tokenType, additionalProperties=$additionalProperties}"
+        "ConnectionCreateResponse{accessToken=$accessToken, accountId=$accountId, authenticationType=$authenticationType, connectionId=$connectionId, entityId=$entityId, products=$products, providerId=$providerId, tokenType=$tokenType, companyId=$companyId, additionalProperties=$additionalProperties}"
 }
