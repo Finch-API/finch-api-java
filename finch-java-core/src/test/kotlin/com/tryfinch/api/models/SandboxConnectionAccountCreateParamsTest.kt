@@ -13,7 +13,7 @@ internal class SandboxConnectionAccountCreateParamsTest {
         SandboxConnectionAccountCreateParams.builder()
             .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .providerId("provider_id")
-            .authenticationType(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
+            .authenticationType(SandboxConnectionAccountCreateParams.AuthenticationType.API_TOKEN)
             .addProduct("string")
             .build()
     }
@@ -25,7 +25,7 @@ internal class SandboxConnectionAccountCreateParamsTest {
                 .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .providerId("provider_id")
                 .authenticationType(
-                    SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL
+                    SandboxConnectionAccountCreateParams.AuthenticationType.API_TOKEN
                 )
                 .addProduct("string")
                 .build()
@@ -35,7 +35,7 @@ internal class SandboxConnectionAccountCreateParamsTest {
         assertThat(body.companyId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
-            .contains(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
+            .contains(SandboxConnectionAccountCreateParams.AuthenticationType.API_TOKEN)
         assertThat(body.products().getOrNull()).containsExactly("string")
     }
 
