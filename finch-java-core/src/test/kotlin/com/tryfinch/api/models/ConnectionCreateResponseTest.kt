@@ -16,12 +16,12 @@ internal class ConnectionCreateResponseTest {
                 .accessToken("access_token")
                 .accountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .authenticationType(ConnectionCreateResponse.AuthenticationType.API_TOKEN)
-                .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .connectionId("connection_id")
                 .entityId("entity_id")
                 .addProduct("string")
                 .providerId("provider_id")
                 .tokenType("token_type")
+                .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         assertThat(connectionCreateResponse.accessToken()).isEqualTo("access_token")
@@ -29,13 +29,13 @@ internal class ConnectionCreateResponseTest {
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(connectionCreateResponse.authenticationType())
             .isEqualTo(ConnectionCreateResponse.AuthenticationType.API_TOKEN)
-        assertThat(connectionCreateResponse.companyId())
-            .contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(connectionCreateResponse.connectionId()).isEqualTo("connection_id")
         assertThat(connectionCreateResponse.entityId()).isEqualTo("entity_id")
         assertThat(connectionCreateResponse.products()).containsExactly("string")
         assertThat(connectionCreateResponse.providerId()).isEqualTo("provider_id")
         assertThat(connectionCreateResponse.tokenType()).isEqualTo("token_type")
+        assertThat(connectionCreateResponse.companyId())
+            .contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 
     @Test
@@ -46,12 +46,12 @@ internal class ConnectionCreateResponseTest {
                 .accessToken("access_token")
                 .accountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .authenticationType(ConnectionCreateResponse.AuthenticationType.API_TOKEN)
-                .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .connectionId("connection_id")
                 .entityId("entity_id")
                 .addProduct("string")
                 .providerId("provider_id")
                 .tokenType("token_type")
+                .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         val roundtrippedConnectionCreateResponse =
