@@ -3,7 +3,7 @@
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-java)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-java/8.7.0)
-[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/8.7.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/8.7.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-java/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-java/8.7.0)
 
 <!-- x-release-please-end -->
 
