@@ -40,8 +40,8 @@ internal class SessionServiceTest {
                     .minutesToExpire(1.0)
                     .recordkeeping(
                         ConnectSessionNewParams.Recordkeeping.builder()
-                            .planId("x")
                             .recordkeeper(ConnectSessionNewParams.Recordkeeping.Recordkeeper.VOYA)
+                            .planId("x")
                             .build()
                     )
                     .redirectUri("redirect_uri")

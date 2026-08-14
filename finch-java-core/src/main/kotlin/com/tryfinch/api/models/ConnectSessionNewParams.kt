@@ -91,7 +91,7 @@ private constructor(
 
     /**
      * Optional recordkeeping configuration. Can only be provided when the `recordkeeping` product
-     * is requested. Currently supports `recordkeeper` set to `voya`.
+     * is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -374,7 +374,7 @@ private constructor(
 
         /**
          * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
-         * product is requested. Currently supports `recordkeeper` set to `voya`.
+         * product is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
          */
         fun recordkeeping(recordkeeping: Recordkeeping?) = apply {
             body.recordkeeping(recordkeeping)
@@ -687,7 +687,7 @@ private constructor(
 
         /**
          * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
-         * product is requested. Currently supports `recordkeeper` set to `voya`.
+         * product is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1007,7 +1007,7 @@ private constructor(
 
             /**
              * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
-             * product is requested. Currently supports `recordkeeper` set to `voya`.
+             * product is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
              */
             fun recordkeeping(recordkeeping: Recordkeeping?) =
                 recordkeeping(JsonField.ofNullable(recordkeeping))
@@ -1789,31 +1789,23 @@ private constructor(
 
     /**
      * Optional recordkeeping configuration. Can only be provided when the `recordkeeping` product
-     * is requested. Currently supports `recordkeeper` set to `voya`.
+     * is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
      */
     class Recordkeeping
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val planId: JsonField<String>,
         private val recordkeeper: JsonField<Recordkeeper>,
+        private val planId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("plan_id") @ExcludeMissing planId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("recordkeeper")
             @ExcludeMissing
             recordkeeper: JsonField<Recordkeeper> = JsonMissing.of(),
-        ) : this(planId, recordkeeper, mutableMapOf())
-
-        /**
-         * The plan identifier used by the recordkeeper
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun planId(): String = planId.getRequired("plan_id")
+            @JsonProperty("plan_id") @ExcludeMissing planId: JsonField<String> = JsonMissing.of(),
+        ) : this(recordkeeper, planId, mutableMapOf())
 
         /**
          * The recordkeeper to configure for this connection
@@ -1824,11 +1816,12 @@ private constructor(
         fun recordkeeper(): Recordkeeper = recordkeeper.getRequired("recordkeeper")
 
         /**
-         * Returns the raw JSON value of [planId].
+         * The plan identifier used by the recordkeeper
          *
-         * Unlike [planId], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("plan_id") @ExcludeMissing fun _planId(): JsonField<String> = planId
+        fun planId(): Optional<String> = planId.getOptional("plan_id")
 
         /**
          * Returns the raw JSON value of [recordkeeper].
@@ -1839,6 +1832,13 @@ private constructor(
         @JsonProperty("recordkeeper")
         @ExcludeMissing
         fun _recordkeeper(): JsonField<Recordkeeper> = recordkeeper
+
+        /**
+         * Returns the raw JSON value of [planId].
+         *
+         * Unlike [planId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("plan_id") @ExcludeMissing fun _planId(): JsonField<String> = planId
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1859,7 +1859,6 @@ private constructor(
              *
              * The following fields are required:
              * ```java
-             * .planId()
              * .recordkeeper()
              * ```
              */
@@ -1869,28 +1868,16 @@ private constructor(
         /** A builder for [Recordkeeping]. */
         class Builder internal constructor() {
 
-            private var planId: JsonField<String>? = null
             private var recordkeeper: JsonField<Recordkeeper>? = null
+            private var planId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(recordkeeping: Recordkeeping) = apply {
-                planId = recordkeeping.planId
                 recordkeeper = recordkeeping.recordkeeper
+                planId = recordkeeping.planId
                 additionalProperties = recordkeeping.additionalProperties.toMutableMap()
             }
-
-            /** The plan identifier used by the recordkeeper */
-            fun planId(planId: String) = planId(JsonField.of(planId))
-
-            /**
-             * Sets [Builder.planId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.planId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun planId(planId: JsonField<String>) = apply { this.planId = planId }
 
             /** The recordkeeper to configure for this connection */
             fun recordkeeper(recordkeeper: Recordkeeper) = recordkeeper(JsonField.of(recordkeeper))
@@ -1905,6 +1892,21 @@ private constructor(
             fun recordkeeper(recordkeeper: JsonField<Recordkeeper>) = apply {
                 this.recordkeeper = recordkeeper
             }
+
+            /** The plan identifier used by the recordkeeper */
+            fun planId(planId: String?) = planId(JsonField.ofNullable(planId))
+
+            /** Alias for calling [Builder.planId] with `planId.orElse(null)`. */
+            fun planId(planId: Optional<String>) = planId(planId.getOrNull())
+
+            /**
+             * Sets [Builder.planId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.planId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun planId(planId: JsonField<String>) = apply { this.planId = planId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1932,7 +1934,6 @@ private constructor(
              *
              * The following fields are required:
              * ```java
-             * .planId()
              * .recordkeeper()
              * ```
              *
@@ -1940,8 +1941,8 @@ private constructor(
              */
             fun build(): Recordkeeping =
                 Recordkeeping(
-                    checkRequired("planId", planId),
                     checkRequired("recordkeeper", recordkeeper),
+                    planId,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -1962,8 +1963,8 @@ private constructor(
                 return@apply
             }
 
-            planId()
             recordkeeper().validate()
+            planId()
             validated = true
         }
 
@@ -1983,8 +1984,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (planId.asKnown().isPresent) 1 else 0) +
-                (recordkeeper.asKnown().getOrNull()?.validity() ?: 0)
+            (recordkeeper.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (planId.asKnown().isPresent) 1 else 0)
 
         /** The recordkeeper to configure for this connection */
         class Recordkeeper @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -2004,12 +2005,15 @@ private constructor(
 
                 @JvmField val VOYA = of("voya")
 
+                @JvmField val EMPOWER = of("empower")
+
                 @JvmStatic fun of(value: String) = Recordkeeper(JsonField.of(value))
             }
 
             /** An enum containing [Recordkeeper]'s known values. */
             enum class Known {
-                VOYA
+                VOYA,
+                EMPOWER,
             }
 
             /**
@@ -2023,6 +2027,7 @@ private constructor(
              */
             enum class Value {
                 VOYA,
+                EMPOWER,
                 /**
                  * An enum member indicating that [Recordkeeper] was instantiated with an unknown
                  * value.
@@ -2040,6 +2045,7 @@ private constructor(
             fun value(): Value =
                 when (this) {
                     VOYA -> Value.VOYA
+                    EMPOWER -> Value.EMPOWER
                     else -> Value._UNKNOWN
                 }
 
@@ -2055,6 +2061,7 @@ private constructor(
             fun known(): Known =
                 when (this) {
                     VOYA -> Known.VOYA
+                    EMPOWER -> Known.EMPOWER
                     else -> throw FinchInvalidDataException("Unknown Recordkeeper: $value")
                 }
 
@@ -2128,19 +2135,19 @@ private constructor(
             }
 
             return other is Recordkeeping &&
-                planId == other.planId &&
                 recordkeeper == other.recordkeeper &&
+                planId == other.planId &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(planId, recordkeeper, additionalProperties)
+            Objects.hash(recordkeeper, planId, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Recordkeeping{planId=$planId, recordkeeper=$recordkeeper, additionalProperties=$additionalProperties}"
+            "Recordkeeping{recordkeeper=$recordkeeper, planId=$planId, additionalProperties=$additionalProperties}"
     }
 
     /** Sandbox mode for testing */

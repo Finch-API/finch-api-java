@@ -24,8 +24,8 @@ internal class ConnectSessionNewParamsTest {
             .minutesToExpire(1.0)
             .recordkeeping(
                 ConnectSessionNewParams.Recordkeeping.builder()
-                    .planId("x")
                     .recordkeeper(ConnectSessionNewParams.Recordkeeping.Recordkeeper.VOYA)
+                    .planId("x")
                     .build()
             )
             .redirectUri("redirect_uri")
@@ -51,8 +51,8 @@ internal class ConnectSessionNewParamsTest {
                 .minutesToExpire(1.0)
                 .recordkeeping(
                     ConnectSessionNewParams.Recordkeeping.builder()
-                        .planId("x")
                         .recordkeeper(ConnectSessionNewParams.Recordkeeping.Recordkeeper.VOYA)
+                        .planId("x")
                         .build()
                 )
                 .redirectUri("redirect_uri")
@@ -78,8 +78,8 @@ internal class ConnectSessionNewParamsTest {
         assertThat(body.recordkeeping())
             .contains(
                 ConnectSessionNewParams.Recordkeeping.builder()
-                    .planId("x")
                     .recordkeeper(ConnectSessionNewParams.Recordkeeping.Recordkeeper.VOYA)
+                    .planId("x")
                     .build()
             )
         assertThat(body.redirectUri()).contains("redirect_uri")
