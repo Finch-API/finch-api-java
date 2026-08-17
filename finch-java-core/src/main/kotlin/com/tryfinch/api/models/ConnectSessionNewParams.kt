@@ -91,7 +91,8 @@ private constructor(
 
     /**
      * Optional recordkeeping configuration. Can only be provided when the `recordkeeping` product
-     * is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
+     * is requested. Currently supports `recordkeeper` set to `voya`, `empower`, `fidelity`, or
+     * `transamerica`.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -374,7 +375,8 @@ private constructor(
 
         /**
          * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
-         * product is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
+         * product is requested. Currently supports `recordkeeper` set to `voya`, `empower`,
+         * `fidelity`, or `transamerica`.
          */
         fun recordkeeping(recordkeeping: Recordkeeping?) = apply {
             body.recordkeeping(recordkeeping)
@@ -687,7 +689,8 @@ private constructor(
 
         /**
          * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
-         * product is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
+         * product is requested. Currently supports `recordkeeper` set to `voya`, `empower`,
+         * `fidelity`, or `transamerica`.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1007,7 +1010,8 @@ private constructor(
 
             /**
              * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
-             * product is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
+             * product is requested. Currently supports `recordkeeper` set to `voya`, `empower`,
+             * `fidelity`, or `transamerica`.
              */
             fun recordkeeping(recordkeeping: Recordkeeping?) =
                 recordkeeping(JsonField.ofNullable(recordkeeping))
@@ -1789,7 +1793,8 @@ private constructor(
 
     /**
      * Optional recordkeeping configuration. Can only be provided when the `recordkeeping` product
-     * is requested. Currently supports `recordkeeper` set to `voya` or `empower`.
+     * is requested. Currently supports `recordkeeper` set to `voya`, `empower`, `fidelity`, or
+     * `transamerica`.
      */
     class Recordkeeping
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -2007,6 +2012,10 @@ private constructor(
 
                 @JvmField val EMPOWER = of("empower")
 
+                @JvmField val FIDELITY = of("fidelity")
+
+                @JvmField val TRANSAMERICA = of("transamerica")
+
                 @JvmStatic fun of(value: String) = Recordkeeper(JsonField.of(value))
             }
 
@@ -2014,6 +2023,8 @@ private constructor(
             enum class Known {
                 VOYA,
                 EMPOWER,
+                FIDELITY,
+                TRANSAMERICA,
             }
 
             /**
@@ -2028,6 +2039,8 @@ private constructor(
             enum class Value {
                 VOYA,
                 EMPOWER,
+                FIDELITY,
+                TRANSAMERICA,
                 /**
                  * An enum member indicating that [Recordkeeper] was instantiated with an unknown
                  * value.
@@ -2046,6 +2059,8 @@ private constructor(
                 when (this) {
                     VOYA -> Value.VOYA
                     EMPOWER -> Value.EMPOWER
+                    FIDELITY -> Value.FIDELITY
+                    TRANSAMERICA -> Value.TRANSAMERICA
                     else -> Value._UNKNOWN
                 }
 
@@ -2062,6 +2077,8 @@ private constructor(
                 when (this) {
                     VOYA -> Known.VOYA
                     EMPOWER -> Known.EMPOWER
+                    FIDELITY -> Known.FIDELITY
+                    TRANSAMERICA -> Known.TRANSAMERICA
                     else -> throw FinchInvalidDataException("Unknown Recordkeeper: $value")
                 }
 
