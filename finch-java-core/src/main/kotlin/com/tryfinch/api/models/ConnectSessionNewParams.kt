@@ -90,6 +90,16 @@ private constructor(
     fun minutesToExpire(): Optional<Double> = body.minutesToExpire()
 
     /**
+     * Optional recordkeeping configuration. Can only be provided when the `recordkeeping` product
+     * is requested. Currently supports `recordkeeper` set to `voya`, `empower`, `fidelity`, or
+     * `transamerica`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun recordkeeping(): Optional<Recordkeeping> = body.recordkeeping()
+
+    /**
      * The URI to redirect to after the Connect flow is completed
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -153,6 +163,13 @@ private constructor(
      * Unlike [minutesToExpire], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _minutesToExpire(): JsonField<Double> = body._minutesToExpire()
+
+    /**
+     * Returns the raw JSON value of [recordkeeping].
+     *
+     * Unlike [recordkeeping], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _recordkeeping(): JsonField<Recordkeeping> = body._recordkeeping()
 
     /**
      * Returns the raw JSON value of [redirectUri].
@@ -356,6 +373,30 @@ private constructor(
             body.minutesToExpire(minutesToExpire)
         }
 
+        /**
+         * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
+         * product is requested. Currently supports `recordkeeper` set to `voya`, `empower`,
+         * `fidelity`, or `transamerica`.
+         */
+        fun recordkeeping(recordkeeping: Recordkeeping?) = apply {
+            body.recordkeeping(recordkeeping)
+        }
+
+        /** Alias for calling [Builder.recordkeeping] with `recordkeeping.orElse(null)`. */
+        fun recordkeeping(recordkeeping: Optional<Recordkeeping>) =
+            recordkeeping(recordkeeping.getOrNull())
+
+        /**
+         * Sets [Builder.recordkeeping] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.recordkeeping] with a well-typed [Recordkeeping] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun recordkeeping(recordkeeping: JsonField<Recordkeeping>) = apply {
+            body.recordkeeping(recordkeeping)
+        }
+
         /** The URI to redirect to after the Connect flow is completed */
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
@@ -540,6 +581,7 @@ private constructor(
         private val integration: JsonField<Integration>,
         private val manual: JsonField<Boolean>,
         private val minutesToExpire: JsonField<Double>,
+        private val recordkeeping: JsonField<Recordkeeping>,
         private val redirectUri: JsonField<String>,
         private val sandbox: JsonField<Sandbox>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -566,6 +608,9 @@ private constructor(
             @JsonProperty("minutes_to_expire")
             @ExcludeMissing
             minutesToExpire: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("recordkeeping")
+            @ExcludeMissing
+            recordkeeping: JsonField<Recordkeeping> = JsonMissing.of(),
             @JsonProperty("redirect_uri")
             @ExcludeMissing
             redirectUri: JsonField<String> = JsonMissing.of(),
@@ -578,6 +623,7 @@ private constructor(
             integration,
             manual,
             minutesToExpire,
+            recordkeeping,
             redirectUri,
             sandbox,
             mutableMapOf(),
@@ -640,6 +686,16 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun minutesToExpire(): Optional<Double> = minutesToExpire.getOptional("minutes_to_expire")
+
+        /**
+         * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
+         * product is requested. Currently supports `recordkeeper` set to `voya`, `empower`,
+         * `fidelity`, or `transamerica`.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun recordkeeping(): Optional<Recordkeeping> = recordkeeping.getOptional("recordkeeping")
 
         /**
          * The URI to redirect to after the Connect flow is completed
@@ -722,6 +778,16 @@ private constructor(
         fun _minutesToExpire(): JsonField<Double> = minutesToExpire
 
         /**
+         * Returns the raw JSON value of [recordkeeping].
+         *
+         * Unlike [recordkeeping], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("recordkeeping")
+        @ExcludeMissing
+        fun _recordkeeping(): JsonField<Recordkeeping> = recordkeeping
+
+        /**
          * Returns the raw JSON value of [redirectUri].
          *
          * Unlike [redirectUri], this method doesn't throw if the JSON field has an unexpected type.
@@ -775,6 +841,7 @@ private constructor(
             private var integration: JsonField<Integration> = JsonMissing.of()
             private var manual: JsonField<Boolean> = JsonMissing.of()
             private var minutesToExpire: JsonField<Double> = JsonMissing.of()
+            private var recordkeeping: JsonField<Recordkeeping> = JsonMissing.of()
             private var redirectUri: JsonField<String> = JsonMissing.of()
             private var sandbox: JsonField<Sandbox> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -788,6 +855,7 @@ private constructor(
                 integration = createConnectSessionRequest.integration
                 manual = createConnectSessionRequest.manual
                 minutesToExpire = createConnectSessionRequest.minutesToExpire
+                recordkeeping = createConnectSessionRequest.recordkeeping
                 redirectUri = createConnectSessionRequest.redirectUri
                 sandbox = createConnectSessionRequest.sandbox
                 additionalProperties =
@@ -940,6 +1008,29 @@ private constructor(
                 this.minutesToExpire = minutesToExpire
             }
 
+            /**
+             * Optional recordkeeping configuration. Can only be provided when the `recordkeeping`
+             * product is requested. Currently supports `recordkeeper` set to `voya`, `empower`,
+             * `fidelity`, or `transamerica`.
+             */
+            fun recordkeeping(recordkeeping: Recordkeeping?) =
+                recordkeeping(JsonField.ofNullable(recordkeeping))
+
+            /** Alias for calling [Builder.recordkeeping] with `recordkeeping.orElse(null)`. */
+            fun recordkeeping(recordkeeping: Optional<Recordkeeping>) =
+                recordkeeping(recordkeeping.getOrNull())
+
+            /**
+             * Sets [Builder.recordkeeping] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.recordkeeping] with a well-typed [Recordkeeping]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun recordkeeping(recordkeeping: JsonField<Recordkeeping>) = apply {
+                this.recordkeeping = recordkeeping
+            }
+
             /** The URI to redirect to after the Connect flow is completed */
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
 
@@ -1014,6 +1105,7 @@ private constructor(
                     integration,
                     manual,
                     minutesToExpire,
+                    recordkeeping,
                     redirectUri,
                     sandbox,
                     additionalProperties.toMutableMap(),
@@ -1043,6 +1135,7 @@ private constructor(
             integration().ifPresent { it.validate() }
             manual()
             minutesToExpire()
+            recordkeeping().ifPresent { it.validate() }
             redirectUri()
             sandbox().ifPresent { it.validate() }
             validated = true
@@ -1071,6 +1164,7 @@ private constructor(
                 (integration.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (manual.asKnown().isPresent) 1 else 0) +
                 (if (minutesToExpire.asKnown().isPresent) 1 else 0) +
+                (recordkeeping.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (redirectUri.asKnown().isPresent) 1 else 0) +
                 (sandbox.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -1087,6 +1181,7 @@ private constructor(
                 integration == other.integration &&
                 manual == other.manual &&
                 minutesToExpire == other.minutesToExpire &&
+                recordkeeping == other.recordkeeping &&
                 redirectUri == other.redirectUri &&
                 sandbox == other.sandbox &&
                 additionalProperties == other.additionalProperties
@@ -1101,6 +1196,7 @@ private constructor(
                 integration,
                 manual,
                 minutesToExpire,
+                recordkeeping,
                 redirectUri,
                 sandbox,
                 additionalProperties,
@@ -1110,7 +1206,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "CreateConnectSessionRequest{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
+            "CreateConnectSessionRequest{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, recordkeeping=$recordkeeping, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
     }
 
     class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -1693,6 +1789,382 @@ private constructor(
 
         override fun toString() =
             "Integration{provider=$provider, authMethod=$authMethod, additionalProperties=$additionalProperties}"
+    }
+
+    /**
+     * Optional recordkeeping configuration. Can only be provided when the `recordkeeping` product
+     * is requested. Currently supports `recordkeeper` set to `voya`, `empower`, `fidelity`, or
+     * `transamerica`.
+     */
+    class Recordkeeping
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val recordkeeper: JsonField<Recordkeeper>,
+        private val planId: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("recordkeeper")
+            @ExcludeMissing
+            recordkeeper: JsonField<Recordkeeper> = JsonMissing.of(),
+            @JsonProperty("plan_id") @ExcludeMissing planId: JsonField<String> = JsonMissing.of(),
+        ) : this(recordkeeper, planId, mutableMapOf())
+
+        /**
+         * The recordkeeper to configure for this connection
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun recordkeeper(): Recordkeeper = recordkeeper.getRequired("recordkeeper")
+
+        /**
+         * The plan identifier used by the recordkeeper
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun planId(): Optional<String> = planId.getOptional("plan_id")
+
+        /**
+         * Returns the raw JSON value of [recordkeeper].
+         *
+         * Unlike [recordkeeper], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("recordkeeper")
+        @ExcludeMissing
+        fun _recordkeeper(): JsonField<Recordkeeper> = recordkeeper
+
+        /**
+         * Returns the raw JSON value of [planId].
+         *
+         * Unlike [planId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("plan_id") @ExcludeMissing fun _planId(): JsonField<String> = planId
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Recordkeeping].
+             *
+             * The following fields are required:
+             * ```java
+             * .recordkeeper()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Recordkeeping]. */
+        class Builder internal constructor() {
+
+            private var recordkeeper: JsonField<Recordkeeper>? = null
+            private var planId: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(recordkeeping: Recordkeeping) = apply {
+                recordkeeper = recordkeeping.recordkeeper
+                planId = recordkeeping.planId
+                additionalProperties = recordkeeping.additionalProperties.toMutableMap()
+            }
+
+            /** The recordkeeper to configure for this connection */
+            fun recordkeeper(recordkeeper: Recordkeeper) = recordkeeper(JsonField.of(recordkeeper))
+
+            /**
+             * Sets [Builder.recordkeeper] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.recordkeeper] with a well-typed [Recordkeeper] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun recordkeeper(recordkeeper: JsonField<Recordkeeper>) = apply {
+                this.recordkeeper = recordkeeper
+            }
+
+            /** The plan identifier used by the recordkeeper */
+            fun planId(planId: String?) = planId(JsonField.ofNullable(planId))
+
+            /** Alias for calling [Builder.planId] with `planId.orElse(null)`. */
+            fun planId(planId: Optional<String>) = planId(planId.getOrNull())
+
+            /**
+             * Sets [Builder.planId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.planId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun planId(planId: JsonField<String>) = apply { this.planId = planId }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Recordkeeping].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .recordkeeper()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Recordkeeping =
+                Recordkeeping(
+                    checkRequired("recordkeeper", recordkeeper),
+                    planId,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): Recordkeeping = apply {
+            if (validated) {
+                return@apply
+            }
+
+            recordkeeper().validate()
+            planId()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (recordkeeper.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (planId.asKnown().isPresent) 1 else 0)
+
+        /** The recordkeeper to configure for this connection */
+        class Recordkeeper @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val VOYA = of("voya")
+
+                @JvmField val EMPOWER = of("empower")
+
+                @JvmField val FIDELITY = of("fidelity")
+
+                @JvmField val TRANSAMERICA = of("transamerica")
+
+                @JvmStatic fun of(value: String) = Recordkeeper(JsonField.of(value))
+            }
+
+            /** An enum containing [Recordkeeper]'s known values. */
+            enum class Known {
+                VOYA,
+                EMPOWER,
+                FIDELITY,
+                TRANSAMERICA,
+            }
+
+            /**
+             * An enum containing [Recordkeeper]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Recordkeeper] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                VOYA,
+                EMPOWER,
+                FIDELITY,
+                TRANSAMERICA,
+                /**
+                 * An enum member indicating that [Recordkeeper] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    VOYA -> Value.VOYA
+                    EMPOWER -> Value.EMPOWER
+                    FIDELITY -> Value.FIDELITY
+                    TRANSAMERICA -> Value.TRANSAMERICA
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    VOYA -> Known.VOYA
+                    EMPOWER -> Known.EMPOWER
+                    FIDELITY -> Known.FIDELITY
+                    TRANSAMERICA -> Known.TRANSAMERICA
+                    else -> throw FinchInvalidDataException("Unknown Recordkeeper: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    FinchInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
+            fun validate(): Recordkeeper = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Recordkeeper && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Recordkeeping &&
+                recordkeeper == other.recordkeeper &&
+                planId == other.planId &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(recordkeeper, planId, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Recordkeeping{recordkeeper=$recordkeeper, planId=$planId, additionalProperties=$additionalProperties}"
     }
 
     /** Sandbox mode for testing */

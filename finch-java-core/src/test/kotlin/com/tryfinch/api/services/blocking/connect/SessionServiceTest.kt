@@ -38,6 +38,12 @@ internal class SessionServiceTest {
                     )
                     .manual(true)
                     .minutesToExpire(1.0)
+                    .recordkeeping(
+                        ConnectSessionNewParams.Recordkeeping.builder()
+                            .recordkeeper(ConnectSessionNewParams.Recordkeeping.Recordkeeper.VOYA)
+                            .planId("x")
+                            .build()
+                    )
                     .redirectUri("redirect_uri")
                     .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                     .build()

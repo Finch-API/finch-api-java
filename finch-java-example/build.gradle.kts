@@ -8,7 +8,8 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":finch-java"))
+    implementation(project(":finch-java-core"))
+    implementation(project(":finch-java-client-okhttp"))
 }
 
 tasks.withType<JavaCompile>().configureEach {
