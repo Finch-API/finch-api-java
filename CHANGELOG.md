@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.8.0](https://github.com/Finch-API/finch-api-java/compare/v8.7.0...v8.8.0) (2026-08-20)
+
+
+### Features
+
+* **stainless:** migrate SDK generation from Stainless SaaS to self-hosted stlc - PLAT-3989 ([5e769ca](https://github.com/Finch-API/finch-api-java/commit/5e769ca6784c45cdadcd2e819850603351d4dd1c))
+
 ## 8.7.0 (2026-08-07)
 
 Full Changelog: [v8.6.0...v8.7.0](https://github.com/Finch-API/finch-api-java/compare/v8.6.0...v8.7.0)
