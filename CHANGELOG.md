@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.8.1](https://github.com/Finch-API/finch-api-java/compare/v8.8.0...v8.8.1) (2026-08-21)
+
+
+### Bug Fixes
+
+* **stainless:** prevent codegen release deadlock - PLAT-3989 ([3054c51](https://github.com/Finch-API/finch-api-java/commit/3054c51ebb575bfa414a597d0f816e6bcdf30587))
+
 ## [8.8.0](https://github.com/Finch-API/finch-api-java/compare/v8.7.0...v8.8.0) (2026-08-20)
 
 
