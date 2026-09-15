@@ -66,11 +66,7 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
-                    .prepareAsync(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepareAsync(clientOptions, params, SecurityOptions.none())
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }

@@ -65,11 +65,7 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepare(clientOptions, params, SecurityOptions.none())
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
