@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.8.2](https://github.com/Finch-API/finch-api-java/compare/v8.8.1...v8.8.2) (2026-09-15)
+
+
+### Bug Fixes
+
+* **sdk:** restore basic authentication for providers ([de6c5f0](https://github.com/Finch-API/finch-api-java/commit/de6c5f03bd9660d6d4d04e78d3ea08e2dde97179))
+
 ## [8.8.1](https://github.com/Finch-API/finch-api-java/compare/v8.8.0...v8.8.1) (2026-08-21)
 
 
