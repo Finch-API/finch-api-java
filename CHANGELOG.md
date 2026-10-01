@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.8.3](https://github.com/Finch-API/finch-api-java/compare/v8.8.2...v8.8.3) (2026-10-01)
+
+
+### Documentation
+
+* **spec:** document phone number format on individual phone_numbers ([fe14526](https://github.com/Finch-API/finch-api-java/commit/fe14526225b9f62145bbd82dc391d49f7db632da))
+
 ## [8.8.2](https://github.com/Finch-API/finch-api-java/compare/v8.8.1...v8.8.2) (2026-09-15)
 
 
