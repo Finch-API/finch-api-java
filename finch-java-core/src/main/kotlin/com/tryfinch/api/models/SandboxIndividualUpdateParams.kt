@@ -2198,6 +2198,9 @@ private constructor(
         ) : this(data, type, mutableMapOf())
 
         /**
+         * The phone number. Format: E.164, with extension where applicable, e.g. `+NNNNNNNNNNN
+         * xExtension`. If the number cannot be parsed, the raw value from the provider is returned.
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -2255,6 +2258,11 @@ private constructor(
                 additionalProperties = phoneNumber.additionalProperties.toMutableMap()
             }
 
+            /**
+             * The phone number. Format: E.164, with extension where applicable, e.g. `+NNNNNNNNNNN
+             * xExtension`. If the number cannot be parsed, the raw value from the provider is
+             * returned.
+             */
             fun data(data: String?) = data(JsonField.ofNullable(data))
 
             /** Alias for calling [Builder.data] with `data.orElse(null)`. */
