@@ -584,7 +584,7 @@ private constructor(
                 benefitsSupport.getOptional("benefits_support")
 
             /**
-             * The supported data fields returned by our HR and payroll endpoints
+             * The supported data fields returned by our HR, payroll, and benefits endpoints
              *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
@@ -687,7 +687,7 @@ private constructor(
                     this.benefitsSupport = benefitsSupport
                 }
 
-                /** The supported data fields returned by our HR and payroll endpoints */
+                /** The supported data fields returned by our HR, payroll, and benefits endpoints */
                 fun supportedFields(supportedFields: SupportedFields?) =
                     supportedFields(JsonField.ofNullable(supportedFields))
 
@@ -799,7 +799,7 @@ private constructor(
                     (supportedFields.asKnown().getOrNull()?.validity() ?: 0) +
                     (type.asKnown().getOrNull()?.validity() ?: 0)
 
-            /** The supported data fields returned by our HR and payroll endpoints */
+            /** The supported data fields returned by our HR, payroll, and benefits endpoints */
             class SupportedFields
             @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
@@ -810,6 +810,9 @@ private constructor(
                 private val payGroup: JsonField<SupportedPayGroupFields>,
                 private val payStatement: JsonField<SupportedPayStatementFields>,
                 private val payment: JsonField<SupportedPaymentFields>,
+                private val planDependents: JsonField<SupportedPlanDependentFields>,
+                private val planEnrollments: JsonField<SupportedPlanEnrollmentFields>,
+                private val plans: JsonField<SupportedPlanFields>,
                 private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
 
@@ -836,6 +839,15 @@ private constructor(
                     @JsonProperty("payment")
                     @ExcludeMissing
                     payment: JsonField<SupportedPaymentFields> = JsonMissing.of(),
+                    @JsonProperty("plan_dependents")
+                    @ExcludeMissing
+                    planDependents: JsonField<SupportedPlanDependentFields> = JsonMissing.of(),
+                    @JsonProperty("plan_enrollments")
+                    @ExcludeMissing
+                    planEnrollments: JsonField<SupportedPlanEnrollmentFields> = JsonMissing.of(),
+                    @JsonProperty("plans")
+                    @ExcludeMissing
+                    plans: JsonField<SupportedPlanFields> = JsonMissing.of(),
                 ) : this(
                     company,
                     directory,
@@ -844,6 +856,9 @@ private constructor(
                     payGroup,
                     payStatement,
                     payment,
+                    planDependents,
+                    planEnrollments,
+                    plans,
                     mutableMapOf(),
                 )
 
@@ -893,6 +908,26 @@ private constructor(
                  *   if the server responded with an unexpected value).
                  */
                 fun payment(): Optional<SupportedPaymentFields> = payment.getOptional("payment")
+
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
+                fun planDependents(): Optional<SupportedPlanDependentFields> =
+                    planDependents.getOptional("plan_dependents")
+
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
+                fun planEnrollments(): Optional<SupportedPlanEnrollmentFields> =
+                    planEnrollments.getOptional("plan_enrollments")
+
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
+                fun plans(): Optional<SupportedPlanFields> = plans.getOptional("plans")
 
                 /**
                  * Returns the raw JSON value of [company].
@@ -964,6 +999,36 @@ private constructor(
                 @ExcludeMissing
                 fun _payment(): JsonField<SupportedPaymentFields> = payment
 
+                /**
+                 * Returns the raw JSON value of [planDependents].
+                 *
+                 * Unlike [planDependents], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("plan_dependents")
+                @ExcludeMissing
+                fun _planDependents(): JsonField<SupportedPlanDependentFields> = planDependents
+
+                /**
+                 * Returns the raw JSON value of [planEnrollments].
+                 *
+                 * Unlike [planEnrollments], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("plan_enrollments")
+                @ExcludeMissing
+                fun _planEnrollments(): JsonField<SupportedPlanEnrollmentFields> = planEnrollments
+
+                /**
+                 * Returns the raw JSON value of [plans].
+                 *
+                 * Unlike [plans], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("plans")
+                @ExcludeMissing
+                fun _plans(): JsonField<SupportedPlanFields> = plans
+
                 @JsonAnySetter
                 private fun putAdditionalProperty(key: String, value: JsonValue) {
                     additionalProperties.put(key, value)
@@ -995,6 +1060,11 @@ private constructor(
                     private var payStatement: JsonField<SupportedPayStatementFields> =
                         JsonMissing.of()
                     private var payment: JsonField<SupportedPaymentFields> = JsonMissing.of()
+                    private var planDependents: JsonField<SupportedPlanDependentFields> =
+                        JsonMissing.of()
+                    private var planEnrollments: JsonField<SupportedPlanEnrollmentFields> =
+                        JsonMissing.of()
+                    private var plans: JsonField<SupportedPlanFields> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
@@ -1006,6 +1076,9 @@ private constructor(
                         payGroup = supportedFields.payGroup
                         payStatement = supportedFields.payStatement
                         payment = supportedFields.payment
+                        planDependents = supportedFields.planDependents
+                        planEnrollments = supportedFields.planEnrollments
+                        plans = supportedFields.plans
                         additionalProperties = supportedFields.additionalProperties.toMutableMap()
                     }
 
@@ -1105,6 +1178,47 @@ private constructor(
                         this.payment = payment
                     }
 
+                    fun planDependents(planDependents: SupportedPlanDependentFields) =
+                        planDependents(JsonField.of(planDependents))
+
+                    /**
+                     * Sets [Builder.planDependents] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.planDependents] with a well-typed
+                     * [SupportedPlanDependentFields] value instead. This method is primarily for
+                     * setting the field to an undocumented or not yet supported value.
+                     */
+                    fun planDependents(planDependents: JsonField<SupportedPlanDependentFields>) =
+                        apply {
+                            this.planDependents = planDependents
+                        }
+
+                    fun planEnrollments(planEnrollments: SupportedPlanEnrollmentFields) =
+                        planEnrollments(JsonField.of(planEnrollments))
+
+                    /**
+                     * Sets [Builder.planEnrollments] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.planEnrollments] with a well-typed
+                     * [SupportedPlanEnrollmentFields] value instead. This method is primarily for
+                     * setting the field to an undocumented or not yet supported value.
+                     */
+                    fun planEnrollments(planEnrollments: JsonField<SupportedPlanEnrollmentFields>) =
+                        apply {
+                            this.planEnrollments = planEnrollments
+                        }
+
+                    fun plans(plans: SupportedPlanFields) = plans(JsonField.of(plans))
+
+                    /**
+                     * Sets [Builder.plans] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.plans] with a well-typed
+                     * [SupportedPlanFields] value instead. This method is primarily for setting the
+                     * field to an undocumented or not yet supported value.
+                     */
+                    fun plans(plans: JsonField<SupportedPlanFields>) = apply { this.plans = plans }
+
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
                         putAllAdditionalProperties(additionalProperties)
@@ -1141,6 +1255,9 @@ private constructor(
                             payGroup,
                             payStatement,
                             payment,
+                            planDependents,
+                            planEnrollments,
+                            plans,
                             additionalProperties.toMutableMap(),
                         )
                 }
@@ -1169,6 +1286,9 @@ private constructor(
                     payGroup().ifPresent { it.validate() }
                     payStatement().ifPresent { it.validate() }
                     payment().ifPresent { it.validate() }
+                    planDependents().ifPresent { it.validate() }
+                    planEnrollments().ifPresent { it.validate() }
+                    plans().ifPresent { it.validate() }
                     validated = true
                 }
 
@@ -1194,7 +1314,10 @@ private constructor(
                         (individual.asKnown().getOrNull()?.validity() ?: 0) +
                         (payGroup.asKnown().getOrNull()?.validity() ?: 0) +
                         (payStatement.asKnown().getOrNull()?.validity() ?: 0) +
-                        (payment.asKnown().getOrNull()?.validity() ?: 0)
+                        (payment.asKnown().getOrNull()?.validity() ?: 0) +
+                        (planDependents.asKnown().getOrNull()?.validity() ?: 0) +
+                        (planEnrollments.asKnown().getOrNull()?.validity() ?: 0) +
+                        (plans.asKnown().getOrNull()?.validity() ?: 0)
 
                 class SupportedCompanyFields
                 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -3386,8 +3509,22 @@ private constructor(
                              */
                             fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
-                            fun department(department: Boolean) =
-                                department(JsonField.of(department))
+                            fun department(department: Boolean?) =
+                                department(JsonField.ofNullable(department))
+
+                            /**
+                             * Alias for [Builder.department].
+                             *
+                             * This unboxed primitive overload exists for backwards compatibility.
+                             */
+                            fun department(department: Boolean) = department(department as Boolean?)
+
+                            /**
+                             * Alias for calling [Builder.department] with
+                             * `department.orElse(null)`.
+                             */
+                            fun department(department: Optional<Boolean>) =
+                                department(department.getOrNull())
 
                             /**
                              * Sets [Builder.department] to an arbitrary JSON value.
@@ -4584,7 +4721,10 @@ private constructor(
                             this.location = location
                         }
 
-                        fun manager(manager: Manager) = manager(JsonField.of(manager))
+                        fun manager(manager: Manager?) = manager(JsonField.ofNullable(manager))
+
+                        /** Alias for calling [Builder.manager] with `manager.orElse(null)`. */
+                        fun manager(manager: Optional<Manager>) = manager(manager.getOrNull())
 
                         /**
                          * Sets [Builder.manager] to an arbitrary JSON value.
@@ -10667,6 +10807,2878 @@ private constructor(
                         "SupportedPaymentFields{id=$id, companyDebit=$companyDebit, debitDate=$debitDate, employeeTaxes=$employeeTaxes, employerTaxes=$employerTaxes, grossPay=$grossPay, individualIds=$individualIds, netPay=$netPay, payDate=$payDate, payFrequencies=$payFrequencies, payGroupIds=$payGroupIds, payPeriod=$payPeriod, additionalProperties=$additionalProperties}"
                 }
 
+                class SupportedPlanDependentFields
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val coverage: JsonField<Coverage>,
+                    private val dateOfBirth: JsonField<Boolean>,
+                    private val dependentId: JsonField<Boolean>,
+                    private val firstName: JsonField<Boolean>,
+                    private val gender: JsonField<Boolean>,
+                    private val lastName: JsonField<Boolean>,
+                    private val middleName: JsonField<Boolean>,
+                    private val ssn: JsonField<Boolean>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("coverage")
+                        @ExcludeMissing
+                        coverage: JsonField<Coverage> = JsonMissing.of(),
+                        @JsonProperty("date_of_birth")
+                        @ExcludeMissing
+                        dateOfBirth: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("dependent_id")
+                        @ExcludeMissing
+                        dependentId: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("first_name")
+                        @ExcludeMissing
+                        firstName: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("gender")
+                        @ExcludeMissing
+                        gender: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("last_name")
+                        @ExcludeMissing
+                        lastName: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("middle_name")
+                        @ExcludeMissing
+                        middleName: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("ssn")
+                        @ExcludeMissing
+                        ssn: JsonField<Boolean> = JsonMissing.of(),
+                    ) : this(
+                        coverage,
+                        dateOfBirth,
+                        dependentId,
+                        firstName,
+                        gender,
+                        lastName,
+                        middleName,
+                        ssn,
+                        mutableMapOf(),
+                    )
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun coverage(): Optional<Coverage> = coverage.getOptional("coverage")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun dateOfBirth(): Optional<Boolean> = dateOfBirth.getOptional("date_of_birth")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun dependentId(): Optional<Boolean> = dependentId.getOptional("dependent_id")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun firstName(): Optional<Boolean> = firstName.getOptional("first_name")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun gender(): Optional<Boolean> = gender.getOptional("gender")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun lastName(): Optional<Boolean> = lastName.getOptional("last_name")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun middleName(): Optional<Boolean> = middleName.getOptional("middle_name")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun ssn(): Optional<Boolean> = ssn.getOptional("ssn")
+
+                    /**
+                     * Returns the raw JSON value of [coverage].
+                     *
+                     * Unlike [coverage], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("coverage")
+                    @ExcludeMissing
+                    fun _coverage(): JsonField<Coverage> = coverage
+
+                    /**
+                     * Returns the raw JSON value of [dateOfBirth].
+                     *
+                     * Unlike [dateOfBirth], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("date_of_birth")
+                    @ExcludeMissing
+                    fun _dateOfBirth(): JsonField<Boolean> = dateOfBirth
+
+                    /**
+                     * Returns the raw JSON value of [dependentId].
+                     *
+                     * Unlike [dependentId], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("dependent_id")
+                    @ExcludeMissing
+                    fun _dependentId(): JsonField<Boolean> = dependentId
+
+                    /**
+                     * Returns the raw JSON value of [firstName].
+                     *
+                     * Unlike [firstName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("first_name")
+                    @ExcludeMissing
+                    fun _firstName(): JsonField<Boolean> = firstName
+
+                    /**
+                     * Returns the raw JSON value of [gender].
+                     *
+                     * Unlike [gender], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("gender")
+                    @ExcludeMissing
+                    fun _gender(): JsonField<Boolean> = gender
+
+                    /**
+                     * Returns the raw JSON value of [lastName].
+                     *
+                     * Unlike [lastName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("last_name")
+                    @ExcludeMissing
+                    fun _lastName(): JsonField<Boolean> = lastName
+
+                    /**
+                     * Returns the raw JSON value of [middleName].
+                     *
+                     * Unlike [middleName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("middle_name")
+                    @ExcludeMissing
+                    fun _middleName(): JsonField<Boolean> = middleName
+
+                    /**
+                     * Returns the raw JSON value of [ssn].
+                     *
+                     * Unlike [ssn], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("ssn") @ExcludeMissing fun _ssn(): JsonField<Boolean> = ssn
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedPlanDependentFields].
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [SupportedPlanDependentFields]. */
+                    class Builder internal constructor() {
+
+                        private var coverage: JsonField<Coverage> = JsonMissing.of()
+                        private var dateOfBirth: JsonField<Boolean> = JsonMissing.of()
+                        private var dependentId: JsonField<Boolean> = JsonMissing.of()
+                        private var firstName: JsonField<Boolean> = JsonMissing.of()
+                        private var gender: JsonField<Boolean> = JsonMissing.of()
+                        private var lastName: JsonField<Boolean> = JsonMissing.of()
+                        private var middleName: JsonField<Boolean> = JsonMissing.of()
+                        private var ssn: JsonField<Boolean> = JsonMissing.of()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(
+                            supportedPlanDependentFields: SupportedPlanDependentFields
+                        ) = apply {
+                            coverage = supportedPlanDependentFields.coverage
+                            dateOfBirth = supportedPlanDependentFields.dateOfBirth
+                            dependentId = supportedPlanDependentFields.dependentId
+                            firstName = supportedPlanDependentFields.firstName
+                            gender = supportedPlanDependentFields.gender
+                            lastName = supportedPlanDependentFields.lastName
+                            middleName = supportedPlanDependentFields.middleName
+                            ssn = supportedPlanDependentFields.ssn
+                            additionalProperties =
+                                supportedPlanDependentFields.additionalProperties.toMutableMap()
+                        }
+
+                        fun coverage(coverage: Coverage) = coverage(JsonField.of(coverage))
+
+                        /**
+                         * Sets [Builder.coverage] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.coverage] with a well-typed [Coverage]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun coverage(coverage: JsonField<Coverage>) = apply {
+                            this.coverage = coverage
+                        }
+
+                        fun dateOfBirth(dateOfBirth: Boolean) =
+                            dateOfBirth(JsonField.of(dateOfBirth))
+
+                        /**
+                         * Sets [Builder.dateOfBirth] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.dateOfBirth] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun dateOfBirth(dateOfBirth: JsonField<Boolean>) = apply {
+                            this.dateOfBirth = dateOfBirth
+                        }
+
+                        fun dependentId(dependentId: Boolean) =
+                            dependentId(JsonField.of(dependentId))
+
+                        /**
+                         * Sets [Builder.dependentId] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.dependentId] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun dependentId(dependentId: JsonField<Boolean>) = apply {
+                            this.dependentId = dependentId
+                        }
+
+                        fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
+
+                        /**
+                         * Sets [Builder.firstName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.firstName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun firstName(firstName: JsonField<Boolean>) = apply {
+                            this.firstName = firstName
+                        }
+
+                        fun gender(gender: Boolean) = gender(JsonField.of(gender))
+
+                        /**
+                         * Sets [Builder.gender] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.gender] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun gender(gender: JsonField<Boolean>) = apply { this.gender = gender }
+
+                        fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
+
+                        /**
+                         * Sets [Builder.lastName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.lastName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun lastName(lastName: JsonField<Boolean>) = apply {
+                            this.lastName = lastName
+                        }
+
+                        fun middleName(middleName: Boolean) = middleName(JsonField.of(middleName))
+
+                        /**
+                         * Sets [Builder.middleName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.middleName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun middleName(middleName: JsonField<Boolean>) = apply {
+                            this.middleName = middleName
+                        }
+
+                        fun ssn(ssn: Boolean) = ssn(JsonField.of(ssn))
+
+                        /**
+                         * Sets [Builder.ssn] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.ssn] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun ssn(ssn: JsonField<Boolean>) = apply { this.ssn = ssn }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [SupportedPlanDependentFields].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
+                        fun build(): SupportedPlanDependentFields =
+                            SupportedPlanDependentFields(
+                                coverage,
+                                dateOfBirth,
+                                dependentId,
+                                firstName,
+                                gender,
+                                lastName,
+                                middleName,
+                                ssn,
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
+                    fun validate(): SupportedPlanDependentFields = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        coverage().ifPresent { it.validate() }
+                        dateOfBirth()
+                        dependentId()
+                        firstName()
+                        gender()
+                        lastName()
+                        middleName()
+                        ssn()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (coverage.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (dateOfBirth.asKnown().isPresent) 1 else 0) +
+                            (if (dependentId.asKnown().isPresent) 1 else 0) +
+                            (if (firstName.asKnown().isPresent) 1 else 0) +
+                            (if (gender.asKnown().isPresent) 1 else 0) +
+                            (if (lastName.asKnown().isPresent) 1 else 0) +
+                            (if (middleName.asKnown().isPresent) 1 else 0) +
+                            (if (ssn.asKnown().isPresent) 1 else 0)
+
+                    class Coverage
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                    private constructor(
+                        private val enrollments: JsonField<Enrollments>,
+                        private val individualId: JsonField<Boolean>,
+                        private val relationshipToIndividual: JsonField<Boolean>,
+                        private val additionalProperties: MutableMap<String, JsonValue>,
+                    ) {
+
+                        @JsonCreator
+                        private constructor(
+                            @JsonProperty("enrollments")
+                            @ExcludeMissing
+                            enrollments: JsonField<Enrollments> = JsonMissing.of(),
+                            @JsonProperty("individual_id")
+                            @ExcludeMissing
+                            individualId: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("relationship_to_individual")
+                            @ExcludeMissing
+                            relationshipToIndividual: JsonField<Boolean> = JsonMissing.of(),
+                        ) : this(
+                            enrollments,
+                            individualId,
+                            relationshipToIndividual,
+                            mutableMapOf(),
+                        )
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
+                        fun enrollments(): Optional<Enrollments> =
+                            enrollments.getOptional("enrollments")
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
+                        fun individualId(): Optional<Boolean> =
+                            individualId.getOptional("individual_id")
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
+                        fun relationshipToIndividual(): Optional<Boolean> =
+                            relationshipToIndividual.getOptional("relationship_to_individual")
+
+                        /**
+                         * Returns the raw JSON value of [enrollments].
+                         *
+                         * Unlike [enrollments], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("enrollments")
+                        @ExcludeMissing
+                        fun _enrollments(): JsonField<Enrollments> = enrollments
+
+                        /**
+                         * Returns the raw JSON value of [individualId].
+                         *
+                         * Unlike [individualId], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("individual_id")
+                        @ExcludeMissing
+                        fun _individualId(): JsonField<Boolean> = individualId
+
+                        /**
+                         * Returns the raw JSON value of [relationshipToIndividual].
+                         *
+                         * Unlike [relationshipToIndividual], this method doesn't throw if the JSON
+                         * field has an unexpected type.
+                         */
+                        @JsonProperty("relationship_to_individual")
+                        @ExcludeMissing
+                        fun _relationshipToIndividual(): JsonField<Boolean> =
+                            relationshipToIndividual
+
+                        @JsonAnySetter
+                        private fun putAdditionalProperty(key: String, value: JsonValue) {
+                            additionalProperties.put(key, value)
+                        }
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> =
+                            Collections.unmodifiableMap(additionalProperties)
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Coverage].
+                             */
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [Coverage]. */
+                        class Builder internal constructor() {
+
+                            private var enrollments: JsonField<Enrollments> = JsonMissing.of()
+                            private var individualId: JsonField<Boolean> = JsonMissing.of()
+                            private var relationshipToIndividual: JsonField<Boolean> =
+                                JsonMissing.of()
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(coverage: Coverage) = apply {
+                                enrollments = coverage.enrollments
+                                individualId = coverage.individualId
+                                relationshipToIndividual = coverage.relationshipToIndividual
+                                additionalProperties = coverage.additionalProperties.toMutableMap()
+                            }
+
+                            fun enrollments(enrollments: Enrollments) =
+                                enrollments(JsonField.of(enrollments))
+
+                            /**
+                             * Sets [Builder.enrollments] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.enrollments] with a well-typed
+                             * [Enrollments] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
+                            fun enrollments(enrollments: JsonField<Enrollments>) = apply {
+                                this.enrollments = enrollments
+                            }
+
+                            fun individualId(individualId: Boolean) =
+                                individualId(JsonField.of(individualId))
+
+                            /**
+                             * Sets [Builder.individualId] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.individualId] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
+                            fun individualId(individualId: JsonField<Boolean>) = apply {
+                                this.individualId = individualId
+                            }
+
+                            fun relationshipToIndividual(relationshipToIndividual: Boolean) =
+                                relationshipToIndividual(JsonField.of(relationshipToIndividual))
+
+                            /**
+                             * Sets [Builder.relationshipToIndividual] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.relationshipToIndividual] with a
+                             * well-typed [Boolean] value instead. This method is primarily for
+                             * setting the field to an undocumented or not yet supported value.
+                             */
+                            fun relationshipToIndividual(
+                                relationshipToIndividual: JsonField<Boolean>
+                            ) = apply { this.relationshipToIndividual = relationshipToIndividual }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            /**
+                             * Returns an immutable instance of [Coverage].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
+                            fun build(): Coverage =
+                                Coverage(
+                                    enrollments,
+                                    individualId,
+                                    relationshipToIndividual,
+                                    additionalProperties.toMutableMap(),
+                                )
+                        }
+
+                        private var validated: Boolean = false
+
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
+                        fun validate(): Coverage = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            enrollments().ifPresent { it.validate() }
+                            individualId()
+                            relationshipToIndividual()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (enrollments.asKnown().getOrNull()?.validity() ?: 0) +
+                                (if (individualId.asKnown().isPresent) 1 else 0) +
+                                (if (relationshipToIndividual.asKnown().isPresent) 1 else 0)
+
+                        class Enrollments
+                        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                        private constructor(
+                            private val id: JsonField<Boolean>,
+                            private val type: JsonField<Boolean>,
+                            private val additionalProperties: MutableMap<String, JsonValue>,
+                        ) {
+
+                            @JsonCreator
+                            private constructor(
+                                @JsonProperty("id")
+                                @ExcludeMissing
+                                id: JsonField<Boolean> = JsonMissing.of(),
+                                @JsonProperty("type")
+                                @ExcludeMissing
+                                type: JsonField<Boolean> = JsonMissing.of(),
+                            ) : this(id, type, mutableMapOf())
+
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
+                            fun id(): Optional<Boolean> = id.getOptional("id")
+
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
+                            fun type(): Optional<Boolean> = type.getOptional("type")
+
+                            /**
+                             * Returns the raw JSON value of [id].
+                             *
+                             * Unlike [id], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
+                            @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
+
+                            /**
+                             * Returns the raw JSON value of [type].
+                             *
+                             * Unlike [type], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            fun _type(): JsonField<Boolean> = type
+
+                            @JsonAnySetter
+                            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                                additionalProperties.put(key, value)
+                            }
+
+                            @JsonAnyGetter
+                            @ExcludeMissing
+                            fun _additionalProperties(): Map<String, JsonValue> =
+                                Collections.unmodifiableMap(additionalProperties)
+
+                            fun toBuilder() = Builder().from(this)
+
+                            companion object {
+
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [Enrollments].
+                                 */
+                                @JvmStatic fun builder() = Builder()
+                            }
+
+                            /** A builder for [Enrollments]. */
+                            class Builder internal constructor() {
+
+                                private var id: JsonField<Boolean> = JsonMissing.of()
+                                private var type: JsonField<Boolean> = JsonMissing.of()
+                                private var additionalProperties: MutableMap<String, JsonValue> =
+                                    mutableMapOf()
+
+                                @JvmSynthetic
+                                internal fun from(enrollments: Enrollments) = apply {
+                                    id = enrollments.id
+                                    type = enrollments.type
+                                    additionalProperties =
+                                        enrollments.additionalProperties.toMutableMap()
+                                }
+
+                                fun id(id: Boolean) = id(JsonField.of(id))
+
+                                /**
+                                 * Sets [Builder.id] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.id] with a well-typed [Boolean]
+                                 * value instead. This method is primarily for setting the field to
+                                 * an undocumented or not yet supported value.
+                                 */
+                                fun id(id: JsonField<Boolean>) = apply { this.id = id }
+
+                                fun type(type: Boolean) = type(JsonField.of(type))
+
+                                /**
+                                 * Sets [Builder.type] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.type] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
+                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
+
+                                fun additionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                    additionalProperties.put(key, value)
+                                }
+
+                                fun putAllAdditionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                                fun removeAdditionalProperty(key: String) = apply {
+                                    additionalProperties.remove(key)
+                                }
+
+                                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                    keys.forEach(::removeAdditionalProperty)
+                                }
+
+                                /**
+                                 * Returns an immutable instance of [Enrollments].
+                                 *
+                                 * Further updates to this [Builder] will not mutate the returned
+                                 * instance.
+                                 */
+                                fun build(): Enrollments =
+                                    Enrollments(id, type, additionalProperties.toMutableMap())
+                            }
+
+                            private var validated: Boolean = false
+
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
+                            fun validate(): Enrollments = apply {
+                                if (validated) {
+                                    return@apply
+                                }
+
+                                id()
+                                type()
+                                validated = true
+                            }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int =
+                                (if (id.asKnown().isPresent) 1 else 0) +
+                                    (if (type.asKnown().isPresent) 1 else 0)
+
+                            override fun equals(other: Any?): Boolean {
+                                if (this === other) {
+                                    return true
+                                }
+
+                                return other is Enrollments &&
+                                    id == other.id &&
+                                    type == other.type &&
+                                    additionalProperties == other.additionalProperties
+                            }
+
+                            private val hashCode: Int by lazy {
+                                Objects.hash(id, type, additionalProperties)
+                            }
+
+                            override fun hashCode(): Int = hashCode
+
+                            override fun toString() =
+                                "Enrollments{id=$id, type=$type, additionalProperties=$additionalProperties}"
+                        }
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Coverage &&
+                                enrollments == other.enrollments &&
+                                individualId == other.individualId &&
+                                relationshipToIndividual == other.relationshipToIndividual &&
+                                additionalProperties == other.additionalProperties
+                        }
+
+                        private val hashCode: Int by lazy {
+                            Objects.hash(
+                                enrollments,
+                                individualId,
+                                relationshipToIndividual,
+                                additionalProperties,
+                            )
+                        }
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "Coverage{enrollments=$enrollments, individualId=$individualId, relationshipToIndividual=$relationshipToIndividual, additionalProperties=$additionalProperties}"
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is SupportedPlanDependentFields &&
+                            coverage == other.coverage &&
+                            dateOfBirth == other.dateOfBirth &&
+                            dependentId == other.dependentId &&
+                            firstName == other.firstName &&
+                            gender == other.gender &&
+                            lastName == other.lastName &&
+                            middleName == other.middleName &&
+                            ssn == other.ssn &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(
+                            coverage,
+                            dateOfBirth,
+                            dependentId,
+                            firstName,
+                            gender,
+                            lastName,
+                            middleName,
+                            ssn,
+                            additionalProperties,
+                        )
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "SupportedPlanDependentFields{coverage=$coverage, dateOfBirth=$dateOfBirth, dependentId=$dependentId, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, ssn=$ssn, additionalProperties=$additionalProperties}"
+                }
+
+                class SupportedPlanEnrollmentFields
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val id: JsonField<Boolean>,
+                    private val contributions: JsonField<Contributions>,
+                    private val coverageEndDate: JsonField<Boolean>,
+                    private val coverageStartDate: JsonField<Boolean>,
+                    private val coverageTier: JsonField<Boolean>,
+                    private val dependentIds: JsonField<Boolean>,
+                    private val individualId: JsonField<Boolean>,
+                    private val planId: JsonField<Boolean>,
+                    private val status: JsonField<Boolean>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("id")
+                        @ExcludeMissing
+                        id: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("contributions")
+                        @ExcludeMissing
+                        contributions: JsonField<Contributions> = JsonMissing.of(),
+                        @JsonProperty("coverage_end_date")
+                        @ExcludeMissing
+                        coverageEndDate: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("coverage_start_date")
+                        @ExcludeMissing
+                        coverageStartDate: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("coverage_tier")
+                        @ExcludeMissing
+                        coverageTier: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("dependent_ids")
+                        @ExcludeMissing
+                        dependentIds: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("individual_id")
+                        @ExcludeMissing
+                        individualId: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("plan_id")
+                        @ExcludeMissing
+                        planId: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("status")
+                        @ExcludeMissing
+                        status: JsonField<Boolean> = JsonMissing.of(),
+                    ) : this(
+                        id,
+                        contributions,
+                        coverageEndDate,
+                        coverageStartDate,
+                        coverageTier,
+                        dependentIds,
+                        individualId,
+                        planId,
+                        status,
+                        mutableMapOf(),
+                    )
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun id(): Optional<Boolean> = id.getOptional("id")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun contributions(): Optional<Contributions> =
+                        contributions.getOptional("contributions")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun coverageEndDate(): Optional<Boolean> =
+                        coverageEndDate.getOptional("coverage_end_date")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun coverageStartDate(): Optional<Boolean> =
+                        coverageStartDate.getOptional("coverage_start_date")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun coverageTier(): Optional<Boolean> =
+                        coverageTier.getOptional("coverage_tier")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun dependentIds(): Optional<Boolean> =
+                        dependentIds.getOptional("dependent_ids")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun individualId(): Optional<Boolean> =
+                        individualId.getOptional("individual_id")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun planId(): Optional<Boolean> = planId.getOptional("plan_id")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun status(): Optional<Boolean> = status.getOptional("status")
+
+                    /**
+                     * Returns the raw JSON value of [id].
+                     *
+                     * Unlike [id], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
+
+                    /**
+                     * Returns the raw JSON value of [contributions].
+                     *
+                     * Unlike [contributions], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("contributions")
+                    @ExcludeMissing
+                    fun _contributions(): JsonField<Contributions> = contributions
+
+                    /**
+                     * Returns the raw JSON value of [coverageEndDate].
+                     *
+                     * Unlike [coverageEndDate], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("coverage_end_date")
+                    @ExcludeMissing
+                    fun _coverageEndDate(): JsonField<Boolean> = coverageEndDate
+
+                    /**
+                     * Returns the raw JSON value of [coverageStartDate].
+                     *
+                     * Unlike [coverageStartDate], this method doesn't throw if the JSON field has
+                     * an unexpected type.
+                     */
+                    @JsonProperty("coverage_start_date")
+                    @ExcludeMissing
+                    fun _coverageStartDate(): JsonField<Boolean> = coverageStartDate
+
+                    /**
+                     * Returns the raw JSON value of [coverageTier].
+                     *
+                     * Unlike [coverageTier], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("coverage_tier")
+                    @ExcludeMissing
+                    fun _coverageTier(): JsonField<Boolean> = coverageTier
+
+                    /**
+                     * Returns the raw JSON value of [dependentIds].
+                     *
+                     * Unlike [dependentIds], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("dependent_ids")
+                    @ExcludeMissing
+                    fun _dependentIds(): JsonField<Boolean> = dependentIds
+
+                    /**
+                     * Returns the raw JSON value of [individualId].
+                     *
+                     * Unlike [individualId], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("individual_id")
+                    @ExcludeMissing
+                    fun _individualId(): JsonField<Boolean> = individualId
+
+                    /**
+                     * Returns the raw JSON value of [planId].
+                     *
+                     * Unlike [planId], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("plan_id")
+                    @ExcludeMissing
+                    fun _planId(): JsonField<Boolean> = planId
+
+                    /**
+                     * Returns the raw JSON value of [status].
+                     *
+                     * Unlike [status], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("status")
+                    @ExcludeMissing
+                    fun _status(): JsonField<Boolean> = status
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedPlanEnrollmentFields].
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [SupportedPlanEnrollmentFields]. */
+                    class Builder internal constructor() {
+
+                        private var id: JsonField<Boolean> = JsonMissing.of()
+                        private var contributions: JsonField<Contributions> = JsonMissing.of()
+                        private var coverageEndDate: JsonField<Boolean> = JsonMissing.of()
+                        private var coverageStartDate: JsonField<Boolean> = JsonMissing.of()
+                        private var coverageTier: JsonField<Boolean> = JsonMissing.of()
+                        private var dependentIds: JsonField<Boolean> = JsonMissing.of()
+                        private var individualId: JsonField<Boolean> = JsonMissing.of()
+                        private var planId: JsonField<Boolean> = JsonMissing.of()
+                        private var status: JsonField<Boolean> = JsonMissing.of()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(
+                            supportedPlanEnrollmentFields: SupportedPlanEnrollmentFields
+                        ) = apply {
+                            id = supportedPlanEnrollmentFields.id
+                            contributions = supportedPlanEnrollmentFields.contributions
+                            coverageEndDate = supportedPlanEnrollmentFields.coverageEndDate
+                            coverageStartDate = supportedPlanEnrollmentFields.coverageStartDate
+                            coverageTier = supportedPlanEnrollmentFields.coverageTier
+                            dependentIds = supportedPlanEnrollmentFields.dependentIds
+                            individualId = supportedPlanEnrollmentFields.individualId
+                            planId = supportedPlanEnrollmentFields.planId
+                            status = supportedPlanEnrollmentFields.status
+                            additionalProperties =
+                                supportedPlanEnrollmentFields.additionalProperties.toMutableMap()
+                        }
+
+                        fun id(id: Boolean) = id(JsonField.of(id))
+
+                        /**
+                         * Sets [Builder.id] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.id] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
+
+                        fun contributions(contributions: Contributions) =
+                            contributions(JsonField.of(contributions))
+
+                        /**
+                         * Sets [Builder.contributions] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.contributions] with a well-typed
+                         * [Contributions] value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
+                        fun contributions(contributions: JsonField<Contributions>) = apply {
+                            this.contributions = contributions
+                        }
+
+                        fun coverageEndDate(coverageEndDate: Boolean) =
+                            coverageEndDate(JsonField.of(coverageEndDate))
+
+                        /**
+                         * Sets [Builder.coverageEndDate] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.coverageEndDate] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
+                        fun coverageEndDate(coverageEndDate: JsonField<Boolean>) = apply {
+                            this.coverageEndDate = coverageEndDate
+                        }
+
+                        fun coverageStartDate(coverageStartDate: Boolean) =
+                            coverageStartDate(JsonField.of(coverageStartDate))
+
+                        /**
+                         * Sets [Builder.coverageStartDate] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.coverageStartDate] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
+                        fun coverageStartDate(coverageStartDate: JsonField<Boolean>) = apply {
+                            this.coverageStartDate = coverageStartDate
+                        }
+
+                        fun coverageTier(coverageTier: Boolean) =
+                            coverageTier(JsonField.of(coverageTier))
+
+                        /**
+                         * Sets [Builder.coverageTier] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.coverageTier] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
+                        fun coverageTier(coverageTier: JsonField<Boolean>) = apply {
+                            this.coverageTier = coverageTier
+                        }
+
+                        fun dependentIds(dependentIds: Boolean) =
+                            dependentIds(JsonField.of(dependentIds))
+
+                        /**
+                         * Sets [Builder.dependentIds] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.dependentIds] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
+                        fun dependentIds(dependentIds: JsonField<Boolean>) = apply {
+                            this.dependentIds = dependentIds
+                        }
+
+                        fun individualId(individualId: Boolean) =
+                            individualId(JsonField.of(individualId))
+
+                        /**
+                         * Sets [Builder.individualId] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.individualId] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
+                        fun individualId(individualId: JsonField<Boolean>) = apply {
+                            this.individualId = individualId
+                        }
+
+                        fun planId(planId: Boolean) = planId(JsonField.of(planId))
+
+                        /**
+                         * Sets [Builder.planId] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.planId] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun planId(planId: JsonField<Boolean>) = apply { this.planId = planId }
+
+                        fun status(status: Boolean) = status(JsonField.of(status))
+
+                        /**
+                         * Sets [Builder.status] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.status] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun status(status: JsonField<Boolean>) = apply { this.status = status }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [SupportedPlanEnrollmentFields].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
+                        fun build(): SupportedPlanEnrollmentFields =
+                            SupportedPlanEnrollmentFields(
+                                id,
+                                contributions,
+                                coverageEndDate,
+                                coverageStartDate,
+                                coverageTier,
+                                dependentIds,
+                                individualId,
+                                planId,
+                                status,
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
+                    fun validate(): SupportedPlanEnrollmentFields = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        id()
+                        contributions().ifPresent { it.validate() }
+                        coverageEndDate()
+                        coverageStartDate()
+                        coverageTier()
+                        dependentIds()
+                        individualId()
+                        planId()
+                        status()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (id.asKnown().isPresent) 1 else 0) +
+                            (contributions.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (coverageEndDate.asKnown().isPresent) 1 else 0) +
+                            (if (coverageStartDate.asKnown().isPresent) 1 else 0) +
+                            (if (coverageTier.asKnown().isPresent) 1 else 0) +
+                            (if (dependentIds.asKnown().isPresent) 1 else 0) +
+                            (if (individualId.asKnown().isPresent) 1 else 0) +
+                            (if (planId.asKnown().isPresent) 1 else 0) +
+                            (if (status.asKnown().isPresent) 1 else 0)
+
+                    class Contributions
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                    private constructor(
+                        private val employeeContribution: JsonField<EmployeeContribution>,
+                        private val employerContribution: JsonField<EmployerContribution>,
+                        private val frequency: JsonField<Boolean>,
+                        private val additionalProperties: MutableMap<String, JsonValue>,
+                    ) {
+
+                        @JsonCreator
+                        private constructor(
+                            @JsonProperty("employee_contribution")
+                            @ExcludeMissing
+                            employeeContribution: JsonField<EmployeeContribution> =
+                                JsonMissing.of(),
+                            @JsonProperty("employer_contribution")
+                            @ExcludeMissing
+                            employerContribution: JsonField<EmployerContribution> =
+                                JsonMissing.of(),
+                            @JsonProperty("frequency")
+                            @ExcludeMissing
+                            frequency: JsonField<Boolean> = JsonMissing.of(),
+                        ) : this(
+                            employeeContribution,
+                            employerContribution,
+                            frequency,
+                            mutableMapOf(),
+                        )
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
+                        fun employeeContribution(): Optional<EmployeeContribution> =
+                            employeeContribution.getOptional("employee_contribution")
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
+                        fun employerContribution(): Optional<EmployerContribution> =
+                            employerContribution.getOptional("employer_contribution")
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
+                        fun frequency(): Optional<Boolean> = frequency.getOptional("frequency")
+
+                        /**
+                         * Returns the raw JSON value of [employeeContribution].
+                         *
+                         * Unlike [employeeContribution], this method doesn't throw if the JSON
+                         * field has an unexpected type.
+                         */
+                        @JsonProperty("employee_contribution")
+                        @ExcludeMissing
+                        fun _employeeContribution(): JsonField<EmployeeContribution> =
+                            employeeContribution
+
+                        /**
+                         * Returns the raw JSON value of [employerContribution].
+                         *
+                         * Unlike [employerContribution], this method doesn't throw if the JSON
+                         * field has an unexpected type.
+                         */
+                        @JsonProperty("employer_contribution")
+                        @ExcludeMissing
+                        fun _employerContribution(): JsonField<EmployerContribution> =
+                            employerContribution
+
+                        /**
+                         * Returns the raw JSON value of [frequency].
+                         *
+                         * Unlike [frequency], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("frequency")
+                        @ExcludeMissing
+                        fun _frequency(): JsonField<Boolean> = frequency
+
+                        @JsonAnySetter
+                        private fun putAdditionalProperty(key: String, value: JsonValue) {
+                            additionalProperties.put(key, value)
+                        }
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> =
+                            Collections.unmodifiableMap(additionalProperties)
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Contributions].
+                             */
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [Contributions]. */
+                        class Builder internal constructor() {
+
+                            private var employeeContribution: JsonField<EmployeeContribution> =
+                                JsonMissing.of()
+                            private var employerContribution: JsonField<EmployerContribution> =
+                                JsonMissing.of()
+                            private var frequency: JsonField<Boolean> = JsonMissing.of()
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(contributions: Contributions) = apply {
+                                employeeContribution = contributions.employeeContribution
+                                employerContribution = contributions.employerContribution
+                                frequency = contributions.frequency
+                                additionalProperties =
+                                    contributions.additionalProperties.toMutableMap()
+                            }
+
+                            fun employeeContribution(employeeContribution: EmployeeContribution) =
+                                employeeContribution(JsonField.of(employeeContribution))
+
+                            /**
+                             * Sets [Builder.employeeContribution] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.employeeContribution] with a
+                             * well-typed [EmployeeContribution] value instead. This method is
+                             * primarily for setting the field to an undocumented or not yet
+                             * supported value.
+                             */
+                            fun employeeContribution(
+                                employeeContribution: JsonField<EmployeeContribution>
+                            ) = apply { this.employeeContribution = employeeContribution }
+
+                            fun employerContribution(employerContribution: EmployerContribution) =
+                                employerContribution(JsonField.of(employerContribution))
+
+                            /**
+                             * Sets [Builder.employerContribution] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.employerContribution] with a
+                             * well-typed [EmployerContribution] value instead. This method is
+                             * primarily for setting the field to an undocumented or not yet
+                             * supported value.
+                             */
+                            fun employerContribution(
+                                employerContribution: JsonField<EmployerContribution>
+                            ) = apply { this.employerContribution = employerContribution }
+
+                            fun frequency(frequency: Boolean) = frequency(JsonField.of(frequency))
+
+                            /**
+                             * Sets [Builder.frequency] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.frequency] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
+                            fun frequency(frequency: JsonField<Boolean>) = apply {
+                                this.frequency = frequency
+                            }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            /**
+                             * Returns an immutable instance of [Contributions].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
+                            fun build(): Contributions =
+                                Contributions(
+                                    employeeContribution,
+                                    employerContribution,
+                                    frequency,
+                                    additionalProperties.toMutableMap(),
+                                )
+                        }
+
+                        private var validated: Boolean = false
+
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
+                        fun validate(): Contributions = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            employeeContribution().ifPresent { it.validate() }
+                            employerContribution().ifPresent { it.validate() }
+                            frequency()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (employeeContribution.asKnown().getOrNull()?.validity() ?: 0) +
+                                (employerContribution.asKnown().getOrNull()?.validity() ?: 0) +
+                                (if (frequency.asKnown().isPresent) 1 else 0)
+
+                        class EmployeeContribution
+                        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                        private constructor(
+                            private val amount: JsonField<Boolean>,
+                            private val currency: JsonField<Boolean>,
+                            private val additionalProperties: MutableMap<String, JsonValue>,
+                        ) {
+
+                            @JsonCreator
+                            private constructor(
+                                @JsonProperty("amount")
+                                @ExcludeMissing
+                                amount: JsonField<Boolean> = JsonMissing.of(),
+                                @JsonProperty("currency")
+                                @ExcludeMissing
+                                currency: JsonField<Boolean> = JsonMissing.of(),
+                            ) : this(amount, currency, mutableMapOf())
+
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
+                            fun amount(): Optional<Boolean> = amount.getOptional("amount")
+
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
+                            fun currency(): Optional<Boolean> = currency.getOptional("currency")
+
+                            /**
+                             * Returns the raw JSON value of [amount].
+                             *
+                             * Unlike [amount], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
+                            @JsonProperty("amount")
+                            @ExcludeMissing
+                            fun _amount(): JsonField<Boolean> = amount
+
+                            /**
+                             * Returns the raw JSON value of [currency].
+                             *
+                             * Unlike [currency], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
+                            @JsonProperty("currency")
+                            @ExcludeMissing
+                            fun _currency(): JsonField<Boolean> = currency
+
+                            @JsonAnySetter
+                            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                                additionalProperties.put(key, value)
+                            }
+
+                            @JsonAnyGetter
+                            @ExcludeMissing
+                            fun _additionalProperties(): Map<String, JsonValue> =
+                                Collections.unmodifiableMap(additionalProperties)
+
+                            fun toBuilder() = Builder().from(this)
+
+                            companion object {
+
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [EmployeeContribution].
+                                 */
+                                @JvmStatic fun builder() = Builder()
+                            }
+
+                            /** A builder for [EmployeeContribution]. */
+                            class Builder internal constructor() {
+
+                                private var amount: JsonField<Boolean> = JsonMissing.of()
+                                private var currency: JsonField<Boolean> = JsonMissing.of()
+                                private var additionalProperties: MutableMap<String, JsonValue> =
+                                    mutableMapOf()
+
+                                @JvmSynthetic
+                                internal fun from(employeeContribution: EmployeeContribution) =
+                                    apply {
+                                        amount = employeeContribution.amount
+                                        currency = employeeContribution.currency
+                                        additionalProperties =
+                                            employeeContribution.additionalProperties.toMutableMap()
+                                    }
+
+                                fun amount(amount: Boolean) = amount(JsonField.of(amount))
+
+                                /**
+                                 * Sets [Builder.amount] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.amount] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
+                                fun amount(amount: JsonField<Boolean>) = apply {
+                                    this.amount = amount
+                                }
+
+                                fun currency(currency: Boolean) = currency(JsonField.of(currency))
+
+                                /**
+                                 * Sets [Builder.currency] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.currency] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
+                                fun currency(currency: JsonField<Boolean>) = apply {
+                                    this.currency = currency
+                                }
+
+                                fun additionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                    additionalProperties.put(key, value)
+                                }
+
+                                fun putAllAdditionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                                fun removeAdditionalProperty(key: String) = apply {
+                                    additionalProperties.remove(key)
+                                }
+
+                                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                    keys.forEach(::removeAdditionalProperty)
+                                }
+
+                                /**
+                                 * Returns an immutable instance of [EmployeeContribution].
+                                 *
+                                 * Further updates to this [Builder] will not mutate the returned
+                                 * instance.
+                                 */
+                                fun build(): EmployeeContribution =
+                                    EmployeeContribution(
+                                        amount,
+                                        currency,
+                                        additionalProperties.toMutableMap(),
+                                    )
+                            }
+
+                            private var validated: Boolean = false
+
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
+                            fun validate(): EmployeeContribution = apply {
+                                if (validated) {
+                                    return@apply
+                                }
+
+                                amount()
+                                currency()
+                                validated = true
+                            }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int =
+                                (if (amount.asKnown().isPresent) 1 else 0) +
+                                    (if (currency.asKnown().isPresent) 1 else 0)
+
+                            override fun equals(other: Any?): Boolean {
+                                if (this === other) {
+                                    return true
+                                }
+
+                                return other is EmployeeContribution &&
+                                    amount == other.amount &&
+                                    currency == other.currency &&
+                                    additionalProperties == other.additionalProperties
+                            }
+
+                            private val hashCode: Int by lazy {
+                                Objects.hash(amount, currency, additionalProperties)
+                            }
+
+                            override fun hashCode(): Int = hashCode
+
+                            override fun toString() =
+                                "EmployeeContribution{amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+                        }
+
+                        class EmployerContribution
+                        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                        private constructor(
+                            private val amount: JsonField<Boolean>,
+                            private val currency: JsonField<Boolean>,
+                            private val additionalProperties: MutableMap<String, JsonValue>,
+                        ) {
+
+                            @JsonCreator
+                            private constructor(
+                                @JsonProperty("amount")
+                                @ExcludeMissing
+                                amount: JsonField<Boolean> = JsonMissing.of(),
+                                @JsonProperty("currency")
+                                @ExcludeMissing
+                                currency: JsonField<Boolean> = JsonMissing.of(),
+                            ) : this(amount, currency, mutableMapOf())
+
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
+                            fun amount(): Optional<Boolean> = amount.getOptional("amount")
+
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
+                            fun currency(): Optional<Boolean> = currency.getOptional("currency")
+
+                            /**
+                             * Returns the raw JSON value of [amount].
+                             *
+                             * Unlike [amount], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
+                            @JsonProperty("amount")
+                            @ExcludeMissing
+                            fun _amount(): JsonField<Boolean> = amount
+
+                            /**
+                             * Returns the raw JSON value of [currency].
+                             *
+                             * Unlike [currency], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
+                            @JsonProperty("currency")
+                            @ExcludeMissing
+                            fun _currency(): JsonField<Boolean> = currency
+
+                            @JsonAnySetter
+                            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                                additionalProperties.put(key, value)
+                            }
+
+                            @JsonAnyGetter
+                            @ExcludeMissing
+                            fun _additionalProperties(): Map<String, JsonValue> =
+                                Collections.unmodifiableMap(additionalProperties)
+
+                            fun toBuilder() = Builder().from(this)
+
+                            companion object {
+
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [EmployerContribution].
+                                 */
+                                @JvmStatic fun builder() = Builder()
+                            }
+
+                            /** A builder for [EmployerContribution]. */
+                            class Builder internal constructor() {
+
+                                private var amount: JsonField<Boolean> = JsonMissing.of()
+                                private var currency: JsonField<Boolean> = JsonMissing.of()
+                                private var additionalProperties: MutableMap<String, JsonValue> =
+                                    mutableMapOf()
+
+                                @JvmSynthetic
+                                internal fun from(employerContribution: EmployerContribution) =
+                                    apply {
+                                        amount = employerContribution.amount
+                                        currency = employerContribution.currency
+                                        additionalProperties =
+                                            employerContribution.additionalProperties.toMutableMap()
+                                    }
+
+                                fun amount(amount: Boolean) = amount(JsonField.of(amount))
+
+                                /**
+                                 * Sets [Builder.amount] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.amount] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
+                                fun amount(amount: JsonField<Boolean>) = apply {
+                                    this.amount = amount
+                                }
+
+                                fun currency(currency: Boolean) = currency(JsonField.of(currency))
+
+                                /**
+                                 * Sets [Builder.currency] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.currency] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
+                                fun currency(currency: JsonField<Boolean>) = apply {
+                                    this.currency = currency
+                                }
+
+                                fun additionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                    additionalProperties.put(key, value)
+                                }
+
+                                fun putAllAdditionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                                fun removeAdditionalProperty(key: String) = apply {
+                                    additionalProperties.remove(key)
+                                }
+
+                                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                    keys.forEach(::removeAdditionalProperty)
+                                }
+
+                                /**
+                                 * Returns an immutable instance of [EmployerContribution].
+                                 *
+                                 * Further updates to this [Builder] will not mutate the returned
+                                 * instance.
+                                 */
+                                fun build(): EmployerContribution =
+                                    EmployerContribution(
+                                        amount,
+                                        currency,
+                                        additionalProperties.toMutableMap(),
+                                    )
+                            }
+
+                            private var validated: Boolean = false
+
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws FinchInvalidDataException if any value type in this object
+                             *   doesn't match its expected type.
+                             */
+                            fun validate(): EmployerContribution = apply {
+                                if (validated) {
+                                    return@apply
+                                }
+
+                                amount()
+                                currency()
+                                validated = true
+                            }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: FinchInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int =
+                                (if (amount.asKnown().isPresent) 1 else 0) +
+                                    (if (currency.asKnown().isPresent) 1 else 0)
+
+                            override fun equals(other: Any?): Boolean {
+                                if (this === other) {
+                                    return true
+                                }
+
+                                return other is EmployerContribution &&
+                                    amount == other.amount &&
+                                    currency == other.currency &&
+                                    additionalProperties == other.additionalProperties
+                            }
+
+                            private val hashCode: Int by lazy {
+                                Objects.hash(amount, currency, additionalProperties)
+                            }
+
+                            override fun hashCode(): Int = hashCode
+
+                            override fun toString() =
+                                "EmployerContribution{amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+                        }
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Contributions &&
+                                employeeContribution == other.employeeContribution &&
+                                employerContribution == other.employerContribution &&
+                                frequency == other.frequency &&
+                                additionalProperties == other.additionalProperties
+                        }
+
+                        private val hashCode: Int by lazy {
+                            Objects.hash(
+                                employeeContribution,
+                                employerContribution,
+                                frequency,
+                                additionalProperties,
+                            )
+                        }
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "Contributions{employeeContribution=$employeeContribution, employerContribution=$employerContribution, frequency=$frequency, additionalProperties=$additionalProperties}"
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is SupportedPlanEnrollmentFields &&
+                            id == other.id &&
+                            contributions == other.contributions &&
+                            coverageEndDate == other.coverageEndDate &&
+                            coverageStartDate == other.coverageStartDate &&
+                            coverageTier == other.coverageTier &&
+                            dependentIds == other.dependentIds &&
+                            individualId == other.individualId &&
+                            planId == other.planId &&
+                            status == other.status &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(
+                            id,
+                            contributions,
+                            coverageEndDate,
+                            coverageStartDate,
+                            coverageTier,
+                            dependentIds,
+                            individualId,
+                            planId,
+                            status,
+                            additionalProperties,
+                        )
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "SupportedPlanEnrollmentFields{id=$id, contributions=$contributions, coverageEndDate=$coverageEndDate, coverageStartDate=$coverageStartDate, coverageTier=$coverageTier, dependentIds=$dependentIds, individualId=$individualId, planId=$planId, status=$status, additionalProperties=$additionalProperties}"
+                }
+
+                class SupportedPlanFields
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val id: JsonField<Boolean>,
+                    private val carrier: JsonField<Carrier>,
+                    private val coverageTiers: JsonField<Boolean>,
+                    private val deductionCodes: JsonField<Boolean>,
+                    private val description: JsonField<Boolean>,
+                    private val endDate: JsonField<Boolean>,
+                    private val name: JsonField<Boolean>,
+                    private val networkType: JsonField<Boolean>,
+                    private val startDate: JsonField<Boolean>,
+                    private val type: JsonField<Boolean>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("id")
+                        @ExcludeMissing
+                        id: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("carrier")
+                        @ExcludeMissing
+                        carrier: JsonField<Carrier> = JsonMissing.of(),
+                        @JsonProperty("coverage_tiers")
+                        @ExcludeMissing
+                        coverageTiers: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("deduction_codes")
+                        @ExcludeMissing
+                        deductionCodes: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("description")
+                        @ExcludeMissing
+                        description: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("end_date")
+                        @ExcludeMissing
+                        endDate: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("name")
+                        @ExcludeMissing
+                        name: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("network_type")
+                        @ExcludeMissing
+                        networkType: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("start_date")
+                        @ExcludeMissing
+                        startDate: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        type: JsonField<Boolean> = JsonMissing.of(),
+                    ) : this(
+                        id,
+                        carrier,
+                        coverageTiers,
+                        deductionCodes,
+                        description,
+                        endDate,
+                        name,
+                        networkType,
+                        startDate,
+                        type,
+                        mutableMapOf(),
+                    )
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun id(): Optional<Boolean> = id.getOptional("id")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun carrier(): Optional<Carrier> = carrier.getOptional("carrier")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun coverageTiers(): Optional<Boolean> =
+                        coverageTiers.getOptional("coverage_tiers")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun deductionCodes(): Optional<Boolean> =
+                        deductionCodes.getOptional("deduction_codes")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun description(): Optional<Boolean> = description.getOptional("description")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun endDate(): Optional<Boolean> = endDate.getOptional("end_date")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun name(): Optional<Boolean> = name.getOptional("name")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun networkType(): Optional<Boolean> = networkType.getOptional("network_type")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun startDate(): Optional<Boolean> = startDate.getOptional("start_date")
+
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
+                    fun type(): Optional<Boolean> = type.getOptional("type")
+
+                    /**
+                     * Returns the raw JSON value of [id].
+                     *
+                     * Unlike [id], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
+
+                    /**
+                     * Returns the raw JSON value of [carrier].
+                     *
+                     * Unlike [carrier], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("carrier")
+                    @ExcludeMissing
+                    fun _carrier(): JsonField<Carrier> = carrier
+
+                    /**
+                     * Returns the raw JSON value of [coverageTiers].
+                     *
+                     * Unlike [coverageTiers], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("coverage_tiers")
+                    @ExcludeMissing
+                    fun _coverageTiers(): JsonField<Boolean> = coverageTiers
+
+                    /**
+                     * Returns the raw JSON value of [deductionCodes].
+                     *
+                     * Unlike [deductionCodes], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("deduction_codes")
+                    @ExcludeMissing
+                    fun _deductionCodes(): JsonField<Boolean> = deductionCodes
+
+                    /**
+                     * Returns the raw JSON value of [description].
+                     *
+                     * Unlike [description], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("description")
+                    @ExcludeMissing
+                    fun _description(): JsonField<Boolean> = description
+
+                    /**
+                     * Returns the raw JSON value of [endDate].
+                     *
+                     * Unlike [endDate], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("end_date")
+                    @ExcludeMissing
+                    fun _endDate(): JsonField<Boolean> = endDate
+
+                    /**
+                     * Returns the raw JSON value of [name].
+                     *
+                     * Unlike [name], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<Boolean> = name
+
+                    /**
+                     * Returns the raw JSON value of [networkType].
+                     *
+                     * Unlike [networkType], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("network_type")
+                    @ExcludeMissing
+                    fun _networkType(): JsonField<Boolean> = networkType
+
+                    /**
+                     * Returns the raw JSON value of [startDate].
+                     *
+                     * Unlike [startDate], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("start_date")
+                    @ExcludeMissing
+                    fun _startDate(): JsonField<Boolean> = startDate
+
+                    /**
+                     * Returns the raw JSON value of [type].
+                     *
+                     * Unlike [type], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedPlanFields].
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [SupportedPlanFields]. */
+                    class Builder internal constructor() {
+
+                        private var id: JsonField<Boolean> = JsonMissing.of()
+                        private var carrier: JsonField<Carrier> = JsonMissing.of()
+                        private var coverageTiers: JsonField<Boolean> = JsonMissing.of()
+                        private var deductionCodes: JsonField<Boolean> = JsonMissing.of()
+                        private var description: JsonField<Boolean> = JsonMissing.of()
+                        private var endDate: JsonField<Boolean> = JsonMissing.of()
+                        private var name: JsonField<Boolean> = JsonMissing.of()
+                        private var networkType: JsonField<Boolean> = JsonMissing.of()
+                        private var startDate: JsonField<Boolean> = JsonMissing.of()
+                        private var type: JsonField<Boolean> = JsonMissing.of()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(supportedPlanFields: SupportedPlanFields) = apply {
+                            id = supportedPlanFields.id
+                            carrier = supportedPlanFields.carrier
+                            coverageTiers = supportedPlanFields.coverageTiers
+                            deductionCodes = supportedPlanFields.deductionCodes
+                            description = supportedPlanFields.description
+                            endDate = supportedPlanFields.endDate
+                            name = supportedPlanFields.name
+                            networkType = supportedPlanFields.networkType
+                            startDate = supportedPlanFields.startDate
+                            type = supportedPlanFields.type
+                            additionalProperties =
+                                supportedPlanFields.additionalProperties.toMutableMap()
+                        }
+
+                        fun id(id: Boolean) = id(JsonField.of(id))
+
+                        /**
+                         * Sets [Builder.id] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.id] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
+
+                        fun carrier(carrier: Carrier) = carrier(JsonField.of(carrier))
+
+                        /**
+                         * Sets [Builder.carrier] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.carrier] with a well-typed [Carrier]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun carrier(carrier: JsonField<Carrier>) = apply { this.carrier = carrier }
+
+                        fun coverageTiers(coverageTiers: Boolean) =
+                            coverageTiers(JsonField.of(coverageTiers))
+
+                        /**
+                         * Sets [Builder.coverageTiers] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.coverageTiers] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
+                        fun coverageTiers(coverageTiers: JsonField<Boolean>) = apply {
+                            this.coverageTiers = coverageTiers
+                        }
+
+                        fun deductionCodes(deductionCodes: Boolean) =
+                            deductionCodes(JsonField.of(deductionCodes))
+
+                        /**
+                         * Sets [Builder.deductionCodes] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.deductionCodes] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
+                        fun deductionCodes(deductionCodes: JsonField<Boolean>) = apply {
+                            this.deductionCodes = deductionCodes
+                        }
+
+                        fun description(description: Boolean) =
+                            description(JsonField.of(description))
+
+                        /**
+                         * Sets [Builder.description] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.description] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun description(description: JsonField<Boolean>) = apply {
+                            this.description = description
+                        }
+
+                        fun endDate(endDate: Boolean) = endDate(JsonField.of(endDate))
+
+                        /**
+                         * Sets [Builder.endDate] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.endDate] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun endDate(endDate: JsonField<Boolean>) = apply { this.endDate = endDate }
+
+                        fun name(name: Boolean) = name(JsonField.of(name))
+
+                        /**
+                         * Sets [Builder.name] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.name] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun name(name: JsonField<Boolean>) = apply { this.name = name }
+
+                        fun networkType(networkType: Boolean) =
+                            networkType(JsonField.of(networkType))
+
+                        /**
+                         * Sets [Builder.networkType] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.networkType] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun networkType(networkType: JsonField<Boolean>) = apply {
+                            this.networkType = networkType
+                        }
+
+                        fun startDate(startDate: Boolean) = startDate(JsonField.of(startDate))
+
+                        /**
+                         * Sets [Builder.startDate] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.startDate] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun startDate(startDate: JsonField<Boolean>) = apply {
+                            this.startDate = startDate
+                        }
+
+                        fun type(type: Boolean) = type(JsonField.of(type))
+
+                        /**
+                         * Sets [Builder.type] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.type] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun type(type: JsonField<Boolean>) = apply { this.type = type }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [SupportedPlanFields].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
+                        fun build(): SupportedPlanFields =
+                            SupportedPlanFields(
+                                id,
+                                carrier,
+                                coverageTiers,
+                                deductionCodes,
+                                description,
+                                endDate,
+                                name,
+                                networkType,
+                                startDate,
+                                type,
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    /**
+                     * Validates that the types of all values in this object match their expected
+                     * types recursively.
+                     *
+                     * This method is _not_ forwards compatible with new types from the API for
+                     * existing fields.
+                     *
+                     * @throws FinchInvalidDataException if any value type in this object doesn't
+                     *   match its expected type.
+                     */
+                    fun validate(): SupportedPlanFields = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        id()
+                        carrier().ifPresent { it.validate() }
+                        coverageTiers()
+                        deductionCodes()
+                        description()
+                        endDate()
+                        name()
+                        networkType()
+                        startDate()
+                        type()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (id.asKnown().isPresent) 1 else 0) +
+                            (carrier.asKnown().getOrNull()?.validity() ?: 0) +
+                            (if (coverageTiers.asKnown().isPresent) 1 else 0) +
+                            (if (deductionCodes.asKnown().isPresent) 1 else 0) +
+                            (if (description.asKnown().isPresent) 1 else 0) +
+                            (if (endDate.asKnown().isPresent) 1 else 0) +
+                            (if (name.asKnown().isPresent) 1 else 0) +
+                            (if (networkType.asKnown().isPresent) 1 else 0) +
+                            (if (startDate.asKnown().isPresent) 1 else 0) +
+                            (if (type.asKnown().isPresent) 1 else 0)
+
+                    class Carrier
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                    private constructor(
+                        private val id: JsonField<Boolean>,
+                        private val name: JsonField<Boolean>,
+                        private val additionalProperties: MutableMap<String, JsonValue>,
+                    ) {
+
+                        @JsonCreator
+                        private constructor(
+                            @JsonProperty("id")
+                            @ExcludeMissing
+                            id: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            name: JsonField<Boolean> = JsonMissing.of(),
+                        ) : this(id, name, mutableMapOf())
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
+                        fun id(): Optional<Boolean> = id.getOptional("id")
+
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
+                        fun name(): Optional<Boolean> = name.getOptional("name")
+
+                        /**
+                         * Returns the raw JSON value of [id].
+                         *
+                         * Unlike [id], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
+
+                        /**
+                         * Returns the raw JSON value of [name].
+                         *
+                         * Unlike [name], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<Boolean> = name
+
+                        @JsonAnySetter
+                        private fun putAdditionalProperty(key: String, value: JsonValue) {
+                            additionalProperties.put(key, value)
+                        }
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> =
+                            Collections.unmodifiableMap(additionalProperties)
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Carrier].
+                             */
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [Carrier]. */
+                        class Builder internal constructor() {
+
+                            private var id: JsonField<Boolean> = JsonMissing.of()
+                            private var name: JsonField<Boolean> = JsonMissing.of()
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(carrier: Carrier) = apply {
+                                id = carrier.id
+                                name = carrier.name
+                                additionalProperties = carrier.additionalProperties.toMutableMap()
+                            }
+
+                            fun id(id: Boolean) = id(JsonField.of(id))
+
+                            /**
+                             * Sets [Builder.id] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.id] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
+                            fun id(id: JsonField<Boolean>) = apply { this.id = id }
+
+                            fun name(name: Boolean) = name(JsonField.of(name))
+
+                            /**
+                             * Sets [Builder.name] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.name] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
+                            fun name(name: JsonField<Boolean>) = apply { this.name = name }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            /**
+                             * Returns an immutable instance of [Carrier].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             */
+                            fun build(): Carrier =
+                                Carrier(id, name, additionalProperties.toMutableMap())
+                        }
+
+                        private var validated: Boolean = false
+
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws FinchInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
+                        fun validate(): Carrier = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            id()
+                            name()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (id.asKnown().isPresent) 1 else 0) +
+                                (if (name.asKnown().isPresent) 1 else 0)
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Carrier &&
+                                id == other.id &&
+                                name == other.name &&
+                                additionalProperties == other.additionalProperties
+                        }
+
+                        private val hashCode: Int by lazy {
+                            Objects.hash(id, name, additionalProperties)
+                        }
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "Carrier{id=$id, name=$name, additionalProperties=$additionalProperties}"
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is SupportedPlanFields &&
+                            id == other.id &&
+                            carrier == other.carrier &&
+                            coverageTiers == other.coverageTiers &&
+                            deductionCodes == other.deductionCodes &&
+                            description == other.description &&
+                            endDate == other.endDate &&
+                            name == other.name &&
+                            networkType == other.networkType &&
+                            startDate == other.startDate &&
+                            type == other.type &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(
+                            id,
+                            carrier,
+                            coverageTiers,
+                            deductionCodes,
+                            description,
+                            endDate,
+                            name,
+                            networkType,
+                            startDate,
+                            type,
+                            additionalProperties,
+                        )
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "SupportedPlanFields{id=$id, carrier=$carrier, coverageTiers=$coverageTiers, deductionCodes=$deductionCodes, description=$description, endDate=$endDate, name=$name, networkType=$networkType, startDate=$startDate, type=$type, additionalProperties=$additionalProperties}"
+                }
+
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
                         return true
@@ -10680,6 +13692,9 @@ private constructor(
                         payGroup == other.payGroup &&
                         payStatement == other.payStatement &&
                         payment == other.payment &&
+                        planDependents == other.planDependents &&
+                        planEnrollments == other.planEnrollments &&
+                        plans == other.plans &&
                         additionalProperties == other.additionalProperties
                 }
 
@@ -10692,6 +13707,9 @@ private constructor(
                         payGroup,
                         payStatement,
                         payment,
+                        planDependents,
+                        planEnrollments,
+                        plans,
                         additionalProperties,
                     )
                 }
@@ -10699,7 +13717,7 @@ private constructor(
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "SupportedFields{company=$company, directory=$directory, employment=$employment, individual=$individual, payGroup=$payGroup, payStatement=$payStatement, payment=$payment, additionalProperties=$additionalProperties}"
+                    "SupportedFields{company=$company, directory=$directory, employment=$employment, individual=$individual, payGroup=$payGroup, payStatement=$payStatement, payment=$payment, planDependents=$planDependents, planEnrollments=$planEnrollments, plans=$plans, additionalProperties=$additionalProperties}"
             }
 
             /** The type of authentication method. */
