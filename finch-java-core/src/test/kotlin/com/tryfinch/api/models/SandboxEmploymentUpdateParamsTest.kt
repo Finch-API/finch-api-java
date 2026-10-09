@@ -13,6 +13,7 @@ internal class SandboxEmploymentUpdateParamsTest {
     fun create() {
         SandboxEmploymentUpdateParams.builder()
             .individualId("individual_id")
+            .benefitEligibilityClass("benefit_eligibility_class")
             .classCode("class_code")
             .addCustomField(
                 SandboxEmploymentUpdateParams.CustomField.builder()
@@ -92,6 +93,7 @@ internal class SandboxEmploymentUpdateParamsTest {
         val params =
             SandboxEmploymentUpdateParams.builder()
                 .individualId("individual_id")
+                .benefitEligibilityClass("benefit_eligibility_class")
                 .classCode("class_code")
                 .addCustomField(
                     SandboxEmploymentUpdateParams.CustomField.builder()
@@ -158,6 +160,7 @@ internal class SandboxEmploymentUpdateParamsTest {
 
         val body = params._body()
 
+        assertThat(body.benefitEligibilityClass()).contains("benefit_eligibility_class")
         assertThat(body.classCode()).contains("class_code")
         assertThat(body.customFields().getOrNull())
             .containsExactly(

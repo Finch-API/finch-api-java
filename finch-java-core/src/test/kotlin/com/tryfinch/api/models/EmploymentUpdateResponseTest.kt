@@ -16,6 +16,7 @@ internal class EmploymentUpdateResponseTest {
         val employmentUpdateResponse =
             EmploymentUpdateResponse.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .benefitEligibilityClass("benefit_eligibility_class")
                 .classCode("class_code")
                 .addCustomField(
                     EmploymentUpdateResponse.CustomField.builder()
@@ -81,6 +82,8 @@ internal class EmploymentUpdateResponseTest {
                 .build()
 
         assertThat(employmentUpdateResponse.id()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(employmentUpdateResponse.benefitEligibilityClass())
+            .contains("benefit_eligibility_class")
         assertThat(employmentUpdateResponse.classCode()).contains("class_code")
         assertThat(employmentUpdateResponse.customFields().getOrNull())
             .containsExactly(
@@ -157,6 +160,7 @@ internal class EmploymentUpdateResponseTest {
         val employmentUpdateResponse =
             EmploymentUpdateResponse.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .benefitEligibilityClass("benefit_eligibility_class")
                 .classCode("class_code")
                 .addCustomField(
                     EmploymentUpdateResponse.CustomField.builder()

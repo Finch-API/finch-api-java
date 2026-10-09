@@ -27,6 +27,7 @@ internal class EmploymentServiceAsyncTest {
             employmentServiceAsync.update(
                 SandboxEmploymentUpdateParams.builder()
                     .individualId("individual_id")
+                    .benefitEligibilityClass("benefit_eligibility_class")
                     .classCode("class_code")
                     .addCustomField(
                         SandboxEmploymentUpdateParams.CustomField.builder()
