@@ -217,6 +217,7 @@ private constructor(
     class IndividualOrEmployment
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
+        private val benefitEligibilityClass: JsonField<String>,
         private val classCode: JsonField<String>,
         private val customFields: JsonField<List<CustomField>>,
         private val department: JsonField<Department>,
@@ -255,6 +256,9 @@ private constructor(
 
         @JsonCreator
         private constructor(
+            @JsonProperty("benefit_eligibility_class")
+            @ExcludeMissing
+            benefitEligibilityClass: JsonField<String> = JsonMissing.of(),
             @JsonProperty("class_code")
             @ExcludeMissing
             classCode: JsonField<String> = JsonMissing.of(),
@@ -341,6 +345,7 @@ private constructor(
             @ExcludeMissing
             unionLocal: JsonField<String> = JsonMissing.of(),
         ) : this(
+            benefitEligibilityClass,
             classCode,
             customFields,
             department,
@@ -376,6 +381,16 @@ private constructor(
             unionLocal,
             mutableMapOf(),
         )
+
+        /**
+         * The employer defined benefit eligibility class that groups an employee into a set of
+         * eligible benefit plans, as stored by the provider. Null when not configured.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun benefitEligibilityClass(): Optional<String> =
+            benefitEligibilityClass.getOptional("benefit_eligibility_class")
 
         /**
          * Worker's compensation classification code for this employee
@@ -638,6 +653,16 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun unionLocal(): Optional<String> = unionLocal.getOptional("union_local")
+
+        /**
+         * Returns the raw JSON value of [benefitEligibilityClass].
+         *
+         * Unlike [benefitEligibilityClass], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("benefit_eligibility_class")
+        @ExcludeMissing
+        fun _benefitEligibilityClass(): JsonField<String> = benefitEligibilityClass
 
         /**
          * Returns the raw JSON value of [classCode].
@@ -934,6 +959,7 @@ private constructor(
         /** A builder for [IndividualOrEmployment]. */
         class Builder internal constructor() {
 
+            private var benefitEligibilityClass: JsonField<String> = JsonMissing.of()
             private var classCode: JsonField<String> = JsonMissing.of()
             private var customFields: JsonField<MutableList<CustomField>>? = null
             private var department: JsonField<Department> = JsonMissing.of()
@@ -971,6 +997,7 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(individualOrEmployment: IndividualOrEmployment) = apply {
+                benefitEligibilityClass = individualOrEmployment.benefitEligibilityClass
                 classCode = individualOrEmployment.classCode
                 customFields = individualOrEmployment.customFields.map { it.toMutableList() }
                 department = individualOrEmployment.department
@@ -1005,6 +1032,31 @@ private constructor(
                 unionCode = individualOrEmployment.unionCode
                 unionLocal = individualOrEmployment.unionLocal
                 additionalProperties = individualOrEmployment.additionalProperties.toMutableMap()
+            }
+
+            /**
+             * The employer defined benefit eligibility class that groups an employee into a set of
+             * eligible benefit plans, as stored by the provider. Null when not configured.
+             */
+            fun benefitEligibilityClass(benefitEligibilityClass: String?) =
+                benefitEligibilityClass(JsonField.ofNullable(benefitEligibilityClass))
+
+            /**
+             * Alias for calling [Builder.benefitEligibilityClass] with
+             * `benefitEligibilityClass.orElse(null)`.
+             */
+            fun benefitEligibilityClass(benefitEligibilityClass: Optional<String>) =
+                benefitEligibilityClass(benefitEligibilityClass.getOrNull())
+
+            /**
+             * Sets [Builder.benefitEligibilityClass] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.benefitEligibilityClass] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun benefitEligibilityClass(benefitEligibilityClass: JsonField<String>) = apply {
+                this.benefitEligibilityClass = benefitEligibilityClass
             }
 
             /** Worker's compensation classification code for this employee */
@@ -1673,6 +1725,7 @@ private constructor(
              */
             fun build(): IndividualOrEmployment =
                 IndividualOrEmployment(
+                    benefitEligibilityClass,
                     classCode,
                     (customFields ?: JsonMissing.of()).map { it.toImmutable() },
                     department,
@@ -1726,6 +1779,7 @@ private constructor(
                 return@apply
             }
 
+            benefitEligibilityClass()
             classCode()
             customFields().ifPresent { it.forEach { it.validate() } }
             department().ifPresent { it.validate() }
@@ -1778,7 +1832,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (classCode.asKnown().isPresent) 1 else 0) +
+            (if (benefitEligibilityClass.asKnown().isPresent) 1 else 0) +
+                (if (classCode.asKnown().isPresent) 1 else 0) +
                 (customFields.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (department.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (dob.asKnown().isPresent) 1 else 0) +
@@ -4625,6 +4680,7 @@ private constructor(
             }
 
             return other is IndividualOrEmployment &&
+                benefitEligibilityClass == other.benefitEligibilityClass &&
                 classCode == other.classCode &&
                 customFields == other.customFields &&
                 department == other.department &&
@@ -4663,6 +4719,7 @@ private constructor(
 
         private val hashCode: Int by lazy {
             Objects.hash(
+                benefitEligibilityClass,
                 classCode,
                 customFields,
                 department,
@@ -4703,7 +4760,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, flsaStatus=$flsaStatus, gender=$gender, highlyCompensatedEmployee=$highlyCompensatedEmployee, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, keyEmployee=$keyEmployee, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, maritalStatus=$maritalStatus, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, unionCode=$unionCode, unionLocal=$unionLocal, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{benefitEligibilityClass=$benefitEligibilityClass, classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, flsaStatus=$flsaStatus, gender=$gender, highlyCompensatedEmployee=$highlyCompensatedEmployee, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, keyEmployee=$keyEmployee, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, maritalStatus=$maritalStatus, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, unionCode=$unionCode, unionLocal=$unionLocal, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

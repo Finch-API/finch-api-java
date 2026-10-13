@@ -14,6 +14,7 @@ internal class SandboxDirectoryCreateParamsTest {
         SandboxDirectoryCreateParams.builder()
             .addBody(
                 SandboxDirectoryCreateParams.IndividualOrEmployment.builder()
+                    .benefitEligibilityClass("benefit_eligibility_class")
                     .classCode("class_code")
                     .addCustomField(
                         SandboxDirectoryCreateParams.IndividualOrEmployment.CustomField.builder()
@@ -140,6 +141,7 @@ internal class SandboxDirectoryCreateParamsTest {
             SandboxDirectoryCreateParams.builder()
                 .addBody(
                     SandboxDirectoryCreateParams.IndividualOrEmployment.builder()
+                        .benefitEligibilityClass("benefit_eligibility_class")
                         .classCode("class_code")
                         .addCustomField(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.CustomField
@@ -272,6 +274,7 @@ internal class SandboxDirectoryCreateParamsTest {
         assertThat(body)
             .containsExactly(
                 SandboxDirectoryCreateParams.IndividualOrEmployment.builder()
+                    .benefitEligibilityClass("benefit_eligibility_class")
                     .classCode("class_code")
                     .addCustomField(
                         SandboxDirectoryCreateParams.IndividualOrEmployment.CustomField.builder()

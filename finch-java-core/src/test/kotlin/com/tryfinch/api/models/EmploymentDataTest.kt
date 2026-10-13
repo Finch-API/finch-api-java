@@ -20,6 +20,7 @@ internal class EmploymentDataTest {
         val responseBody =
             EmploymentData.EmploymentDataResponseBody.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .benefitEligibilityClass("benefit_eligibility_class")
                 .classCode("class_code")
                 .department(
                     EmploymentData.EmploymentDataResponseBody.Department.builder()
@@ -104,6 +105,7 @@ internal class EmploymentDataTest {
             EmploymentData.ofResponseBody(
                 EmploymentData.EmploymentDataResponseBody.builder()
                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .benefitEligibilityClass("benefit_eligibility_class")
                     .classCode("class_code")
                     .department(
                         EmploymentData.EmploymentDataResponseBody.Department.builder()

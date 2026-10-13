@@ -27,6 +27,7 @@ internal class DirectoryServiceAsyncTest {
             directoryServiceAsync.create(
                 listOf(
                     SandboxDirectoryCreateParams.IndividualOrEmployment.builder()
+                        .benefitEligibilityClass("benefit_eligibility_class")
                         .classCode("class_code")
                         .addCustomField(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.CustomField
