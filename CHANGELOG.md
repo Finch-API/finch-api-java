@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.9.0](https://github.com/Finch-API/finch-api-java/compare/v8.8.3...v8.9.0) (2026-10-13)
+
+
+### Features
+
+* **employment:** expose benefit_eligibility_class on the API surface [INT-4092] ([2f23ba3](https://github.com/Finch-API/finch-api-java/commit/2f23ba38d04f1ef48f7c57ac348215a270219d14))
+
 ## [8.8.3](https://github.com/Finch-API/finch-api-java/compare/v8.8.2...v8.8.3) (2026-10-01)
 
 
