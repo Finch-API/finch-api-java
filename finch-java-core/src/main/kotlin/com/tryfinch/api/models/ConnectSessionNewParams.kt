@@ -100,7 +100,9 @@ private constructor(
     fun recordkeeping(): Optional<Recordkeeping> = body.recordkeeping()
 
     /**
-     * The URI to redirect to after the Connect flow is completed
+     * The URI to redirect to after the Connect flow is completed. Required if you use the redirect
+     * flow, and it must be registered on the Credentials tab of the Finch Developer Dashboard. Omit
+     * it for the embedded flow (Connect SDK).
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -397,7 +399,11 @@ private constructor(
             body.recordkeeping(recordkeeping)
         }
 
-        /** The URI to redirect to after the Connect flow is completed */
+        /**
+         * The URI to redirect to after the Connect flow is completed. Required if you use the
+         * redirect flow, and it must be registered on the Credentials tab of the Finch Developer
+         * Dashboard. Omit it for the embedded flow (Connect SDK).
+         */
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
         /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
@@ -698,7 +704,9 @@ private constructor(
         fun recordkeeping(): Optional<Recordkeeping> = recordkeeping.getOptional("recordkeeping")
 
         /**
-         * The URI to redirect to after the Connect flow is completed
+         * The URI to redirect to after the Connect flow is completed. Required if you use the
+         * redirect flow, and it must be registered on the Credentials tab of the Finch Developer
+         * Dashboard. Omit it for the embedded flow (Connect SDK).
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1031,7 +1039,11 @@ private constructor(
                 this.recordkeeping = recordkeeping
             }
 
-            /** The URI to redirect to after the Connect flow is completed */
+            /**
+             * The URI to redirect to after the Connect flow is completed. Required if you use the
+             * redirect flow, and it must be registered on the Credentials tab of the Finch
+             * Developer Dashboard. Omit it for the embedded flow (Connect SDK).
+             */
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
 
             /** Alias for calling [Builder.redirectUri] with `redirectUri.orElse(null)`. */
