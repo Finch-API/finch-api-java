@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.9.1](https://github.com/Finch-API/finch-api-java/compare/v8.9.0...v8.9.1) (2026-10-22)
+
+
+### Documentation
+
+* **spec:** clarify redirect_uri requirement on connect and token endpoints [DDR-1050] ([dd485cf](https://github.com/Finch-API/finch-api-java/commit/dd485cff9ae9960eed61e9e2cf6521c9b339b860))
+* **spec:** document missing entity_ids error for multi-entity connections [DDR-1051] ([a73c0de](https://github.com/Finch-API/finch-api-java/commit/a73c0dec8539da4ef811ff58b72ce1c9b735cbdf))
+
 ## [8.9.0](https://github.com/Finch-API/finch-api-java/compare/v8.8.3...v8.9.0) (2026-10-13)
 
 
