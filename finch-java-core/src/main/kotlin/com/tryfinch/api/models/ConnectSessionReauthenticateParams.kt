@@ -40,7 +40,8 @@ private constructor(
     fun connectionId(): String = body.connectionId()
 
     /**
-     * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+     * The number of minutes until the session expires (defaults to 43,200, which is 30 days). Must
+     * be between 1 and 129,600 (90 days).
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -162,7 +163,8 @@ private constructor(
         }
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days).
+         * Must be between 1 and 129,600 (90 days).
          */
         fun minutesToExpire(minutesToExpire: Long) = apply { body.minutesToExpire(minutesToExpire) }
 
@@ -400,7 +402,8 @@ private constructor(
         fun connectionId(): String = connectionId.getRequired("connection_id")
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days).
+         * Must be between 1 and 129,600 (90 days).
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -524,7 +527,7 @@ private constructor(
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
-             * days)
+             * days). Must be between 1 and 129,600 (90 days).
              */
             fun minutesToExpire(minutesToExpire: Long) =
                 minutesToExpire(JsonField.of(minutesToExpire))
