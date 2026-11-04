@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.9.2](https://github.com/Finch-API/finch-api-java/compare/v8.9.1...v8.9.2) (2026-10-30)
+
+
+### Documentation
+
+* **spec:** fix OpenAPI lint errors flagged by Unum's Spectral review [DDR-984] ([a060975](https://github.com/Finch-API/finch-api-java/commit/a0609756fa0a11ec04f8608096a53ee08d0decc3))
+
 ## [8.9.1](https://github.com/Finch-API/finch-api-java/compare/v8.9.0...v8.9.1) (2026-10-22)
 
 
