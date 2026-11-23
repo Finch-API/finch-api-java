@@ -15,6 +15,7 @@ import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
@@ -25,6 +26,7 @@ class ManualAsyncJob
 private constructor(
     private val body: JsonField<List<JsonValue?>>,
     private val jobId: JsonField<String>,
+    private val slaDeadline: JsonField<OffsetDateTime>,
     private val status: JsonField<Status>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -33,8 +35,11 @@ private constructor(
     private constructor(
         @JsonProperty("body") @ExcludeMissing body: JsonField<List<JsonValue?>> = JsonMissing.of(),
         @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("sla_deadline")
+        @ExcludeMissing
+        slaDeadline: JsonField<OffsetDateTime> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
-    ) : this(body, jobId, status, mutableMapOf())
+    ) : this(body, jobId, slaDeadline, status, mutableMapOf())
 
     /**
      * Specific information about the job, such as individual statuses for batch jobs.
@@ -49,6 +54,15 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun jobId(): String = jobId.getRequired("job_id")
+
+    /**
+     * The datetime by which the job is expected to be completed. Only returned for jobs that
+     * include requests Finch processes manually (assisted).
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun slaDeadline(): OffsetDateTime = slaDeadline.getRequired("sla_deadline")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -69,6 +83,15 @@ private constructor(
      * Unlike [jobId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("job_id") @ExcludeMissing fun _jobId(): JsonField<String> = jobId
+
+    /**
+     * Returns the raw JSON value of [slaDeadline].
+     *
+     * Unlike [slaDeadline], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("sla_deadline")
+    @ExcludeMissing
+    fun _slaDeadline(): JsonField<OffsetDateTime> = slaDeadline
 
     /**
      * Returns the raw JSON value of [status].
@@ -98,6 +121,7 @@ private constructor(
          * ```java
          * .body()
          * .jobId()
+         * .slaDeadline()
          * .status()
          * ```
          */
@@ -109,6 +133,7 @@ private constructor(
 
         private var body: JsonField<MutableList<JsonValue?>>? = null
         private var jobId: JsonField<String>? = null
+        private var slaDeadline: JsonField<OffsetDateTime>? = null
         private var status: JsonField<Status>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -116,6 +141,7 @@ private constructor(
         internal fun from(manualAsyncJob: ManualAsyncJob) = apply {
             body = manualAsyncJob.body.map { it.toMutableList() }
             jobId = manualAsyncJob.jobId
+            slaDeadline = manualAsyncJob.slaDeadline
             status = manualAsyncJob.status
             additionalProperties = manualAsyncJob.additionalProperties.toMutableMap()
         }
@@ -159,6 +185,23 @@ private constructor(
          */
         fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
+        /**
+         * The datetime by which the job is expected to be completed. Only returned for jobs that
+         * include requests Finch processes manually (assisted).
+         */
+        fun slaDeadline(slaDeadline: OffsetDateTime) = slaDeadline(JsonField.of(slaDeadline))
+
+        /**
+         * Sets [Builder.slaDeadline] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.slaDeadline] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun slaDeadline(slaDeadline: JsonField<OffsetDateTime>) = apply {
+            this.slaDeadline = slaDeadline
+        }
+
         fun status(status: Status) = status(JsonField.of(status))
 
         /**
@@ -197,6 +240,7 @@ private constructor(
          * ```java
          * .body()
          * .jobId()
+         * .slaDeadline()
          * .status()
          * ```
          *
@@ -206,6 +250,7 @@ private constructor(
             ManualAsyncJob(
                 checkRequired("body", body).map { it.toImmutable() },
                 checkRequired("jobId", jobId),
+                checkRequired("slaDeadline", slaDeadline),
                 checkRequired("status", status),
                 additionalProperties.toMutableMap(),
             )
@@ -228,6 +273,7 @@ private constructor(
 
         body()
         jobId()
+        slaDeadline()
         status().validate()
         validated = true
     }
@@ -249,6 +295,7 @@ private constructor(
     internal fun validity(): Int =
         (body.asKnown().getOrNull()?.sumOf { (if (it == null) 0 else 1).toInt() } ?: 0) +
             (if (jobId.asKnown().isPresent) 1 else 0) +
+            (if (slaDeadline.asKnown().isPresent) 1 else 0) +
             (status.asKnown().getOrNull()?.validity() ?: 0)
 
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -404,14 +451,17 @@ private constructor(
         return other is ManualAsyncJob &&
             body == other.body &&
             jobId == other.jobId &&
+            slaDeadline == other.slaDeadline &&
             status == other.status &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(body, jobId, status, additionalProperties) }
+    private val hashCode: Int by lazy {
+        Objects.hash(body, jobId, slaDeadline, status, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ManualAsyncJob{body=$body, jobId=$jobId, status=$status, additionalProperties=$additionalProperties}"
+        "ManualAsyncJob{body=$body, jobId=$jobId, slaDeadline=$slaDeadline, status=$status, additionalProperties=$additionalProperties}"
 }
