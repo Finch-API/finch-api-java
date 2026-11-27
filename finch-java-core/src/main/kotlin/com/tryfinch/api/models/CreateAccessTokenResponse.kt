@@ -489,7 +489,11 @@ private constructor(
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID
          */
         @Deprecated("deprecated")
-        fun accountId(accountId: String) = accountId(JsonField.of(accountId))
+        fun accountId(accountId: String?) = accountId(JsonField.ofNullable(accountId))
+
+        /** Alias for calling [Builder.accountId] with `accountId.orElse(null)`. */
+        @Deprecated("deprecated")
+        fun accountId(accountId: Optional<String>) = accountId(accountId.getOrNull())
 
         /**
          * Sets [Builder.accountId] to an arbitrary JSON value.
@@ -502,7 +506,10 @@ private constructor(
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /** The Finch UUID of the company associated with the `access_token`. */
-        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
+        fun companyId(companyId: String?) = companyId(JsonField.ofNullable(companyId))
+
+        /** Alias for calling [Builder.companyId] with `companyId.orElse(null)`. */
+        fun companyId(companyId: Optional<String>) = companyId(companyId.getOrNull())
 
         /**
          * Sets [Builder.companyId] to an arbitrary JSON value.

@@ -5,6 +5,7 @@ package com.tryfinch.api.models
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.jsonMapper
+import java.time.OffsetDateTime
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -17,12 +18,15 @@ internal class ManualAsyncJobTest {
             ManualAsyncJob.builder()
                 .addBody(JsonValue.from(mapOf<String, Any>()))
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .slaDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .status(ManualAsyncJob.Status.PENDING)
                 .build()
 
         assertThat(manualAsyncJob.body().getOrNull())
             .containsExactly(JsonValue.from(mapOf<String, Any>()))
         assertThat(manualAsyncJob.jobId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(manualAsyncJob.slaDeadline())
+            .isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(manualAsyncJob.status()).isEqualTo(ManualAsyncJob.Status.PENDING)
     }
 
@@ -33,6 +37,7 @@ internal class ManualAsyncJobTest {
             ManualAsyncJob.builder()
                 .addBody(JsonValue.from(mapOf<String, Any>()))
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .slaDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .status(ManualAsyncJob.Status.PENDING)
                 .build()
 
